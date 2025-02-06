@@ -30,6 +30,7 @@ public class SolutionComponentElement implements MetadataElement
     private List<WiredSolutionComponent>        wiredFromLinks  = null; // SolutionLinkingWires to the component or ports
     private List<SolutionPortElement>           ports           = null;
     private List<RelatedMetadataElementSummary> actors          = null;
+    private List<InformationSupplyChainContext> context         = null;
     private String                              mermaidTimeline = null;
     private String                              mermaidGraph    = null;
 
@@ -58,6 +59,7 @@ public class SolutionComponentElement implements MetadataElement
             wiredFromLinks  = template.getWiredFromLinks();
             ports           = template.getPorts();
             actors          = template.getActors();
+            context         = template.getContext();
             mermaidTimeline = template.getMermaidTimeline();
             mermaidGraph    = template.getMermaidGraph();
         }
@@ -217,6 +219,30 @@ public class SolutionComponentElement implements MetadataElement
         this.actors = actors;
     }
 
+
+    /**
+     * Return details of the information supply chains and parent components for this solution component.
+     * This is only returned on top-level elements.
+     *
+     * @return list of linked context
+     */
+    public List<InformationSupplyChainContext> getContext()
+    {
+        return context;
+    }
+
+
+    /**
+     * Set up details of the information supply chains and parent components for this solution component.
+     *
+     * @param context list of linked context
+     */
+    public void setContext(List<InformationSupplyChainContext> context)
+    {
+        this.context = context;
+    }
+
+
     /**
      * Return the timeline showing the flow of data along the solution component.
      *
@@ -276,6 +302,7 @@ public class SolutionComponentElement implements MetadataElement
                 ", wiredFromLinks=" + wiredFromLinks +
                 ", ports=" + ports +
                 ", actors=" + actors +
+                ", context=" + context +
                 ", mermaidTimeline='" + mermaidTimeline + '\'' +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
@@ -301,6 +328,7 @@ public class SolutionComponentElement implements MetadataElement
                 Objects.equals(wiredFromLinks, that.wiredFromLinks) &&
                 Objects.equals(ports, that.ports) &&
                 Objects.equals(actors, that.actors) &&
+                Objects.equals(context, that.context) &&
                 Objects.equals(mermaidTimeline, that.mermaidTimeline) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
     }
@@ -314,6 +342,6 @@ public class SolutionComponentElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, properties, subComponents, wiredToLinks, wiredFromLinks, ports, actors, mermaidTimeline, mermaidGraph);
+        return Objects.hash(elementHeader, properties, subComponents, wiredToLinks, wiredFromLinks, ports, actors, context, mermaidTimeline, mermaidGraph);
     }
 }

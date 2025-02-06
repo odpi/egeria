@@ -47,7 +47,6 @@ public class AssetConsumerRESTServices
     private static final RESTCallLogger                 restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
                                                                                                   instanceHandler.getServiceName());
 
-
     /**
      * Default constructor
      */
@@ -345,7 +344,7 @@ public class AssetConsumerRESTServices
      * @param serverName name of the server instances for this request
      * @param userId the userId of the requesting user
      * @param assetGUID  unique identifier for the asset
-     * @param relationshipTypes list of relationship type names to use in the search
+     * @param requestBody list of relationship type names to use in the search plus optional supply chain information
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -354,12 +353,12 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public AssetLineageGraphResponse getAssetLineageGraph(String       serverName,
-                                                          String       userId,
-                                                          String       assetGUID,
-                                                          List<String> relationshipTypes,
-                                                          int          startFrom,
-                                                          int          pageSize)
+    public AssetLineageGraphResponse getAssetLineageGraph(String                       serverName,
+                                                          String                       userId,
+                                                          String                       assetGUID,
+                                                          AssetLineageGraphRequestBody requestBody,
+                                                          int                          startFrom,
+                                                          int                          pageSize)
     {
         final String methodName = "getAssetLineageGraph";
 
@@ -373,17 +372,33 @@ public class AssetConsumerRESTServices
             AssetHandler<AssetElement>                   assetHandler                = instanceHandler.getAssetHandler(userId, serverName, methodName);
             ReferenceableHandler<MetadataRelationship>   metadataRelationshipHandler = instanceHandler.getMetadataRelationshipHandler(userId, serverName, methodName);
 
-            List<String> lineageRelationshipTypeNames = getLineageRelationshipTypeNames(relationshipTypes);
-
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             List<AssetLineageGraphNode>         linkedAssets         = new ArrayList<>();
             List<AssetLineageGraphRelationship> lineageRelationships = new ArrayList<>();
-            Set<String> processedAssets = new HashSet<>();
+            Set<String>                         processedAssets      = new HashSet<>();
 
+            List<String> lineageRelationshipTypeNames    = null;
+            String       limitToInformationSupplyChain   = null;
+            String       highlightInformationSupplyChain = null;
+            Date         asOfTime                        = null;
+            Date         effectiveTime                   = new Date();
+
+            if (requestBody != null)
+            {
+                lineageRelationshipTypeNames    = getLineageRelationshipTypeNames(requestBody.getRelationshipTypes());
+                limitToInformationSupplyChain   = requestBody.getLimitToISCQualifiedName();
+                highlightInformationSupplyChain = requestBody.getHighlightISCQualifiedName();
+                asOfTime                        = requestBody.getAsOfTime();
+                effectiveTime                   = requestBody.getEffectiveTime();
+            } 
+            
             this.getAssetLineageGraphNodes(userId,
                                            assetGUID,
                                            lineageRelationshipTypeNames,
+                                           limitToInformationSupplyChain,
+                                           asOfTime,
+                                           effectiveTime,
                                            startFrom,
                                            pageSize,
                                            linkedAssets,
@@ -403,7 +418,7 @@ public class AssetConsumerRESTServices
 
                 assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
 
-                AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph);
+                AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph, highlightInformationSupplyChain);
                 assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
 
                 response.setAssetLineageGraph(assetLineageGraph);
@@ -459,22 +474,29 @@ public class AssetConsumerRESTServices
             lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
         }
         return lineageRelationshipTypeNames;
     }
 
+    record LineageLink(Set<String> relationshipTypes,
+                       Set<String> informationSupplyChains)
+    {}
 
     /**
      * Retrieve the asset and its lineage relationships.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
+     * @param lineageRelationshipTypeNames list of requested type names
+     * @param limitToInformationSupplyChain qualified name to control retrieval
+     * @param asOfTime repository time for the query
+     * @param effectiveTime effectivity date to use
      * @param startFrom where to start from in retrieval
      * @param pageSize maximum number of elements to receive
      * @param assetHandler handler for retrieving entities/relationships
      * @param linkedAssets set of assets that are upstream of this asset
      * @param lineageRelationships relationships that link the assets together in the lineage graph
-     * @param lineageRelationshipTypeNames list of requested type names
      * @param processedAssets list of assets covered so far
      * @param converter relationship converter
      * @throws InvalidParameterException invalid parameter - not expected
@@ -483,7 +505,10 @@ public class AssetConsumerRESTServices
      */
     void getAssetLineageGraphNodes(String                                                userId,
                                    String                                                assetGUID,
-                                   List<String>                                          lineageRelationshipTypeNames,
+                                   List<String>                                          lineageRelationshipTypeNames, 
+                                   String                                                limitToInformationSupplyChain, 
+                                   Date                                                  asOfTime, 
+                                   Date                                                  effectiveTime,
                                    int                                                   startFrom,
                                    int                                                   pageSize,
                                    List<AssetLineageGraphNode>                           linkedAssets,
@@ -494,12 +519,15 @@ public class AssetConsumerRESTServices
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        Map<String, List<String>> upstreamAssets   = new HashMap<>();
-        Map<String, List<String>> downstreamAssets = new HashMap<>();
+        Map<String, LineageLink> upstreamAssets   = new HashMap<>();
+        Map<String, LineageLink> downstreamAssets = new HashMap<>();
 
         AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
                                                                     assetGUID,
                                                                     lineageRelationshipTypeNames,
+                                                                    limitToInformationSupplyChain,
+                                                                    asOfTime,
+                                                                    effectiveTime,
                                                                     startFrom,
                                                                     pageSize,
                                                                     upstreamAssets,
@@ -519,7 +547,20 @@ public class AssetConsumerRESTServices
             {
                 AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
 
-                assetLineageGraphRelationship.setRelationshipTypes(upstreamAssets.get(linkedAssetGUID));
+                LineageLink lineageLink = upstreamAssets.get(linkedAssetGUID);
+
+                if (lineageLink != null)
+                {
+                    if (lineageLink.relationshipTypes != null)
+                    {
+                        assetLineageGraphRelationship.setRelationshipTypes(new ArrayList<>(lineageLink.relationshipTypes));
+                    }
+                    if (lineageLink.informationSupplyChains != null)
+                    {
+                        assetLineageGraphRelationship.setInformationSupplyChains(new ArrayList<>(lineageLink.informationSupplyChains));
+                    }
+                }
+
                 assetLineageGraphRelationship.setEnd1AssetGUID(linkedAssetGUID);
                 assetLineageGraphRelationship.setEnd2AssetGUID(asset.getElementHeader().getGUID());
 
@@ -530,6 +571,9 @@ public class AssetConsumerRESTServices
                     this.getAssetLineageGraphNodes(userId,
                                                    linkedAssetGUID,
                                                    lineageRelationshipTypeNames,
+                                                   limitToInformationSupplyChain,
+                                                   asOfTime,
+                                                   effectiveTime,
                                                    startFrom,
                                                    pageSize,
                                                    linkedAssets,
@@ -547,7 +591,20 @@ public class AssetConsumerRESTServices
             {
                 AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
 
-                assetLineageGraphRelationship.setRelationshipTypes(downstreamAssets.get(linkedAssetGUID));
+                LineageLink lineageLink = downstreamAssets.get(linkedAssetGUID);
+
+                if (lineageLink != null)
+                {
+                    if (lineageLink.relationshipTypes != null)
+                    {
+                        assetLineageGraphRelationship.setRelationshipTypes(new ArrayList<>(lineageLink.relationshipTypes));
+                    }
+                    if (lineageLink.informationSupplyChains != null)
+                    {
+                        assetLineageGraphRelationship.setInformationSupplyChains(new ArrayList<>(lineageLink.informationSupplyChains));
+                    }
+                }
+
                 assetLineageGraphRelationship.setEnd1AssetGUID(asset.getElementHeader().getGUID());
                 assetLineageGraphRelationship.setEnd2AssetGUID(linkedAssetGUID);
 
@@ -558,6 +615,9 @@ public class AssetConsumerRESTServices
                     this.getAssetLineageGraphNodes(userId,
                                                    linkedAssetGUID,
                                                    lineageRelationshipTypeNames,
+                                                   limitToInformationSupplyChain,
+                                                   asOfTime,
+                                                   effectiveTime,
                                                    startFrom,
                                                    pageSize,
                                                    linkedAssets,
@@ -577,6 +637,9 @@ public class AssetConsumerRESTServices
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param limitToInformationSupplyChain qualified name to control retrieval
+     * @param asOfTime repository time for the query
+     * @param effectiveTime effectivity date to use
      * @param startFrom where to start from in retrieval
      * @param pageSize maximum number of elements to receive
      * @param upstreamAssets set of assets that are upstream of this asset
@@ -591,10 +654,13 @@ public class AssetConsumerRESTServices
     AssetLineageGraphNode getAssetLineageGraphNode(String                                                userId,
                                                    String                                                assetGUID,
                                                    List<String>                                          lineageRelationshipTypeNames,
+                                                   String                                                limitToInformationSupplyChain,
+                                                   Date                                                  asOfTime,
+                                                   Date                                                  effectiveTime,
                                                    int                                                   startFrom,
                                                    int                                                   pageSize,
-                                                   Map<String, List<String>>                             upstreamAssets,
-                                                   Map<String, List<String>>                             downstreamAssets,
+                                                   Map<String, LineageLink>                              upstreamAssets,
+                                                   Map<String, LineageLink>                              downstreamAssets,
                                                    AssetHandler<AssetElement>                            assetHandler,
                                                    OpenMetadataAPIGenericConverter<MetadataRelationship> converter) throws InvalidParameterException,
                                                                                                                            PropertyServerException,
@@ -619,6 +685,9 @@ public class AssetConsumerRESTServices
             List<Relationship> relationships = this.getAssetLineageRelationships(userId,
                                                                                  asset.getElementHeader().getGUID(),
                                                                                  lineageRelationshipTypeNames,
+                                                                                 limitToInformationSupplyChain,
+                                                                                 asOfTime,
+                                                                                 effectiveTime,
                                                                                  startFrom,
                                                                                  pageSize,
                                                                                  assetHandler);
@@ -645,19 +714,40 @@ public class AssetConsumerRESTServices
                             }
                             else
                             {
-                                List<String> currentRelationshipNames = downstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+                                LineageLink  currentLineageLinks = downstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+
+                                if (currentLineageLinks == null)
+                                {
+                                    currentLineageLinks = new LineageLink(null, null);
+                                }
+
+                                Set<String> currentRelationshipNames = currentLineageLinks.relationshipTypes;
 
                                 if (currentRelationshipNames == null)
                                 {
-                                    currentRelationshipNames = new ArrayList<>();
+                                    currentRelationshipNames = new HashSet<>();
                                 }
 
-                                if (! currentRelationshipNames.contains(relationshipName))
+                                currentRelationshipNames.add(relationshipName);
+
+                                Set<String> currentInformationSupplyChains = currentLineageLinks.informationSupplyChains;
+
+                                String relationshipSupplyChain = assetHandler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(),
+                                                                                                                      OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                                      relationship.getProperties(),
+                                                                                                                      methodName);
+
+                                if (relationshipSupplyChain != null)
                                 {
-                                    currentRelationshipNames.add(relationshipName);
+                                    if (currentInformationSupplyChains == null)
+                                    {
+                                        currentInformationSupplyChains = new HashSet<>();
+                                    }
+
+                                    currentInformationSupplyChains.add(relationshipSupplyChain);
                                 }
 
-                                downstreamAssets.put(end2AnchorGUID, currentRelationshipNames);
+                                downstreamAssets.put(end2AnchorGUID, new LineageLink(currentRelationshipNames, currentInformationSupplyChains));
                                 downstreamRelationships.add(relationship);
                             }
                         }
@@ -665,19 +755,40 @@ public class AssetConsumerRESTServices
                         {
                             if (assetGUID.equals(end2AnchorGUID))
                             {
-                                List<String> currentRelationshipNames = upstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+                                LineageLink  currentLineageLinks = upstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+
+                                if (currentLineageLinks == null)
+                                {
+                                    currentLineageLinks = new LineageLink(null, null);
+                                }
+
+                                Set<String> currentRelationshipNames = currentLineageLinks.relationshipTypes;
 
                                 if (currentRelationshipNames == null)
                                 {
-                                    currentRelationshipNames = new ArrayList<>();
+                                    currentRelationshipNames = new HashSet<>();
                                 }
 
-                                if (! currentRelationshipNames.contains(relationshipName))
+                                Set<String> currentInformationSupplyChains = currentLineageLinks.informationSupplyChains;
+
+                                String relationshipSupplyChain = assetHandler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(),
+                                                                                                                      OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                                      relationship.getProperties(),
+                                                                                                                      methodName);
+
+                                if (relationshipSupplyChain != null)
                                 {
-                                    currentRelationshipNames.add(relationshipName);
+                                    if (currentInformationSupplyChains == null)
+                                    {
+                                        currentInformationSupplyChains = new HashSet<>();
+                                    }
+
+                                    currentInformationSupplyChains.add(relationshipSupplyChain);
                                 }
 
-                                upstreamAssets.put(end1AnchorGUID, currentRelationshipNames);
+                                currentRelationshipNames.add(relationshipName);
+
+                                upstreamAssets.put(end1AnchorGUID, new LineageLink(currentRelationshipNames, currentInformationSupplyChains));
                                 upstreamRelationships.add(relationship);
                             }
                         }
@@ -834,6 +945,9 @@ public class AssetConsumerRESTServices
      * @param pageSize maximum number of elements to receive
      * @param assetHandler handler for retrieving entities/relationships
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param limitToInformationSupplyChain qualified name to control retrieval
+     * @param asOfTime repository time for the query
+     * @param effectiveTime effectivity date to use
      * @return list for relationships - may be empty
      * @throws InvalidParameterException invalid parameter - not expected
      * @throws PropertyServerException problem accessing the repository
@@ -842,6 +956,9 @@ public class AssetConsumerRESTServices
     private List<Relationship> getAssetLineageRelationships(String                     userId,
                                                             String                     assetGUID,
                                                             List<String>               lineageRelationshipTypeNames,
+                                                            String                     limitToInformationSupplyChain,
+                                                            Date                       asOfTime,
+                                                            Date                       effectiveTime,
                                                             int                        startFrom,
                                                             int                        pageSize,
                                                             AssetHandler<AssetElement> assetHandler) throws InvalidParameterException,
@@ -859,6 +976,9 @@ public class AssetConsumerRESTServices
                                                                                                          assetGUIDParameterName,
                                                                                                          OpenMetadataType.ASSET.typeName,
                                                                                                          lineageRelationshipTypeNames,
+                                                                                                         limitToInformationSupplyChain,
+                                                                                                         asOfTime,
+                                                                                                         effectiveTime,
                                                                                                          assetHandler));
 
 
@@ -897,7 +1017,7 @@ public class AssetConsumerRESTServices
                                                                         null,
                                                                         null,
                                                                         searchClassifications,
-                                                                        null,
+                                                                        asOfTime,
                                                                         null,
                                                                         null,
                                                                         true,
@@ -905,7 +1025,7 @@ public class AssetConsumerRESTServices
                                                                         startFrom,
                                                                         pageSize,
                                                                         assetHandler.getSupportedZones(),
-                                                                        new Date(),
+                                                                        effectiveTime,
                                                                         methodName);
 
         /*
@@ -922,6 +1042,9 @@ public class AssetConsumerRESTServices
                                                                                    anchoredElementGUIDParameterName,
                                                                                    OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                                                    lineageRelationshipTypeNames,
+                                                                                   limitToInformationSupplyChain,
+                                                                                   asOfTime,
+                                                                                   effectiveTime,
                                                                                    assetHandler));
             }
         }
@@ -938,6 +1061,9 @@ public class AssetConsumerRESTServices
      * @param elementGUIDParameterName parameter name of element's unique identifier
      * @param elementTypeName type name of element
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param limitToInformationSupplyChain qualified name to control retrieval
+     * @param asOfTime repository time for the query
+     * @param effectiveTime effectivity date to use
      * @param assetHandler handler for retrieving relationships
      * @return list for relationships - may be empty
      * @throws InvalidParameterException invalid parameter - not expected
@@ -949,6 +1075,9 @@ public class AssetConsumerRESTServices
                                                          String                     elementGUIDParameterName,
                                                          String                     elementTypeName,
                                                          List<String>               lineageRelationshipTypeNames,
+                                                         String                     limitToInformationSupplyChain,
+                                                         Date                       asOfTime,
+                                                         Date                       effectiveTime,
                                                          AssetHandler<AssetElement> assetHandler) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -965,12 +1094,12 @@ public class AssetConsumerRESTServices
                                                                               elementGUIDParameterName,
                                                                               elementTypeName,
                                                                               null,
-                                                                              null,
+                                                                              asOfTime,
                                                                               SequencingOrder.CREATION_DATE_RECENT,
                                                                               null,
                                                                               true,
                                                                               false,
-                                                                              new Date(),
+                                                                              effectiveTime,
                                                                               methodName);
 
         if (relationships != null)
@@ -979,7 +1108,22 @@ public class AssetConsumerRESTServices
             {
                 if ((relationship != null) && (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName())))
                 {
-                    lineageRelationships.add(relationship);
+                    if (limitToInformationSupplyChain != null)
+                    {
+                        String relationshipSupplyChain = assetHandler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(),
+                                                                                                              OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                              relationship.getProperties(),
+                                                                                                              methodName);
+
+                        if (limitToInformationSupplyChain.equals(relationshipSupplyChain))
+                        {
+                            lineageRelationships.add(relationship);
+                        }
+                    }
+                    else
+                    {
+                        lineageRelationships.add(relationship);
+                    }
                 }
             }
         }
@@ -1124,7 +1268,7 @@ public class AssetConsumerRESTServices
                                                                                           searchProperties,
                                                                                           null,
                                                                                           searchClassifications,
-                                                                                          null,
+                                                                                          requestBody.getAsOfTime(),
                                                                                           null,
                                                                                           null,
                                                                                           false,
@@ -1132,7 +1276,7 @@ public class AssetConsumerRESTServices
                                                                                           startFrom,
                                                                                           pageSize,
                                                                                           assetHandler.getSupportedZones(),
-                                                                                          new Date(),
+                                                                                          requestBody.getEffectiveTime(),
                                                                                           methodName);
 
                 if (anchoredEntities != null)

@@ -5,14 +5,11 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.commonservices.ffdc.rest.AssetGraphResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.AssetSearchMatchesListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
@@ -113,7 +110,7 @@ public class AssetCatalogRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param assetGUID  unique identifier for the asset
-     * @param relationshipTypes list of relationship type names to use in the search
+     * @param requestBody list of relationship type names to use in the search
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -122,11 +119,11 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public AssetLineageGraphResponse getAssetLineageGraph(String       serverName,
-                                                          String       assetGUID,
-                                                          List<String> relationshipTypes,
-                                                          int          startFrom,
-                                                          int          pageSize)
+    public AssetLineageGraphResponse getAssetLineageGraph(String                       serverName,
+                                                          String                       assetGUID,
+                                                          AssetLineageGraphRequestBody requestBody,
+                                                          int                          startFrom,
+                                                          int                          pageSize)
     {
         final String methodName    = "getAssetLineageGraph";
 
@@ -145,7 +142,30 @@ public class AssetCatalogRESTServices extends TokenController
 
             AssetConsumer handler = instanceHandler.getAssetConsumerClient(userId, serverName, methodName);
 
-            response.setAssetLineageGraph(handler.getAssetLineageGraph(userId, assetGUID, relationshipTypes, startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setAssetLineageGraph(handler.getAssetLineageGraph(userId,
+                                                                           assetGUID,
+                                                                           requestBody.getRelationshipTypes(),
+                                                                           requestBody.getLimitToISCQualifiedName(),
+                                                                           requestBody.getHighlightISCQualifiedName(),
+                                                                           requestBody.getAsOfTime(),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           startFrom,
+                                                                           pageSize));
+            }
+            else
+            {
+                response.setAssetLineageGraph(handler.getAssetLineageGraph(userId,
+                                                                           assetGUID,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           new Date(),
+                                                                           startFrom,
+                                                                           pageSize));
+            }
         }
         catch (Exception error)
         {

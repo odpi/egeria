@@ -64,6 +64,20 @@ public enum SolutionComponentActor
                                        "Reviewer",
                                        "Reviews report and discussed findings with regulator."),
 
+    SUSTAINABILITY_LEADER_TO_DASHBOARD(SolutionRoleDefinition.SUSTAINABILITY_LEADER,
+                                       SolutionComponent.SUSTAINABILITY_DASHBOARDS,
+                                       "Review Status",
+                                       "Reviews current status of company's sustainability position."),
+
+    SUSTAINABILITY_EXECUTIVE_TO_DASHBOARD(SolutionRoleDefinition.SUSTAINABILITY_EXECUTIVE,
+                                          SolutionComponent.SUSTAINABILITY_DASHBOARDS,
+                                          "Review Status",
+                                          "Reviews current status of company's sustainability position."),
+
+    SUSTAINABILITY_CHAMPION_TO_DASHBOARD(SolutionRoleDefinition.SUSTAINABILITY_CHAMPION,
+                                         SolutionComponent.SUSTAINABILITY_DASHBOARDS,
+                                         "Review Status",
+                                         "Reviews current status of company's sustainability position."),
     ;
 
     final SolutionRoleDefinition solutionRole;

@@ -1774,7 +1774,7 @@
         <mxCell id="p79f9EVHTzLSiiD5oxnm-9" value="Data Lake Folder&lt;div&gt;Set up&lt;/div&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" parent="1" vertex="1">
           <mxGeometry x="593" y="870" width="170" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="p79f9EVHTzLSiiD5oxnm-10" value="Clinical Trial Treatment Validation" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="p79f9EVHTzLSiiD5oxnm-10" value="Clinical Trial Treatment Validation" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="-50" y="180" width="1720" height="80" as="geometry" />
         </mxCell>
         <mxCell id="p79f9EVHTzLSiiD5oxnm-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="p79f9EVHTzLSiiD5oxnm-11" target="p79f9EVHTzLSiiD5oxnm-4" edge="1">
@@ -1834,7 +1834,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="p79f9EVHTzLSiiD5oxnm-12" value="Landing Area&amp;nbsp;&lt;div&gt;to&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Data Lake&lt;/span&gt;&lt;/div&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+        <mxCell id="p79f9EVHTzLSiiD5oxnm-12" value="Landing Area&amp;nbsp;&lt;div&gt;to&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Data Lake&lt;/span&gt;&lt;/div&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffff88;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="100" y="270" width="590" height="80" as="geometry" />
         </mxCell>
         <mxCell id="p79f9EVHTzLSiiD5oxnm-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="p79f9EVHTzLSiiD5oxnm-13" target="p79f9EVHTzLSiiD5oxnm-19" edge="1">

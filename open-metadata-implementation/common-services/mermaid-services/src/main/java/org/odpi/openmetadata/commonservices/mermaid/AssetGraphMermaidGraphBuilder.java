@@ -6,10 +6,6 @@ package org.odpi.openmetadata.commonservices.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
     /**
@@ -26,17 +22,14 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
 
         String currentNodeName    = assetGraph.getElementHeader().getGUID();
         String currentDisplayName = assetGraph.getProperties().getDisplayName();
 
-        appendMermaidNode(currentNodeName,
-                          currentDisplayName,
-                          assetGraph.getElementHeader().getType().getTypeName());
-
-        usedNodeNames.add(currentNodeName);
-
+        appendNewMermaidNode(currentNodeName,
+                             currentDisplayName,
+                             assetGraph.getElementHeader().getType().getTypeName(),
+                             VisualStyle.ANCHOR_ASSET);
 
         if (assetGraph.getAnchoredElements() != null)
         {
@@ -59,14 +52,10 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                         currentDisplayName = node.getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
                     }
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getElementHeader().getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
+                    appendNewMermaidNode(currentNodeName,
+                                             currentDisplayName,
+                                             node.getElementHeader().getType().getTypeName(),
+                                             VisualStyle.ANCHORED_ELEMENT);
                 }
             }
 
@@ -74,8 +63,30 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
+                    String endName = line.getEnd1().getGUID();
+                    if (line.getEnd1().getUniqueName() != null)
+                    {
+                        endName = line.getEnd1().getUniqueName();
+                    }
+
+                    appendNewMermaidNode(line.getEnd1().getGUID(),
+                                         endName,
+                                         line.getEnd1().getType().getTypeName(),
+                                         VisualStyle.LINKED_ELEMENT);
+
+                    endName = line.getEnd2().getGUID();
+                    if (line.getEnd2().getUniqueName() != null)
+                    {
+                        endName = line.getEnd2().getUniqueName();
+                    }
+
+                    appendNewMermaidNode(line.getEnd2().getGUID(),
+                                         endName,
+                                         line.getEnd2().getType().getTypeName(),
+                                         VisualStyle.LINKED_ELEMENT);
+
                     super.appendMermaidLine(this.removeSpaces(line.getEnd1().getGUID()),
-                                            line.getType().getTypeName(),
+                                            super.addSpacesToTypeName(line.getType().getTypeName()),
                                             this.removeSpaces(line.getEnd2().getGUID()));
                 }
             }

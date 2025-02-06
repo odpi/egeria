@@ -236,23 +236,10 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "queryId";
-        final String attribute1Description     = "Identifier for placeholder in data set's formula.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "query";
-        final String attribute2Description     = "Details of how the value(s) is/are retrieved.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

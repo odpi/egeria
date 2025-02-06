@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -301,8 +302,10 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * from the endpoint without performing the work twice.
      *
      * @param catalogTarget catalog target retrieved from the open metadata ecosystem.
+     * @throws ConnectorCheckedException problem with open metadata or the connector
+     * @throws IOException problem resolving the file name
      */
-    void addCatalogTarget(CatalogTarget catalogTarget) throws ConnectorCheckedException
+    void addCatalogTarget(CatalogTarget catalogTarget) throws ConnectorCheckedException, IOException
     {
         /*
          * First perform a simple check - does the relationship GUID of the catalog target match one of the directories to monitor?
@@ -337,7 +340,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
                 for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
                 {
-                    if (directoryToMonitor.directoryFile.getAbsolutePath().equals(pathFile.getAbsolutePath()))
+                    if (directoryToMonitor.directoryFile.getCanonicalPath().equals(pathFile.getCanonicalPath()))
                     {
                         directoryToMonitor.catalogTargetGUID = catalogTarget.getRelationshipGUID();
 
@@ -400,20 +403,20 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         {
             try
             {
-                FileFolderElement folderElement = this.getContext().getFolderByPathName(dataFolderFile.getAbsolutePath());
+                FileFolderElement folderElement = this.getContext().getFolderByPathName(dataFolderFile.getCanonicalPath());
 
                 if (folderElement == null)
                 {
                     FileFolderProperties properties = new FileFolderProperties();
 
                     properties.setTypeName(assetTypeName);
-                    properties.setPathName(dataFolderFile.getAbsolutePath());
+                    properties.setPathName(dataFolderFile.getCanonicalPath());
                     properties.setName(dataFolderFile.getName());
                     properties.setDeployedImplementationType(deployedImplementationType);
 
                     this.getContext().addDataFolderToCatalog(properties, connectorProviderName);
 
-                    folderElement = this.getContext().getFolderByPathName(dataFolderFile.getAbsolutePath());
+                    folderElement = this.getContext().getFolderByPathName(dataFolderFile.getCanonicalPath());
                 }
 
                 /*
@@ -427,7 +430,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                     {
                         auditLog.logMessage(methodName,
                                             BasicFilesIntegrationConnectorsAuditCode.BAD_FOLDER_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                             dataFolderFile.getAbsolutePath(),
+                                                                                                                             dataFolderFile.getCanonicalPath(),
                                                                                                                              folderElement.toString()));
                     }
                 }
@@ -555,7 +558,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
                 if (cataloguedElement == null)
                 {
-                    cataloguedElement = this.getContext().getFileByPathName(file.getAbsolutePath());
+                    cataloguedElement = this.getContext().getFileByPathName(file.getCanonicalPath());
                 }
 
                 if (cataloguedElement == null)

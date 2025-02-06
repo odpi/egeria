@@ -411,7 +411,7 @@ public class AssetConsumerResource
      * @param serverName name of the server instances for this request
      * @param userId the userId of the requesting user
      * @param assetGUID  unique identifier for the asset
-     * @param relationshipTypes list of relationship type names to use in the search
+     * @param requestBody list of relationship type names to use in the search
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -436,9 +436,9 @@ public class AssetConsumerResource
                                                           @RequestParam(required = false, defaultValue = "0")
                                                                         int   pageSize,
                                                           @RequestBody(required = false)
-                                                                        List<String> relationshipTypes)
+                                                                        AssetLineageGraphRequestBody requestBody)
     {
-        return restAPI.getAssetLineageGraph(serverName, userId, assetGUID, relationshipTypes, startFrom, pageSize);
+        return restAPI.getAssetLineageGraph(serverName, userId, assetGUID, requestBody, startFrom, pageSize);
     }
 
 

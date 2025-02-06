@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -19,10 +18,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
      * Construct a mermaid markdown graph.
      *
      * @param solutionComponentElement content
-     * @param linkedSegmentsAndSupplyChains an optional map of linked information supply chain segment mapped to owning information supply chain
      */
-    public SolutionComponentMermaidGraphBuilder(SolutionComponentElement            solutionComponentElement,
-                                                List<InformationSupplyChainContext> linkedSegmentsAndSupplyChains)
+    public SolutionComponentMermaidGraphBuilder(SolutionComponentElement solutionComponentElement)
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Solution Component - ");
@@ -40,11 +37,11 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                                          solutionComponentElement,
                                          solutionWireGUIDs);
 
-        if (linkedSegmentsAndSupplyChains != null)
+        if (solutionComponentElement.getContext() != null)
         {
-            String currentNodeName    = solutionComponentElement.getElementHeader().getGUID();
+            String currentNodeName = solutionComponentElement.getElementHeader().getGUID();
 
-            for (InformationSupplyChainContext informationSupplyChainContext : linkedSegmentsAndSupplyChains)
+            for (InformationSupplyChainContext informationSupplyChainContext : solutionComponentElement.getContext())
             {
                 if (informationSupplyChainContext != null)
                 {
@@ -55,21 +52,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                             if (parentComponent != null)
                             {
                                 String parentComponentName = parentComponent.getRelatedElement().getElementHeader().getGUID();
-                                String parentComponentDisplayName = parentComponentName;
-
-                                if (parentComponent.getRelatedElement().getProperties() != null)
-                                {
-                                    parentComponentDisplayName = parentComponent.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-
-                                    if (parentComponentDisplayName == null)
-                                    {
-                                        parentComponentDisplayName = parentComponent.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                                    }
-                                    if (parentComponentDisplayName == null)
-                                    {
-                                        parentComponentDisplayName = parentComponent.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                                    }
-                                }
+                                String parentComponentDisplayName = super.getNodeDisplayName(parentComponent.getRelatedElement());
 
                                 appendNewMermaidNode(parentComponentName,
                                                      parentComponentDisplayName,
@@ -88,26 +71,12 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                     if (informationSupplyChainContext.linkedSegment() != null)
                     {
                         String segmentName = informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getGUID();
-                        String segmentDisplayName = segmentName;
-
-                        if (informationSupplyChainContext.linkedSegment().getRelatedElement().getProperties() != null)
-                        {
-                            segmentDisplayName = informationSupplyChainContext.linkedSegment().getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-
-                            if (segmentDisplayName == null)
-                            {
-                                segmentDisplayName = informationSupplyChainContext.linkedSegment().getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                            }
-                            if (segmentDisplayName == null)
-                            {
-                                segmentDisplayName = informationSupplyChainContext.linkedSegment().getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                            }
-                        }
+                        String segmentDisplayName = super.getNodeDisplayName(informationSupplyChainContext.linkedSegment().getRelatedElement());
 
                         appendNewMermaidNode(segmentName,
                                              segmentDisplayName,
                                              informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             super.getVisualStyleForSolutionComponent(informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getType().getTypeName()));
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
 
                         appendMermaidLine(segmentName,
                                           informationSupplyChainContext.linkedSegment().getRelationshipHeader().getType().getTypeName(),
@@ -119,26 +88,12 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                     if (informationSupplyChainContext.owningInformationSupplyChain() != null)
                     {
                         String iscName = informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getGUID();
-                        String iscDisplayName = iscName;
-
-                        if (informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getProperties() != null)
-                        {
-                            iscDisplayName = informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-
-                            if (iscDisplayName == null)
-                            {
-                                iscDisplayName = informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                            }
-                            if (iscDisplayName == null)
-                            {
-                                iscDisplayName = informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                            }
-                        }
+                        String iscDisplayName = super.getNodeDisplayName(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement());
 
                         appendNewMermaidNode(iscName,
                                              iscDisplayName,
                                              informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             super.getVisualStyleForSolutionComponent(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getType().getTypeName()));
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN);
 
                         appendMermaidLine(iscName,
                                           informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getType().getTypeName(),

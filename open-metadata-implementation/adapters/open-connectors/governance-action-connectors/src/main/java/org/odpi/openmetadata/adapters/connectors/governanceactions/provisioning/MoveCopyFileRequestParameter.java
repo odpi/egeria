@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ public enum MoveCopyFileRequestParameter
     TOP_LEVEL_PROCESS_ONLY_LINEAGE("topLevelProcessLineageOnly", "If this property is set, lineage mappings are connected to the top level process representing this governance action service.", "", ""),
     LINEAGE_TO_DESTINATION_FOLDER_ONLY("lineageToDestinationFolderOnly", "If this property is set, the lineage relationship from the governance action service to the destination is linked to the destination folder rather than the new file in the destination folder.  Without this value, the default behavior is to show lineage from governance action process to the destination file.", "", ""),
     LINEAGE_FROM_SOURCE_FOLDER_ONLY("lineageFromSourceFolderOnly", "If this property is set, the lineage relationship from the source to the governance action service is linked from the source folder rather than the source file.  Without this value, the default behavior is to show lineage from source file to governance action process.", "", ""),
+    IGNORE_COLUMN_LEVEL_LINEAGE("ignoreColumnLevelLineage", "If this property is set, the lineage relationships between schema elements are not created.", "", ""),
+    INFORMATION_SUPPLY_CHAIN("informationSupplyChain", "If this property is set, the value it is set to is the qualified name of the information supply chain that this provisioning process belongs to.  It is used to set the iscQualifiedName in the lineage relationships.", DataType.STRING.getName(), "InformationSupplyChain:Onboard My Data"),
 
     ;
 

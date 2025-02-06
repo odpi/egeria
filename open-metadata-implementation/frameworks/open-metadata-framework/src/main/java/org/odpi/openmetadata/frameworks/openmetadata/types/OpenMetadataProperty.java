@@ -2281,7 +2281,20 @@ public enum OpenMetadataProperty
      */
     ISC_QUALIFIED_NAME("iscQualifiedName", DataType.STRING.getName(), "Unique name for the associated Information Supply Chain.", "InformationSupplyChain:Monthly Reporting", "705bec02-411a-4a92-9566-6a67bf5a612b"),
 
+    /**
+     * Placeholder for a query.
+     */
+    QUERY_ID("queryId", DataType.STRING.getName(), "Placeholder for a query.", null, "4a480cb0-b87d-47a5-8a68-660c2a144c9b"),
 
+    /**
+     * Query used to extract data, can include placeholders.
+     */
+    QUERY("query", DataType.STRING.getName(), "Query used to extract data, can include placeholders.", null, "62b8678e-a414-4bab-91c7-ca2f53397833"),
+
+    /**
+     * Type of query used to extract data.
+     */
+    QUERY_TYPE("queryType", DataType.STRING.getName(), "Type of query used to extract data.", "SQL", "58d5990e-8afa-49fd-8364-db53ccc1dfd8"),
     ;
 
 

@@ -401,6 +401,15 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       "The governance action service has completed successfully.",
                       "Ensure follow-on uses of the day of the week are successful."),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0037 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}
+     */
+    UNEXPECTED_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0037",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
+                         "The service is unable to process the current request.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
     ;
 
     private final String                      logMessageId;

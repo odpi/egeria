@@ -24,7 +24,7 @@ import java.util.List;
 public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
 {
     private final List<SolutionComponentElement> subComponents; // SolutionComposition
-    private final List<SolutionPortElement> ports;
+    private final List<SolutionPortElement>      ports;
     /**
      * Constructor
      *
@@ -158,7 +158,7 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
 
                         if (! wiredFrom.isEmpty())
                         {
-                            bean.setWiredFromLinks(wiredTo);
+                            bean.setWiredFromLinks(wiredFrom);
                         }
 
                         if (! wiredTo.isEmpty())

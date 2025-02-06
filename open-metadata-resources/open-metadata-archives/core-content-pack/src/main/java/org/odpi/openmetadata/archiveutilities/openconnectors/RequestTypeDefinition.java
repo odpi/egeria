@@ -432,6 +432,32 @@ public enum RequestTypeDefinition
                             DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName(),
                             ContentPackDefinition.CORE_CONTENT_PACK),
 
+    /**
+     * create-kafka-topic
+     */
+    CREATE_KAFKA_TOPIC("create-kafka-topic",
+                        null,
+                        getManageAssetRequestParameters(DataAssetTemplateDefinition.KAFKA_TOPIC_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                        GovernanceServiceDefinition.CREATE_ASSET,
+                        "3e880bc6-729e-4666-8124-3c9d033f54fd",
+                        DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
+                        ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * harvest-open-lineage-topic
+     */
+    HARVEST_OPEN_LINEAGE_TOPIC("harvest-open-lineage-topic",
+                        null,
+                        null,
+                        getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.OPEN_LINEAGE_KAFKA_LISTENER.getGUID()),
+                        GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                        GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                        "9b7e56ca-d145-48e1-8c69-2bc1327f008b",
+                        DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
+                        ContentPackDefinition.CORE_CONTENT_PACK),
+
 
     /**
      * create-unity-catalog-server

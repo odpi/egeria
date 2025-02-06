@@ -3309,7 +3309,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.QUERY_PROPERTY_NAME,
+                                                      OpenMetadataProperty.QUERY.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3331,7 +3331,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.QUERY_ID_PROPERTY_NAME,
+                                                      OpenMetadataProperty.QUERY_ID.name,
                                                       instanceProperties,
                                                       methodName);
         }

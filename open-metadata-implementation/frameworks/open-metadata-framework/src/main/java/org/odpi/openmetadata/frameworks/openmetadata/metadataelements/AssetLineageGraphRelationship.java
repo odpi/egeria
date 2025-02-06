@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,9 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetLineageGraphRelationship
 {
-    private List<String> relationshipTypes = null;
-    private String       end1AssetGUID     = null;
-    private String       end2AssetGUID     = null;
+    private List<String> relationshipTypes       = null;
+    private List<String> informationSupplyChains = null;
+    private String       end1AssetGUID           = null;
+    private String       end2AssetGUID          = null;
 
 
     /**
@@ -45,9 +47,10 @@ public class AssetLineageGraphRelationship
     {
         if (template != null)
         {
-            relationshipTypes      = template.getRelationshipTypes();
-            end1AssetGUID = template.getEnd1AssetGUID();
-            end2AssetGUID = template.getEnd2AssetGUID();
+            relationshipTypes       = template.getRelationshipTypes();
+            informationSupplyChains = template.getInformationSupplyChains();
+            end1AssetGUID           = template.getEnd1AssetGUID();
+            end2AssetGUID          = template.getEnd2AssetGUID();
         }
     }
 
@@ -71,6 +74,28 @@ public class AssetLineageGraphRelationship
     public void setRelationshipTypes(List<String> relationshipTypes)
     {
         this.relationshipTypes = relationshipTypes;
+    }
+
+
+    /**
+     * Return the properties found in the relationship.
+     *
+     * @return list of ISC qualified names
+     */
+    public List<String> getInformationSupplyChains()
+    {
+        return informationSupplyChains;
+    }
+
+
+    /**
+     * Set up the properties found in the relationship.
+     *
+     * @param informationSupplyChains list of qualified names
+     */
+    public void setInformationSupplyChains(List<String> informationSupplyChains)
+    {
+        this.informationSupplyChains = informationSupplyChains;
     }
 
 
@@ -130,6 +155,7 @@ public class AssetLineageGraphRelationship
     {
         return "AssetLineageGraphRelationship{" +
                 "relationshipTypes=" + relationshipTypes +
+                ", relationshipProperties='" + informationSupplyChains + '\'' +
                 ", end1AssetGUID='" + end1AssetGUID + '\'' +
                 ", end2AssetGUID='" + end2AssetGUID + '\'' +
                 '}';
@@ -155,6 +181,7 @@ public class AssetLineageGraphRelationship
         }
         AssetLineageGraphRelationship that = (AssetLineageGraphRelationship) objectToCompare;
         return Objects.equals(relationshipTypes, that.relationshipTypes) &&
+                       Objects.equals(informationSupplyChains, that.informationSupplyChains) &&
                        Objects.equals(end1AssetGUID, that.end1AssetGUID) &&
                        Objects.equals(end2AssetGUID, that.end2AssetGUID);
     }
@@ -168,6 +195,6 @@ public class AssetLineageGraphRelationship
     @Override
     public int hashCode()
     {
-        return Objects.hash(relationshipTypes, end1AssetGUID, end2AssetGUID);
+        return Objects.hash(relationshipTypes, informationSupplyChains, end1AssetGUID, end2AssetGUID);
     }
 }

@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.Q
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -32,6 +34,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataSetProperties extends DataAssetProperties
 {
+    private String        formula                = null;
+    private String        formulaType            = null;
+
     /**
      * Default constructor
      */
@@ -49,7 +54,56 @@ public class DataSetProperties extends DataAssetProperties
     public DataSetProperties(DataSetProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            formula = template.getFormula();
+            formulaType = template.getFormulaType();
+        }
     }
+
+
+
+    /**
+     * Return the description of the processing performed by this process.
+     *
+     * @return string description
+     */
+    public String getFormula() { return formula; }
+
+
+    /**
+     * Set up the description of the processing performed by this process.
+     *
+     * @param formula string description
+     */
+    public void setFormula(String formula)
+    {
+        this.formula = formula;
+    }
+
+
+    /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
 
 
     /**
@@ -57,10 +111,41 @@ public class DataSetProperties extends DataAssetProperties
      *
      * @return print out of variables in a JSON-style
      */
-
     @Override
     public String toString()
     {
-        return "DataSetProperties{} " + super.toString();
+        return "DataSetProperties{" +
+                "formula='" + formula + '\'' +
+                ", formulaType='" + formulaType + '\'' +
+                "} " + super.toString();
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        DataSetProperties that = (DataSetProperties) objectToCompare;
+        return Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), formula, formulaType);
     }
 }

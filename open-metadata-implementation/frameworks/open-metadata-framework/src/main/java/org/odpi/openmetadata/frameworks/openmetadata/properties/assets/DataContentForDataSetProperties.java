@@ -22,6 +22,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
 {
     private String queryId         = null;
     private String query           = null;
+    private String queryType       = null;
 
 
 
@@ -45,8 +46,9 @@ public class DataContentForDataSetProperties extends RelationshipProperties
 
         if (template != null)
         {
-            queryId = template.getQueryId();
-            query = template.getQuery();
+            queryId       = template.getQueryId();
+            query         = template.getQuery();
+            query         = template.getQueryType();
         }
     }
 
@@ -94,6 +96,25 @@ public class DataContentForDataSetProperties extends RelationshipProperties
 
 
     /**
+     * Return the name of the query language used in the query.
+     *
+     * @return queryType String
+     */
+    public String getQueryType() { return queryType; }
+
+
+    /**
+     * Set up the name of the query language used in the query.
+     *
+     * @param queryType String name
+     */
+    public void setQueryType(String queryType)
+    {
+        this.queryType = queryType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -102,11 +123,10 @@ public class DataContentForDataSetProperties extends RelationshipProperties
     public String toString()
     {
         return "DataContentForDataSetProperties{" +
-                       "queryId='" + queryId + '\'' +
-                       ", query='" + query + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       '}';
+                "queryId='" + queryId + '\'' +
+                ", query='" + query + '\'' +
+                ", queryType='" + queryType + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -119,19 +139,12 @@ public class DataContentForDataSetProperties extends RelationshipProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof DataContentForDataSetProperties))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DataContentForDataSetProperties that = (DataContentForDataSetProperties) objectToCompare;
-        return Objects.equals(getQueryId(), that.getQueryId()) &&
-                Objects.equals(getQuery(), that.getQuery());
+        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -141,6 +154,6 @@ public class DataContentForDataSetProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(getQueryId(), getQuery());
+        return Objects.hash(super.hashCode(), queryId, query, queryType);
     }
 }

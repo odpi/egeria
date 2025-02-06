@@ -5,10 +5,6 @@ package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's asset lineage graph.
  */
@@ -18,8 +14,10 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
      * Construct a mermaid markdown graph.
      *
      * @param assetLineageGraph content
+     * @param highlightInformationSupplyChain optional information supply chain to highlight
      */
-    public AssetLineageGraphMermaidGraphBuilder(AssetLineageGraph assetLineageGraph)
+    public AssetLineageGraphMermaidGraphBuilder(AssetLineageGraph assetLineageGraph,
+                                                String            highlightInformationSupplyChain)
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Lineage Graph for Asset - ");
@@ -28,17 +26,13 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
         mermaidGraph.append(assetLineageGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
-
         String currentNodeName    = assetLineageGraph.getElementHeader().getGUID();
         String currentDisplayName = assetLineageGraph.getProperties().getDisplayName();
 
-        appendMermaidNode(currentNodeName,
-                          currentDisplayName,
-                          assetLineageGraph.getElementHeader().getType().getTypeName());
-
-        usedNodeNames.add(currentNodeName);
-
+        appendNewMermaidNode(currentNodeName,
+                             currentDisplayName,
+                             assetLineageGraph.getElementHeader().getType().getTypeName(),
+                             VisualStyle.PRINCIPAL_ASSET);
 
         if (assetLineageGraph.getLinkedAssets() != null)
         {
@@ -61,14 +55,10 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                         currentDisplayName = node.getProperties().getQualifiedName();
                     }
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getElementHeader().getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
+                    appendNewMermaidNode(currentNodeName,
+                                             currentDisplayName,
+                                             node.getElementHeader().getType().getTypeName(),
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
                 }
             }
 
@@ -76,9 +66,18 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
             {
                 if (line != null)
                 {
-                    super.appendMermaidLine(line.getEnd1AssetGUID(),
-                                            this.getListLabel(line.getRelationshipTypes()),
-                                            line.getEnd2AssetGUID());
+                    if ((highlightInformationSupplyChain != null) && (line.getInformationSupplyChains() != null) && (! line.getInformationSupplyChains().contains(highlightInformationSupplyChain)))
+                    {
+                        super.appendMermaidThinLine(line.getEnd1AssetGUID(),
+                                                    this.getListLabel(line.getRelationshipTypes()),
+                                                    line.getEnd2AssetGUID());
+                    }
+                    else
+                    {
+                        super.appendMermaidLine(line.getEnd1AssetGUID(),
+                                                this.getListLabel(line.getRelationshipTypes()),
+                                                line.getEnd2AssetGUID());
+                    }
                 }
             }
         }

@@ -3669,7 +3669,7 @@ public class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.QUERY_PROPERTY_NAME,
+                                                    OpenMetadataProperty.QUERY.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -3691,7 +3691,7 @@ public class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.QUERY_ID_PROPERTY_NAME,
+                                                    OpenMetadataProperty.QUERY_ID.name,
                                                     elementProperties,
                                                     methodName);
         }
