@@ -162,6 +162,7 @@ public class OpenMetadataTypesArchive
         this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
         this.update0735SolutionPortsAndWires();
+        this.update0770LineageMapping();
     }
 
 
@@ -399,6 +400,75 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0056 Resource Managers
+     */
+    private void update0770LineageMapping()
+    {
+        this.archiveBuilder.addRelationshipDef(getSchemaAttributeLineageMappingRelationship());
+    }
+
+
+    private RelationshipDef getSchemaAttributeLineageMappingRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_MAPPING_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "sourceAttributes";
+        final String                     end1AttributeDescription     = "The data fields that the data is copied from.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "targetAttributes";
+        final String                     end2AttributeDescription     = "The data fields that the data is copied to.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
     }
 }
 

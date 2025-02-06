@@ -585,13 +585,13 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.QUERY_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUERY.name,
                                                                                      query,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.QUERY_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUERY_ID.name,
                                                                   queryId,
                                                                   methodName);
 
@@ -668,13 +668,13 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.QUERY_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUERY.name,
                                                                                      query,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.QUERY_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUERY_ID.name,
                                                                   queryId,
                                                                   methodName);
 

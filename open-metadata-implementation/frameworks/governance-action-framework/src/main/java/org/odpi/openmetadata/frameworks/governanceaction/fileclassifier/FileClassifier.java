@@ -126,7 +126,7 @@ public class FileClassifier
                                                                                   fileExtension);
 
         return new FileClassification(file.getName(),
-                                      file.getAbsolutePath(),
+                                      file.getCanonicalPath(),
                                       fileExtension,
                                       creationTime,
                                       lastModifiedTime,

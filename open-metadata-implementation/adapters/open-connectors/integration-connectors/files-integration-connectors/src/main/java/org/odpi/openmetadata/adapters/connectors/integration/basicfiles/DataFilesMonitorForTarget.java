@@ -223,7 +223,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                 FileClassification fileClassification = fileClassifier.classifyFile(file);
 
-                DataFileElement cataloguedElement = integrationConnector.getContext().getFileByPathName(file.getAbsolutePath());
+                DataFileElement cataloguedElement = integrationConnector.getContext().getFileByPathName(file.getCanonicalPath());
 
                 if (cataloguedElement == null)
                 {
@@ -413,7 +413,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
             try
             {
-                DataFileElement dataFileInCatalog = integrationConnector.getContext().getFileByPathName(file.getAbsolutePath());
+                DataFileElement dataFileInCatalog = integrationConnector.getContext().getFileByPathName(file.getCanonicalPath());
 
                 if (dataFileInCatalog != null)
                 {

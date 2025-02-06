@@ -4253,13 +4253,23 @@ public enum OpenMetadataType
                          "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow."),
 
     /**
-     * A lineage stitching link between two equivalent elements
+     * A lineage stitching link between two equivalent elements.
      */
     LINEAGE_MAPPING("a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff",
                     "LineageMapping",
                     OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
                     "a1c53199-2c7c-4709-8e64-6ba1b303d5e3",
-                    "A lineage stitching link between two equivalent elements"),
+                    "A lineage stitching link between two equivalent elements."),
+
+
+    /**
+     * A mapping relationship between schema attributes from different assets showing that data is copied from one to the other.
+     */
+    DATA_MAPPING_RELATIONSHIP("3264af28-d81b-42f3-b1c7-fdc774a4d179",
+                              "DataMapping",
+                              OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
+                              "9021c6bc-7214-4580-849a-8583b11a3f2b",
+                              "A mapping relationship between data values from different assets showing how data is copied/transformed from one to the other."),
 
     ;
 
@@ -4821,38 +4831,10 @@ public enum OpenMetadataType
     /* Linked to SchemaAttribute */
     public static final String SCHEMA_TYPE_NAME_PROPERTY_NAME                   = "schemaTypeName";      /* from TypeEmbeddedAttribute classification */
 
-    /* For Schema Link */
-    public static final String SCHEMA_LINK_TYPE_GUID = "67e08705-2d2a-4df6-9239-1818161a41e0";      /* from Area 5 */
-    public static final String SCHEMA_LINK_TYPE_NAME = "SchemaLinkElement";
-    /* SchemaElement */
-
-    public static final String LINK_NAME_PROPERTY_NAME       = "linkName";             /* from SchemaAttribute entity */
-    public static final String LINK_PROPERTIES_PROPERTY_NAME = "linkProperties";       /* from SchemaAttribute entity */
-
-    public static final String LINK_TO_TYPE_RELATIONSHIP_TYPE_GUID = "292125f7-5660-4533-a48a-478c5611922e";     /* from Area 5 */
-    public static final String LINK_TO_TYPE_RELATIONSHIP_TYPE_NAME = "LinkedType";
-    /* End1 = SchemaLinkElement; End 2 = SchemaType */
-
-    public static final String ATTRIBUTE_TO_LINK_RELATIONSHIP_TYPE_GUID = "db9583c5-4690-41e5-a580-b4e30a0242d3";     /* from Area 5 */
-    public static final String ATTRIBUTE_TO_LINK_RELATIONSHIP_TYPE_NAME = "SchemaLinkToType";
-    /* End1 = SchemaAttribute; End 2 = SchemaLinkElement */
 
     public static final String SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID = "1c2622b7-ac21-413c-89e1-6f61f348cd19"; /* from Area 5 */
     public static final String SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME = "DerivedSchemaTypeQueryTarget";
     /* End1 = SchemaElement; End 2 = SchemaElement (target) */
-
-    public static final String QUERY_ID_PROPERTY_NAME = "queryId"; /* from DerivedSchemaTypeQueryTarget relationship */
-    public static final String QUERY_PROPERTY_NAME    = "query";   /* from DerivedSchemaTypeQueryTarget relationship */
-
-    /* - Known Subtypes ------------------------------------------------------- */
-
-    public static final String ARRAY_SCHEMA_TYPE_TYPE_GUID = "ba8d29d2-a8a4-41f3-b29f-91ad924dd944";   /* from Area 5 */
-    public static final String ARRAY_SCHEMA_TYPE_TYPE_NAME = "ArraySchemaType";
-    /* BoundedSchemaType */
-
-    public static final String SET_SCHEMA_TYPE_TYPE_GUID = "b2605d2d-10cd-443c-b3e8-abf15fb051f0";   /* from Area 5 */
-    public static final String SET_SCHEMA_TYPE_TYPE_NAME = "SetSchemaType";
-    /* BoundedSchemaType */
 
     public static final String PORT_SCHEMA_RELATIONSHIP_TYPE_GUID = "B216fA00-8281-F9CC-9911-Ae6377f2b457"; /* from Area 5 */
     public static final String PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "PortSchema";

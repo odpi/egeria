@@ -40,12 +40,12 @@ public enum SolutionRoleDefinition
 
     CLINICAL_TRIAL_RESEARCHER("0c757e35-8a42-4d5f-b01b-c72a6cea65cc",
                               "NewTreatmentResearcher",
-                              "New Treatment Researcher.",
+                              "New Treatment Researcher",
                               "A member of Coco Pharmaceutical's Trial Research Team responsible for the development of the new treatment under trial."),
 
     SUSTAINABILITY_LEADER("3d6e9e6e-6dda-4586-a114-d8e7a1f47972",
                               "SustainabilityLeader",
-                              "Sustainability Leader.",
+                              "Sustainability Leader",
                               "A Coco Pharmaceutical's leader responsible for the measurement and improvement of the company's sustainability position."),
 
     SUSTAINABILITY_EXECUTIVE("2942cd61-d8ad-427d-847a-dae4a1a6f32f",

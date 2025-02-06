@@ -5,22 +5,15 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.AssetGraphResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.AssetSearchMatchesListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetListResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 /**
- * The AssetCatalogResource provides some of the Spring API endpoints of the Asset Catalog Open Metadata View Service (OMVS).
+ * The AssetCatalogResource provides some of the REST API endpoints of the Asset Catalog Open Metadata View Service (OMVS).
  */
 
 @RestController
@@ -105,7 +98,7 @@ public class AssetCatalogResource
      *
      * @param serverName name of the server instances for this request
      * @param assetGUID  unique identifier for the asset
-     * @param relationshipTypes list of relationship type names to use in the search
+     * @param requestBody list of relationship type names to use in the search plus information supply chain details
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -125,13 +118,13 @@ public class AssetCatalogResource
     public AssetLineageGraphResponse getAssetLineageGraph(@PathVariable String serverName,
                                                           @PathVariable String assetGUID,
                                                           @RequestParam(required = false, defaultValue = "0")
-                                                          int   startFrom,
+                                                              int   startFrom,
                                                           @RequestParam(required = false, defaultValue = "0")
-                                                          int   pageSize,
+                                                              int   pageSize,
                                                           @RequestBody(required = false)
-                                                          List<String> relationshipTypes)
+                                                              AssetLineageGraphRequestBody requestBody)
     {
-        return restAPI.getAssetLineageGraph(serverName, assetGUID, relationshipTypes, startFrom, pageSize);
+        return restAPI.getAssetLineageGraph(serverName, assetGUID, requestBody, startFrom, pageSize);
     }
 
 

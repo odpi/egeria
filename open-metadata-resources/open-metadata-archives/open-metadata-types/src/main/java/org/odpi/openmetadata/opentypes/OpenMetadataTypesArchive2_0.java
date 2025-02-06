@@ -394,13 +394,7 @@ public class OpenMetadataTypesArchive2_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "queryId";
-        final String attribute1Description     = "Identifier for placeholder in derived schema attribute's formula.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

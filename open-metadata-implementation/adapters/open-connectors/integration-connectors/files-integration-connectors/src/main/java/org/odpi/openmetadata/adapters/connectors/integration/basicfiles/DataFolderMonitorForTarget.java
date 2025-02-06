@@ -81,7 +81,7 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
             {
                 try
                 {
-                    if (fileChanged.getAbsolutePath().startsWith(directoryToMonitor.directoryFile.getAbsolutePath()))
+                    if (fileChanged.getCanonicalPath().startsWith(directoryToMonitor.directoryFile.getCanonicalPath()))
                     {
                         /*
                          * The directory matches this directory.
@@ -111,9 +111,9 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                                     auditLog.logMessage(methodName,
                                                         BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
                                                                 sourceName,
-                                                                directoryToMonitor.directoryFile.getAbsolutePath(),
+                                                                directoryToMonitor.directoryFile.getCanonicalPath(),
                                                                 modifiedTime.toString(),
-                                                                fileChanged.getAbsolutePath()));
+                                                                fileChanged.getCanonicalPath()));
                                 }
                             }
                         }

@@ -243,7 +243,7 @@ public enum InformationSupplyChain
      */
     public String getQualifiedName()
     {
-        return "InformationSupplyChain:" + displayName + ":" + scope;
+        return "InformationSupplyChain:" + displayName;
     }
 
 

@@ -136,7 +136,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
              * Scan the folder (and sub-folders) and count up its contents
              */
             auditLog.logMessage(methodName, SurveyServiceAuditCode.SURVEYING_FOLDER.getMessageDefinition(surveyActionServiceName,
-                                                                                                         rootFolder.getAbsolutePath(),
+                                                                                                         rootFolder.getCanonicalPath(),
                                                                                                          analysisLevel));
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
@@ -652,7 +652,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             String assetGUID = surveyAssetStore.addCSVFileToCatalog("Missing reference data for survey report " + surveyReportGUID,
                                                                     "Shows the files that could not be correctly classified from the reference data.",
-                                                                    logFile.getAbsolutePath(),
+                                                                    logFile.getCanonicalPath(),
                                                                     null,
                                                                     ',',
                                                                     '"');
@@ -734,7 +734,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             String assetGUID = surveyAssetStore.addCSVFileToCatalog("Inaccessible files detected by " + surveyReportGUID,
                                                                     "Shows the files that could not be accessed.",
-                                                                    logFile.getAbsolutePath(),
+                                                                    logFile.getCanonicalPath(),
                                                                     null,
                                                                     ',',
                                                                     '"');

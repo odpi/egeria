@@ -488,7 +488,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
             String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                     "Provides an inventory of the resources discovered during the survey.",
-                                                                    logFile.getAbsolutePath(),
+                                                                    logFile.getCanonicalPath(),
                                                                     null,
                                                                     ',',
                                                                     '"');
@@ -614,7 +614,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                 "Provides an inventory of the resources discovered during the survey.",
-                                                                logFile.getAbsolutePath(),
+                                                                logFile.getCanonicalPath(),
                                                                 null,
                                                                 ',',
                                                                 '"');
@@ -719,7 +719,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                 "Provides an inventory of the resources discovered during the survey.",
-                                                                logFile.getAbsolutePath(),
+                                                                logFile.getCanonicalPath(),
                                                                 null,
                                                                 ',',
                                                                 '"');
@@ -824,7 +824,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                 "Provides an inventory of the resources discovered during the survey.",
-                                                                logFile.getAbsolutePath(),
+                                                                logFile.getCanonicalPath(),
                                                                 null,
                                                                 ',',
                                                                 '"');

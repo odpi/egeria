@@ -26,6 +26,9 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
         String contactEmail = null;
     }
 
+
+    protected String informationSupplyChainQualifiedName = "InformationSupplyChain:Clinical Trial Treatment Validation";
+
     /**
      * Retrieve the email for a specific person.
      *

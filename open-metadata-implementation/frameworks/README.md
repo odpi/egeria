@@ -32,10 +32,6 @@ or the organization in some way.
   (called survey action services) that survey and extract characteristics
   about the real-world resources and stores them in an open metadata repository.
 
-* **[Context Event Framework (CEF)](context-event-framework)** provides the interfaces and base implementations for components
-  (called context event services) that manage context events and time-based services.
-
-
 
 ----
 Return to [open-metadata-implementation](..).

@@ -361,6 +361,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
                                      String description,
                                      String formula,
                                      String targetElementGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 }

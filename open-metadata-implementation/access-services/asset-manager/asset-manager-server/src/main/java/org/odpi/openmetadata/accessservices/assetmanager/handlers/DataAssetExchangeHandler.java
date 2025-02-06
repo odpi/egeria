@@ -855,8 +855,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         {
             if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
             {
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataType.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.QUERY_ID.name, dataContentForDataSetProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataProperty.QUERY.name, dataContentForDataSetProperties.getQuery(), methodName);
             }
         }
 
@@ -1002,8 +1002,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
-                    properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataType.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
-                    properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataType.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
+                    properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());
@@ -1072,8 +1072,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         {
             if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
             {
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataType.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.QUERY_ID.name, dataContentForDataSetProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataProperty.QUERY.name, dataContentForDataSetProperties.getQuery(), methodName);
             }
         }
 

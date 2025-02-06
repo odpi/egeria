@@ -37,14 +37,20 @@ public enum OIFErrorCode implements ExceptionMessageSet
 
 
     /**
-     * OIF-CONNECTOR-400-001 - The object passed on the {0} parameter of the {1} operation is null
+     * OIF-CONNECTOR-400-002 - The object passed on the {0} parameter of the {1} operation is null
      */
     NULL_OBJECT(400, "OIF-CONNECTOR-400-002",
                         "The object passed on the {0} parameter of the {1} operation is null",
                         "The system is unable to process the request without this object.",
                         "Correct the code in the caller to provide the object."),
 
-
+    /**
+     * OIF-CONNECTOR-400-003 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}
+     */
+    UNEXPECTED_IO_EXCEPTION(500, "OIF-CONNECTOR-400-003",
+                            "The listener manager received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
+                            "The listener manager attempted to retrieve the canonical file name and an IO exception occurred.  It is therefore unable to monitor the file.",
+                            "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.");
     ;
 
     private final int    httpErrorCode;

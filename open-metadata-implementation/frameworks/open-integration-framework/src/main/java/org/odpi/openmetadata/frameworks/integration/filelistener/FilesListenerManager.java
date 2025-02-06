@@ -7,18 +7,17 @@ import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 
 /**
@@ -86,25 +85,36 @@ public class FilesListenerManager
         validateParameter(listener, listenerParameterName, methodName);
         validateParameter(fileToMonitor, fileParameterName, methodName);
 
-        FileAlterationObserver observer = new FileAlterationObserver(fileToMonitor.getAbsolutePath());
-        FileAlterationListener managedListener = new FileMonitoringListener(listener);
-
-        /*
-         * The observer watches the specific file
-         */
-        observer.addListener(managedListener);
-
-        /*
-         * The monitor polls the observer at regular intervals.
-         */
-        monitor.addObserver(observer);
-
-
-        if (auditLog != null)
+        try
         {
-            auditLog.logMessage(methodName,
-                                OIFAuditCode.FILE_MONITORING_STARTING.getMessageDefinition(connectorName,
-                                                                                           fileToMonitor.getAbsolutePath()));
+            FileAlterationObserver observer        = new FileAlterationObserver(fileToMonitor.getCanonicalPath());
+            FileAlterationListener managedListener = new FileMonitoringListener(listener);
+
+            /*
+             * The observer watches the specific file
+             */
+            observer.addListener(managedListener);
+
+            /*
+             * The monitor polls the observer at regular intervals.
+             */
+            monitor.addObserver(observer);
+
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.FILE_MONITORING_STARTING.getMessageDefinition(connectorName,
+                                                                                               fileToMonitor.getCanonicalPath()));
+            }
+        }
+        catch (IOException exception)
+        {
+            throw new InvalidParameterException(OIFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                exception,
+                                                OpenMetadataProperty.PATH_NAME.name);
         }
     }
 
@@ -145,24 +155,35 @@ public class FilesListenerManager
         validateParameter(listener, listenerParameterName, methodName);
         validateParameter(directoryToMonitor, directoryParameterName, methodName);
 
-        FileAlterationObserver observer = new FileAlterationObserver(directoryToMonitor.getAbsolutePath(), fileFilter);
-        FileAlterationListener managedListener = new FolderMonitoringListener(listener, false, fileFilter);
-
-        /*
-         * The observer watches the specific file
-         */
-        observer.addListener(managedListener);
-
-        /*
-         * The monitor polls the observer at regular intervals.
-         */
-        monitor.addObserver(observer);
-
-        if (auditLog != null)
+        try
         {
-            auditLog.logMessage(methodName,
-                                OIFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
-                                                                                                directoryToMonitor.getAbsolutePath()));
+            FileAlterationObserver observer = new FileAlterationObserver(directoryToMonitor.getCanonicalPath(), fileFilter);
+            FileAlterationListener managedListener = new FolderMonitoringListener(listener, false, fileFilter);
+
+            /*
+             * The observer watches the specific file
+             */
+            observer.addListener(managedListener);
+
+            /*
+             * The monitor polls the observer at regular intervals.
+             */
+            monitor.addObserver(observer);
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
+                                                                                                    directoryToMonitor.getCanonicalPath()));
+            }
+        }
+        catch (IOException exception)
+        {
+            throw new InvalidParameterException(OIFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                exception,
+                                                OpenMetadataProperty.PATH_NAME.name);
         }
     }
 
@@ -203,26 +224,37 @@ public class FilesListenerManager
         validateParameter(listener, listenerParameterName, methodName);
         validateParameter(directoryToMonitor, directoryParameterName, methodName);
 
-        FileAlterationObserver observer = new FileAlterationObserver(directoryToMonitor.getAbsolutePath(), fileFilter);
-        FileAlterationListener managedListener = new FolderMonitoringListener(listener, false, fileFilter);
-
-        /*
-         * The observer watches the specific file
-         */
-        observer.addListener(managedListener);
-
-        /*
-         * The monitor polls the observer at regular intervals.
-         */
-        monitor.addObserver(observer);
-
-        // todo add monitoring of subdirectories?
-
-        if (auditLog != null)
+        try
         {
-            auditLog.logMessage(methodName,
-                                OIFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
-                                                                                                directoryToMonitor.getAbsolutePath()));
+            FileAlterationObserver observer = new FileAlterationObserver(directoryToMonitor.getCanonicalPath(), fileFilter);
+            FileAlterationListener managedListener = new FolderMonitoringListener(listener, false, fileFilter);
+
+            /*
+             * The observer watches the specific file
+             */
+            observer.addListener(managedListener);
+
+            /*
+             * The monitor polls the observer at regular intervals.
+             */
+            monitor.addObserver(observer);
+
+            // todo add monitoring of subdirectories?
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
+                                                                                                    directoryToMonitor.getCanonicalPath()));
+            }
+        }
+        catch (IOException exception)
+        {
+            throw new InvalidParameterException(OIFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                exception,
+                                                OpenMetadataProperty.PATH_NAME.name);
         }
     }
 

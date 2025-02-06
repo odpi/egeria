@@ -3,11 +3,10 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintComponent;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintElement;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +42,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
 
             addDescription(solutionBlueprintElement, false);
 
-            List<String> solutionWireGUIDs = new ArrayList<>();
+            List<String> solutionLinkingWireGUIDs = new ArrayList<>();
 
             for (SolutionBlueprintComponent node : solutionBlueprintElement.getSolutionComponents())
             {
@@ -52,7 +51,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
                     super.addSolutionComponentToGraph(null,
                                                       null,
                                                       node.getSolutionComponent(),
-                                                      solutionWireGUIDs);
+                                                      solutionLinkingWireGUIDs);
                 }
             }
 

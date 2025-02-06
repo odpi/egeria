@@ -342,7 +342,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertSolutionComponents(userId, openMetadataElements, asOfTime, effectiveTime, methodName);
+        return convertSolutionComponents(userId, openMetadataElements, true, asOfTime, effectiveTime, methodName);
     }
 
 
@@ -497,7 +497,14 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    solutionRoleElements.add(convertSolutionRole(userId, openMetadataElement, asOfTime, effectiveTime, methodName));
+                    SolutionRoleElement solutionRoleElement = convertSolutionRole(userId, openMetadataElement, asOfTime, effectiveTime, methodName);
+                    if (solutionRoleElement != null)
+                    {
+                        /*
+                         * Only save the roles that either inherit from SolutionActorRole or are linked to solution components.
+                         */
+                        solutionRoleElements.add(solutionRoleElement);
+                    }
                 }
             }
 
@@ -513,6 +520,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param userId calling user
      * @param openMetadataElements elements extracted from the repository
+     * @param addParentContext should parent information supply chains, segments and solution components be added?
      * @param asOfTime repository time to use
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
@@ -520,6 +528,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      */
     private List<SolutionComponentElement> convertSolutionComponents(String                    userId,
                                                                      List<OpenMetadataElement> openMetadataElements,
+                                                                     boolean                   addParentContext,
                                                                      Date                      asOfTime,
                                                                      Date                      effectiveTime,
                                                                      String                    methodName)
@@ -532,7 +541,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    solutionComponentElements.add(convertSolutionComponent(userId, openMetadataElement, asOfTime, effectiveTime, methodName));
+                    solutionComponentElements.add(convertSolutionComponent(userId, openMetadataElement, addParentContext, asOfTime, effectiveTime, methodName));
                 }
             }
 
@@ -1086,7 +1095,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                         relationshipProperties.setExtendedProperties(solutionBlueprintConverter.getRemainingExtendedProperties(elementProperties));
 
                         solutionBlueprintComponent.setProperties(relationshipProperties);
-                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), asOfTime, effectiveTime, methodName));
+                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), false, asOfTime, effectiveTime, methodName));
                         solutionBlueprintComponents.add(solutionBlueprintComponent);
                     }
                 }
@@ -1136,6 +1145,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
 
     /**
      * Return the solution role extracted from the open metadata element plus linked solution components.
+     * Only convert the roles that either inherit from SolutionActorRole or are linked to solution components.
      *
      * @param userId calling user
      * @param openMetadataElement element extracted from the repository
@@ -1172,7 +1182,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 relatedMetadataElements.addAll(relatedMetadataElementList.getElementList());
 
-                startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+                startFrom                  = startFrom + invalidParameterHandler.getMaxPagingSize();
                 relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                 openMetadataElement.getElementGUID(),
                                                                                                 1,
@@ -1188,19 +1198,23 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                 invalidParameterHandler.getMaxPagingSize());
             }
 
-            SolutionRoleConverter<SolutionRoleElement> converter = new SolutionRoleConverter<>(propertyHelper, serviceName, serverName);
-            SolutionRoleElement solutionRoleElement =  converter.getNewComplexBean(SolutionRoleElement.class,
-                                                                                   openMetadataElement,
-                                                                                   relatedMetadataElements,
-                                                                                   methodName);
-            if (solutionRoleElement != null)
+            if ((propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName)) ||
+                    (!relatedMetadataElements.isEmpty()))
             {
-                SolutionRoleMermaidGraphBuilder graphBuilder = new SolutionRoleMermaidGraphBuilder(solutionRoleElement);
+                SolutionRoleConverter<SolutionRoleElement> converter = new SolutionRoleConverter<>(propertyHelper, serviceName, serverName);
+                SolutionRoleElement solutionRoleElement = converter.getNewComplexBean(SolutionRoleElement.class,
+                                                                                      openMetadataElement,
+                                                                                      relatedMetadataElements,
+                                                                                      methodName);
+                if (solutionRoleElement != null)
+                {
+                    SolutionRoleMermaidGraphBuilder graphBuilder = new SolutionRoleMermaidGraphBuilder(solutionRoleElement);
 
-                solutionRoleElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+                    solutionRoleElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+                }
+
+                return solutionRoleElement;
             }
-
-            return solutionRoleElement;
         }
         catch (Exception error)
         {
@@ -1211,9 +1225,9 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                      methodName,
                                                                                                                      error.getMessage()));
             }
-
-            return null;
         }
+
+        return null;
     }
 
 
@@ -1222,6 +1236,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param userId calling user
      * @param openMetadataElement element extracted from the repository
+     * @param addParentContext should parent information supply chains, segments and solution components be added?
      * @param asOfTime repository time to use
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
@@ -1229,15 +1244,17 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      */
     private SolutionComponentElement convertSolutionComponent(String              userId,
                                                               OpenMetadataElement openMetadataElement,
+                                                              boolean             addParentContext,
                                                               Date                asOfTime,
                                                               Date                effectiveTime,
                                                               String              methodName)
     {
         try
         {
-            List<RelatedMetadataElement>   relatedMetadataElements      = new ArrayList<>();
-            List<SolutionPortElement>      relatedPortElements          = new ArrayList<>();
-            List<SolutionComponentElement> relatedSubComponentsElements = new ArrayList<>();
+            List<RelatedMetadataElement>   relatedMetadataElements        = new ArrayList<>();
+            List<RelatedMetadataElement>   relatedParentElements          = new ArrayList<>();
+            List<SolutionPortElement>      relatedPortElements            = new ArrayList<>();
+            List<SolutionComponentElement> relatedSubComponentsElements   = new ArrayList<>();
 
             int startFrom = 0;
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
@@ -1261,9 +1278,20 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                     {
                         if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName))
                         {
-                            if (!relatedMetadataElement.getElementAtEnd1())
+                            if (relatedMetadataElement.getElementAtEnd1())
                             {
-                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), asOfTime, effectiveTime, methodName));
+                                relatedParentElements.add(relatedMetadataElement);
+                            }
+                            else
+                            {
+                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), addParentContext, asOfTime, effectiveTime, methodName));
+                            }
+                        }
+                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                        {
+                            if (relatedMetadataElement.getElementAtEnd1())
+                            {
+                                relatedParentElements.add(relatedMetadataElement);
                             }
                         }
                         else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName))
@@ -1299,12 +1327,18 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                             relatedMetadataElements,
                                                                                             methodName);
 
-
-
             if (solutionComponentElement != null)
             {
-                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement,
-                                                                                                             null);
+                if (addParentContext)
+                {
+                    solutionComponentElement.setContext(this.getInformationSupplyChainContext(userId,
+                                                                                              relatedParentElements,
+                                                                                              asOfTime,
+                                                                                              effectiveTime,
+                                                                                              methodName));
+                }
+
+                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement);
 
                 solutionComponentElement.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
@@ -1323,6 +1357,153 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
 
             return null;
         }
+    }
+
+
+    private List<InformationSupplyChainContext> getInformationSupplyChainContext(String                       userId,
+                                                                                 List<RelatedMetadataElement> relatedParentElements,
+                                                                                 Date                         asOfTime,
+                                                                                 Date                         effectiveTime,
+                                                                                 String                       methodName) throws PropertyServerException
+    {
+        if (relatedParentElements != null)
+        {
+            RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> converter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                                                           serviceName,
+                                                                                                                                           serverName);
+            List<InformationSupplyChainContext> contexts = new ArrayList<>();
+
+            for (RelatedMetadataElement parentElement : relatedParentElements)
+            {
+                if (parentElement != null)
+                {
+                    if (propertyHelper.isTypeOf(parentElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
+                    {
+                        InformationSupplyChainContext context = new InformationSupplyChainContext(null,
+                                                                                                  null,
+                                                                                                  converter.getNewBean(RelatedMetadataElementSummary.class,
+                                                                                                                       parentElement,
+                                                                                                                       methodName));
+                        contexts.add(context);
+                    }
+                    else
+                    {
+                        List<RelatedMetadataElement> fullParentContext = this.getFullParentContext(userId, parentElement, asOfTime, effectiveTime, methodName);
+                        RelatedMetadataElementSummary informationSupplyChain = null;
+                        RelatedMetadataElementSummary linkedSegment = null;
+                        List<RelatedMetadataElementSummary> parentComponents = new ArrayList<>();
+
+                        for (RelatedMetadataElement relatedMetadataElement : fullParentContext)
+                        {
+                            if (relatedMetadataElement != null)
+                            {
+                                RelatedMetadataElementSummary bean = converter.getNewBean(RelatedMetadataElementSummary.class,
+                                                                                          relatedMetadataElement,
+                                                                                          methodName);
+
+                                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
+                                {
+                                    parentComponents.add(bean);
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName))
+                                {
+                                    linkedSegment = bean;
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
+                                {
+                                    informationSupplyChain = bean;
+                                }
+                            }
+                        }
+
+                        if (parentComponents.isEmpty())
+                        {
+                            parentComponents = null;
+                        }
+
+                        InformationSupplyChainContext context = new InformationSupplyChainContext(parentComponents,
+                                                                                                  linkedSegment,
+                                                                                                  informationSupplyChain);
+                        contexts.add(context);
+                    }
+                }
+            }
+
+            return contexts;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the context in which this component is used.
+     *
+     * @param userId caller
+     * @param initialParentElement first parent element
+     * @param asOfTime repository retrieval time
+     * @param effectiveTime effectivity data
+     * @param methodName calling method
+     * @return list of parent elements (including the starting one)
+     */
+    private List<RelatedMetadataElement> getFullParentContext(String                 userId,
+                                                              RelatedMetadataElement initialParentElement,
+                                                              Date                   asOfTime,
+                                                              Date                   effectiveTime,
+                                                              String                 methodName)
+    {
+        List<RelatedMetadataElement> fullParentContext = new ArrayList<>();
+
+        fullParentContext.add(initialParentElement);
+
+        try
+        {
+            RelatedMetadataElementList additionalParents = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                              initialParentElement.getElement().getElementGUID(),
+                                                                                                              2,
+                                                                                                              null,
+                                                                                                              null,
+                                                                                                              asOfTime,
+                                                                                                              null,
+                                                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                              true,
+                                                                                                              false,
+                                                                                                              effectiveTime,
+                                                                                                              0,
+                                                                                                              0);
+
+            if ((additionalParents != null) && (additionalParents.getElementList() != null))
+            {
+                for (RelatedMetadataElement relatedMetadataElement : additionalParents.getElementList())
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
+                        {
+                            fullParentContext.add(relatedMetadataElement);
+                        }
+                        else
+                        {
+                            if ((propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName)) ||
+                                    (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                            {
+                                List<RelatedMetadataElement> higherParents = this.getFullParentContext(userId, relatedMetadataElement, asOfTime, effectiveTime, methodName);
+
+                                fullParentContext.addAll(higherParents);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logMessage(methodName, DigitalArchitectureAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             error.getMessage()));
+        }
+
+        return fullParentContext;
     }
 
 

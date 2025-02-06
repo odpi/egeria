@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionComponentElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.WiredSolutionComponent;
@@ -15,9 +17,10 @@ import java.util.*;
  */
 public class MermaidGraphBuilderBase
 {
-    protected final StringBuilder            mermaidGraph  = new StringBuilder();
-    private   final List<String>             usedNodeNames = new ArrayList<>();
-    protected final Map<String, VisualStyle> nodeColours   = new HashMap<>();
+    protected final StringBuilder            mermaidGraph   = new StringBuilder();
+    private   final List<String>             usedNodeNames  = new ArrayList<>();
+    protected final Map<String, VisualStyle> nodeColours    = new HashMap<>();
+    protected final PropertyHelper           propertyHelper = new PropertyHelper();
 
 
     /**
@@ -167,9 +170,9 @@ public class MermaidGraphBuilderBase
      * @param label label for the line
      * @param end2Id identifier of the ending end
      */
-    public void appendMermaidLine(String end1Id,
-                                  String label,
-                                  String end2Id)
+    public void appendMermaidThinLine(String end1Id,
+                                      String label,
+                                      String end2Id)
     {
         mermaidGraph.append(this.removeSpaces(end1Id));
 
@@ -182,6 +185,35 @@ public class MermaidGraphBuilderBase
         else
         {
             mermaidGraph.append("-->");
+        }
+
+        mermaidGraph.append(this.removeSpaces(end2Id));
+        mermaidGraph.append("\n");
+    }
+
+
+    /**
+     * Append a line to the graph.
+     *
+     * @param end1Id identifier of the starting end
+     * @param label label for the line
+     * @param end2Id identifier of the ending end
+     */
+    public void appendMermaidLine(String end1Id,
+                                  String label,
+                                  String end2Id)
+    {
+        mermaidGraph.append(this.removeSpaces(end1Id));
+
+        if (label != null)
+        {
+            mermaidGraph.append("==>|\"");
+            mermaidGraph.append(label);
+            mermaidGraph.append("\"|");
+        }
+        else
+        {
+            mermaidGraph.append("==>");
         }
 
         mermaidGraph.append(this.removeSpaces(end2Id));
@@ -216,6 +248,7 @@ public class MermaidGraphBuilderBase
         String noSpaces = currentQualifiedName.replaceAll("\\s+","");
         return noSpaces.replaceAll("[\\[\\](){}]", "");
     }
+
 
     /**
      * Add styling for nodes as requested.  These go at the end of the graph.
@@ -276,6 +309,34 @@ public class MermaidGraphBuilderBase
     }
 
 
+    protected String getNodeDisplayName(MetadataElementSummary metadataElementSummary)
+    {
+        String nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.NAME.name);
+        }
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.RESOURCE_NAME.name);
+        }
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.ROLE.name);
+        }
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
+        }
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getElementHeader().getGUID();
+        }
+
+        return nodeDisplayName;
+    }
+
 
     /**
      * Add a solution component to graph.
@@ -283,12 +344,12 @@ public class MermaidGraphBuilderBase
      * @param parentNodeName identifier of the parent node (maybe null)
      * @param parentLinkLabel add label to parent link - also optional
      * @param solutionComponentElement element to process
-     * @param solutionWireGUIDs list of solution wires already defined
+     * @param solutionLinkingWireGUIDs list of solution wires already defined
      */
     protected void addSolutionComponentToGraph(String                   parentNodeName,
                                                String                   parentLinkLabel,
                                                SolutionComponentElement solutionComponentElement,
-                                               List<String>             solutionWireGUIDs)
+                                               List<String>             solutionLinkingWireGUIDs)
 
     {
         if (solutionComponentElement != null)
@@ -320,26 +381,13 @@ public class MermaidGraphBuilderBase
             {
                 for (WiredSolutionComponent line : solutionComponentElement.getWiredToLinks())
                 {
-                    if ((line != null) && (! solutionWireGUIDs.contains(line.getElementHeader().getGUID())))
+                    if ((line != null) && (! solutionLinkingWireGUIDs.contains(line.getElementHeader().getGUID())))
                     {
-                        String relatedComponentDisplayName = line.getLinkedElement().getElementHeader().getGUID();
+                        String relatedComponentDisplayName = getNodeDisplayName(line.getLinkedElement());
 
                         if (line.getLinkedElement().getProperties() != null)
                         {
-                            relatedComponentDisplayName = line.getLinkedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-
-                            if (relatedComponentDisplayName == null)
-                            {
-                                line.getLinkedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                            }
-                            if (relatedComponentDisplayName == null)
-                            {
-                                line.getLinkedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                            }
-                            if (relatedComponentDisplayName == null)
-                            {
-                                relatedComponentDisplayName = line.getLinkedElement().getElementHeader().getGUID();
-                            }
+                            relatedComponentDisplayName = this.getNodeDisplayName(line.getLinkedElement());
                         }
 
                         appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
@@ -347,11 +395,23 @@ public class MermaidGraphBuilderBase
                                              solutionComponentElement.getElementHeader().getType().getTypeName(),
                                              VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
+                        List<String> labelList = new ArrayList<>();
+
+                        if ((line.getProperties() != null) && (line.getProperties().getLabel() != null))
+                        {
+                            labelList.add(line.getProperties().getLabel());
+                            labelList.add("[" + this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()) + "]");
+                        }
+                        else
+                        {
+                            labelList.add(this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()));
+                        }
+
                         this.appendMermaidLine(line.getLinkedElement().getElementHeader().getGUID(),
-                                               this.getListLabel(Collections.singletonList(this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()))),
+                                               this.getListLabel(labelList),
                                                solutionComponentElement.getElementHeader().getGUID());
 
-                        solutionWireGUIDs.add(line.getElementHeader().getGUID());
+                        solutionLinkingWireGUIDs.add(line.getElementHeader().getGUID());
                     }
                 }
             }
@@ -360,13 +420,32 @@ public class MermaidGraphBuilderBase
             {
                 for (WiredSolutionComponent line : solutionComponentElement.getWiredFromLinks())
                 {
-                    if ((line != null) && (! solutionWireGUIDs.contains(line.getElementHeader().getGUID())))
+                    if ((line != null) && (! solutionLinkingWireGUIDs.contains(line.getElementHeader().getGUID())))
                     {
+                        String relatedComponentDisplayName = getNodeDisplayName(line.getLinkedElement());
+
+                        appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
+                                             relatedComponentDisplayName,
+                                             solutionComponentElement.getElementHeader().getType().getTypeName(),
+                                             VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+
+                        List<String> labelList = new ArrayList<>();
+
+                        if ((line.getProperties() != null) && (line.getProperties().getLabel() != null))
+                        {
+                            labelList.add(line.getProperties().getLabel());
+                            labelList.add("[" + this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()) + "]");
+                        }
+                        else
+                        {
+                            labelList.add(this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()));
+                        }
+
                         this.appendMermaidLine(solutionComponentElement.getElementHeader().getGUID(),
-                                               this.getListLabel(Collections.singletonList(this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()))),
+                                               this.getListLabel(labelList),
                                                line.getLinkedElement().getElementHeader().getGUID());
 
-                        solutionWireGUIDs.add(line.getElementHeader().getGUID());
+                        solutionLinkingWireGUIDs.add(line.getElementHeader().getGUID());
                     }
                 }
             }
@@ -377,12 +456,7 @@ public class MermaidGraphBuilderBase
                 {
                     if (line != null)
                     {
-                        String actorRoleName = line.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-
-                        if (actorRoleName == null)
-                        {
-                            actorRoleName = line.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                        }
+                        String actorRoleName = getNodeDisplayName(line.getRelatedElement());
 
                         appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                              actorRoleName,
@@ -395,6 +469,7 @@ public class MermaidGraphBuilderBase
                         {
                             actorRoleDescription = this.addSpacesToTypeName(line.getRelatedElement().getElementHeader().getType().getTypeName());
                         }
+
                         this.appendMermaidLine(line.getRelatedElement().getElementHeader().getGUID(),
                                                this.getListLabel(Collections.singletonList(actorRoleDescription)),
                                                solutionComponentElement.getElementHeader().getGUID());

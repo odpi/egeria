@@ -461,12 +461,12 @@ public class AssetOwnerRESTServices
                 {
                     InstanceProperties instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(),
                                                                                                                       null,
-                                                                                                                      OpenMetadataType.QUERY_ID_PROPERTY_NAME,
+                                                                                                                      OpenMetadataProperty.QUERY_ID.name,
                                                                                                                       dataContentForDataSetProperties.getQueryId(),
                                                                                                                       methodName);
                     instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(),
                                                                                                    instanceProperties,
-                                                                                                   OpenMetadataType.QUERY_PROPERTY_NAME,
+                                                                                                   OpenMetadataProperty.QUERY.name,
                                                                                                    dataContentForDataSetProperties.getQuery(),
                                                                                                    methodName);
 
@@ -704,8 +704,8 @@ public class AssetOwnerRESTServices
                 {
                     if (requestBody.getProperties() instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
                     {
-                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), null, OpenMetadataType.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
-                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), instanceProperties, OpenMetadataType.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), null, OpenMetadataProperty.QUERY_ID.name, dataContentForDataSetProperties.getQueryId(), methodName);
+                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), instanceProperties, OpenMetadataProperty.QUERY.name, dataContentForDataSetProperties.getQuery(), methodName);
                     }
                 }
 
@@ -1100,8 +1100,8 @@ public class AssetOwnerRESTServices
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
-                    properties.setQueryId(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataType.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
-                    properties.setQuery(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataType.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQueryId(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
+                    properties.setQuery(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());

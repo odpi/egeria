@@ -916,6 +916,19 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         super.createRequestTypes(ContentPackDefinition.CORE_CONTENT_PACK);
 
         /*
+         * Set up the governance action process that associates a kafka topic with the open lineage listener.
+         */
+        this.createAndHarvestToAssetGovernanceActionProcess("HarvestOpenLineageEvents",
+                                                            DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName(),
+                                                            DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
+                                                            RequestTypeDefinition.CREATE_KAFKA_TOPIC,
+                                                            DataAssetTemplateDefinition.KAFKA_TOPIC_TEMPLATE,
+                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                                                            RequestTypeDefinition.HARVEST_OPEN_LINEAGE_TOPIC,
+                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                                                            DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName());
+
+        /*
          * Create a sample process
          */
         this.createDailyGovernanceActionProcess();

@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.Asset
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.TagRequestBody;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -365,6 +366,10 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     public AssetLineageGraph getAssetLineageGraph(String       userId,
                                                   String       assetGUID,
                                                   List<String> relationshipTypes,
+                                                  String       limitToISCQualifiedName,
+                                                  String       highlightISCQualifiedName,
+                                                  Date         asOfTime,
+                                                  Date         effectiveTime,
                                                   int          startFrom,
                                                   int          pageSize) throws InvalidParameterException,
                                                                                 PropertyServerException,
@@ -377,30 +382,22 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        AssetLineageGraphResponse restResult;
+        AssetLineageGraphRequestBody requestBody = new AssetLineageGraphRequestBody();
 
-        if (relationshipTypes == null)
-        {
-            restResult = restClient.callAssetLineageGraphPostRESTCall(methodName,
-                                                                      urlTemplate,
-                                                                      new ArrayList<>(),
-                                                                      serverName,
-                                                                      userId,
-                                                                      assetGUID,
-                                                                      startFrom,
-                                                                      pageSize);
-        }
-        else
-        {
-            restResult = restClient.callAssetLineageGraphPostRESTCall(methodName,
-                                                                      urlTemplate,
-                                                                      relationshipTypes,
-                                                                      serverName,
-                                                                      userId,
-                                                                      assetGUID,
-                                                                      startFrom,
-                                                                      pageSize);
-        }
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setAsOfTime(asOfTime);
+        requestBody.setRelationshipTypes(relationshipTypes);
+        requestBody.setLimitToISCQualifiedName(limitToISCQualifiedName);
+        requestBody.setHighlightISCQualifiedName(highlightISCQualifiedName);
+
+        AssetLineageGraphResponse restResult = restClient.callAssetLineageGraphPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            requestBody,
+                                                                                            serverName,
+                                                                                            userId,
+                                                                                            assetGUID,
+                                                                                            startFrom,
+                                                                                            pageSize);
 
         return restResult.getAssetLineageGraph();
     }

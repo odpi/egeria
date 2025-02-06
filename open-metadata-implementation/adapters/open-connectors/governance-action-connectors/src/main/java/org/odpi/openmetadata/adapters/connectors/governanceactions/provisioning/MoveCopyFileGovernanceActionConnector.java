@@ -37,6 +37,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
 
     private String  topLevelProcessName                  = MoveCopyFileGovernanceActionProvider.DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY;
+    private String  informationSupplyChainQualifiedName  = null;
     private String  destinationFileTemplateQualifiedName = null;
     private String  topLevelProcessTemplateQualifiedName = null;
     private String  destinationFileNamePattern           = "{0}";
@@ -53,6 +54,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
     private boolean sourceLineageFromFile = true;
     private boolean destinationLineageToFile = true;
     private boolean childProcessLineage = true;
+    private boolean columnLevelLineage = true;
 
     /**
      * Generate a destination file name based on the input.
@@ -288,6 +290,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             {
                 childProcessLineage = false;
             }
+
+            Object columnLevelLineageOption = configurationProperties.get(MoveCopyFileRequestParameter.IGNORE_COLUMN_LEVEL_LINEAGE.getName());
+
+            if (columnLevelLineageOption != null)
+            {
+                columnLevelLineage = false;
+            }
+
+            informationSupplyChainQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN.getName(), configurationProperties);
         }
 
         /*
@@ -311,6 +322,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 else if (MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName().equals(requestParameterName))
                 {
                     destinationFileTemplateQualifiedName = requestParameters.get(requestParameterName);
+                }
+                else if (MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN.getName().equals(requestParameterName))
+                {
+                    informationSupplyChainQualifiedName = requestParameters.get(requestParameterName);
                 }
                 else if (MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName().equals(requestParameterName))
                 {
@@ -339,6 +354,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 else if (MoveCopyFileRequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName().equals(requestParameterName))
                 {
                     destinationLineageToFile = false;
+                }
+                else if (MoveCopyFileRequestParameter.IGNORE_COLUMN_LEVEL_LINEAGE.getName().equals(requestParameterName))
+                {
+                    columnLevelLineage = false;
                 }
             }
         }
@@ -374,11 +393,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileName == null)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.NO_SOURCE_FILE_NAME.getMessageDefinition(governanceServiceName));
-
-            }
+            super.logRecord(methodName, GovernanceActionConnectorsAuditCode.NO_SOURCE_FILE_NAME.getMessageDefinition(governanceServiceName));
 
             throw new ConnectorCheckedException(GovernanceActionConnectorsErrorCode.NO_SOURCE_FILE_NAME.getMessageDefinition(governanceServiceName),
                                                 this.getClass().getName(),
@@ -444,17 +459,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
         catch (Exception  error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                      error.getClass().getName(),
-                                                                                                                      sourceFileName,
-                                                                                                                      destinationFolderName,
-                                                                                                                      destinationFileNamePattern,
-                                                                                                                      error.getMessage()),
-                                      error);
-            }
+            super.logExceptionRecord(methodName,
+                                     GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     sourceFileName,
+                                                                                                                     destinationFolderName,
+                                                                                                                     destinationFileNamePattern,
+                                                                                                                     error.getMessage()),
+                                     error);
+
 
             outputGuards.add(MoveCopyFileGuard.PROVISIONING_FAILED_EXCEPTION.getName());
             completionStatus = MoveCopyFileGuard.PROVISIONING_FAILED_EXCEPTION.getCompletionStatus();
@@ -695,14 +708,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                       methodName);
                     if (address == null)
                     {
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                GovernanceActionConnectorsAuditCode.NO_NETWORK_ADDRESS.getMessageDefinition(governanceServiceName,
-                                                                                                                            endpoint.getElementGUID(),
-                                                                                                                            connection.getElementGUID(),
-                                                                                                                            assetGUID));
-                        }
+                        super.logRecord(methodName,
+                                        GovernanceActionConnectorsAuditCode.NO_NETWORK_ADDRESS.getMessageDefinition(governanceServiceName,
+                                                                                                                    endpoint.getElementGUID(),
+                                                                                                                    connection.getElementGUID(),
+                                                                                                                    assetGUID));
                     }
 
                     return address;
@@ -717,7 +727,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
     /**
      * Create the lineage mapping for the provisioning process.  This governance action service supports a number of lineage patterns.
      * It assumes the source file / folder is catalogued.  It attaches it to the metadata element that represents this process
-     * (if needed) and the destination file / folder.
+     * (if needed) and the destination file / folder.  If desired, and schemas are defined, it can also create data field
+     * level lineage
      *
      * @param destinationFilePathName name of the file that was created
      * @return unique identifier if the new file asset
@@ -800,6 +811,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
             if (sourceFileGUID == null)
             {
+                /*
+                 * Use the predefined unique name (usual qualifiedName).
+                 */
                 sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null);
             }
         }
@@ -843,7 +857,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
 
             /*
-             * The template uses place holders rather than fixed values
+             * The template uses placeholders rather than fixed values
              */
             Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -919,23 +933,161 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, sourceFileGUID, null, null,null, null, processGUID);
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, sourceFileGUID, informationSupplyChainQualifiedName, null,null, null, processGUID);
         }
 
-        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, processGUID, null, null, null, null, newFileGUID);
+        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, processGUID, informationSupplyChainQualifiedName, null, null, null, newFileGUID);
+
+        if (columnLevelLineage)
+        {
+            this.createDataFieldLineage(metadataStore, sourceFileGUID, newFileGUID);
+        }
 
         metadataStore.setForLineage(false);
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                GovernanceActionConnectorsAuditCode.CREATED_LINEAGE.getMessageDefinition(governanceServiceName,
-                                                                                                         sourceFileGUID,
-                                                                                                         processGUID,
-                                                                                                         newFileGUID));
-        }
+        super.logRecord(methodName,
+                        GovernanceActionConnectorsAuditCode.CREATED_LINEAGE.getMessageDefinition(governanceServiceName,
+                                                                                                 sourceFileGUID,
+                                                                                                 processGUID,
+                                                                                                 newFileGUID));
 
         return newFileGUID;
+    }
+
+
+    /**
+     * Attempt to add lineage relationships between the schema attributes of the source and target files.
+     *
+     * @param metadataStore client
+     * @param sourceFileGUID asset GUID for the source file
+     * @param newFileGUID assetGUID for the target/destination file
+     */
+    private void createDataFieldLineage(OpenMetadataStore metadataStore,
+                                        String            sourceFileGUID,
+                                        String            newFileGUID)
+    {
+        final String methodName = "createDataFieldLineage";
+
+        try
+        {
+            RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(sourceFileGUID,
+                                                                                        1,
+                                                                                        OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                        new Date());
+
+            if (schemaType != null)
+            {
+                List<OpenMetadataElement> sourceFileSchemaAttributes = this.getSchemaAttributes(metadataStore, sourceFileGUID);
+                List<OpenMetadataElement> newFileSchemaAttributes    = this.getSchemaAttributes(metadataStore, newFileGUID);
+
+                if ((sourceFileSchemaAttributes != null) && (newFileSchemaAttributes != null))
+                {
+                    int attributePointer = 0;
+
+                    for (OpenMetadataElement sourceAttribute : sourceFileSchemaAttributes)
+                    {
+                        if (sourceAttribute != null)
+                        {
+                            OpenMetadataElement destinationAttribute = newFileSchemaAttributes.get(attributePointer);
+
+                            if (destinationAttribute != null)
+                            {
+                                governanceContext.createLineageRelationship(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                                                                            sourceAttribute.getElementGUID(),
+                                                                            null,
+                                                                            "copy",
+                                                                            null,
+                                                                            null,
+                                                                            destinationAttribute.getElementGUID());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            super.logExceptionRecord(methodName,
+                                     GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   error.getMessage()),
+                                     error);
+        }
+    }
+
+
+    /**
+     * Retrieve the schema attributes for the requested asset and organize them into a list ordered by the
+     * position attribute.
+     *
+     * @param metadataStore client
+     * @param assetGUID asset to start from
+     * @return ordered list of schema attributes
+     */
+    private List<OpenMetadataElement> getSchemaAttributes(OpenMetadataStore metadataStore,
+                                                          String            assetGUID)
+    {
+        final String methodName = "getSchemaAttributes";
+
+        if (sourceFileGUID != null)
+        {
+            try
+            {
+                RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(assetGUID,
+                                                                                            1,
+                                                                                            OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                            new Date());
+
+                if (schemaType != null)
+                {
+                    int startFrom = 0;
+                    List<OpenMetadataElement>  schemaAttributes = new ArrayList<>();
+
+                    RelatedMetadataElementList relatedMetadataElementList = metadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
+                                                                                                                     1,
+                                                                                                                     OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                                                     startFrom,
+                                                                                                                     governanceContext.getMaxPageSize());
+
+                    while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+                    {
+                        for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+                        {
+                            if (relatedMetadataElement != null)
+                            {
+                                int position = propertyHelper.getIntProperty(governanceServiceName,
+                                                                             OpenMetadataProperty.POSITION.name,
+                                                                             relatedMetadataElement.getElement().getElementProperties(),
+                                                                             methodName);
+                                schemaAttributes.add(position, relatedMetadataElement.getElement());
+                            }
+                        }
+
+                        startFrom = startFrom + governanceContext.getMaxPageSize();
+
+                        relatedMetadataElementList = metadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
+                                                                                              1,
+                                                                                              OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                              startFrom,
+                                                                                              governanceContext.getMaxPageSize());
+                    }
+
+                    return schemaAttributes;
+                }
+            }
+            catch (Exception error)
+            {
+                super.logExceptionRecord(methodName,
+                                         GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       methodName,
+                                                                                                                       error.getMessage()),
+                                         error);
+            }
+        }
+
+        return null;
     }
 
 

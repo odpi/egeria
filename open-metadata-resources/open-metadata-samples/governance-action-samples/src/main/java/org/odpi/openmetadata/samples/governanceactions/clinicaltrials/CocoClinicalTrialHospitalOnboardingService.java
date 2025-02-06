@@ -243,6 +243,13 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                         landingAreaDirectoryTemplateGUID);
 
                 addSolutionComponentRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID);
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                            hospitalGUID,
+                                                            informationSupplyChainQualifiedName,
+                                                            "publish weekly measurements",
+                                                            "A csv file containing the patient measurements for this week is sent from the hospital to the landing area folder.",
+                                                            null,
+                                                            landingAreaFolderGUID);
 
                 /*
                  * These templates have the project and hospital information filled out, leaving specifics
@@ -271,9 +278,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                hospitalName,
                                                                stewardGUID,
                                                                hospitalDataLakeTemplateName,
-                                                               dataQualityCertificationTypeGUID);
-
-
+                                                               dataQualityCertificationTypeGUID,
+                                                               integrationConnectorGUID);
 
                 /*
                  * Create the context event for the data lake folder
@@ -292,6 +298,13 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                 newFileProcessName);
 
                 addSolutionComponentRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID);
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                            landingAreaFolderGUID,
+                                                            informationSupplyChainQualifiedName,
+                                                            "new file notification",
+                                                            "The arrival of a new file creates a notification that is sent to the integration connector.",
+                                                            null,
+                                                            integrationConnectorGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -669,9 +682,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * @param onboardingProcessGUID unique identifier of the generic process
      * @param clinicalTrialId identifier of the clinical trial
      * @param clinicalTrialName name of the clinical trial
+     * @param hospitalName name of hospital
      * @param stewardGUID unique identifier of the steward for the project
      * @param dataLakeTemplateName qualified name
      * @param dataQualityCertificationType certification type used in quality analysis
+     * @param integrationConnectorGUID unique identifier of the integration connector
      */
     private String createNewFileProcess(String onboardingProcessGUID,
                                         String clinicalTrialId,
@@ -679,9 +694,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                         String hospitalName,
                                         String stewardGUID,
                                         String dataLakeTemplateName,
-                                        String dataQualityCertificationType) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+                                        String dataQualityCertificationType,
+                                        String integrationConnectorGUID) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName = "createNewFileProcess";
 
@@ -696,6 +712,13 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                      null);
 
             addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID);
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                        integrationConnectorGUID,
+                                                        informationSupplyChainQualifiedName,
+                                                        "new file trigger",
+                                                        "The arrival of a new file creates an instance of the onboarding pipeline process.",
+                                                        null,
+                                                        processGUID);
 
             RelatedMetadataElement firstProcessStep = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(onboardingProcessGUID,
                                                                                                                          1,
@@ -718,6 +741,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 requestParameters.put(MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName(), clinicalTrialId + "_{1, number,000000}.csv");
                 requestParameters.put("publishZones", "data-lake,clinical-trials");
                 requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName(), dataLakeTemplateName);
+                requestParameters.put(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN.getName(), informationSupplyChainQualifiedName);
 
                 relationshipProperties = propertyHelper.addStringMapProperty(relationshipProperties,
                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
