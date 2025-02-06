@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 @RequestMapping("/servers/{serverName}/api/open-metadata/asset-catalog")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">AssetCatalogResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">The AssetCatalogResource provides some of the Spring API endpoints of the Asset Catalog Open Metadata View Service (OMVS).</div>
+<div class="block">The AssetCatalogResource provides some of the REST API endpoints of the Asset Catalog Open Metadata View Service (OMVS).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,11 +130,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetLineageGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetLineageGraph(java.lang.String,java.lang.String,int,int,java.util.List)" class="member-name-link">getAssetLineageGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetLineageGraph(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody)" class="member-name-link">getAssetLineageGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipTypes)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.</div>
 </div>
@@ -232,7 +232,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetLineageGraph(java.lang.String,java.lang.String,int,int,java.util.List)">
+<section class="detail" id="getAssetLineageGraph(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody)">
 <h3>getAssetLineageGraph</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/{assetGUID}/as-lineage-graph")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetLineageGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphResponse</a></span>&nbsp;<span class="element-name">getAssetLineageGraph</span><wbr><span class="parameters">(@PathVariable
@@ -244,14 +244,14 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
  @RequestBody(required=false)
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipTypes)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.  The relationships are
  retrieved both from the asset, and the anchored schema elements</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset</dd>
-<dd><code>relationshipTypes</code> - list of relationship type names to use in the search</dd>
+<dd><code>requestBody</code> - list of relationship type names to use in the search plus information supply chain details</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>

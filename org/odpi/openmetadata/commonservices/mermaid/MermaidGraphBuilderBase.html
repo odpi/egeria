@@ -101,6 +101,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&gt;</code></div>
 <div class="col-second odd-row-color"><code><a href="#nodeColours" class="member-name-link">nodeColours</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../frameworks/governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></code></div>
+<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -132,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionComponentToGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionComponentElement,java.util.List)" class="member-name-link">addSolutionComponentToGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentNodeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentLinkLabel,
  <a href="../../frameworks/openmetadata/metadataelements/SolutionComponentElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionComponentElement</a>&nbsp;solutionComponentElement,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solutionWireGUIDs)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solutionLinkingWireGUIDs)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a solution component to graph.</div>
 </div>
@@ -167,23 +170,33 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a node in the mermaid graph.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#appendNewMermaidNode(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)" class="member-name-link">appendNewMermaidNode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentNodeName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#appendMermaidThinLine(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">appendMermaidThinLine</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1Id,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2Id)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Append a line to the graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#appendNewMermaidNode(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)" class="member-name-link">appendNewMermaidNode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentNodeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentDisplayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentType,
  <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;visualStyle)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a node in the mermaid graph.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListLabel(java.util.List)" class="member-name-link">getListLabel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;labelValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListLabel(java.util.List)" class="member-name-link">getListLabel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;labelValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Convert an array into a comma separated string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add any style requests and return the built mermaid graph.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodeDisplayName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">getNodeDisplayName</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;metadataElementSummary)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForSolutionComponent(java.lang.String)" class="member-name-link">getVisualStyleForSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentType)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -216,6 +229,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="nodeColours">
 <h3>nodeColours</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&gt;</span>&nbsp;<span class="element-name">nodeColours</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="propertyHelper">
+<h3>propertyHelper</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../frameworks/governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
 </section>
 </li>
 </ul>
@@ -312,6 +331,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="appendMermaidThinLine(java.lang.String,java.lang.String,java.lang.String)">
+<h3>appendMermaidThinLine</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">appendMermaidThinLine</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1Id,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2Id)</span></div>
+<div class="block">Append a line to the graph.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>end1Id</code> - identifier of the starting end</dd>
+<dd><code>label</code> - label for the line</dd>
+<dd><code>end2Id</code> - identifier of the ending end</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="appendMermaidLine(java.lang.String,java.lang.String,java.lang.String)">
 <h3>appendMermaidLine</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">appendMermaidLine</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1Id,
@@ -347,19 +381,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getNodeDisplayName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">
+<h3>getNodeDisplayName</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNodeDisplayName</span><wbr><span class="parameters">(<a href="../../frameworks/openmetadata/metadataelements/MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;metadataElementSummary)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="addSolutionComponentToGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionComponentElement,java.util.List)">
 <h3>addSolutionComponentToGraph</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSolutionComponentToGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentNodeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentLinkLabel,
  <a href="../../frameworks/openmetadata/metadataelements/SolutionComponentElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionComponentElement</a>&nbsp;solutionComponentElement,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solutionWireGUIDs)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solutionLinkingWireGUIDs)</span></div>
 <div class="block">Add a solution component to graph.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>parentNodeName</code> - identifier of the parent node (maybe null)</dd>
 <dd><code>parentLinkLabel</code> - add label to parent link - also optional</dd>
 <dd><code>solutionComponentElement</code> - element to process</dd>
-<dd><code>solutionWireGUIDs</code> - list of solution wires already defined</dd>
+<dd><code>solutionLinkingWireGUIDs</code> - list of solution wires already defined</dd>
 </dl>
 </section>
 </li>

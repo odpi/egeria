@@ -144,9 +144,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/AssetLineageGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetLineageGraph(java.lang.String,java.lang.String,java.util.List,int,int)" class="member-name-link">getAssetLineageGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetLineageGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody,int,int)" class="member-name-link">getAssetLineageGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipTypes,
+ <a href="../../../commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a>&nbsp;requestBody,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -310,11 +310,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetLineageGraph(java.lang.String,java.lang.String,java.util.List,int,int)">
+<section class="detail" id="getAssetLineageGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody,int,int)">
 <h3>getAssetLineageGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/AssetLineageGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphResponse</a></span>&nbsp;<span class="element-name">getAssetLineageGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipTypes,
+ <a href="../../../commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a>&nbsp;requestBody,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span></div>
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.  The relationships are
@@ -323,7 +323,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset</dd>
-<dd><code>relationshipTypes</code> - list of relationship type names to use in the search</dd>
+<dd><code>requestBody</code> - list of relationship type names to use in the search</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
