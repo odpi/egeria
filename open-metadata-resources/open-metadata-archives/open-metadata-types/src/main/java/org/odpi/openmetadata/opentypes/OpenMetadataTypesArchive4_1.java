@@ -338,8 +338,8 @@ public class OpenMetadataTypesArchive4_1
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SAMPLE_VALUES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_PATTERN));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_PATTERNS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERNS));
 
         classificationDef.setPropertiesDefinition(properties);
 

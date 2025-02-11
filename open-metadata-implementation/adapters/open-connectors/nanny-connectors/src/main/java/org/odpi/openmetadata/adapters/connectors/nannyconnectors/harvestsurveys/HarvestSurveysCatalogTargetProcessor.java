@@ -80,6 +80,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         super(catalogTarget, connectorToTarget, connectorName, auditLog);
 
         this.openMetadataAccess = openMetadataAccess;
+        this.openMetadataAccess.setForLineage(true);
         this.connectorFactoryService = connectorFactoryService;
 
         if (super.getCatalogTargetConnector() instanceof JDBCResourceConnector jdbcResourceConnector)

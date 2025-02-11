@@ -7302,16 +7302,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getAbstractConceptClassification()
     {
-        final String guid            = "9d725a07-4abf-4939-a268-419d200b69c2";
-        final String name            = "AbstractConcept";
-        final String description     = "Identifies that this glossary term describes an abstract concept.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
@@ -7319,16 +7311,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getDataValueClassification()
     {
-        final String guid            = "ab253e31-3d8a-45a7-8592-24329a189b9e";
-        final String name            = "DataValue";
-        final String description     = "Identifies that this glossary term describes a data value.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_VALUE_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
@@ -7356,16 +7340,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getRelatedTermRelationship()
     {
-        final String guid            = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
-        final String name            = "RelatedTerm";
-        final String description     = "Link between similar glossary terms.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.RELATED_TERM_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7403,36 +7379,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7442,16 +7394,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getSynonymRelationship()
     {
-        final String guid            = "74f4094d-dba2-4ad9-874e-d422b69947e2";
-        final String name            = "Synonym";
-        final String description     = "Link between glossary terms that have the same meaning.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SYNONYM_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7489,37 +7433,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7529,16 +7448,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAntonymRelationship()
     {
-        final String guid            = "ea5e126a-a8fa-4a43-bcfa-309a98aa0185";
-        final String name            = "Antonym";
-        final String description     = "Link between glossary terms that have the opposite meaning.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ANTONYM_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7576,36 +7487,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7615,16 +7502,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getPreferredTermRelationship()
     {
-        final String guid            = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
-        final String name            = "PreferredTerm";
-        final String description     = "Link to an alternative term that the organization prefer is used.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PREFERRED_TERM_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7662,36 +7541,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7701,16 +7556,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getReplacementTermRelationship()
     {
-        final String guid            = "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed";
-        final String name            = "ReplacementTerm";
-        final String description     = "Link to a glossary term that is replacing an obsolete glossary term.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REPLACEMENT_TERM_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7748,36 +7595,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7787,16 +7610,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTranslationRelationship()
     {
-        final String guid            = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
-        final String name            = "Translation";
-        final String description     = "Link between glossary terms that provide different natural language translation of the same concept.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TRANSLATION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7834,36 +7649,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7873,16 +7664,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getISARelationshipRelationship()
     {
-        final String guid            = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
-        final String name            = "ISARelationship";
-        final String description     = "Link between a more general glossary term and a more specific definition.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ISA_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -7920,36 +7703,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7959,16 +7718,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getValidValueRelationship()
     {
-        final String guid            = "707a156b-e579-4482-89a5-de5889da1971";
-        final String name            = "ValidValue";
-        final String description     = "Link between glossary terms where one defines one of the data values for the another.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.VALID_VALUE_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -8006,36 +7757,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -8060,12 +7787,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getUsedInContextRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.description,
-                                                                                OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -8103,36 +7826,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "An expression that explains the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -8142,38 +7841,18 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getContextDefinitionClassification()
     {
-        final String guid            = "54f9f41a-3871-4650-825d-59a41de01330";
-        final String name            = "ContextDefinition";
-        final String description     = "Identifies a glossary term that describes a context where processing or decisions occur.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         OpenMetadataType.GLOSSARY_TERM.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                                                  false);
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "scope";
-        final String attribute2Description     = "Scope of influence of the context.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -8314,16 +7993,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTermHASARelationshipRelationship()
     {
-        final String guid            = "d67f16d1-5348-419e-ba38-b0bb6fe4ad6c";
-        final String name            = "TermHASARelationship";
-        final String description     = "Defines the relationship between a spine object and a spine attribute.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TERM_HAS_A_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -8361,29 +8032,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -8391,6 +8045,7 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+    /* Deprecated in later release */
     private RelationshipDef getTermISATYPEOFRelationshipRelationship()
     {
         final String guid            = "d5d588c3-46c9-420c-adff-6031802a7e51";
@@ -8440,29 +8095,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -8472,16 +8110,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTermTYPEDBYRelationshipRelationship()
     {
-        final String guid            = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
-        final String name            = "TermTYPEDBYRelationship";
-        final String description     = "Defines the relationship between a spine attribute and its type.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TERM_TYPED_BY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -8519,29 +8149,12 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of or confidence in the relationship.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -8551,16 +8164,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getSpineObjectClassification()
     {
-        final String guid            = "a41ee152-de1e-4533-8535-2f8b37897cac";
-        final String name            = "SpineObject";
-        final String description     = "Identifies a glossary term that describes a type of spine object.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.SPINE_OBJECT_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
@@ -8568,16 +8173,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getSpineAttributeClassification()
     {
-        final String guid            = "ccb749ba-34ec-4f71-8755-4d8b383c34c3";
-        final String name            = "SpineAttribute";
-        final String description     = "Identifies a glossary term that describes an attribute of a spine object.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
@@ -8585,16 +8182,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getObjectIdentifierClassification()
     {
-        final String guid            = "3d1e4389-27de-44fa-8df4-d57bfaf809ea";
-        final String name            = "ObjectIdentifier";
-        final String description     = "Identifies a glossary term that describes an attribute that can be used to identify an instance.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
@@ -8649,19 +8238,9 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getGlossaryProjectClassification()
     {
-        final String guid            = "43be51a9-2d19-4044-b399-3ba36af10929";
-        final String name            = "GlossaryProject";
-        final String description     = "Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "Project";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.GLOSSARY_PROJECT_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
                                                   false);
     }
 
@@ -8798,16 +8377,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceOfficerEntity()
     {
-        final String guid            = "578a3510-9ad3-45fe-8ada-e4e9572c37c8";
-        final String name            = "GovernanceOfficer";
-        final String description     = "Person responsible for a governance domain.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_OFFICER,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
 
         /*
          * Build the attributes
@@ -8848,35 +8419,15 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceDriverEntity()
     {
-        final String guid            = "c403c109-7b6b-48cd-8eee-df445b258b33";
-        final String name            = "GovernanceDriver";
-        final String description     = "Defines a reason for having the governance program.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceDefinition";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_DRIVER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName));
     }
 
 
     private EntityDef getGovernanceStrategyEntity()
     {
-        final String guid            = "3c34f121-07a6-4e95-a07d-9b0ef17b7bbf";
-        final String name            = "GovernanceStrategy";
-        final String description     = "Defines how the governance program and the supporting capabilities are supporting the business strategy.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceDriver";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_STRATEGY,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DRIVER.typeName));
 
         /*
          * Build the attributes
@@ -8901,33 +8452,15 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getRegulationEntity()
     {
-        final String guid            = "e3c4293d-8846-4500-b0c0-197d73aba8b0";
-        final String name            = "Regulation";
-        final String description     = "Identifies a regulation related to data that must be supported.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceDriver";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.REGULATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DRIVER.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "jurisdiction";
-        final String attribute1Description     = "Issuing authority for the regulation.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.JURISDICTION));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -8957,84 +8490,36 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernancePolicyEntity()
     {
-        final String guid            = "a7defa41-9cfa-4be5-9059-359022bb016d";
-        final String name            = "GovernancePolicy";
-        final String description     = "Defines a goal or outcome expected from the organization.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceDefinition";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_POLICY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName));
     }
 
 
     private EntityDef getGovernancePrincipleEntity()
     {
-        final String guid            = "3b7d1325-ec2c-44cb-8db0-ce207beb78cf";
-        final String name            = "GovernancePrinciple";
-        final String description     = "Defines a principle related to how data is managed or used that the organization should ensure remains true.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernancePolicy";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_PRINCIPLE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName));
     }
 
 
     private EntityDef getGovernanceObligationEntity()
     {
-        final String guid            = "0cec20d3-aa29-41b7-96ea-1c544ed32537";
-        final String name            = "GovernanceObligation";
-        final String description     = "Defines a capability, rule or action that is required by a regulation or external party.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernancePolicy";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_OBLIGATION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName));
     }
 
 
     private EntityDef getGovernanceApproachEntity()
     {
-        final String guid            = "2d03ec9d-bd6b-4be9-8e17-95a7ecdbaa67";
-        final String name            = "GovernanceApproach";
-        final String description     = "Defines a preferred approach to managing or using data.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernancePolicy";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_APPROACH,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName));
     }
 
 
     private RelationshipDef getGovernancePolicyLinkRelationship()
     {
-        final String guid            = "0c42c999-4cac-4da4-afab-0e381f3a818e";
-        final String name            = "GovernancePolicyLink";
-        final String description     = "Links related governance policies together.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -9042,12 +8527,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernancePolicy";
         final String                     end1AttributeName            = "linkingPolicies";
         final String                     end1AttributeDescription     = "Policies that are dependent on this policy.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -9058,12 +8542,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernancePolicy";
         final String                     end2AttributeName            = "linkedPolicies";
         final String                     end2AttributeDescription     = "Policies that further define aspects of this policy.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -9089,16 +8572,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getGovernanceResponseRelationship()
     {
-        final String guid            = "8845990e-7fd9-4b79-a19d-6c4730dadd6b";
-        final String name            = "GovernanceResponse";
-        final String description     = "Links a governance policy to a governance driver that it is supporting.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -9106,12 +8581,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceDriver";
         final String                     end1AttributeName            = "drivers";
         final String                     end1AttributeDescription     = "Drivers that justify this policy.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DRIVER.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -9122,12 +8596,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernancePolicy";
         final String                     end2AttributeName            = "policies";
         final String                     end2AttributeDescription     = "Governance policies that support this governance driver.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -9138,17 +8611,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "rationale";
-        final String attribute1Description     = "Describes the reasoning for defining the policy in support of the driver.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RATIONALE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -9227,19 +8691,10 @@ public class OpenMetadataTypesArchive1_2
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
-
     private RelationshipDef getGovernanceImplementationRelationship()
     {
-        final String guid            = "787eaf46-7cf2-4096-8d6e-671a0819d57e";
-        final String name            = "GovernanceImplementation";
-        final String description     = "A link between a governance control and the governance driver it is implementing.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -9247,12 +8702,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernancePolicy";
         final String                     end1AttributeName            = "policies";
         final String                     end1AttributeDescription     = "The policies that are supported by this control.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_POLICY.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -9263,12 +8717,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceControl";
         final String                     end2AttributeName            = "implementations";
         final String                     end2AttributeDescription     = "The governance controls that implement this policy.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -9279,35 +8732,18 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "rationale";
-        final String attribute1Description     = "The reasons for implementing the policy using this control.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RATIONALE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
 
-
     private RelationshipDef getGovernanceControlLinkRelationship()
     {
-        final String guid            = "806933fb-7925-439b-9876-922a960d2ba1";
-        final String name            = "GovernanceControlLink";
-        final String description     = "A link between two related governance controls.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -9315,12 +8751,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceControl";
         final String                     end1AttributeName            = "linkingControls";
         final String                     end1AttributeDescription     = "Governance controls that ate dependent on this control.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -9331,12 +8766,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceControl";
         final String                     end2AttributeName            = "linkedControls";
         final String                     end2AttributeDescription     = "Governance controls that support the implementation of this control.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -9347,12 +8781,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -9366,6 +8796,7 @@ public class OpenMetadataTypesArchive1_2
 
     /**
      * 0421 Governance Confidentiality Level defines the organization's levels of confidentiality.
+     * This has been deprecated in favour of using the valid metadata values.
      */
     private void add0421GovernanceConfidentialityLevels()
     {
@@ -9373,6 +8804,11 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+    /**
+     * Deprecated in later release.
+     *
+     * @return entity
+     */
     private EntityDef getGovernanceConfidentialityLevelEntity()
     {
         final String guid            = "49dd320b-4850-4838-9b78-f1285f0e6d2f";
@@ -9593,14 +9029,9 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getConfidentialityClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
-                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION,
                                                                                  null,
-                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.description,
-                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.descriptionGUID,
-                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.wikiURL,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -9621,22 +9052,11 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.CONFIDENCE.name,
-                                                        OpenMetadataProperty.CONFIDENCE.description,
-                                                        OpenMetadataProperty.CONFIDENCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+
         property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
                                                         attribute6Description,
                                                         attribute6DescriptionGUID);
@@ -9649,16 +9069,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getConfidenceClassification()
     {
-        final String guid            = "25d8f8d5-2998-4983-b9ef-265f58732965";
-        final String name            = "Confidence";
-        final String description     = "Defines the level of confidence that should be placed in the accuracy of related data items.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CONFIDENCE_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
@@ -9681,22 +9093,10 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.CONFIDENCE.name,
-                                                        OpenMetadataProperty.CONFIDENCE.description,
-                                                        OpenMetadataProperty.CONFIDENCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
         property = archiveHelper.getEnumTypeDefAttribute("ConfidenceLevel",
                                                          attribute6Name,
                                                          attribute6Description,
@@ -9710,14 +9110,9 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getRetentionClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.RETENTION_CLASSIFICATION.typeGUID,
-                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.RETENTION_CLASSIFICATION,
                                                                                  null,
-                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.description,
-                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.descriptionGUID,
-                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.wikiURL,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -9732,54 +9127,26 @@ public class OpenMetadataTypesArchive1_2
         final String attribute6Name            = "basis";
         final String attribute6Description     = "Basis on which the retention period is defined.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "associatedGUID";
-        final String attribute7Description     = "Related entity used to determine the retention period.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "archiveAfter";
-        final String attribute8Description     = "Date when archiving can take place.";
-        final String attribute8DescriptionGUID = null;
-        final String attribute9Name            = "deleteAfter";
-        final String attribute9Description     = "Date when delete can take place.";
-        final String attribute9DescriptionGUID = null;
+
 
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.CONFIDENCE.name,
-                                                        OpenMetadataProperty.CONFIDENCE.description,
-                                                        OpenMetadataProperty.CONFIDENCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
         property = archiveHelper.getEnumTypeDefAttribute("RetentionBasis",
                                                          attribute6Name,
                                                          attribute6Description,
                                                          attribute6DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute8Name,
-                                                         attribute8Description,
-                                                         attribute8DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute9Name,
-                                                         attribute9Description,
-                                                         attribute9DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ASSOCIATED_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ARCHIVE_AFTER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_AFTER));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -9788,14 +9155,9 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getCriticalityClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
-                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CRITICALITY_CLASSIFICATION,
                                                                                  null,
-                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.description,
-                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.descriptionGUID,
-                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.wikiURL,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -9817,22 +9179,10 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.CONFIDENCE.name,
-                                                        OpenMetadataProperty.CONFIDENCE.description,
-                                                        OpenMetadataProperty.CONFIDENCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
         property = archiveHelper.getEnumTypeDefAttribute("CriticalityLevel",
                                                          attribute6Name,
                                                          attribute6Description,
@@ -9898,16 +9248,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getAssetZoneMembershipClassification()
     {
-        final String guid            = "a1c17a86-9fd3-40ca-bb9b-fe83c6981deb";
-        final String name            = "AssetZoneMembership";
-        final String description     = "Defines the asset's membership of the governance zones.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
                                                                                  false);
 
@@ -9915,16 +9257,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "zoneMembership";
-        final String attribute1Description     = "List of governance zones for the asset.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
-                                                                attribute1Description,
-                                                                attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ZONE_MEMBERSHIP));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -9934,39 +9268,17 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceZoneEntity()
     {
-        final String guid            = "290a192b-42a7-449a-935a-269ca62cfdac";
-        final String name            = "GovernanceZone";
-        final String description     = "Defines a collection of assets that are suitable for a particular usage or are governed by a particular process.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ZONE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "criteria";
-        final String attribute3Description     = "Definition of the types of assets that belong in this zone.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CRITERIA));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -9974,6 +9286,11 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+    /**
+     * Deprecated in a later release.
+     *
+     * @return relationship
+     */
     private RelationshipDef getZoneGovernanceRelationship()
     {
         final String guid            = "4c4d1d9c-a9fc-4305-8b71-4e891c0f9ae0";
@@ -10009,12 +9326,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceDefinition";
         final String                     end2AttributeName            = "governedBy";
         final String                     end2AttributeDescription     = "Governance definitions for this zone.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -10028,16 +9344,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getZoneHierarchyRelationship()
     {
-        final String guid            = "ee6cf469-cb4d-4c3b-a4c7-e2da1236d139";
-        final String name            = "ZoneHierarchy";
-        final String description     = "Creates a controlling hierarchy for governance zones.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10045,12 +9353,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceZone";
         final String                     end1AttributeName            = "inheritsFromZone";
         final String                     end1AttributeDescription     = "The zone that provides additional governance requirements.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ZONE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10061,12 +9368,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceZone";
         final String                     end2AttributeName            = "controlsZone";
         final String                     end2AttributeDescription     = "The zones that are also governed in the same way.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ZONE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -10097,50 +9403,22 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceRuleEntity()
     {
-        final String guid            = "8f954380-12ce-4a2d-97c6-9ebe250fecf8";
-        final String name            = "GovernanceRule";
-        final String description     = "Technical control expressed as a logic expression.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "TechnicalControl";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_RULE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
     }
 
 
     private EntityDef getGovernanceProcessEntity()
     {
-        final String guid            = "b68b5d9d-6b79-4f3a-887f-ec0f81c54aea";
-        final String name            = "GovernanceProcess";
-        final String description     = "Technical control expressed as a sequence of tasks.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "TechnicalControl";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_PROCESS,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
     }
 
 
     private RelationshipDef getGovernanceRuleImplementationRelationship()
     {
-        final String guid            = "e701a5c8-c1ba-4b75-8257-e0a6569eda48";
-        final String name            = "GovernanceRuleImplementation";
-        final String description     = "Identifies the implementation of a governance rule.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_RULE_IMPLEMENTATION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10148,12 +9426,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceRule";
         final String                     end1AttributeName            = "implementsGovernanceRules";
         final String                     end1AttributeDescription     = "The rules that are implemented by this component.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_RULE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10179,12 +9456,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -10194,16 +9467,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getGovernanceProcessImplementationRelationship()
     {
-        final String guid            = "a5a7b08a-73fd-4026-a9dd-d0fe55bea8a4";
-        final String name            = "GovernanceProcessImplementation";
-        final String description     = "Identifies the implementation of a governance process.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_PROCESS_IMPLEMENTATION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10211,12 +9476,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceProcess";
         final String                     end1AttributeName            = "implementsGovernanceProcesses";
         final String                     end1AttributeDescription     = "The processes that are implemented by this component.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_PROCESS.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10242,12 +9506,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -10275,34 +9535,15 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getNamingStandardRuleEntity()
     {
-        final String guid            = "52505b06-98a5-481f-8a32-db9b02afabfc";
-        final String name            = "NamingStandardRule";
-        final String description     = "Describes a parsing rule used to create compliant names.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceRule";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.NAMING_STANDARD_RULE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_RULE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "namePattern";
-        final String attribute1Description     = "Format of the naming standard rule.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERNS));
 
 
         entityDef.setPropertiesDefinition(properties);
@@ -10313,33 +9554,15 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getNamingStandardRuleSetEntity()
     {
-        final String guid            = "ba70f506-1f81-4890-bb4f-1cb1d99c939e";
-        final String name            = "NamingStandardRuleSet";
-        final String description     = "Describes a collection of related naming standard rules.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Collection";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NAMING_STANDARD_RULE_SET,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 
     private ClassificationDef getPrimeWordClassification()
     {
-        final String guid            = "3ea1ea66-8923-4662-8628-0bacef3e9c5f";
-        final String name            = "PrimeWord";
-        final String description     = "Describes a primary noun, used in naming standards.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.PRIME_WORD_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
@@ -10347,21 +9570,17 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getClassWordClassification()
     {
-        final String guid            = "feac4bd9-37d9-4437-82f6-618ce3e2793e";
-        final String name            = "ClassWord";
-        final String description     = "Describes classifying or grouping noun, using in naming standards.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.CLASS_WORD_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
 
+    /**
+     * Deprecated in 1.7 as name is wrong
+     * @return classification
+     */
     private ClassificationDef getModifierClassification()
     {
         final String guid            = "dfc70bed-7e8b-4060-910c-59c7473f23a3";
@@ -10436,33 +9655,15 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getOrganizationEntity()
     {
-        final String guid            = "50a61105-35be-4ee3-8b99-bdd958ed0685";
-        final String name            = "Organization";
-        final String description     = "Describes a specific organization.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Team";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ORGANIZATION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM.typeName));
     }
 
 
     private EntityDef getBusinessCapabilityEntity()
     {
-        final String guid            = "7cc6bcb2-b573-4719-9412-cf6c3f4bbb15";
-        final String name            = "BusinessCapability";
-        final String description     = "Describes a function, capability or skill set.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.BUSINESS_CAPABILITY,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
@@ -10479,10 +9680,7 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -10492,50 +9690,22 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceResponsibilityEntity()
     {
-        final String guid            = "89a76b24-deb8-45bf-9304-a578a610326f";
-        final String name            = "GovernanceResponsibility";
-        final String description     = "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "OrganizationalControl";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_RESPONSIBILITY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
     }
 
 
     private EntityDef getGovernanceProcedureEntity()
     {
-        final String guid            = "69055d10-51dc-4c2b-b21f-d76fad3f8ef3";
-        final String name            = "GovernanceProcedure";
-        final String description     = "Describes set of tasks that a person, team or organization performs to support the implementation of a governance driver.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "OrganizationalControl";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_PROCEDURE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
     }
 
 
     private ClassificationDef getAssetOriginClassification()
     {
-        final String guid            = "e530c566-03d2-470a-be69-6f52bfbd5fb7";
-        final String name            = "AssetOrigin";
-        final String description     = "Describes the origin of an asset.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef =  archiveHelper.getClassificationDef(guid,
-                                                                                  name,
+        ClassificationDef classificationDef =  archiveHelper.getClassificationDef(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION,
                                                                                   null,
-                                                                                  description,
-                                                                                  descriptionGUID,
                                                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
                                                                                   false);
 
@@ -10543,31 +9713,10 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "organization";
-        final String attribute1Description     = "Unique identifier (GUID) of the organization where this asset originated from.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "businessCapability";
-        final String attribute2Description     = "Unique identifier (GUID) of the business capability where this asset originated from.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "otherOriginValues";
-        final String attribute3Description     = "Descriptive labels describing origin of the asset.";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OTHER_ORIGIN_VALUES));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -10577,16 +9726,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getOrganizationCapabilityRelationship()
     {
-        final String guid            = "47f0ad39-db77-41b0-b406-36b1598e0ba7";
-        final String name            = "OrganizationalCapability";
-        final String description     = "Describes the relationship between a team and the business capabilities it supports.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ORGANIZATION_CAPABILITY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10594,12 +9735,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "BusinessCapability";
         final String                     end1AttributeName            = "supportsBusinessCapabilities";
         final String                     end1AttributeDescription     = "The business capabilities that this team supports.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.BUSINESS_CAPABILITY.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10625,6 +9765,9 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+    /*
+     * Deprecated in 2.10
+     */
     private RelationshipDef getResponsibilityStaffContactRelationship()
     {
         final String guid            = "49f2ecb5-6bf7-4324-9824-ac98d595c404";
@@ -10692,6 +9835,9 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+    /*
+     * Deprecated in 2.10
+     */
     private RelationshipDef getBusinessCapabilityControlsRelationship()
     {
         final String guid            = "b5de932a-738c-4c69-b852-09fec2b9c678";
@@ -10711,12 +9857,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceControl";
         final String                     end1AttributeName            = "implementsControls";
         final String                     end1AttributeDescription     = "The governance controls that this business capability supports.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10774,46 +9919,17 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getProjectCharterEntity()
     {
-        final String guid            = "f96b5a32-42c1-4a74-8f77-70a81cec783d";
-        final String name            = "ProjectCharter";
-        final String description     = "Describes the goals, scope and authority of a project.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.PROJECT_CHARTER,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "mission";
-        final String attribute1Description     = "The high-level goal of the project.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "projectType";
-        final String attribute2Description     = "Short description of type of the project.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "purposes";
-        final String attribute3Description     = "List of purposes for having the project.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
-                                                                attribute3Description,
-                                                                attribute3DescriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MISSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -10823,16 +9939,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getProjectCharterLinkRelationship()
     {
-        final String guid            = "f081808d-545a-41cb-a9aa-c4f074a16c78";
-        final String name            = "ProjectCharterLink";
-        final String description     = "Links a Project with its Charter.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PROJECT_CHARTER_LINK_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10855,12 +9963,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ProjectCharter";
         final String                     end2AttributeName            = "charter";
         final String                     end2AttributeDescription     = "The charter guiding this project.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT_CHARTER.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -11237,12 +10344,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceDefinition";
         final String                     end2AttributeName            = "measuredDefinitions";
         final String                     end2AttributeDescription     = "The governance definitions that are measured by this metric.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -11626,11 +10732,9 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A type of license that sets out specific terms and conditions for the use of an asset.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceDefinition";
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -11787,11 +10891,10 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A specific type of certification required by a regulation.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceDefinition";
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
                                                                 description,
                                                                 descriptionGUID);
 

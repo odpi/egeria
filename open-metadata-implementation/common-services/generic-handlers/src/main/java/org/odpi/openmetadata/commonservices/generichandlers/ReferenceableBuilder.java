@@ -453,13 +453,13 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataProperty.DATA_PATTERN.name,
+                                                                       OpenMetadataProperty.DATA_PATTERNS.name,
                                                                        dataPattern,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataProperty.NAME_PATTERN.name,
+                                                                       OpenMetadataProperty.NAME_PATTERNS.name,
                                                                        namePattern,
                                                                        methodName);
 

@@ -1334,7 +1334,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
             }
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.USER_DEFINED_STATUS_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.USER_DEFINED_STATUS.name,
                                                                  collectionMembershipProperties.getUserDefinedStatus());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,

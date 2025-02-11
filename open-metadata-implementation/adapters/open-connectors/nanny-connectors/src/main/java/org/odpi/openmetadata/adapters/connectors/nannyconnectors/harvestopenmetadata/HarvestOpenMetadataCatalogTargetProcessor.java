@@ -77,12 +77,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         super(catalogTarget, connectorToTarget, connectorName, auditLog);
         
         this.openMetadataAccess = openMetadataAccess;
+        this.openMetadataAccess.setForLineage(true);
         this.dataAssetExchangeService = dataAssetExchangeService;
         this.dataAssetExchangeService.setForLineage(true);
-        this.dataAssetExchangeService.setForDuplicateProcessing(true);
         this.glossaryExchangeService = glossaryExchangeService;
         this.glossaryExchangeService.setForLineage(true);
-        this.glossaryExchangeService.setForDuplicateProcessing(true);
 
         if (super.getCatalogTargetConnector() instanceof JDBCResourceConnector jdbcResourceConnector)
         {
@@ -93,6 +92,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             {
                 schemaName = super.getStringConfigurationProperty(PostgresPlaceholderProperty.SCHEMA_NAME.getName(), catalogTarget.getConfigurationProperties());
             }
+
             loadDDL(databaseClient, schemaName);
         }
     }

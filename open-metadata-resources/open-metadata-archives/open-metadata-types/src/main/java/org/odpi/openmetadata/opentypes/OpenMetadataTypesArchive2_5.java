@@ -557,16 +557,8 @@ public class OpenMetadataTypesArchive2_5
 
     private ClassificationDef addElementSupplementClassification()
     {
-        final String guid            = "58520015-ce6e-47b7-a1fd-864030544819";
-        final String name            = "ElementSupplement";
-        final String description     = "Identifies a glossary term that is being used to supplement asset descriptions.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
 
@@ -575,17 +567,8 @@ public class OpenMetadataTypesArchive2_5
 
     private RelationshipDef getSupplementaryPropertiesRelationship()
     {
-        final String guid            = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
-        final String name            = "SupplementaryProperties";
-        final String description     =
-                "Provides additional descriptive properties to augment technical metadata extracted from a third party technology.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;

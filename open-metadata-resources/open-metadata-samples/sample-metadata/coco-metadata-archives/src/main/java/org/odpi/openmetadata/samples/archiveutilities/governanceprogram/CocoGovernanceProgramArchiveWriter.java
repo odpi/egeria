@@ -5,8 +5,11 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
@@ -73,27 +76,30 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeDomains()
     {
-        String governanceDomainSetGUID = archiveHelper.addCollection(OpenMetadataType.COLLECTION.typeName,
-                                                                     null,
-                                                                     OpenMetadataType.COLLECTION.typeName,
-                                                                     OpenMetadataType.COLLECTION.typeName,
-                                                                     OpenMetadataType.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
-                                                                     "GovernanceDomainSet:Coco Pharmaceuticals",
-                                                                     "Coco Pharmaceuticals Governance Domains",
-                                                                     "List of active governance domains at Coco Pharmaceuticals.",
-                                                                     CollectionType.GOVERNANCE_DOMAIN_SET.getName(),
-                                                                     null,
-                                                                     null,
-                                                                     null);
+        String governanceDomainSetGUID = this.getParentSet(null,
+                                                           null,
+                                                           OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                           null);
 
         for (GovernanceDomainDefinition domainDefinition : GovernanceDomainDefinition.values())
         {
-            archiveHelper.addGovernanceDomainDescription(governanceDomainSetGUID,
-                                                         domainDefinition.getQualifiedName(),
-                                                         domainDefinition.getDomainIdentifier(),
-                                                         domainDefinition.getDisplayName(),
-                                                         domainDefinition.getDescription(),
-                                                         null);
+            String validValueGUID = this.archiveHelper.addValidValue(null,
+                                                                     governanceDomainSetGUID,
+                                                                     governanceDomainSetGUID,
+                                                                     OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                     OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                     OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                     domainDefinition.getQualifiedName(),
+                                                                     domainDefinition.getDisplayName(),
+                                                                     domainDefinition.getDescription(),
+                                                                     domainDefinition.getCategory(),
+                                                                     OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                                     DataType.INT.getName(),
+                                                                     OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                                                     Integer.toString(domainDefinition.getDomainIdentifier()),
+                                                                     false,
+                                                                     false,
+                                                                     null);
 
             String communityQName = "Community: " + domainDefinition.getQualifiedName();
 

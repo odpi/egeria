@@ -607,8 +607,8 @@ Content-Type: application/json
 			"class" : "DataFieldValuesProperties",
 			"defaultValue" : "Add default value here",
             "sampleValues" : [ "Sample Value 1", "Sample Value 2"],
-            "dataPattern" : ["add data pattern here"],
-            "namePattern" : ["add column pattern here"]
+            "dataPatterns" : ["add data pattern here"],
+            "namePatterns" : ["add column pattern here"]
 		}
 }
 
@@ -852,8 +852,3 @@ Content-Type: application/json
         "qualifiedName" : "fred"
     }
 }
-
-###
-# group: Connector Types
-# @name Update a connector type
-GET

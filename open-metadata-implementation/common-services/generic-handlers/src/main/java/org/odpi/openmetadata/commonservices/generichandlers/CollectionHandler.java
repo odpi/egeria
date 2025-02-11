@@ -507,7 +507,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.USER_DEFINED_STATUS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.USER_DEFINED_STATUS.name,
                                                                   userDefinedStatus,
                                                                   methodName);
 

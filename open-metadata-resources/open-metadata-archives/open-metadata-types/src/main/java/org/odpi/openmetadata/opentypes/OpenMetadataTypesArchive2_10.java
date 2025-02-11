@@ -791,9 +791,7 @@ public class OpenMetadataTypesArchive2_10
      */
     private TypeDefPatch updateGovernanceResponsibilityAssignmentRelationship()
     {
-        final String typeName = "GovernanceResponsibilityAssignment";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -825,9 +823,7 @@ public class OpenMetadataTypesArchive2_10
      */
     private TypeDefPatch updateAssetOrigin()
     {
-        final String typeName = "AssetOrigin";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -836,23 +832,9 @@ public class OpenMetadataTypesArchive2_10
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "organizationPropertyName";
-        final String attribute1Description     = "Name of the property from the element used to identify the organization property.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "businessCapabilityPropertyName";
-        final String attribute2Description     = "Name of the property from the element used to identify the businessCapability property.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION_PROPERTY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_PROPERTY_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

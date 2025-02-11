@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -54,8 +53,8 @@ public class OpenMetadataTypesArchive1_7
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -705,16 +704,8 @@ public class OpenMetadataTypesArchive1_7
 
     private ClassificationDef getModifierClassification()
     {
-        final String guid            = "f662c95a-ae3f-4f71-b442-78ab70f2ee47";
-        final String name            = "Modifier";
-        final String description     = "Describes modifying noun or adverb, used in naming standards.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.MODIFIER_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
@@ -742,9 +733,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Create the Patch
          */
-        final String typeName = "PrimeWord";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PRIME_WORD_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -763,9 +752,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Create the Patch
          */
-        final String typeName = "ClassWord";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLASS_WORD_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -2467,131 +2454,6 @@ public class OpenMetadataTypesArchive1_7
         return classificationDef;
     }
 
-
-    /*
-     * ========================================================================
-     * Below are place holders for types to be introduced in future releases.
-     * ========================================================================
-     */
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0217 Automated Processes defines a Process is automated (as opposed to manual procedure).
-     */
-    private void add0217AutomatedProcesses()
-    {
-        /* placeholder */
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0260Transformations()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0265AnalyticsAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0270IoTAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0280ModelAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0435 Governance Rules define details of a governance rule implementation.
-     */
-    private void add0435GovernanceRules()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0447GovernanceProcesses()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0452GovernanceDaemons()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0480RightsManagement()
-    {
-        /* placeholder */
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0550LogicSpecificationModel()
-    {
-        /* placeholder */
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0560MappingModel()
-    {
-        /* placeholder */
-    }
 
 
     /*

@@ -25,8 +25,8 @@ public class DataFieldValuesProperties extends ClassificationProperties
 {
     private String       defaultValue = null;
     private List<String> sampleValues = null;
-    private List<String> dataPattern = null;
-    private List<String> namePattern = null;
+    private List<String> dataPatterns = null;
+    private List<String> namePatterns = null;
 
 
     /**
@@ -51,8 +51,8 @@ public class DataFieldValuesProperties extends ClassificationProperties
         {
             defaultValue = template.getDefaultValue();
             sampleValues = template.getSampleValues();
-            dataPattern = template.getDataPattern();
-            namePattern = template.getNamePattern();
+            dataPatterns = template.getDataPatterns();
+            namePatterns = template.getNamePatterns();
         }
     }
 
@@ -106,20 +106,20 @@ public class DataFieldValuesProperties extends ClassificationProperties
      *
      * @return string
      */
-    public List<String> getDataPattern()
+    public List<String> getDataPatterns()
     {
-        return dataPattern;
+        return dataPatterns;
     }
 
 
     /**
      * Set up a regular expression that characterizes the data values stored in this data field.
      *
-     * @param dataPattern string
+     * @param dataPatterns string
      */
-    public void setDataPattern(List<String> dataPattern)
+    public void setDataPatterns(List<String> dataPatterns)
     {
-        this.dataPattern = dataPattern;
+        this.dataPatterns = dataPatterns;
     }
 
 
@@ -128,20 +128,20 @@ public class DataFieldValuesProperties extends ClassificationProperties
      *
      * @return string
      */
-    public List<String> getNamePattern()
+    public List<String> getNamePatterns()
     {
-        return namePattern;
+        return namePatterns;
     }
 
 
     /**
      * Set up  a regular expression that characterizes the name used for this type of data field.
      *
-     * @param namePattern string
+     * @param namePatterns string
      */
-    public void setNamePattern(List<String> namePattern)
+    public void setNamePatterns(List<String> namePatterns)
     {
-        this.namePattern = namePattern;
+        this.namePatterns = namePatterns;
     }
 
 
@@ -156,8 +156,8 @@ public class DataFieldValuesProperties extends ClassificationProperties
         return "DataFieldValuesProperties{" +
                 "defaultValue='" + defaultValue + '\'' +
                 ", sampleValues=" + sampleValues +
-                ", dataPattern=" + dataPattern +
-                ", namePattern=" + namePattern +
+                ", dataPattern=" + dataPatterns +
+                ", namePattern=" + namePatterns +
                 "} " + super.toString();
     }
 
@@ -185,8 +185,8 @@ public class DataFieldValuesProperties extends ClassificationProperties
         }
         return Objects.equals(defaultValue, that.defaultValue) &&
                        Objects.equals(sampleValues, that.sampleValues) &&
-                       Objects.equals(dataPattern, that.dataPattern) &&
-                       Objects.equals(namePattern, that.namePattern);
+                       Objects.equals(dataPatterns, that.dataPatterns) &&
+                       Objects.equals(namePatterns, that.namePatterns);
     }
 
 
@@ -198,6 +198,6 @@ public class DataFieldValuesProperties extends ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), defaultValue, sampleValues, dataPattern, namePattern);
+        return Objects.hash(super.hashCode(), defaultValue, sampleValues, dataPatterns, namePatterns);
     }
 }

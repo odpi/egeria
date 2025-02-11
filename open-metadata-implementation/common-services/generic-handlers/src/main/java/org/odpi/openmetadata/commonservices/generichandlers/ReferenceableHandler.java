@@ -1881,7 +1881,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                         OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName,
                                                                                          null,
                                                                                          null,
                                                                                          null,
@@ -1913,7 +1913,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                     {
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName,
                                                                                                      methodName);
                         if (classification != null)
                         {
@@ -1946,7 +1946,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                 if (dataPattern != null)
                                 {
                                     List<String> retrievedDataPatterns = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataProperty.DATA_PATTERN.name,
+                                                                                                                 OpenMetadataProperty.DATA_PATTERNS.name,
                                                                                                                  classification.getProperties(),
                                                                                                                  methodName);
 
@@ -1963,7 +1963,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                 if (namePattern != null)
                                 {
                                     List<String> retrievedNamePatterns = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataProperty.NAME_PATTERN.name,
+                                                                                                                 OpenMetadataProperty.NAME_PATTERNS.name,
                                                                                                                  classification.getProperties(),
                                                                                                                  methodName);
 

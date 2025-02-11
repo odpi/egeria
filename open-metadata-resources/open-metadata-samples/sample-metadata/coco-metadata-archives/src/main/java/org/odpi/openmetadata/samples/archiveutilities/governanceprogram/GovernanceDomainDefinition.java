@@ -3,7 +3,11 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
+
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * The GovernanceDomainDefinition is used to feed the definition of the governance domains for
@@ -122,7 +126,23 @@ public enum GovernanceDomainDefinition
      */
     public String getQualifiedName()
     {
-        return "GovernanceDomain:" + domainIdentifier;
+        return constructValidValueQualifiedName(null,
+                                                OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                null,
+                                                Integer.toString(domainIdentifier));
+    }
+
+
+    /**
+     * Return the category for this resourceUse value.
+     *
+     * @return string
+     */
+    public String getCategory()
+    {
+        return constructValidValueCategory(null,
+                                           OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                           null);
     }
 
 

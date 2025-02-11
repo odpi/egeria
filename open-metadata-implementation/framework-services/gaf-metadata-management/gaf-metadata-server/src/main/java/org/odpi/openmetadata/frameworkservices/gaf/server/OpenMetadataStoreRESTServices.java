@@ -1493,9 +1493,14 @@ public class OpenMetadataStoreRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             OpenMetadataElement anchorElement;
+            Date                effectiveTime = new Date();
+            Date                asOfTime = null;
 
             if (requestBody != null)
             {
+                effectiveTime = requestBody.getEffectiveTime();
+                asOfTime      = requestBody.getAsOfTime();
+
                 anchorElement = handler.getBeanFromRepository(userId,
                                                               elementGUID,
                                                               parameterName,
@@ -1503,8 +1508,8 @@ public class OpenMetadataStoreRESTServices
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                              requestBody.getAsOfTime(),
-                                                              requestBody.getEffectiveTime(),
+                                                              asOfTime,
+                                                              effectiveTime,
                                                               methodName);
             }
             else
@@ -1516,8 +1521,8 @@ public class OpenMetadataStoreRESTServices
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                              null,
-                                                              new Date(),
+                                                              asOfTime,
+                                                              effectiveTime,
                                                               methodName);
             }
 
@@ -1532,12 +1537,12 @@ public class OpenMetadataStoreRESTServices
                                                                                   parameterName,
                                                                                   anchorElement.getType().getTypeName(),
                                                                                   null,
-                                                                                  null,
+                                                                                  asOfTime,
                                                                                   SequencingOrder.CREATION_DATE_RECENT,
                                                                                   null,
-                                                                                  false,
-                                                                                  false,
-                                                                                  new Date(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  effectiveTime,
                                                                                   methodName);
                 if (relationships != null)
                 {
@@ -1582,15 +1587,15 @@ public class OpenMetadataStoreRESTServices
                                                                                null,
                                                                                null,
                                                                                searchClassifications,
-                                                                               null,
+                                                                               asOfTime,
                                                                                null,
                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                               false,
-                                                                               false,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
                                                                                startFrom,
                                                                                pageSize,
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                               new Date(),
+                                                                               effectiveTime,
                                                                                methodName);
 
                 elementGraph.setAnchoredElements(anchoredElements);
@@ -1608,12 +1613,12 @@ public class OpenMetadataStoreRESTServices
                                                                           anchoredElementParameterName,
                                                                           metadataElement.getType().getTypeName(),
                                                                           null,
-                                                                          null,
+                                                                          asOfTime,
                                                                           SequencingOrder.CREATION_DATE_RECENT,
                                                                           null,
-                                                                          false,
-                                                                          false,
-                                                                          new Date(),
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
                                                                           methodName);
                             if (relationships != null)
                             {
@@ -1739,7 +1744,7 @@ public class OpenMetadataStoreRESTServices
                                                                                 requestBody.getSequencingProperty(),
                                                                                 requestBody.getSequencingOrder(),
                                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                null,
+                                                                                requestBody.getEffectiveTime(),
                                                                                 startFrom,
                                                                                 pageSize,
                                                                                 methodName));
@@ -1816,8 +1821,8 @@ public class OpenMetadataStoreRESTServices
                                                          guidParameterName,
                                                          null,
                                                          requestBody.getAsOfTime(),
-                                                         false,
-                                                         false,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
                                                          handler.getSupportedZones(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
@@ -2336,7 +2341,7 @@ public class OpenMetadataStoreRESTServices
                                                      false,
                                                      false,
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                     null,
+                                                     new Date(),
                                                      methodName);
             }
         }
@@ -2405,7 +2410,7 @@ public class OpenMetadataStoreRESTServices
                                                       false,
                                                       false,
                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                      null,
+                                                      new Date(),
                                                       methodName);            }
         }
         catch (Exception error)
