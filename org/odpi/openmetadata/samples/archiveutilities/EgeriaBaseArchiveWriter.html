@@ -189,20 +189,28 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the open metadata archive containing new metadata entities.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setArchiveBuilder(org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder,org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper)" class="member-name-link">setArchiveBuilder</a><wbr>(<a href="../../repositoryservices/archiveutilities/OMRSArchiveBuilder.html" title="class in org.odpi.openmetadata.repositoryservices.archiveutilities">OMRSArchiveBuilder</a>&nbsp;archiveBuilder,
- <a href="GovernanceArchiveHelper.html" title="class in org.odpi.openmetadata.samples.archiveutilities">GovernanceArchiveHelper</a>&nbsp;archiveHelper)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getParentSet</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mapName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Provide an alternative archive builder.</div>
+<div class="block">Find or create the parent set for a valid value.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive()" class="member-name-link">writeOpenMetadataArchive</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setArchiveBuilder(org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder,org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper)" class="member-name-link">setArchiveBuilder</a><wbr>(<a href="../../repositoryservices/archiveutilities/OMRSArchiveBuilder.html" title="class in org.odpi.openmetadata.repositoryservices.archiveutilities">OMRSArchiveBuilder</a>&nbsp;archiveBuilder,
+ <a href="GovernanceArchiveHelper.html" title="class in org.odpi.openmetadata.samples.archiveutilities">GovernanceArchiveHelper</a>&nbsp;archiveHelper)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Generates and writes out the open metadata archive created in the builder.</div>
+<div class="block">Provide an alternative archive builder.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive(java.lang.String)" class="member-name-link">writeOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive()" class="member-name-link">writeOpenMetadataArchive</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Generates and writes out the open metadata archive created in the builder.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive(java.lang.String)" class="member-name-link">writeOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Generates and writes out the open metadata archive created in the builder.</div>
 </div>
 </div>
@@ -421,6 +429,25 @@ loadScripts(document, 'script');</script>
 <h3>getArchiveContent</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">getArchiveContent</span>()</div>
 <div class="block">Implemented by subclass to add the content.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getParentSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>getParentSet</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getParentSet</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mapName)</span></div>
+<div class="block">Find or create the parent set for a valid value.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>requestedGUID</code> - optional guid for the valid value</dd>
+<dd><code>typeName</code> - name of the type (can be null)</dd>
+<dd><code>propertyName</code> - name of the property (can be null)</dd>
+<dd><code>mapName</code> - name of the mapName (can be null)</dd>
+<dt>Returns:</dt>
+<dd>unique identifier (guid) of the parent set</dd>
+</dl>
 </section>
 </li>
 <li>
