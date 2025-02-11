@@ -78,7 +78,6 @@ public class InvalidParameterTest
         thisTest.testGovernanceClassificationsClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testExternalReferenceClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testGovernanceDefinitionClient(serverName, serverPlatformRootURL, userId, auditLog);
-        thisTest.testGovernanceDomainClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testGovernanceMetricsClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testGovernanceProgramReviewClient(serverName, serverPlatformRootURL, userId, auditLog);
         thisTest.testGovernanceRoleClient(serverName, serverPlatformRootURL, userId, auditLog);
@@ -145,41 +144,6 @@ public class InvalidParameterTest
             GovernanceDefinitionManager client     = new GovernanceDefinitionManager(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             new CreateGovernanceDefinitionInvalidParameterTest(userId, client);
-        }
-        catch (FVTUnexpectedCondition testCaseError)
-        {
-            throw testCaseError;
-        }
-        catch (Exception unexpectedError)
-        {
-            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-        }
-    }
-
-
-
-    /**
-     * Create a client to test the invalid parameters.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param userId calling user
-     * @param auditLog logging destination
-     * @throws FVTUnexpectedCondition the test case failed
-     */
-    private void testGovernanceDomainClient(String   serverName,
-                                          String   serverPlatformRootURL,
-                                          String   userId,
-                                          AuditLog auditLog) throws FVTUnexpectedCondition
-    {
-        final String activityName = "testGovernanceDomainClient";
-
-        try
-        {
-            GovernanceProgramRESTClient restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL, auditLog);
-            GovernanceDomainManager       client   = new GovernanceDomainManager(serverName, serverPlatformRootURL, restClient, maxPageSize);
-
-            new CreateGovernanceDomainInvalidParameterTest(userId, client);
         }
         catch (FVTUnexpectedCondition testCaseError)
         {

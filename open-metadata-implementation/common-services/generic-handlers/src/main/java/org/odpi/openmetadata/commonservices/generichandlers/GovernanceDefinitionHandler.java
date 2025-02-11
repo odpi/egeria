@@ -94,7 +94,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param businessImperatives for the GovernanceStrategy - how does it link to business imperatives
      * @param jurisdiction for Regulations - where does this regulation apply
      * @param implementationDescription for GovernanceControl - how should this be implemented
-     * @param namePattern for NamingStandardsRule - the pattern used to for new names
+     * @param namePatterns for NamingStandardsRule - the pattern used to for new names
      * @param details for License or Certification - additional details about the definition
      * @param distinguishedName for Security groups - qualified name for LDAP
      * @param additionalProperties additional properties for a definition
@@ -124,7 +124,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                              List<String>        businessImperatives,
                                              String              jurisdiction,
                                              String              implementationDescription,
-                                             String              namePattern,
+                                             List<String>        namePatterns,
                                              String              details,
                                              String              distinguishedName,
                                              Map<String, String> additionalProperties,
@@ -165,7 +165,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               businessImperatives,
                                                                               jurisdiction,
                                                                               implementationDescription,
-                                                                              namePattern,
+                                                                              namePatterns,
                                                                               details,
                                                                               distinguishedName,
                                                                               additionalProperties,
@@ -209,7 +209,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param businessImperatives for the GovernanceStrategy - how does it link to business imperatives
      * @param jurisdiction for Regulations - where does this regulation apply
      * @param implementationDescription for GovernanceControl - how should this be implemented
-     * @param namePattern for NamingStandardsRule - the pattern used to for new names
+     * @param namePatterns for NamingStandardsRule - the pattern used to for new names
      * @param details for License or Certification - additional details about the definition
      * @param distinguishedName for Security groups - qualified name for LDAP
      * @param additionalProperties additional properties for a governance definition
@@ -244,7 +244,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                            List<String>        businessImperatives,
                                            String              jurisdiction,
                                            String              implementationDescription,
-                                           String              namePattern,
+                                           List<String>        namePatterns,
                                            String              details,
                                            String              distinguishedName,
                                            Map<String, String> additionalProperties,
@@ -295,7 +295,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               businessImperatives,
                                                                               jurisdiction,
                                                                               implementationDescription,
-                                                                              namePattern,
+                                                                              namePatterns,
                                                                               details,
                                                                               distinguishedName,
                                                                               additionalProperties,

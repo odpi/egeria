@@ -5,9 +5,6 @@
  *
  * <ul>
  *   <li>
- *       GovernanceDomainInterface - Describes the different focus areas of governance in the organization.
- *   </li>
- *   <li>
  *       GovernanceDefinitionsInterface - Supports the definition of the governance drivers, policies and controls
  *       that define the motivation, goals and implementation approach for the governance program.
  *   </li>

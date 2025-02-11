@@ -189,7 +189,7 @@ public class AssetConverter<B> extends OMFConverter<B>
                             {
                                 if (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_NAME))
+                                                              OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy termProxy = relationship.getEntityTwoProxy();
 

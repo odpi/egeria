@@ -41,8 +41,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     private final GovernanceDefinitionHandler<GovernanceDefinitionGraph>   governanceDefinitionGraphHandler;
     private final CertificationHandler<CertificationTypeElement>           certificationTypeHandler;
     private final LicenseHandler<LicenseTypeElement>                       licenseTypeHandler;
-    private final CollectionHandler<GovernanceDomainSetElement>            governanceDomainSetHandler;
-    private final GovernanceDomainHandler<GovernanceDomainElement>         governanceDomainHandler;
     private final GovernanceMetricHandler<GovernanceMetricElement>         governanceMetricHandler;
     private final GovernanceMetricHandler<GovernanceMetricImplementation>  governanceMetricImplementationHandler;
     private final SubjectAreaHandler<SubjectAreaElement>                   subjectAreaHandler;
@@ -240,20 +238,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                            publishZones,
                                                            auditLog);
 
-            this.governanceDomainHandler = new GovernanceDomainHandler<>(new GovernanceDomainConverter<>(repositoryHelper, serviceName, serverName),
-                                                                         GovernanceDomainElement.class,
-                                                                         serviceName,
-                                                                         serverName,
-                                                                         invalidParameterHandler,
-                                                                         repositoryHandler,
-                                                                         repositoryHelper,
-                                                                         localServerUserId,
-                                                                         securityVerifier,
-                                                                         supportedZones,
-                                                                         defaultZones,
-                                                                         publishZones,
-                                                                         auditLog);
-
             this.governanceMetricHandler = new GovernanceMetricHandler<>(new GovernanceMetricConverter<>(repositoryHelper, serviceName, serverName),
                                                                          GovernanceMetricElement.class,
                                                                          serviceName,
@@ -281,20 +265,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                                                        defaultZones,
                                                                                        publishZones,
                                                                                        auditLog);
-
-            this.governanceDomainSetHandler = new CollectionHandler<>(new GovernanceDomainSetConverter<>(repositoryHelper, serviceName, serverName),
-                                                                      GovernanceDomainSetElement.class,
-                                                                      serviceName,
-                                                                      serverName,
-                                                                      invalidParameterHandler,
-                                                                      repositoryHandler,
-                                                                      repositoryHelper,
-                                                                      localServerUserId,
-                                                                      securityVerifier,
-                                                                      supportedZones,
-                                                                      defaultZones,
-                                                                      publishZones,
-                                                                      auditLog);
 
             this.subjectAreaHandler = new SubjectAreaHandler<>(new SubjectAreaConverter<>(repositoryHelper, serviceName, serverName),
                                                                SubjectAreaElement.class,
@@ -473,16 +443,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the handler for governance domains requests.
-     *
-     * @return handler object
-     */
-    GovernanceDomainHandler<GovernanceDomainElement> getGovernanceDomainHandler()
-    {
-        return governanceDomainHandler;
-    }
-
-    /**
      * Return the handler for governance metrics requests.
      *
      * @return handler object
@@ -501,17 +461,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     GovernanceMetricHandler<GovernanceMetricImplementation> getGovernanceMetricImplementationHandler()
     {
         return governanceMetricImplementationHandler;
-    }
-
-
-    /**
-     * Return the handler for governance domain sets requests.
-     *
-     * @return handler object
-     */
-    CollectionHandler<GovernanceDomainSetElement> getGovernanceDomainSetHandler()
-    {
-        return governanceDomainSetHandler;
     }
 
 

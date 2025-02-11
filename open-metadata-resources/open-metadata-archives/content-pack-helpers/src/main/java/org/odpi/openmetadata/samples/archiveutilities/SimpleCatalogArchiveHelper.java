@@ -2121,50 +2121,6 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a governance domain description entity.
-     *
-     * @param qualifiedName unique name for the governance domain entity
-     * @param domainIdentifier unique identifier of the governance domain
-     * @param displayName display name for the governance domain
-     * @param description description about the governance domain
-     * @param additionalProperties any other properties
-     * @param governanceDomainSetGUID unique identifier of the collection for the domain definitions
-     *
-     * @return unique identifier for the governance domain (governanceDomainGUID)
-     */
-    public String addGovernanceDomainDescription(String               governanceDomainSetGUID,
-                                                 String               qualifiedName,
-                                                 int                  domainIdentifier,
-                                                 String               displayName,
-                                                 String               description,
-                                                 Map<String, String>  additionalProperties)
-    {
-        final String methodName = "addGovernanceDomainDescription";
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
-
-        EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
-                                                               idToGUIDMap.getGUID(qualifiedName),
-                                                               properties,
-                                                               InstanceStatus.ACTIVE,
-                                                               null);
-
-        archiveBuilder.addEntity(newEntity);
-
-        if (governanceDomainSetGUID != null)
-        {
-            addMemberToCollection(governanceDomainSetGUID, newEntity.getGUID(), null);
-        }
-
-        return newEntity.getGUID();
-    }
-
-
-    /**
      * Create a governance definition entity.
      *
      * @param suppliedTypeName type of governance definition to add
@@ -5505,7 +5461,7 @@ public class SimpleCatalogArchiveHelper
 
         if (isSpineObject)
         {
-            Classification  newClassification = archiveHelper.getClassification(OpenMetadataType.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
+            Classification  newClassification = archiveHelper.getClassification(OpenMetadataType.SPINE_OBJECT_CLASSIFICATION.typeName,
                                                                                 null,
                                                                                 InstanceStatus.ACTIVE);
 
@@ -5514,7 +5470,7 @@ public class SimpleCatalogArchiveHelper
 
         if (isSpineAttribute)
         {
-            Classification newClassification = archiveHelper.getClassification(OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+            Classification newClassification = archiveHelper.getClassification(OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION.typeName,
                                                                                null,
                                                                                InstanceStatus.ACTIVE);
 
@@ -5526,7 +5482,7 @@ public class SimpleCatalogArchiveHelper
             InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, contextDescription, methodName);
             classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataProperty.SCOPE.name, contextScope, methodName);
 
-            Classification  newClassification = archiveHelper.getClassification(OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
+            Classification  newClassification = archiveHelper.getClassification(OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION.typeName,
                                                                                 classificationProperties,
                                                                                 InstanceStatus.ACTIVE);
 
@@ -5697,7 +5653,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SYNONYM_RELATIONSHIP_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SYNONYM_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(synonymGUID + "_to_" + termGUID + "_synonym_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -6197,7 +6153,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_IS_A_TYPE_OF_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(specializedTermId + "_to_" + generalizedTermId + "_isatypeof_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -6219,7 +6175,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_HAS_A_RELATIONSHIP_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_HAS_A_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_hasa_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -6242,7 +6198,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RELATED_TERM_RELATIONSHIP_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_related_term_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,

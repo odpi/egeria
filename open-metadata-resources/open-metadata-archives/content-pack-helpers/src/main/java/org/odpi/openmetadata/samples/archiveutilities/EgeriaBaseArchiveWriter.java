@@ -3,16 +3,18 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 
 /**
@@ -36,6 +38,8 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
      * Specific values for initializing TypeDefs
      */
     protected static final String versionName   = "5.3-SNAPSHOT";
+
+    private final Map<String, String> parentValidValueQNameToGUIDMap = new HashMap<>();
 
     protected       OMRSArchiveBuilder      archiveBuilder;
     protected       GovernanceArchiveHelper archiveHelper;
@@ -159,6 +163,73 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
      * Implemented by subclass to add the content.
      */
     public abstract void getArchiveContent();
+
+
+
+    /**
+     * Find or create the parent set for a valid value.
+     *
+     * @param requestedGUID optional guid for the valid value
+     * @param typeName name of the type (can be null)
+     * @param propertyName name of the property (can be null)
+     * @param mapName name of the mapName (can be null)
+     * @return unique identifier (guid) of the parent set
+     */
+    protected String getParentSet(String requestedGUID,
+                                  String typeName,
+                                  String propertyName,
+                                  String mapName)
+    {
+        final String parentDescription = "Organizing set for valid metadata values";
+
+        String parentQualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, null);
+        String parentSetGUID = parentValidValueQNameToGUIDMap.get(parentQualifiedName);
+
+        if (parentSetGUID == null)
+        {
+            String grandParentSetGUID = null;
+            String parentDisplayName = parentQualifiedName.substring(26);
+
+            if (mapName != null)
+            {
+                grandParentSetGUID = getParentSet(null, typeName, propertyName, null);
+            }
+            else if (propertyName != null)
+            {
+                grandParentSetGUID = getParentSet(null, typeName, null, null);
+            }
+            else if (typeName != null)
+            {
+                grandParentSetGUID = getParentSet(null, null, null, null);
+            }
+
+            parentSetGUID =  archiveHelper.addValidValue(requestedGUID,
+                                                         grandParentSetGUID,
+                                                         grandParentSetGUID,
+                                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                         parentQualifiedName,
+                                                         parentDisplayName,
+                                                         parentDescription,
+                                                         constructValidValueCategory(typeName, propertyName, mapName),
+                                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                         null,
+                                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         null);
+
+            parentValidValueQNameToGUIDMap.put(parentQualifiedName, parentSetGUID);
+
+            return parentSetGUID;
+        }
+        else
+        {
+            return parentSetGUID;
+        }
+    }
 
 
     /**

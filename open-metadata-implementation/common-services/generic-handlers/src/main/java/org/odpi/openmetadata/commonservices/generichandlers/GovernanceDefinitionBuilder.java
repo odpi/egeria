@@ -29,7 +29,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
     private List<String> businessImperatives       = null;
     private String       jurisdiction              = null;
     private String       implementationDescription = null;
-    private String       namePattern               = null;
+    private List<String> namePatterns              = null;
     private String       details                   = null;
     private String       distinguishedName         = null;
 
@@ -50,7 +50,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
      * @param businessImperatives for the GovernanceStrategy - how does it link to business imperatives
      * @param jurisdiction for Regulations - where does this regulation apply
      * @param implementationDescription for GovernanceControl - how should this be implemented
-     * @param namePattern for NamingStandardsRule - the pattern used to for new names
+     * @param namePatterns for NamingStandardsRule - the patterns used to for new names
      * @param details for License or Certification - additional details about the definition
      * @param distinguishedName for Security groups - qualified name for LDAP
      * @param additionalProperties additional properties for a governance definition
@@ -74,7 +74,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
                                 List<String>         businessImperatives,
                                 String               jurisdiction,
                                 String               implementationDescription,
-                                String               namePattern,
+                                List<String> namePatterns,
                                 String               details,
                                 String               distinguishedName,
                                 Map<String, String>  additionalProperties,
@@ -106,8 +106,8 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
         this.businessImperatives = businessImperatives;
         this.jurisdiction = jurisdiction;
         this.implementationDescription = implementationDescription;
-        this.namePattern = namePattern;
-        this.details = details;
+        this.namePatterns              = namePatterns;
+        this.details                   = details;
         this.distinguishedName = distinguishedName;
     }
 
@@ -252,11 +252,11 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
                                                                   implementationDescription,
                                                                   methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataProperty.NAME_PATTERN.name,
-                                                                  namePattern,
-                                                                  methodName);
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataProperty.NAME_PATTERNS.name,
+                                                                       namePatterns,
+                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

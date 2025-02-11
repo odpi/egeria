@@ -2706,6 +2706,14 @@ public enum OpenMetadataType
                                         "1e2296b4-f7c5-45d0-9fa4-de5f27e68bef",
                                         "Identifies that this glossary term describes an activity."),
 
+    /**
+     * Identifies that this glossary term describes an abstract concept.
+     */
+    ABSTRACT_CONCEPT_CLASSIFICATION("9d725a07-4abf-4939-a268-419d200b69c2",
+                                    "AbstractConcept",
+                                    OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
+                                    "a47a2a76-9212-47fd-ae4a-a8043eb5c417",
+                                    "Identifies that this glossary term describes an abstract concept."),
 
     /**
      * Characterizations of a collection of data values.
@@ -2717,6 +2725,87 @@ public enum OpenMetadataType
                                         "Characterizations of a collection of data values."),
 
     /**
+     * Identifies that this glossary term describes a data value.
+     */
+    DATA_VALUE_CLASSIFICATION("ab253e31-3d8a-45a7-8592-24329a189b9e",
+                              "DataValue",
+                              OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
+                              "1f9cefee-9987-437c-accf-0786821d6c27",
+                              "Identifies that this glossary term describes a data value."),
+
+    /**
+     * Link between similar glossary terms.
+     */
+    RELATED_TERM_RELATIONSHIP("b1161696-e563-4cf9-9fd9-c0c76e47d063",
+                              "RelatedTerm",
+                              OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                              "6721cfb0-d45a-4cd4-bcb7-ac350b756535",
+                              "Link between similar glossary terms."),
+
+    /**
+     * Link between glossary terms that have the same meaning.
+     */
+    SYNONYM_RELATIONSHIP("74f4094d-dba2-4ad9-874e-d422b69947e2",
+                         "Synonym",
+                         OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                         "3b30e0bb-8eb4-4c50-bd51-f0c2d8981d2f",
+                         "Link between glossary terms that have the same meaning."),
+
+    /**
+     * Link between glossary terms that have the opposite meaning.
+     */
+    ANTONYM_RELATIONSHIP("ea5e126a-a8fa-4a43-bcfa-309a98aa0185",
+                         "Antonym",
+                         OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                         "8b041d5f-062b-4107-995e-e13a90025c4e",
+                         "Link between glossary terms that have the opposite meaning."),
+
+    /**
+     * Link to an alternative term that the organization prefers to use.
+     */
+    PREFERRED_TERM_RELATIONSHIP("8ac8f9de-9cdd-4103-8a33-4cb204b78c2a",
+                                "PreferredTerm",
+                                OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                                "c75dc30a-165c-4c87-99f2-424fe4f1cc36",
+                                "Link to an alternative term that the organization prefers to use."),
+
+    /**
+     * Link to a glossary term that is replacing an obsolete glossary term.
+     */
+    REPLACEMENT_TERM_RELATIONSHIP("3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed",
+                                  "ReplacementTerm",
+                                  OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                                  "0f75a805-bce8-4f98-8225-c6c4321eaf50",
+                                  "Link to a glossary term that is replacing an obsolete glossary term."),
+
+    /**
+     * Link between glossary terms that provide different natural language translation of the same concept.
+     */
+    TRANSLATION_RELATIONSHIP("6ae42e95-efc5-4256-bfa8-801140a29d2a",
+                             "Translation",
+                             OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                             "21eacf36-0434-4006-8a67-da484c2f8859",
+                             "Link between glossary terms that provide different natural language translation of the same concept."),
+
+    /**
+     * Link between a more general glossary term and a more specific definition.
+     */
+    ISA_RELATIONSHIP("50fab7c7-68bc-452f-b8eb-ec76829cac85",
+                     "ISARelationship",
+                     OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                     "603144c6-03bc-4ce1-b557-7161e4807161",
+                     "Link between a more general glossary term and a more specific definition."),
+
+    /**
+     * Link between glossary terms where one defines one of the data values for the another.
+     */
+    VALID_VALUE_RELATIONSHIP("707a156b-e579-4482-89a5-de5889da1971",
+                             "ValidValue",
+                             OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
+                             "376f795e-96f9-4e21-a673-179e198eab64",
+                             "Link between glossary terms where one defines one of the data values for the another."),
+
+    /**
      * Link between glossary terms where on describes the context where the other one is valid to use.
      */
     USED_IN_CONTEXT_RELATIONSHIP("2dc524d2-e29f-4186-9081-72ea956c75de",
@@ -2724,6 +2813,15 @@ public enum OpenMetadataType
                                  OpenMetadataWikiPages.MODEL_0360_CONTEXTS,
                                  "27226e7d-c7b3-4eaf-b1ff-bf38445a857f",
                                  "Link between glossary terms where on describes the context where the other one is valid to use."),
+
+    /**
+     * Identifies a glossary term that describes a context where processing or decisions occur.
+     */
+    CONTEXT_DEFINITION_CLASSIFICATION("54f9f41a-3871-4650-825d-59a41de01330",
+                                      "ContextDefinition",
+                                      OpenMetadataWikiPages.MODEL_0360_CONTEXTS,
+                                      "1d798f81-3d29-465b-9dc3-aaca6aa5b3f7",
+                                      "Identifies a glossary term that describes a context where processing or decisions occur."),
 
     /**
      * Links a glossary term to another element such as an asset or schema element to define its meaning.
@@ -2742,6 +2840,51 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
                                    "b7e9f8a2-de9b-4d1f-a5d1-61b0dfd22df9",
                                    "Defines an inheritance relationship between two spine objects."),
+
+    /**
+     * Defines the relationship between a spine object and a spine attribute.
+     */
+    TERM_HAS_A_RELATIONSHIP("d67f16d1-5348-419e-ba38-b0bb6fe4ad6c",
+                            "TermHASARelationship",
+                            OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
+                            "53e39548-233c-425e-a911-4e6d0337cc18",
+                            "Defines the relationship between a spine object and a spine attribute."),
+
+    /**
+     * Defines the relationship between a spine attribute and its type.
+     */
+   TERM_TYPED_BY_RELATIONSHIP("669e8aa4-c671-4ee7-8d03-f37d09b9d006",
+                              "TermTYPEDBYRelationship",
+                              OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
+                              "cf760a39-8f7a-4aad-957c-f16d64b0e3e9",
+                              "Defines the relationship between a spine attribute and its type."),
+
+    /**
+     * Identifies a glossary term that describes a type of spine object.
+     */
+    SPINE_OBJECT_CLASSIFICATION("a41ee152-de1e-4533-8535-2f8b37897cac",
+                                "SpineObject",
+                                OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
+                                "9f122fa4-3bf0-4169-a32b-5de5388e011d",
+                                "Identifies a glossary term that describes a type of spine object."),
+
+    /**
+     * Identifies a glossary term that describes an attribute of a spine object.
+     */
+    SPINE_ATTRIBUTE_CLASSIFICATION("ccb749ba-34ec-4f71-8755-4d8b383c34c3",
+                                   "SpineAttribute",
+                                   OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
+                                   "3ef02bfa-1963-458a-95f0-674ec2684d37",
+                                   "Identifies a glossary term that describes an attribute of a spine object."),
+
+    /**
+     * Identifies a glossary term that describes an attribute that can be used to identify an instance.
+     */
+    OBJECT_IDENTIFIER_CLASSIFICATION("3d1e4389-27de-44fa-8df4-d57bfaf809ea",
+                                     "ObjectIdentifier",
+                                     OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
+                                     "b5de9a9d-f4d9-4248-ba2f-24bcb817a6d2",
+                                     "Identifies a glossary term that describes an attribute that can be used to identify an instance."),
 
     /**
      * Defines a glossary term that is developed through a controlled workflow.
@@ -2770,6 +2913,34 @@ public enum OpenMetadataType
                                     "cc0e0ed5-70cb-4228-abff-eddd93dd15c6",
                                     "A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary."),
 
+    /**
+     * Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary.
+     */
+    GLOSSARY_PROJECT_CLASSIFICATION("43be51a9-2d19-4044-b399-3ba36af10929",
+                                    "GlossaryProject",
+                                    OpenMetadataWikiPages.MODEL_0390_GLOSSARY_PROJECTS,
+                                    "f2503fdb-6386-4497-8140-663e985e0f2d",
+                                    "Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary."),
+
+    /**
+     * Identifies a glossary term that is being used to supplement asset descriptions.
+     */
+    ELEMENT_SUPPLEMENT_CLASSIFICATION("58520015-ce6e-47b7-a1fd-864030544819",
+                                      "ElementSupplement",
+                                      OpenMetadataWikiPages.MODEL_0395_SUPPLEMENTARY_PROPERTIES,
+                                      "559c4dd2-0d75-4246-8084-329f08916be8",
+                                      "Identifies a glossary term that is being used to supplement asset descriptions."),
+
+    /**
+     * Provides additional descriptive properties to augment technical metadata extracted from a third party technology.
+     */
+    SUPPLEMENTARY_PROPERTIES_RELATIONSHIP("2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd",
+                                          "SupplementaryProperties",
+                                          OpenMetadataWikiPages.MODEL_0395_SUPPLEMENTARY_PROPERTIES,
+                                          "812387e7-de78-47b4-bcbd-c5886dbcbe25",
+                                          "Provides additional descriptive properties to augment technical metadata extracted from a third party technology."),
+
+
     /* ============================================================================================================================*/
     /* Area 4 - Governance                                                                                                         */
     /* ============================================================================================================================*/
@@ -2782,6 +2953,96 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
                           "8f4f3146-0c21-4754-b2d3-41e04c519226",
                           "Defines an aspect of the governance program."),
+
+    /**
+     * Person responsible for a governance domain.
+     */
+    GOVERNANCE_OFFICER("578a3510-9ad3-45fe-8ada-e4e9572c37c8",
+                       "GovernanceOfficer",
+                       OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
+                       "be460431-d42b-40a8-a4dd-616082c51c88",
+                       "Person responsible for a governance domain."),
+
+    /**
+     * Defines a reason for having the governance program.
+     */
+    GOVERNANCE_DRIVER("c403c109-7b6b-48cd-8eee-df445b258b33",
+                      "GovernanceDriver",
+                      OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
+                      "7dec9d4e-109c-42bc-b33d-5d3656dafccc",
+                      "Defines a reason for having the governance program."),
+
+    /**
+     * Defines how the governance program and the supporting capabilities are supporting the business strategy.
+     */
+    GOVERNANCE_STRATEGY("3c34f121-07a6-4e95-a07d-9b0ef17b7bbf",
+                        "GovernanceStrategy",
+                        OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
+                        "69c22d42-eed6-4b92-8b07-9a8d1ed916eb",
+                        "Defines how the governance program and the supporting capabilities are supporting the business strategy."),
+
+    /**
+     * Identifies a regulation related to data that must be supported.
+     */
+    REGULATION("e3c4293d-8846-4500-b0c0-197d73aba8b0",
+               "Regulation",
+               OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
+               "4c00dcc9-cf73-4c1f-bd7c-2f365bfb5aec",
+               "Identifies a regulation related to data that must be supported."),
+
+    /**
+     * Defines a goal or outcome expected from the organization.
+     */
+    GOVERNANCE_POLICY("a7defa41-9cfa-4be5-9059-359022bb016d",
+                      "GovernancePolicy",
+                      OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+                      "411dbd24-cb9a-4137-9f7a-625704722e7c",
+                      "Defines a goal or outcome expected from the organization."),
+
+    /**
+     * Defines a principle related to how data is managed or used that the organization should ensure remains true.
+     */
+    GOVERNANCE_PRINCIPLE("3b7d1325-ec2c-44cb-8db0-ce207beb78cf",
+                         "GovernancePrinciple",
+                         OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+                         "dc33a7e5-103d-49b0-92c6-8070d2781b88",
+                         "Defines a principle related to how data is managed or used that the organization should ensure remains true."),
+
+    /**
+     * Defines a capability, rule or action that is required by a regulation or external party.
+     */
+    GOVERNANCE_OBLIGATION("0cec20d3-aa29-41b7-96ea-1c544ed32537",
+                          "GovernanceObligation",
+                          OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+                          "78a2e0a8-4bc9-4e45-9eed-945e5753f303",
+                          "Defines a capability, rule or action that is required by a regulation or external party."),
+
+    /**
+     * Defines a preferred approach to managing or using data.
+     */
+    GOVERNANCE_APPROACH("2d03ec9d-bd6b-4be9-8e17-95a7ecdbaa67",
+                        "GovernanceApproach",
+                        OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+                        "9417c20e-e440-40a6-8265-d39a77d7916b",
+                        "Defines a preferred approach to managing or using data."),
+
+    /**
+     * Links related governance policies together.
+     */
+    GOVERNANCE_POLICY_LINK_RELATIONSHIP("0c42c999-4cac-4da4-afab-0e381f3a818e",
+                                        "GovernancePolicyLink",
+                                        OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+                                        "3999b68b-9e66-425c-b1a3-0c76b2196c47",
+                                        "Links related governance policies together."),
+
+    /**
+     * Links a governance policy to a governance driver that it is supporting.
+     */
+    GOVERNANCE_RESPONSE_RELATIONSHIP("8845990e-7fd9-4b79-a19d-6c4730dadd6b",
+                                     "GovernanceResponse",
+                                     OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
+                                     "269e802d-bc79-4211-a4f4-3a68d6063097",
+                                     "Links a governance policy to a governance driver that it is supporting."),
 
     /**
      * Identifies that a project is rolling out capability to support the governance program.
@@ -2820,6 +3081,23 @@ public enum OpenMetadataType
                        "ae48c751-4574-451e-9999-703259507819",
                        "A governance control that is implemented using organization structure, training, roles manual procedures and reviews."),
 
+    /**
+     * A link between a governance control and the governance policy it is implementing.
+     */
+    GOVERNANCE_IMPLEMENTATION_RELATIONSHIP("787eaf46-7cf2-4096-8d6e-671a0819d57e",
+                                           "GovernanceImplementation",
+                                           OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                                           "3fa34b67-02a7-429c-bde5-9b7a3e8dce28",
+                                           "A link between a governance control and the governance policy it is implementing."),
+
+    /**
+     * A link between two related governance controls.
+     */
+    GOVERNANCE_CONTROL_LINK_RELATIONSHIP("806933fb-7925-439b-9876-922a960d2ba1",
+                                         "GovernanceControlLink",
+                                         OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                                         "2a19beb6-4c30-4f1c-a7ea-75f7f47e37b1",
+                                         "A link between two related governance controls."),
 
     /**
      * Defines the level of confidentiality of related data items.
@@ -2893,8 +3171,188 @@ public enum OpenMetadataType
     ASSOCIATED_GROUP_RELATIONSHIP("e47a19d0-7e12-4cf7-9ad7-50856da7faa2",
                                   "AssociatedGroup",
                                   OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
-                                  "",
+                                  "de70d92a-ac47-4221-914b-bdb52bf1a161",
                                   "Links a security access control to a security group."),
+
+    /**
+     * Defines the asset's membership of the governance zones.
+     */
+    ASSET_ZONE_MEMBERSHIP_CLASSIFICATION("a1c17a86-9fd3-40ca-bb9b-fe83c6981deb",
+                                         "AssetZoneMembership",
+                                         OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
+                                         "3c2d8924-84d7-4b4f-9422-71cdda15865d",
+                                         "Defines the asset's membership of the governance zones."),
+
+    /**
+     * Defines a collection of assets that are suitable for a particular usage or are governed by a particular process.
+     */
+    GOVERNANCE_ZONE("290a192b-42a7-449a-935a-269ca62cfdac",
+                    "GovernanceZone",
+                    OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
+                    "d748483f-7f63-46c2-ba08-765c0b1f82e4",
+                    "Defines a collection of assets that are suitable for a particular usage or are governed by a particular process."),
+
+    /**
+     * Creates a controlling hierarchy for governance zones.
+     */
+    ZONE_HIERARCHY_RELATIONSHIP("ee6cf469-cb4d-4c3b-a4c7-e2da1236d139",
+                                "ZoneHierarchy",
+                                OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
+                                "d1fb3e10-53ec-49b9-99f9-b786450bf76d",
+                                "Creates a controlling hierarchy for governance zones."),
+
+    /**
+     * Technical control expressed as a logic expression.
+     */
+    GOVERNANCE_RULE("8f954380-12ce-4a2d-97c6-9ebe250fecf8",
+                    "GovernanceRule",
+                    OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                    "d9ed4134-cad6-4d47-9613-68325fca3430",
+                    "Technical control expressed as a logic expression."),
+
+    /**
+     * Technical control expressed as a sequence of tasks.
+     */
+    GOVERNANCE_PROCESS("b68b5d9d-6b79-4f3a-887f-ec0f81c54aea",
+                       "GovernanceProcess",
+                       OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                       "2e184032-436b-48ff-b5a2-93cc1bec250b",
+                       "Technical control expressed as a sequence of tasks."),
+
+    /**
+     * Identifies the implementation of a governance rule.
+     */
+    GOVERNANCE_RULE_IMPLEMENTATION_RELATIONSHIP("e701a5c8-c1ba-4b75-8257-e0a6569eda48",
+                                                "GovernanceRuleImplementation",
+                                                OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                                                "1135c2b6-1c7c-43c6-8043-08ad8f90db5e",
+                                                "Identifies the implementation of a governance rule."),
+
+    /**
+     * Identifies the implementation of a governance process.
+     */
+    GOVERNANCE_PROCESS_IMPLEMENTATION_RELATIONSHIP("a5a7b08a-73fd-4026-a9dd-d0fe55bea8a4",
+                                                   "GovernanceProcessImplementation",
+                                                   OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                                                   "a431983a-3e94-4da7-ba4f-b53b75a94461",
+                                                   "Identifies the implementation of a governance process."),
+
+    /**
+     * Describes a parsing rule used to create compliant names.
+     */
+    NAMING_STANDARD_RULE("52505b06-98a5-481f-8a32-db9b02afabfc",
+                         "NamingStandardRule",
+                         OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                         "bf547932-cfaf-483a-a3c9-facac1aa50e6",
+                         "Describes a parsing rule used to create compliant names."),
+
+    /**
+     * Describes a collection of related naming standard rules.
+     */
+    NAMING_STANDARD_RULE_SET("ba70f506-1f81-4890-bb4f-1cb1d99c939e",
+                             "NamingStandardRuleSet",
+                             OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                             "44d13d19-e98d-4b8b-a1cb-1a540afe69e6",
+                             "Describes a collection of related naming standard rules."),
+
+    /**
+     * Describes a primary noun, used in naming standards.
+     */
+    PRIME_WORD_CLASSIFICATION("3ea1ea66-8923-4662-8628-0bacef3e9c5f",
+                              "PrimeWord",
+                              OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                              "52c3d97c-04d6-4cd7-bfce-5f4f68cbf122",
+                              "Describes a primary noun, used in naming standards."),
+
+    /**
+     * Describes classifying or grouping noun, used in naming standards.
+     */
+    CLASS_WORD_CLASSIFICATION("feac4bd9-37d9-4437-82f6-618ce3e2793e",
+                              "ClassWord",
+                              OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                              "3a56cfb6-db5c-4201-ba69-d33a2e016a04",
+                              "Describes classifying or grouping noun, used in naming standards."),
+
+    /**
+     * Describes modifying noun or adverb, used in naming standards.
+     */
+    MODIFIER_CLASSIFICATION("f662c95a-ae3f-4f71-b442-78ab70f2ee47",
+                            "Modifier",
+                            OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                            "f0c88ead-509d-4f78-b5ce-04416798ec5e",
+                            "Describes modifying noun or adverb, used in naming standards."),
+
+    /**
+     * Describes a specific organization.
+     */
+    ORGANIZATION("50a61105-35be-4ee3-8b99-bdd958ed0685",
+                 "Organization",
+                 OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                 "1f885654-26a4-43bd-bb7b-62fbd8acdae9",
+                 "Describes a specific organization."),
+
+    /**
+     * Describes a function, capability or skill set.
+     */
+    BUSINESS_CAPABILITY("7cc6bcb2-b573-4719-9412-cf6c3f4bbb15",
+                        "BusinessCapability",
+                        OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                        "102f73be-7baf-4a10-997e-41e6eb42d66b",
+                        "Describes a function, capability or skill set."),
+
+    /**
+     * Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.
+     */
+    GOVERNANCE_RESPONSIBILITY("89a76b24-deb8-45bf-9304-a578a610326f",
+                              "GovernanceResponsibility",
+                              OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                              "c6e947b0-13a6-4e2e-a410-17c0794db5a8",
+                              "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver."),
+
+    /**
+     * Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.
+     */
+    GOVERNANCE_PROCEDURE("69055d10-51dc-4c2b-b21f-d76fad3f8ef3",
+                         "GovernanceProcedure",
+                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                         "09d402ba-d4bc-40f2-bdff-eba8ed7f79f1",
+                         "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver."),
+
+    /**
+     * Describes the origin of an asset.
+     */
+    ASSET_ORIGIN_CLASSIFICATION("e530c566-03d2-470a-be69-6f52bfbd5fb7",
+                                "AssetOrigin",
+                                OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                                "1298ba80-f745-4878-b16c-181a7c25db09",
+                                "Describes the origin of an asset."),
+
+    /**
+     * Describes the relationship between a team and the business capabilities it supports.
+     */
+    ORGANIZATION_CAPABILITY_RELATIONSHIP("47f0ad39-db77-41b0-b406-36b1598e0ba7",
+                                         "OrganizationalCapability",
+                                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
+                                         "0cf949bc-70cf-4ae1-887a-4738d30c9317",
+                                         "Describes the relationship between a team and the business capabilities it supports."),
+
+    /**
+     * Describes the goals, scope and authority of a project.
+     */
+    PROJECT_CHARTER("f96b5a32-42c1-4a74-8f77-70a81cec783d",
+                    "ProjectCharter",
+                    OpenMetadataWikiPages.MODEL_0442_PROJECT_CHARTER,
+                    "c9b7873e-771e-4d34-a6b7-0f6fe1b9c9e4",
+                    "Describes the goals, scope and authority of a project."),
+
+    /**
+     * Links a Project with its Charter.
+     */
+    PROJECT_CHARTER_LINK_RELATIONSHIP("f081808d-545a-41cb-a9aa-c4f074a16c78",
+                                      "ProjectCharterLink",
+                                      OpenMetadataWikiPages.MODEL_0442_PROJECT_CHARTER,
+                                      "86d5460a-e6b2-415b-965a-f2c52ff2d5e9",
+                                      "Links a Project with its Charter."),
 
     /**
      * Who is responsible for making decisions on the management and governance of this element.
@@ -4316,84 +4774,6 @@ public enum OpenMetadataType
         this.description     = description;
     }
 
-
-    /* ============================================================================================================================*/
-    /* Area 3 - Glossary                                                                                                           */
-    /* ============================================================================================================================*/
-
-
-    public static final String RELATED_TERM_RELATIONSHIP_GUID = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
-    public static final String RELATED_TERM_RELATIONSHIP_NAME = "RelatedTerm";
-
-    public static final String SYNONYM_RELATIONSHIP_GUID = "74f4094d-dba2-4ad9-874e-d422b69947e2";
-    public static final String SYNONYM_RELATIONSHIP_NAME = "Synonym";
-
-    public static final String ANTONYM_RELATIONSHIP_GUID = "ea5e126a-a8fa-4a43-bcfa-309a98aa0185";
-    public static final String ANTONYM_RELATIONSHIP_NAME = "Antonym";
-
-    public static final String PREFERRED_TERM_RELATIONSHIP_GUID = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
-    public static final String PREFERRED_TERM_RELATIONSHIP_NAME = "PreferredTerm";
-
-    public static final String REPLACEMENT_TERM_RELATIONSHIP_GUID = "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed";
-    public static final String REPLACEMENT_TERM_RELATIONSHIP_NAME = "ReplacementTerm";
-
-    public static final String TRANSLATION_RELATIONSHIP_GUID = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
-    public static final String TRANSLATION_RELATIONSHIP_NAME = "Translation";
-
-    public static final String ISA_RELATIONSHIP_GUID = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
-    public static final String ISA_RELATIONSHIP_NAME = "ISARelationship";
-
-    public static final String VALID_VALUE_RELATIONSHIP_GUID = "707a156b-e579-4482-89a5-de5889da1971";
-    public static final String VALID_VALUE_RELATIONSHIP_NAME = "ValidValue";
-
-    public static final String USED_IN_CONTEXT_RELATIONSHIP_GUID = "2dc524d2-e29f-4186-9081-72ea956c75de";
-    public static final String USED_IN_CONTEXT_RELATIONSHIP_NAME = "UsedInContext";
-
-
-    public static final String ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID = "9d725a07-4abf-4939-a268-419d200b69c2";
-    public static final String ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME = "AbstractConcept";   /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String DATA_VALUE_CLASSIFICATION_TYPE_GUID = "ab253e31-3d8a-45a7-8592-24329a189b9e";
-    public static final String DATA_VALUE_CLASSIFICATION_TYPE_NAME = "DataValue";   /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID = "54f9f41a-3871-4650-825d-59a41de01330";
-    public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME = "ContextDefinition";   /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String SPINE_OBJECT_CLASSIFICATION_TYPE_GUID = "a41ee152-de1e-4533-8535-2f8b37897cac";
-    public static final String SPINE_OBJECT_CLASSIFICATION_TYPE_NAME = "SpineObject";   /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID = "ccb749ba-34ec-4f71-8755-4d8b383c34c3";
-    public static final String SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME = "SpineAttribute";   /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID = "3d1e4389-27de-44fa-8df4-d57bfaf809ea";
-    public static final String OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME = "ObjectIdentifier";   /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String TERM_HAS_A_RELATIONSHIP_GUID = "d67f16d1-5348-419e-ba38-b0bb6fe4ad6c";
-    public static final String TERM_HAS_A_RELATIONSHIP_NAME = "TermHASARelationship";
-
-    public static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_GUID = "71f83296-2007-46a5-a4c7-919a7c4a12f5";
-    public static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATYPEOFRelationship";
-
-    public static final String TERM_TYPED_BY_RELATIONSHIP_GUID = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
-    public static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
-
-
-    public static final String USER_DEFINED_STATUS_PROPERTY_NAME   = "userDefinedStatus";
-
-
-    public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID = "58520015-ce6e-47b7-a1fd-864030544819";
-    public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME = "ElementSupplement";   /* from Area 3 */
-    /* Referencable */
-
-    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_GUID = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
-    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME = "SupplementaryProperties";  /* from Area 3 */
-    /* End1 = Referenceable; End 2 = GlossaryTerm */
 
 
     /* ============================================================================================================================*/

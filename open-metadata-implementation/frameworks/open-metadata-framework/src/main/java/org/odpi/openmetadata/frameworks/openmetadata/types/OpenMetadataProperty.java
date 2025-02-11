@@ -203,6 +203,11 @@ public enum OpenMetadataProperty
     ZONE_MEMBERSHIP("zoneMembership", DataType.ARRAY_STRING.getName(), "The list of governance zones that this asset belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
 
     /**
+     * Definition of the types of assets that belong in this zone.
+     */
+    CRITERIA("criteria", DataType.STRING.getName(), "Definition of the types of assets that belong in this zone.", "Incoming data that has not been checked.", "3e49feee-624f-41ab-beda-2f727edda93e"),
+
+    /**
      * Formula that describes the behaviour of the element.  May include placeholders for queryIds
      */
     FORMULA("formula", DataType.STRING.getName(), "Formula that describes the behaviour of the element.  May include placeholders for queryIds.", null, "0b35fe46-1c16-4af7-b7b1-ea6951718dc7"),
@@ -451,12 +456,12 @@ public enum OpenMetadataProperty
     /**
      * A regular expression that characterizes the values in the data field.
      */
-    DATA_PATTERN("dataPattern", DataType.ARRAY_STRING.getName(), "A regular expression that characterizes the values in the data field.", null, "bea19c2c-7a41-464d-852a-8fbfb821c208"),
+    DATA_PATTERNS("dataPatterns", DataType.ARRAY_STRING.getName(), "Regular expression that characterizes the values in the data field.", null, "bea19c2c-7a41-464d-852a-8fbfb821c208"),
 
     /**
      * A regular expression that characterizes the name of the data field.
      */
-    NAME_PATTERN("namePattern", DataType.ARRAY_STRING.getName(), "A regular expression that characterizes the name of the data field.", null, "e5cf2938-d1c9-4a09-bf40-76d0431b6c1a"),
+    NAME_PATTERNS("namePatterns", DataType.ARRAY_STRING.getName(), "Regular expressions that characterizes the name of the data field.", null, "e5cf2938-d1c9-4a09-bf40-76d0431b6c1a"),
 
     /**
      * The value of a literal data type.
@@ -554,6 +559,16 @@ public enum OpenMetadataProperty
     USER_DEFINED_STATUS("userDefinedStatus", DataType.STRING.getName(), "Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.", null, "ff8797aa-8e7c-414a-8987-ca56ff77ad21"),
 
     /**
+     * Issuing authority for the regulation.
+     */
+    JURISDICTION("jurisdiction", DataType.STRING.getName(), "Issuing authority for the regulation.", "European Union", "d90cffe0-d440-401e-befc-39aaddec46a4"),
+
+    /**
+     * Describes the reasoning for defining the relationship.
+     */
+    RATIONALE("rationale", DataType.STRING.getName(), "Describes the reasoning for defining the relationship.", null, "a724c4e5-b664-4841-87f2-b3df0fa84668"),
+
+    /**
      * User identifier for the steward performing the review.
      */
     STEWARD("steward", DataType.STRING.getName(), "Unique identifier for the steward performing the action.", null, "6777fa1e-3289-4896-a032-1097b4ad78b2"),
@@ -572,6 +587,21 @@ public enum OpenMetadataProperty
      * Notes on why decision were made relating to this element, and other useful information.
      */
     NOTES("notes", DataType.STRING.getName(), "Notes on why decision were made relating to this element, and other useful information.", null, "577281c3-82f8-4c1d-ad95-04ef5919e57c"),
+
+    /**
+     * Related entity used to determine the retention period.
+     */
+    ASSOCIATED_GUID("associatedGUID", DataType.STRING.getName(), "Related entity used to determine the retention period.", "57261de3-37ed-4fb3-80c9-284501b27416", "ef9fb957-1409-4aae-bbcc-ca9dbef92dc5"),
+
+    /**
+     * Date when archiving can take place.
+     */
+    ARCHIVE_AFTER("archiveAfter", DataType.DATE.getName(), "Date when archiving can take place.", null, "dd421eb2-eb6c-4ee4-b8ed-920228581ccd"),
+
+    /**
+     * Date when delete can take place.
+     */
+    DELETE_AFTER("deleteAfter", DataType.DATE.getName(), "Date when delete can take place.", null, "cf157cd4-491c-429a-80a6-faf76b91128b"),
 
     /**
      * Notes provided by the steward.
@@ -1086,6 +1116,11 @@ public enum OpenMetadataProperty
     PROPERTY_TYPE("propertyType", DataType.STRING.getName(), "The type of property that the valid value represents.", "producedGuard", "f9f2eba1-943a-4611-8bdd-647c1645b036"),
 
     /**
+     * Short description of type of the project.
+     */
+    PROJECT_TYPE("projectType", DataType.STRING.getName(), "Short description of type of the project.", null, "f11748b8-1a17-419b-b1d5-c3db8ffef151"),
+
+    /**
      * The phase in the lifecycle of the project.
      */
     PROJECT_PHASE("projectPhase", DataType.STRING.getName(), "The phase in the lifecycle of the project.", "Plan", "9178fece-e112-4250-9c08-5c336bd93f78"),
@@ -1422,9 +1457,29 @@ public enum OpenMetadataProperty
     MEDIA_ID("mediaId", DataType.STRING.getName(), "Local identifier for the media, from the perspective of the referencee.  For example. it may be the citation number in the list of references", "COLT-2", "1f738dc4-2df1-4177-919a-44b91b3ed22e"),
 
     /**
-     * Name of the organization that this external source is from.
+     * Identifier of the organization that this resource is from.
      */
-    ORGANIZATION("organization", DataType.STRING.getName(), "Name of the organization that this external source is from.", null, "a837b6b5-ca30-4662-a643-5477d793bd29"),
+    ORGANIZATION("organization", DataType.STRING.getName(), "Identifier of the organization that this resource is from.", null, "a837b6b5-ca30-4662-a643-5477d793bd29"),
+
+    /**
+     * Name of the property from the element used to identify the organization property.
+     */
+    ORGANIZATION_PROPERTY_NAME("organizationPropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the organization property.", null, "6c59889d-c8b2-4154-812a-cdc6f27f5594"),
+
+    /**
+     * Identifier of the business capability where this asset originated from.
+     */
+    BUSINESS_CAPABILITY("businessCapability", DataType.STRING.getName(), "Identifier of the business capability where this resource originated from.", null, "586b18dd-e205-43bd-9fb2-3265384bd125"),
+
+    /**
+     * Name of the property from the element used to identify the businessCapability property.
+     */
+    BUSINESS_CAPABILITY_PROPERTY_NAME("businessCapabilityPropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the businessCapability property.", null, "0dbfe481-106f-4092-8fca-11bf19895af9"),
+
+    /**
+     * Descriptive labels describing origin of the resource.
+     */
+    OTHER_ORIGIN_VALUES("otherOriginValues", DataType.MAP_STRING_STRING.getName(), "Descriptive labels describing origin of the resource.", null, "5982223c-72fb-4ceb-b060-298399d398d9"),
 
     /**
      * Network address used to connect to the endpoint.
@@ -1761,9 +1816,9 @@ public enum OpenMetadataProperty
     COMPLETION_TIME("completionTime", DataType.DATE.getName(), "When the requested action was completed.", null, "9359f36f-ed11-4c33-80c3-e02941fee6b5"),
 
     /**
-     * Purpose of the community.
+     * The high-level goal of the activity.
      */
-    MISSION("mission", DataType.STRING.getName(), "Purpose of the community.", "To share new data science techniques.", "cb870681-de85-406b-bea6-6d138777cfe9"),
+    MISSION("mission", DataType.STRING.getName(), "The high-level goal of the activity.", "To share new data science techniques.", "cb870681-de85-406b-bea6-6d138777cfe9"),
 
     /**
      * Type of community membership.
@@ -2295,6 +2350,13 @@ public enum OpenMetadataProperty
      * Type of query used to extract data.
      */
     QUERY_TYPE("queryType", DataType.STRING.getName(), "Type of query used to extract data.", "SQL", "58d5990e-8afa-49fd-8364-db53ccc1dfd8"),
+
+    /**
+     * Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.
+     */
+    DOMAIN_IDENTIFIER("domainIdentifier", DataType.INT.getName(), "Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.", "0", "f76e01aa-6f89-4214-b79f-f2c2a87d261b"),
+
+
     ;
 
 

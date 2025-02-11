@@ -161,7 +161,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              resourceUse.getDescription(),
                                              resourceUse.getCategory(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             "string",
+                                             DataType.STRING.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              resourceUse.getResourceUse(),
                                              false,
@@ -503,7 +503,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       GlossaryTermRelationshipStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_TERM_RELATIONSHIP_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                       GlossaryTermRelationshipStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));

@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum OMAGConnectorAuditCode implements AuditLogMessageSet
 {
     /**
-     * EGERIA-CONNECTOR-0001 - The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("OMAG-CONNECTORS-0001",
                          AuditLogRecordSeverityLevel.ERROR,
