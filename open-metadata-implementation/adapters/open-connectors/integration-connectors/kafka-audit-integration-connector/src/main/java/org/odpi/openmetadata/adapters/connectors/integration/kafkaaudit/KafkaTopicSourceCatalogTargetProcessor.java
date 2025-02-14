@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -22,18 +23,24 @@ public class KafkaTopicSourceCatalogTargetProcessor extends CatalogTargetProcess
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      * @param listener listener
+     * @throws ConnectorCheckedException problem connecting to topic
      */
     public KafkaTopicSourceCatalogTargetProcessor(CatalogTarget             template,
                                                   Connector                 connectorToTarget,
                                                   String                    connectorName,
                                                   AuditLog                  auditLog,
-                                                  OpenMetadataTopicListener listener)
+                                                  OpenMetadataTopicListener listener) throws ConnectorCheckedException
     {
         super(template, connectorToTarget, connectorName, auditLog);
 
         if (super.getCatalogTargetConnector() instanceof OpenMetadataTopicConnector topicConnector)
         {
             topicConnector.registerListener(listener);
+
+            if (!topicConnector.isActive())
+            {
+                topicConnector.start();
+            }
         }
     }
 

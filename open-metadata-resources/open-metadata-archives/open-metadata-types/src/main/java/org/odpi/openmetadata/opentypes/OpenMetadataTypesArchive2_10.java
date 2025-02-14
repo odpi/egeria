@@ -563,9 +563,7 @@ public class OpenMetadataTypesArchive2_10
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceRole";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ROLE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -607,13 +605,11 @@ public class OpenMetadataTypesArchive2_10
          */
         final String typeName = "GovernanceOfficer";
 
-        final String superTypeName = "GovernanceRole";
-
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName));
 
         /*
          * Build the attributes
@@ -652,11 +648,9 @@ public class OpenMetadataTypesArchive2_10
         final String description     = "An ownership role for a component - typically part of an asset.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
 
@@ -676,11 +670,9 @@ public class OpenMetadataTypesArchive2_10
         final String description     = "An ownership role for a particular type of data.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
 

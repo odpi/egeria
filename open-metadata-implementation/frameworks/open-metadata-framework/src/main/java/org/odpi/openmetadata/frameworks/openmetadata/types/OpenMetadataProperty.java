@@ -2356,6 +2356,15 @@ public enum OpenMetadataProperty
      */
     DOMAIN_IDENTIFIER("domainIdentifier", DataType.INT.getName(), "Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.", "0", "f76e01aa-6f89-4214-b79f-f2c2a87d261b"),
 
+    /**
+     * Format or description of the measurements captured for this metric.
+     */
+    MEASUREMENT("measurement", DataType.STRING.getName(), "Format or description of the measurements captured for this metric.", null, "1e1215b6-3d76-457a-b46f-d62655f8001c"),
+
+    /**
+     * Definition of the measurement values that the governance definitions are trying to achieve.
+     */
+    TARGET("target", DataType.STRING.getName(), "Definition of the measurement values that the governance definitions are trying to achieve.", null, "0798f3ef-ceda-46ff-9a8a-d3926dff7f36"),
 
     ;
 

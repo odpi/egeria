@@ -963,11 +963,10 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -980,11 +979,9 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility for activity at a particular location.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -997,11 +994,9 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -1014,11 +1009,9 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility for an IT solution.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }

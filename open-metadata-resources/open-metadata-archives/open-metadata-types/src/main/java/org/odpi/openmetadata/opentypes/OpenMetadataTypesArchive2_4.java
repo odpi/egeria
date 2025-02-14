@@ -1548,9 +1548,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceRole";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ROLE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

@@ -10050,6 +10050,9 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+    /*
+     * Deprecated
+     */
     private ClassificationDef getAssetOwnershipClassification()
     {
         final String guid = "d531c566-03d2-470a-be69-6f52cabd5fb9";
@@ -10095,53 +10098,28 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceRoleEntity()
     {
-        final String guid            = "de2d7f2e-1759-44e3-b8a6-8af53e8fb0ee";
-        final String name            = "GovernanceRole";
-        final String description     = "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ROLE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
     }
 
 
     private EntityDef getAssetOwnerEntity()
     {
-        final String guid            = "ac406bf8-e53e-49f1-9088-2af28eeee285";
-        final String name            = "AssetOwner";
-        final String description     = "A role defining a responsibility to manage an asset.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceRole";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ASSET_OWNER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName));
     }
 
 
     private EntityDef getSubjectAreaOwnerEntity()
     {
-        final String guid            = "c6fe40af-cdd6-4ca7-98c4-353d2612921f";
-        final String name            = "SubjectAreaOwner";
-        final String description     = "A role defining a responsibility to manage the development and maintenance of a subject area.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceRole";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SUBJECT_AREA_OWNER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName));
     }
 
 
+    /*
+     * Deprecated
+     */
     private RelationshipDef getGovernanceRoleAssignmentRelationship()
     {
         final String guid            = "cb10c107-b7af-475d-aab0-d78b8297b982";
@@ -10193,17 +10171,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getGovernanceResponsibilityAssignmentRelationship()
     {
-        final String guid            = "cb15c107-b7af-475d-aab0-d78b8297b982";
-        final String name            = "GovernanceResponsibilityAssignment";
-        final String description     = "Identifies a role that will perform a governance responsibility.";
-        final String descriptionGUID = null;
-
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10211,12 +10180,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceRole";
         final String                     end1AttributeName            = "performedByRoles";
         final String                     end1AttributeDescription     = "The roles assigned to this responsibility.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10227,12 +10195,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceResponsibility";
         final String                     end2AttributeName            = "governanceResponsibilities";
         final String                     end2AttributeDescription     = "The responsibilities performed by this role.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -10261,47 +10228,18 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceMetricEntity()
     {
-        final String guid            = "9ada8e7b-823c-40f7-adf8-f164aabda77e";
-        final String name            = "GovernanceMetric";
-        final String description     = "A definition for how the effectiveness of the governance program is measured.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_METRIC,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "measurement";
-        final String attribute3Description     = "Format or description of the measurements captured for this metric.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "target";
-        final String attribute4Description     = "Definition of the measurement values that the governance definitions are trying to achieve.";
-        final String attribute4DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -10311,16 +10249,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getGovernanceDefinitionMetricRelationship()
     {
-        final String guid            = "e076fbb3-54f5-46b8-8f1e-a7cb7e792673";
-        final String name            = "GovernanceDefinitionMetric";
-        final String description     = "Link between a governance definition and a governance metric used to measure this definition.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10328,12 +10258,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceMetric";
         final String                     end1AttributeName            = "metrics";
         final String                     end1AttributeDescription     = "The metrics that measure the landscape against this governance definition.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_METRIC.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10378,16 +10307,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getGovernanceResultsRelationship()
     {
-        final String guid            = "89c3c695-9e8d-4660-9f44-ed971fd55f88";
-        final String name            = "GovernanceResults";
-        final String description     = "Link between a governance metric and a data set used to gather measurements from the landscape.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -10395,12 +10316,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceMetric";
         final String                     end1AttributeName            = "metrics";
         final String                     end1AttributeDescription     = "The governance metrics that are captured in this data set.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_METRIC.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10426,16 +10346,9 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "query";
-        final String attribute1Description     = "Defines how the data items from the data set are converted in measurements for the metric.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -10445,16 +10358,8 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getGovernanceMeasurementsDataSetClassification()
     {
-        final String guid            = "789f2e89-accd-4489-8eca-dc43b432c022";
-        final String name            = "GovernanceMeasurementsResultsDataSet";
-        final String description     = "A data file containing measurements for a governance metric.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.GOVERNANCE_MEASUREMENTS_RESULTS_DATA_SET_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName),
                                                                                  false);
 
@@ -10462,12 +10367,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         classificationDef.setPropertiesDefinition(properties);
 

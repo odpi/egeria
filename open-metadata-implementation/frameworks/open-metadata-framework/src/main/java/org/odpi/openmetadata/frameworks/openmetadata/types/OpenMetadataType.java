@@ -3364,6 +3364,78 @@ public enum OpenMetadataType
                              "Who is responsible for making decisions on the management and governance of this element."),
 
     /**
+     * Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource.
+     */
+    GOVERNANCE_ROLE("de2d7f2e-1759-44e3-b8a6-8af53e8fb0ee",
+                    "GovernanceRole",
+                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                    "f8bfd5eb-2dea-4c41-8c7e-1c6965108944",
+                    "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource."),
+
+    /**
+     * A role defining a responsibility to manage an asset.
+     */
+    ASSET_OWNER("ac406bf8-e53e-49f1-9088-2af28eeee285",
+                "AssetOwner",
+                OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                "5042920d-859f-4a7c-af3c-008a5ef1e388",
+                "A role defining a responsibility to manage an asset."),
+
+    /**
+     * A role defining a responsibility to manage the development and maintenance of a subject area.
+     */
+    SUBJECT_AREA_OWNER("c6fe40af-cdd6-4ca7-98c4-353d2612921f",
+                       "SubjectAreaOwner",
+                       OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                       "f8ee2921-90e1-4d12-aa7b-bedb8f2ee545",
+                       "A role defining a responsibility to manage the development and maintenance of a subject area."),
+
+    /**
+     * Identifies a role that will perform a governance responsibility.
+     */
+    GOVERNANCE_RESPONSIBILITY_ASSIGNMENT("cb15c107-b7af-475d-aab0-d78b8297b982",
+                                         "GovernanceResponsibilityAssignment",
+                                         OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                                         "b44383d1-58bb-4609-b84e-45fed8b9ea1d",
+                                         "Identifies a role that will perform a governance responsibility."),
+
+    /**
+     * A definition for how the effectiveness of the governance program is measured.
+     */
+    GOVERNANCE_METRIC("9ada8e7b-823c-40f7-adf8-f164aabda77e",
+                      "GovernanceMetric",
+                      OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
+                      "c6e37924-a550-46ba-b8e6-92891bdf4178",
+                      "A definition for how the effectiveness of the governance program is measured."),
+
+    /**
+     * Link between a governance definition and a governance metric used to measure this definition.
+     */
+    GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP("e076fbb3-54f5-46b8-8f1e-a7cb7e792673",
+                                              "GovernanceDefinitionMetric",
+                                              OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
+                                              "10f36c85-835f-4b55-a56d-41a69feb6baa",
+                                              "Link between a governance definition and a governance metric used to measure this definition."),
+
+    /**
+     * Link between a governance metric and a data set used to gather measurements from the landscape.
+     */
+    GOVERNANCE_RESULTS_RELATIONSHIP("89c3c695-9e8d-4660-9f44-ed971fd55f88",
+                                    "GovernanceResults",
+                                    OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
+                                    "e8da6c0f-bbc5-4fb1-bdb1-487cd71eafcf",
+                                    "Link between a governance metric and a data set used to gather measurements from the landscape."),
+
+    /**
+     * A data set containing measurements for a governance metric.
+     */
+    GOVERNANCE_MEASUREMENTS_RESULTS_DATA_SET_CLASSIFICATION("789f2e89-accd-4489-8eca-dc43b432c022",
+                                                            "GovernanceMeasurementsResultsDataSet",
+                                                            OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
+                                                            "c9e91e4a-02ae-4ffa-a783-155bba268667",
+                                                            "A data set containing measurements for a governance metric."),
+
+    /**
      * A collection of related governance services of the same type.
      */
     GOVERNANCE_ENGINE("3fa23d4a-aceb-422f-9301-04ed474c6f74",
@@ -4780,26 +4852,6 @@ public enum OpenMetadataType
     /* Area 4 - Governance                                                                                                         */
     /* ============================================================================================================================*/
 
-    public static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID = "084cd115-5d0d-4f12-8093-697526a120ea";
-    public static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME = "GovernanceDomainDescription";
-    /* Referenceable */
-
-    public static final String GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME = "GovernanceDomainSet";
-
-    public static final String GOVERNANCE_ROLE_TYPE_GUID = "de2d7f2e-1759-44e3-b8a6-8af53e8fb0ee";
-    public static final String GOVERNANCE_ROLE_TYPE_NAME = "GovernanceRole";
-    /* PersonRole */
-
-    public static final String GOVERNANCE_OFFICER_TYPE_GUID = "578a3500-9ad3-45fe-8ada-e4e9572c37c8";
-    public static final String GOVERNANCE_OFFICER_TYPE_NAME = "GovernanceOfficer";
-    /* GovernanceRole */
-
-    /* GovernanceRole */
-
-
-    public static final String GOVERNANCE_RESPONSIBILITY_TYPE_GUID = "89a76b24-deb8-45bf-9304-a578a610326f";
-    public static final String GOVERNANCE_RESPONSIBILITY_TYPE_NAME = "GovernanceResponsibility";
-    /* OrganizationalControl */
 
     public static final String GOVERNED_BY_TYPE_GUID = "89c3c695-9e8d-4660-9f44-ed971fd55f89";
     public static final String GOVERNED_BY_TYPE_NAME = "GovernedBy";  /* from Area 4 */

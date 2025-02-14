@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Endp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorAuditCode;
-import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISpecification;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPITag;
@@ -409,14 +408,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                                                                                                                                methodName,
                                                                                                                                url,
                                                                                                                                error.getMessage()));
-
-
-                    throw new ConnectorCheckedException(OpenAPIIntegrationConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                       error.getClass().getName(),
-                                                                                                                                       error.getMessage()),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        error);
                 }
             }
         }

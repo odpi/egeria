@@ -118,8 +118,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                       null);
 
 
-            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER_TYPE_NAME + ": " + domainDefinition.getQualifiedName();
-            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER_TYPE_NAME,
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ": " + domainDefinition.getQualifiedName();
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER.typeName,
                                             governanceOfficerQName,
                                             domainDefinition.getDomainIdentifier(),
                                             "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),

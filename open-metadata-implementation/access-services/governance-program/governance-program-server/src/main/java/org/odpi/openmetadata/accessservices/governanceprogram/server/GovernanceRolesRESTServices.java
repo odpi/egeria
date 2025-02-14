@@ -72,7 +72,7 @@ public class GovernanceRolesRESTServices
                 {
                     GovernanceRoleProperties properties = requestBody.getProperties();
 
-                    String typeName = OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME;
+                    String typeName = OpenMetadataType.GOVERNANCE_ROLE.typeName;
 
                     if (properties.getTypeName() != null)
                     {
@@ -284,11 +284,11 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataType.PERSON_ROLE.typeName,
                                                  responsibilityGUID,
                                                  responsibilityGUIDParameterName,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                                  null,
                                                  requestBody.getProperties().getEffectiveFrom(),
                                                  requestBody.getProperties().getEffectiveTo(),
@@ -305,11 +305,11 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataType.PERSON_ROLE.typeName,
                                                  responsibilityGUID,
                                                  responsibilityGUIDParameterName,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -378,12 +378,12 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataType.PERSON_ROLE.typeName,
                                                  responsibilityGUID,
                                                  responsibilityGUIDParameterName,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                                  new Date(),
                                                  methodName);
             }
@@ -453,8 +453,8 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataType.PERSON_ROLE.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeGUID,
+                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                  null,
                                                  requestBody.getProperties().getEffectiveFrom(),
                                                  requestBody.getProperties().getEffectiveTo(),
@@ -474,8 +474,8 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataType.PERSON_ROLE.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeGUID,
+                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -548,8 +548,8 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataType.PERSON_ROLE.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeGUID,
+                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                  new Date(),
                                                  methodName);
             }

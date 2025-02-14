@@ -1285,7 +1285,7 @@ public class SimpleCatalogArchiveHelper
 
         if (typeName == null)
         {
-            typeName = OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME;
+            typeName = OpenMetadataType.GOVERNANCE_ROLE.typeName;
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);

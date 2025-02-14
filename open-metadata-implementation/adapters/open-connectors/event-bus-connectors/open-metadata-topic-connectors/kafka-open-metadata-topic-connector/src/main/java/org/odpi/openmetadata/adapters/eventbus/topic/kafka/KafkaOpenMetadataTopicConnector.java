@@ -183,7 +183,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 if (auditLog != null)
                 {
                     auditLog.logMessage(actionDescription,
-                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId));
+                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId, consumerProperties.getProperty("bootstrap.servers")));
                 }
             }
             else
@@ -269,11 +269,25 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 		Map<String, Object> propertiesMap;
 		if (propertiesObject != null)
 		{
+            if (propertiesObject instanceof String propertiesAsString)
+            {
+                String properties = propertiesAsString.substring(1, propertiesAsString.length()-1); //remove curly brackets
+                String[] keyValuePairs = properties.split(",");              //split the string to creat key-value pairs
+
+                for (String pair : keyValuePairs)                        //iterate over the pairs
+                {
+                    String[] entry = pair.split("=");                   //split the pairs to get key and value
+                    target.setProperty(entry[0].trim(), entry[1].trim());
+                }
+            }
+            else
+            {
                 propertiesMap = (Map<String, Object>) propertiesObject; //only casting the reference to the Map, not the actual Map
                 for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
                 {
                     target.setProperty(entry.getKey(), String.valueOf(entry.getValue()));
                 }
+            }
 		}
 	}
 

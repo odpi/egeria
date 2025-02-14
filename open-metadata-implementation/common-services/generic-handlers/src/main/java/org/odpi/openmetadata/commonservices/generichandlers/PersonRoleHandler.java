@@ -149,7 +149,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
          * is a type of governance role then domain identifier is set.  If the role comes from an API that does not explicitly support
          * the domain identifier then it will be set to zero (all domains) unless overridden in the extended properties.
          */
-        boolean domainIdentifierSet = repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME);
+        boolean domainIdentifierSet = repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_ROLE.typeName);
 
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
                                                               identifier,
@@ -842,13 +842,13 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataType.PERSON_ROLE.typeName,
                                       governanceResponsibilityGUID,
                                       governanceResponsibilityGUIDParameterName,
-                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
-                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeGUID,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeGUID,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -890,9 +890,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         governanceResponsibilityGUID,
                                         governanceResponsibilityGUIDParameterName,
-                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
-                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeGUID,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                         OpenMetadataType.PERSON_ROLE.typeName,
                                         (String)null,
                                         null,
@@ -996,7 +996,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
          */
         boolean domainIdentifierSet = (typeName != null) &&
                                       (!(isMergeUpdate) && (domainIdentifier == 0)) &&
-                                      (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME));
+                                      (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_ROLE.typeName));
 
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
                                                               identifier,
