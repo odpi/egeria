@@ -206,82 +206,75 @@ loadScripts(document, 'script');</script>
 <div class="block">Create the executor relationships and attach the action targets to the step.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndCatalogAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)" class="member-name-link">createAndCatalogAssetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndCatalogAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)" class="member-name-link">createAndCatalogAssetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of asset
  and then adds it as a catalog target for an appropriate integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndCatalogServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)" class="member-name-link">createAndCatalogServerGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndCatalogServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)" class="member-name-link">createAndCatalogServerGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of server
  and then adds it as a catalog target for an appropriate integration connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndHarvestToAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)" class="member-name-link">createAndHarvestToAssetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndHarvestToAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)" class="member-name-link">createAndHarvestToAssetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of asset
  and then adds it as a catalog target for an appropriate integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndSurveyServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)" class="member-name-link">createAndSurveyServerGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAndSurveyServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)" class="member-name-link">createAndSurveyServerGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;surveyRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;surveyEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a three-step governance action process that creates a metadata element for a particular type of asset
  and then runs a survey against the asset's resource and creates a report.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)" class="member-name-link">createAsCatalogTargetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)" class="member-name-link">createAsCatalogTargetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionName,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of asset
  and then adds it as a catalog target for an appropriate integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataAssetCatalogTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List)" class="member-name-link">createDataAssetCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataAssetCatalogTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List)" class="member-name-link">createDataAssetCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateVersion,
  <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;suppliedExtendedProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encoding,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encodingLanguage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
@@ -294,9 +287,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a template for a type of asset and link it to the associated deployed implementation type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataFileCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.util.Map)" class="member-name-link">createDataFileCatalogTemplate</a><wbr>(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataFileCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.lang.String,java.util.Map,java.util.List)" class="member-name-link">createDataFileCatalogTemplate</a><wbr>(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encodingLanguage,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderPropertyType</a>&gt;&nbsp;placeholderPropertyTypes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a template for a data file and link it to the associated open metadata type.</div>
 </div>
@@ -322,37 +317,31 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a template for a software server and link it to the associated deployed implementation type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createFolderCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String)" class="member-name-link">createFolderCatalogTemplate</a><wbr>(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceEngines(org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition)" class="member-name-link">createGovernanceEngines</a><wbr>(<a href="../ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a>&nbsp;contentPackDefinition)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a template for a file directory and link it to the associated open metadata type.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceEngines(org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition)" class="member-name-link">createGovernanceEngines</a><wbr>(<a href="../ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a>&nbsp;contentPackDefinition)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create the default governance engines</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceServices(org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition)" class="member-name-link">createGovernanceServices</a><wbr>(<a href="../ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a>&nbsp;contentPackDefinition)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceServices(org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition)" class="member-name-link">createGovernanceServices</a><wbr>(<a href="../ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a>&nbsp;contentPackDefinition)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register the governance services that are going to be in the default governance engines.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createHostCatalogTemplate(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification)" class="member-name-link">createHostCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createHostCatalogTemplate(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification)" class="member-name-link">createHostCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
  <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;softwareCapabilityType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;softwareCapabilityName,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&nbsp;softwareCapabilityClassification)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a template for a host and link it to the associated deployed implementation type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRequestTypes(org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition)" class="member-name-link">createRequestTypes</a><wbr>(<a href="../ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a>&nbsp;contentPackDefinition)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRequestTypes(org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition)" class="member-name-link">createRequestTypes</a><wbr>(<a href="../ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a>&nbsp;contentPackDefinition)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the request types.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSoftwareCapabilityCatalogTemplate(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification,java.util.List,java.util.List)" class="member-name-link">createSoftwareCapabilityCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSoftwareCapabilityCatalogTemplate(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification,java.util.List,java.util.List)" class="member-name-link">createSoftwareCapabilityCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;softwareCapabilityName,
@@ -360,14 +349,8 @@ loadScripts(document, 'script');</script>
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&nbsp;softwareCapabilityClassification,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/controls/ReplacementAttributeType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">ReplacementAttributeType</a>&gt;&nbsp;replacementAttributeTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderPropertyType</a>&gt;&nbsp;placeholderPropertyTypes)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a template for a software server and link it to the associated deployed implementation type.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSoftwareFileCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String)" class="member-name-link">createSoftwareFileCatalogTemplate</a><wbr>(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a template for a software file and link it to the associated open metadata type.</div>
+<div class="block">Create a template for a software server and link it to the associated deployed implementation type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSoftwareServerCatalogTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List)" class="member-name-link">createSoftwareServerCatalogTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
@@ -394,11 +377,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a template for a software server and link it to the associated deployed implementation type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)" class="member-name-link">deleteAsCatalogTargetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)" class="member-name-link">deleteAsCatalogTargetGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;deleteRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;deleteEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a one-step governance action process that deletes a metadata element for a particular type of asset
@@ -481,11 +463,13 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createDataFileCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.util.Map)">
+<section class="detail" id="createDataFileCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.lang.String,java.util.Map,java.util.List)">
 <h3>createDataFileCatalogTemplate</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createDataFileCatalogTemplate</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encodingLanguage,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderPropertyType</a>&gt;&nbsp;placeholderPropertyTypes)</span></div>
 <div class="block">Create a template for a data file and link it to the associated open metadata type.
  The template consists of a DataFile asset plus an optional connection, linked
  to the supplied connector type and an endpoint,</div>
@@ -493,22 +477,9 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>connectorTypeGUID</code> - connector type to link to the connection</dd>
 <dd><code>deployedImplementationType</code> - deployed implementation type to link the template to</dd>
+<dd><code>encodingLanguage</code> - language used to encode the contents of the file</dd>
 <dd><code>configurationProperties</code> - configuration properties</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createFolderCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String)">
-<h3>createFolderCatalogTemplate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createFolderCatalogTemplate</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID)</span></div>
-<div class="block">Create a template for a file directory and link it to the associated open metadata type.
- The template consists of a DataFile asset plus an optional connection, linked
- to the supplied connector type and an endpoint,</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>deployedImplementationType</code> - info for the template</dd>
-<dd><code>connectorTypeGUID</code> - connector type to link to the connection</dd>
+<dd><code>placeholderPropertyTypes</code> - placeholders used in template</dd>
 </dl>
 </section>
 </li>
@@ -524,21 +495,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>deployedImplementationType</code> - values for the template</dd>
-<dd><code>connectorTypeGUID</code> - connector type to link to the connection</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSoftwareFileCatalogTemplate(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String)">
-<h3>createSoftwareFileCatalogTemplate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createSoftwareFileCatalogTemplate</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID)</span></div>
-<div class="block">Create a template for a software file and link it to the associated open metadata type.
- The template consists of a DataFile asset plus an optional connection, linked
- to the supplied connector type and an endpoint,</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>deployedImplementationType</code> - description for the template</dd>
 <dd><code>connectorTypeGUID</code> - connector type to link to the connection</dd>
 </dl>
 </section>
@@ -695,15 +651,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createDataAssetCatalogTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List)">
+<section class="detail" id="createDataAssetCatalogTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List)">
 <h3>createDataAssetCatalogTemplate</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createDataAssetCatalogTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateVersion,
  <a href="../../../frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;suppliedExtendedProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encoding,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encodingLanguage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
@@ -722,8 +681,11 @@ loadScripts(document, 'script');</script>
 <dd><code>deployedImplementationType</code> - deployed implementation type for the technology</dd>
 <dd><code>assetName</code> - name for the asset</dd>
 <dd><code>assetDescription</code> - description</dd>
-<dd><code>serverName</code> - optional server name</dd>
+<dd><code>qualifiedName</code> - optional server name</dd>
 <dd><code>versionIdentifier</code> - version identifier</dd>
+<dd><code>suppliedExtendedProperties</code> - extended properties for the asset</dd>
+<dd><code>encoding</code> - what encoding is needed?</dd>
+<dd><code>encodingLanguage</code> - language used to encode the contents of the file</dd>
 <dd><code>connectorTypeGUID</code> - connector type to link to the connection</dd>
 <dd><code>networkAddress</code> - network address for the endpoint</dd>
 <dd><code>configurationProperties</code> - additional properties for the connection</dd>
@@ -874,15 +836,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createAndSurveyServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)">
+<section class="detail" id="createAndSurveyServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)">
 <h3>createAndSurveyServerGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createAndSurveyServerGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;surveyRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;surveyEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</span></div>
 <div class="block">Create a three-step governance action process that creates a metadata element for a particular type of asset
  and then runs a survey against the asset's resource and creates a report.</div>
@@ -892,9 +852,7 @@ loadScripts(document, 'script');</script>
 <dd><code>technologyType</code> - value for deployed implementation type</dd>
 <dd><code>createRequestType</code> - request type used to create the server's metadata element</dd>
 <dd><code>createTemplate</code> - details of the template to use</dd>
-<dd><code>createEngineDefinition</code> - engine to call for the create operation</dd>
 <dd><code>surveyRequestType</code> - request type to run the survey</dd>
-<dd><code>surveyEngineDefinition</code> - survey engine</dd>
 <dd><code>supportedElementQualifiedName</code> - qualified name of the element that this should be listed as a resource</dd>
 </dl>
 </section>
@@ -914,15 +872,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createAndCatalogServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)">
+<section class="detail" id="createAndCatalogServerGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)">
 <h3>createAndCatalogServerGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createAndCatalogServerGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</span></div>
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of server
  and then adds it as a catalog target for an appropriate integration connector.</div>
@@ -932,24 +888,20 @@ loadScripts(document, 'script');</script>
 <dd><code>technologyType</code> - value for deployed implementation type</dd>
 <dd><code>createRequestType</code> - request type used to create the server's metadata element</dd>
 <dd><code>createTemplate</code> - details of the template to use</dd>
-<dd><code>createEngineDefinition</code> - governance action engine</dd>
 <dd><code>catalogRequestType</code> - request type to run the survey</dd>
-<dd><code>catalogEngineDefinition</code> - governance action engine</dd>
 <dd><code>supportedElementQualifiedName</code> - qualified name of the element that this should be listed as a resource</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createAndCatalogAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)">
+<section class="detail" id="createAndCatalogAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)">
 <h3>createAndCatalogAssetGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createAndCatalogAssetGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</span></div>
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of asset
  and then adds it as a catalog target for an appropriate integration connector.</div>
@@ -960,24 +912,20 @@ loadScripts(document, 'script');</script>
 <dd><code>technologyType</code> - value for deployed implementation type</dd>
 <dd><code>createRequestType</code> - request type used to create the server's metadata element</dd>
 <dd><code>createTemplate</code> - details of the template to use</dd>
-<dd><code>createEngineDefinition</code> - governance action engine</dd>
 <dd><code>catalogRequestType</code> - request type to run the survey</dd>
-<dd><code>catalogEngineDefinition</code> - governance action engine</dd>
 <dd><code>supportedElementQualifiedName</code> - qualified name of the element that this should be listed as a resource</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createAndHarvestToAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)">
+<section class="detail" id="createAndHarvestToAssetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)">
 <h3>createAndHarvestToAssetGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createAndHarvestToAssetGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</span></div>
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of asset
  and then adds it as a catalog target for an appropriate integration connector.</div>
@@ -988,15 +936,13 @@ loadScripts(document, 'script');</script>
 <dd><code>technologyType</code> - value for deployed implementation type</dd>
 <dd><code>createRequestType</code> - request type used to create the server's metadata element</dd>
 <dd><code>createTemplate</code> - details of the template to use</dd>
-<dd><code>createEngineDefinition</code> - governance action engine</dd>
 <dd><code>catalogRequestType</code> - request type to run the survey</dd>
-<dd><code>catalogEngineDefinition</code> - governance action engine</dd>
 <dd><code>supportedElementQualifiedName</code> - qualified name of the element that this should be listed as a resource</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)">
+<section class="detail" id="createAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)">
 <h3>createAsCatalogTargetGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createAsCatalogTargetGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
@@ -1004,9 +950,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionName,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;createRequestType,
  <a href="../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a>&nbsp;createTemplate,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;createEngineDefinition,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;catalogRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;catalogEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</span></div>
 <div class="block">Create a two-step governance action process that creates a metadata element for a particular type of asset
  and then adds it as a catalog target for an appropriate integration connector.</div>
@@ -1018,21 +962,18 @@ loadScripts(document, 'script');</script>
 <dd><code>actionName</code> - nme to use for the action</dd>
 <dd><code>createRequestType</code> - request type used to create the server's metadata element</dd>
 <dd><code>createTemplate</code> - details of the template to use</dd>
-<dd><code>createEngineDefinition</code> - governance action engine</dd>
 <dd><code>catalogRequestType</code> - request type to run the survey</dd>
-<dd><code>catalogEngineDefinition</code> - governance action engine</dd>
 <dd><code>supportedElementQualifiedName</code> - qualified name of the element that this should be listed as a resource</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition,java.lang.String)">
+<section class="detail" id="deleteAsCatalogTargetGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition,java.lang.String)">
 <h3>deleteAsCatalogTargetGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteAsCatalogTargetGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;technologyType,
  <a href="../RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>&nbsp;deleteRequestType,
- <a href="../GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>&nbsp;deleteEngineDefinition,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedElementQualifiedName)</span></div>
 <div class="block">Create a one-step governance action process that deletes a metadata element for a particular type of asset
  which then removes it, any anchored content and relationships - like the catalog target for an appropriate integration connector.</div>
@@ -1041,7 +982,6 @@ loadScripts(document, 'script');</script>
 <dd><code>assetType</code> - name for the server type (no spaces)</dd>
 <dd><code>technologyType</code> - value for deployed implementation type</dd>
 <dd><code>deleteRequestType</code> - request type used to delete the server's metadata element</dd>
-<dd><code>deleteEngineDefinition</code> - governance action engine</dd>
 <dd><code>supportedElementQualifiedName</code> - qualified name of the element that this should be listed as a resource</dd>
 </dl>
 </section>

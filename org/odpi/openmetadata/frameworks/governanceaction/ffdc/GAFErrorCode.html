@@ -191,33 +191,37 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="block">GAF-CONVERTER-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
  because a metadata instance of type {2} has not passed to method {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_GOVERNANCE_CONTEXT" class="member-name-link">NULL_GOVERNANCE_CONTEXT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_METADATA_ELEMENT" class="member-name-link">NO_METADATA_ELEMENT</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">GAF-PROPERTIES-400-010 - The {0} method has been called without an open metadata element to work with</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_GOVERNANCE_CONTEXT" class="member-name-link">NULL_GOVERNANCE_CONTEXT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GAF-GOVERNANCE-SERVICE-400-001 - No governance context supplied to the governance action service {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GAF-PROPERTIES-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GAF-PROPERTIES-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GAF-PROPERTIES-400-008 - Null property name passed to properties object</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GAF-CONVERTER-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; the expected class name is: {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GAF-PROPERTIES-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
 </div>
 </div>
@@ -342,6 +346,13 @@ the order they are declared.</div>
 <h3>ARRAY_OUT_OF_BOUNDS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">ARRAY_OUT_OF_BOUNDS</span></div>
 <div class="block">GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_METADATA_ELEMENT">
+<h3>NO_METADATA_ELEMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">NO_METADATA_ELEMENT</span></div>
+<div class="block">GAF-PROPERTIES-400-010 - The {0} method has been called without an open metadata element to work with</div>
 </section>
 </li>
 <li>

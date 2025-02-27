@@ -256,7 +256,8 @@ implements <a href="../../../../repositoryservices/connectors/openmetadatatopic/
 <section class="detail" id="getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector)">
 <h3>getNewRequestedCatalogTargetSkeleton</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></span>&nbsp;<span class="element-name">getNewRequestedCatalogTargetSkeleton</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;retrievedCatalogTarget,
- <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</span></div>
+ <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</span>
+                                                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -266,6 +267,8 @@ implements <a href="../../../../repositoryservices/connectors/openmetadatatopic/
 <dd><code>connectorToTarget</code> - connector to access the target resource</dd>
 <dt>Returns:</dt>
 <dd>new processor based on the catalog target information</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem connecting to topic</dd>
 </dl>
 </section>
 </li>

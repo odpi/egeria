@@ -170,7 +170,8 @@ loadScripts(document, 'script');</script>
  <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="../../../../repositoryservices/connectors/openmetadatatopic/OpenMetadataTopicListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic">OpenMetadataTopicListener</a>&nbsp;listener)</span></div>
+ <a href="../../../../repositoryservices/connectors/openmetadatatopic/OpenMetadataTopicListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic">OpenMetadataTopicListener</a>&nbsp;listener)</span>
+                                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -179,6 +180,8 @@ loadScripts(document, 'script');</script>
 <dd><code>connectorName</code> - name of this integration connector</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>listener</code> - listener</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem connecting to topic</dd>
 </dl>
 </section>
 </li>

@@ -123,12 +123,16 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last odd-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-0009 - JDBC resource connector is closing all {0} connection(s) to database {1} and is shutting down</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ROllBACK_AFTER_EXCEPTION" class="member-name-link">ROllBACK_AFTER_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">JDBC-RESOURCE-CONNECTOR-0004 - The JDBC resource connector for database {0} has issued a rollback after receiving SQL Exception with message {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-0001 - The JDBC resource connector received an unexpected exception {0} during method {1}; the error message was: {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_ROW_COUNT_FROM_DATABASE" class="member-name-link">UNEXPECTED_ROW_COUNT_FROM_DATABASE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_ROW_COUNT_FROM_DATABASE" class="member-name-link">UNEXPECTED_ROW_COUNT_FROM_DATABASE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-0003 - The JDBC resource connector for database {0} has received {1} results from query {2}</div>
 </div>
 </div>
@@ -210,6 +214,13 @@ the order they are declared.</div>
 <h3>UNEXPECTED_ROW_COUNT_FROM_DATABASE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc">JDBCAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_ROW_COUNT_FROM_DATABASE</span></div>
 <div class="block">JDBC-RESOURCE-CONNECTOR-0003 - The JDBC resource connector for database {0} has received {1} results from query {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ROllBACK_AFTER_EXCEPTION">
+<h3>ROllBACK_AFTER_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc">JDBCAuditCode</a></span>&nbsp;<span class="element-name">ROllBACK_AFTER_EXCEPTION</span></div>
+<div class="block">JDBC-RESOURCE-CONNECTOR-0004 - The JDBC resource connector for database {0} has issued a rollback after receiving SQL Exception with message {1}</div>
 </section>
 </li>
 <li>

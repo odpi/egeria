@@ -262,16 +262,13 @@ implements <a href="../../../../accessservices/datamanager/api/DataManagerEventL
 <li>
 <section class="detail" id="refresh()">
 <h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
-             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()</div>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
  Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
  as well as any external REST API calls to explicitly refresh the connector.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
 </dl>
 </section>
 </li>
