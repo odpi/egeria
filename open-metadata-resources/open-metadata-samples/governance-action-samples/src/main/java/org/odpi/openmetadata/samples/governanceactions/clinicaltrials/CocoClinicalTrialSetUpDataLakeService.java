@@ -490,7 +490,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
         RelatedMetadataElement processFlowRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(hospitalOnboardingProcessGUID,
                                                                                                                             1,
-                                                                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                                                                                             new Date());
 
         if (processFlowRelationship != null)

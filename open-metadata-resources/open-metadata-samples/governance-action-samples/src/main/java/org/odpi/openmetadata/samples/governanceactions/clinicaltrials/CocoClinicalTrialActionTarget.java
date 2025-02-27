@@ -36,7 +36,7 @@ public enum CocoClinicalTrialActionTarget
      */
     HOSPITAL("hospital",
             "Hospital that will be supplying data for the clinical trial.",
-            OpenMetadataType.ORGANIZATION_TYPE_NAME,
+            OpenMetadataType.ORGANIZATION.typeName,
             null,
             true),
 
@@ -109,7 +109,7 @@ public enum CocoClinicalTrialActionTarget
      */
     HOSPITAL_DATA_LICENSE_TYPE("hospitalDataLicenseType",
                                "The type of licences granted by the hospital for data that originates from them for this clinical trial.",
-                               OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                               OpenMetadataType.LICENSE_TYPE.typeName,
                                null,
                                true),
 
@@ -127,7 +127,7 @@ public enum CocoClinicalTrialActionTarget
      */
     HOSPITAL_CERTIFICATION_TYPE("hospitalCertificationType",
                                 "The certification type that should be used to certify the hospital.",
-                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                 null,
                                 true),
 
@@ -136,43 +136,43 @@ public enum CocoClinicalTrialActionTarget
      */
     DATA_QUALITY_CERTIFICATION_TYPE("dataQualityCertificationType",
                                 "The certification type that should be used to certify that data from the hospital conforms to specification.",
-                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                 null,
                                 true),
 
     GENERIC_ONBOARDING_PIPELINE("onboardingPipeline",
                                 "The standard onboarding pipeline that brings data from the landing area to the data lake that is not customized for a project or hospital.",
-                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                 null,
                                 true),
 
     GENERIC_HOSPITAL_NOMINATION_GAT("hospitalNominationGovernanceActionType",
                                     "The Governance Action Type that tentatively adds a hospital to a clinical trial.",
-                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                     null,
                                     true),
 
     GENERIC_HOSPITAL_CERTIFICATION_GAT("hospitalCertificationGovernanceActionType",
                                        "The Governance Action Type that implements the hospital certification process.",
-                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                        null,
                                        true),
 
     GENERIC_HOSPITAL_ONBOARDING_GAT("hospitalOnboardingGovernanceActionType",
                                        "The Governance Action Type that implements the hospital certification process.",
-                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                        null,
                                        true),
 
     GENERIC_SET_UP_DATA_LAKE_GAT("setUpDataLakeGovernanceActionType",
                                     "The Governance Action Type that sets up the volume in the data lake catalog.",
-                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                     null,
                                     true),
 
     ONBOARD_HOSPITAL_PROCESS("onboardHospitalProcess",
                                  "The Governance Action Process that sets up the onboarding pipeline.  SetUpDataLake needs to pass the destination directory onto this process.",
-                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                  null,
                                  true),
 

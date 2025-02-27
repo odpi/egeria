@@ -314,9 +314,7 @@ public class OpenMetadataTypesArchive2_7
 
     private TypeDefPatch updateEngineActionEntity()
     {
-        final String typeName = OpenMetadataType.ENGINE_ACTION.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENGINE_ACTION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -325,16 +323,8 @@ public class OpenMetadataTypesArchive2_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "mandatoryGuards";
-        final String attribute1Description     = "The list of guards that must be received before this engine action can progress.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
-                                                                attribute1Description,
-                                                                attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MANDATORY_GUARDS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -400,13 +390,11 @@ public class OpenMetadataTypesArchive2_7
 
     private TypeDefPatch updateCalculatedValueClassification()
     {
-        final String typeName = "CalculatedValue";
-
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName));
 
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

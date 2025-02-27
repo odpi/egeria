@@ -105,7 +105,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
         int projectStartFrom = 0;
         RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
                                                                                                                     1,
-                                                                                                                    OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                                                                                                    OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                                                                                     projectStartFrom,
                                                                                                                     governanceContext.getMaxPageSize());
         while ((projects != null) && (projects.getElementList() != null))
@@ -125,7 +125,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
             projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
                                                                                            1,
-                                                                                           OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                                                                           OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                                                            projectStartFrom,
                                                                                            governanceContext.getMaxPageSize());
         }
@@ -170,7 +170,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              processDescription);
 
-        return governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+        return governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                                      ElementStatus.ACTIVE,
                                                                                      null,
                                                                                      null,

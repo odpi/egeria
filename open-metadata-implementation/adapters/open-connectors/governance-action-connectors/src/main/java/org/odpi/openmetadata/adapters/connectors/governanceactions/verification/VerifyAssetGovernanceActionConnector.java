@@ -71,7 +71,7 @@ public class VerifyAssetGovernanceActionConnector extends VerificationGovernance
                         {
                             if (classification != null)
                             {
-                                if (propertyHelper.isTypeOf(classification, OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME))
+                                if (propertyHelper.isTypeOf(classification, OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
                                 {
                                     noZones = false;
                                 }
@@ -79,7 +79,7 @@ public class VerifyAssetGovernanceActionConnector extends VerificationGovernance
                                 {
                                     noOwner = false;
                                 }
-                                else if (propertyHelper.isTypeOf(classification, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME))
+                                else if (propertyHelper.isTypeOf(classification, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName))
                                 {
                                     noOrigin = false;
                                 }

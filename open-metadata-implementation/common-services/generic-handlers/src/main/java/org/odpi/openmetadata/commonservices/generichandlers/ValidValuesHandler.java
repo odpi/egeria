@@ -451,7 +451,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         if ((definitionGUID != null) && (setGUID != null))
         {
-            InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName, null, OpenMetadataType.IS_DEFAULT_VALUE_PROPERTY_NAME, isDefaultValue, methodName);
+            InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName, null, OpenMetadataProperty.IS_DEFAULT_VALUE.name, isDefaultValue, methodName);
 
             this.uncheckedLinkElementToElement(userId,
                                                externalSourceGUID,
@@ -667,7 +667,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataType.IS_DEFAULT_VALUE_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.IS_DEFAULT_VALUE.name,
                                                                                       isDefaultValue,
                                                                                       methodName);
 
@@ -845,7 +845,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                                   null,
-                                                                                                  OpenMetadataType.IS_STRICT_REQUIREMENT_PROPERTY_NAME,
+                                                                                                  OpenMetadataProperty.STRICT_REQUIREMENT.name,
                                                                                                   strictRequirement,
                                                                                                   methodName);
 
@@ -985,7 +985,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.ATTRIBUTE_NAME.name,
                                                                               attributeName,
                                                                               methodName);
 

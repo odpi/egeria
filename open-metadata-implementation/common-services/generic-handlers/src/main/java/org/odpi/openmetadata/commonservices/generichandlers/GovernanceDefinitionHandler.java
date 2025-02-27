@@ -379,7 +379,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.RATIONALE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.RATIONALE.name,
                                                                                      rationale,
                                                                                      methodName);
 
@@ -806,7 +806,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                     if (entity.getProperties() != null)
                     {
                         if (repositoryHelper.getIntProperty(serviceName,
-                                                            OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                             entity.getProperties(),
                                                             methodName) == domainIdentifier)
                         {
@@ -1018,8 +1018,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                        elementGUID,
                                        elementGUIDParameterName,
                                        elementTypeName,
-                                       OpenMetadataType.GOVERNED_BY_TYPE_GUID,
-                                       OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                       OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeGUID,
+                                       OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                        null,
                                        typeName,
                                        1,
@@ -1076,8 +1076,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.GOVERNED_BY_TYPE_GUID,
-                                        OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                         governanceDefinitionTypeName,
                                         null,
                                         null,
@@ -1135,8 +1135,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
-                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeGUID,
+                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
                                         governanceDefinitionTypeName,
                                         null,
                                         null,
@@ -1190,9 +1190,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         personRoleGUID,
                                         personRoleGUIDParameterName,
                                         OpenMetadataType.PERSON_ROLE.typeName,
-                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
-                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeGUID,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
                                         (String)null,
                                         null,
                                         2,

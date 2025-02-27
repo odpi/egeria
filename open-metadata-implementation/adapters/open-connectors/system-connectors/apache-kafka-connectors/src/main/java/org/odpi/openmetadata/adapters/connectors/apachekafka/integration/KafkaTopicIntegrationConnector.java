@@ -7,6 +7,7 @@ package org.odpi.openmetadata.adapters.connectors.apachekafka.integration;
 import org.apache.kafka.clients.admin.Admin;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TopicElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.ffdc.KafkaIntegrationConnectorAuditCode;
@@ -317,7 +318,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
 
         ElementProperties supportedCapabilityProperties = propertyHelper.addEnumProperty(null,
                                                                                          OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                                         OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                                         OperationalStatus.getOpenTypeName(),
                                                                                          "Owns");
 
         if (eventBroker == null)

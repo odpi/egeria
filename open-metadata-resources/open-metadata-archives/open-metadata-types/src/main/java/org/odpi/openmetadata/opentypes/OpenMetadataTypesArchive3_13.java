@@ -550,9 +550,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Create the Patch
          */
-        final String typeName = "License";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LICENSE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -561,30 +559,10 @@ public class OpenMetadataTypesArchive3_13
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "entitlements";
-        final String attribute1Description     = "The list of rights and permissions granted.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "restrictions";
-        final String attribute2Description     = "The list of limiting conditions or measures imposed.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "obligations";
-        final String attribute3Description     = "The list of actions, duties or commitments required.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
-                                                                    attribute1Description,
-                                                                    attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENTITLEMENTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESTRICTIONS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OBLIGATIONS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

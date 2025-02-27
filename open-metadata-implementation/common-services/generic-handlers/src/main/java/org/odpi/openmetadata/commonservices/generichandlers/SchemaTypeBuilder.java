@@ -482,19 +482,19 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SCHEMA_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.VERSION_NUMBER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.VERSION_NUMBER.name,
                                                                   versionNumber,
                                                                   methodName);
 
@@ -512,19 +512,19 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SCHEMA_USAGE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.USAGE.name,
                                                                   usage,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ENCODING_STANDARD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ENCODING_STANDARD.name,
                                                                   encodingStandard,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.NAMESPACE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAMESPACE.name,
                                                                   namespace,
                                                                   methodName);
 
@@ -564,7 +564,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SCHEMA_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
                                                                   typeName,
                                                                   methodName);
 

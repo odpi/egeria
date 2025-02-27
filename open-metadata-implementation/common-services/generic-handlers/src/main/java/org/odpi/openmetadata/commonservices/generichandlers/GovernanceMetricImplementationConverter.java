@@ -201,13 +201,13 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
                         {
                             if (relationship != null)
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_RESULTS_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName))
                                 {
                                     RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityTwoProxy(), methodName);
 
                                     implementations.add(element);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName))
                                 {
                                     RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
 

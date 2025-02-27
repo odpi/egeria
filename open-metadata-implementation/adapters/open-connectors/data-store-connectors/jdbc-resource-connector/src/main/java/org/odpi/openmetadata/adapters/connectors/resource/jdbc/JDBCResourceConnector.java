@@ -232,6 +232,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -239,6 +240,38 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                                               this.getClass().getName(),
                                               methodName,
                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Issue a rollback on the connection when a SQL error occurs.
+     *
+     * @param jdbcConnection connection with the error
+     * @param sqlException original exception
+     */
+    private void rollbackAfterException(java.sql.Connection jdbcConnection,
+                                        SQLException        sqlException)
+    {
+        final String methodName = "rollbackAfterException";
+
+        try
+        {
+            jdbcConnection.rollback();
+
+            super.logRecord(methodName,
+                            JDBCAuditCode.ROllBACK_AFTER_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                        sqlException.getClass().getName(),
+                                                                                        sqlException.getMessage()));
+        }
+        catch (SQLException rollbackFailed)
+        {
+            super.logExceptionRecord(methodName,
+                                     JDBCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                             rollbackFailed.getClass().getName(),
+                                                                                             methodName,
+                                                                                             rollbackFailed.getMessage()),
+                                     rollbackFailed);
         }
     }
 
@@ -290,6 +323,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -337,6 +371,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -384,6 +419,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -427,6 +463,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -472,6 +509,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -642,6 +680,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
         catch (SQLException sqlException)
         {
+            this.rollbackAfterException(jdbcConnection, sqlException);
             throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
                                                                                                           sqlCommand,
                                                                                                           methodName,
@@ -819,9 +858,10 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         {
             final String methodName = "dataSource.getConnection";
 
+            Connection jdbcConnection = null;
             try
             {
-                Connection jdbcConnection = this.knownConnections.get(Thread.currentThread().getId());
+                jdbcConnection = this.knownConnections.get(Thread.currentThread().getId());
 
                 if ((jdbcConnection == null) || (jdbcConnection.isClosed()))
                 {
@@ -850,6 +890,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
             }
             catch (SQLException error)
             {
+                if (jdbcConnection != null)
+                {
+                    rollbackAfterException(jdbcConnection, error);
+                }
+
                 if (auditLog != null)
                 {
                     auditLog.logException(methodName,
@@ -879,9 +924,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         {
             final String methodName = "dataSource.getConnection(supplied security)";
 
+            Connection jdbcConnection = null;
+
             try
             {
-               Connection jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress(), username, password);
+                jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress(), username, password);
 
                 if (auditLog != null)
                 {
@@ -892,6 +939,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
             }
             catch (SQLException error)
             {
+                if (jdbcConnection != null)
+                {
+                    rollbackAfterException(jdbcConnection, error);
+                }
+
                 if (auditLog != null)
                 {
                     auditLog.logException(methodName,

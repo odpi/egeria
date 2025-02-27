@@ -66,23 +66,6 @@ public enum EngineServiceDescription
 
 
     /**
-     * Executes requested event action services to monitor, assess and maintain context events.
-     */
-    CONTEXT_EVENT_OMES(403,
-                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                       "Context Event",
-                       "Context Event OMES",
-                       "context-event",
-                       "Executes requested context event services to monitor, assess and maintain context events.",
-                       "https://egeria-project.org/services/omes/context-event/overview/",
-                       AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
-                       DeployedImplementationType.CONTEXT_EVENT_ENGINE.getAssociatedTypeName(),
-                       DeployedImplementationType.CONTEXT_EVENT_SERVICE_CONNECTOR.getAssociatedTypeName(),
-                       DeployedImplementationType.CONTEXT_EVENT_ENGINE.getDeployedImplementationType(),
-                       DeployedImplementationType.CONTEXT_EVENT_SERVICE_CONNECTOR.getDeployedImplementationType()),
-
-
-    /**
      * Analyses the content of an asset's real world counterpart (resource), generates annotations
      * in a survey report that is attached to the asset in the open metadata repositories.
      */

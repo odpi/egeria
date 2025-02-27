@@ -1561,15 +1561,15 @@ public class APIManagerRESTServices
      */
     private String getRelationshipType(APIParameterListType parameterListType)
     {
-        String relationshipTypeName = OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME;
+        String relationshipTypeName = OpenMetadataType.API_HEADER_RELATIONSHIP.typeName;
 
         if (APIParameterListType.REQUEST.equals(parameterListType))
         {
-            relationshipTypeName = OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME;
+            relationshipTypeName = OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName;
         }
         else if (APIParameterListType.RESPONSE.equals(parameterListType))
         {
-            relationshipTypeName = OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME;
+            relationshipTypeName = OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName;
         }
 
         return relationshipTypeName;

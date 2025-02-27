@@ -102,7 +102,7 @@ public class SchemaAttributeConverter<B> extends OMFConverter<B>
                 bean.setAliases(this.removeAliases(instanceProperties));
                 bean.setSortOrder(this.removeSortOrder(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME, schemaAttributeEntity);
+                instanceProperties = super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName, schemaAttributeEntity);
 
                 bean.setIsCalculatedValue(instanceProperties != null);
                 bean.setExpression(this.getFormula(instanceProperties));

@@ -52,7 +52,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
     private final static String BOOLEAN_LC_TRUE   = "true";
     private final static String BOOLEAN_UC_FALSE  = "FALSE";
     private final static String BOOLEAN_LC_FALSE  = "false";
-    private final static String schemaType  = OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME;
+    private final static String schemaType  = OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName;
     private final static String schemaName  = "CSV";
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
@@ -439,7 +439,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                                                elementProperties);
         if (schemaTypeGUID != null)
         {
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                            assetUniverse.getGUID(),
                                                            schemaTypeGUID,
                                                            null,
@@ -487,15 +487,15 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
         ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
                                                                                       OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
-                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME);
+                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
         classificationProperties = propertyHelper.addStringProperty(classificationProperties,
                                                                     OpenMetadataProperty.DATA_TYPE.name,
                                                                     dataField.getDataFieldType());
 
-        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
                                    classificationProperties);
 
-        return openMetadataStore.createMetadataElementInStore(OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
+        return openMetadataStore.createMetadataElementInStore(OpenMetadataType.TABULAR_COLUMN.typeName,
                                                               ElementStatus.ACTIVE,
                                                               initialClassifications,
                                                               assetUniverse.getGUID(),
@@ -504,7 +504,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                               null,
                                                               elementProperties,
                                                               schemaTypeGUID,
-                                                              OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                              OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                               null,
                                                               true);
     }
@@ -538,13 +538,13 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
         ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
                                                                                       OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
-                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME);
+                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
         classificationProperties = propertyHelper.addStringProperty(classificationProperties,
                                                                     OpenMetadataProperty.DATA_TYPE.name,
                                                                     dataField.getDataFieldType());
 
         openMetadataStore.reclassifyMetadataElementInStore(schemaAttributeGUID,
-                                                           OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
                                                            false,
                                                            classificationProperties);
     }
@@ -555,8 +555,8 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      */
     private static class DataField
     {
-        private       String                dataFieldName               = null;
-        private       String                dataFieldType               = null;
+        private       String                    dataFieldName               = null;
+        private       String                    dataFieldType               = null;
         private       int                       dataFieldPosition           = 0;
         private final ResourceProfileAnnotation resourceProfileAnnotation   = new ResourceProfileAnnotation();
         private       String                    matchingSchemaAttributeGUID = null;

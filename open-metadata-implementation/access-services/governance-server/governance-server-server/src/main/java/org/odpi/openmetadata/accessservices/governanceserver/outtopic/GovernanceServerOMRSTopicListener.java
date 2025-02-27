@@ -710,11 +710,11 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
                     if (status == EngineActionStatus.APPROVED)
                     {
                         String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name,
                                                                                          entity.getProperties(),
                                                                                          methodName);
                         String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.EXECUTOR_ENGINE_NAME.name,
                                                                                          entity.getProperties(),
                                                                                          methodName);
 
@@ -725,11 +725,11 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
                     else if (status == EngineActionStatus.CANCELLED)
                     {
                         String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name,
                                                                                          entity.getProperties(),
                                                                                          methodName);
                         String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.EXECUTOR_ENGINE_NAME.name,
                                                                                          entity.getProperties(),
                                                                                          methodName);
 

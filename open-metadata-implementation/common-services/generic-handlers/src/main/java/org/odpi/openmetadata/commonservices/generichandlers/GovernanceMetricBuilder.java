@@ -81,8 +81,8 @@ public class GovernanceMetricBuilder extends ReferenceableBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataType.GOVERNANCE_METRIC_TYPE_GUID,
-              OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+        super(OpenMetadataType.GOVERNANCE_METRIC.typeGUID,
+              OpenMetadataType.GOVERNANCE_METRIC.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -115,19 +115,19 @@ public class GovernanceMetricBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.MEASUREMENT_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.MEASUREMENT.name,
                                                                   measurement,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TARGET_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TARGET.name,
                                                                   target,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                domainIdentifier,
                                                                methodName);
 

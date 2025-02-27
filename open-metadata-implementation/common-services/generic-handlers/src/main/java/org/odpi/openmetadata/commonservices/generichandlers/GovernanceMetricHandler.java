@@ -125,7 +125,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_METRIC.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -133,7 +133,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -225,7 +225,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_METRIC.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -233,7 +233,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -312,7 +312,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.RATIONALE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.RATIONALE.name,
                                                                                      rationale,
                                                                                      methodName);
         this.linkElementToElement(userId,
@@ -320,15 +320,15 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   governanceMetricGUID,
                                   governanceMetricGUIDParameterName,
-                                  OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                   governanceDefinitionGUID,
                                   governanceDefinitionGUIDParameterName,
                                   OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_GUID,
-                                  OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_GUID,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -376,15 +376,15 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       governanceMetricGUID,
                                       governanceMetricGUIDParameterName,
-                                      OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                       governanceDefinitionGUID,
                                       governanceDefinitionGUIDParameterName,
                                       OpenMetadataType.GOVERNANCE_DEFINITION.typeGUID,
                                       OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_GUID,
-                                      OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -439,15 +439,15 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   governanceMetricGUID,
                                   governanceMetricGUIDParameterName,
-                                  OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                   dataSetGUID,
                                   dataSetGUIDParameterName,
                                   OpenMetadataType.DATA_SET.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.GOVERNANCE_RESULTS_TYPE_GUID,
-                                  OpenMetadataType.GOVERNANCE_RESULTS_TYPE_GUID,
+                                  OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -495,15 +495,15 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       governanceMetricGUID,
                                       governanceMetricGUIDParameterName,
-                                      OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                       dataSetGUID,
                                       dataSetGUIDParameterName,
                                       OpenMetadataType.DATA_SET.typeGUID,
                                       OpenMetadataType.DATA_SET.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.GOVERNANCE_RESULTS_TYPE_GUID,
-                                      OpenMetadataType.GOVERNANCE_RESULTS_TYPE_GUID,
+                                      OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -544,8 +544,8 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     governanceMetricGUID,
                                     governanceMetricGUIDParameterName,
-                                    OpenMetadataType.GOVERNANCE_METRIC_TYPE_GUID,
-                                    OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_METRIC.typeGUID,
+                                    OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -590,8 +590,8 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.GOVERNANCE_METRIC_TYPE_GUID,
-                              OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                              OpenMetadataType.GOVERNANCE_METRIC.typeGUID,
+                              OpenMetadataType.GOVERNANCE_METRIC.typeName,
                               startFrom,
                               pageSize,
                               null,
@@ -640,9 +640,9 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                                                guid,
                                                                guidParameterName,
                                                                OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
-                                                               OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_GUID,
-                                                               OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME,
-                                                               OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                                               OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeGUID,
+                                                               OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName,
+                                                               OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                                                null,
                                                                null,
                                                                1,
@@ -669,7 +669,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                     List<Relationship> relationships = this.getAllAttachmentLinks(userId,
                                                                                   guid,
                                                                                   guidParameterName,
-                                                                                  OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                                                                  OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                                                                   null,
                                                                                   null,
                                                                                   SequencingOrder.CREATION_DATE_RECENT,
@@ -723,7 +723,7 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                          OpenMetadataType.GOVERNANCE_METRIC.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

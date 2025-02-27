@@ -178,8 +178,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataType.ASSET.typeName,
-                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.ROOT_SCHEMA_TYPE.typeGUID,
+                                                                                    OpenMetadataType.ROOT_SCHEMA_TYPE.typeName,
                                                                                     effectiveFrom,
                                                                                     effectiveTo,
                                                                                     forLineage,
@@ -193,14 +193,14 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
              * A data container is represented as a schemaAttribute of type DisplayDataContainer (or a subtype).
              * Check that the type name requested is valid.
              */
-            String attributeTypeName = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME;
-            String attributeTypeId   = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID;
+            String attributeTypeName = OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName;
+            String attributeTypeId   = OpenMetadataType.DISPLAY_DATA_CONTAINER.typeGUID;
 
             if (typeName != null)
             {
                 attributeTypeName = typeName;
                 attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                             OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                             OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                                              serviceName,
                                                                              methodName,
                                                                              repositoryHelper);
@@ -246,8 +246,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                         methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":containerType",
-                                                                        OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
-                                                                        OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                        OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeGUID,
+                                                                        OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeName,
                                                                         repositoryHelper,
                                                                         serviceName,
                                                                         serverName);
@@ -259,9 +259,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                         externalSourceName,
                                                                                         databaseSchemaTypeGUID,
                                                                                         schemaTypeGUIDParameterName,
-                                                                                        OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                         qualifiedName,
                                                                                         qualifiedNameParameterName,
                                                                                         schemaAttributeBuilder,
@@ -353,8 +353,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataType.ASSET.typeName,
-                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeGUID,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeName,
                                                                                     effectiveFrom,
                                                                                     effectiveTo,
                                                                                     forLineage,
@@ -386,8 +386,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                    externalSourceName,
                                                                                    templateGUID,
                                                                                    templateParameterName,
-                                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER.typeGUID,
+                                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                                                    qualifiedName,
                                                                                    qualifiedNameParameterName,
                                                                                    builder,
@@ -409,7 +409,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                    displaySchemaTypeGUIDParameterName,
                                                                    dataContainerGUID,
                                                                    dataContainerGUIDParameterName,
-                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                   OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
                                                                    null,
                                                                    methodName);
                 return dataContainerGUID;
@@ -483,14 +483,14 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
          * A data container is represented as a schemaAttribute of type DisplayDataContainer (or a subtype).
          * Check that the type name requested is valid.
          */
-        String attributeTypeName = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME;
-        String attributeTypeId   = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID;
+        String attributeTypeName = OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName;
+        String attributeTypeId   = OpenMetadataType.DISPLAY_DATA_CONTAINER.typeGUID;
 
         if (typeName != null)
         {
             attributeTypeName = typeName;
             attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                                          serviceName,
                                                                          methodName,
                                                                          repositoryHelper);
@@ -515,7 +515,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
                                                                    isDeprecated,
                                                                    methodName);
 
@@ -617,8 +617,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                     externalSourceName,
                                                     dataContainerGUID,
                                                     dataContainerGUIDParameterName,
-                                                    OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                    OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                    OpenMetadataType.DISPLAY_DATA_CONTAINER.typeGUID,
+                                                    OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                     qualifiedName,
                                                     forLineage,
@@ -666,8 +666,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
         return dataContainerHandler.findSchemaAttributes(userId,
                                                          searchString,
                                                          searchStringParameterName,
-                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER.typeGUID,
+                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                          null,
                                                          null,
                                                          startFrom,
@@ -728,8 +728,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataType.ASSET.typeName,
-                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeGUID,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeName,
                                                                                     effectiveFrom,
                                                                                     effectiveTo,
                                                                                     forLineage,
@@ -745,7 +745,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                 databaseSchemaTypeGUID,
                                                                                 displaySchemaTypeGUIDParameterName,
                                                                                 null,
-                                                                                OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                                                 startFrom,
                                                                                 pageSize,
                                                                                 forLineage,
@@ -789,8 +789,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                      PropertyServerException
     {
         return dataContainerHandler.getSchemaAttributesByName(userId,
-                                                              OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                              OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                              OpenMetadataType.DISPLAY_DATA_CONTAINER.typeGUID,
+                                                              OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                               name,
                                                               null,
                                                               null,
@@ -833,7 +833,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
         return dataContainerHandler.getSchemaAttribute(userId,
                                                        guid,
                                                        guidParameterName,
-                                                       OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                       OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName,
                                                        null,
                                                        null,
                                                        forLineage,

@@ -655,22 +655,6 @@ public abstract class SAFConverter<B> extends OMFConverter<B>
             annotation.setSchemaName(this.removeSchemaName(remainingProperties));
             annotation.setSchemaTypeName(this.removeSchemaType(remainingProperties));
 
-            int dataFieldCount = 0;
-
-            if (relationships != null)
-            {
-                for (Relationship relationship : relationships)
-                {
-                    if (relationship != null)
-                    {
-                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME))
-                        {
-                            dataFieldCount++;
-                        }
-                    }
-                }
-            }
-
             /*
              * Any remaining properties are returned in the extended properties.  They are
              * assumed to be defined in a subtype.

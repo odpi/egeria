@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -347,7 +348,7 @@ public class OpenMetadataTypesArchive3_5
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+        property = archiveHelper.getEnumTypeDefAttribute(OperationalStatus.getOpenTypeName(),
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);

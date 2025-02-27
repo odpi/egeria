@@ -604,7 +604,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
             RelatedMetadataElementList schemaAttributes = openMetadataAccess.getRelatedMetadataElements(memberElement.getRootSchemaType().getElement().getElementGUID(),
                                                                                                         1,
-                                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                                         startFrom,
                                                                                                         context.getMaxPageSize());
 
@@ -621,7 +621,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 startFrom = startFrom + context.getMaxPageSize();
                 schemaAttributes = openMetadataAccess.getRelatedMetadataElements(memberElement.getRootSchemaType().getElement().getElementGUID(),
                                                                                  1,
-                                                                                 OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                 OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                  startFrom,
                                                                                  context.getMaxPageSize());
             }

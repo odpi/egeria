@@ -1740,7 +1740,7 @@ public class OCFMetadataRESTServices
                     List<Relationship> relationships = handler.getAllAttachmentLinks(userId,
                                                                                      apiOperation.getGUID(),
                                                                                      apiOpGUIDParameterName,
-                                                                                     OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                                                                     OpenMetadataType.API_OPERATION.typeName,
                                                                                      null,
                                                                                      null,
                                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -1757,7 +1757,7 @@ public class OCFMetadataRESTServices
 
                         for (Relationship relationship : relationships)
                         {
-                            if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_HEADER_RELATIONSHIP.typeName))
                             {
                                 SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
 
@@ -1765,9 +1765,9 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.API_PARAMETER_LIST.typeName,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                         2,
                                                                                         false,
                                                                                         false,
@@ -1776,7 +1776,7 @@ public class OCFMetadataRESTServices
 
                                 apiOperationResponse.setHeaderAttributeCount(attributeCount);
                             }
-                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName))
                             {
                                 SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
 
@@ -1784,9 +1784,9 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.API_PARAMETER_LIST.typeName,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                         2,
                                                                                         false,
                                                                                         false,
@@ -1795,7 +1795,7 @@ public class OCFMetadataRESTServices
 
                                 apiOperationResponse.setRequestAttributeCount(attributeCount);
                             }
-                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName))
                             {
                                 SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
 
@@ -1803,9 +1803,9 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.API_PARAMETER_LIST.typeName,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                                        OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                         2,
                                                                                         false,
                                                                                         false,

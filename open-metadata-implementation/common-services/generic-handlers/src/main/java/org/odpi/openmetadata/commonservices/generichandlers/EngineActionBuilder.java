@@ -219,7 +219,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                domainIdentifier,
                                                                methodName);
 
@@ -237,13 +237,13 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name,
                                                                   governanceEngineGUID,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXECUTOR_ENGINE_NAME.name,
                                                                   governanceEngineName,
                                                                   methodName);
 
@@ -297,13 +297,13 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.MANDATORY_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.MANDATORY_GUARDS.name,
                                                                        mandatoryGuards,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECEIVED_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECEIVED_GUARDS.name,
                                                                        receivedGuards,
                                                                        methodName);
 
@@ -329,31 +329,31 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.REQUESTED_START_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.REQUESTED_START_DATE.name,
                                                                 requestedStartDate,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.START_DATE.name,
                                                                 startDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PROCESSING_ENGINE_USER_ID.name,
                                                                   processingEngineUserId,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.COMPLETION_DATE.name,
                                                                 completionDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.COMPLETION_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.COMPLETION_GUARDS.name,
                                                                        completionGuards,
                                                                        methodName);
 
@@ -389,7 +389,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PROCESSING_ENGINE_USER_ID.name,
                                                                   processingEngineUserId,
                                                                   methodName);
 
@@ -425,7 +425,7 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.COMPLETION_DATE.name,
                                                                 new Date(),
                                                                 methodName);
 
@@ -469,19 +469,19 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.COMPLETION_DATE.name,
                                                                 completionDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.COMPLETION_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.COMPLETION_GUARDS.name,
                                                                        completionGuards,
                                                                        methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.COMPLETION_MESSAGE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.COMPLETION_MESSAGE.name,
                                                                   completionMessage,
                                                                   methodName);
 

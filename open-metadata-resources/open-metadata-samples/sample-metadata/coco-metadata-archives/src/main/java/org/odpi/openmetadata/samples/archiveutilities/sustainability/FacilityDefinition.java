@@ -313,6 +313,19 @@ public enum FacilityDefinition
                     OrganizationDefinition.COCO),
 
     /**
+     * Edmonton Office
+     */
+    EDMONTON_DC("ED-DC",
+                    "Edmonton Data Centre",
+                    "Edmonton data centre.",
+                    FacilityTypeDefinition.DATA_CENTER,
+                    FacilityDefinition.EDMONTON_SITE,
+                    null,
+                    SustainabilityRoleDefinition.EDMONTON_DC_LEADER,
+                    null,
+                    OrganizationDefinition.COCO),
+
+    /**
      * Edmonton Manufacturing Center
      */
     EDMONTON_FACTORY("ED-FACTORY",

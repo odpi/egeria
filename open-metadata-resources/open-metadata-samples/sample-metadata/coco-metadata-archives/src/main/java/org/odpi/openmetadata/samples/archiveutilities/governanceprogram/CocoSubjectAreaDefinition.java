@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
+import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+
 /**
  * The CocoSubjectAreaDefinition is used to feed the definition of the subject areas for Coco Pharmaceuticals.
  */
@@ -15,9 +17,9 @@ public enum CocoSubjectAreaDefinition
                     null,
                     "Organization",
                     "Information relating to an organization.",
-                    "Across Coco Pharmaceuticals.",
+                    ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to different types of organizational structures and catalogues.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Organization:Hospital - Information relating to a hospital's organization.
@@ -26,9 +28,9 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.ORGANIZATION,
                     "Hospital",
                     "Information relating to a hospital's organization.",
-                    "Across Coco Pharmaceuticals.",
+                    ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to different types of hospital organizational structures and catalogues.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Organization:Supplier - Information relating to a supplier's organization.
@@ -37,9 +39,9 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.ORGANIZATION,
                     "Supplier",
                     "Information relating to a supplier's organization.",
-                    "Across Coco Pharmaceuticals.",
+                    ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to different types of supplier organizational structures and catalogues.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Person - Information relating to an individual.
@@ -48,9 +50,9 @@ public enum CocoSubjectAreaDefinition
                     null,
                     "Person",
                     "Information relating to an individual.",
-                    "Across Coco Pharmaceuticals.",
+                    ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to information that describes an individual.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Person:Patient - Information relating to an individual patient.
@@ -59,9 +61,9 @@ public enum CocoSubjectAreaDefinition
                      CocoSubjectAreaDefinition.PERSON,
                     "Patient",
                     "Information relating to an individual patient.",
-                    "Across Coco Pharmaceuticals.",
+                     ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to information that describes an individual patient.",
-                    0),
+                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Person:Clinician - Information relating to an individual who works with patients.
@@ -70,9 +72,9 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.PERSON,
                     "Clinician",
                     "Information relating to an individual who works with patients.",
-                    "Across Coco Pharmaceuticals.",
+                       ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to information that describes an individual working with patients.",
-                    0),
+                       GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Person:Employee - Information relating to an individual who is employed by an organization.
@@ -81,9 +83,9 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.PERSON,
                     "Employee",
                     "Information relating to an individual who is employed by an organization.",
-                    "Across Coco Pharmaceuticals.",
+                    ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to information that describes an employee.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Person:Collaborator - Information relating to an individual who works for a business partner.
@@ -92,9 +94,9 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.PERSON,
                     "Collaborator",
                     "Information relating to an individual who works for a business partner.",
-                    "Across Coco Pharmaceuticals.",
+                    ScopeDefinition.ALL_COCO.getPreferredValue(),
                     "Controlling data management relating to information that describes an individuals who are business partners.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Clinical - Information relating to the work understanding medical conditions and their resolution.
@@ -105,7 +107,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the work understanding medical conditions and their resolution.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Clinical:Symptom - Information relating to the symptoms of a medical condition.
@@ -116,7 +118,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the symptoms of a medical condition.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Clinical:Measurement - Information relating to the measurements taken to understanding medical conditions and their effectiveness.
@@ -127,7 +129,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the measurements taken to understanding medical conditions and their effectiveness.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Clinical:Prescription - Information relating to the treatment defined for a specific patient.
@@ -138,7 +140,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the treatment defined for a specific patient.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Clinical:Outcome - Information relating to the work understanding the result of a course of treatment.
@@ -149,7 +151,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the work understanding the result of a course of treatment.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Treatment - Information relating to the Coco Pharmaceutical products and practices around patient care.
@@ -160,7 +162,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceutical products and practices around patient care.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Treatment:Product - Information relating to the Coco Pharmaceutical products to be used in particular treatments.
@@ -171,7 +173,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceutical products to be used in particular treatments.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Treatment:Order - Information relating to orders for Coco Pharmaceutical products.
@@ -182,7 +184,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to orders for Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * Treatment:Recipe - Information relating to the ingredients and manufacturing know-how for Coco Pharmaceutical products.
@@ -193,7 +195,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the ingredients and manufacturing know-how for Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * ServiceQuality - Information relating to the Coco Pharmaceuticals' business operations.
@@ -204,7 +206,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceuticals' business operations.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * ServiceQuality:Contract - Information relating to the Coco Pharmaceuticals' contracts.
@@ -215,7 +217,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceuticals' contracts.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * ServiceQuality:Stock - Information relating to the Coco Pharmaceuticals' stock management and control.
@@ -226,7 +228,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceuticals' stock management and control.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * ServiceQuality:Distribution - Information relating to the Coco Pharmaceuticals' distribution of treatments.
@@ -237,7 +239,7 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceuticals' distribution of treatments.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
     /**
      * ServiceQuality:Invoice - Information relating to the Coco Pharmaceuticals' billing and payments.
@@ -248,8 +250,18 @@ public enum CocoSubjectAreaDefinition
                     "Information relating to the Coco Pharmaceuticals' billing and payments.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
-                    0),
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
+    /**
+     * Governance - Information relating to the Coco Pharmaceuticals' governance initiatives.
+     */
+    GOVERNANCE("Governance",
+                    null,
+                    "Governance",
+                    "Information relating to the Coco Pharmaceuticals' governance initiatives.",
+                    "Within research, sales, manufacturing, finance and the data lake.",
+                    "Education on the terminology associated with a governance domain",
+                    GovernanceDomainDefinition.ALL.getDomainIdentifier()),
     ;
 
 

@@ -28,6 +28,15 @@ public enum KafkaTemplateType implements TemplateDefinition
                          DeployedImplementationType.APACHE_KAFKA_TOPIC,
                          KafkaPlaceholderProperty.getKafkaTopicPlaceholderPropertyTypes(),
                          null),
+
+    KAFKA_SERVER_TEMPLATE(KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
+                         "Create a " + DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName() + " asset.",
+                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName(),
+                         false,
+                         "5e1ff810-5418-43f7-b7c4-e6e062f9aff7",
+                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER,
+                         KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes(),
+                         null),
     ;
 
 
@@ -63,7 +72,7 @@ public enum KafkaTemplateType implements TemplateDefinition
      */
     private final Map<String, String> otherPropertyValues;
 
-    private final DeployedImplementationType deployedImplementationType;
+    private final DeployedImplementationTypeDefinition deployedImplementationType;
 
     private final List<PlaceholderPropertyType>        placeholderPropertyTypes;
 
@@ -80,14 +89,14 @@ public enum KafkaTemplateType implements TemplateDefinition
      * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      * @param otherPropertyValues other values
      */
-    KafkaTemplateType(String                             templateName,
-                      String                             templateDescription,
-                      String                             typeName,
-                      boolean                            required,
-                      String                             defaultTemplateGUID,
-                      DeployedImplementationType         deployedImplementationType,
-                      List<PlaceholderPropertyType>      placeholderPropertyTypes,
-                      Map<String, String>                otherPropertyValues)
+    KafkaTemplateType(String                               templateName,
+                      String                               templateDescription,
+                      String                               typeName,
+                      boolean                              required,
+                      String                               defaultTemplateGUID,
+                      DeployedImplementationTypeDefinition deployedImplementationType,
+                      List<PlaceholderPropertyType>        placeholderPropertyTypes,
+                      Map<String, String>                  otherPropertyValues)
     {
         this.templateName               = templateName;
         this.templateDescription        = templateDescription;

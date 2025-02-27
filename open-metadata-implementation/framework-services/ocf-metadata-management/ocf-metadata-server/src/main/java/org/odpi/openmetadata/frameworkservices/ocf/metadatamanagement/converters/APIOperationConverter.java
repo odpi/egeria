@@ -67,7 +67,7 @@ public class APIOperationConverter<B> extends OMFConverter<B>
                     /*
                      * Check that the entity is of the correct type.
                      */
-                    this.setUpElementHeader(bean, entity, OpenMetadataType.API_OPERATION_TYPE_NAME, methodName);
+                    this.setUpElementHeader(bean, entity, OpenMetadataType.API_OPERATION.typeName, methodName);
 
                     /*
                      * Set up the values from the entity.

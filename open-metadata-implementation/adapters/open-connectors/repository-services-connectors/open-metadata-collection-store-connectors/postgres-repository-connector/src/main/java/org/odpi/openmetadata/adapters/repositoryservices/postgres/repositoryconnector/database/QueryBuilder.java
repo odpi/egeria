@@ -152,7 +152,7 @@ public class QueryBuilder
      * @param propertyName name of the property to test (or null for any property)
      * @param propertyColumn is the property name an attribute name or a nested property name?
      * @param operator operator to compare the property value
-     * @param propertyValue property value to look for
+     * @param propertyValue property value to look for (already validated and escaped).
      * @return sub select statement
      */
     private String getPropertySubSelect(String propertyName,
@@ -180,6 +180,23 @@ public class QueryBuilder
         }
 
         return subSelect + "))) ";
+    }
+
+
+    /**
+     * Ensure any single quote in a property value is escaped.
+     *
+     * @param propertyValue supplied property value
+     * @return escaped property value
+     */
+    private String escapePropertyValue(Object propertyValue)
+    {
+        if (propertyValue != null)
+        {
+            return propertyValue.toString().replaceAll("'", "''");
+        }
+
+        return null;
     }
 
 
@@ -386,7 +403,7 @@ public class QueryBuilder
                         stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
                                                                                     leafPropertyName,
                                                                                     stringPropertyOperator,
-                                                                                    primitivePropertyValue.getPrimitiveValue()));
+                                                                                    this.escapePropertyValue(primitivePropertyValue.getPrimitiveValue())));
                     }
                     else
                     {
@@ -401,7 +418,7 @@ public class QueryBuilder
                     stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
                                                                                 leafPropertyName,
                                                                                 stringPropertyOperator,
-                                                                                enumPropertyValue.getSymbolicName()));
+                                                                                this.escapePropertyValue(enumPropertyValue.getSymbolicName())));
                 }
                 else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
                 {
@@ -703,17 +720,27 @@ public class QueryBuilder
 
                     if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
                     {
-                        stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
-                                                                                    leafPropertyName,
-                                                                                    propertyCondition.getOperator(),
-                                                                                    primitivePropertyValue.getPrimitiveValue()));
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        {
+                            stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
+                                                                                        leafPropertyName,
+                                                                                        propertyCondition.getOperator(),
+                                                                                        this.escapePropertyValue(primitivePropertyValue.getPrimitiveValue())));
+                        }
+                        else
+                        {
+                            stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
+                                                                                        leafPropertyName,
+                                                                                        propertyCondition.getOperator(),
+                                                                                        primitivePropertyValue.getPrimitiveValue()));
+                        }
                     }
                     else if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                     {
                         stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
                                                                                     leafPropertyName,
                                                                                     propertyCondition.getOperator(),
-                                                                                    enumPropertyValue.getSymbolicName()));
+                                                                                    this.escapePropertyValue(enumPropertyValue.getSymbolicName())));
                     }
                     else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
                     {

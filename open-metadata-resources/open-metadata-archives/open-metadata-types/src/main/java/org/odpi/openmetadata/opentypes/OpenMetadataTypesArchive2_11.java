@@ -447,16 +447,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private RelationshipDef addGovernanceDefinitionScopeRelationship()
     {
-        final String guid            = "3845b5cc-8c85-462f-b7e6-47472a568793";
-        final String name            = "GovernanceDefinitionScope";
-        final String description     = "Link between a scope - such as a digital service, infrastructure element or organization - and a governance definition.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -479,12 +471,11 @@ public class OpenMetadataTypesArchive2_11
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceDefinition";
         final String                     end2AttributeName            = "associatedGovernanceDefinitions";
         final String                     end2AttributeDescription     = "Governance definitions for this scope.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -503,18 +494,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addThreatEntity()
     {
-        final String guid            = "4ca51fdf-9b70-46b1-bdf6-8860429e78d8";
-        final String name            = "Threat";
-        final String description     = "A description of a specific threat.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "GovernanceDriver";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.THREAT,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DRIVER.typeName));
 
     }
 
@@ -634,9 +615,7 @@ public class OpenMetadataTypesArchive2_11
 
     private TypeDefPatch updateRelationalTableTypeEntity()
     {
-        final String typeName = "RelationalTableType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -669,16 +648,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addEventTypeListEntity()
     {
-        final String guid            = "77ccda3d-c4c6-464c-a424-4b2cb27ac06c";
-        final String name            = "EventTypeList";
-        final String description     = "A list of event types that flow on a topic.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EVENT_TYPE_LIST,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName));
 
     }
 
@@ -690,16 +661,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addEventSchemaAttributeEntity()
     {
-        final String guid            = "5be4ee8f-4d0c-45cd-a411-22a468950342";
-        final String name            = "EventSchemaAttribute";
-        final String description     = "A data field in an event type.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName));
 
     }
 
@@ -728,31 +691,15 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addAPIParameterListEntity()
     {
-        final String guid            = "ba167b12-969f-49d3-8bea-d04228d9a44b";
-        final String name            = "APIParameterList";
-        final String description     = "A list of parameters for an API.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.API_PARAMETER_LIST,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "required";
-        final String attribute2Description     = "Is this parameter list required when calling the API.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUIRED));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -769,32 +716,15 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addAPIParameterEntity()
     {
-        final String guid            = "10277b13-509c-480e-9829-bc16d0eafc53";
-        final String name            = "APIParameter";
-        final String description     = "A data value that is part of a API definition.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.API_PARAMETER,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "parameterType";
-        final String attribute3Description     = "What type of parameter is it";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PARAMETER_TYPE));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -829,16 +759,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addDisplayDataSchemaTypeEntity()
     {
-        final String guid            = "2f5796f5-3fac-4501-9d0d-207aa8620d16";
-        final String name            = "DisplayDataSchemaType";
-        final String description     = "A structure describing data that is to be displayed.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
     }
 
 
@@ -849,16 +771,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addDisplayDataContainerEntity()
     {
-        final String guid            = "f2a4ff99-1954-48c0-8081-92d1a4dfd910";
-        final String name            = "DisplayDataContainer";
-        final String description     = "A grouping of display data fields (and nested containers) for a report, form or similar data display asset.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DISPLAY_DATA_CONTAINER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName));
 
 
     }
@@ -871,31 +785,15 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addDisplayDataFieldEntity()
     {
-        final String guid            = "46f9ea33-996e-4c62-a67d-803df75ef9d4";
-        final String name            = "DisplayDataField";
-        final String description     = "A data display field.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DISPLAY_DATA_FIELD,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "inputField";
-        final String attribute2Description     = "Is this data field accepting new  data from the end user or not.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INPUT_FIELD));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -910,16 +808,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addQuerySchemaTypeEntity()
     {
-        final String guid            = "4d11bdbb-5d4a-488b-9f16-bf1e34d34dd9";
-        final String name            = "QuerySchemaType";
-        final String description     = "A structure describing data that being queried and formatted to support a user display or report.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.QUERY_SCHEMA_TYPE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
     }
 
 
@@ -930,16 +820,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addQueryDataContainerEntity()
     {
-        final String guid            = "b55c2740-2d41-4433-a099-596c8e9b7bf6";
-        final String name            = "QueryDataContainer";
-        final String description     = "A grouping of display data fields (and nested containers) for a query.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.QUERY_DATA_CONTAINER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName));
     }
 
 
@@ -950,16 +832,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addQueryDataFieldEntity()
     {
-        final String guid            = "0eb92215-52b1-4fac-92e7-ff02ff385a68";
-        final String name            = "QueryDataField";
-        final String description     = "A data field that is returned by a query.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.QUERY_DATA_FIELD,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName));
     }
 }
 

@@ -22,7 +22,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
 {
     SERVICE_INITIALIZING("OCF-KAFKA-TOPIC-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.STARTUP,
-                         "Connecting to Apache Kafka Topic {0} with a server identifier of {1}",
+                         "Connecting to Apache Kafka Topic {0} with a server identifier of {1} and bootstrap server location of {2}",
                          "The local server has started up the Apache Kafka connector.",
                          "No action is required.  This is part of the normal operation of the server."),
 

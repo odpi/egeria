@@ -106,30 +106,30 @@ public class APIParameterListConverter<B> extends OMFConverter<B>
                                 EntityProxy endOne = relationship.getEntityOneProxy();
                                 if (repositoryHelper.isTypeOf(serviceName,
                                                               endOne.getType().getTypeDefName(),
-                                                              OpenMetadataType.API_OPERATION_TYPE_NAME))
+                                                              OpenMetadataType.API_OPERATION.typeName))
                                 {
                                     if (repositoryHelper.isTypeOf(serviceName,
                                                                   relationship.getType().getTypeDefName(),
-                                                                  OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME))
+                                                                  OpenMetadataType.API_HEADER_RELATIONSHIP.typeName))
                                     {
                                         bean.setParameterListType(APIParameterListType.HEADER);
                                     }
                                     else if (repositoryHelper.isTypeOf(serviceName,
                                                                        relationship.getType().getTypeDefName(),
-                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME))
+                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName))
                                     {
                                         bean.setParameterListType(APIParameterListType.REQUEST);
                                     }
                                     else if (repositoryHelper.isTypeOf(serviceName,
                                                                        relationship.getType().getTypeDefName(),
-                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
+                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName))
                                     {
                                         bean.setParameterListType(APIParameterListType.RESPONSE);
                                     }
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName,
                                                                    endOne.getType().getTypeDefName(),
-                                                                   OpenMetadataType.API_PARAMETER_TYPE_NAME))
+                                                                   OpenMetadataType.API_PARAMETER.typeName))
                                 {
                                     parameterCount ++;
                                 }

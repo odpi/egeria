@@ -472,7 +472,7 @@ public class AssetConsumerRESTServices
             lineageRelationshipTypeNames.add(OpenMetadataType.CONTROL_FLOW.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME);
+            lineageRelationshipTypeNames.add(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
         }
@@ -1012,7 +1012,7 @@ public class AssetConsumerRESTServices
         searchClassifications.setConditions(classificationConditions);
 
         List<EntityDetail> anchoredElements = assetHandler.findEntities(userId,
-                                                                        OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                        OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -1040,7 +1040,7 @@ public class AssetConsumerRESTServices
                 lineageRelationships.addAll(this.getLineageRelationshipsForElement(userId,
                                                                                    anchoredElement.getGUID(),
                                                                                    anchoredElementGUIDParameterName,
-                                                                                   OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                                   OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                                                                    lineageRelationshipTypeNames,
                                                                                    limitToInformationSupplyChain,
                                                                                    asOfTime,

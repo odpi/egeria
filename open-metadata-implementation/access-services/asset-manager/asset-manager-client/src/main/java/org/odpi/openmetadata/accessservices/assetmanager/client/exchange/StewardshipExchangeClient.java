@@ -1540,10 +1540,10 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         properties.setName(subjectAreaName);
 
         return super.getClassifiedElements(userId,
-                                           OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
                                            null,
                                            subjectAreaName,
-                                           OpenMetadataType.SUBJECT_AREA_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.SUBJECT_AREA_NAME.name,
                                            startFrom,
                                            pageSize,
                                            effectiveTime,
@@ -1956,7 +1956,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         return super.getRelatedElements(userId,
                                         governanceDefinitionGUID,
                                         1,
-                                        OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,

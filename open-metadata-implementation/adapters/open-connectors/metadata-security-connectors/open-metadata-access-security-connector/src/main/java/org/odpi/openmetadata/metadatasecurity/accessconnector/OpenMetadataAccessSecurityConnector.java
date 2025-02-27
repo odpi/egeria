@@ -1053,7 +1053,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         {
             InstanceProperties zoneMembershipProperties = repositoryHelper.getClassificationProperties(serviceName,
                                                                                                        classifications,
-                                                                                                       OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                                                                       OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                                                                                        methodName);
 
             if (zoneMembershipProperties != null)

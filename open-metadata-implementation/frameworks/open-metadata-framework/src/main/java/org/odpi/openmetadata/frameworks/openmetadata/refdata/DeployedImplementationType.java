@@ -643,29 +643,9 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                              "A governance engine that runs governance action services.",
                              "https://egeria-project.org/concepts/governance-action-engine/"),
 
-    /**
-     * Context Event Service - A connector that coordinates governance of context events.
-     */
-    CONTEXT_EVENT_SERVICE_CONNECTOR("Context Event Service",
-                                    DeployedImplementationType.GOVERNANCE_SERVICE,
-                                    OpenMetadataType.CONTEXT_EVENT_SERVICE.typeName,
-                                    null,
-                                    "A connector that coordinates governance of context events.",
-                                    "https://egeria-project.org/concepts/context-event-service/"),
-
 
     /**
-     * Context Event Engine - A governance engine that runs context event services.
-     */
-    CONTEXT_EVENT_ENGINE("Context Event Engine",
-                         DeployedImplementationType.GOVERNANCE_ENGINE,
-                         OpenMetadataType.CONTEXT_EVENT_ENGINE.typeName,
-                         null,
-                         "A governance engine that runs context event services.",
-                         "https://egeria-project.org/concepts/context-event-engine/"),
-
-    /**
-     * Event Action Service - A connector that coordinates asset surveys.
+     * Survey Action Service - A connector that coordinates asset surveys.
      */
     SURVEY_ACTION_SERVICE_CONNECTOR("Survey Action Service",
                                     DeployedImplementationType.GOVERNANCE_SERVICE,
@@ -675,7 +655,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                     "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
-     * Event Action Engine - A governance engine that runs survey action services.
+     * Survey Action Engine - A governance engine that runs survey action services.
      */
     SURVEY_ACTION_ENGINE("Survey Action Engine",
                          DeployedImplementationType.GOVERNANCE_ENGINE,

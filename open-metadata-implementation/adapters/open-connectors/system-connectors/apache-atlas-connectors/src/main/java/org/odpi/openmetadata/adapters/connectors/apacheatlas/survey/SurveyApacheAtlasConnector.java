@@ -790,7 +790,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                null,
                                                                properties,
                                                                assetGUID,
-                                                               OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                               OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                null,
                                                                true);
             }
@@ -1043,7 +1043,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                      atlasTypeDef.getDescription());
 
                 elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                          OpenMetadataType.ALIASES_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.ALIASES.name,
                                                                           new ArrayList<>(atlasSuperTypes));
 
 
@@ -1053,23 +1053,23 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                 typeProperties = propertyHelper.addStringProperty(typeProperties,
                                                                   OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
-                                                                  OpenMetadataType.COMPLEX_SCHEMA_TYPE_TYPE_NAME);
+                                                                  OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName);
 
                 typeProperties = propertyHelper.addStringProperty(typeProperties,
                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   atlasCategoryName);
 
                 typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataType.NAMESPACE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAMESPACE.name,
                                                                   atlasTypeDef.getServiceType());
 
                 typeProperties = propertyHelper.addStringProperty(typeProperties,
-                                                                  OpenMetadataType.VERSION_NUMBER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.VERSION_NUMBER.name,
                                                                   atlasTypeDef.getTypeVersion());
 
                 Map<String, ElementProperties> initialClassifications = new HashMap<>();
 
-                initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
                                            typeProperties);
 
                 typeAttributeGUID = openMetadataStore.createMetadataElementInStore(openMetadataTypeName,
@@ -1081,7 +1081,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                                    null,
                                                                                    elementProperties,
                                                                                    assetUniverse.getRootSchemaType().getGUID(),
-                                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                   OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                    null,
                                                                                    true);
 
@@ -1167,18 +1167,18 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                              attributeDef.getDescription());
 
         elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                          OpenMetadataType.MIN_CARDINALITY_PROPERTY_NAME,
+                                                          OpenMetadataProperty.MIN_CARDINALITY.name,
                                                           attributeDef.getValuesMinCount());
 
         elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                          OpenMetadataType.MAX_CARDINALITY_PROPERTY_NAME,
+                                                          OpenMetadataProperty.MAX_CARDINALITY.name,
                                                           attributeDef.getValuesMaxCount());
 
         Map<String, ElementProperties> initialClassifications = new HashMap<>();
 
         ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
                                                                                       OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
-                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME);
+                                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
 
         classificationProperties = propertyHelper.addStringProperty(classificationProperties,
                                                                     OpenMetadataProperty.DATA_TYPE.name,
@@ -1188,7 +1188,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                     OpenMetadataProperty.DEFAULT_VALUE.name,
                                                                     attributeDef.getDefaultValue());
 
-        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
                                    classificationProperties);
 
         String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
@@ -1200,11 +1200,11 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                                     null,
                                                                                     elementProperties,
                                                                                     typeSchemaAttributeGUID,
-                                                                                    OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                    OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                                                     null,
                                                                                     true);
 
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                        typeSchemaAttributeGUID,
                                                        schemaAttributeGUID,
                                                        null,

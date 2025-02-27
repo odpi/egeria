@@ -49,6 +49,15 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                                     "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
 
     /**
+     * JDBC-RESOURCE-CONNECTOR-0004 - The JDBC resource connector for database {0} has issued a rollback after receiving SQL Exception with message {1}
+     */
+    ROllBACK_AFTER_EXCEPTION("JDBC-RESOURCE-CONNECTOR-0004",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The JDBC resource connector for database {0} has issued a rollback after receiving {1} error with message {2}",
+                           "The connector is attempting to clean up the connection after an error.",
+                           "Diagnose and fix the cause of the original exception.  Check that subsequent requests execute successfully."),
+
+    /**
      * JDBC-RESOURCE-CONNECTOR-0009 - JDBC resource connector is closing all {0} connection(s) to database {1} and is shutting down
      */
     CONNECTOR_STOPPING("JDBC-RESOURCE-CONNECTOR-0009",
@@ -56,6 +65,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                        "The JDBC resource connector for database {0} is closing all {1} connection(s) to database and is shutting down",
                        "The connector has been requested to disconnect from the database and is ensuring all connections are closed.  This message is output by each data source that was created by the connector.  Therefore the number of times that this message is emitted indicates the number of data sources were created by the connector.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+
 
 
 

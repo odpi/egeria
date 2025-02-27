@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -149,7 +150,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
     /**
      * Delete a specific metadata element.
      *
-     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param metadataElementGUID unique identifier of the metadata element to delete
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -164,6 +165,25 @@ public interface RemediationGovernanceContext extends GovernanceContext
                                Date    effectiveTime) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException;
+
+    /**
+     * Delete a specific metadata element.
+     *
+     * @param metadataElement the metadata element to delete
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void deleteMetadataElement(OpenMetadataElement metadataElement,
+                               boolean             forLineage,
+                               boolean             forDuplicateProcessing,
+                               Date                effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**

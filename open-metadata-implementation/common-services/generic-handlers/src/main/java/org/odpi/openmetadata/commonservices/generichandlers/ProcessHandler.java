@@ -2252,7 +2252,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.GUARD.name,
                                                                               guard,
                                                                               methodName);
 

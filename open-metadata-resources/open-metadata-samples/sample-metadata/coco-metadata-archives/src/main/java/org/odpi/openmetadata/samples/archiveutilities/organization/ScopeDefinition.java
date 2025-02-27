@@ -28,7 +28,12 @@ public enum ScopeDefinition
     /**
      * Within the local country.
      */
-    WITHIN_COUNTRY ("Within County","Within the local country."),
+    WITHIN_COUNTRY ("Within Country","Within the local country."),
+
+    /**
+     * Within a Business Area or Service.
+     */
+    WITHIN_BUSINESS_CAPABILITY("Within Business Capability", "Within a Business Area or Service."),
 
     /**
      * Within the team.

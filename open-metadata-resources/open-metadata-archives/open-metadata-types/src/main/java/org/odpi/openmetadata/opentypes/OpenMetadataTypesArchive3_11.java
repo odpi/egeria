@@ -833,9 +833,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceZone";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ZONE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -844,16 +842,8 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "zoneName";
-        final String attribute1Description     = "Identifier of the zone - if null use qualifiedName.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ZONE_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -866,9 +856,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "SubjectAreaDefinition";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -877,16 +865,8 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "subjectAreaName";
-        final String attribute1Description     = "Identifier of the subject area - if null use qualifiedName.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUBJECT_AREA_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -899,9 +879,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "BusinessCapability";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -910,16 +888,9 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.IDENTIFIER.name,
-                                                           OpenMetadataProperty.IDENTIFIER.description,
-                                                           OpenMetadataProperty.IDENTIFIER.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -963,11 +934,10 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -980,11 +950,9 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility for activity at a particular location.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -997,11 +965,9 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -1014,11 +980,9 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A role defining a responsibility for an IT solution.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -1079,9 +1043,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceActionProcessStep";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1096,9 +1058,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "NextEngineAction";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NEXT_ENGINE_ACTION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1113,9 +1073,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "License";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LICENSE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1130,9 +1088,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "Certification";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1245,9 +1201,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1274,16 +1228,8 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "isDefaultValue";
-        final String attribute1Description     = "Is the member the default value in the set?";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEFAULT_VALUE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

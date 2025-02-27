@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.mapper.SupplementaryPropert
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
-import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;

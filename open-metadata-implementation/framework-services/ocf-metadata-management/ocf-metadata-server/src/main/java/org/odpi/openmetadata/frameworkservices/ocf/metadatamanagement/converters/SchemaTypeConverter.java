@@ -89,35 +89,35 @@ public class SchemaTypeConverter<B> extends OMFConverter<B>
                      * This next piece of logic sorts out which type of schema bean to create.
                      */
 
-                    if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getPrimitiveSchemaType(instanceProperties);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.LITERAL_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.LITERAL_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getLiteralSchemaType(instanceProperties);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.API_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getAPISchemaType(instanceProperties, attributeCount);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getComplexSchemaType(instanceProperties, attributeCount);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.LITERAL_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.LITERAL_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getEnumSchemaType(instanceProperties, validValueSetGUID);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.MAP_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.MAP_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getMapSchemaType(instanceProperties, mapFromSchemaType, mapToSchemaType);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName))
                     {
                         returnBean = this.getSchemaTypeChoice(instanceProperties, schemaTypeOptions);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName))
                     {
                         returnBean = this.getExternalSchemaType(instanceProperties, externalSchemaType);
                     }
@@ -126,7 +126,7 @@ public class SchemaTypeConverter<B> extends OMFConverter<B>
                         /*
                          * This will throw an exception
                          */
-                        super.validateInstanceType(OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                        super.validateInstanceType(OpenMetadataType.SCHEMA_TYPE.typeName,
                                                    beanClass.getName(),
                                                    schemaTypeTypeName,
                                                    methodName);
@@ -140,7 +140,7 @@ public class SchemaTypeConverter<B> extends OMFConverter<B>
                                                  methodName);
 
                         InstanceProperties classificationProperties =
-                                super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                                   schemaRootClassifications);
 
                         returnBean.setFormula(this.getFormula(classificationProperties));

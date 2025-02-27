@@ -435,10 +435,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   schemaTypeGUID,
-                                                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                   false,
-                                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                                   null,
                                                                                   null,
                                                                                   SequencingOrder.CREATION_DATE_RECENT,
@@ -464,10 +464,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -488,10 +488,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -512,10 +512,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -532,10 +532,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         }
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -556,10 +556,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -576,31 +576,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         }
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME,
-                                                                     null,
-                                                                     null,
-                                                                     SequencingOrder.CREATION_DATE_RECENT,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveTime,
-                                                                     methodName);
-        if (relationship != null)
-        {
-            EntityProxy proxy = relationship.getEntityOneProxy();
-
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
-
-        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                     schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
-                                                                     false,
-                                                                     OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.API_HEADER_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -618,10 +597,31 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.API_REQUEST_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveTime,
+                                                                     methodName);
+        if (relationship != null)
+        {
+            EntityProxy proxy = relationship.getEntityOneProxy();
+
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+
+        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                     schemaTypeGUID,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
+                                                                     false,
+                                                                     OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -642,10 +642,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                      false,
-                                                                     OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.PORT_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                     OpenMetadataType.PORT_SCHEMA_RELATIONSHIP.typeName,
                                                                      null,
                                                                      null,
                                                                      SequencingOrder.CREATION_DATE_RECENT,
@@ -709,8 +709,8 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                                                   attributeGUID,
                                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                                   false,
-                                                                                  OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                  OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                  OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                   null,
                                                                                   null,
                                                                                   SequencingOrder.CREATION_DATE_RECENT,
@@ -734,8 +734,8 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         relationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                            attributeGUID,
                                                                            OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                           OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                           OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                           OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeGUID,
+                                                                           OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                                            true,
                                                                            null,
                                                                            null,
@@ -1062,68 +1062,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
 
     /**
-     * Walk the graph to locate the anchor for a Rating.  Ratings are attached directly to a referenceable.
-     *
-     * @param userId calling user
-     * @param reportGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return unique identifiers of attached anchor or null if there is no attached anchor
-     *
-     * @throws InvalidParameterException one of the guids is no longer available
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    private AnchorIdentifiers getAnchorGUIDForOpenDiscoveryAnalysisReport(String  userId,
-                                                                          String  reportGUID,
-                                                                          boolean forLineage,
-                                                                          boolean forDuplicateProcessing,
-                                                                          Date    effectiveTime,
-                                                                          String  methodName) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
-    {
-        /*
-         * Is the report connected to an Asset?
-         */
-        Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                                  reportGUID,
-                                                                                  OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                                                                  false,
-                                                                                  OpenMetadataType.REPORT_TO_ASSET_TYPE_GUID,
-                                                                                  OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME,
-                                                                                  null,
-                                                                                  null,
-                                                                                  SequencingOrder.CREATION_DATE_RECENT,
-                                                                                  null,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  effectiveTime,
-                                                                                  methodName);
-
-        if (relationship != null)
-        {
-            EntityProxy proxy = relationship.getEntityOneProxy();
-            if ((proxy != null) && (proxy.getGUID() != null))
-            {
-                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
-
-                anchorIdentifiers.anchorGUID = proxy.getGUID();
-                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
-
-                return anchorIdentifiers;
-            }
-        }
-
-        return null;
-    }
-
-
-
-    /**
      * Walk the graph to locate the anchor for a Survey report.  Survey reports are attached directly to an asset.
      *
      * @param userId calling user
@@ -1344,8 +1282,8 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                                                   dataFieldGUID,
                                                                                   OpenMetadataType.DATA_FIELD.typeName,
                                                                                   false,
-                                                                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
-                                                                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
+                                                                                  OpenMetadataType.NESTED_DATA_FIELD_TYPE_GUID,
+                                                                                  OpenMetadataType.NESTED_DATA_FIELD_TYPE_NAME,
                                                                                   null,
                                                                                   null,
                                                                                   SequencingOrder.CREATION_DATE_RECENT,
@@ -1650,10 +1588,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.LIKE.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForLike(localServerUserId, targetGUID, forLineage,forDuplicateProcessing, effectiveTime, methodName);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
-        {
-            anchorIdentifiers = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SURVEY_REPORT.typeName))
         {

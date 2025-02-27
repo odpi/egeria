@@ -162,7 +162,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 element.getElementHeader().getGUID(),
                                                                                 schemaTypeGUIDParameterName,
-                                                                                OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                                OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 forLineage,
@@ -311,7 +311,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
-                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.SCHEMA_TYPE.typeName,
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -342,7 +342,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    String               serverName,
                                                    String               methodName) throws InvalidParameterException
     {
-        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE.typeName;
 
         if (schemaType.getTypeName() != null)
         {
@@ -350,7 +350,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -423,7 +423,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
-                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.SCHEMA_TYPE.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -478,7 +478,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         schemaTypeGUID,
                                         schemaTypeGUIDParameterName,
-                                        OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                        OpenMetadataType.SCHEMA_TYPE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -558,11 +558,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    parentElementTypeName,
                                                    schemaTypeGUID,
                                                    schemaTypeGUIDParameterName,
-                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                   OpenMetadataType.SCHEMA_TYPE.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
-                                                   OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                                   OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                   OpenMetadataType.PORT_SCHEMA_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.PORT_SCHEMA_RELATIONSHIP.typeName,
                                                    null,
                                                    effectiveFrom,
                                                    effectiveTo,
@@ -579,11 +579,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    parentElementTypeName,
                                                    schemaTypeGUID,
                                                    schemaTypeGUIDParameterName,
-                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                   OpenMetadataType.SCHEMA_TYPE.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
-                                                   OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                   OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                   OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                    null,
                                                    effectiveFrom,
                                                    effectiveTo,
@@ -801,7 +801,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         schemaTypeGUID,
                                         schemaTypeGUIDParameterName,
-                                        OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                        OpenMetadataType.SCHEMA_TYPE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -813,8 +813,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       getExternalSourceName(correlationProperties),
                                                       schemaTypeGUID,
                                                       schemaTypeGUIDParameterName,
-                                                      OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
-                                                      OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                      OpenMetadataType.SCHEMA_TYPE.typeGUID,
+                                                      OpenMetadataType.SCHEMA_TYPE.typeName,
                                                       null,
                                                       null,
                                                       forLineage,
@@ -947,7 +947,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             schemaTypeElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                   schemaTypeElement.getElementHeader().getGUID(),
                                                                                   schemaTypeGUIDParameterName,
-                                                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
                                                                                   forLineage,
@@ -1053,7 +1053,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             schemaTypeElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                   schemaTypeGUID,
                                                                                   guidParameterName,
-                                                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
                                                                                   forLineage,
@@ -1105,7 +1105,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        invalidParameterHandler,
                                                                                        userId,
                                                                                        schemaTypeGUID,
-                                                                                       OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                                       OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                        null,
                                                                                        null,
                                                                                        1,
@@ -1127,10 +1127,10 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             if ((relationship != null) && (relationship.getType() != null) &&
                         ((repositoryHelper.isTypeOf(serviceName,
                                                     relationship.getType().getTypeDefName(),
-                                                    OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
+                                                    OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName)) ||
                          (repositoryHelper.isTypeOf(serviceName,
                                                     relationship.getType().getTypeDefName(),
-                                                    OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))))
+                                                    OpenMetadataType.PORT_SCHEMA_RELATIONSHIP.typeName))))
             {
                 final String parentGUIDParameterName = "relationship.getEntityOneProxy().getGUID()";
 
@@ -1500,9 +1500,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                              getExternalSourceName(assetManagerName, assetManagerIsHome),
                                                              schemaElementGUID,
                                                              schemaElementGUIDParameterName,
-                                                             OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                             OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                             OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                             OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                             OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeGUID,
+                                                             OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                              properties,
                                                              false,
                                                              forLineage,
@@ -1546,9 +1546,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                   assetManagerName,
                                                                   schemaElementGUID,
                                                                   schemaElementGUIDParameterName,
-                                                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   effectiveTime,
@@ -1594,7 +1594,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.PRIMARY_KEY_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.NAME.name,
                                                                                      primaryKeyName,
                                                                                      methodName);
 
@@ -1608,15 +1608,15 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.PRIMARY_KEY_PATTERN_PROPERTY_NAME,
-                                                                    OpenMetadataType.KEY_PATTERN_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.KEY_PATTERN_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.KEY_PATTERN.name,
+                                                                    KeyPattern.getOpenTypeGUID(),
+                                                                    KeyPattern.getOpenTypeName(),
                                                                     keyPatternOrdinal,
                                                                     methodName);
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.PRIMARY_KEY_PATTERN_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataProperty.KEY_PATTERN.name);
         }
 
         schemaAttributeHandler.setClassificationInRepository(userId,
@@ -1625,8 +1625,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                              schemaAttributeGUID,
                                                              schemaAttributeGUIDParameterName,
                                                              OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                             OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
-                                                             OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                             OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeGUID,
+                                                             OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName,
                                                              properties,
                                                              false,
                                                              forLineage,
@@ -1669,8 +1669,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                   schemaAttributeGUID,
                                                                   schemaAttributeGUIDParameterName,
                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                  OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   effectiveTime,
@@ -1739,8 +1739,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                     OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                     forLineage,
                                                     forDuplicateProcessing,
-                                                    OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
-                                                    OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                    OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeGUID,
+                                                    OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
                                                     this.getForeignKeyProperties(foreignKeyProperties, methodName),
                                                     effectiveFrom,
                                                     effectiveTo,
@@ -1765,27 +1765,27 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataType.FOREIGN_KEY_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.NAME.name,
                                                                       foreignKeyProperties.getName(),
                                                                       methodName);
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataType.FOREIGN_KEY_DESCRIPTION_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                       foreignKeyProperties.getDescription(),
                                                                       methodName);
             properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.FOREIGN_KEY_CONFIDENCE_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.CONFIDENCE.name,
                                                                    foreignKeyProperties.getConfidence(),
                                                                    methodName);
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataType.FOREIGN_KEY_STEWARD_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.STEWARD.name,
                                                                       foreignKeyProperties.getSteward(),
                                                                       methodName);
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataType.FOREIGN_KEY_SOURCE_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.SOURCE.name,
                                                                       foreignKeyProperties.getSource(),
                                                                       methodName);
         }
@@ -1845,8 +1845,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           supportedZones,
-                                                          OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
-                                                          OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                          OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeGUID,
+                                                          OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
                                                           false,
                                                           this.getForeignKeyProperties(foreignKeyProperties, methodName),
                                                           effectiveTime,
@@ -1903,8 +1903,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                         forLineage,
                                                         forDuplicateProcessing,
-                                                        OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
-                                                        OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                        OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeGUID,
+                                                        OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
                                                         effectiveTime,
                                                         methodName);
     }

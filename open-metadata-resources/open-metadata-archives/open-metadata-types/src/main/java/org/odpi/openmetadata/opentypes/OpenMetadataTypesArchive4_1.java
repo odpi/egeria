@@ -521,7 +521,7 @@ public class OpenMetadataTypesArchive4_1
         final String                     end2AttributeDescription     = "The security groups to use to validate access for the operation.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_GROUP_TYPE_NAME),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_GROUP.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

@@ -95,7 +95,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
      */
     @Override
     public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
-                                                                       Connector     connectorToTarget)
+                                                                       Connector     connectorToTarget) throws ConnectorCheckedException
     {
         if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
         {

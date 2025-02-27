@@ -6,6 +6,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -87,14 +88,14 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
                                                                     OpenMetadataProperty.ANNOTATION_STATUS.name,
-                                                                    OpenMetadataType.ANNOTATION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ANNOTATION_STATUS_ENUM_TYPE_NAME,
+                                                                    AnnotationStatus.getOpenTypeGUID(),
+                                                                    AnnotationStatus.getOpenTypeName(),
                                                                     annotationStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ANNOTATION_STATUS_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, AnnotationStatus.getOpenTypeName());
         }
 
         return properties;

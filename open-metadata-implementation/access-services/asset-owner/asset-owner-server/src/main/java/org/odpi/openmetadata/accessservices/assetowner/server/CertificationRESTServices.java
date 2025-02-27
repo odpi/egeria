@@ -126,7 +126,7 @@ public class CertificationRESTServices
             CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
             List<CertificationTypeElement> certificationTypeElements = handler.getGovernanceDefinitionsByName(userId,
-                                                                                                              OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                                                              OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                                                                               documentIdentifier,
                                                                                                               documentIdParameterName,
                                                                                                               0,
@@ -188,7 +188,7 @@ public class CertificationRESTServices
                 CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                       OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                       OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                                        requestBody.getSearchString(),
                                                                        titleParameterName,
                                                                        startFrom,
@@ -247,7 +247,7 @@ public class CertificationRESTServices
             CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
             response.setElements(handler.getGovernanceDefinitionsByDomain(userId,
-                                                                          OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                                           domainIdentifier,
                                                                           startFrom,
                                                                           pageSize,
@@ -319,7 +319,7 @@ public class CertificationRESTServices
                                                             OpenMetadataType.REFERENCEABLE.typeName,
                                                             certificationTypeGUID,
                                                             certificationTypeGUIDParameterName,
-                                                            OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                            OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                             properties.getCertificateId(),
                                                             properties.getStartDate(),
                                                             properties.getEndDate(),
@@ -536,9 +536,9 @@ public class CertificationRESTServices
             response.setElements(handler.getAttachedElements(userId,
                                                              certificationTypeGUID,
                                                              guidParameter,
-                                                             OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
-                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                                             OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeGUID,
+                                                             OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                              null,
                                                              null,
@@ -601,9 +601,9 @@ public class CertificationRESTServices
                                                              elementGUID,
                                                              guidParameterName,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                             OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                             OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeGUID,
+                                                             OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                                             OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                              null,
                                                              null,
                                                              2,

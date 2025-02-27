@@ -17,6 +17,7 @@ import java.util.List;
 public enum ManageAssetGuard
 {
     SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The new asset representing the resource has been created.  Its unique identifier (guid) is published in the 'newAsset' action target"),
+    DELETE_COMPLETE("delete-complete", CompletionStatus.ACTIONED, "The new asset representing the resource has been deleted."),
     MISSING_TEMPLATE("missing-template", CompletionStatus.INVALID, "The templateGUID request parameter has not been supplied."),
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
     ;

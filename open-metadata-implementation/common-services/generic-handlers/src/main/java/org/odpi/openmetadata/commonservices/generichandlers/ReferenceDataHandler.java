@@ -194,7 +194,7 @@ public class ReferenceDataHandler<VALID_VALUE,
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataType.SYMBOLIC_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.SYMBOLIC_NAME.name,
                                                                       symbolicName,
                                                                       methodName);
         }
@@ -203,7 +203,7 @@ public class ReferenceDataHandler<VALID_VALUE,
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataType.IMPLEMENTATION_VALUE_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.IMPLEMENTATION_VALUE.name,
                                                                       implementationValue,
                                                                       methodName);
         }
@@ -212,7 +212,7 @@ public class ReferenceDataHandler<VALID_VALUE,
         {
             properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                          properties,
-                                                                         OpenMetadataType.ADDITIONAL_VALUES_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.ADDITIONAL_VALUES.name,
                                                                          additionalValues,
                                                                          methodName);
         }
@@ -343,7 +343,7 @@ public class ReferenceDataHandler<VALID_VALUE,
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.ASSOCIATION_DESCRIPTION.name,
                                                                               associationDescription,
                                                                               methodName);
 

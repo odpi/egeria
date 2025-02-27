@@ -782,7 +782,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
                                                                                                          1,
-                                                                                                         OpenMetadataType.REFERENCEABLE_TO_LICENSE_TYPE_NAME,
+                                                                                                         OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                                                                                          0,
                                                                                                          openMetadataAccess.getMaxPagingSize());
 
@@ -1000,7 +1000,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     {
                         numberOfComments = numberOfComments + 1 + countAttachedComments(relatedMetadataElement.getElement().getElementGUID());
                     }
-                    else if (OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME.equals(relationshipType))
+                    else if (OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName.equals(relationshipType))
                     {
                         syncCertification(databaseConnection, elementHeader.getGUID(), relatedMetadataElement);
                     }
@@ -2335,7 +2335,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     for (ElementClassification classification : elementHeader.getClassifications())
                     {
-                        if (OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
+                        if (OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
                         {
                             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ZONE_NAMES, this.getZoneNames(classification.getClassificationProperties()));
                         }
@@ -2345,7 +2345,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
                             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
                         }
-                        else if (OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
+                        else if (OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
                         {
                             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.ORGANIZATION.name, 80));
                             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), "businessCapability", 80));

@@ -122,7 +122,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        String typeName = OpenMetadataType.ZONE_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_ZONE.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -130,7 +130,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.ZONE_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -209,7 +209,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        String typeName = OpenMetadataType.ZONE_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_ZONE.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -217,7 +217,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.ZONE_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -242,8 +242,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     zoneGUID,
                                     zoneGUIDParameterName,
-                                    OpenMetadataType.ZONE_TYPE_GUID,
-                                    OpenMetadataType.ZONE_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_ZONE.typeGUID,
+                                    OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                     false,
                                     false,
                                     supportedZones,
@@ -277,13 +277,13 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.ZONE_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.ZONE_NAME.name);
 
         return this.getBeanByValue(userId,
                                    name,
                                    nameParameter,
-                                   OpenMetadataType.ZONE_TYPE_GUID,
-                                   OpenMetadataType.ZONE_TYPE_NAME,
+                                   OpenMetadataType.GOVERNANCE_ZONE.typeGUID,
+                                   OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                    specificMatchPropertyNames,
                                    null,
                                    null,
@@ -321,11 +321,11 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getUniqueAttachmentLink(userId,
                                             zoneGUID,
                                             zoneGUIDParameter,
-                                            OpenMetadataType.ZONE_TYPE_NAME,
-                                            OpenMetadataType.ZONE_HIERARCHY_TYPE_GUID,
-                                            OpenMetadataType.ZONE_HIERARCHY_TYPE_NAME,
+                                            OpenMetadataType.GOVERNANCE_ZONE.typeName,
+                                            OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName,
                                             null,
-                                            OpenMetadataType.ZONE_TYPE_NAME,
+                                            OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                             1,
                                             null,
                                             null,
@@ -362,11 +362,11 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getAttachmentLinks(userId,
                                        zoneGUID,
                                        zoneGUIDParameter,
-                                       OpenMetadataType.ZONE_TYPE_NAME,
-                                       OpenMetadataType.ZONE_HIERARCHY_TYPE_GUID,
-                                       OpenMetadataType.ZONE_HIERARCHY_TYPE_NAME,
+                                       OpenMetadataType.GOVERNANCE_ZONE.typeName,
+                                       OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeGUID,
+                                       OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName,
                                        null,
-                                       OpenMetadataType.ZONE_TYPE_NAME,
+                                       OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                        2,
                                        null,
                                        null,
@@ -404,8 +404,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataType.ZONE_TYPE_GUID,
-                                   OpenMetadataType.ZONE_TYPE_NAME,
+                                   OpenMetadataType.GOVERNANCE_ZONE.typeGUID,
+                                   OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                    null,
                                    null,
                                    SequencingOrder.CREATION_DATE_RECENT,
@@ -449,8 +449,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<EntityDetail> entities = this.getEntitiesByType(userId,
-                                                             OpenMetadataType.ZONE_TYPE_GUID,
-                                                             OpenMetadataType.ZONE_TYPE_NAME,
+                                                             OpenMetadataType.GOVERNANCE_ZONE.typeGUID,
+                                                             OpenMetadataType.GOVERNANCE_ZONE.typeName,
                                                              null,
                                                              null,
                                                              SequencingOrder.CREATION_DATE_RECENT,
@@ -474,7 +474,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     if (entity.getProperties() != null)
                     {
                         if (repositoryHelper.getIntProperty(serviceName,
-                                                            OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                             entity.getProperties(),
                                                             methodName) == domainIdentifier)
                         {

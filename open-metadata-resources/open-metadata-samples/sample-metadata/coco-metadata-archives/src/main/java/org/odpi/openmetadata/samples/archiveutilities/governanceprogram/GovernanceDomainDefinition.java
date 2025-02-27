@@ -87,6 +87,16 @@ public enum GovernanceDomainDefinition
                      "Asset Management Community",
                      PersonDefinition.SIDNEY_SEEKER),
 
+
+    /**
+     * Development of new treatments by Coco Pharmaceuticals.
+     */
+    DRUG_DEVELOPMENT(8,
+                     "Drug Development",
+                     "Development of new treatments by Coco Pharmaceuticals.",
+                     "Drug Development Community",
+                     PersonDefinition.TESSA_TUBE),
+
     ;
 
 

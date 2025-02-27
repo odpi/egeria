@@ -392,6 +392,83 @@ public enum RequestTypeDefinition
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
+    /**
+     * create-file-folder
+     */
+    CREATE_FILE_FOLDER("create-file-folder",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.CREATE_ASSET,
+                       "52a82692-7e49-40a8-9b3d-469e87e0220b",
+                       DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
+                       ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * create-file-folder
+     */
+    CREATE_DATA_FOLDER("create-data-folder",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.DATA_FOLDER_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.CREATE_ASSET,
+                       "246a8a18-7b10-402a-95d8-acf7115046ff",
+                       DeployedImplementationType.DATA_FOLDER.getQualifiedName(),
+                       ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * delete-file-folder
+     */
+    DELETE_FILE_FOLDER("delete-file-folder",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.DELETE_ASSET,
+                       "ac62ef3c-674e-48d7-b9a2-636cbaee4c6b",
+                       DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
+                       ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * delete-data-folder
+     */
+    DELETE_DATA_FOLDER("delete-data-folder",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.DATA_FOLDER_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.DELETE_ASSET,
+                       "6710231c-bfd6-4701-8aed-52e2a818c3e0",
+                       DeployedImplementationType.DATA_FOLDER.getQualifiedName(),
+                       ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * catalog-file-folder
+     */
+    CATALOG_FILE_FOLDER("catalog-file-folder",
+                            null,
+                            null,
+                            null,
+                            GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                            "33fb5cd5-b84d-4c17-95b3-b1b2b99840e0",
+                            DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
+                            ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * catalog-data-folder
+     */
+    CATALOG_DATA_FOLDER("catalog-data-folder",
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                        "85424989-b821-49b6-8824-29b1b06536f5",
+                        DeployedImplementationType.DATA_FOLDER.getQualifiedName(),
+                        ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * create-software-server
@@ -458,6 +535,18 @@ public enum RequestTypeDefinition
                         DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
                         ContentPackDefinition.CORE_CONTENT_PACK),
 
+    /**
+     * delete-kafka-topic
+     */
+    DELETE_KAFKA_TOPIC("delete-kafka-topic",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.KAFKA_TOPIC_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                       GovernanceServiceDefinition.CREATE_ASSET,
+                       "7a800598-6d62-460b-b7be-0c545535622c",
+                       DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName(),
+                       ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * create-unity-catalog-server

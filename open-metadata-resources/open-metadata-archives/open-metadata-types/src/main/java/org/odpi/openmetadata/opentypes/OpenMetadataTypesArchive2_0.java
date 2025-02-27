@@ -183,18 +183,8 @@ public class OpenMetadataTypesArchive2_0
 
     private ClassificationDef addTemplateClassification()
     {
-        final String guid            = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeGUID;
-        final String name            = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName;
-        final String description     = OpenMetadataType.TEMPLATE_CLASSIFICATION.description;
-        final String descriptionGUID = OpenMetadataType.TEMPLATE_CLASSIFICATION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.TEMPLATE_CLASSIFICATION.wikiURL;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.TEMPLATE_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
@@ -202,20 +192,10 @@ public class OpenMetadataTypesArchive2_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
-                                                           OpenMetadataProperty.NAME.description,
-                                                           OpenMetadataProperty.NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
         classificationDef.setPropertiesDefinition(properties);
 

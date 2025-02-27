@@ -27,7 +27,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private int               minCardinality        = 0;
     private int               maxCardinality        = 0;
     private boolean           isDeprecated          = false;
-    private String            cardinality           = null;
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
     private int               sortOrder             = 0;
@@ -155,7 +154,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         this.displayName           = displayName;
         this.description           = description;
         this.elementPosition       = elementPosition;
-        this.cardinality           = null;
         this.minCardinality        = minCardinality;
         this.maxCardinality        = maxCardinality;
         this.isDeprecated          = isDeprecated;
@@ -197,7 +195,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -206,7 +204,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName);
         }
     }
 
@@ -249,7 +247,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param userId calling user
      * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName        name of the software capability entity that represented the external source
-     * @param instanceProperties        properties for the calculated vlaue classification
+     * @param instanceProperties        properties for the calculated value classification
      * @param methodName calling method
      * @throws InvalidParameterException calculated value is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
@@ -274,7 +272,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                                   externalSourceName,
                                                                                   instanceProvenanceType,
                                                                                   userId,
-                                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -283,7 +281,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName);
         }
     }
 
@@ -339,49 +337,43 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.ELEMENT_POSITION_PROPERTY_NAME,
+                                                               OpenMetadataProperty.POSITION.name,
                                                                elementPosition,
                                                                methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataType.CARDINALITY_PROPERTY_NAME,
-                                                                  cardinality,
-                                                                  methodName);
-
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.MIN_CARDINALITY_PROPERTY_NAME,
+                                                               OpenMetadataProperty.MIN_CARDINALITY.name,
                                                                minCardinality,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.MAX_CARDINALITY_PROPERTY_NAME,
+                                                               OpenMetadataProperty.MAX_CARDINALITY.name,
                                                                maxCardinality,
                                                                methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
                                                                    isDeprecated,
                                                                    methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DEFAULT_VALUE_OVERRIDE.name,
                                                                   defaultValueOverride,
                                                                   methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.ALLOWS_DUPLICATES_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.name,
                                                                    allowsDuplicateValues,
                                                                    methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.ORDERED_VALUES_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.ORDERED_VALUES.name,
                                                                    orderedValues,
                                                                    methodName);
 
@@ -402,37 +394,37 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.MIN_LENGTH_PROPERTY_NAME,
+                                                               OpenMetadataProperty.MINIMUM_LENGTH.name,
                                                                minimumLength,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.LENGTH_PROPERTY_NAME,
+                                                               OpenMetadataProperty.LENGTH.name,
                                                                length,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.SIGNIFICANT_DIGITS_PROPERTY_NAME,
+                                                               OpenMetadataProperty.SIGNIFICANT_DIGITS.name,
                                                                significantDigits,
                                                                methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IS_NULLABLE_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_NULLABLE.name,
                                                                    isNullable,
                                                                    methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.NATIVE_CLASS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NATIVE_CLASS.name,
                                                                   nativeJavaClass,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.ALIASES_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.ALIASES.name,
                                                                        aliases,
                                                                        methodName);
 

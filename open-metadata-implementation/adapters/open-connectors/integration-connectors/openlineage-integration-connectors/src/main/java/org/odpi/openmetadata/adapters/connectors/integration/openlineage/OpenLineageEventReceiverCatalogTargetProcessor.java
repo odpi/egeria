@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
@@ -30,7 +31,7 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
                                                           Connector                 connectorToTarget,
                                                           String                    connectorName,
                                                           AuditLog                  auditLog,
-                                                          OpenMetadataTopicListener listener)
+                                                          OpenMetadataTopicListener listener) throws ConnectorCheckedException
     {
         super(template, connectorToTarget, connectorName, auditLog);
 
@@ -48,7 +49,7 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
      * @param listener event listener
      */
     private void registerTopicConnector(OpenMetadataTopicConnector topicConnector,
-                                        OpenMetadataTopicListener  listener)
+                                        OpenMetadataTopicListener  listener) throws ConnectorCheckedException
     {
         final String methodName = "registerTopicConnector";
 
@@ -69,6 +70,12 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
                                     OpenLineageIntegrationConnectorAuditCode.KAFKA_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                                endpoint.getAddress(),
                                                                                                                                connectionProperties.getConnectionName()));
+            }
+
+
+            if (! topicConnector.isActive())
+            {
+                topicConnector.start();
             }
         }
     }

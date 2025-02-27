@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -155,10 +156,10 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
                                                                     elementGUID,
                                                                     elementGUIDParameterName,
                                                                     elementTypeName,
-                                                                    OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                                    OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.LICENSE_RELATIONSHIP.typeGUID,
+                                                                    OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                                                     null,
-                                                                    OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                    OpenMetadataType.LICENSE_TYPE.typeName,
                                                                     0,
                                                                     null,
                                                                     null,
@@ -188,7 +189,7 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
                         EntityDetail entity = this.getEntityFromRepository(userId,
                                                                            entityProxy.getGUID(),
                                                                            entityParameterName,
-                                                                           OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                           OpenMetadataType.LICENSE_TYPE.typeName,
                                                                            null,
                                                                            null,
                                                                            forLineage,
@@ -300,8 +301,8 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
                                               forLineage,
                                               forDuplicateProcessing,
                                               supportedZones,
-                                              OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                              OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                              OpenMetadataType.LICENSE_RELATIONSHIP.typeGUID,
+                                              OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                               getLicenseProperties(licenseGUID,
                                                                    start,
                                                                    end,
@@ -392,7 +393,7 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
                                           externalSourceName,
                                           licenseGUID,
                                           licenseGUIDParameterName,
-                                          OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                          OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                           isMergeUpdate,
                                           getLicenseProperties(licenseId,
                                                                start,
@@ -461,85 +462,85 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.LICENSE_GUID_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.LICENSE_GUID.name,
                                                                                      licenseId,
                                                                                      methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.START_PROPERTY_NAME,
+                                                                OpenMetadataProperty.START.name,
                                                                 start,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.END_PROPERTY_NAME,
+                                                                OpenMetadataProperty.END.name,
                                                                 end,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONDITIONS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CONDITIONS.name,
                                                                   conditions,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LICENSED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LICENSED_BY.name,
                                                                   licensedBy,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LICENSED_BY_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LICENSED_BY_TYPE_NAME.name,
                                                                   licensedByTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LICENSED_BY_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LICENSED_BY_PROPERTY_NAME.name,
                                                                   licensedByPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CUSTODIAN.name,
                                                                   custodian,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CUSTODIAN_TYPE_NAME.name,
                                                                   custodianTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name,
                                                                   custodianPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LICENSEE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LICENSEE.name,
                                                                   licensee,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LICENSEE_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LICENSEE_TYPE_NAME.name,
                                                                   licenseeTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LICENSEE_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LICENSEE_PROPERTY_NAME.name,
                                                                   licenseePropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NOTES.name,
                                                                   notes,
                                                                   methodName);
 
@@ -581,7 +582,7 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
                                 externalSourceName,
                                 licenseGUID,
                                 licenseGUIDParameterName,
-                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                 forLineage,
                                 forDuplicateProcessing,
                                 supportedZones,
