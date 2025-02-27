@@ -602,12 +602,15 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            error.getMessage()),
+                                          error);
+                }
             }
         }
     }
@@ -1884,8 +1887,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.PATHNAME, fileDirectoryMeasurement.getDirectoryName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DIRECTORY_NAME, fileDirectoryMeasurement.getDirectoryName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_COUNT, fileDirectoryMeasurement.getFileCount());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.TOTAL_FILE_SIZE, fileDirectoryMeasurement.getTotalFileSize());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUB_DIRECTORY_COUNT, fileDirectoryMeasurement.getSubDirectoryCount());

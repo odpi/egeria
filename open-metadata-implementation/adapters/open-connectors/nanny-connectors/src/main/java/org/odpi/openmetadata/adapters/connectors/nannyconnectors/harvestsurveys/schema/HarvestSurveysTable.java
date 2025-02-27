@@ -153,7 +153,6 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                                    HarvestSurveysColumn.METADATA_COLLECTION_ID,
                                    HarvestSurveysColumn.SUBJECT_GUID,
                                    HarvestSurveysColumn.SUBJECT_TYPE,
-                                   HarvestSurveysColumn.DIRECTORY_NAME,
                                    HarvestSurveysColumn.FILE_COUNT,
                                    HarvestSurveysColumn.TOTAL_FILE_SIZE,
                                    HarvestSurveysColumn.SUB_DIRECTORY_COUNT,
@@ -200,10 +199,12 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                              HarvestSurveysColumn.SUBJECT_GUID,
                              HarvestSurveysColumn.MEASUREMENT_CATEGORY},
                      new HarvestSurveysColumn[]{
+                             HarvestSurveysColumn.METADATA_COLLECTION_ID,
                              HarvestSurveysColumn.SUBJECT_TYPE,
                              HarvestSurveysColumn.CREATION_TIME,
                              HarvestSurveysColumn.MEASUREMENT_NAME,
-                             HarvestSurveysColumn.MEASUREMENT_VALUE}),
+                             HarvestSurveysColumn.MEASUREMENT_VALUE,
+                             HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE}),
 
 
     /**
