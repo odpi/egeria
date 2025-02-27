@@ -129,7 +129,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
             /*
              * Check that the AssetOrigin classification is not already set - this is an error if it is.
              */
-            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(targetElement, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME);
+            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(targetElement, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
 
             if (existingAssetOriginClassification != null)
             {
@@ -164,7 +164,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                      * A single origin has been found, so it is ok to add it to the action target asset.
                      */
                     governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
-                                                              OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                              OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
                                                               false,
                                                               false,
                                                               originClassifications.get(0),
@@ -263,7 +263,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                             /*
                              * If we find an origin classification on this asset we stop traversing the lineage graph.
                              */
-                            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(nextAsset, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME);
+                            AttachedClassification existingAssetOriginClassification = propertyHelper.getClassification(nextAsset, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName);
 
                             if (existingAssetOriginClassification == null)
                             {

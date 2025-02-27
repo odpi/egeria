@@ -370,7 +370,7 @@ public class OpenGovernanceRESTServices
                     element.setSpecification(handler.getSpecification(userId,
                                                                       element.getElementHeader().getGUID(),
                                                                       elementGUIDParameterName,
-                                                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                                                       supportedZones));
 
                     if (element.getSpecification() != null)
@@ -512,7 +512,7 @@ public class OpenGovernanceRESTServices
             element.setSpecification(handler.getSpecification(userId,
                                                               element.getElementHeader().getGUID(),
                                                               elementGUIDParameterName,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                                               supportedZones));
 
             if (element.getSpecification() != null)
@@ -579,7 +579,7 @@ public class OpenGovernanceRESTServices
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
                 extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, processProperties.getFormulaType());
-                extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, processProperties.getDomainIdentifier());
+                extendedProperties.put(OpenMetadataProperty.DOMAIN_IDENTIFIER.name, processProperties.getDomainIdentifier());
 
                 Date effectiveTime = new Date();
 
@@ -592,7 +592,7 @@ public class OpenGovernanceRESTServices
                                                                  processProperties.getDescription(),
                                                                  null,
                                                                  processProperties.getAdditionalProperties(),
-                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                  extendedProperties,
                                                                  this.getProcessStatus(requestBody.getProcessStatus()),
                                                                  null,
@@ -680,7 +680,7 @@ public class OpenGovernanceRESTServices
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
                 extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, processProperties.getFormulaType());
-                extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, processProperties.getDomainIdentifier());
+                extendedProperties.put(OpenMetadataProperty.DOMAIN_IDENTIFIER.name, processProperties.getDomainIdentifier());
 
                 Date effectiveTime = new Date();
 
@@ -696,8 +696,8 @@ public class OpenGovernanceRESTServices
                                     processProperties.getDescription(),
                                     null,
                                     processProperties.getAdditionalProperties(),
-                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
+                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                     extendedProperties,
                                     null,
@@ -715,8 +715,8 @@ public class OpenGovernanceRESTServices
                                                          null,
                                                          processGUID,
                                                          processGUIDParameterName,
-                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
+                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                          false,
                                                          false,
                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -893,8 +893,8 @@ public class OpenGovernanceRESTServices
                                            null,
                                            processGUID,
                                            processGUIDParameterName,
-                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
+                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                            null,
                                            null,
                                            false,
@@ -957,8 +957,8 @@ public class OpenGovernanceRESTServices
                 List<GovernanceActionProcessElement> results = handler.findBeans(userId,
                                                                                  requestBody.getSearchString(),
                                                                                  searchStringParameterName,
-                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
+                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                                  null,
                                                                                  null,
                                                                                  SequencingOrder.CREATION_DATE_RECENT,
@@ -1021,7 +1021,7 @@ public class OpenGovernanceRESTServices
                     element.setSpecification(handler.getSpecification(userId,
                                                                       element.getElementHeader().getGUID(),
                                                                       elementGUIDParameterName,
-                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                       supportedZones));
 
                     if (element.getSpecification() != null)
@@ -1089,8 +1089,8 @@ public class OpenGovernanceRESTServices
                                                                                                                          methodName);
 
                 List<GovernanceActionProcessElement> results = handler.findAssetsByName(userId,
-                                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
+                                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                                         requestBody.getName(),
                                                                                         nameParameterName,
                                                                                         supportedZones,
@@ -1153,7 +1153,7 @@ public class OpenGovernanceRESTServices
             GovernanceActionProcessElement element = handler.getBeanFromRepository(userId,
                                                                                    processGUID,
                                                                                    processGUIDParameterName,
-                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                                    false,
                                                                                    false,
                                                                                    supportedZones,
@@ -1163,7 +1163,7 @@ public class OpenGovernanceRESTServices
             element.setSpecification(handler.getSpecification(userId,
                                                               element.getElementHeader().getGUID(),
                                                               processGUIDParameterName,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                               supportedZones));
 
             if (element.getSpecification() != null)
@@ -1267,7 +1267,7 @@ public class OpenGovernanceRESTServices
 
             String processTypeName = governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName();
 
-            if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME.equals(processTypeName))
+            if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName.equals(processTypeName))
             {
                 governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,
                                                                                                  serviceURLMarker,
@@ -1292,7 +1292,7 @@ public class OpenGovernanceRESTServices
 
                 processedGUIDs.add(firstProcessStepGUID);
 
-                if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME.equals(processTypeName))
+                if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName.equals(processTypeName))
                 {
                     getNextProcessSteps(userId,
                                         handler,
@@ -1361,9 +1361,9 @@ public class OpenGovernanceRESTServices
         int startFrom = 0;
         List<Relationship> nextProcessStepRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                                    processStepGUID,
-                                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                                                                                   OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
-                                                                                                   OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
+                                                                                                   OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeGUID,
+                                                                                                   OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName,
                                                                                                    2,
                                                                                                    null,
                                                                                                    null,
@@ -1393,11 +1393,11 @@ public class OpenGovernanceRESTServices
                 processStepLink.setNextProcessStep(handler.getElementStub(relationship.getEntityTwoProxy()));
                 processStepLink.setNextProcessStepLinkGUID(relationship.getGUID());
                 processStepLink.setGuard(handler.getRepositoryHelper().getStringProperty(handler.getServiceName(),
-                                                                                         OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.GUARD.name,
                                                                                          relationship.getProperties(),
                                                                                          methodName));
                 processStepLink.setMandatoryGuard(handler.getRepositoryHelper().getBooleanProperty(handler.getServiceName(),
-                                                                                                   OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                                   OpenMetadataProperty.MANDATORY_GUARD.name,
                                                                                                    relationship.getProperties(),
                                                                                                    methodName));
 
@@ -1433,9 +1433,9 @@ public class OpenGovernanceRESTServices
             startFrom = startFrom + pageSize;
             nextProcessStepRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     processStepGUID,
-                                                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
-                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
+                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName,
                                                                                     2,
                                                                                     null,
                                                                                     null,
@@ -1515,11 +1515,11 @@ public class OpenGovernanceRESTServices
                 processStepLink.setNextProcessStep(handler.getElementStub(relationship.getEntityTwoProxy()));
                 processStepLink.setNextProcessStepLinkGUID(relationship.getGUID());
                 processStepLink.setGuard(handler.getRepositoryHelper().getStringProperty(handler.getServiceName(),
-                                                                                         OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.GUARD.name,
                                                                                          relationship.getProperties(),
                                                                                          methodName));
                 processStepLink.setMandatoryGuard(handler.getRepositoryHelper().getBooleanProperty(handler.getServiceName(),
-                                                                                                   OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                                   OpenMetadataProperty.MANDATORY_GUARD.name,
                                                                                                    relationship.getProperties(),
                                                                                                    methodName));
 
@@ -1978,7 +1978,7 @@ public class OpenGovernanceRESTServices
                     element.setSpecification(handler.getSpecification(userId,
                                                                       element.getElementHeader().getGUID(),
                                                                       elementGUIDParameterName,
-                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                       supportedZones));
 
                     if (element.getSpecification() != null)
@@ -2121,7 +2121,7 @@ public class OpenGovernanceRESTServices
             element.setSpecification(handler.getSpecification(userId,
                                                               element.getElementHeader().getGUID(),
                                                               elementGUIDParameterName,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                               supportedZones));
 
             if (element.getSpecification() != null)
@@ -2274,11 +2274,11 @@ public class OpenGovernanceRESTServices
         Relationship firstActionProcessStepLink = handler.getUniqueAttachmentLink(userId,
                                                                                   processGUID,
                                                                                   processGUIDParameterName,
-                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_GUID,
-                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                                                   null,
-                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                                   0,
                                                                                   null,
                                                                                   null,
@@ -2296,7 +2296,7 @@ public class OpenGovernanceRESTServices
 
             firstProcessStep.setLinkGUID(firstActionProcessStepLink.getGUID());
             firstProcessStep.setGuard(handler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(serviceURLMarker),
-                                                                                      OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.GUARD.name,
                                                                                       firstActionProcessStepLink.getProperties(),
                                                                                       methodName));
 
@@ -2615,11 +2615,11 @@ public class OpenGovernanceRESTServices
 
                         element.setNextProcessStepLinkGUID(relationship.getGUID());
                         element.setGuard(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                            OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                            OpenMetadataProperty.GUARD.name,
                                                                             relationship.getProperties(),
                                                                             methodName));
                         element.setMandatoryGuard(repositoryHelper.getBooleanProperty(instanceHandler.getServiceName(),
-                                                                                      OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.MANDATORY_GUARD.name,
                                                                                       relationship.getProperties(),
                                                                                       methodName));
 

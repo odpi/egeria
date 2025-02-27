@@ -94,7 +94,7 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ZONE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ZONE_NAME.name,
                                                                   zoneName,
                                                                   methodName);
 
@@ -106,7 +106,7 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CRITERIA_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CRITERIA.name,
                                                                   criteria,
                                                                   methodName);
 
@@ -118,7 +118,7 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                domainIdentifier,
                                                                methodName);
 

@@ -37,7 +37,6 @@ import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMeasuremen
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDataManagerMeasurement;
 import org.odpi.openmetadata.integrationservices.catalog.connector.ConnectorFactoryService;
 
-import java.sql.SQLException;
 import java.util.*;
 
 
@@ -519,7 +518,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "processDataProfileLogAnnotations";
 
-
         for (RelatedMetadataElement relatedAnnotationElement : relatedDataProfileLogAnnotations)
         {
             try
@@ -569,9 +567,25 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
                             if ((recordValues != null) && (recordValues.size() > 1))
                             {
-                                Integer measurementValue = Integer.parseInt(recordValues.get(1));
+                                try
+                                {
+                                    Integer measurementValue = Integer.parseInt(recordValues.get(1));
 
-                                measurementValues.put(recordValues.get(0), measurementValue);
+                                    measurementValues.put(recordValues.get(0), measurementValue);
+                                }
+                                catch (NumberFormatException notIntError)
+                                {
+                                    if (auditLog != null)
+                                    {
+                                        auditLog.logException(methodName,
+                                                              HarvestSurveysAuditCode.NOT_A_NUMBER.getMessageDefinition(connectorName,
+                                                                                                                        recordValues.get(1),
+                                                                                                                        Long.toString(recordNumber),
+                                                                                                                        csvFileStoreConnector.getFileName(),
+                                                                                                                        notIntError.getMessage()),
+                                                              notIntError);
+                                    }
+                                }
                             }
                         }
 
@@ -790,8 +804,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENGINE_ACTION_GUID, relatedEngineAction.getElement().getElementGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.INITIATOR, relatedEngineAction.getElement().getVersions().getCreatedBy());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.REQUEST_TYPE, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.REQUEST_TYPE.name, relatedEngineAction.getElement().getElementProperties(), methodName));
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.GOVERNANCE_ENGINE_NAME, propertyHelper.getStringProperty(connectorName, OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME, relatedEngineAction.getElement().getElementProperties(), methodName));
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENGINE_HOST_USER_ID, propertyHelper.getStringProperty(connectorName, OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME, relatedEngineAction.getElement().getElementProperties(), methodName));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.GOVERNANCE_ENGINE_NAME, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.EXECUTOR_ENGINE_NAME.name, relatedEngineAction.getElement().getElementProperties(), methodName));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENGINE_HOST_USER_ID, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.PROCESSING_ENGINE_USER_ID.name, relatedEngineAction.getElement().getElementProperties(), methodName));
 
         return openMetadataRecord;
     }

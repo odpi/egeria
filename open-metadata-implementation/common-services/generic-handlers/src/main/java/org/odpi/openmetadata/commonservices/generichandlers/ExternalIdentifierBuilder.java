@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -116,8 +118,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
                                                                     OpenMetadataProperty.KEY_PATTERN.name,
-                                                                    OpenMetadataType.KEY_PATTERN_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.KEY_PATTERN_ENUM_TYPE_NAME,
+                                                                    KeyPattern.getOpenTypeGUID(),
+                                                                    KeyPattern.getOpenTypeName(),
                                                                     keyPattern,
                                                                     methodName);
         }
@@ -246,8 +248,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
                                                                     OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
-                                                                    OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
+                                                                    PermittedSynchronization.getOpenTypeGUID(),
+                                                                    PermittedSynchronization.getOpenTypeName(),
                                                                     permittedSynchronization,
                                                                     methodName);
         }

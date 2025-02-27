@@ -108,7 +108,7 @@ public class DatabaseColumnConverter<B> extends OMFConverter<B>
                         }
                     }
 
-                    InstanceProperties classificationProperties = super.getClassificationProperties(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME, schemaAttributeEntity);
+                    InstanceProperties classificationProperties = super.getClassificationProperties(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName, schemaAttributeEntity);
 
                     if (classificationProperties != null)
                     {
@@ -126,7 +126,7 @@ public class DatabaseColumnConverter<B> extends OMFConverter<B>
                     {
                         for (Relationship relationship : schemaAttributeRelationships)
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName))
                             {
                                 /*
                                  * Foreign key properties are only set up in the column that contains the  foreign key which is at end 2 of the relationship.

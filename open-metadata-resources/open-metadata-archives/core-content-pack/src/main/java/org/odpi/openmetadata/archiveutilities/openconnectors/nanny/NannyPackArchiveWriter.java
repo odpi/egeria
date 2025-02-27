@@ -5,7 +5,6 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.nanny;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
@@ -67,9 +66,7 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                             RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
                                                             PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE,
-                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                             RequestTypeDefinition.HARVEST_SURVEYS,
-                                                            GovernanceEngineDefinition.NANNY_GOVERNANCE_ENGINE,
                                                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName());
 
         this.createAndHarvestToAssetGovernanceActionProcess("HarvestOpenMetadataEcosystem",
@@ -77,9 +74,7 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                             RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
                                                             PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE,
-                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                             RequestTypeDefinition.HARVEST_OPEN_METADATA,
-                                                            GovernanceEngineDefinition.NANNY_GOVERNANCE_ENGINE,
                                                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName());
 
         /*

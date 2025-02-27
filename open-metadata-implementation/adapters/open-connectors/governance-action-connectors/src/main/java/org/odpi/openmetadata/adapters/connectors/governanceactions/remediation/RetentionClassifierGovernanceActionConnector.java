@@ -215,10 +215,10 @@ public class RetentionClassifierGovernanceActionConnector extends RemediationGov
                                                           OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
                                                           basisIdentifier);
         elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                           OpenMetadataType.RETENTION_ARCHIVE_AFTER_PROPERTY_NAME,
+                                                           OpenMetadataProperty.ARCHIVE_AFTER.name,
                                                            dateToArchive);
         elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                           OpenMetadataType.RETENTION_DELETE_AFTER_PROPERTY_NAME,
+                                                           OpenMetadataProperty.DELETE_AFTER.name,
                                                            dateToDelete);
 
         return elementProperties;

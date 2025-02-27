@@ -124,7 +124,7 @@ public class LicenseRESTServices
             LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
             List<LicenseTypeElement> licenseTypeElements = handler.getGovernanceDefinitionsByName(userId,
-                                                                                                  OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                                                  OpenMetadataType.LICENSE_TYPE.typeName,
                                                                                                   documentIdentifier,
                                                                                                   documentIdParameterName,
                                                                                                   0,
@@ -186,7 +186,7 @@ public class LicenseRESTServices
                 LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                       OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                       OpenMetadataType.LICENSE_TYPE.typeName,
                                                                        requestBody.getSearchString(),
                                                                        titleParameterName,
                                                                        startFrom,
@@ -245,7 +245,7 @@ public class LicenseRESTServices
             LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
             response.setElements(handler.getGovernanceDefinitionsByDomain(userId,
-                                                                          OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.LICENSE_TYPE.typeName,
                                                                           domainIdentifier,
                                                                           startFrom,
                                                                           pageSize,
@@ -317,7 +317,7 @@ public class LicenseRESTServices
                                                             OpenMetadataType.REFERENCEABLE.typeName,
                                                             licenseTypeGUID,
                                                             licenseTypeGUIDParameterName,
-                                                            OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                            OpenMetadataType.LICENSE_TYPE.typeName,
                                                             properties.getLicenseId(),
                                                             properties.getStartDate(),
                                                             properties.getEndDate(),
@@ -375,10 +375,10 @@ public class LicenseRESTServices
      *  UserNotAuthorizedException security access problem
      */
     public VoidResponse updateLicense(String                  serverName,
-                                            String                  userId,
-                                            String                  licenseGUID,
-                                            boolean                 isMergeUpdate,
-                                            RelationshipRequestBody requestBody)
+                                      String                  userId,
+                                      String                  licenseGUID,
+                                      boolean                 isMergeUpdate,
+                                      RelationshipRequestBody requestBody)
     {
         final String methodName = "updateLicense";
         final String licenseGUIDParameterName = "licenseGUID";
@@ -534,9 +534,9 @@ public class LicenseRESTServices
             response.setElements(handler.getAttachedElements(userId,
                                                              licenseTypeGUID,
                                                              guidParameter,
-                                                             OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
-                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataType.LICENSE_TYPE.typeName,
+                                                             OpenMetadataType.LICENSE_RELATIONSHIP.typeGUID,
+                                                             OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                              null,
                                                              null,
@@ -599,9 +599,9 @@ public class LicenseRESTServices
                                                              elementGUID,
                                                              guidParameterName,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
-                                                             OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                             OpenMetadataType.LICENSE_RELATIONSHIP.typeGUID,
+                                                             OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
+                                                             OpenMetadataType.LICENSE_TYPE.typeName,
                                                              null,
                                                              null,
                                                              2,

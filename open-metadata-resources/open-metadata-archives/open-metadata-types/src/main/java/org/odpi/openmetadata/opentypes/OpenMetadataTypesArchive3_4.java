@@ -490,30 +490,15 @@ public class OpenMetadataTypesArchive3_4
 
     private EntityDef addSecurityGroupEntity()
     {
-        final String guid = "042d9b5c-677e-477b-811f-1c39bf716759";
-
-        final String name            = "SecurityGroup";
-        final String description     = "A collection of users that should be given the same security privileges.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "TechnicalControl";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_GROUP,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME.name,
-                                                           OpenMetadataProperty.DISTINGUISHED_NAME.description,
-                                                           OpenMetadataProperty.DISTINGUISHED_NAME.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -523,38 +508,17 @@ public class OpenMetadataTypesArchive3_4
 
     private ClassificationDef addSecurityGroupMembershipClassification()
     {
-        final String guid = "21a16f1e-9231-4983-b371-a0686d555273";
-
-        final String name            = "SecurityGroupMembership";
-        final String description     = "Identifies the set of user groups that this user identity is a member of.";
-        final String descriptionGUID = null;
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.USER_IDENTITY.typeName));
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 linkedToEntities,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.USER_IDENTITY.typeName),
                                                                                  false);
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "groups";
-        final String attribute1Description     = "List of user group names.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
-                                                                attribute1Description,
-                                                                attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GROUPS));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -677,72 +641,16 @@ public class OpenMetadataTypesArchive3_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "requestType";
-        final String attribute1Description     = "The request type used to call the service.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "requestParameters";
-        final String attribute2Description     = "Properties that configure the governance service for this type of request.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "executorEngineGUID";
-        final String attribute3Description     = "Unique identifier of the governance engine nominated to run the request.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "executorEngineName";
-        final String attribute4Description     = "Unique identifier of the governance engine nominated to run the request.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = OpenMetadataProperty.PROCESS_NAME.name;
-        final String attribute5Description     = OpenMetadataProperty.PROCESS_NAME.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.PROCESS_NAME.descriptionGUID;
-        final String attribute6Name            = OpenMetadataProperty.PROCESS_STEP_GUID.name;
-        final String attribute6Description     = OpenMetadataProperty.PROCESS_STEP_GUID.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.PROCESS_STEP_GUID.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.PROCESS_STEP_NAME.name;
-        final String attribute7Description     = OpenMetadataProperty.PROCESS_STEP_NAME.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.PROCESS_STEP_NAME.descriptionGUID;
-        final String attribute8Name            = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.name;
-        final String attribute8Description     = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.description;
-        final String attribute8DescriptionGUID = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.descriptionGUID;
-        final String attribute9Name            = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.name;
-        final String attribute9Description     = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.description;
-        final String attribute9DescriptionGUID = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
-                                                           attribute8Description,
-                                                           attribute8DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
-                                                           attribute9Description,
-                                                           attribute9DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXECUTOR_ENGINE_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXECUTOR_ENGINE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS_STEP_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS_STEP_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

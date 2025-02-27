@@ -88,7 +88,7 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SUBJECT_AREA_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SUBJECT_AREA_NAME.name,
                                                                   subjectAreaName,
                                                                   methodName);
 
@@ -118,7 +118,7 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                domainIdentifier,
                                                                methodName);
 

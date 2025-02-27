@@ -120,7 +120,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        String typeName = OpenMetadataType.SUBJECT_AREA_TYPE_NAME;
+        String typeName = OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -128,7 +128,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                                                   OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -207,7 +207,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        String typeName = OpenMetadataType.SUBJECT_AREA_TYPE_NAME;
+        String typeName = OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -215,7 +215,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                                                   OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -240,8 +240,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     subjectAreaGUID,
                                     subjectAreaGUIDParameterName,
-                                    OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
-                                    OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                    OpenMetadataType.SUBJECT_AREA_DEFINITION.typeGUID,
+                                    OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                     false,
                                     false,
                                     supportedZones,
@@ -281,13 +281,13 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.SUBJECT_AREA_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.SUBJECT_AREA_NAME.name);
 
         return this.getBeanByValue(userId,
                                    name,
                                    nameParameter,
-                                   OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
-                                   OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                   OpenMetadataType.SUBJECT_AREA_DEFINITION.typeGUID,
+                                   OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                    specificMatchPropertyNames,
                                    null,
                                    null,
@@ -331,10 +331,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity = this.getAttachedEntity(userId,
                                                      subjectAreaGUID,
                                                      subjectAreaGUIDParameter,
-                                                     OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
-                                                     OpenMetadataType.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
-                                                     OpenMetadataType.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
-                                                     OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                                     OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
+                                                     OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName,
+                                                     OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                                      1,
                                                      forLineage,
                                                      forDuplicateProcessing,
@@ -383,10 +383,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities = this.getAttachedEntities(userId,
                                                                subjectAreaGUID,
                                                                subjectAreaGUIDParameter,
-                                                               OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
-                                                               OpenMetadataType.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
-                                                               OpenMetadataType.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
-                                                               OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                                               OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
+                                                               OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                               OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName,
+                                                               OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                                                null,
                                                                null,
                                                                0,
@@ -452,8 +452,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
-                                   OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                   OpenMetadataType.SUBJECT_AREA_DEFINITION.typeGUID,
+                                   OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                    null,
                                    null,
                                    SequencingOrder.CREATION_DATE_RECENT,
@@ -503,8 +503,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<EntityDetail> entities = this.getEntitiesByType(userId,
-                                                             OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
-                                                             OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                                             OpenMetadataType.SUBJECT_AREA_DEFINITION.typeGUID,
+                                                             OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
                                                              null,
                                                              null,
                                                              SequencingOrder.CREATION_DATE_RECENT,
@@ -528,7 +528,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     if (entity.getProperties() != null)
                     {
                         if (repositoryHelper.getIntProperty(serviceName,
-                                                            OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                             entity.getProperties(),
                                                             methodName) == domainIdentifier)
                         {

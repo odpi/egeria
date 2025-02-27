@@ -4,6 +4,11 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
@@ -54,8 +59,11 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     @Override
     public void getArchiveContent()
     {
+        writeDomains();
+        writeSubjectAreaDefinitions();
         writeFacilityTypeValidValueSet();
         writeGlossary();
+        writeGovernanceDefinitions();
         writeRoles();
         writeFacility();
     }
@@ -104,15 +112,80 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
 
     /**
-     * Creates Governance Role definitions.
+     * Creates SubjectArea definitions.
+     */
+    private void writeSubjectAreaDefinitions()
+    {
+        Map<String, String> subjectAreaMap = new HashMap<>();
+
+        for (SustainabilitySubjectAreaDefinition subjectAreaDefinition : SustainabilitySubjectAreaDefinition.values())
+        {
+            String subjectAreaGUID = archiveHelper.addSubjectAreaDefinition(subjectAreaDefinition.getQualifiedName(),
+                                                                            subjectAreaDefinition.getSubjectAreaName(),
+                                                                            subjectAreaDefinition.getDisplayName(),
+                                                                            subjectAreaDefinition.getDescription(),
+                                                                            subjectAreaDefinition.getScope(),
+                                                                            subjectAreaDefinition.getUsage(),
+                                                                            subjectAreaDefinition.getDomain(),
+                                                                            null,
+                                                                            null);
+
+            subjectAreaMap.put(subjectAreaDefinition.getSubjectAreaName(), subjectAreaGUID);
+
+            if (subjectAreaDefinition.getParent() != null)
+            {
+                archiveHelper.addSubjectAreaHierarchy(subjectAreaMap.get(subjectAreaDefinition.getParent().getSubjectAreaName()),
+                                                      subjectAreaGUID);
+            }
+        }
+    }
+
+
+
+    private void writeGovernanceDefinitions()
+    {
+        for (GovernanceDefinition governanceDefinition : GovernanceDefinition.values())
+        {
+            archiveHelper.setGUID(governanceDefinition.getQualifiedName(), governanceDefinition.getGUID());
+            String governanceDefinitionGUID = archiveHelper.addGovernanceDefinition(governanceDefinition.getType(),
+                                                                                    governanceDefinition.getQualifiedName(),
+                                                                                    governanceDefinition.getTitle(),
+                                                                                    governanceDefinition.getSummary(),
+                                                                                    governanceDefinition.getDescription(),
+                                                                                    governanceDefinition.getScope().getPreferredValue(),
+                                                                                    governanceDefinition.getDomain(),
+                                                                                    governanceDefinition.getImportance(),
+                                                                                    governanceDefinition.getImplications(),
+                                                                                    governanceDefinition.getOutcomes(),
+                                                                                    governanceDefinition.getResults(),
+                                                                                    null,
+                                                                                    null);
+
+            assert governanceDefinition.getGUID().equals(governanceDefinitionGUID);
+        }
+
+        for (GovernanceDefinitionLink link : GovernanceDefinitionLink.values())
+        {
+            archiveHelper.addGovernanceDefinitionDelegationRelationship(link.getRelationshipType(),
+                                                                        link.getParentDefinition().getQualifiedName(),
+                                                                        link.getChildDefinition().getQualifiedName(),
+                                                                        null);
+        }
+    }
+
+
+    /**
+     * Creates Governance Role definitions and links them to .
      */
     private void writeRoles()
     {
+        String communityQName = "Community: " + SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getQualifiedName();
+
         for (SustainabilityRoleDefinition roleDefinition : SustainabilityRoleDefinition.values())
         {
             archiveHelper.addGovernanceRole(roleDefinition.getTypeName(),
                                             roleDefinition.getQualifiedName(),
-                                            9,
+                                            SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
                                             roleDefinition.getIdentifier(),
                                             roleDefinition.getDisplayName(),
                                             roleDefinition.getDescription(),
@@ -121,6 +194,10 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                             roleDefinition.getHeadCount(),
                                             null,
                                             null);
+
+            archiveHelper.addCommunityMembershipRelationship(communityQName,
+                                                             roleDefinition.getQualifiedName(),
+                                                             CommunityMembershipType.CONTRIBUTOR.getOrdinal());
 
             if (roleDefinition.getBusinessArea() != null)
             {
@@ -134,6 +211,82 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addPersonRoleAppointmentRelationship(roleDefinition.getAppointee().getQualifiedName(),
                                                                    roleDefinition.getQualifiedName(),
+                                                                   true);
+            }
+
+            if (roleDefinition.getGovernanceResponsibility() != null)
+            {
+                archiveHelper.addGovernanceResponsibilityAssignmentRelationship(roleDefinition.getQualifiedName(),
+                                                                                roleDefinition.getGovernanceResponsibility().getQualifiedName());
+            }
+        }
+    }
+
+
+    /**
+     * Creates Governance Domain definitions.
+     */
+    private void writeDomains()
+    {
+        String governanceDomainSetGUID = this.getParentSet(null,
+                                                           null,
+                                                           OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                           null);
+
+        for (SustainabilityDomainDefinition domainDefinition : SustainabilityDomainDefinition.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             governanceDomainSetGUID,
+                                             governanceDomainSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             domainDefinition.getQualifiedName(),
+                                             domainDefinition.getDisplayName(),
+                                             domainDefinition.getDescription(),
+                                             domainDefinition.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             DataType.INT.getName(),
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             Integer.toString(domainDefinition.getDomainIdentifier()),
+                                             false,
+                                             false,
+                                             null);
+
+            String communityQName = "Community: " + domainDefinition.getQualifiedName();
+
+            archiveHelper.addCommunity(null,
+                                       communityQName,
+                                       domainDefinition.getCommunityName(),
+                                       "Community supporting " + domainDefinition.getDisplayName() + " that is lead by the governance domain leader and includes all the people supporting the domain.",
+                                       "To provide a mechanism for communication and coordination of work across Coco Pharmaceuticals that supports this governance domain.",
+                                       null,
+                                       null);
+
+
+            archiveHelper.addResourceListRelationship(domainDefinition.getQualifiedName(),
+                                                      communityQName,
+                                                      ResourceUse.SUPPORTING_PEOPLE.getResourceUse(),
+                                                      null);
+
+
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ": " + domainDefinition.getQualifiedName();
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER.typeName,
+                                            governanceOfficerQName,
+                                            domainDefinition.getDomainIdentifier(),
+                                            "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
+                                            "Governance Officer for " + domainDefinition.getDisplayName(),
+                                            null,
+                                            null,
+                                            true,
+                                            1,
+                                            null,
+                                            null);
+
+            if (domainDefinition.getGovernanceOfficer() != null)
+            {
+                archiveHelper.addPersonRoleAppointmentRelationship(domainDefinition.getGovernanceOfficer().getQualifiedName(),
+                                                                   governanceOfficerQName,
                                                                    true);
             }
         }

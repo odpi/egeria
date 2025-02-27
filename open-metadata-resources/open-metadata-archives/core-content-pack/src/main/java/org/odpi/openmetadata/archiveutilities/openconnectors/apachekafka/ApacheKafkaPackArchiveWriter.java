@@ -93,23 +93,18 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_KAFKA_SERVER,
                                                           SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE,
-                                                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_KAFKA_SERVER,
-                                                          GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE,
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("ApacheKafkaServer",
                                                            KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_KAFKA_SERVER,
                                                            SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE,
-                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_KAFKA_SERVER,
-                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                            KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
         this.deleteAsCatalogTargetGovernanceActionProcess("ApacheKafkaServer",
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName(),
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.DELETE_KAFKA_SERVER,
-                                                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
 
         /*

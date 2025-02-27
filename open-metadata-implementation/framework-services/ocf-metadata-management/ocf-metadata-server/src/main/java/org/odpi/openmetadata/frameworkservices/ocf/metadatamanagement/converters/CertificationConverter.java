@@ -64,7 +64,7 @@ public class CertificationConverter<B> extends OMFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.CERTIFICATION_TYPE.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.

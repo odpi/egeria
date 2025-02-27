@@ -62,7 +62,7 @@ public class LicenseConverter<B> extends OMFConverter<B>
 
             if (returnBean instanceof License bean)
             {
-                this.setUpElementHeader(bean, entity, OpenMetadataType.LICENSE_TYPE_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.LICENSE_TYPE.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.

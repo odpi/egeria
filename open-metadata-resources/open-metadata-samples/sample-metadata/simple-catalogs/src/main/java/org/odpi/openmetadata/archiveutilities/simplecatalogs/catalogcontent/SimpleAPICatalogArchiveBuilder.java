@@ -163,7 +163,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 null);
 
         String requestGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
-                                                               OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                               OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
                                                                getCustomerQualifiedName + "_request",
                                                                getCustomerDisplayName + " Request Parameter List",
                                                                null,
@@ -187,7 +187,7 @@ public class SimpleAPICatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(requestGUID, parameterGUID);
 
         String responseGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
-                                                                OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
+                                                                OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
                                                                 getCustomerQualifiedName + "_response",
                                                                 getCustomerDisplayName + " Response Parameter List",
                                                                 null,

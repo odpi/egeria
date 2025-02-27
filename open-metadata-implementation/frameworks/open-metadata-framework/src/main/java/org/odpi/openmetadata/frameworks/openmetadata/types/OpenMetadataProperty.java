@@ -359,6 +359,12 @@ public enum OpenMetadataProperty
     COMMAND("command", DataType.STRING.getName(), "The REST command for this API operation.", "POST", "cc4a83dd-4a11-4873-8a16-e7c9232ad4cf"),
 
     /**
+     * What type of parameter is it.
+     */
+    PARAMETER_TYPE("parameterType", DataType.STRING.getName(), "What type of parameter is it.", null, "e1a0a48d-35a6-425d-bb2a-bb6880014fc5"),
+
+
+    /**
      * File type descriptor (or logical file type) typically extracted from the file name.
      */
     FILE_TYPE("fileType", DataType.STRING.getName(), "File type descriptor (or logical file type) typically extracted from the file name.", null, "f180c49b-2de6-4657-bdf7-069747bc612d"),
@@ -417,6 +423,21 @@ public enum OpenMetadataProperty
      * Request type supported by the governance service (overrides requestType on call to governance service if specified)
      */
     SERVICE_REQUEST_TYPE("serviceRequestType", DataType.STRING.getName(), "Request type supported by the governance service (overrides requestType on call to governance service if specified).", null, "63238bb7-e935-4c38-8d0a-61917f01a31d"),
+
+    /**
+     * Unique identifier of the governance engine nominated to run the request.
+     */
+    EXECUTOR_ENGINE_GUID("executorEngineGUID", DataType.STRING.getName(), "Unique identifier of the governance engine nominated to run the request.", null, "2b658eb5-0f96-40f5-91ca-9ddd9984e36b"),
+
+    /**
+     * Unique name of the governance engine nominated to run the request.
+     */
+    EXECUTOR_ENGINE_NAME("executorEngineName", DataType.STRING.getName(), "Unique identifier of the governance engine nominated to run the request.", null, "f87dacc3-2f6a-4aeb-a0fd-85bea6382c2d"),
+
+    /**
+     * The list of guards that must be received before this engine action can progress.
+     */
+    MANDATORY_GUARDS("mandatoryGuards", DataType.ARRAY_STRING.getName(), "The list of guards that must be received before this engine action can progress.", null, "757e6f07-ecf1-496b-ac14-69647fa7bd12"),
 
     /**
      * Unique name of the link type that connects the edge to the vertex.
@@ -502,6 +523,32 @@ public enum OpenMetadataProperty
      * Maximum number of allowed instances.
      */
     MAX_CARDINALITY("maxCardinality", DataType.INT.getName(), "Maximum number of allowed instances.", null, "5caa1b1a-590f-4a2e-85ad-260b64f4bbc1"),
+
+    /**
+     * When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.
+     */
+    ALLOWS_DUPLICATE_VALUES("allowsDuplicateValues", DataType.BOOLEAN.getName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "67a94396-93ca-4a20-94a8-78538bacaa65"),
+
+    /**
+     * When multiple occurrences are allowed, indicates whether the values are ordered or not.
+     */
+    ORDERED_VALUES("orderedValues", DataType.BOOLEAN.getName(), "When multiple occurrences are allowed, indicates whether the values are ordered or not.", null, "3e136e52-5afe-49ae-9e18-b88368e83ab8"),
+
+    /**
+     * Initial value for the attribute (overriding the default value of its type.
+     */
+    DEFAULT_VALUE_OVERRIDE("defaultValueOverride", DataType.STRING.getName(), "Initial value for the attribute (overriding the default value of its type.", null, "762d14f8-e07c-42f1-b19b-23b2395ebd92"),
+
+    /**
+     * Native class used by the client to represent this element.
+     */
+    NATIVE_CLASS("nativeClass", DataType.STRING.getName(), "Native class used by the client to represent this element.", null, "df77c563-4797-40a2-8b8b-4f68a7b589df"),
+
+    /**
+     * List of aliases for attribute.
+     */
+    ALIASES("aliases", DataType.ARRAY_STRING.getName(), "List of aliases for attribute.", null, "aa5304e0-2157-40eb-b01d-fc4d4799a8dd"),
+
 
     /**
      * Provides additional reasons, or expectations from the results.
@@ -662,6 +709,11 @@ public enum OpenMetadataProperty
      * Is this value required?
      */
     REQUIRED("required", DataType.BOOLEAN.getName(), "Is this value required?", null, "fb810cde-18a7-46a0-88a3-6a0fb69b2286"),
+
+    /**
+     * Is this data field accepting new  data from the end user or not.
+     */
+    INPUT_FIELD("inputField", DataType.BOOLEAN.getName(), "Is this data field accepting new  data from the end user or not.", null, "d2091eb1-0ab6-4038-87e3-695d5d626f57"),
 
     /**
      * Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.
@@ -1091,6 +1143,11 @@ public enum OpenMetadataProperty
     SERVER_VERSION("serverVersion", DataType.STRING.getName(), "Deployed version number for this server.", null, "c762845d-f333-43b3-bd98-8780bc979167"),
 
     /**
+     * Deployed version number for this software.
+     */
+    SOFTWARE_VERSION("softwareVersion", DataType.STRING.getName(), "Deployed version number for this software.", null, "1386c460-d28e-4c19-ba32-b61ba11c8038"),
+
+    /**
      * Level of confidence in the correctness of the element.
      */
     CONFIDENCE("confidence", DataType.INT.getName(), "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000"),
@@ -1470,6 +1527,16 @@ public enum OpenMetadataProperty
      * Identifier of the business capability where this asset originated from.
      */
     BUSINESS_CAPABILITY("businessCapability", DataType.STRING.getName(), "Identifier of the business capability where this resource originated from.", null, "586b18dd-e205-43bd-9fb2-3265384bd125"),
+
+    /**
+     * Type of business capability.
+     */
+    BUSINESS_CAPABILITY_TYPE("businessCapabilityType", BusinessCapabilityType.getOpenTypeName(), BusinessCapabilityType.getOpenTypeDescription(), BusinessCapabilityType.BUSINESS_AREA.getName(), BusinessCapabilityType.getOpenTypeDescriptionGUID()),
+
+    /**
+     * Implementation type for the business capability.
+     */
+    BUSINESS_IMPLEMENTATION_TYPE("businessImplementationType", DataType.STRING.getName(), "Implementation type for the business capability.", null, "43cd44fd-dbb4-464d-bd9f-4be0a369fc60"),
 
     /**
      * Name of the property from the element used to identify the businessCapability property.
@@ -1996,9 +2063,9 @@ public enum OpenMetadataProperty
     ID("id", DataType.STRING.getName(), "Id of report.", null, "3dd6fb02-e375-40ca-97bb-24af0142887f"),
 
     /**
-     * Author of the report.
+     * Author of the resource.
      */
-    AUTHOR("author", DataType.STRING.getName(), "Author of the report.", null, "e121d939-cd79-49cb-aa3e-d05b99c64b8a"),
+    AUTHOR("author", DataType.STRING.getName(), "Author of the resource.", null, "e121d939-cd79-49cb-aa3e-d05b99c64b8a"),
 
     /**
      * Report create time.
@@ -2365,6 +2432,302 @@ public enum OpenMetadataProperty
      * Definition of the measurement values that the governance definitions are trying to achieve.
      */
     TARGET("target", DataType.STRING.getName(), "Definition of the measurement values that the governance definitions are trying to achieve.", null, "0798f3ef-ceda-46ff-9a8a-d3926dff7f36"),
+
+    /**
+     * Unique identifier of the automated process that processes this exception backlog.
+     */
+    PROCESS("process", DataType.STRING.getName(), "Unique identifier of the automated process that processes this log.", null, "79e21ab2-959f-4e7d-9474-bec3261a376a"),
+
+    /**
+     * The minimum number of minutes that the governance engine should wait before calling the governance service.
+     */
+    WAIT_TIME("waitTime", DataType.INT.getName(), "The minimum number of minutes that the governance engine should wait before calling the governance service.", "0", "fc0ed593-e4d5-465a-8e32-beeef0d7d736"),
+
+    /**
+     * List of guards that this action type produces.
+     */
+    PRODUCED_GUARDS("producedGuards", DataType.ARRAY_STRING.getName(), "List of guards that this action type produces.", null, "2e9bb0fb-82af-48b2-a639-6665074f250e"),
+
+    /**
+     * Trigger one or many engine action instances within a process instance?
+     */
+    IGNORE_MULTIPLE_TRIGGERS("ignoreMultipleTriggers", DataType.BOOLEAN.getName(), "Trigger one or many engine action instances within a process instance?", "true", "2c31c693-e347-4369-9cdf-cf52a1af872e"),
+
+    /**
+     * Is this guard mandatory for the next step to run.
+     */
+    MANDATORY_GUARD("mandatoryGuard", DataType.BOOLEAN.getName(), "Is this guard mandatory for the next step to run.", "true", "bd5acc27-7b8f-4460-b75c-94453a5d93dd"),
+
+    /**
+     * Governance engine responsible for executing this engine action.
+     */
+    PROCESSING_ENGINE_USER_ID("processingEngineUserId", DataType.STRING.getName(), "Governance engine responsible for executing this engine action.", null, "642a2571-bc8f-45f7-949a-72b0851e8ea2"),
+
+    /**
+     * List of guards returned by the governance service.
+     */
+    COMPLETION_GUARDS("completionGuards", DataType.ARRAY_STRING.getName(), "List of guards returned by the governance service.", null, "8b106216-1b4d-4eca-8bb2-25c2dfe4c365"),
+
+    /**
+     * List of guards received from the previous governance service(s).
+     */
+    RECEIVED_GUARDS("receivedGuards", DataType.ARRAY_STRING.getName(), "List of guards received from the previous governance service(s).", null, "6259d3fd-6d04-46b4-b844-0407675128c6"),
+
+    /**
+     * The qualifiedName of the governance service that caused the engine action to be created.
+     */
+    ORIGIN_GOVERNANCE_SERVICE("originGovernanceService", DataType.STRING.getName(), "The qualifiedName of the governance service that caused the engine action to be created.", null, "0bd2d2ca-0113-4fa1-80c3-e4061e2e5093"),
+
+    /**
+     * The qualifiedName of the governance engine that caused the engine action to be created.
+     */
+    ORIGIN_GOVERNANCE_ENGINE("originGovernanceEngine", DataType.STRING.getName(), "The qualifiedName of the governance engine that caused the engine action to be created.", null, "20f5fddd-1f7d-440d-ba57-ccc39ae0ac37"),
+
+    /**
+     * The name to identify the request source to the governance service that processes it.
+     */
+    REQUEST_SOURCE_NAME("requestSourceName", DataType.STRING.getName(), "The name to identify the request source to the governance service that processes it.", null, "a7eb9ae6-261d-47b2-82ed-6afd5ce1a48c"),
+
+    /**
+     * Goals or required outcomes from the business strategy that is supported by the data strategy.
+     */
+    BUSINESS_IMPERATIVES("businessImperatives", DataType.ARRAY_STRING.getName(), "Goals or required outcomes from the business strategy that is supported by the data strategy.", null, "962526a1-e16c-4604-8bf6-585b8943849c"),
+
+    /**
+     * Numeric value for the classification level.
+     */
+    LEVEL_IDENTIFIER("levelIdentifier", DataType.INT.getName(), "Numeric value for the classification level.", null, "07962ad3-a239-4207-bdd1-0ddfa085e0b9"),
+
+    /**
+     * List of security group distinguished names.
+     */
+    GROUPS("groups", DataType.ARRAY_STRING.getName(), "List of security group distinguished names.", null, "71adcf56-bf50-4cbe-abcc-fc9157a545f0"),
+
+    /**
+     * Identifier of the zone - if null use qualifiedName.
+     */
+    ZONE_NAME("zoneName", DataType.STRING.getName(), "Identifier of the zone - if null use qualifiedName.", "quarantine_zone", "06d25085-acd6-4899-9247-e1675db07a22"),
+
+    /**
+     * Descriptive type information about the policy management capability.
+     */
+    POINT_TYPE("pointType", DataType.STRING.getName(), "Descriptive type information about the the policy management capability.", null, "ab24e2bf-1ef8-4053-bb4d-9b4817bc095d"),
+
+    /**
+     * Identifier of the subject area - if null use qualifiedName.
+     */
+    SUBJECT_AREA_NAME("subjectAreaName", DataType.STRING.getName(), "Identifier of the subject area - if null use qualifiedName.", null, "ef1b567b-e079-4ef7-9a34-7c01e26a539e"),
+
+    /**
+     * A set of metric name to count value pairs.
+     */
+    COUNTS("counts", DataType.MAP_STRING_INT.getName(), "A set of metric name to count value pairs.", null, "1ecedf35-5b23-47e0-b3c9-7ad0acbd6f3c"),
+
+    /**
+     * A set of metric name to string value pairs.
+     */
+    VALUES("values", DataType.MAP_STRING_STRING.getName(), "A set of metric name to string value pairs.", null, "5e2444a0-2449-46e3-8949-95ce0eca2a79"),
+
+    /**
+     * A set of metric name to boolean value pairs.
+     */
+    FLAGS("flags", DataType.MAP_STRING_BOOLEAN.getName(), "A set of metric name to boolean value pairs.", null, "bbd22825-b6d7-4dc9-828c-5299d484ff55"),
+
+    /**
+     * A set of metric name to current count value pairs.
+     */
+    MEASUREMENT_COUNTS("measurementCounts", DataType.MAP_STRING_INT.getName(), "A set of metric name to current count value pairs.", null, "54f5cd37-106f-41ac-80be-b8a6bc40fe54"),
+
+    /**
+     * A set of metric name to current value pairs.
+     */
+    MEASUREMENT_VALUES("measurementValues", DataType.MAP_STRING_STRING.getName(), "A set of metric name to current value pairs.", null, "d5efa9e2-009f-4973-888d-7d0d1ed97e9c"),
+
+    /**
+     * A set of metric name to current boolean value pairs.
+     */
+    MEASUREMENT_FLAGS("measurementFlags", DataType.MAP_STRING_BOOLEAN.getName(), "A set of metric name to current boolean value pairs.", null, "79a797b2-f5a3-4d38-bbb3-0b587923f1fe"),
+
+    /**
+     * Description of the requirements, rights, terms and conditions associated with the certification or license.
+     */
+    DETAILS("details", DataType.STRING.getName(), "Description of the requirements, rights, terms and conditions associated with the certification or license.", null, "a2431fef-185d-4f1d-bbb8-22041fa8cb97"),
+
+    /**
+     * Unique identifier of the actual certificate.
+     */
+    CERTIFICATE_GUID("certificateGUID", DataType.STRING.getName(), "Unique identifier of the actual certificate.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "3ff7c882-7bfb-4e42-8cdc-a5c41e4db80b"),
+
+    /**
+     * Unique identifier of the actual license.
+     */
+    LICENSE_GUID("licenseGUID", DataType.STRING.getName(), "Unique identifier of the actual license.", "2e0b760d-80fc-4e4e-a6bd-aa1169585533", "2bd31f57-2984-4ca9-9dd9-2d86da804a75"),
+
+    /**
+     * Start date for the certification.
+     */
+    START("start", DataType.DATE.getName(), "Start date for the certification.", null, "c9a4fdab-c44f-41d0-bce3-7c305bb13681"),
+
+    /**
+     * End date for the certification.
+     */
+    END("end", DataType.DATE.getName(), "End date for the certification.", null, "3933b3eb-a303-4818-8218-c7b0122393d8"),
+
+    /**
+     * Any special conditions or endorsements over the basic certification type.
+     */
+    CONDITIONS("conditions", DataType.STRING.getName(), "Any special conditions or endorsements over the basic certification/license type.", null, "df0f342a-c933-4bb3-8ad7-1721500db53b"),
+
+    /**
+     * Person or organization awarding the certification.
+     */
+    CERTIFIED_BY("certifiedBy", DataType.STRING.getName(), "Person or organization awarding the certification.", null, "64bf8d6e-a156-4e5b-a000-b414915ac3b8"),
+
+    /**
+     * Type of element referenced in the certifiedBy property.
+     */
+    CERTIFIED_BY_TYPE_NAME("certifiedByTypeName", DataType.STRING.getName(), "Type of element referenced in the certifiedBy property.", null, "4218f738-e0bb-4afd-9f37-ab2d86a423e1"),
+
+    /**
+     * Name of the property from the element used to identify the certifiedBy property.
+     */
+    CERTIFIED_BY_PROPERTY_NAME("certifiedByPropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the certifiedBy property.", null, "8851a966-9eac-4af6-bc01-daac185b981d"),
+
+    /**
+     * Person or organization awarding the license.
+     */
+    LICENSED_BY("licensedBy", DataType.STRING.getName(), "Person or organization awarding the license.", null, "351f42b6-7177-43f2-b48b-b640ff4d38bf"),
+
+    /**
+     * Type of element referenced in the licensedBy property.
+     */
+    LICENSED_BY_TYPE_NAME("licensedByTypeName", DataType.STRING.getName(), "Type of element referenced in the licensedBy property.", null, "38a23a1a-be8f-4d2e-b9af-1636501d50af"),
+
+    /**
+     * Name of the property from the element used to identify the licensedBy property.
+     */
+    LICENSED_BY_PROPERTY_NAME("licensedByPropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the licensedBy property.", null, "8e13071d-d8ca-4b12-8c56-3794117f0c4a"),
+
+    /**
+     * The person, engine or organization that will ensure the certification/license is honored.
+     */
+    CUSTODIAN("custodian", DataType.STRING.getName(), "The person, engine or organization that will ensure the certification/license is honored.", null, "f87be57e-f774-46f5-8f9c-e047e9a26023"),
+
+    /**
+     * Type of element referenced in the custodian property.
+     */
+    CUSTODIAN_TYPE_NAME("custodianTypeName", DataType.STRING.getName(), "Type of element referenced in the custodian property.", null, "913794e9-d989-4274-81db-44fee1ac77a6"),
+
+    /**
+     * Name of the property from the element used to identify the custodian property.
+     */
+    CUSTODIAN_PROPERTY_NAME("custodianPropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the custodian property.", null, "b2001ca5-04bf-465f-9974-921e51f5adb3"),
+
+    /**
+     * The person or organization that received the certification.
+     */
+    RECIPIENT("recipient", DataType.STRING.getName(), "The person or organization that received the certification.", null, "8c52edc2-f385-4cc8-bd1c-5c2c71023cf3"),
+
+    /**
+     * Type of element referenced in the recipient property.
+     */
+    RECIPIENT_TYPE_NAME("recipientTypeName", DataType.STRING.getName(), "Type of element referenced in the recipient property.", null, "b932b5bc-add7-429f-baee-8e19245363dc"),
+
+    /**
+     * Name of the property from the element used to identify the recipient property.
+     */
+    RECIPIENT_PROPERTY_NAME("recipientPropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the recipient property.", null, "b6603182-95ce-4b9d-bdca-a4c483c3b755"),
+
+    /**
+     * The person or organization that received the license.
+     */
+    LICENSEE("licensee", DataType.STRING.getName(), "The person or organization that received the license.", null, "00a42e8b-208e-4dac-8e14-94e0194f9f04"),
+
+    /**
+     * Type of element referenced in the licensee property.
+     */
+    LICENSEE_TYPE_NAME("licenseeTypeName", DataType.STRING.getName(), "Type of element referenced in the licensee property.", null, "2be3b93f-471e-49a1-9879-e234a4015b0f"),
+
+    /**
+     * Name of the property from the element used to identify the licensee property.
+     */
+    LICENSEE_PROPERTY_NAME("licenseePropertyName", DataType.STRING.getName(), "Name of the property from the element used to identify the licensee property.", null, "ab10a18d-f449-4450-913b-e44055d5e3b8"),
+
+    /**
+     * The list of rights and permissions granted.
+     */
+    ENTITLEMENTS("entitlements", DataType.MAP_STRING_STRING.getName(), "The list of rights and permissions granted.", null, "e7e05bae-2e26-4f5e-97a8-ae6f524b77b5"),
+
+    /**
+     * The list of limiting conditions or measures imposed.
+     */
+    RESTRICTIONS("restrictions", DataType.MAP_STRING_STRING.getName(), "The list of limiting conditions or measures imposed.", null, "2119de4f-22ba-4979-b7ab-e926386b96da"),
+
+    /**
+     * The list of actions, duties or commitments required.
+     */
+    OBLIGATIONS("obligations", DataType.MAP_STRING_STRING.getName(), "The list of actions, duties or commitments required.", null, "d5aa9324-70f9-40c1-9f3c-da28c8f7e6bf"),
+
+    /**
+     * Prefix for element names to ensure uniqueness.
+     */
+    NAMESPACE("namespace", DataType.STRING.getName(), "Prefix for element names to ensure uniqueness.", null, "00282ffd-950d-43d1-b9ee-d1b38c6ec49f"),
+
+    /**
+     * Version of the schema type.
+     */
+    VERSION_NUMBER("versionNumber", DataType.STRING.getName(), "Version of the schema type.", null, "9059b5ee-00be-4298-bee2-d588ddc142c2"),
+
+    /**
+     * Format of the schema.
+     */
+    ENCODING_STANDARD("encodingStandard", DataType.STRING.getName(), "Format of the schema.", null, "ed168cda-302d-40fe-8170-32440db3c7ca"),
+
+    /**
+     * Concrete implementation of the schema type.
+     */
+    SNIPPET("snippet", DataType.STRING.getName(), "Concrete implementation of the schema type.", null, "4a375217-b571-41a8-8227-0f215d13c43b"),
+
+    /**
+     * Version number of the snippet.
+     */
+    SNIPPET_VERSION("snippetVersion", DataType.STRING.getName(), "Version number of the snippet.", null, "269411bf-01be-490b-b8f1-04940f33b239"),
+
+    /**
+     * Identifier of the person or process that is maintaining the snippet.
+     */
+    CURATOR("curator", DataType.STRING.getName(), "Identifier of the person or process that is maintaining the snippet.", null, "07631a57-6656-4917-b424-f826765267d2"),
+
+
+    /**
+     * Only values from the ValidValues set/definition are allowed.
+     */
+    STRICT_REQUIREMENT("strictRequirement", DataType.BOOLEAN.getName(), "Only values from the ValidValues set/definition are allowed.", null, "5d0ff357-906c-4483-8962-2df1bf978de4"),
+
+    /**
+     *  Is the member the default value in the set?
+     */
+    IS_DEFAULT_VALUE("isDefaultValue", DataType.BOOLEAN.getName(), "Is the member the default value in the set?", null, "b6c3a286-dc8a-4a2f-a7ab-d9117f53ec9e"),
+
+    /**
+     * Name of the valid value used in code.
+     */
+    SYMBOLIC_NAME("symbolicName", DataType.STRING.getName(), "Name of the valid value used in code.", null, "9909b6f9-00fc-4dba-a48c-225e5537ec55"),
+
+    /**
+     * Value in the asset that maps to this valid value if different from the preferred value.
+     */
+    IMPLEMENTATION_VALUE("implementationValue", DataType.STRING.getName(), "Value in the asset that maps to this valid value if different from the preferred value.", null, "faf3c645-db0a-4235-857e-7b02aa5394ea"),
+
+    /**
+     * Brief description describing how they are related.
+     */
+    ASSOCIATION_DESCRIPTION("associationDescription", DataType.STRING.getName(), "Brief description describing how they are related." , null, "61c19bbd-3603-498c-b03d-b9add5cdf2c4"),
+
+    /**
+     * Additional values for additional columns or fields in the reference data store.
+     */
+    ADDITIONAL_VALUES("additionalValues", DataType.MAP_STRING_STRING.getName(), "Additional values for additional columns or fields in the reference data store.", null, "59e020b4-a4f3-4a80-91e9-e08948a8578a"),
 
     ;
 

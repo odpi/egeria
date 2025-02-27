@@ -114,77 +114,62 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_UC_SERVER,
                                                           SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_UC_SERVER,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("UnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_UC_SERVER,
                                                            SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE,
-                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
-                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
         this.deleteAsCatalogTargetGovernanceActionProcess("UnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.DELETE_UC_SERVER,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
 
         this.createAndSurveyServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_DB_UC_SERVER,
                                                           SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_UC_SERVER,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_DB_UC_SERVER,
                                                            SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE,
-                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
-                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName());
         this.deleteAsCatalogTargetGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.DELETE_UC_SERVER,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName());
 
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogCatalog",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
                                                                 UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogSchema",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
                                                                 UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogVolume",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
                                                                 UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogTable",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
                                                                 UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogFunction",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
                                                                 UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getQualifiedName());
 
         /*
@@ -198,21 +183,21 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
      * Create a two-step governance action process that creates a metadata element for a particular type of server
      * and then adds it as a catalog target for an appropriate integration connector.
      *
+     * @param technologyName name of technology
      * @param technologyType value for deployed implementation type
      * @param provisionRequestType request type used to create the server's metadata element
-     * @param provisionEngineDefinition governance action engine
+     * @param createTemplate template to use in the creation step
      * @param supportedElementQualifiedName qualified name of the element that this should be listed as a resource
      */
     protected void createProvisionUnityCatalogGovernanceActionProcess(String                     technologyName,
                                                                       String                     technologyType,
                                                                       RequestTypeDefinition      provisionRequestType,
                                                                       TemplateDefinition         createTemplate,
-                                                                      GovernanceEngineDefinition provisionEngineDefinition,
                                                                       String                     supportedElementQualifiedName)
     {
         String description = "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.";
 
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                       "Provision:" + technologyName + ":GovernanceActionProcess",
                                                                       "Provision " + technologyType,
                                                                       null,
@@ -231,9 +216,9 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
             supportedRequestParameters = this.getRequestTypeDefinition(createTemplate.getPlaceholders());
         }
 
-        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Provision:" + technologyName + ":Step1",
                                                                         "Create the new element",
@@ -254,7 +239,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         if (step1GUID != null)
         {
-            super.addStepExecutor(step1GUID, provisionRequestType, provisionEngineDefinition);
+            super.addStepExecutor(step1GUID, provisionRequestType, provisionRequestType.getGovernanceEngine());
 
             Map<String, String> requestParameters = new HashMap<>();
 

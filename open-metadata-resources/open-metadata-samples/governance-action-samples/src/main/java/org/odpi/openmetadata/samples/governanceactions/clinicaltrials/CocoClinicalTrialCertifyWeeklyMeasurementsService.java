@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttrib
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
@@ -34,7 +35,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyActionServiceConnector
 {
-    private final static String schemaType  = OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME;
+    private final static String schemaType  = OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName;
 
 
     private Connector connector = null;
@@ -314,14 +315,14 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     angleRightAnnotation.getQualityScore() == 0)
                 {
                     ElementProperties elementProperties = propertyHelper.addDateProperty(null,
-                                                                                         OpenMetadataType.START_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.START.name,
                                                                                          new Date());
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.CERTIFICATE_GUID.name,
                                                                          annotationStore.getSurveyReportGUID());
 
-                    surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                    surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                                       assetUniverse.getGUID(),
                                                                                       certificationTypeGUID,
                                                                                       null,

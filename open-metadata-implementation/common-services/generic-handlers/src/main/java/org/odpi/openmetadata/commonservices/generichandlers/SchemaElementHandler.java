@@ -150,8 +150,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                assetGUID,
                                                                assetGUIDParameterName,
                                                                assetTypeName,
-                                                               OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                               OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                               OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                               OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                schemaTypeTypeName,
                                                                2,
                                                                forLineage,
@@ -209,8 +209,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
-                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                           null,
                                           effectiveFrom,
                                           effectiveTo,
@@ -270,7 +270,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
         if (schemaTypeBuilder != null)
         {
-            if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataType.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName))
             {
                 String externalSchemaGUID = schemaTypeBuilder.getExternalSchemaTypeGUID();
 
@@ -284,12 +284,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                               schemaTypeTypeName,
                                               externalSchemaGUID,
                                               externalParameterName,
-                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                              OpenMetadataType.SCHEMA_TYPE.typeName,
                                               forLineage,
                                               forDuplicateProcessing,
                                               supportedZones,
-                                              OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
-                                              OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
+                                              OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                              OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                               null,
                                               effectiveFrom,
                                               effectiveTo,
@@ -297,7 +297,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                               methodName);
                 }
             }
-            else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataType.MAP_SCHEMA_TYPE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataType.MAP_SCHEMA_TYPE.typeName))
             {
                 /*
                  * The caller may have set up the maps as builders (requiring the schema type to be created first) or as GUIDs.
@@ -331,12 +331,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                               schemaTypeTypeName,
                                               mapFromGUID,
                                               mapFromParameterName,
-                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                              OpenMetadataType.SCHEMA_TYPE.typeName,
                                               forLineage,
                                               forDuplicateProcessing,
                                               supportedZones,
-                                              OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_GUID,
-                                              OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                              OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeGUID,
+                                              OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                               null,
                                               effectiveFrom,
                                               effectiveTo,
@@ -368,12 +368,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                               schemaTypeTypeName,
                                               mapToGUID,
                                               mapToParameterName,
-                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                              OpenMetadataType.SCHEMA_TYPE.typeName,
                                               forLineage,
                                               forDuplicateProcessing,
                                               supportedZones,
-                                              OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_GUID,
-                                              OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                              OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeGUID,
+                                              OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                               null,
                                               effectiveFrom,
                                               effectiveTo,
@@ -381,7 +381,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                               methodName);
                 }
             }
-            else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName))
             {
                 List<SchemaTypeBuilder> schemaOptionBuilders = schemaTypeBuilder.getSchemaOptions();
 
@@ -412,12 +412,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                           schemaTypeTypeName,
                                                           optionGUID,
                                                           optionParameterName,
-                                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                          OpenMetadataType.SCHEMA_TYPE.typeName,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           supportedZones,
-                                                          OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_GUID,
-                                                          OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME,
+                                                          OpenMetadataType.SCHEMA_TYPE_CHOICE.typeGUID,
+                                                          OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName,
                                                           null,
                                                           effectiveFrom,
                                                           effectiveTo,
@@ -481,7 +481,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                          externalSourceName,
                          schemaTypeGUID,
                          schemaTypeGUIDParameterName,
-                         OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                         OpenMetadataType.SCHEMA_TYPE.typeName,
                          schemaTypeBuilder,
                          effectiveFrom,
                          effectiveTo,
@@ -521,9 +521,9 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
         return repositoryHandler.countAttachedRelationshipsByType(userId,
                                                                   schemaElementGUID,
-                                                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                  OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                  OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                  OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                                  OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeGUID,
+                                                                  OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                                   2,
                                                                   null,
                                                                   null,
@@ -603,12 +603,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                   schemaElementTypeName,
                                   queryTargetGUID,
                                   queryTargetGUIDParameterName,
-                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                  OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -686,12 +686,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                         schemaElementTypeName,
                                         queryTargetGUID,
                                         queryTargetGUIDParameterName,
-                                        OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                        OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
-                                        OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
                                         isMergeUpdate,
                                         this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                         effectiveTime,
@@ -738,12 +738,12 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                       schemaElementTypeName,
                                       queryTargetGUID,
                                       queryTargetGUIDParameterName,
-                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_GUID,
-                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                      OpenMetadataType.SCHEMA_ELEMENT.typeGUID,
+                                      OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                       false,
                                       false,
-                                      OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
                                       null,
                                       methodName);
     }
@@ -826,10 +826,10 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   endOneGUID,
                                   endOneParameterName,
-                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                  OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                   endTwoGUID,
                                   endTwoParameterName,
-                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                  OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   relationshipTypeGUID,
@@ -891,11 +891,11 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       endOneGUID,
                                       endOneParameterName,
-                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                      OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                       endTwoGUID,
                                       endTwoParameterName,
-                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_GUID,
-                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                      OpenMetadataType.SCHEMA_ELEMENT.typeGUID,
+                                      OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       relationshipTypeGUID,

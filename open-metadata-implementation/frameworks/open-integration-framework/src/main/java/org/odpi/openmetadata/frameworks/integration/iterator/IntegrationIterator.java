@@ -219,7 +219,7 @@ public abstract class IntegrationIterator
 
             rootSchemaType = openMetadataAccess.getRelatedMetadataElement(element.getElementGUID(),
                                                                           1,
-                                                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                           new Date());
         }
 

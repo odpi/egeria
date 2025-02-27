@@ -8,9 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
@@ -47,7 +45,6 @@ public class DeleteAssetGovernanceActionConnector extends GeneralGovernanceActio
         try
         {
             List<String>              outputGuards        = new ArrayList<>();
-            List<NewActionTarget>     outputActionTargets = new ArrayList<>();
             CompletionStatus          completionStatus;
             AuditLogMessageDefinition messageDefinition;
             String                    templateGUID;
@@ -85,27 +82,15 @@ public class DeleteAssetGovernanceActionConnector extends GeneralGovernanceActio
                                                                                                                                                 methodName),
                                                                                                                assetGUID);
 
-                governanceContext.deleteMetadataElement(assetGUID, false, false, null);
+                governanceContext.deleteMetadataElement(assetElement, false, false, null);
 
-                NewActionTarget newActionTarget = new NewActionTarget();
-
-                newActionTarget.setActionTargetGUID(assetGUID);
-                newActionTarget.setActionTargetName(ActionTarget.DELETED_ASSET.name);
-
-                outputActionTargets.add(newActionTarget);
-
-                completionStatus = ManageAssetGuard.SET_UP_COMPLETE.getCompletionStatus();
-                outputGuards.add(ManageAssetGuard.SET_UP_COMPLETE.getName());
+                completionStatus = ManageAssetGuard.DELETE_COMPLETE.getCompletionStatus();
+                outputGuards.add(ManageAssetGuard.DELETE_COMPLETE.getName());
             }
 
             auditLog.logMessage(methodName, messageDefinition);
 
-            if (outputActionTargets.isEmpty())
-            {
-                outputActionTargets = null;
-            }
-
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, outputActionTargets, messageDefinition);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }
         catch (Exception error)
         {

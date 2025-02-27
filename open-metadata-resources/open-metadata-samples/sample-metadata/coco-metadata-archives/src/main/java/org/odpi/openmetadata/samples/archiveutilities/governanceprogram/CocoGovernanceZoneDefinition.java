@@ -127,7 +127,15 @@ public enum CocoGovernanceZoneDefinition
     TRASH_CAN(  "trash-can",
                 "Trash Can Zone",
                 "Asset that are in a holding zone ready to be deleted.",
-                "Assets that are no longer required.")
+                "Assets that are no longer required."),
+
+    /**
+     * sustainability
+     */
+    SUSTAINABILITY("sustainability",
+                   "Sustainability Reporting",
+                   "Assets used to build reports that illustrate the status of Coco Pharmaceutical's greenhouse gas emissions and sustainability initiatives.",
+                   "Activity data that relates to sustainability"),
 ;
 
 

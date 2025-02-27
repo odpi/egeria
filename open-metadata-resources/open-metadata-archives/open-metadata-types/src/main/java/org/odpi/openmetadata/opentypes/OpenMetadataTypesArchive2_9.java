@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -183,24 +184,16 @@ public class OpenMetadataTypesArchive2_9
 
     private ClassificationDef getUserProfileManagerClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.USER_PROFILE_MANAGER.typeGUID,
-                                                  OpenMetadataType.USER_PROFILE_MANAGER.typeName,
+        return archiveHelper.getClassificationDef(OpenMetadataType.USER_PROFILE_MANAGER,
                                                   null,
-                                                  OpenMetadataType.USER_PROFILE_MANAGER.description,
-                                                  OpenMetadataType.USER_PROFILE_MANAGER.descriptionGUID,
-                                                  OpenMetadataType.USER_PROFILE_MANAGER.wikiURL,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
 
     private ClassificationDef getUserAccessDirectoryClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.USER_ACCESS_DIRECTORY.typeGUID,
-                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.typeName,
+        return archiveHelper.getClassificationDef(OpenMetadataType.USER_ACCESS_DIRECTORY,
                                                   null,
-                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.description,
-                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.descriptionGUID,
-                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.wikiURL,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
@@ -284,16 +277,8 @@ public class OpenMetadataTypesArchive2_9
 
     private ClassificationDef getGovernanceMeasurementClassification()
     {
-        final String guid            = "9d99d962-0214-49ba-83f7-c9b1f9f5bed4";
-        final String name            = "GovernanceMeasurements";
-        final String description     = "A set of measurements on the performance and use of the connected resource.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
@@ -301,30 +286,10 @@ public class OpenMetadataTypesArchive2_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "measurementCounts";
-        final String attribute1Description     = "A set of metric name to current count value pairs.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "measurementValues";
-        final String attribute2Description     = "A set of metric name to current value pairs.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "measurementFlags";
-        final String attribute3Description     = "A set of metric name to current boolean value pairs.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringIntTypeDefAttribute(attribute1Name,
-                                                                 attribute1Description,
-                                                                 attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringBooleanTypeDefAttribute(attribute3Name,
-                                                                     attribute3Description,
-                                                                     attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT_COUNTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT_VALUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT_FLAGS));
 
         classificationDef.setPropertiesDefinition(properties);
 

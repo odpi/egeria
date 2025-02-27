@@ -377,6 +377,7 @@ public class OpenMetadataTypesArchive1_6
     /**
      * 0512 - SchemaAttribute entity is changed to show deprecated properties
      */
+    /* Deprecated */
     private TypeDefPatch updateDerivedSchemaAttributeEntity()
     {
         /*

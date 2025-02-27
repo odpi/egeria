@@ -48,8 +48,8 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
-              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeGUID,
+              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -77,7 +77,7 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                domainIdentifier,
                                                                methodName);
 
@@ -94,13 +94,13 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IGNORE_MULTIPLE_TRIGGERS.name,
                                                                    ignoreMultipleTriggers,
                                                                    methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.WAIT_TIME_PROPERTY_NAME,
+                                                               OpenMetadataProperty.WAIT_TIME.name,
                                                                waitTime,
                                                                methodName);
 

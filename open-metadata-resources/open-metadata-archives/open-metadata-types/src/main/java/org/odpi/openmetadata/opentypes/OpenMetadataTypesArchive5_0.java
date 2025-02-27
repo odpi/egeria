@@ -1189,23 +1189,8 @@ public class OpenMetadataTypesArchive5_0
 
     private void update0461GovernanceEngines()
     {
-        this.archiveBuilder.addEntityDef(getContextEventEngineEntity());
-        this.archiveBuilder.addEntityDef(getContextEventServiceEntity());
         this.archiveBuilder.addEntityDef(getSurveyActionEngineEntity());
         this.archiveBuilder.addEntityDef(getSurveyActionServiceEntity());
-    }
-
-    private EntityDef getContextEventEngineEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTEXT_EVENT_ENGINE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName));
-    }
-
-    private EntityDef getContextEventServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTEXT_EVENT_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName));
-
     }
 
     private EntityDef getSurveyActionEngineEntity()
@@ -1785,7 +1770,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1796,7 +1781,7 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataType.SUPPORTED_GUARDS_PROPERTY_NAME;
+        final String attribute1Name            = "supportedGuards";
         final String attribute1Description     = "Deprecated list of produced guards.";
         final String attribute1DescriptionGUID = null;
 
@@ -1805,7 +1790,7 @@ public class OpenMetadataTypesArchive5_0
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME);
+        property.setReplacedByAttribute(OpenMetadataProperty.PRODUCED_GUARDS.name);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

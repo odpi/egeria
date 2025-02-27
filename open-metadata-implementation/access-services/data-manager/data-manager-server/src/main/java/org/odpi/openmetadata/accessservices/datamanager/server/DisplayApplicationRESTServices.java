@@ -2319,7 +2319,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME;
+                String typeName = OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {

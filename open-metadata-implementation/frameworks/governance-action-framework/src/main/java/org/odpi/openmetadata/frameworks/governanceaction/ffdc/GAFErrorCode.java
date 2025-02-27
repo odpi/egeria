@@ -86,7 +86,7 @@ public enum GAFErrorCode implements ExceptionMessageSet
     /**
      * GAF-PROPERTIES-400-008 - Null property name passed to properties object
      */
-    NULL_PROPERTY_NAME(500, "GAF-PROPERTIES-400-008",
+    NULL_PROPERTY_NAME(400, "GAF-PROPERTIES-400-008",
                        "Null property name passed to properties object",
                        "A request to set an additional property failed because the property name passed was null",
                        "Recode the call to the property object with a valid property name and retry."),
@@ -94,10 +94,20 @@ public enum GAFErrorCode implements ExceptionMessageSet
     /**
      * GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value
      */
-    ARRAY_OUT_OF_BOUNDS(500, "GAF-PROPERTIES-400-009",
+    ARRAY_OUT_OF_BOUNDS(400, "GAF-PROPERTIES-400-009",
                         "{0} is unable to add a new element to location {1} of an array of size {2} value",
                         "There is an error in the update of an ArrayTypePropertyValue.",
                         "Recode the call to the property object with a valid element location and retry."),
+
+    /**
+     * GAF-PROPERTIES-400-010 - The {0} method has been called without an open metadata element to work with
+     */
+    NO_METADATA_ELEMENT(400, "GAF-PROPERTIES-400-010",
+                        "The {0} method has been called without an open metadata element to work with",
+                        "The provisioning governance action service connector is designed to manage files on request.  " +
+                                "It is unable to operate without the name of the source file and so it terminates with a FAILED completion status.",
+                        "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
+                                "relationship.  Correct the information passed to the governance service and rerun the request"),
 
     /**
      * GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.  The error message was {4}

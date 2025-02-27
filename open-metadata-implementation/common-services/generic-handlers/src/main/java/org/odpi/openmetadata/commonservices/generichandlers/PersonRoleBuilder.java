@@ -190,11 +190,11 @@ public class PersonRoleBuilder extends ReferenceableBuilder
              * The domain identifier may have been set in the extended properties which are populated by the super class.
              * This ensures the value fromm extended properties is not overridden.
              */
-            if ((properties == null) || (properties.getPropertyValue(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME) == null))
+            if ((properties == null) || (properties.getPropertyValue(OpenMetadataProperty.DOMAIN_IDENTIFIER.name) == null))
             {
                 properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                        domainIdentifier,
                                                                        methodName);
             }

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeplo
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
@@ -110,7 +111,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   UnityCatalogPlaceholderProperty.getSecureServerPlaceholderPropertyTypes(),
                                   ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
-    KAFKA_SERVER_TEMPLATE("5e1ff810-5418-43f7-b7c4-e6e062f9aff7",
+    KAFKA_SERVER_TEMPLATE(KafkaTemplateType.KAFKA_SERVER_TEMPLATE.getTemplateGUID(),
                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER,
                           KafkaDeployedImplementationType.APACHE_KAFKA_EVENT_BROKER,
                           OpenMetadataType.EVENT_BROKER.typeName,

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -88,7 +89,7 @@ public class GovernanceRolesRESTServices
                             extendedProperties = new HashMap<>();
                         }
 
-                        extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
+                        extendedProperties.put(OpenMetadataProperty.DOMAIN_IDENTIFIER.name, properties.getDomainIdentifier());
                     }
 
                     PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
@@ -183,7 +184,7 @@ public class GovernanceRolesRESTServices
                             extendedProperties = new HashMap<>();
                         }
 
-                        extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
+                        extendedProperties.put(OpenMetadataProperty.DOMAIN_IDENTIFIER.name, properties.getDomainIdentifier());
                     }
 
                     PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);

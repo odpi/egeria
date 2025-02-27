@@ -135,7 +135,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(topicGUID, topicGUIDParameterName, methodName);
 
-        String typeName = OpenMetadataType.EVENT_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.EVENT_TYPE.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -143,7 +143,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.EVENT_TYPE.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -213,7 +213,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                eventTypeListGUIDParameterName,
                                                eventTypeGUID,
                                                eventTypeGUIDParameterName,
-                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeGUID,
                                                null,
                                                methodName);
         }
@@ -301,8 +301,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                            externalSourceName,
                                                            templateGUID,
                                                            templateGUIDParameterName,
-                                                           OpenMetadataType.EVENT_TYPE_TYPE_GUID,
-                                                           OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                                           OpenMetadataType.EVENT_TYPE.typeGUID,
+                                                           OpenMetadataType.EVENT_TYPE.typeName,
                                                            qualifiedName,
                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                                            builder,
@@ -324,7 +324,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                            eventTypeListGUIDParameterName,
                                            eventTypeGUID,
                                            eventTypeGUIDParameterName,
-                                           OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeGUID,
                                            null,
                                            methodName);
 
@@ -400,7 +400,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.EVENT_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.EVENT_TYPE.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -408,7 +408,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.EVENT_TYPE.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -485,8 +485,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     eventTypeGUID,
                                     eventTypeGUIDParameterName,
-                                    OpenMetadataType.EVENT_TYPE_TYPE_GUID,
-                                    OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                    OpenMetadataType.EVENT_TYPE.typeGUID,
+                                    OpenMetadataType.EVENT_TYPE.typeName,
                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,
@@ -531,8 +531,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.EVENT_TYPE_TYPE_GUID,
-                              OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                              OpenMetadataType.EVENT_TYPE.typeGUID,
+                              OpenMetadataType.EVENT_TYPE.typeName,
                               startFrom,
                               pageSize,
                               null,
@@ -581,10 +581,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElements(userId,
                                         eventSetGUID,
                                         eventSetGUIDParameterName,
-                                        OpenMetadataType.EVENT_SET_TYPE_NAME,
+                                        OpenMetadataType.EVENT_SET.typeName,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                        OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                        OpenMetadataType.EVENT_TYPE.typeName,
                                         null,
                                         null,
                                         0,
@@ -643,8 +643,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.EVENT_TYPE_TYPE_GUID,
-                                    OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                    OpenMetadataType.EVENT_TYPE.typeGUID,
+                                    OpenMetadataType.EVENT_TYPE.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -702,9 +702,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                                   topicGUID,
                                                                   topicGUIDParameterName,
                                                                   OpenMetadataType.TOPIC.typeName,
-                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                                                  OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                  OpenMetadataType.EVENT_TYPE_LIST.typeName,
                                                                   2,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -719,10 +719,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
             return this.getAttachedElements(userId,
                                             eventTypeListEntity.getGUID(),
                                             eventTypeListGUIDParameterName,
-                                            OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
-                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                            OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                            OpenMetadataType.EVENT_TYPE_LIST.typeName,
+                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                            OpenMetadataType.EVENT_TYPE.typeName,
                                             null,
                                             null,
                                             2,
@@ -784,9 +784,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                               topicGUID,
                                                               topicGUIDParameterName,
                                                               OpenMetadataType.TOPIC.typeName,
-                                                              OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                              OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                                              OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
+                                                              OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                              OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                              OpenMetadataType.EVENT_TYPE_LIST.typeName,
                                                               2,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -797,8 +797,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         if (eventListEntity == null)
         {
             SchemaTypeBuilder builder = new SchemaTypeBuilder(topicQualifiedName + "_EventList",
-                                                              OpenMetadataType.EVENT_TYPE_LIST_TYPE_GUID,
-                                                              OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
+                                                              OpenMetadataType.EVENT_TYPE_LIST.typeGUID,
+                                                              OpenMetadataType.EVENT_TYPE_LIST.typeName,
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
@@ -816,8 +816,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
             builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
             eventTypeListGUID = repositoryHandler.createEntity(userId,
-                                                               OpenMetadataType.EVENT_TYPE_LIST_TYPE_GUID,
-                                                               OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
+                                                               OpenMetadataType.EVENT_TYPE_LIST.typeGUID,
+                                                               OpenMetadataType.EVENT_TYPE_LIST.typeName,
                                                                externalSourceGUID,
                                                                externalSourceName,
                                                                builder.getInstanceProperties(methodName),
@@ -837,12 +837,12 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataType.TOPIC.typeName,
                                           eventTypeListGUID,
                                           eventTypeListGUIDParameterName,
-                                          OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
+                                          OpenMetadataType.EVENT_TYPE_LIST.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
-                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                           null,
                                           effectiveFrom,
                                           effectiveTo,
@@ -851,7 +851,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
             }
             else
             {
-                errorHandler.logNullInstance(OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME, methodName);
+                errorHandler.logNullInstance(OpenMetadataType.EVENT_TYPE_LIST.typeName, methodName);
             }
         }
         else
@@ -893,7 +893,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.EVENT_TYPE_TYPE_NAME,
+                                          OpenMetadataType.EVENT_TYPE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

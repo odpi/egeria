@@ -431,7 +431,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       KeyPattern.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(KeyPattern.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName,
                                       OpenMetadataProperty.KEY_PATTERN.name,
                                       KeyPattern.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(KeyPattern.values())));
@@ -855,7 +855,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         /*
          * Add catalog templates
          */
-        this.addFileTemplates();
         this.addEndpointCatalogTemplates();
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
@@ -923,10 +922,54 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
                                                             RequestTypeDefinition.CREATE_KAFKA_TOPIC,
                                                             DataAssetTemplateDefinition.KAFKA_TOPIC_TEMPLATE,
-                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                             RequestTypeDefinition.HARVEST_OPEN_LINEAGE_TOPIC,
-                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                             DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName());
+
+        this.deleteAsCatalogTargetGovernanceActionProcess("ApacheKafkaTopic",
+                                                          DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName(),
+                                                          DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_KAFKA_TOPIC,
+                                                          DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName());
+
+        this.createAndSurveyServerGovernanceActionProcess("FileDirectory",
+                                                          DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_FILE_FOLDER,
+                                                          DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE,
+                                                          RequestTypeDefinition.SURVEY_ALL_FOLDERS_AND_FILES,
+                                                          DeployedImplementationType.FILE_FOLDER.getQualifiedName());
+
+        this.createAndCatalogServerGovernanceActionProcess("FileDirectory",
+                                                           DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
+                                                           RequestTypeDefinition.CREATE_FILE_FOLDER,
+                                                           DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE,
+                                                           RequestTypeDefinition.CATALOG_FILE_FOLDER,
+                                                           DeployedImplementationType.FILE_FOLDER.getQualifiedName());
+
+        this.deleteAsCatalogTargetGovernanceActionProcess("FileDirectory",
+                                                          DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName(),
+                                                          DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_FILE_FOLDER,
+                                                          DeployedImplementationType.FILE_FOLDER.getQualifiedName());
+
+        this.createAndSurveyServerGovernanceActionProcess("DataDirectory",
+                                                          DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_DATA_FOLDER,
+                                                          DataAssetTemplateDefinition.DATA_FOLDER_TEMPLATE,
+                                                          RequestTypeDefinition.SURVEY_FOLDER_AND_FILES,
+                                                          DeployedImplementationType.DATA_FOLDER.getQualifiedName());
+
+        this.createAndCatalogServerGovernanceActionProcess("DataDirectory",
+                                                           DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
+                                                           RequestTypeDefinition.CREATE_DATA_FOLDER,
+                                                           DataAssetTemplateDefinition.DATA_FOLDER_TEMPLATE,
+                                                           RequestTypeDefinition.CATALOG_DATA_FOLDER,
+                                                           DeployedImplementationType.DATA_FOLDER.getQualifiedName());
+
+        this.deleteAsCatalogTargetGovernanceActionProcess("DataDirectory",
+                                                          DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName(),
+                                                          DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_DATA_FOLDER,
+                                                          DeployedImplementationType.DATA_FOLDER.getQualifiedName());
 
         /*
          * Create a sample process
@@ -1024,43 +1067,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              false,
                                              null);
         }
-    }
-
-
-    /**
-     * Add templates to the open metadata types for files.
-     */
-    private void addFileTemplates()
-    {
-        String basicFileConnectorTypeGUID = new BasicFileStoreProvider().getConnectorType().getGUID();
-
-        createFolderCatalogTemplate(DeployedImplementationType.FILE_FOLDER, new BasicFolderProvider().getConnectorType().getGUID());
-        createFolderCatalogTemplate(DeployedImplementationType.DATA_FOLDER, new DataFolderProvider().getConnectorType().getGUID());
-
-        createDataFileCatalogTemplate(DeployedImplementationType.FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.CSV_FILE, new CSVFileStoreProvider().getConnectorType().getGUID(), null);
-        createDataFileCatalogTemplate(DeployedImplementationType.AVRO_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.JSON_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.PARQUET_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.SPREADSHEET_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.XML_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.DOCUMENT, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.AUDIO_DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.VIDEO_DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.THREE_D_IMAGE_DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.RASTER_DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.VECTOR_DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.ARCHIVE_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.KEYSTORE_FILE, basicFileConnectorTypeGUID, null);
-
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.PROGRAM_FILE, basicFileConnectorTypeGUID);
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.SOURCE_CODE_FILE, basicFileConnectorTypeGUID);
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.BUILD_FILE, basicFileConnectorTypeGUID);
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.EXECUTABLE_FILE, basicFileConnectorTypeGUID);
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.SCRIPT_FILE, basicFileConnectorTypeGUID);
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.PROPERTIES_FILE, basicFileConnectorTypeGUID);
-        createSoftwareFileCatalogTemplate(DeployedImplementationType.YAML_FILE, basicFileConnectorTypeGUID);
     }
 
 
@@ -1581,7 +1587,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
      */
     private void createDailyGovernanceActionProcess()
     {
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                       "Egeria:DailyGovernanceActionProcess",
                                                                       "DailyGovernanceActionProcess",
                                                                       null,
@@ -1592,9 +1598,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                       null,
                                                                       null);
 
-        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:GetDayOfWeek",
                                                                         "Get the day of the Week",
@@ -1627,9 +1633,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
         }
 
-        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:MondayTask",
                                                                         "Output Monday's task",
@@ -1665,9 +1671,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.MONDAY.getName(), false, step2GUID);
         }
 
-        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:TuesdayTask",
                                                                         "Output Tuesday's task",
@@ -1703,9 +1709,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.TUESDAY.getName(), false, step3GUID);
         }
 
-        String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:WednesdayTask",
                                                                         "Output Wednesday's task",
@@ -1741,9 +1747,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.WEDNESDAY.getName(), false, step4GUID);
         }
 
-        String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:ThursdayTask",
                                                                         "Output Thursday's task",
@@ -1779,9 +1785,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.THURSDAY.getName(), false, step5GUID);
         }
 
-        String step6GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step6GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:FridayTask",
                                                                         "Output Friday's task",
@@ -1817,9 +1823,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.FRIDAY.getName(), false, step6GUID);
         }
 
-        String step7GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step7GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:SaturdayTask",
                                                                         "Output Saturday's task",
@@ -1856,9 +1862,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
 
-        String step8GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step8GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:SundayTask",
                                                                         "Output Sunday's task",

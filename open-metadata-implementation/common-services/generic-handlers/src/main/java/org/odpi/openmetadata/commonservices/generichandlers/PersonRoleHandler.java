@@ -1620,7 +1620,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        domainIdentifier,
                                        OpenMetadataType.PERSON_ROLE.typeGUID,
                                        OpenMetadataType.PERSON_ROLE.typeName,
-                                       OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                       OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                        null,
                                        null,
                                        null,

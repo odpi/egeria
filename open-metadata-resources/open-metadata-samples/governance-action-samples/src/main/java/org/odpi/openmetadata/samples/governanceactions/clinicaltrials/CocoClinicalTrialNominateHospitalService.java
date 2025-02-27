@@ -208,7 +208,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
         int startFrom = 0;
         OpenMetadataRelationshipList existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
                                                                                                                                        certificationTypeGUID,
-                                                                                                                                       OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                                                       OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                                                                                        startFrom,
                                                                                                                                        governanceContext.getMaxPageSize());
 
@@ -219,7 +219,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
         while ((existingCertifications != null) && (existingCertifications.getElementList() != null))
         {
             ElementProperties updatedProperties = propertyHelper.addDateProperty(null,
-                                                                                 OpenMetadataType.END_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.END.name,
                                                                                  new Date());
 
             for (OpenMetadataRelationship certification : existingCertifications.getElementList())
@@ -235,7 +235,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
             startFrom = startFrom + governanceContext.getMaxPageSize();
             existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
                                                                                                               certificationTypeGUID,
-                                                                                                              OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                              OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                                                               startFrom,
                                                                                                               governanceContext.getMaxPageSize());
         }
@@ -244,50 +244,50 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
          * Create the new certification relationship
          */
         ElementProperties elementProperties = propertyHelper.addDateProperty(null,
-                                                                             OpenMetadataType.START_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.START.name,
                                                                              null);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CERTIFICATE_GUID.name,
                                                              UUID.randomUUID().toString());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CERTIFIED_BY.name,
                                                              processOwnerGUID);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CERTIFIED_BY_TYPE_NAME.name,
                                                              processOwnerTypeName);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name,
                                                              OpenMetadataProperty.GUID.name);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CUSTODIAN.name,
                                                              custodianGUID);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CUSTODIAN_TYPE_NAME.name,
                                                              custodianTypeName);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name,
                                                              OpenMetadataProperty.GUID.name);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.RECIPIENT_PROPERTY_NAME,
+                                                             OpenMetadataProperty.RECIPIENT.name,
                                                              hospitalContactGUID);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.RECIPIENT_TYPE_NAME.name,
                                                              hospitalContactTypeName);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name,
                                                              OpenMetadataProperty.GUID.name);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                               hospitalGUID,
                                                                               certificationTypeGUID,
                                                                               null,

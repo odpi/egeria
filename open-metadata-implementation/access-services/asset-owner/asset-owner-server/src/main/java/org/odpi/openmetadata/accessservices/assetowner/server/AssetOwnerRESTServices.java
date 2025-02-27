@@ -1326,7 +1326,7 @@ public class AssetOwnerRESTServices
                                                   assetGUIDParameterName,
                                                   schemaTypeGUID,
                                                   schemaTypeGUIDParameterName,
-                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
                                                   null,
                                                   methodName);
         }
@@ -1354,7 +1354,7 @@ public class AssetOwnerRESTServices
                                                    String               serverName,
                                                    String               methodName) throws InvalidParameterException
     {
-        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE.typeName;
 
         if (schemaType.getTypeName() != null)
         {
@@ -1362,7 +1362,7 @@ public class AssetOwnerRESTServices
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1517,9 +1517,9 @@ public class AssetOwnerRESTServices
                                                                           null,
                                                                           schemaTypeGUID,
                                                                           schemaTypeGUIDParameterName,
-                                                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
-                                                                          OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                          OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_TYPE.typeName,
+                                                                          OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID,
+                                                                          OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                           schemaAttribute.getQualifiedName(),
                                                                           qualifiedNameParameterName,
                                                                           schemaAttributeBuilder,
@@ -2318,8 +2318,8 @@ public class AssetOwnerRESTServices
                                                null,
                                                schemaTypeGUID,
                                                schemaTypeGUIDParameterName,
-                                               OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
-                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_TYPE.typeGUID,
+                                               OpenMetadataType.SCHEMA_TYPE.typeName,
                                                null,
                                                null,
                                                false,
@@ -2334,8 +2334,8 @@ public class AssetOwnerRESTServices
                                                null,
                                                schemaTypeGUID,
                                                schemaTypeGUIDParameterName,
-                                               OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
-                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_TYPE.typeGUID,
+                                               OpenMetadataType.SCHEMA_TYPE.typeName,
                                                null,
                                                null,
                                                false,
@@ -2645,7 +2645,7 @@ public class AssetOwnerRESTServices
                                                                                                invalidParameterHandler,
                                                                                                userId,
                                                                                                schemaTypeGUID,
-                                                                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                                               OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                                null,
                                                                                                null,
                                                                                                1,
@@ -2667,10 +2667,10 @@ public class AssetOwnerRESTServices
                     if ((relationship != null) && (relationship.getType() != null) &&
                                 ((repositoryHelper.isTypeOf(handler.getServiceName(),
                                                             relationship.getType().getTypeDefName(),
-                                                            OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
+                                                            OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName)) ||
                                          (repositoryHelper.isTypeOf(handler.getServiceName(),
                                                                     relationship.getType().getTypeDefName(),
-                                                                    OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))))
+                                                                    OpenMetadataType.PORT_SCHEMA_RELATIONSHIP.typeName))))
                     {
                         final String parentGUIDParameterName = "relationship.getEntityOneProxy().getGUID()";
 
@@ -3190,9 +3190,9 @@ public class AssetOwnerRESTServices
                                                       null,
                                                       schemaElementGUID,
                                                       schemaElementGUIDParameterName,
-                                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                      OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                       properties,
                                                       false,
                                                       false,
@@ -3207,9 +3207,9 @@ public class AssetOwnerRESTServices
                                                       null,
                                                       schemaElementGUID,
                                                       schemaElementGUIDParameterName,
-                                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                      OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                       null,
                                                       false,
                                                       false,
@@ -3267,9 +3267,9 @@ public class AssetOwnerRESTServices
                                                            null,
                                                            schemaElementGUID,
                                                            schemaElementGUIDParameterName,
-                                                           OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeGUID,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                            false,
                                                            false,
                                                            requestBody.getEffectiveTime(),
@@ -3282,9 +3282,9 @@ public class AssetOwnerRESTServices
                                                            null,
                                                            schemaElementGUID,
                                                            schemaElementGUIDParameterName,
-                                                           OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
-                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeGUID,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                            false,
                                                            false,
                                                            null,

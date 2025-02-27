@@ -10,13 +10,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.governanceaction.client.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
+import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
@@ -47,7 +45,6 @@ public class GovernanceActionContext implements GovernanceContext,
     private final String                     requesterUserId;
     private final List<RequestSourceElement> requestSourceElements;
     private final List<ActionTargetElement>  actionTargetElements;
-
 
     private volatile CompletionStatus        completionStatus = null;
 
@@ -2046,12 +2043,68 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                      PropertyServerException
     {
         openMetadataClient.updateMetadataElementEffectivityInStore(userId,
-                                                                     metadataElementGUID,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveFrom,
-                                                                     effectiveTo,
-                                                                     effectiveTime);
+                                                                   metadataElementGUID,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveFrom,
+                                                                   effectiveTo,
+                                                                   effectiveTime);
+    }
+
+
+    /**
+     * Delete a specific metadata element.
+     *
+     * @param metadataElement the metadata element to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void deleteMetadataElement(OpenMetadataElement metadataElement,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName = "deleteMetadataElement";
+        final String parameterName = "metadataElement";
+
+        if (metadataElement != null)
+        {
+            if (metadataElement.getOrigin().getOriginCategory() == ElementOriginCategory.LOCAL_COHORT)
+            {
+                openMetadataClient.deleteMetadataElementInStore(userId,
+                                                                null,
+                                                                null,
+                                                                metadataElement.getElementGUID(),
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime);
+            }
+            else
+            {
+                openMetadataClient.deleteMetadataElementInStore(userId,
+                                                                metadataElement.getOrigin().getHomeMetadataCollectionId(),
+                                                                metadataElement.getOrigin().getHomeMetadataCollectionName(),
+                                                                metadataElement.getElementGUID(),
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime);
+            }
+        }
+        else
+        {
+            throw new InvalidParameterException(GAFErrorCode.NO_METADATA_ELEMENT.getMessageDefinition(methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
     }
 
 
@@ -2076,10 +2129,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     PropertyServerException
     {
         openMetadataClient.deleteMetadataElementInStore(userId,
-                                                          metadataElementGUID,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          effectiveTime);
+                                                        metadataElementGUID,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime);
     }
 
 

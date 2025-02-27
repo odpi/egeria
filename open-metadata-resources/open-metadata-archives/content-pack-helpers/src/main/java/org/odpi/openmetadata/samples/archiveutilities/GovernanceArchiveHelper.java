@@ -1383,7 +1383,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                              Map<String, Object>  extendedProperties,
                                              List<Classification> classifications)
     {
-        String processTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME;
+        String processTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName;
 
         if (typeName != null)
         {
@@ -1396,7 +1396,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         {
             processExtendedProperties = new HashMap<>();
 
-            processExtendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier);
+            processExtendedProperties.put(OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier);
         }
 
         return super.addProcess(processTypeName,
@@ -1458,7 +1458,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     {
         final String methodName = "addGovernanceActionType";
 
-        String actionTypeName = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME;
+        String actionTypeName = OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName;
 
         if (typeName != null)
         {
@@ -1468,8 +1468,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.WAIT_TIME_PROPERTY_NAME, waitTime, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.WAIT_TIME.name, waitTime, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -1495,37 +1495,37 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         addSupportedRequestParameters(typeEntity.getGUID(),
                                       actionTypeName,
-                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                       supportedRequestParameters);
 
         addSupportedActionTargets(typeEntity.getGUID(),
                                   actionTypeName,
-                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                   supportedActionTargets);
 
         addSupportedAnalysisSteps(typeEntity.getGUID(),
                                   actionTypeName,
-                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                   supportedAnalysisSteps);
 
         addProducedAnnotationTypes(typeEntity.getGUID(),
                                    actionTypeName,
-                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                    supportedAnnotationTypes);
 
         addProducedRequestParameters(typeEntity.getGUID(),
                                      actionTypeName,
-                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                      producedRequestParameters);
 
         addProducedActionTargets(typeEntity.getGUID(),
                                  actionTypeName,
-                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                  producedActionTargets);
 
         addProducedGuards(typeEntity.getGUID(),
                           actionTypeName,
-                          OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                          OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                           producedGuards);
 
         return typeEntity.getGUID();
@@ -1581,7 +1581,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     {
         final String methodName = "addGovernanceActionProcessStep";
 
-        String actionTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME;
+        String actionTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName;
 
         if (typeName != null)
         {
@@ -1591,9 +1591,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.WAIT_TIME_PROPERTY_NAME, waitTime, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME, ignoreMultipleTriggers, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.WAIT_TIME.name, waitTime, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IGNORE_MULTIPLE_TRIGGERS.name, ignoreMultipleTriggers, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -1619,37 +1619,37 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         addSupportedRequestParameters(stepEntity.getGUID(),
                                       actionTypeName,
-                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                       supportedRequestParameters);
 
         addSupportedActionTargets(stepEntity.getGUID(),
                                   actionTypeName,
-                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                   supportedActionTargets);
 
         addSupportedAnalysisSteps(stepEntity.getGUID(),
                                   actionTypeName,
-                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                   supportedAnalysisSteps);
 
         addProducedAnnotationTypes(stepEntity.getGUID(),
                                    actionTypeName,
-                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                    supportedAnnotationTypes);
 
         addProducedRequestParameters(stepEntity.getGUID(),
                                      actionTypeName,
-                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                      producedRequestParameters);
 
         addProducedActionTargets(stepEntity.getGUID(),
                                  actionTypeName,
-                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                                  producedActionTargets);
 
         addProducedGuards(stepEntity.getGUID(),
                           actionTypeName,
-                          OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                          OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
                           producedGuards);
 
         return stepEntity.getGUID();
@@ -1678,11 +1678,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(processEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(actionTypeEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.GUARD_PROPERTY_NAME, guard, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.GUARD.name, guard, methodName);
 
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + governanceActionProcessStepGUID + "_governance_action_process_flow_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -1713,10 +1713,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(nextActionTypeEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.GUARD_PROPERTY_NAME, guard, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME, mandatoryGuard, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.GUARD.name, guard, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MANDATORY_GUARD.name, mandatoryGuard, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(governanceActionProcessStepGUID + "_to_" + nextGovernanceActionTypeGUID + "_next_governance_action_process_step_relationship_with_guard_" + guard),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -1761,7 +1761,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTION_TARGET_FILTER.name, actionTargetFilter, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTION_TARGET_MAP.name, actionTargetMap, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(governanceActionGUID + "_to_" + governanceEngineGUID + "_governance_action_executor_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,

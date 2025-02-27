@@ -1046,7 +1046,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
                     RelatedMetadataElementList relatedMetadataElementList = metadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
                                                                                                                      1,
-                                                                                                                     OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                                                     OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                                                      startFrom,
                                                                                                                      governanceContext.getMaxPageSize());
 
@@ -1068,7 +1068,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
                         relatedMetadataElementList = metadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
                                                                                               1,
-                                                                                              OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                              OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                                               startFrom,
                                                                                               governanceContext.getMaxPageSize());
                     }

@@ -45,8 +45,8 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_GUID,
-              OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+              OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeGUID,
+              OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -73,7 +73,7 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                                domainIdentifier,
                                                                methodName);
 
@@ -92,7 +92,7 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.WAIT_TIME_PROPERTY_NAME,
+                                                               OpenMetadataProperty.WAIT_TIME.name,
                                                                waitTime,
                                                                methodName);
 

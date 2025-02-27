@@ -191,7 +191,7 @@ public class ProcessBuilder extends AssetBuilder
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.PRIMARY_KEY_PATTERN_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataProperty.KEY_PATTERN.name);
         }
     }
 

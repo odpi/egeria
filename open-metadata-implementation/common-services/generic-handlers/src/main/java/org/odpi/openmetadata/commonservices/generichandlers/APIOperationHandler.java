@@ -135,7 +135,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(apiGUID, apiGUIDParameterName, methodName);
 
-        String typeName = OpenMetadataType.API_OPERATION_TYPE_NAME;
+        String typeName = OpenMetadataType.API_OPERATION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -143,7 +143,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                                                   OpenMetadataType.API_OPERATION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -215,7 +215,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                apiSchemaTypeGUIDParameterName,
                                                apiOperationGUID,
                                                apiOperationGUIDParameterName,
-                                               OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeGUID,
                                                null,
                                                methodName);
         }
@@ -301,8 +301,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                               externalSourceName,
                                                               templateGUID,
                                                               templateGUIDParameterName,
-                                                              OpenMetadataType.API_OPERATION_TYPE_GUID,
-                                                              OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                                              OpenMetadataType.API_OPERATION.typeGUID,
+                                                              OpenMetadataType.API_OPERATION.typeName,
                                                               qualifiedName,
                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                               builder,
@@ -324,7 +324,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                            apiSchemaTypeGUIDParameterName,
                                            apiOperationGUID,
                                            apiOperationGUIDParameterName,
-                                           OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeGUID,
                                            null,
                                            methodName);
 
@@ -400,7 +400,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.API_OPERATION_TYPE_NAME;
+        String typeName = OpenMetadataType.API_OPERATION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -408,7 +408,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                                                   OpenMetadataType.API_OPERATION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -485,8 +485,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     apiOperationGUID,
                                     apiOperationGUIDParameterName,
-                                    OpenMetadataType.API_OPERATION_TYPE_GUID,
-                                    OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                    OpenMetadataType.API_OPERATION.typeGUID,
+                                    OpenMetadataType.API_OPERATION.typeName,
                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,
@@ -531,8 +531,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.API_OPERATION_TYPE_GUID,
-                              OpenMetadataType.API_OPERATION_TYPE_NAME,
+                              OpenMetadataType.API_OPERATION.typeGUID,
+                              OpenMetadataType.API_OPERATION.typeName,
                               startFrom,
                               pageSize,
                               null,
@@ -588,8 +588,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.API_OPERATION_TYPE_GUID,
-                                    OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                    OpenMetadataType.API_OPERATION.typeGUID,
+                                    OpenMetadataType.API_OPERATION.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -683,9 +683,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   apiGUID,
                                                                   apiGUIDParameterName,
                                                                   OpenMetadataType.DEPLOYED_API.typeName,
-                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                                                  OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                  OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                                                   2,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -702,10 +702,10 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             apiSchemaTypeEntity.getGUID(),
                                             apiSchemaTypeGUIDParameterName,
-                                            OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
-                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                            OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                            OpenMetadataType.API_SCHEMA_TYPE.typeName,
+                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                            OpenMetadataType.API_OPERATION.typeName,
                                             (String)null,
                                             null,
                                             2,
@@ -765,7 +765,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         EntityDetail apiSchemaTypeEntity = this.getEntityFromRepository(userId,
                                                                         apiSchemaTypeGUID,
                                                                         apiSchemaTypeGUIDParameterName,
-                                                                        OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                                                        OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                                                         null,
                                                                         null,
                                                                         forLineage,
@@ -781,10 +781,10 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             apiSchemaTypeEntity.getGUID(),
                                             apiSchemaTypeGUIDParameterName,
-                                            OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
-                                            OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                            OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
-                                            OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                            OpenMetadataType.API_SCHEMA_TYPE.typeName,
+                                            OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                            OpenMetadataType.API_OPERATION.typeName,
                                             (String)null,
                                             null,
                                             2,
@@ -847,9 +847,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   apiGUID,
                                                                   apiGUIDParameterName,
                                                                   OpenMetadataType.DEPLOYED_API.typeName,
-                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                                                  OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                                                  OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                  OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                                                   2,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -860,8 +860,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         if (apiSchemaTypeEntity == null)
         {
             SchemaTypeBuilder builder = new SchemaTypeBuilder(topicQualifiedName + "_EventList",
-                                                              OpenMetadataType.API_SCHEMA_TYPE_TYPE_GUID,
-                                                              OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                                              OpenMetadataType.API_SCHEMA_TYPE.typeGUID,
+                                                              OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
@@ -877,8 +877,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                         methodName);
 
             apiSchemaTypeGUID = repositoryHandler.createEntity(userId,
-                                                               OpenMetadataType.API_SCHEMA_TYPE_TYPE_GUID,
-                                                               OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                                               OpenMetadataType.API_SCHEMA_TYPE.typeGUID,
+                                                               OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                                                externalSourceGUID,
                                                                externalSourceName,
                                                                builder.getInstanceProperties(methodName),
@@ -898,12 +898,12 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataType.DEPLOYED_API.typeName,
                                           apiSchemaTypeGUID,
                                           apiSchemaTypeGUIDParameterName,
-                                          OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
-                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                           null,
                                           effectiveFrom,
                                           effectiveTo,
@@ -912,7 +912,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
             }
             else
             {
-                errorHandler.logNullInstance(OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME, methodName);
+                errorHandler.logNullInstance(OpenMetadataType.API_SCHEMA_TYPE.typeName, methodName);
             }
         }
         else
@@ -954,7 +954,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                          OpenMetadataType.API_OPERATION.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,

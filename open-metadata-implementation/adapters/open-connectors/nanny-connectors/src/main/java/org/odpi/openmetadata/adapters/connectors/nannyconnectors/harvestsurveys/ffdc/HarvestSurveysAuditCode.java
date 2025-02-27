@@ -31,6 +31,15 @@ public enum HarvestSurveysAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
+     * HARVEST-SURVEYS-0004 - Integration connector {0} has detected a non-numeric value of {1} in row {2} of file {3}: exception message is {4}
+     */
+    NOT_A_NUMBER( "HARVEST-SURVEYS-0004",
+                 OMRSAuditLogRecordSeverity.ERROR,
+                 "Integration connector {0} has detected a non-numeric value of {1} in row {2} of file {3}: exception message is {4}",
+                 "The row in the file is ignored.",
+                 "Check the content of the file to ascertain why the value is not null, correct the data."),
+
+    /**
      * HARVEST-SURVEYS-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}
      */
     BAD_CONFIGURATION("HARVEST-SURVEYS-0005",

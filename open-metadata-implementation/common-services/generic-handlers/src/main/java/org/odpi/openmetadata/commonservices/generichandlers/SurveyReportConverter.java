@@ -81,7 +81,7 @@ public class SurveyReportConverter<B> extends SAFConverter<B>
 
                 bean.setDisplayName(this.removeDisplayName(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setStartDate(this.removeExecutionDate(instanceProperties));
+                bean.setStartDate(this.removeStartDate(instanceProperties));
                 bean.setAnalysisParameters(this.removeAnalysisParameters(instanceProperties));
                 bean.setAnalysisStep(this.removeAnalysisStep(instanceProperties));
 
@@ -97,7 +97,7 @@ public class SurveyReportConverter<B> extends SAFConverter<B>
                     {
                         if ((relationship != null) && (relationship.getType() != null) && (relationship.getType().getTypeDefName() != null))
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 

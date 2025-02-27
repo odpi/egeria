@@ -441,7 +441,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     {
         for (OrganizationDefinition organizationDefinition : OrganizationDefinition.values())
         {
-            archiveHelper.addTeam(OpenMetadataType.ORGANIZATION_TYPE_NAME,
+            archiveHelper.addTeam(OpenMetadataType.ORGANIZATION.typeName,
                                   organizationDefinition.getQualifiedName(),
                                   organizationDefinition.getDisplayName(),
                                   organizationDefinition.getDescription(),

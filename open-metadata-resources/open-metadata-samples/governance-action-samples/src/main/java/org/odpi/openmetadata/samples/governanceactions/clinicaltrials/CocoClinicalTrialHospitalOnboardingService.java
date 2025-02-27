@@ -418,7 +418,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         int startFrom = 0;
         RelatedMetadataElementList certifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(hospitalGUID,
                                                                                                                           1,
-                                                                                                                          OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                                          OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                                                                           startFrom,
                                                                                                                           governanceContext.getOpenMetadataStore().getMaxPagingSize());
 
@@ -434,21 +434,21 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                          * First check it is an active certification.
                          */
                         Date startDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                        OpenMetadataType.START_PROPERTY_NAME,
+                                                                        OpenMetadataProperty.START.name,
                                                                         certification.getRelationshipProperties(),
                                                                         methodName);
                         Date endDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                      OpenMetadataType.END_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.END.name,
                                                                       certification.getRelationshipProperties(),
                                                                       methodName);
 
                         String hospitalContactGUID = propertyHelper.getStringProperty(governanceServiceName,
-                                                                                      OpenMetadataType.RECIPIENT_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.RECIPIENT.name,
                                                                                       certification.getRelationshipProperties(),
                                                                                       methodName);
 
                         String custodianGUID = propertyHelper.getStringProperty(governanceServiceName,
-                                                                                OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.CUSTODIAN.name,
                                                                                 certification.getRelationshipProperties(),
                                                                                 methodName);
 
@@ -467,7 +467,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                             int projectStartFrom = 0;
                             RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                                         1,
-                                                                                                                                        OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                                                                                                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                                                                                                         projectStartFrom,
                                                                                                                                         governanceContext.getMaxPageSize());
                             while ((projects != null) && (projects.getElementList() != null))
@@ -496,7 +496,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
                                 projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                2,
-                                                                                                               OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+                                                                                                               OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                                                                                projectStartFrom,
                                                                                                                governanceContext.getMaxPageSize());
                             }
@@ -508,7 +508,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             startFrom = startFrom + governanceContext.getMaxPageSize();
             certifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(hospitalGUID,
                                                                                                  1,
-                                                                                                 OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                                                 OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                                                                  startFrom,
                                                                                                  governanceContext.getOpenMetadataStore().getMaxPagingSize());
         }
@@ -722,7 +722,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
             RelatedMetadataElement firstProcessStep = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(onboardingProcessGUID,
                                                                                                                          1,
-                                                                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                                                                                          new Date());
 
             if (firstProcessStep != null)
@@ -747,7 +747,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                              requestParameters);
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       firstProcessStep.getElement().getElementGUID(),
                                                                                       null,

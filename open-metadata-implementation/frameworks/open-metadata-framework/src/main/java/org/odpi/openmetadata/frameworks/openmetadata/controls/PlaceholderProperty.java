@@ -124,7 +124,7 @@ public enum PlaceholderProperty
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    FILE_SYSTEM_NAME ("fileSystemName", "The unique name for the file system that this file/directory belongs.  It may be a machine name or a URL to a remote file store.", DataType.STRING.getName(), "/a/b/c/myFile.txt"),
+    FILE_SYSTEM_NAME ("fileSystemName", "The unique name for the file system that this file/directory belongs.  It may be a machine name or a URL to a remote file store.", DataType.STRING.getName(), null),
 
     /**
      * The format standard used in the file system.
@@ -495,6 +495,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(EMBEDDED_METADATA.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+
         return placeholderPropertyTypes;
     }
 
@@ -513,6 +514,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(DIRECTORY_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+
         return placeholderPropertyTypes;
     }
 

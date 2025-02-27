@@ -580,7 +580,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         if (properties != null)
         {
             ElementProperties elementProperties = propertyHelper.addBooleanProperty(null,
-                                                                                    OpenMetadataType.IS_DEFAULT_VALUE_PROPERTY_NAME,
+                                                                                    OpenMetadataProperty.IS_DEFAULT_VALUE.name,
                                                                                     properties.getDefaultValue());
 
             openMetadataStoreClient.createRelatedElementsInStore(userId,
@@ -700,7 +700,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         if (properties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.ATTRIBUTE_NAME.name,
                                                                                    properties.getAttributeName());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,

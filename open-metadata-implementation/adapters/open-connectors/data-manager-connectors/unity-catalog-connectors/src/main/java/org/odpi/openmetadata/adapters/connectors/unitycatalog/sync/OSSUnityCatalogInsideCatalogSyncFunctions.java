@@ -573,7 +573,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
          */
         openMetadataAccess.createMetadataElementInStore(catalogGUID,
                                                         catalogQualifiedName,
-                                                        OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+                                                        OpenMetadataType.API_SCHEMA_TYPE.typeName,
                                                         ElementStatus.ACTIVE,
                                                         null,
                                                         functionGUID,

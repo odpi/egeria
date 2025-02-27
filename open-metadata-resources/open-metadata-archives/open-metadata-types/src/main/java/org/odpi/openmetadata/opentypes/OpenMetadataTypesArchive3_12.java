@@ -236,12 +236,8 @@ public class OpenMetadataTypesArchive3_12
 
     private EntityDef getRootSchemaTypeEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeGUID,
-                                                 OpenMetadataType.ROOT_SCHEMA_TYPE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
-                                                 OpenMetadataType.ROOT_SCHEMA_TYPE.description,
-                                                 OpenMetadataType.ROOT_SCHEMA_TYPE.descriptionGUID,
-                                                 OpenMetadataType.ROOT_SCHEMA_TYPE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
     }
 
 
@@ -265,7 +261,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DOCUMENT_SCHEMA_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DOCUMENT_SCHEMA_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -280,7 +276,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OBJECT_SCHEMA_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OBJECT_SCHEMA_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -296,7 +292,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EVENT_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EVENT_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -311,7 +307,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -326,7 +322,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.API_SCHEMA_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -341,7 +337,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -356,7 +352,7 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.QUERY_SCHEMA_TYPE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.QUERY_SCHEMA_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

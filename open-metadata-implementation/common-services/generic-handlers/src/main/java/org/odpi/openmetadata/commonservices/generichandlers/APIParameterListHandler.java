@@ -95,7 +95,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
             schemaTypeExtendedProperties = new HashMap<>();
         }
 
-        schemaTypeExtendedProperties.put(OpenMetadataType.REQUIRED_PROPERTY_NAME, required);
+        schemaTypeExtendedProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
         return schemaTypeExtendedProperties;
     }
@@ -162,7 +162,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(apiOperationGUID, apiOperationGUIDParameterName, methodName);
 
-        String typeName = OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME;
+        String typeName = OpenMetadataType.API_PARAMETER_LIST.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -170,7 +170,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                   OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -296,8 +296,8 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                                   externalSourceName,
                                                                   templateGUID,
                                                                   templateGUIDParameterName,
-                                                                  OpenMetadataType.API_PARAMETER_LIST_TYPE_GUID,
-                                                                  OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                  OpenMetadataType.API_PARAMETER_LIST.typeGUID,
+                                                                  OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                                   qualifiedName,
                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   builder,
@@ -402,7 +402,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME;
+        String typeName = OpenMetadataType.API_PARAMETER_LIST.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -410,7 +410,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                   OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -487,8 +487,8 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     apiParameterListGUID,
                                     apiParameterListGUIDParameterName,
-                                    OpenMetadataType.API_PARAMETER_LIST_TYPE_GUID,
-                                    OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                    OpenMetadataType.API_PARAMETER_LIST.typeGUID,
+                                    OpenMetadataType.API_PARAMETER_LIST.typeName,
                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,
@@ -533,8 +533,8 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.findEntities(userId,
                                                         searchString,
                                                         searchStringParameterName,
-                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_GUID,
-                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                        OpenMetadataType.API_PARAMETER_LIST.typeGUID,
+                                                        OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                         null,
                                                         null,
                                                         startFrom,
@@ -600,8 +600,8 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.getEntitiesByValue(userId,
                                                               name,
                                                               nameParameterName,
-                                                              OpenMetadataType.API_PARAMETER_LIST_TYPE_GUID,
-                                                              OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                              OpenMetadataType.API_PARAMETER_LIST.typeGUID,
+                                                              OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                               specificMatchPropertyNames,
                                                               true,
                                                               false,
@@ -726,11 +726,11 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                    apiOperationGUID,
                                                                    apiOperationGUIDParameterName,
-                                                                   OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                                                   OpenMetadataType.API_OPERATION.typeName,
                                                                    null,
                                                                    null,
                                                                    null,
-                                                                   OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                   OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                                    0,
                                                                    null,
                                                                    null,
@@ -756,7 +756,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
 
                     if (repositoryHelper.isTypeOf(serviceName,
                                                   endTwo.getType().getTypeDefName(),
-                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME))
+                                                  OpenMetadataType.SCHEMA_TYPE.typeName))
                     {
                         B bean = this.getAPIParameterListByGUID(userId,
                                                                 endTwo.getGUID(),
@@ -814,7 +814,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            guid,
                                                            guidParameterName,
-                                                           OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                           OpenMetadataType.SCHEMA_TYPE.typeName,
                                                            null,
                                                            null,
                                                            forLineage,
@@ -857,11 +857,11 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
             List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                        entity,
                                                                        guidParameterName,
-                                                                       OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                       OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                        null,
                                                                        null,
                                                                        null,
-                                                                       OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                       OpenMetadataType.SCHEMA_ELEMENT.typeName,
                                                                        0,
                                                                        null,
                                                                        null,

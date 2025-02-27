@@ -502,7 +502,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String qualifiedName = "Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding";
 
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                       qualifiedName,
                                                                       "Onboard Landing Area Files For Clinical Trial Project",
                                                                       "V1.0",
@@ -521,9 +521,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                                       null,
                                                                       null);
 
-        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         qualifiedName + ":MoveWeeklyMeasurementsFile",
                                                                         "Move Weekly Measurements File",
@@ -556,9 +556,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
         }
 
-        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         qualifiedName + ":SeekOrigin",
                                                                         "Seek and validate origin",
@@ -591,9 +591,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, MoveCopyFileGuard.PROVISIONING_COMPLETE.getName(), false, step2GUID);
         }
 
-        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         qualifiedName + ":SetRetention",
                                                                         "SetRetentionPeriod.",
@@ -627,9 +627,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step2GUID, OriginSeekerGuard.ORIGIN_ALREADY_ASSIGNED.getName(), false, step3GUID);
         }
 
-        String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         qualifiedName + ":DataQuality",
                                                                         "Check quality of data",
@@ -662,9 +662,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, MoveCopyFileGuard.PROVISIONING_COMPLETE.getName(), false, step4GUID);
         }
 
-        String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         qualifiedName + ":CheckForRFAs",
                                                                         "Check for quality issues",
@@ -698,9 +698,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         }
 
 
-        String step6GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        String step6GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         qualifiedName + ":SetZones",
                                                                         "Publish asset.",

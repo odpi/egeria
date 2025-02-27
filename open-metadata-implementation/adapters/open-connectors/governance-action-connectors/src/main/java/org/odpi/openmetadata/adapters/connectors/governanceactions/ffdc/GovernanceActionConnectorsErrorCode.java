@@ -26,6 +26,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
 {
+    /**
+     * The {0} governance action service has been called without a source file name to work with
+     */
     NO_SOURCE_FILE_NAME(400, "GOVERNANCE-ACTION-CONNECTORS-400-006",
                         "The {0} governance action service has been called without a source file name to work with",
                         "The provisioning governance action service connector is designed to manage files on request.  " +
@@ -33,17 +36,26 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                         "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
                                 "relationship.  Correct the information passed to the governance service and rerun the request"),
 
+    /**
+     * A FileFolder element with a path name of {0} is not found in the open metadata ecosystem
+     */
     FOLDER_ELEMENT_NOT_FOUND(404, "GOVERNANCE-ACTION-CONNECTORS-404-002",
                              "A FileFolder element with a path name of {0} is not found in the open metadata ecosystem",
                              "The governance action service is not able to proceed until the element has been created.",
                              "The path name of the folder is passed either in the folderName configuration property; folderName request parameters or folderTarget action target."),
 
+    /**
+     * The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}
+     */
     UNABLE_TO_REGISTER_LISTENER(500, "GOVERNANCE-ACTION-CONNECTORS-500-003",
                                 "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
                                 "The governance action throws a GovernanceServiceException in the hope that the .",
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
                                         "and follow its instructions."),
 
+    /**
+     * The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}
+     */
     UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-004",
                                   "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
                                   "The governance action returns an exception to the Governance Action Engine.",

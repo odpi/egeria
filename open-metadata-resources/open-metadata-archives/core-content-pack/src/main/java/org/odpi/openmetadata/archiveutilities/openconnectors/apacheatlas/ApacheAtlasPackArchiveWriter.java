@@ -92,25 +92,20 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_ATLAS_SERVER,
                                                           SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE,
-                                                          GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                           RequestTypeDefinition.SURVEY_ATLAS_SERVER,
-                                                          GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE,
                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName());
         
         this.createAndCatalogServerGovernanceActionProcess("ApacheAtlasServer",
                                                            AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_ATLAS_SERVER,
                                                            SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE,
-                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                            RequestTypeDefinition.CATALOG_ATLAS_SERVER,
-                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                            AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName());
 
         this.deleteAsCatalogTargetGovernanceActionProcess("ApacheAtlasServer",
                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName(),
                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.DELETE_ATLAS_SERVER,
-                                                          GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName());
 
         /*

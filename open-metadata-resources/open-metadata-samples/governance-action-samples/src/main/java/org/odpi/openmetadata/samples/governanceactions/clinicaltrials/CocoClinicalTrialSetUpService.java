@@ -364,7 +364,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNED_BY_TYPE_NAME,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                                               certificationTypeGUID,
                                                                               projectGUID,
                                                                               null,
@@ -403,7 +403,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         {
             RelatedMetadataElement governanceActionExecutorRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(governanceActionTypeGUID,
                                                                                                                                              1,
-                                                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+                                                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
                                                                                                                                              new Date());
 
             if (governanceActionExecutorRelationship != null)
@@ -418,7 +418,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                               OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                               additionalRequestParameters);
 
-                String processStep1GUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                String processStep1GUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                                                                 ElementStatus.ACTIVE,
                                                                                                                 null,
                                                                                                                 processGUID,
@@ -427,11 +427,11 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                 null,
                                                                                                                 processStepProperties,
                                                                                                                 processGUID,
-                                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                                                                                 processFlowProperties,
                                                                                                                 true);
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
                                                                                       processStep1GUID,
                                                                                       governanceEngineGUID,
                                                                                       null,

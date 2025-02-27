@@ -466,8 +466,8 @@ public class SecurityManagerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.getGovernanceDefinitionsByStringParameter(userId,
-                                                                                   OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
-                                                                                   OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
+                                                                                   OpenMetadataType.SECURITY_GROUP.typeGUID,
+                                                                                   OpenMetadataType.SECURITY_GROUP.typeName,
                                                                                    distinguishedName,
                                                                                    distinguishedNameParameterName,
                                                                                    OpenMetadataProperty.DISTINGUISHED_NAME.name,
@@ -552,7 +552,7 @@ public class SecurityManagerRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
+                                                                          OpenMetadataType.SECURITY_GROUP.typeName,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,
                                                                           startFrom,

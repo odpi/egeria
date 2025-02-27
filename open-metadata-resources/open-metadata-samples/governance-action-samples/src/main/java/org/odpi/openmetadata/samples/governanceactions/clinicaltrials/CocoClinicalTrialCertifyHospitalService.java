@@ -191,7 +191,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
         int startFrom = 0;
         OpenMetadataRelationshipList existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
                                                                                                                                        certificationTypeGUID,
-                                                                                                                                       OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                                                       OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                                                                                        startFrom,
                                                                                                                                        governanceContext.getMaxPageSize());
 
@@ -229,7 +229,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
         else
         {
             ElementProperties updatedProperties = propertyHelper.addDateProperty(null,
-                                                                                 OpenMetadataType.START_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.START.name,
                                                                                  new Date());
 
             for (OpenMetadataRelationship certification : existingCertifications.getElementList())
@@ -237,11 +237,11 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                 if (certification != null)
                 {
                     Date startDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                    OpenMetadataType.START_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.START.name,
                                                                     certification.getRelationshipProperties(),
                                                                     methodName);
                     Date endDate = propertyHelper.getDateProperty(governanceServiceName,
-                                                                  OpenMetadataType.END_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.END.name,
                                                                   certification.getRelationshipProperties(),
                                                                   methodName);
 

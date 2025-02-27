@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -85,8 +86,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
                                                                     OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    OperationalStatus.getOpenTypeGUID(),
+                                                                    OperationalStatus.getOpenTypeName(),
                                                                     serverCapabilityStatus,
                                                                     methodName);
         }

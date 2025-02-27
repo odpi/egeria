@@ -25,7 +25,8 @@ public enum SustainabilityRoleDefinition
                            ScopeDefinition.ALL_COCO,
                            true, 1,
                            null,
-                           null),
+                           PersonDefinition.TOM_TALLY,
+                           GovernanceDefinition.SUSTAINABILITY_LEADER_RESPONSIBILITY),
 
     /**
      * Research Sustainability Champion
@@ -36,92 +37,100 @@ public enum SustainabilityRoleDefinition
                       "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
                       ScopeDefinition.ALL_COCO,
                       false, 0,
-                      null,
-                      null),
+                      BusinessAreaDefinition.RESEARCH,
+                      PersonDefinition.TESSA_TUBE,
+                      GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * Clinical Trials Sustainability Champion
      */
     CLINICAL_TRIALS_CHAMPION("GovernanceRepresentative",
-                            "C-TRL-SUSTAINABILITY-CHAMP",
-                            "Clinical Trials Sustainability Champion",
-                            "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                            ScopeDefinition.ALL_COCO,
-                            false, 0,
-                            BusinessAreaDefinition.CLINICAL_TRIALS,
-                            PersonDefinition.TANYA_TIDIE),
+                             "C-TRL-SUSTAINABILITY-CHAMP",
+                             "Clinical Trials Sustainability Champion",
+                             "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                             ScopeDefinition.ALL_COCO,
+                             false, 0,
+                             BusinessAreaDefinition.CLINICAL_TRIALS,
+                             PersonDefinition.TANYA_TIDIE,
+                             GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * Finance Sustainability Champion
      */
     FINANCE_TRIALS_CHAMPION("GovernanceRepresentative",
-                             "FIN-SUSTAINABILITY-CHAMP",
-                             "Finance Sustainability Champion",
-                             "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                             ScopeDefinition.ALL_COCO,
-                             false, 0,
-                             BusinessAreaDefinition.FINANCE,
-                             PersonDefinition.TANYA_TIDIE),
+                            "FIN-SUSTAINABILITY-CHAMP",
+                            "Finance Sustainability Champion",
+                            "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                            ScopeDefinition.ALL_COCO,
+                            false, 0,
+                            BusinessAreaDefinition.FINANCE,
+                            PersonDefinition.SALLY_COUNTER,
+                            GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * HR Sustainability Champion
      */
     HR_CHAMPION("GovernanceRepresentative",
-                            "HR-SUSTAINABILITY-CHAMP",
-                            "HR Sustainability Champion",
-                            "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                            ScopeDefinition.ALL_COCO,
-                            false, 0,
-                            BusinessAreaDefinition.HR,
-                            PersonDefinition.FAITH_BROKER),
+                "HR-SUSTAINABILITY-CHAMP",
+                "HR Sustainability Champion",
+                "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                ScopeDefinition.ALL_COCO,
+                false, 0,
+                BusinessAreaDefinition.HR,
+                PersonDefinition.FAITH_BROKER,
+                GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * IT Sustainability Champion
      */
     IT_CHAMPION("GovernanceRepresentative",
-                            "IT-SUSTAINABILITY-CHAMP",
-                            "IT Sustainability Champion",
-                            "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                            ScopeDefinition.ALL_COCO,
-                            false, 0,
-                            BusinessAreaDefinition.IT,
-                            PersonDefinition.GARY_GEEKE),
+                "IT-SUSTAINABILITY-CHAMP",
+                "IT Sustainability Champion",
+                "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                ScopeDefinition.ALL_COCO,
+                false, 0,
+                BusinessAreaDefinition.IT,
+                PersonDefinition.GARY_GEEKE,
+                GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * Manufacturing Sustainability Champion
      */
     MANUFACTURING_CHAMPION("GovernanceRepresentative",
-                "MFG-SUSTAINABILITY-CHAMP",
-                "Manufacturing Sustainability Champion",
-                "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                ScopeDefinition.ALL_COCO,
-                false, 0,
-                BusinessAreaDefinition.MANUFACTURING,
-                PersonDefinition.STEW_FASTER),
+                           "MFG-SUSTAINABILITY-CHAMP",
+                           "Manufacturing Sustainability Champion",
+                           "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                           ScopeDefinition.ALL_COCO,
+                           false, 0,
+                           BusinessAreaDefinition.MANUFACTURING,
+                           PersonDefinition.STEW_FASTER,
+                           GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * Distribution Sustainability Champion
      */
     DIST_CHAMPION("GovernanceRepresentative",
-                           "DIST-SUSTAINABILITY-CHAMP",
-                           "Distribution Sustainability Champion",
-                           "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                           ScopeDefinition.ALL_COCO,
-                           false, 0,
-                           BusinessAreaDefinition.DISTRIBUTION,
-                           null),
+                  "DIST-SUSTAINABILITY-CHAMP",
+                  "Distribution Sustainability Champion",
+                  "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                  ScopeDefinition.ALL_COCO,
+                  false, 0,
+                  BusinessAreaDefinition.DISTRIBUTION,
+                  null,
+                  GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * Sales Sustainability Champion
      */
     SALES_CHAMPION("GovernanceRepresentative",
-                  "SALES-SUSTAINABILITY-CHAMP",
-                  "Sales Sustainability Champion",
-                  "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                  ScopeDefinition.ALL_COCO,
-                  false, 0,
-                  BusinessAreaDefinition.SALES,
-                  PersonDefinition.HARRY_HOPEFUL),
+                   "SALES-SUSTAINABILITY-CHAMP",
+                   "Sales Sustainability Champion",
+                   "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
+                   ScopeDefinition.ALL_COCO,
+                   false, 0,
+                   BusinessAreaDefinition.SALES,
+                   PersonDefinition.HARRY_HOPEFUL,
+                   GovernanceDefinition.SUSTAINABILITY_CHAMPION_RESPONSIBILITY),
 
     /**
      * Sustainability Technology Lead
@@ -133,7 +142,8 @@ public enum SustainabilityRoleDefinition
                              ScopeDefinition.ALL_COCO,
                              false, 0,
                              null,
-                             null),
+                             PersonDefinition.PETER_PROFILE,
+                             GovernanceDefinition.SUSTAINABILITY_TECHNOLOGY_LEAD_RESPONSIBILITY),
 
     /**
      * Amsterdam Site Leader
@@ -145,7 +155,8 @@ public enum SustainabilityRoleDefinition
                     ScopeDefinition.WITHIN_SITE,
                     true, 1,
                     null,
-                    null),
+                    null,
+                    GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Amsterdam Lab Leader
@@ -157,7 +168,8 @@ public enum SustainabilityRoleDefinition
                    ScopeDefinition.WITHIN_FACILITY,
                    true, 1,
                    null,
-                   null),
+                   null,
+                   GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Amsterdam Office Leader
@@ -169,7 +181,8 @@ public enum SustainabilityRoleDefinition
                       ScopeDefinition.WITHIN_FACILITY,
                       true, 1,
                       null,
-                      null),
+                      null,
+                      GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Amsterdam Data Center Leader
@@ -181,7 +194,8 @@ public enum SustainabilityRoleDefinition
                   ScopeDefinition.WITHIN_FACILITY,
                   true, 1,
                   null,
-                  null),
+                  null,
+                  GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
 
     /**
@@ -194,7 +208,8 @@ public enum SustainabilityRoleDefinition
                      ScopeDefinition.WITHIN_FACILITY,
                      true, 1,
                      null,
-                     null),
+                     null,
+                     GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * London Site Leader
@@ -206,7 +221,8 @@ public enum SustainabilityRoleDefinition
                        ScopeDefinition.WITHIN_SITE,
                        true, 1,
                        null,
-                       null),
+                       null,
+                       GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * London Lab Leader
@@ -218,7 +234,8 @@ public enum SustainabilityRoleDefinition
                       ScopeDefinition.WITHIN_FACILITY,
                       true, 1,
                       null,
-                      null),
+                      null,
+                      GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * London Office Leader
@@ -230,7 +247,8 @@ public enum SustainabilityRoleDefinition
                          ScopeDefinition.WITHIN_FACILITY,
                          true, 1,
                          null,
-                         null),
+                         null,
+                         GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * London Data Center Leader
@@ -242,7 +260,8 @@ public enum SustainabilityRoleDefinition
                      ScopeDefinition.WITHIN_FACILITY,
                      true, 1,
                      null,
-                     null),
+                     null,
+                     GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * New York Site Leader
@@ -254,7 +273,8 @@ public enum SustainabilityRoleDefinition
                          ScopeDefinition.WITHIN_SITE,
                          true, 1,
                          null,
-                         null),
+                         null,
+                         GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * New York Lab Leader
@@ -266,7 +286,8 @@ public enum SustainabilityRoleDefinition
                         ScopeDefinition.WITHIN_FACILITY,
                         true, 1,
                         null,
-                        null),
+                        null,
+                        GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * New York Office Leader
@@ -278,7 +299,8 @@ public enum SustainabilityRoleDefinition
                            ScopeDefinition.WITHIN_FACILITY,
                            true, 1,
                            null,
-                           null),
+                           null,
+                           GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * New York Data Center Leader
@@ -290,7 +312,8 @@ public enum SustainabilityRoleDefinition
                        ScopeDefinition.WITHIN_FACILITY,
                        true, 1,
                        null,
-                       null),
+                       null,
+                       GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Austin Site Leader
@@ -302,7 +325,8 @@ public enum SustainabilityRoleDefinition
                        ScopeDefinition.WITHIN_SITE,
                        true, 1,
                        null,
-                       null),
+                       null,
+                       GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Austin Office Leader
@@ -314,7 +338,8 @@ public enum SustainabilityRoleDefinition
                          ScopeDefinition.WITHIN_FACILITY,
                          true, 1,
                          null,
-                         null),
+                         null,
+                         GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Austin Data Center Leader
@@ -326,7 +351,8 @@ public enum SustainabilityRoleDefinition
                      ScopeDefinition.WITHIN_FACILITY,
                      true, 1,
                      null,
-                     null),
+                     null,
+                     GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
 
     /**
@@ -339,7 +365,8 @@ public enum SustainabilityRoleDefinition
                           ScopeDefinition.WITHIN_FACILITY,
                           true, 1,
                           null,
-                          null),
+                          null,
+                          GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Winchester Site Leader
@@ -351,7 +378,8 @@ public enum SustainabilityRoleDefinition
                            ScopeDefinition.WITHIN_SITE,
                            true, 1,
                            null,
-                           null),
+                           null,
+                           GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Winchester Office Leader
@@ -363,7 +391,8 @@ public enum SustainabilityRoleDefinition
                              ScopeDefinition.WITHIN_FACILITY,
                              true, 1,
                              null,
-                             null),
+                             null,
+                             GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Winchester Data Centre Leader
@@ -375,7 +404,8 @@ public enum SustainabilityRoleDefinition
                          ScopeDefinition.WITHIN_FACILITY,
                          true, 1,
                          null,
-                         null),
+                         null,
+                         GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Winchester Factory Leader
@@ -387,7 +417,8 @@ public enum SustainabilityRoleDefinition
                               ScopeDefinition.WITHIN_FACILITY,
                               true, 1,
                               null,
-                              null),
+                              null,
+                              GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Winchester Distribution Centre Leader
@@ -399,7 +430,8 @@ public enum SustainabilityRoleDefinition
                             ScopeDefinition.WITHIN_FACILITY,
                             true, 1,
                             null,
-                            null),
+                            null,
+                            GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Kansas City Site Leader
@@ -411,7 +443,8 @@ public enum SustainabilityRoleDefinition
                             ScopeDefinition.WITHIN_SITE,
                             true, 1,
                             null,
-                            null),
+                            null,
+                            GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Kansas City Office Leader
@@ -423,7 +456,8 @@ public enum SustainabilityRoleDefinition
                               ScopeDefinition.WITHIN_FACILITY,
                               true, 1,
                               null,
-                              null),
+                              null,
+                              GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
 
     /**
@@ -436,7 +470,8 @@ public enum SustainabilityRoleDefinition
                              ScopeDefinition.WITHIN_FACILITY,
                              true, 1,
                              null,
-                             null),
+                             null,
+                             GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Edmonton Site Leader
@@ -448,7 +483,8 @@ public enum SustainabilityRoleDefinition
                          ScopeDefinition.WITHIN_SITE,
                          true, 1,
                          null,
-                         null),
+                         null,
+                         GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Edmonton Office Leader
@@ -460,7 +496,8 @@ public enum SustainabilityRoleDefinition
                            ScopeDefinition.WITHIN_FACILITY,
                            true, 1,
                            null,
-                           null),
+                           null,
+                           GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Edmonton Data Centre Leader
@@ -472,7 +509,8 @@ public enum SustainabilityRoleDefinition
                        ScopeDefinition.WITHIN_FACILITY,
                        true, 1,
                        null,
-                       null),
+                       null,
+                       GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Edmonton Factory Leader
@@ -484,7 +522,8 @@ public enum SustainabilityRoleDefinition
                             ScopeDefinition.WITHIN_FACILITY,
                             true, 1,
                             null,
-                            null),
+                            null,
+                            GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
 
     /**
      * Edmonton Distribution Centre Leader
@@ -496,7 +535,8 @@ public enum SustainabilityRoleDefinition
                           ScopeDefinition.WITHIN_FACILITY,
                           true, 1,
                           null,
-                          null),
+                          null,
+                          GovernanceDefinition.REMOVE_BAD_COOLING_UNITS),
     ;
 
     private final String                 typeName;
@@ -508,6 +548,7 @@ public enum SustainabilityRoleDefinition
     private final int                    headCount;
     private final BusinessAreaDefinition businessArea;
     private final PersonDefinition       appointee;
+    private final GovernanceDefinition   governanceResponsibility;
 
     /**
      * SustainabilityRoleDefinition constructor creates an instance of the enum
@@ -519,6 +560,9 @@ public enum SustainabilityRoleDefinition
      * @param description   description of the assets in the role
      * @param headCountSet should the headcount property be set?
      * @param headCount   criteria for inclusion
+     * @param businessArea which part of the business
+     * @param appointee who is appointed
+     * @param governanceResponsibility what is the associated responsibility
      */
     SustainabilityRoleDefinition(String                 typeName,
                                  String                 identifier,
@@ -528,7 +572,8 @@ public enum SustainabilityRoleDefinition
                                  boolean                headCountSet,
                                  int                    headCount,
                                  BusinessAreaDefinition businessArea,
-                                 PersonDefinition       appointee)
+                                 PersonDefinition       appointee,
+                                 GovernanceDefinition   governanceResponsibility)
     {
         this.typeName = typeName;
         this.identifier = identifier;
@@ -539,6 +584,7 @@ public enum SustainabilityRoleDefinition
         this.headCount = headCount;
         this.businessArea = businessArea;
         this.appointee = appointee;
+        this.governanceResponsibility = governanceResponsibility;
     }
 
 
@@ -648,6 +694,17 @@ public enum SustainabilityRoleDefinition
     public PersonDefinition getAppointee()
     {
         return appointee;
+    }
+
+
+    /**
+     * Return the associated responsibility.
+     *
+     * @return governance definition
+     */
+    public GovernanceDefinition getGovernanceResponsibility()
+    {
+        return governanceResponsibility;
     }
 
 

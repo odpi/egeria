@@ -25,6 +25,7 @@ public enum CommunityDefinition
                          PersonDefinition.TERRI_DARING,
                          PersonDefinition.STEVE_STARTER,
                          PersonDefinition.TOM_TALLY}),
+
     ;
 
     private final String             qualifiedName;

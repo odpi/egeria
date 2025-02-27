@@ -149,7 +149,7 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
                     }
 
                     InstanceProperties classificationProperties =
-                            super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                            super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName,
                                                               schemaRootClassifications);
 
                     bean.setFormula(this.getFormula(classificationProperties));

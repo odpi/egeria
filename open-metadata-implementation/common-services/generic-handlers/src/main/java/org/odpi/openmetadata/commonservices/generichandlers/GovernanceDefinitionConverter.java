@@ -81,19 +81,19 @@ public class GovernanceDefinitionConverter<B> extends OMFConverter<B>
                     String                         typeName = primaryEntity.getType().getTypeDefName();
                     GovernanceDefinitionProperties governanceDefinitionProperties;
 
-                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE.typeName))
                     {
                         governanceDefinitionProperties = new CertificationTypeProperties();
 
                         ((CertificationTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE.typeName))
                     {
                         governanceDefinitionProperties = new LicenseTypeProperties();
 
                         ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP.typeName))
                     {
                         governanceDefinitionProperties = new SecurityGroupProperties();
 
@@ -212,19 +212,19 @@ public class GovernanceDefinitionConverter<B> extends OMFConverter<B>
                     String typeName = primaryEntity.getType().getTypeDefName();
                     GovernanceDefinitionProperties governanceDefinitionProperties;
 
-                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE.typeName))
                     {
                         governanceDefinitionProperties = new CertificationTypeProperties();
 
                         ((CertificationTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE.typeName))
                     {
                         governanceDefinitionProperties = new LicenseTypeProperties();
 
                         ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP.typeName))
                     {
                         governanceDefinitionProperties = new SecurityGroupProperties();
 

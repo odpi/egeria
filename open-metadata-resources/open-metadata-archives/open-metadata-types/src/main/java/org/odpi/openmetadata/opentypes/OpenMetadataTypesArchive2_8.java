@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.BusinessCapabilityType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -321,9 +322,7 @@ public class OpenMetadataTypesArchive2_8
         /*
          * Create the Patch
          */
-        final String typeName = "BusinessCapability";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -334,29 +333,12 @@ public class OpenMetadataTypesArchive2_8
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Deprecated attribute. Use the businessCapabilityType attribute to describe the type of business capability.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "businessCapabilityType";
-
-        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
+        property.setReplacedByAttribute(OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE.name);
         properties.add(property);
 
-        final String attribute2Name            = "businessCapabilityType";
-        final String attribute2Description     = "Type of business capability.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

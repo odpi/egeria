@@ -83,23 +83,23 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
         for (GovernanceDomainDefinition domainDefinition : GovernanceDomainDefinition.values())
         {
-            String validValueGUID = this.archiveHelper.addValidValue(null,
-                                                                     governanceDomainSetGUID,
-                                                                     governanceDomainSetGUID,
-                                                                     OpenMetadataType.VALID_VALUE_SET.typeName,
-                                                                     OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                     OpenMetadataType.VALID_VALUE_SET.typeName,
-                                                                     domainDefinition.getQualifiedName(),
-                                                                     domainDefinition.getDisplayName(),
-                                                                     domainDefinition.getDescription(),
-                                                                     domainDefinition.getCategory(),
-                                                                     OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                                                     DataType.INT.getName(),
-                                                                     OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                                                     Integer.toString(domainDefinition.getDomainIdentifier()),
-                                                                     false,
-                                                                     false,
-                                                                     null);
+            this.archiveHelper.addValidValue(null,
+                                             governanceDomainSetGUID,
+                                             governanceDomainSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             domainDefinition.getQualifiedName(),
+                                             domainDefinition.getDisplayName(),
+                                             domainDefinition.getDescription(),
+                                             domainDefinition.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             DataType.INT.getName(),
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             Integer.toString(domainDefinition.getDomainIdentifier()),
+                                             false,
+                                             false,
+                                             null);
 
             String communityQName = "Community: " + domainDefinition.getQualifiedName();
 
@@ -150,9 +150,9 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         {
             Map<String, Object> extendedProperties = new HashMap<>();
 
-            extendedProperties.put(OpenMetadataType.DETAILS_PROPERTY_NAME, licenseTypeDefinition.getDetails());
+            extendedProperties.put(OpenMetadataProperty.DETAILS.name, licenseTypeDefinition.getDetails());
 
-            archiveHelper.addGovernanceDefinition(OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+            archiveHelper.addGovernanceDefinition(OpenMetadataType.LICENSE_TYPE.typeName,
                                                   licenseTypeDefinition.getQualifiedName(),
                                                   licenseTypeDefinition.getTitle(),
                                                   licenseTypeDefinition.getSummary(),
@@ -178,11 +178,11 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         {
             Map<String, Object> extendedProperties = new HashMap<>();
 
-            extendedProperties.put(OpenMetadataType.DETAILS_PROPERTY_NAME, certificationTypeDefinition.getDetails());
+            extendedProperties.put(OpenMetadataProperty.DETAILS.name, certificationTypeDefinition.getDetails());
 
             archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
 
-            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                   certificationTypeDefinition.getQualifiedName(),
                                                   certificationTypeDefinition.getTitle(),
                                                   certificationTypeDefinition.getSummary(),

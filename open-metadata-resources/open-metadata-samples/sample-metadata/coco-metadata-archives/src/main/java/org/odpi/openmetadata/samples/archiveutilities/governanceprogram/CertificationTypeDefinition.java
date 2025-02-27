@@ -12,6 +12,16 @@ import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefiniti
 public enum CertificationTypeDefinition
 {
     /**
+     * Approved clinical trial
+     */
+    APPROVED_CLINICAL_TRIAL("28ee93d2-f5a5-4352-bcad-0674aae2b2a6",
+                            "Approved clinical trial",
+                            "The clinical trial is approved by the board of directors and the regulators",
+                            "This certification gives permission for resources to be deployed as part of the linked clinical trial project.",
+                            "The clinical trial must be conducted as agreed with the approved level and types of participants and the identified data and analysis.",
+                            ScopeDefinition.ALL_COCO),
+
+    /**
      * The certification that a particular hospital is approved to participate in the Teddy Bear Drop Foot Clinical Trial.
      */
     DROP_FOOT_APPROVED_HOSPITAL("5acc69bf-dfbb-4e4a-b47b-19d610f2cb06",
