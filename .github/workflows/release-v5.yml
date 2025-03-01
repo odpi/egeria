@@ -82,7 +82,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: Assemblies
           path: open-metadata-distribution/omag-server-platform/build/distributions/*.gz
