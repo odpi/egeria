@@ -163,7 +163,6 @@ public class OpenMetadataTypesArchive5_0
         update0050ApplicationsAndProcesses();
         update0137Actions();
         update0130Projects();
-        update0201Connections();
         update0210DataStores();
         update0220DataFiles();
         update0221MediaFiles();
@@ -692,37 +691,6 @@ public class OpenMetadataTypesArchive5_0
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0201Connections()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateConnectorType());
-    }
-
-
-    private TypeDefPatch updateConnectorType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTOR_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -853,7 +821,6 @@ public class OpenMetadataTypesArchive5_0
         this.archiveBuilder.addEntityDef(add3DImageFileEntity());
         this.archiveBuilder.addEntityDef(addRasterFileEntity());
         this.archiveBuilder.addEntityDef(addVectorFileEntity());
-        this.archiveBuilder.addTypeDefPatch(deprecateGroupedMedia());
     }
 
 
@@ -914,24 +881,6 @@ public class OpenMetadataTypesArchive5_0
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.VECTOR_FILE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName));
-    }
-
-    /**
-     * Deprecate the GroupedMedia - use DataContentForDataSet
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateGroupedMedia()
-    {
-        final String typeName = "GroupedMedia";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 
@@ -1101,26 +1050,7 @@ public class OpenMetadataTypesArchive5_0
 
     private void update0380TermInheritance()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateIsATypeOfRelationship());
         this.archiveBuilder.addRelationshipDef(addTermISATYPEOFRelationship());
-    }
-
-    /**
-     * Deprecate the IsATypeOfRelationship - use TermISATYPEOFRelationship
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateIsATypeOfRelationship()
-    {
-        final String typeName = "IsATypeOfRelationship";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 
@@ -1603,18 +1533,8 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getConsistentValidValuesRelationship()
     {
-        final String guid            = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1779,19 +1699,8 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "supportedGuards";
-        final String attribute1Description     = "Deprecated list of produced guards.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.PRODUCED_GUARDS.name);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCED_GUARDS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

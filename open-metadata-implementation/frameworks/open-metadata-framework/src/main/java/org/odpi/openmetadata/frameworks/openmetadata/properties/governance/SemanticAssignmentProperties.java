@@ -22,13 +22,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SemanticAssignmentProperties extends RelationshipProperties
 {
-    private String               expression  = null;
+    private String                       expression  = null;
     private String                       description = null;
-    private GlossaryTermAssignmentStatus status      = null;
+    private GlossaryTermAssignmentStatus status      = GlossaryTermAssignmentStatus.VALIDATED;
     private int                          confidence  = 0;
-    private String               createdBy   = null;
-    private String               steward     = null;
-    private String               source      = null;
+    private String                       createdBy   = null;
+    private String                       steward     = null;
+    private String                       source      = null;
 
 
     /**
@@ -54,6 +54,8 @@ public class SemanticAssignmentProperties extends RelationshipProperties
             expression = template.getExpression();
             description = template.getDescription();
             status = template.getStatus();
+            confidence = template.getConfidence();
+            createdBy = template.getCreatedBy();
             steward = template.getSteward();
             source = template.getSource();
         }
@@ -226,16 +228,15 @@ public class SemanticAssignmentProperties extends RelationshipProperties
     @Override
     public String toString()
     {
-        return "GlossaryTermRelationship{" +
-                       "expression='" + expression + '\'' +
-                       ", description='" + description + '\'' +
-                       ", status=" + status +
-                       ", steward='" + steward + '\'' +
-                       ", source='" + source + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "SemanticAssignmentProperties{" +
+                "expression='" + expression + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", confidence=" + confidence +
+                ", createdBy='" + createdBy + '\'' +
+                ", steward='" + steward + '\'' +
+                ", source='" + source + '\'' +
+                "} " + super.toString();
     }
 
 

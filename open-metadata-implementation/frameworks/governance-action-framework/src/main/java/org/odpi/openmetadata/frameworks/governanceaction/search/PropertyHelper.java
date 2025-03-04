@@ -223,6 +223,45 @@ public class PropertyHelper
         return null;
     }
 
+
+    /**
+     * Add a new property comparison for another property.
+     *
+     * @param existingSearchConditions current list
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator comparison operator
+     * @param propertyCategory category of the primitive
+     * @return list of property conditions (maybe null)
+     */
+    public List<PropertyCondition> addPrimitivePropertyToSearchCondition(List<PropertyCondition>    existingSearchConditions,
+                                                                         String                     propertyName,
+                                                                         Object                     propertyValue,
+                                                                         PropertyComparisonOperator operator,
+                                                                         PrimitiveTypeCategory      propertyCategory)
+    {
+        List<PropertyCondition> searchConditions = existingSearchConditions;
+
+        if (propertyValue != null)
+        {
+            if (searchConditions == null)
+            {
+                searchConditions = new ArrayList<>();
+            }
+
+            PropertyCondition propertyCondition = new PropertyCondition();
+
+            propertyCondition.setValue(this.getPrimitivePropertyValue(propertyCategory, propertyValue));
+            propertyCondition.setOperator(operator);
+            propertyCondition.setProperty(propertyName);
+
+            searchConditions.add(propertyCondition);
+        }
+
+        return searchConditions;
+    }
+
+
     /**
      * Add the supplied primitive property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
@@ -251,13 +290,7 @@ public class PropertyHelper
                 resultingProperties = properties;
             }
 
-            PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
-
-            primitiveTypePropertyValue.setPrimitiveTypeCategory(propertyCategory);
-            primitiveTypePropertyValue.setPrimitiveValue(propertyValue);
-            primitiveTypePropertyValue.setTypeName(propertyCategory.getName());
-
-            resultingProperties.setProperty(propertyName, primitiveTypePropertyValue);
+            resultingProperties.setProperty(propertyName, this.getPrimitivePropertyValue(propertyCategory, propertyValue));
 
             return resultingProperties;
         }
@@ -265,6 +298,26 @@ public class PropertyHelper
         {
             return properties;
         }
+    }
+
+
+    /**
+     * Create a primitive property value.
+     *
+     * @param primitiveTypeCategory category of the property
+     * @param propertyValue value of the property
+     * @return property value
+     */
+    public PrimitiveTypePropertyValue getPrimitivePropertyValue(PrimitiveTypeCategory primitiveTypeCategory,
+                                                                Object                propertyValue)
+    {
+        PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+
+        primitiveTypePropertyValue.setPrimitiveTypeCategory(primitiveTypeCategory);
+        primitiveTypePropertyValue.setPrimitiveValue(propertyValue);
+        primitiveTypePropertyValue.setTypeName(primitiveTypeCategory.getName());
+
+        return primitiveTypePropertyValue;
     }
 
 
@@ -286,6 +339,24 @@ public class PropertyHelper
 
 
     /**
+     * Add a string property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addStringProperty(List<PropertyCondition>    existingSearchConditions,
+                                                     String                     propertyName,
+                                                     String                     propertyValue,
+                                                     PropertyComparisonOperator operator)
+    {
+        return addPrimitivePropertyToSearchCondition(existingSearchConditions, propertyName, propertyValue, operator, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+    }
+
+
+    /**
      * Add the supplied property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
      *
@@ -299,6 +370,24 @@ public class PropertyHelper
                                             int               propertyValue)
     {
         return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
+    }
+
+
+    /**
+     * Add an int property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addIntProperty(List<PropertyCondition>    existingSearchConditions,
+                                                  String                     propertyName,
+                                                  int                        propertyValue,
+                                                  PropertyComparisonOperator operator)
+    {
+        return addPrimitivePropertyToSearchCondition(existingSearchConditions, propertyName, propertyValue, operator, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
     }
 
 
@@ -320,6 +409,24 @@ public class PropertyHelper
 
 
     /**
+     * Add a long property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addLongProperty(List<PropertyCondition>    existingSearchConditions,
+                                                   String                     propertyName,
+                                                   long                       propertyValue,
+                                                   PropertyComparisonOperator operator)
+    {
+        return addPrimitivePropertyToSearchCondition(existingSearchConditions, propertyName, propertyValue, operator, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG);
+    }
+
+
+    /**
      * Add the supplied property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
      *
@@ -333,6 +440,24 @@ public class PropertyHelper
                                               float             propertyValue)
     {
         return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT);
+    }
+
+
+    /**
+     * Add a float property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addFloatProperty(List<PropertyCondition>   existingSearchConditions,
+                                                   String                     propertyName,
+                                                   float                      propertyValue,
+                                                   PropertyComparisonOperator operator)
+    {
+        return addPrimitivePropertyToSearchCondition(existingSearchConditions, propertyName, propertyValue, operator, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT);
     }
 
 
@@ -361,6 +486,24 @@ public class PropertyHelper
 
 
     /**
+     * Add a date property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addDateProperty(List<PropertyCondition>    existingSearchConditions,
+                                                   String                     propertyName,
+                                                   Date                       propertyValue,
+                                                   PropertyComparisonOperator operator)
+    {
+        return addPrimitivePropertyToSearchCondition(existingSearchConditions, propertyName, propertyValue, operator, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
+    }
+
+
+    /**
      * Add the supplied property to an element properties object.  If the element property object
      * supplied is null, a new element properties object is created.
      *
@@ -374,6 +517,24 @@ public class PropertyHelper
                                                 boolean           propertyValue)
     {
         return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+    }
+
+
+    /**
+     * Add a boolean property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addBooleanProperty(List<PropertyCondition>    existingSearchConditions,
+                                                      String                     propertyName,
+                                                      boolean                    propertyValue,
+                                                      PropertyComparisonOperator operator)
+    {
+        return addPrimitivePropertyToSearchCondition(existingSearchConditions, propertyName, propertyValue, operator, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
     }
 
 
@@ -394,7 +555,6 @@ public class PropertyHelper
     {
         ElementProperties  resultingProperties;
 
-
         if (properties == null)
         {
             resultingProperties = new ElementProperties();
@@ -412,6 +572,49 @@ public class PropertyHelper
         resultingProperties.setProperty(propertyName, enumTypePropertyValue);
 
         return resultingProperties;
+    }
+
+
+    /**
+     * Add an enum property to a set of search conditions.
+     *
+     * @param existingSearchConditions search conditions
+     * @param propertyName name of property
+     * @param propertyType type of enum
+     * @param symbolicName symbol name value of property
+     * @param operator type of operator
+     * @return new list
+     */
+    public List<PropertyCondition> addEnumProperty(List<PropertyCondition>    existingSearchConditions,
+                                                   String                     propertyName,
+                                                   String                     propertyType,
+                                                   String                     symbolicName,
+                                                   PropertyComparisonOperator operator)
+    {
+        List<PropertyCondition> searchConditions = existingSearchConditions;
+
+        if (symbolicName != null)
+        {
+            if (searchConditions == null)
+            {
+                searchConditions = new ArrayList<>();
+            }
+
+            PropertyCondition propertyCondition = new PropertyCondition();
+
+            EnumTypePropertyValue enumTypePropertyValue = new EnumTypePropertyValue();
+
+            enumTypePropertyValue.setSymbolicName(symbolicName);
+            enumTypePropertyValue.setTypeName(propertyType);
+
+            propertyCondition.setValue(enumTypePropertyValue);
+            propertyCondition.setOperator(operator);
+            propertyCondition.setProperty(propertyName);
+
+            searchConditions.add(propertyCondition);
+        }
+
+        return searchConditions;
     }
 
 
@@ -442,27 +645,70 @@ public class PropertyHelper
                 resultingProperties = properties;
             }
 
-            ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
-            arrayTypePropertyValue.setTypeName("array<string>");
-            arrayTypePropertyValue.setArrayCount(arrayValues.size());
-            int index = 0;
-            for (String arrayValue : arrayValues )
-            {
-                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
-
-                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitiveTypePropertyValue.setPrimitiveValue(arrayValue);
-
-                arrayTypePropertyValue.setArrayValue(index, primitiveTypePropertyValue);
-                index++;
-            }
-
-            resultingProperties.setProperty(propertyName, arrayTypePropertyValue);
+            resultingProperties.setProperty(propertyName, getStringArrayPropertyValue(arrayValues));
 
             return resultingProperties;
         }
 
         return properties;
+    }
+
+
+    /**
+     * Add a string array into a property value.
+     *
+     * @param arrayValues list of values
+     * @return array property value
+     */
+    public ArrayTypePropertyValue getStringArrayPropertyValue(List<String> arrayValues)
+    {
+        ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
+        arrayTypePropertyValue.setTypeName("array<string>");
+        arrayTypePropertyValue.setArrayCount(arrayValues.size());
+        int index = 0;
+        for (String arrayValue : arrayValues )
+        {
+            arrayTypePropertyValue.setArrayValue(index, getPrimitivePropertyValue(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING, arrayValue));
+            index++;
+        }
+
+        return arrayTypePropertyValue;
+    }
+
+
+    /**
+     * Add a new property comparison for another property.
+     *
+     * @param existingSearchConditions current list
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator comparison operator
+     * @return list of property conditions (maybe null)
+     */
+    public List<PropertyCondition> addStringArrayToSearchCondition(List<PropertyCondition>    existingSearchConditions,
+                                                                   String                     propertyName,
+                                                                   List<String>               propertyValue,
+                                                                   PropertyComparisonOperator operator)
+    {
+        List<PropertyCondition> searchConditions = existingSearchConditions;
+
+        if (propertyValue != null)
+        {
+            if (searchConditions == null)
+            {
+                searchConditions = new ArrayList<>();
+            }
+
+            PropertyCondition propertyCondition = new PropertyCondition();
+
+            propertyCondition.setValue(this.getStringArrayPropertyValue(propertyValue));
+            propertyCondition.setOperator(operator);
+            propertyCondition.setProperty(propertyName);
+
+            searchConditions.add(propertyCondition);
+        }
+
+        return searchConditions;
     }
 
 
@@ -520,8 +766,6 @@ public class PropertyHelper
 
         return properties;
     }
-
-
 
 
     /**
@@ -758,29 +1002,212 @@ public class PropertyHelper
                     resultingProperties = properties;
                 }
 
-                /*
-                 * The values of a map property are stored as an embedded ElementProperties object.
-                 */
-                ElementProperties  mapElementProperties  = this.addStringPropertyMap(null, mapValues);
+                resultingProperties.setProperty(propertyName, getStringMapPropertyValue(mapValues));
 
-                /*
-                 * If there was content in the map then the resulting ElementProperties are added as
-                 * a property to the resulting properties.
-                 */
-                if (mapElementProperties != null)
-                {
-                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
-                    mapTypePropertyValue.setMapValues(mapElementProperties);
-                    mapTypePropertyValue.setTypeName("map<string,string>");
-                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
-                    
-                    return resultingProperties;
-                }
+                return resultingProperties;
             }
         }
 
         return properties;
     }
+
+
+    /**
+     * Create a MapTypePropertyValue.
+     *
+     * @param mapValues values for the property
+     * @return property value object
+     */
+    public MapTypePropertyValue getStringMapPropertyValue(Map<String, String> mapValues)
+    {
+        /*
+         * The values of a map property are stored as an embedded ElementProperties object.
+         */
+        ElementProperties  mapElementProperties  = this.addStringPropertyMap(null, mapValues);
+
+        /*
+         * If there was content in the map then the resulting ElementProperties are added as
+         * a property to the resulting properties.
+         */
+        if (mapElementProperties != null)
+        {
+            MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+            mapTypePropertyValue.setMapValues(mapElementProperties);
+            mapTypePropertyValue.setTypeName("map<string,string>");
+
+            return mapTypePropertyValue;
+        }
+
+        return null;
+    }
+
+    /**
+     * Create a MapTypePropertyValue.
+     *
+     * @param mapValues values for the property
+     * @return property value object
+     */
+    public MapTypePropertyValue getObjectMapPropertyValue(Map<String, Object> mapValues)
+    {
+        /*
+         * The values of a map property are stored as an embedded ElementProperties object.
+         */
+        ElementProperties  mapElementProperties  = this.addPropertyMap(null, mapValues);
+
+        /*
+         * If there was content in the map then the resulting ElementProperties are added as
+         * a property to the resulting properties.
+         */
+        if (mapElementProperties != null)
+        {
+            MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+            mapTypePropertyValue.setMapValues(mapElementProperties);
+            mapTypePropertyValue.setTypeName("map<string,object>");
+
+            return mapTypePropertyValue;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a MapTypePropertyValue.
+     *
+     * @param mapValues values for the property
+     * @return property value object
+     */
+    public MapTypePropertyValue getListStringMapPropertyValue(Map<String, List<String>> mapValues)
+    {
+        /*
+         * The values of a map property are stored as an embedded ElementProperties object.
+         */
+        ElementProperties  mapElementProperties  = this.addStringArrayPropertyMap(null, mapValues);
+
+        /*
+         * If there was content in the map then the resulting ElementProperties are added as
+         * a property to the resulting properties.
+         */
+        if (mapElementProperties != null)
+        {
+            MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+            mapTypePropertyValue.setMapValues(mapElementProperties);
+            mapTypePropertyValue.setTypeName("map<string,object>");
+
+            return mapTypePropertyValue;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add a new property comparison for another property.
+     *
+     * @param existingSearchConditions current list
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator comparison operator
+     * @return list of property conditions (maybe null)
+     */
+    public List<PropertyCondition> addStringMapToSearchCondition(List<PropertyCondition>    existingSearchConditions,
+                                                                 String                     propertyName,
+                                                                 Map<String, String>        propertyValue,
+                                                                 PropertyComparisonOperator operator)
+    {
+        List<PropertyCondition> searchConditions = existingSearchConditions;
+
+        if ((propertyValue != null) && (! propertyValue.isEmpty()))
+        {
+            if (searchConditions == null)
+            {
+                searchConditions = new ArrayList<>();
+            }
+
+            PropertyCondition propertyCondition = new PropertyCondition();
+
+            propertyCondition.setValue(this.getStringMapPropertyValue(propertyValue));
+            propertyCondition.setOperator(operator);
+            propertyCondition.setProperty(propertyName);
+
+            searchConditions.add(propertyCondition);
+        }
+
+        return searchConditions;
+    }
+
+
+    /**
+     * Add a new property comparison for another property.
+     *
+     * @param existingSearchConditions current list
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator comparison operator
+     * @return list of property conditions (maybe null)
+     */
+    public List<PropertyCondition> addListStringMapToSearchCondition(List<PropertyCondition>    existingSearchConditions,
+                                                                     String                     propertyName,
+                                                                     Map<String, List<String>>  propertyValue,
+                                                                     PropertyComparisonOperator operator)
+    {
+        List<PropertyCondition> searchConditions = existingSearchConditions;
+
+        if ((propertyValue != null) && (! propertyValue.isEmpty()))
+        {
+            if (searchConditions == null)
+            {
+                searchConditions = new ArrayList<>();
+            }
+
+            PropertyCondition propertyCondition = new PropertyCondition();
+
+            propertyCondition.setValue(this.getListStringMapPropertyValue(propertyValue));
+            propertyCondition.setOperator(operator);
+            propertyCondition.setProperty(propertyName);
+
+            searchConditions.add(propertyCondition);
+        }
+
+        return searchConditions;
+    }
+
+
+    /**
+     * Add a new property comparison for another property.
+     *
+     * @param existingSearchConditions current list
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param operator comparison operator
+     * @return list of property conditions (maybe null)
+     */
+    public List<PropertyCondition> addObjectMapToSearchCondition(List<PropertyCondition>    existingSearchConditions,
+                                                                 String                     propertyName,
+                                                                 Map<String, Object>        propertyValue,
+                                                                 PropertyComparisonOperator operator)
+    {
+        List<PropertyCondition> searchConditions = existingSearchConditions;
+
+        if ((propertyValue != null) && (! propertyValue.isEmpty()))
+        {
+            if (searchConditions == null)
+            {
+                searchConditions = new ArrayList<>();
+            }
+
+            PropertyCondition propertyCondition = new PropertyCondition();
+
+            propertyCondition.setValue(this.getObjectMapPropertyValue(propertyValue));
+            propertyCondition.setOperator(operator);
+            propertyCondition.setProperty(propertyName);
+
+            searchConditions.add(propertyCondition);
+        }
+
+        return searchConditions;
+    }
+
 
 
     /**
@@ -1084,11 +1511,7 @@ public class PropertyHelper
             {
                 String mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
-                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                resultingProperties.setProperty(mapPropertyName, getPrimitivePropertyValue(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING, mapPropertyValue));
                 propertyCount++;
             }
 
@@ -1101,6 +1524,50 @@ public class PropertyHelper
         return properties;
     }
 
+
+    /**
+     * Add the supplied property map to an element properties object.  Each of the entries in the map is added
+     * as a separate property in element properties.  If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addStringArrayPropertyMap(ElementProperties         properties,
+                                                       Map<String, List<String>> mapValues)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            ElementProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new ElementProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                List<String> mapPropertyValue = mapValues.get(mapPropertyName);
+
+                resultingProperties.setProperty(mapPropertyName, getStringArrayPropertyValue(mapPropertyValue));
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
 
 
     /**

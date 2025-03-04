@@ -991,40 +991,10 @@ public class OpenMetadataTypesArchive3_13
 
     private ClassificationDef addDigitalProductClassification()
     {
-        final String guid = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeGUID;
-        final String name = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName;
-        final String description = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.description;
-        final String descriptionGUID = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.wikiURL;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
-                                                                                 null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 descriptionWiki,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute property;
-
-        final String attribute1Name = "syncDatesByKey";
-        final String attribute1Description = "Collection of synchronization dates identified by a key";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
-                                                                  attribute1Description,
-                                                                  attribute1DescriptionGUID);
-
-        properties.add(property);
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
+        return archiveHelper.getClassificationDef(OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION,
+                                                  null,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                  true);
     }
 
     /*

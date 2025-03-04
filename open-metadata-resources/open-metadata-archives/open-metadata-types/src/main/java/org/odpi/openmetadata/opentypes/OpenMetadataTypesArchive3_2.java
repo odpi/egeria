@@ -168,7 +168,6 @@ public class OpenMetadataTypesArchive3_2
          * Calls for new and changed types go here
          */
         update0030HostsAndOperatingPlatforms();
-        update0421GovernanceClassificationLevels();
         update0422GovernanceActionClassifications();
         update0450GovernanceRollout();
         update0455ExceptionManagement();
@@ -208,105 +207,6 @@ public class OpenMetadataTypesArchive3_2
                                                  descriptionGUID);
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Add support for configurable governance status levels.
-     */
-    private void update0421GovernanceClassificationLevels()
-    {
-        this.archiveBuilder.addEntityDef(addGovernanceStatusLevelEntity());
-        this.archiveBuilder.addClassificationDef(addGovernanceStatusSetClassification());
-    }
-
-
-    private EntityDef addGovernanceStatusLevelEntity()
-    {
-        final String guid            = "a518de03-0f72-4944-9cd5-e05b43ae9c5e";
-        final String name            = "GovernanceStatusLevel";
-        final String description     = "A value to represent a specific level of status in a governance element.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "levelIdentifier";
-        final String attribute1Description     = "Numeric value for the classification level";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
-    }
-
-
-    private ClassificationDef addGovernanceStatusSetClassification()
-    {
-        final String guid = "c13261bb-0cfe-4540-a44a-cca2b14f412b";
-
-        final String name            = "GovernanceStatusSet";
-        final String description     = "Identifies the set of levels that are used to describe the status of a governance element.";
-        final String descriptionGUID = null;
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Collection"));
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
-                                                                                 null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 linkedToEntities,
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "domainIdentifier";
-        final String attribute1Description     = "Identifier of the governance domain that recognizes this set of levels.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
-    }
 
 
     /*
@@ -402,31 +302,6 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "status";
-        final String attribute1Description     = "Deprecated attribute. Use the statusIdentifier attribute to describe the status of this classification.";
-        final String attribute1DescriptionGUID = null;
-
-        final String attribute3Name            = "level";
-        final String attribute3Description     = "Deprecated attribute. Use the levelIdentifier attribute to describe the criticality level of this classification.";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.STATUS_IDENTIFIER.name);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("CriticalityLevel",
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER));
@@ -451,29 +326,7 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "status";
-        final String attribute1Description     = "Deprecated attribute. Use the statusIdentifier attribute to describe the status of this classification.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute3Name            = "level";
-        final String attribute3Description     = "Deprecated attribute. Use the levelIdentifier attribute to describe the confidentiality level of this classification.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.STATUS_IDENTIFIER.name);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER.name);
-        properties.add(property);
+        List<TypeDefAttribute> properties = new ArrayList<>();;
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER));
@@ -499,30 +352,6 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "status";
-        final String attribute1Description     = "Deprecated attribute. Use the statusIdentifier attribute to describe the status of this classification.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute3Name            = "level";
-        final String attribute3Description     = "Deprecated attribute. Use the levelIdentifier attribute to describe the confidence level of this classification.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.STATUS_IDENTIFIER.name);
-        properties.add(property);
-
-        property = archiveHelper.getEnumTypeDefAttribute("ConfidenceLevel",
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER));
@@ -549,32 +378,6 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "status";
-        final String attribute1Description     = "Deprecated attribute. Use the statusIdentifier attribute to describe the status of this classification.";
-        final String attribute1DescriptionGUID = null;
-
-        final String attribute3Name            = "basis";
-        final String attribute3Description     = "Deprecated attribute. Use the basisIdentifier attribute to describe the retention basis of this classification.";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.STATUS_IDENTIFIER.name);
-        properties.add(property);
-
-        property = archiveHelper.getEnumTypeDefAttribute("RetentionBasis",
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER));
@@ -914,24 +717,9 @@ public class OpenMetadataTypesArchive3_2
      */
     private void update0465DuplicateProcessing()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateKnownDuplicateLink());
         this.archiveBuilder.addClassificationDef(addConsolidatedDuplicateClassification());
         this.archiveBuilder.addRelationshipDef(addPeerDuplicateLinkRelationship());
         this.archiveBuilder.addRelationshipDef(addConsolidatedDuplicateLinkRelationship());
-    }
-
-
-    private TypeDefPatch deprecateKnownDuplicateLink()
-    {
-        final String typeName = "KnownDuplicateLink";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 

@@ -236,7 +236,7 @@ public enum ViewServiceDescription
                             "Classification Manager OMVS",
                             "classification-manager",
                             "Maintain classifications and relationships used to organize open metadata elements.",
-                            "https://egeria-project.org/services/omvs/valid-metadata/overview/",
+                            "https://egeria-project.org/services/omvs/classification-manager/overview/",
                             AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
 
     /**
@@ -376,6 +376,17 @@ public enum ViewServiceDescription
                           "https://egeria-project.org/services/omvs/solution-architect/overview/",
                           AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
 
+    /**
+     * Retrieve elements based on type or the classifications/relationships attached to these metadata elements.
+     */
+    CLASSIFICATION_EXPLORER (830,
+                            ComponentDevelopmentStatus.STABLE,
+                            "Classification Explorer",
+                            "Classification Explorer OMVS",
+                            "classification-explorer",
+                            "Retrieve elements based on type or the classifications/relationships attached to these metadata elements",
+                            "https://egeria-project.org/services/omvs/classification-explorer/overview/",
+                            AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName()),
     ;
 
 

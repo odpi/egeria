@@ -262,7 +262,7 @@ Content-Type: application/json
 ###
 # @name Get GUID for Project
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-exact-property-value?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-exact-property-value?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -414,7 +414,7 @@ Content-Type: application/json
 #
 # https://egeria-project.org/types/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-exact-property-value?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-exact-property-value?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

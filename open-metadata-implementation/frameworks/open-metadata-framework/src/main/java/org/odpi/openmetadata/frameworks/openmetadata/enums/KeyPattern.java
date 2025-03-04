@@ -67,12 +67,11 @@ public enum KeyPattern implements OpenMetadataEnum
     private static final String ENUM_DESCRIPTION_GUID = "c6812f55-cc75-4e60-af29-74b53f03ddb5";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS;
 
-    private final String descriptionGUID;
-
-    private final int            ordinal;
-    private final String         name;
-    private final String         description;
-    private final boolean        isDefault;
+    private final String  descriptionGUID;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
+    private final boolean isDefault;
 
 
     /**
@@ -90,11 +89,11 @@ public enum KeyPattern implements OpenMetadataEnum
                String  description,
                boolean isDefault)
     {
-        this.ordinal = ordinal;
+        this.ordinal         = ordinal;
         this.name            = name;
         this.descriptionGUID = descriptionGUID;
         this.description     = description;
-        this.isDefault = isDefault;
+        this.isDefault       = isDefault;
     }
 
 

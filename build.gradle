@@ -131,7 +131,7 @@ subprojects {
                                 developer {
                                     id = 'mandy-chessell'
                                     name = 'Mandy Chessell'
-                                    email = 'mandy.e.chessell@gmail.com'
+                                    email = 'mandy.chessell@pdr-associates.com'
                                     timezone = 'Europe/London'
                                     roles = ['Project Leader']
                                     organization = 'Pragmatic Data Research Ltd'
@@ -142,6 +142,13 @@ subprojects {
                                     email = 'nigel.l.jones+git@gmail.com'
                                     roles = ['maintainer']
                                     organization = 'IBM Corporation'
+                                }
+                                developer {
+                                    id = 'dwolfson'
+                                    name = 'Dan Wolfson'
+                                    email = 'dan.wolfson@pdr-associates.com'
+                                    roles = ['maintainer']
+                                    organization = 'Pragmatic Data Research Ltd'
                                 }
                             }
                             scm {

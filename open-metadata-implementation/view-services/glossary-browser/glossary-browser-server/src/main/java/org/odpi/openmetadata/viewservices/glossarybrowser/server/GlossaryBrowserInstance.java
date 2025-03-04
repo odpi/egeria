@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
@@ -20,10 +17,8 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_BROWSER;
 
-    private final CollaborationManagementClient collaborationManagementClient;
     private final GlossaryManagementClient      glossaryManagementClient;
-    private final StewardshipManagementClient   stewardshipManagementClient;
-    private final OpenMetadataStoreClient       openMetadataStoreClient;
+
 
     /**
      * Set up the Glossary Browser OMVS instance*
@@ -50,21 +45,7 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
         glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
-    }
-
-
-    /**
-     * Return the collaboration management client.  This client is from Asset Manager OMAS and is for maintaining notelogs.
-     *
-     * @return client
-     */
-    public CollaborationManagementClient getCollaborationManagementClient()
-    {
-        return collaborationManagementClient;
     }
 
 
@@ -76,28 +57,5 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
     public GlossaryManagementClient getGlossaryManagementClient()
     {
         return glossaryManagementClient;
-    }
-
-
-    /**
-     * Return the stewardship management client.  This client is from Asset Manager OMAS and is for setting up classifications and relationships for
-     * a glossary term.
-     *
-     * @return client
-     */
-    public StewardshipManagementClient getStewardshipManagementClient()
-    {
-        return stewardshipManagementClient;
-    }
-
-
-    /**
-     * Return the open metadata store client.  This client is from Asset Manager OMAS and is for accessing all types of metadata.
-     *
-     * @return client
-     */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient()
-    {
-        return openMetadataStoreClient;
     }
 }

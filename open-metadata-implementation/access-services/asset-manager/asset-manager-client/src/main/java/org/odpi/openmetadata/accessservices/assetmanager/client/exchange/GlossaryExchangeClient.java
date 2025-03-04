@@ -1328,7 +1328,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String glossaryParentGUIDParameterName = "glossaryParentCategoryGUID";
         final String glossaryChildGUIDParameterName  = "glossaryChildCategoryGUID";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategory/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/{3}/remove";
 
         super.clearRelationship(userId,
                                 assetManagerGUID,
@@ -3327,7 +3327,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/undo&forLineage={3}&forDuplicateProcessing={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/undo?forLineage={3}&forDuplicateProcessing={4}";
 
         GlossaryTermElementResponse response = restClient.callMyGlossaryTermPostRESTCall(methodName,
                                                                                          urlTemplate,

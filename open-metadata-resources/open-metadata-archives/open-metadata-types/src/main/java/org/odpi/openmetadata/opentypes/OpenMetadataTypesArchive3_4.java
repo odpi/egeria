@@ -586,42 +586,9 @@ public class OpenMetadataTypesArchive3_4
      * -------------------------------------------------------------------------------------------------------
      */
 
-    /**
-     * Deprecate the use of EngineActionExecutor and GovernanceActionProcessStepUse relationships in favour of
-     * additional properties in the EngineAction entity.  This is to improve performance.
-     */
     private void update0463EngineActions()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateEngineActionExecutorRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionProcessStepUseRelationship());
         this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
-    }
-
-    private TypeDefPatch deprecateEngineActionExecutorRelationship()
-    {
-        final String typeName = "EngineActionExecutor";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateGovernanceActionProcessStepUseRelationship()
-    {
-        final String typeName = "GovernanceActionProcessStepUse";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 

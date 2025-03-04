@@ -34,7 +34,7 @@ Content-Type: application/json
 # has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
 # levelIdentifier property.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governed Data Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidence
 Authorization: Bearer {{token}}
@@ -62,7 +62,7 @@ Content-Type: application/json
 # Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
 # confidence to assign to the element.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidence/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -77,7 +77,7 @@ Content-Type: application/json
 # Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
 # is to the organization.  The level of criticality is expressed by the levelIdentifier property.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/criticality
 Authorization: Bearer {{token}}
@@ -104,7 +104,7 @@ Content-Type: application/json
 # Remove the criticality classification from the element.  This normally occurs when the organization has lost track of the level of
 # criticality to assign to the element.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/criticality/remove
 Authorization: Bearer {{token}}
@@ -123,7 +123,7 @@ Content-Type: application/json
 # of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
 # The level of confidence is expressed by the levelIdentifier property.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidentiality
 Authorization: Bearer {{token}}
@@ -151,7 +151,7 @@ Content-Type: application/json
 # Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
 # confidentiality to assign to the element.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidentiality/remove
 Authorization: Bearer {{token}}
@@ -169,7 +169,7 @@ Content-Type: application/json
 # property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
 # properties respectively.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/retention
 Authorization: Bearer {{token}}
@@ -199,7 +199,7 @@ Content-Type: application/json
 # Remove the retention classification from the element.  This normally occurs when the organization has lost track of, or no longer needs to
 # track the retention period to assign to the element.
 #
-# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/retention/remove
 Authorization: Bearer {{token}}

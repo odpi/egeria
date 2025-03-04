@@ -161,7 +161,6 @@ public class OpenMetadataTypesArchive2_9
         update0137ToDos();
         update0450GovernanceRollout();
         update0217Ports();
-        update0534RelationalSchema();
         add0335PrimaryCategoryClassification();
     }
 
@@ -346,33 +345,6 @@ public class OpenMetadataTypesArchive2_9
         return typeDefPatch;
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * The RelationalColumnType only allows for a column to be primitive. - could be a literal, enum or external.
-     */
-    private void update0534RelationalSchema()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateRelationalColumnType());
-    }
-
-    private TypeDefPatch deprecateRelationalColumnType()
-    {
-        final String typeName = "RelationalColumnType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
 
 

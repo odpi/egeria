@@ -195,12 +195,8 @@ public class OpenMetadataTypesArchive3_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PAGES.name,
-                                                           OpenMetadataProperty.PAGES.description,
-                                                           OpenMetadataProperty.PAGES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PAGES));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -223,17 +219,9 @@ public class OpenMetadataTypesArchive3_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(MediaUsage.getOpenTypeName(),
-                                                         OpenMetadataProperty.MEDIA_USAGE.name,
-                                                         OpenMetadataProperty.MEDIA_USAGE.description,
-                                                         OpenMetadataProperty.MEDIA_USAGE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.name,
-                                                           OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.description,
-                                                           OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.MEDIA_USAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEDIA_USAGE_OTHER_ID));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -256,28 +244,10 @@ public class OpenMetadataTypesArchive3_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(MediaUsage.getOpenTypeName(),
-                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name,
-                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.description,
-                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.name,
-                                                           OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.description,
-                                                           OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayIntTypeDefAttribute("mediaUsages",
-                                                             "Types of recommended media usage.",
-                                                             null);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.name,
-                                                           OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.description,
-                                                           OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.descriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEDIA_TYPE_OTHER_ID));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

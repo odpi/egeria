@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.BusinessCapabilityType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -162,8 +161,6 @@ public class OpenMetadataTypesArchive2_8
          * Calls for new and changed types go here
          */
         update0025Locations();
-        update0030HostsAndOperatingPlatforms();
-        update0050Applications();
         update0440OrganizationControls();
     }
 
@@ -190,25 +187,9 @@ public class OpenMetadataTypesArchive2_8
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "address";
-        final String attribute1Description     = "Postal address of the location (Deprecated).";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.POSTAL_ADDRESS.name,
-                                                           OpenMetadataProperty.POSTAL_ADDRESS.description,
-                                                           OpenMetadataProperty.POSTAL_ADDRESS.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.MAP_PROJECTION.name,
-                                                           OpenMetadataProperty.MAP_PROJECTION.description,
-                                                           OpenMetadataProperty.MAP_PROJECTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSTAL_ADDRESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAP_PROJECTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -226,78 +207,14 @@ public class OpenMetadataTypesArchive2_8
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "address";
-        final String attribute1Description     = "Address of the location (Deprecated).";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                           OpenMetadataProperty.NETWORK_ADDRESS.description,
-                                                           OpenMetadataProperty.NETWORK_ADDRESS.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NETWORK_ADDRESS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * The HostLocation relationship is superfluous - can use AssetLocation since Host is an Asset
-     */
-    private void update0030HostsAndOperatingPlatforms()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateHostLocation());
-    }
-
-    private TypeDefPatch deprecateHostLocation()
-    {
-        final String typeName = "HostLocation";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * The RuntimeForProcess relationship is superfluous - can use ServerAssetUse since Application is a SoftwareServerCapability.
-     */
-    private void update0050Applications()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateRuntimeForProcess());
-    }
-
-    private TypeDefPatch deprecateRuntimeForProcess()
-    {
-        final String typeName = "RuntimeForProcess";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -331,12 +248,6 @@ public class OpenMetadataTypesArchive2_8
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE));
 

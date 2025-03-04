@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class MetadataRelationshipSummariesResponse extends FFDCResponseBase
 {
     private List<MetadataRelationshipSummary> relationships = null;
+    private String                            mermaidGraph = null;
 
 
     /**
@@ -47,6 +48,7 @@ public class MetadataRelationshipSummariesResponse extends FFDCResponseBase
         if (template != null)
         {
             this.relationships = template.getRelationships();
+            mermaidGraph = template.getMermaidGraph();
         }
     }
 
@@ -74,6 +76,28 @@ public class MetadataRelationshipSummariesResponse extends FFDCResponseBase
 
 
     /**
+     * Return the mermaid string used to render a graph.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidGraph string in Mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -83,6 +107,7 @@ public class MetadataRelationshipSummariesResponse extends FFDCResponseBase
     {
         return "MetadataRelationshipSummariesResponse{" +
                 "relationships=" + relationships +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +133,8 @@ public class MetadataRelationshipSummariesResponse extends FFDCResponseBase
         {
             return false;
         }
-        return Objects.equals(this.getRelationships(), that.getRelationships());
+        return Objects.equals(relationships, that.relationships) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -120,6 +146,6 @@ public class MetadataRelationshipSummariesResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(relationships, super.hashCode());
+        return Objects.hash(relationships, mermaidGraph, super.hashCode());
     }
 }

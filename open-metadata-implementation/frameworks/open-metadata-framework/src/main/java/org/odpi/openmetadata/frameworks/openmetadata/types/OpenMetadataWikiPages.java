@@ -410,9 +410,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0421_GOVERNANCE_CLASSIFICATION    = "https://egeria-project.org/types/4/0421-Governance-Classification-Levels/";
 
     /**
-     * <a href="https://egeria-project.org/types/4/0422-Governance-Action-Classifications/">...</a>
+     * <a href="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/">...</a>
      */
-    public static final String MODEL_0422_GOVERNANCE_ACTION_CLASS      = "https://egeria-project.org/types/4/0422-Governance-Action-Classifications/";
+    public static final String MODEL_0422_GOVERNED_DATA_CLASSIFICATION = "https://egeria-project.org/types/4/0422-Governed-Data-Classifications/";
 
     /**
      * <a href="https://egeria-project.org/types/4/0423-Security-Definitions/">...</a>
@@ -652,7 +652,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/5/0569-Design-Model-Implementation/">...</a>
      */
-    public static final String MODEL_0568_DESIGN_MODEL_IMPL            = "https://egeria-project.org/types/5/0569-Design-Model-Implementation/";
+    public static final String MODEL_0569_DESIGN_MODEL_IMPL            = "https://egeria-project.org/types/5/0569-Design-Model-Implementation/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0570-Metamodels/">...</a>
@@ -670,19 +670,10 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0595_DESIGN_PATTERNS              = "https://egeria-project.org/types/5/0595-Design-Patterns/";
 
     /**
-     * <a href="https://egeria-project.org/types/6/0601-Open-Discovery-Engine/">...</a>
-     */
-    public static final String MODEL_0601_DISCOVERY_ENGINES            = "https://egeria-project.org/types/6/0601-Open-Discovery-Engine/";
-
-    /**
      * <a href="https://egeria-project.org/types/6/0603-Survey-Reports/">...</a>
      */
     public static final String MODEL_0603_SURVEY_REPORTS             = "https://egeria-project.org/types/6/0603-Survey-Reports/";
 
-    /**
-     * <a href="https://egeria-project.org/types/6/0605-Open-Discovery-Analysis-Reports/">...</a>
-     */
-    public static final String MODEL_0605_DISCOVERY_REPORTS            = "https://egeria-project.org/types/6/0605-Open-Discovery-Analysis-Reports/";
 
     /**
      * <a href="https://egeria-project.org/types/6/0610-Annotations/">...</a>

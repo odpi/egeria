@@ -55,6 +55,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:collection-manager:collection-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:classification-explorer:classification-explorer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:classification-manager:classification-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:data-designer:data-designer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:data-discovery:data-discovery-spring')

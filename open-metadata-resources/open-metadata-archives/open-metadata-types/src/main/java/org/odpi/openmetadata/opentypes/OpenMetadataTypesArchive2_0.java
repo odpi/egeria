@@ -159,11 +159,9 @@ public class OpenMetadataTypesArchive2_0
          * Calls for new and changed types go here
          */
         add0011ManagingReferenceables();
-        update0130Projects();
         update0220FilesAndFolders();
         update0221DocumentStores();
         update0224Databases();
-        update0512DerivedSchemaAttributes();
     }
 
 
@@ -207,70 +205,6 @@ public class OpenMetadataTypesArchive2_0
      * -------------------------------------------------------------------------------------------------------
      */
 
-    /**
-     * 0130 - update ProjectScope description
-     */
-    private void update0130Projects()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateProjectScopeRelationship());
-    }
-
-    /**
-     * The ProjectScope has an attribute with the incorrect type of Date. It is not possible to patch an attribute to change its type for
-     * compatibility reasons. This patch deprecates the old scopeDescription (with Date type) and introduces a new description (with
-     * String type).
-     *
-     * @return the type def patch
-     */
-    private TypeDefPatch updateProjectScopeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ProjectScope";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "scopeDescription";
-        final String attribute1Description     = "Deprecated attribute. Use the description attribute to describe the scope.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DESCRIPTION.name);
-
-        properties.add(property);
-
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-
-        properties.add(property);
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
     private void update0220FilesAndFolders()
     {
         this.archiveBuilder.addClassificationDef(getFileManagerClassification());
@@ -293,22 +227,7 @@ public class OpenMetadataTypesArchive2_0
 
     private void update0221DocumentStores()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateConnectManagerClassification());
         this.archiveBuilder.addClassificationDef(getContentCollectionManagerClassification());
-    }
-
-
-    private TypeDefPatch deprecateConnectManagerClassification()
-    {
-        final String typeName = "ContentManager";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 
@@ -340,49 +259,6 @@ public class OpenMetadataTypesArchive2_0
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
 
     }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0512 - Add the queryId to identify how the query is used in a complex formula.
-     */
-    private void update0512DerivedSchemaAttributes()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSchemaQueryImplementationRelationship());
-    }
-
-
-    private TypeDefPatch updateSchemaQueryImplementationRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaQueryImplementation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-
-    }
-
 
 
     /*

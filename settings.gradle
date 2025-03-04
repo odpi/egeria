@@ -203,6 +203,8 @@ include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog
 include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
 include(':open-metadata-implementation:view-services:automated-curation:automated-curation-server')
 include(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
+include(':open-metadata-implementation:view-server-generic-services:classification-explorer:classification-explorer-server')
+include(':open-metadata-implementation:view-server-generic-services:classification-explorer:classification-explorer-spring')
 include(':open-metadata-implementation:view-services:classification-manager:classification-manager-server')
 include(':open-metadata-implementation:view-services:classification-manager:classification-manager-spring')
 include(':open-metadata-implementation:view-services:collection-manager:collection-manager-server')

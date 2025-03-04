@@ -227,11 +227,6 @@ public class OpenMetadataTypesArchive5_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE));
 
@@ -247,7 +242,6 @@ public class OpenMetadataTypesArchive5_1
     private void update0210DataStores()
     {
         this.archiveBuilder.addClassificationDef(getDataAssetEncodingClassification());
-        this.archiveBuilder.addTypeDefPatch(deprecateDataStoreEncodingClassification());
     }
 
     private ClassificationDef getDataAssetEncodingClassification()
@@ -272,22 +266,6 @@ public class OpenMetadataTypesArchive5_1
         return classificationDef;
     }
 
-
-    private TypeDefPatch deprecateDataStoreEncodingClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataStoreEncoding";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

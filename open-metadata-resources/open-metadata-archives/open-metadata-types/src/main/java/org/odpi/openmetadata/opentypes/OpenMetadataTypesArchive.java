@@ -159,8 +159,6 @@ public class OpenMetadataTypesArchive
          */
         this.update0017ExternalIds();
         this.update0056ResourceManagers();
-        this.update0401GovernanceDefinitions();
-        this.update0421GovernanceClassificationStatuses();
         this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
         this.update0735SolutionPortsAndWires();
@@ -475,117 +473,9 @@ public class OpenMetadataTypesArchive
 
 
 
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * Types *GovernanceDomainDefinition*, *GovernanceDomainSet* have been deprecated in favour of using standard valid metadata values.
-     */
-    private void update0401GovernanceDefinitions()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceDomainDefinition());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceDomainSet());
-    }
-
-
-    private TypeDefPatch deprecateGovernanceDomainDefinition()
-    {
-        final String typeName = "GovernanceDomainDescription";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateGovernanceDomainSet()
-    {
-        final String typeName = "GovernanceDomainSet";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     *  Types *GovernanceClassificationLevel*, *GovernanceClassificationSet*, *GovernanceStatusSet* and *GovernanceStatusLevel* have been deprecated in favour of using standard valid metadata values.
-     */
-    private void update0421GovernanceClassificationStatuses()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceClassificationLevel());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceClassificationSet());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceStatusLevel());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceStatusSet());
-    }
-
-
-    private TypeDefPatch deprecateGovernanceClassificationLevel()
-    {
-        final String typeName = "GovernanceClassificationLevel";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateGovernanceClassificationSet()
-    {
-        final String typeName = "GovernanceClassificationSet";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateGovernanceStatusSet()
-    {
-        final String typeName = "GovernanceStatusSet";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateGovernanceStatusLevel()
-    {
-        final String typeName = "GovernanceStatusLevel";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 }
 

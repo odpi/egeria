@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -27,17 +29,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = LevelIdentifierProperties.class, name = "LevelIdentifierProperties"),
+                @JsonSubTypes.Type(value = LevelIdentifierQueryProperties.class, name = "LevelIdentifierQueryProperties"),
                 @JsonSubTypes.Type(value = DataFieldQueryProperties.class, name = "DataFieldQueryProperties"),
                 @JsonSubTypes.Type(value = FindNameProperties.class, name = "FindNameProperties"),
                 @JsonSubTypes.Type(value = FindAssetOriginProperties.class, name = "FindAssetOriginProperties"),
                 @JsonSubTypes.Type(value = FindPropertyNamesProperties.class, name = "FindPropertyNamesProperties"),
+                @JsonSubTypes.Type(value = SecurityTagQueryProperties.class, name = "SecurityTagQueryProperties"),
+                @JsonSubTypes.Type(value = SemanticAssignmentQueryProperties.class, name = "SemanticAssignmentQueryProperties"),
         })
-public class FindProperties
+public class FindProperties extends FindRequest
 {
     private String              openMetadataTypeName = null;
-    private Date                effectiveTime        = null;
-    private Date                asOfTime             = null;
     private List<ElementStatus> limitResultsByStatus = null;
     private String              sequencingProperty   = null;
     private SequencingOrder     sequencingOrder      = SequencingOrder.LAST_UPDATE_RECENT;
@@ -58,12 +60,12 @@ public class FindProperties
      */
     public FindProperties(FindProperties template)
     {
+        super (template);
+
         if (template != null)
         {
             openMetadataTypeName = template.getOpenMetadataTypeName();
-            effectiveTime        = template.getEffectiveTime();
             limitResultsByStatus = template.getLimitResultsByStatus();
-            asOfTime             = template.getAsOfTime();
             sequencingProperty   = template.getSequencingProperty();
             sequencingOrder      = template.getSequencingOrder();
         }
@@ -89,50 +91,6 @@ public class FindProperties
     public void setOpenMetadataTypeName(String openMetadataTypeName)
     {
         this.openMetadataTypeName = openMetadataTypeName;
-    }
-
-
-    /**
-     * Return the date/time to use for the query.
-     *
-     * @return date object
-     */
-    public Date getEffectiveTime()
-    {
-        return effectiveTime;
-    }
-
-
-    /**
-     * Set up the date/time to use for the query.
-     *
-     * @param effectiveTime date object
-     */
-    public void setEffectiveTime(Date effectiveTime)
-    {
-        this.effectiveTime = effectiveTime;
-    }
-
-
-    /**
-     * Return the time used for a historical query - null mean current repository contents.
-     *
-     * @return date/time object
-     */
-    public Date getAsOfTime()
-    {
-        return asOfTime;
-    }
-
-
-    /**
-     * Set up the time used for a historical query - null mean current repository contents.
-     *
-     * @param asOfTime date/time object
-     */
-    public void setAsOfTime(Date asOfTime)
-    {
-        this.asOfTime = asOfTime;
     }
 
 
@@ -217,14 +175,11 @@ public class FindProperties
     {
         return "FindProperties{" +
                 "openMetadataTypeName='" + openMetadataTypeName + '\'' +
-                ", effectiveTime=" + effectiveTime +
-                ", asOfTime=" + asOfTime +
                 ", limitResultsByStatus=" + limitResultsByStatus +
                 ", sequencingProperty='" + sequencingProperty + '\'' +
                 ", sequencingOrder=" + sequencingOrder +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -240,11 +195,9 @@ public class FindProperties
         if (!super.equals(objectToCompare)) return false;
         FindProperties that = (FindProperties) objectToCompare;
         return Objects.equals(openMetadataTypeName, that.openMetadataTypeName) &&
-                Objects.equals(effectiveTime, that.effectiveTime) &&
                 Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
                 Objects.equals(sequencingProperty, that.sequencingProperty) &&
-                sequencingOrder == that.sequencingOrder &&
-                Objects.equals(asOfTime, that.asOfTime);
+                sequencingOrder == that.sequencingOrder;
     }
 
 
@@ -256,7 +209,6 @@ public class FindProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(openMetadataTypeName, effectiveTime, limitResultsByStatus, asOfTime,
-                            sequencingProperty, sequencingOrder);
+        return Objects.hash(openMetadataTypeName, limitResultsByStatus, sequencingProperty, sequencingOrder);
     }
 }

@@ -18,7 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -176,8 +175,6 @@ public class OpenMetadataTypesArchive3_1
         update0201Connections();
         update0223Events();
         add0485DataProcessingPurposes();
-        update0507ObsoleteDefinitions();
-
     }
 
 
@@ -312,83 +309,42 @@ public class OpenMetadataTypesArchive3_1
         this.archiveBuilder.addEntityDef(addDockerContainerEntity());
         this.archiveBuilder.addEntityDef(addHadoopClusterEntity());
         this.archiveBuilder.addEntityDef(addKubernetesClusterEntity());
-
-        this.archiveBuilder.addTypeDefPatch(deprecateDeployedVirtualContainer());
     }
 
 
     private EntityDef addBareMetalComputerEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.BARE_METAL_COMPUTER.typeGUID,
-                                                 OpenMetadataType.BARE_METAL_COMPUTER.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
-                                                 OpenMetadataType.BARE_METAL_COMPUTER.description,
-                                                 OpenMetadataType.BARE_METAL_COMPUTER.descriptionGUID,
-                                                 OpenMetadataType.BARE_METAL_COMPUTER.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.BARE_METAL_COMPUTER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName));
     }
 
 
 
     private EntityDef addVirtualMachineEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_MACHINE.typeGUID,
-                                                 OpenMetadataType.VIRTUAL_MACHINE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
-                                                 OpenMetadataType.VIRTUAL_MACHINE.description,
-                                                 OpenMetadataType.VIRTUAL_MACHINE.descriptionGUID,
-                                                 OpenMetadataType.VIRTUAL_MACHINE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_MACHINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName));
     }
 
 
     private EntityDef addDockerContainerEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DOCKER_CONTAINER.typeGUID,
-                                                 OpenMetadataType.DOCKER_CONTAINER.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeName),
-                                                 OpenMetadataType.DOCKER_CONTAINER.description,
-                                                 OpenMetadataType.DOCKER_CONTAINER.descriptionGUID,
-                                                 OpenMetadataType.DOCKER_CONTAINER.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DOCKER_CONTAINER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeName));
     }
 
 
     private EntityDef addHadoopClusterEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HADOOP_CLUSTER.typeGUID,
-                                                 OpenMetadataType.HADOOP_CLUSTER.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName),
-                                                 OpenMetadataType.HADOOP_CLUSTER.description,
-                                                 OpenMetadataType.HADOOP_CLUSTER.descriptionGUID,
-                                                 OpenMetadataType.HADOOP_CLUSTER.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HADOOP_CLUSTER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName));
     }
 
 
     private EntityDef addKubernetesClusterEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KUBERNETES_CLUSTER.typeGUID,
-                                                 OpenMetadataType.KUBERNETES_CLUSTER.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName),
-                                                 OpenMetadataType.KUBERNETES_CLUSTER.description,
-                                                 OpenMetadataType.KUBERNETES_CLUSTER.descriptionGUID,
-                                                 OpenMetadataType.KUBERNETES_CLUSTER.wikiURL);
-    }
-
-
-    /**
-     * Deprecate the DeployedVirtualContainer relationship
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateDeployedVirtualContainer()
-    {
-        final String typeName = "DeployedVirtualContainer";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KUBERNETES_CLUSTER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName));
     }
 
     /*
@@ -443,12 +399,11 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Host";
         final String                     end1AttributeName            = "hosts";
         final String                     end1AttributeDescription     = "The hosts that are accessing the storage.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -793,12 +748,8 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef addKafkaTopicEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KAFKA_TOPIC.typeGUID,
-                                                 OpenMetadataType.KAFKA_TOPIC.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TOPIC.typeName),
-                                                 OpenMetadataType.KAFKA_TOPIC.description,
-                                                 OpenMetadataType.KAFKA_TOPIC.descriptionGUID,
-                                                 OpenMetadataType.KAFKA_TOPIC.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KAFKA_TOPIC,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TOPIC.typeName));
     }
 
 
@@ -827,28 +778,16 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef getDataProcessingDescriptionEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeGUID,
-                                                                OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeName),
-                                                                OpenMetadataType.DATA_PROCESSING_DESCRIPTION.description,
-                                                                OpenMetadataType.DATA_PROCESSING_DESCRIPTION.descriptionGUID,
-                                                                OpenMetadataType.DATA_PROCESSING_DESCRIPTION.wikiURL);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -858,39 +797,23 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef getDataProcessingPurposeEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeGUID,
-                                                 OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
-                                                 OpenMetadataType.DATA_PROCESSING_PURPOSE.description,
-                                                 OpenMetadataType.DATA_PROCESSING_PURPOSE.descriptionGUID,
-                                                 OpenMetadataType.DATA_PROCESSING_PURPOSE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_PURPOSE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName));
     }
 
 
     private EntityDef getDataProcessingActionEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeGUID,
-                                                                OpenMetadataType.DATA_PROCESSING_ACTION.typeName,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                OpenMetadataType.DATA_PROCESSING_ACTION.description,
-                                                                OpenMetadataType.DATA_PROCESSING_ACTION.descriptionGUID,
-                                                                OpenMetadataType.DATA_PROCESSING_ACTION.wikiURL);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -900,12 +823,8 @@ public class OpenMetadataTypesArchive3_1
 
     private RelationshipDef getPermittedProcessingRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.description,
-                                                                                OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.PERMITTED_PROCESSING_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -945,12 +864,8 @@ public class OpenMetadataTypesArchive3_1
 
     private RelationshipDef getApprovedPurposeRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.description,
-                                                                                OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -990,12 +905,8 @@ public class OpenMetadataTypesArchive3_1
 
     private RelationshipDef getDetailedProcessingActionsRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.description,
-                                                                                OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1035,12 +946,8 @@ public class OpenMetadataTypesArchive3_1
 
     private RelationshipDef getDataProcessingSpecificationRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.description,
-                                                                                OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1080,12 +987,8 @@ public class OpenMetadataTypesArchive3_1
 
     private RelationshipDef getDataProcessingTargetRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.description,
-                                                                                OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.DATA_PROCESSING_TARGET_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1126,125 +1029,5 @@ public class OpenMetadataTypesArchive3_1
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    private void update0507ObsoleteDefinitions()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaType());
-        this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaElementType());
-        this.archiveBuilder.addTypeDefPatch(deprecateArraySchemaType());
-        this.archiveBuilder.addTypeDefPatch(deprecateArrayDocumentType());
-        this.archiveBuilder.addTypeDefPatch(deprecateSetSchemaType());
-        this.archiveBuilder.addTypeDefPatch(deprecateSetDocumentType());
-    }
-
-
-    /**
-     * Deprecate the BoundedSchemaType
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateBoundedSchemaType()
-    {
-        final String typeName = "BoundedSchemaType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    /**
-     * Deprecate the BoundedSchemaElementType
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateBoundedSchemaElementType()
-    {
-        final String typeName = "BoundedSchemaElementType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    /**
-     * Deprecate the ArraySchemaType
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateArraySchemaType()
-    {
-        final String typeName = "ArraySchemaType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    /**
-     * Deprecate the ArrayDocumentType
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateArrayDocumentType()
-    {
-        final String typeName = "ArrayDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    /**
-     * Deprecate the SetSchemaType
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateSetSchemaType()
-    {
-        final String typeName = "SetSchemaType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the SetDocumentType
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateSetDocumentType()
-    {
-        final String typeName = "SetDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 }
 

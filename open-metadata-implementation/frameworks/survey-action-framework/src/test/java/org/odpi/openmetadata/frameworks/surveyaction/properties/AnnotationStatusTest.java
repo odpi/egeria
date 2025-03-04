@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.surveyaction.properties;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class AnnotationStatusTest
     {
         existingOrdinals = new ArrayList<>();
 
-        AnnotationStatus  testValue;
+        AnnotationStatus testValue;
 
         testValue = AnnotationStatus.NEW_ANNOTATION;
 

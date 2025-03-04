@@ -196,7 +196,6 @@ public class OpenMetadataTypesArchive5_2
         this.archiveBuilder.addRelationshipDef(getTeamRoleAppointmentRelationship());
         this.archiveBuilder.addRelationshipDef(getITProfileRoleRelationship());
 
-        this.archiveBuilder.addTypeDefPatch(deprecatePersonalContribution());
         this.archiveBuilder.addRelationshipDef(getContributionRelationship());
     }
 
@@ -372,25 +371,6 @@ public class OpenMetadataTypesArchive5_2
         return relationshipDef;
     }
 
-
-    /**
-     * Deprecate the PersonalContribution - use Contribution - collect karma points for all types of actor profiles
-     * so can compare the percentage of effort automated.
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecatePersonalContribution()
-    {
-        final String typeName = OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
 
     private RelationshipDef getContributionRelationship()

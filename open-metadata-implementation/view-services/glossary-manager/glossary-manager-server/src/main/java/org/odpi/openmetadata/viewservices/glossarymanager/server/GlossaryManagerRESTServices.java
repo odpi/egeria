@@ -1338,7 +1338,7 @@ public class GlossaryManagerRESTServices extends TokenController
      */
     public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(String serverName)
     {
-        final String methodName = "getGlossaryTermStatuses";
+        final String methodName = "getGlossaryTermRelationshipStatuses";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1374,7 +1374,7 @@ public class GlossaryManagerRESTServices extends TokenController
      */
     public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(String serverName)
     {
-        final String methodName = "getGlossaryTermStatuses";
+        final String methodName = "getGlossaryTermActivityTypes";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -2024,8 +2024,8 @@ public class GlossaryManagerRESTServices extends TokenController
                     GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
 
                     handler.setupTermRelationship(userId,
-                                                  glossaryTermOneGUID,
                                                   relationshipTypeName,
+                                                  glossaryTermOneGUID,
                                                   glossaryTermTwoGUID,
                                                   properties,
                                                   requestBody.getEffectiveTime(),

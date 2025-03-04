@@ -676,7 +676,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.BUSINESS_CAPABILITY.name,
                                                                   businessCapabilityGUID,
                                                                   methodName);
 

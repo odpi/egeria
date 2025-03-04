@@ -1586,8 +1586,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName,
                                            builder.getBusinessSignificanceProperties(description, scope, businessCapabilityGUID, methodName),
                                            true,
                                            forLineage,
@@ -1630,8 +1630,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -4454,13 +4454,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.DESIGN_STEP_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DESIGN_STEP.name,
                                                                                      designStep,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ROLE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ROLE.name,
                                                                   role,
                                                                   methodName);
 
@@ -4484,8 +4484,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -4540,8 +4540,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                       OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
