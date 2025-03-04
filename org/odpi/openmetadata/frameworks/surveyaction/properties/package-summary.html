@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -99,8 +95,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
-<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
+<div class="caption"><span>Classes</span></div>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
@@ -108,68 +103,63 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Annotation is used to record information gleaned from a survey action service.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="AnnotationStatus.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.properties">AnnotationStatus</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
-<div class="block">An AnnotationStatus defines the current status for an annotation plus some default descriptive text.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ClassificationAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ClassificationAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ClassificationAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ClassificationAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ClassificationAnnotation recommends classifications for either an asset or a data field.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataClassAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataClassAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataClassAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataClassAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataClassAnnotation recommends a data class that potentially matches this data field.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFieldAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataFieldAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFieldAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataFieldAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataFieldAnnotation is a common base class for annotations that are attached to a data field.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">PropertyBase</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">PropertyBase</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">This property header implements any common mechanisms that all property objects need.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="QualityAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">QualityAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="QualityAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">QualityAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">QualityAnnotation records a quality assessment of the data.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelationshipAdviceAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">RelationshipAdviceAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelationshipAdviceAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">RelationshipAdviceAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">RelationshipAdviceAnnotation is used to record a recommendation that a new relationship should be made from this data field to another
  object in the open metadata types.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RequestForActionAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">RequestForActionAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RequestForActionAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">RequestForActionAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">RequestForActionAnnotation is used to record an issue that has been discovered.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourceMeasureAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceMeasureAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ResourceMeasureAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceMeasureAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataSourceMeasurementAnnotation describes properties that describe the characteristics of the data source as a whole.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ResourcePhysicalStatusAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourcePhysicalStatusAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourcePhysicalStatusAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourcePhysicalStatusAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataSourceMeasurementAnnotation describes properties that describe the physical characteristics of a data source.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourceProfileAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ResourceProfileAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataProfileAnnotation holds properties that describe the characteristics of a specific field within a data source.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataProfileLogAnnotation is an annotation that is used when the profile data generated is too big to store in the metadata server
  and has been located in log files instead.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaAnalysisAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SchemaAnalysisAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaAnalysisAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SchemaAnalysisAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SchemaAnalysisAnnotation is used to describe the results of reviewing the structure of the content of an asset.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SemanticAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SemanticAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SemanticAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SemanticAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SemanticAnnotation provides a recommendation as to the likely meaning of data.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyReport.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SurveyReport</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyReport.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SurveyReport</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SurveyReport describes the properties for a survey report.</div>
-</div>
 </div>
 </div>
 </div>

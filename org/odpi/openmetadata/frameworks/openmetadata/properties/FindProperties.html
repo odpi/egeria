@@ -72,16 +72,18 @@ loadScripts(document, 'script');</script>
 <h1 title="Class FindProperties" class="title">Class FindProperties</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="FindRequest.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.FindRequest</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="schema/DataFieldQueryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DataFieldQueryProperties</a></code>, <code><a href="governance/FindAssetOriginProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">FindAssetOriginProperties</a></code>, <code><a href="FindNameProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindNameProperties</a></code>, <code><a href="FindPropertyNamesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindPropertyNamesProperties</a></code>, <code><a href="governance/LevelIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">LevelIdentifierProperties</a></code></dd>
+<dd><code><a href="schema/DataFieldQueryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DataFieldQueryProperties</a></code>, <code><a href="governance/FindAssetOriginProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">FindAssetOriginProperties</a></code>, <code><a href="FindNameProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindNameProperties</a></code>, <code><a href="FindPropertyNamesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindPropertyNamesProperties</a></code>, <code><a href="governance/LevelIdentifierQueryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">LevelIdentifierQueryProperties</a></code>, <code><a href="security/SecurityTagQueryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityTagQueryProperties</a></code>, <code><a href="governance/SemanticAssignmentQueryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">SemanticAssignmentQueryProperties</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FindProperties</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="FindRequest.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindRequest</a></span></div>
 <div class="block">FindProperties provides the base class for find by property requests.</div>
 </section>
 <section class="summary">
@@ -121,16 +123,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAsOfTime()" class="member-name-link">getAsOfTime</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the time used for a historical query - null mean current repository contents.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEffectiveTime()" class="member-name-link">getEffectiveTime</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the date/time to use for the query.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLimitResultsByStatus()" class="member-name-link">getLimitResultsByStatus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -155,16 +147,6 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAsOfTime(java.util.Date)" class="member-name-link">setAsOfTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the time used for a historical query - null mean current repository contents.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEffectiveTime(java.util.Date)" class="member-name-link">setEffectiveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the date/time to use for the query.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLimitResultsByStatus(java.util.List)" class="member-name-link">setLimitResultsByStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus)</code></div>
@@ -194,6 +176,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.FindRequest">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="FindRequest.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindRequest</a></h3>
+<code><a href="FindRequest.html#getAsOfTime()">getAsOfTime</a>, <a href="FindRequest.html#getEffectiveTime()">getEffectiveTime</a>, <a href="FindRequest.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="FindRequest.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -253,50 +238,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openMetadataTypeName</code> - string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEffectiveTime()">
-<h3>getEffectiveTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getEffectiveTime</span>()</div>
-<div class="block">Return the date/time to use for the query.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEffectiveTime(java.util.Date)">
-<h3>setEffectiveTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEffectiveTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span></div>
-<div class="block">Set up the date/time to use for the query.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>effectiveTime</code> - date object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAsOfTime()">
-<h3>getAsOfTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getAsOfTime</span>()</div>
-<div class="block">Return the time used for a historical query - null mean current repository contents.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>date/time object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAsOfTime(java.util.Date)">
-<h3>setAsOfTime</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAsOfTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span></div>
-<div class="block">Set up the time used for a historical query - null mean current repository contents.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>asOfTime</code> - date/time object</dd>
 </dl>
 </section>
 </li>
@@ -378,7 +319,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="FindRequest.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="FindRequest.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindRequest</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -391,7 +332,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="FindRequest.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="FindRequest.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindRequest</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
@@ -406,7 +347,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="FindRequest.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="FindRequest.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">FindRequest</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

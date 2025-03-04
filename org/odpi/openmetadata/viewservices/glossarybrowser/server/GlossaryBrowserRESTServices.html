@@ -150,28 +150,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary term metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMyTags(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findMyTags</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTags(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findTags</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of tags containing the supplied string in either the name or description.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementsResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCategoriesForGlossary(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getCategoriesForGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
@@ -194,97 +172,37 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of categories associated with a glossary term.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfidenceClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getConfidenceClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfidentialityClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getConfidentialityClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the confidentiality classification.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCriticalityClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getCriticalityClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the criticality classification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/ElementStubsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ElementStubsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFieldClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getDataFieldClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the data field classification.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementsSourceFrom(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getElementsSourceFrom</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the elements linked via a "SourceFrom" relationship to the requested element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossariesByName(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getGlossariesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossariesByName(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getGlossariesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryByGUID(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryByGUID(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the glossary metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryCategoriesByName(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody)" class="member-name-link">getGlossaryCategoriesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryCategoriesByName(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody)" class="member-name-link">getGlossaryCategoriesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/GlossaryNameRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryNameRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary category metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryCategoryByGUID(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryCategoryByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the glossary category metadata element with the supplied unique identifier.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryCategoryParent(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryCategoryParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryCategoryByGUID(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryCategoryByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -292,51 +210,60 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the glossary category metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryForCategory(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryForCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryCategoryParent(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryCategoryParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the glossary metadata element for the requested category.</div>
+<div class="block">Retrieve the glossary category metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryForTerm(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryForTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryForCategory(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryForCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the glossary metadata element for the requested category.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryElementResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryForTerm(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryForTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the glossary metadata element for the requested term.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossarySubCategories(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossarySubCategories</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryCategoryElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryCategoryElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossarySubCategories(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossarySubCategories</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the glossary category metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GlossaryTermActivityTypeListResponse.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermActivityTypeListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermActivityTypes(java.lang.String)" class="member-name-link">getGlossaryTermActivityTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GlossaryTermActivityTypeListResponse.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermActivityTypeListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermActivityTypes(java.lang.String)" class="member-name-link">getGlossaryTermActivityTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of glossary term activity types enum values.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermByGUID(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryTermByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermByGUID(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGlossaryTermByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the glossary term metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermHistory(java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody)" class="member-name-link">getGlossaryTermHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermHistory(java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody)" class="member-name-link">getGlossaryTermHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -344,98 +271,28 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">HistoryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve all the versions of a glossary term.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GlossaryTermRelationshipStatusListResponse.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermRelationshipStatusListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermRelationshipStatuses(java.lang.String)" class="member-name-link">getGlossaryTermRelationshipStatuses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GlossaryTermRelationshipStatusListResponse.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermRelationshipStatusListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermRelationshipStatuses(java.lang.String)" class="member-name-link">getGlossaryTermRelationshipStatuses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of glossary term relationship status enum values.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermsByName(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody)" class="member-name-link">getGlossaryTermsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermsByName(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody)" class="member-name-link">getGlossaryTermsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/GlossaryNameRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryNameRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary term metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GlossaryTermStatusListResponse.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermStatusListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermStatuses(java.lang.String)" class="member-name-link">getGlossaryTermStatuses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GlossaryTermStatusListResponse.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermStatusListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermStatuses(java.lang.String)" class="member-name-link">getGlossaryTermStatuses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of glossary term status enum values.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GovernanceDefinitionsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GovernanceDefinitionsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernedByDefinitions(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGovernedByDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernedElements(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getGovernedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceDefinitionGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMeanings(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getMeanings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMembersOfSubjectArea(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getMembersOfSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/gaf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)" class="member-name-link">getMetadataElementByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the metadata element using its unique identifier.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyTagsByName(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)" class="member-name-link">getMyTagsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of the calling user's private tags exactly matching the supplied name.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnersElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getOwnersElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the confidence classification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedTerms(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -448,76 +305,26 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary terms associated with the requested term.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRetentionClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getRetentionClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecurityTaggedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)" class="member-name-link">getSecurityTaggedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return information about the elements classified with the security tags classification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSemanticAssignees(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getSemanticAssignees</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSourceElements(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getSourceElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the elements linked via a "SourceFrom" relationship to the requested element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTagsByName(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)" class="member-name-link">getTagsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of tags exactly matching the supplied name.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTermsForGlossary(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getTermsForGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTermsForGlossary(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getTermsForGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary terms associated with a glossary.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTermsForGlossaryCategory(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getTermsForGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTermsForGlossaryCategory(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getTermsForGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../../../accessservices/assetmanager/rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary terms associated with a glossary category.</div>
 </div>
 </div>
@@ -555,30 +362,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getMetadataElementByGUID(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">
-<h3>getMetadataElementByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworkservices/gaf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></span>&nbsp;<span class="element-name">getMetadataElementByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span></div>
-<div class="block">Retrieve the metadata element using its unique identifier.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>elementGUID</code> - unique identifier for the metadata element</dd>
-<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
-<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
-<dt>Returns:</dt>
-<dd>metadata element properties or
-  InvalidParameterException the unique identifier is null or not known.
-  UserNotAuthorizedException the governance action service is not able to access the element
-  PropertyServerException there is a problem accessing the metadata store</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getGlossaryTermStatuses(java.lang.String)">
 <h3>getGlossaryTermStatuses</h3>
@@ -1139,484 +922,6 @@ loadScripts(document, 'script');</script>
   InvalidParameterException one of the parameters is null or invalid.
   PropertyServerException there is a problem removing the properties from the repositories.
   UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTagsByName(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">
-<h3>getTagsByName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></span>&nbsp;<span class="element-name">getTagsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span></div>
-<div class="block">Return the list of tags exactly matching the supplied name.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>requestBody</code> - name of tag.</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dt>Returns:</dt>
-<dd>tag list or
- InvalidParameterException - one of the parameters is invalid or
- PropertyServerException - there is a problem retrieving information from the property server(s) or
- UserNotAuthorizedException - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMyTagsByName(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">
-<h3>getMyTagsByName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></span>&nbsp;<span class="element-name">getMyTagsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span></div>
-<div class="block">Return the list of the calling user's private tags exactly matching the supplied name.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>requestBody</code> - name of tag.</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dt>Returns:</dt>
-<dd>tag list or
- InvalidParameterException - one of the parameters is invalid or
- PropertyServerException - there is a problem retrieving information from the property server(s) or
- UserNotAuthorizedException - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="findTags(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
-<h3>findTags</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></span>&nbsp;<span class="element-name">findTags</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return the list of tags containing the supplied string in either the name or description.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>startsWith</code> - does the value start with the supplied string?</dd>
-<dd><code>endsWith</code> - does the value end with the supplied string?</dd>
-<dd><code>ignoreCase</code> - should the search ignore case?</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>tag list or
- InvalidParameterException - one of the parameters is invalid or
- PropertyServerException - there is a problem retrieving information from the property server(s) or
- UserNotAuthorizedException - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="findMyTags(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
-<h3>findMyTags</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/rest/InformalTagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">InformalTagsResponse</a></span>&nbsp;<span class="element-name">findMyTags</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;startsWith,
- boolean&nbsp;endsWith,
- boolean&nbsp;ignoreCase,
- <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>startsWith</code> - does the value start with the supplied string?</dd>
-<dd><code>endsWith</code> - does the value end with the supplied string?</dd>
-<dd><code>ignoreCase</code> - should the search ignore case?</dd>
-<dd><code>requestBody</code> - string to find in the properties</dd>
-<dt>Returns:</dt>
-<dd>tag list or
- InvalidParameterException - one of the parameters is invalid or
- PropertyServerException - there is a problem retrieving information from the property server(s) or
- UserNotAuthorizedException - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDataFieldClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getDataFieldClassifiedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/ElementStubsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ElementStubsResponse</a></span>&nbsp;<span class="element-name">getDataFieldClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the data field classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConfidenceClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getConfidenceClassifiedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getConfidenceClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCriticalityClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getCriticalityClassifiedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getCriticalityClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the criticality classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConfidentialityClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getConfidentialityClassifiedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getConfidentialityClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the confidentiality classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getRetentionClassifiedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getRetentionClassifiedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getRetentionClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSecurityTaggedElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getSecurityTaggedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getSecurityTaggedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the security tags classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOwnersElements(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getOwnersElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getOwnersElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMembersOfSubjectArea(java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody)">
-<h3>getMembersOfSubjectArea</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getMembersOfSubjectArea</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/FindByPropertiesRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">FindByPropertiesRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return information about the elements classified with the confidence classification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for the request</dd>
-<dt>Returns:</dt>
-<dd>void or
-      InvalidParameterException full path or userId is null or
-      PropertyServerException problem accessing property server or
-      UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMeanings(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)">
-<h3>getMeanings</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></span>&nbsp;<span class="element-name">getMeanings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>elementGUID</code> - unique identifier of the element that is being assigned to the glossary term</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>void or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSemanticAssignees(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)">
-<h3>getSemanticAssignees</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getSemanticAssignees</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>glossaryTermGUID</code> - unique identifier of the glossary term that the returned elements are linked to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>void or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getGovernedElements(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)">
-<h3>getGovernedElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getGovernedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceDefinitionGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>governanceDefinitionGUID</code> - unique identifier of the governance definition that the returned elements are linked to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>void or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getGovernedByDefinitions(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)">
-<h3>getGovernedByDefinitions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/rest/GovernanceDefinitionsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GovernanceDefinitionsResponse</a></span>&nbsp;<span class="element-name">getGovernedByDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>elementGUID</code> - unique identifier of the element that the returned elements are linked to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>void or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSourceElements(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)">
-<h3>getSourceElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getSourceElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
- The elements returned were used to create the requested element.  Typically only one element is returned.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>elementGUID</code> - unique identifier of the governance definition that the returned elements are linked to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>void or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getElementsSourceFrom(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody)">
-<h3>getElementsSourceFrom</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/RelatedMetadataElementSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedMetadataElementSummariesResponse</a></span>&nbsp;<span class="element-name">getElementsSourceFrom</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
- The elements returned were created using the requested element as a template.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server instance to connect to</dd>
-<dd><code>elementGUID</code> - unique identifier of the element that the returned elements are linked to</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - properties for relationship request</dd>
-<dt>Returns:</dt>
-<dd>void or
- InvalidParameterException full path or userId is null or
- PropertyServerException problem accessing property server or
- UserNotAuthorizedException security access problem</dd>
 </dl>
 </section>
 </li>

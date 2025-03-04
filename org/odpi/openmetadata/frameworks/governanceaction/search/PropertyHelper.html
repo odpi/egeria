@@ -114,25 +114,41 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied map property to an element properties object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,boolean)" class="member-name-link">addBooleanProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanProperty(java.util.List,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addBooleanProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- boolean&nbsp;propertyValue)</code></div>
+ boolean&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied property to an element properties object.</div>
+<div class="block">Add a boolean property to a set of search conditions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addBooleanPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,boolean)" class="member-name-link">addBooleanProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ boolean&nbsp;propertyValue)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied property map to an element properties object.</div>
+<div class="block">Add the supplied property to an element properties object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDateMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addDateMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addBooleanPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied property map to an element properties object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDateMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addDateMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&gt;&nbsp;mapValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied map property to an element properties object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDateProperty(java.util.List,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addDateProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a date property to a set of search conditions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDateProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Date)" class="member-name-link">addDateProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -160,13 +176,30 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property map to an element properties object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEnumProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addEnumProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEnumProperty(java.util.List,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addEnumProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;symbolicName,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an enum property to a set of search conditions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEnumProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addEnumProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;symbolicName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property to an element properties object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addFloatProperty(java.util.List,java.lang.String,float,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addFloatProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ float&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a float property to a set of search conditions.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addFloatProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,float)" class="member-name-link">addFloatProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -182,18 +215,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied map property to an element properties object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,int)" class="member-name-link">addIntProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntProperty(java.util.List,java.lang.String,int,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addIntProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- int&nbsp;propertyValue)</code></div>
+ int&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied property to an element properties object.</div>
+<div class="block">Add an int property to a set of search conditions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addIntPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,int)" class="member-name-link">addIntProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ int&nbsp;propertyValue)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied property to an element properties object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addIntPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property map to an element properties object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addListStringMapToSearchCondition(java.util.List,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addListStringMapToSearchCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new property comparison for another property.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addLongMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -202,143 +251,203 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied map property to an element properties object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,long)" class="member-name-link">addLongProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongProperty(java.util.List,java.lang.String,long,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addLongProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ long&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a long property to a set of search conditions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,long)" class="member-name-link">addLongProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  long&nbsp;propertyValue)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property to an element properties object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addLongPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addLongPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;mapValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property map to an element properties object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;mapValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied map property to an element properties object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addObjectMapToSearchCondition(java.util.List,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addObjectMapToSearchCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new property comparison for another property.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addPrimitivePropertyToSearchCondition(java.util.List,java.lang.String,java.lang.Object,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator,org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory)" class="member-name-link">addPrimitivePropertyToSearchCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator,
+ <a href="PrimitiveTypeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PrimitiveTypeCategory</a>&nbsp;propertyCategory)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied property map to an element properties object.</div>
+<div class="block">Add a new property comparison for another property.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringArrayProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List)" class="member-name-link">addStringArrayProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied property map to an element properties object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringArrayProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List)" class="member-name-link">addStringArrayProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;arrayValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied array property to an element properties object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addStringMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied map property to an element properties object.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String)" class="member-name-link">addStringProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringArrayPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addStringArrayPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;mapValues)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied property to an element properties object.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addStringPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property map to an element properties object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the anchorGUID for an element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getBooleanMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringArrayToSearchCondition(java.util.List,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addStringArrayToSearchCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+<div class="block">Add a new property comparison for another property.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getBooleanProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addStringMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the requested property or false if property is not found.</div>
+<div class="block">Add the supplied map property to an element properties object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/AttachedClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">AttachedClassification</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassification(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,java.lang.String)" class="member-name-link">getClassification</a><wbr>(<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;openMetadataElement,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringMapToSearchCondition(java.util.List,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addStringMapToSearchCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract a particular classification from an open metadata element.</div>
+<div class="block">Add a new property comparison for another property.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getDateMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringProperty(java.util.List,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)" class="member-name-link">addStringProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+<div class="block">Add a string property to a set of search conditions.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getDateProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String)" class="member-name-link">addStringProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the requested property or null if property is not found.</div>
+<div class="block">Add the supplied property to an element properties object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader)" class="member-name-link">getDomainName</a><wbr>(<a href="../../openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a>&nbsp;elementControlHeader)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStringPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addStringPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the domain name from an element's header.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDoubleMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getDoubleMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementPropertiesAsMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">getElementPropertiesAsMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Convert an element properties object into a map.</div>
+<div class="block">Add the supplied property map to an element properties object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnumPropertySymbolicName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getEnumPropertySymbolicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../../openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the ordinal value from an enum property.</div>
+<div class="block">Return the anchorGUID for an element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegerMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getIntegerMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getBooleanMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getIntProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getBooleanProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the requested property or false if property is not found.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/AttachedClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">AttachedClassification</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassification(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,java.lang.String)" class="member-name-link">getClassification</a><wbr>(<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;openMetadataElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract a particular classification from an open metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getDateMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getDateProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the requested property or null if property is not found.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader)" class="member-name-link">getDomainName</a><wbr>(<a href="../../openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a>&nbsp;elementControlHeader)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the domain name from an element's header.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDoubleMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getDoubleMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementPropertiesAsMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">getElementPropertiesAsMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert an element properties object into a map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnumPropertySymbolicName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getEnumPropertySymbolicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the ordinal value from an enum property.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegerMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getIntegerMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getIntProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the requested property or 0 if property is not found.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MapTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">MapTypePropertyValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListStringMapPropertyValue(java.util.Map)" class="member-name-link">getListStringMapPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;mapValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a MapTypePropertyValue.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLongMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getLongMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
@@ -363,6 +472,17 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MapTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">MapTypePropertyValue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getObjectMapPropertyValue(java.util.Map)" class="member-name-link">getObjectMapPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a MapTypePropertyValue.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PrimitiveTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PrimitiveTypePropertyValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPrimitivePropertyValue(org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory,java.lang.Object)" class="member-name-link">getPrimitivePropertyValue</a><wbr>(<a href="PrimitiveTypeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PrimitiveTypeCategory</a>&nbsp;primitiveTypeCategory,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a primitive property value.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResolvedStringPropertyFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,java.lang.String,java.util.Map)" class="member-name-link">getResolvedStringPropertyFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
@@ -398,13 +518,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locates and extracts a string array property and extracts its values.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getStringMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ArrayTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ArrayTypePropertyValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringArrayPropertyValue(java.util.List)" class="member-name-link">getStringArrayPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;arrayValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a string array into a property value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringMapFromProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getStringMapFromProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MapTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">MapTypePropertyValue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringMapPropertyValue(java.util.Map)" class="member-name-link">getStringMapPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a MapTypePropertyValue.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)" class="member-name-link">getStringProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
@@ -697,6 +827,42 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addPrimitivePropertyToSearchCondition(java.util.List,java.lang.String,java.lang.Object,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator,org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory)">
+<h3>addPrimitivePropertyToSearchCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addPrimitivePropertyToSearchCondition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator,
+ <a href="PrimitiveTypeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PrimitiveTypeCategory</a>&nbsp;propertyCategory)</span></div>
+<div class="block">Add a new property comparison for another property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - current list</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - comparison operator</dd>
+<dd><code>propertyCategory</code> - category of the primitive</dd>
+<dt>Returns:</dt>
+<dd>list of property conditions (maybe null)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPrimitivePropertyValue(org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory,java.lang.Object)">
+<h3>getPrimitivePropertyValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PrimitiveTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PrimitiveTypePropertyValue</a></span>&nbsp;<span class="element-name">getPrimitivePropertyValue</span><wbr><span class="parameters">(<a href="PrimitiveTypeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PrimitiveTypeCategory</a>&nbsp;primitiveTypeCategory,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue)</span></div>
+<div class="block">Create a primitive property value.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>primitiveTypeCategory</code> - category of the property</dd>
+<dd><code>propertyValue</code> - value of the property</dd>
+<dt>Returns:</dt>
+<dd>property value</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addStringProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String)">
 <h3>addStringProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addStringProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -711,6 +877,25 @@ loadScripts(document, 'script');</script>
 <dd><code>propertyValue</code> - value of property</dd>
 <dt>Returns:</dt>
 <dd>element properties object.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addStringProperty(java.util.List,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addStringProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addStringProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a string property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
 </dl>
 </section>
 </li>
@@ -733,6 +918,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addIntProperty(java.util.List,java.lang.String,int,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addIntProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addIntProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ int&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add an int property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addLongProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,long)">
 <h3>addLongProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addLongProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -747,6 +951,25 @@ loadScripts(document, 'script');</script>
 <dd><code>propertyValue</code> - value of property</dd>
 <dt>Returns:</dt>
 <dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addLongProperty(java.util.List,java.lang.String,long,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addLongProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addLongProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ long&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a long property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
 </dl>
 </section>
 </li>
@@ -769,6 +992,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addFloatProperty(java.util.List,java.lang.String,float,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addFloatProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addFloatProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ float&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a float property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addDateProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Date)">
 <h3>addDateProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addDateProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -787,6 +1029,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addDateProperty(java.util.List,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addDateProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addDateProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a date property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addBooleanProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,boolean)">
 <h3>addBooleanProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addBooleanProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -801,6 +1062,25 @@ loadScripts(document, 'script');</script>
 <dd><code>propertyValue</code> - value of property</dd>
 <dt>Returns:</dt>
 <dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addBooleanProperty(java.util.List,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addBooleanProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addBooleanProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ boolean&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a boolean property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
 </dl>
 </section>
 </li>
@@ -825,6 +1105,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addEnumProperty(java.util.List,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addEnumProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addEnumProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;symbolicName,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add an enum property to a set of search conditions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - search conditions</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyType</code> - type of enum</dd>
+<dd><code>symbolicName</code> - symbol name value of property</dd>
+<dd><code>operator</code> - type of operator</dd>
+<dt>Returns:</dt>
+<dd>new list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addStringArrayProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List)">
 <h3>addStringArrayProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addStringArrayProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -840,6 +1141,38 @@ loadScripts(document, 'script');</script>
 <dd><code>arrayValues</code> - contents of the array</dd>
 <dt>Returns:</dt>
 <dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStringArrayPropertyValue(java.util.List)">
+<h3>getStringArrayPropertyValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ArrayTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ArrayTypePropertyValue</a></span>&nbsp;<span class="element-name">getStringArrayPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;arrayValues)</span></div>
+<div class="block">Add a string array into a property value.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>arrayValues</code> - list of values</dd>
+<dt>Returns:</dt>
+<dd>array property value</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addStringArrayToSearchCondition(java.util.List,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addStringArrayToSearchCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addStringArrayToSearchCondition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a new property comparison for another property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - current list</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - comparison operator</dd>
+<dt>Returns:</dt>
+<dd>list of property conditions (maybe null)</dd>
 </dl>
 </section>
 </li>
@@ -895,6 +1228,102 @@ loadScripts(document, 'script');</script>
 <dd><code>mapValues</code> - contents of the map</dd>
 <dt>Returns:</dt>
 <dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStringMapPropertyValue(java.util.Map)">
+<h3>getStringMapPropertyValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MapTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">MapTypePropertyValue</a></span>&nbsp;<span class="element-name">getStringMapPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Create a MapTypePropertyValue.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mapValues</code> - values for the property</dd>
+<dt>Returns:</dt>
+<dd>property value object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getObjectMapPropertyValue(java.util.Map)">
+<h3>getObjectMapPropertyValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MapTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">MapTypePropertyValue</a></span>&nbsp;<span class="element-name">getObjectMapPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Create a MapTypePropertyValue.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mapValues</code> - values for the property</dd>
+<dt>Returns:</dt>
+<dd>property value object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getListStringMapPropertyValue(java.util.Map)">
+<h3>getListStringMapPropertyValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MapTypePropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">MapTypePropertyValue</a></span>&nbsp;<span class="element-name">getListStringMapPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;mapValues)</span></div>
+<div class="block">Create a MapTypePropertyValue.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mapValues</code> - values for the property</dd>
+<dt>Returns:</dt>
+<dd>property value object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addStringMapToSearchCondition(java.util.List,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addStringMapToSearchCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addStringMapToSearchCondition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a new property comparison for another property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - current list</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - comparison operator</dd>
+<dt>Returns:</dt>
+<dd>list of property conditions (maybe null)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addListStringMapToSearchCondition(java.util.List,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addListStringMapToSearchCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addListStringMapToSearchCondition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a new property comparison for another property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - current list</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - comparison operator</dd>
+<dt>Returns:</dt>
+<dd>list of property conditions (maybe null)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addObjectMapToSearchCondition(java.util.List,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator)">
+<h3>addObjectMapToSearchCondition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;</span>&nbsp;<span class="element-name">addObjectMapToSearchCondition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PropertyCondition.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyCondition</a>&gt;&nbsp;existingSearchConditions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;propertyValue,
+ <a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyComparisonOperator</a>&nbsp;operator)</span></div>
+<div class="block">Add a new property comparison for another property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>existingSearchConditions</code> - current list</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>propertyValue</code> - value of property</dd>
+<dd><code>operator</code> - comparison operator</dd>
+<dt>Returns:</dt>
+<dd>list of property conditions (maybe null)</dd>
 </dl>
 </section>
 </li>
@@ -998,6 +1427,23 @@ loadScripts(document, 'script');</script>
 <h3>addStringPropertyMap</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addStringPropertyMap</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied property map to an element properties object.  Each of the entries in the map is added
+ as a separate property in element properties.  If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addStringArrayPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)">
+<h3>addStringArrayPropertyMap</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addStringArrayPropertyMap</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;mapValues)</span></div>
 <div class="block">Add the supplied property map to an element properties object.  Each of the entries in the map is added
  as a separate property in element properties.  If the element properties object
  supplied is null, a new element properties object is created.</div>

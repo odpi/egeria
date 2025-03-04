@@ -826,6 +826,13 @@ org.odpi.openmetadata.viewservices.automatedcuration.properties
 org.odpi.openmetadata.viewservices.automatedcuration.rest
 org.odpi.openmetadata.viewservices.automatedcuration.server
 org.odpi.openmetadata.viewservices.automatedcuration.server.spring
+org.odpi.openmetadata.viewservices.classificationexplorer.admin
+org.odpi.openmetadata.viewservices.classificationexplorer.converters
+org.odpi.openmetadata.viewservices.classificationexplorer.ffdc
+org.odpi.openmetadata.viewservices.classificationexplorer.handler
+org.odpi.openmetadata.viewservices.classificationexplorer.rest
+org.odpi.openmetadata.viewservices.classificationexplorer.server
+org.odpi.openmetadata.viewservices.classificationexplorer.server.spring
 org.odpi.openmetadata.viewservices.classificationmanager.admin
 org.odpi.openmetadata.viewservices.classificationmanager.ffdc
 org.odpi.openmetadata.viewservices.classificationmanager.rest
