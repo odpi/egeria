@@ -399,6 +399,8 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-explorer" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/classification-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/feedback-manager" }

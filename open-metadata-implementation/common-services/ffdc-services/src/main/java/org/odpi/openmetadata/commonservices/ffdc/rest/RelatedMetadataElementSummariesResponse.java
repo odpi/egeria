@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RelatedMetadataElementSummariesResponse extends FFDCResponseBase
 {
     private List<RelatedMetadataElementSummary> elements = null;
+    private String                              mermaidGraph = null;
 
 
     /**
@@ -48,6 +49,7 @@ public class RelatedMetadataElementSummariesResponse extends FFDCResponseBase
         if (template != null)
         {
             this.elements = template.getElements();
+            this.mermaidGraph = template.getMermaidGraph();
         }
     }
 
@@ -74,6 +76,30 @@ public class RelatedMetadataElementSummariesResponse extends FFDCResponseBase
     }
 
 
+
+    /**
+     * Return the mermaid string used to render a graph.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidGraph string in Mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+
     /**
      * JSON-style toString
      *
@@ -84,6 +110,7 @@ public class RelatedMetadataElementSummariesResponse extends FFDCResponseBase
     {
         return "RelatedMetadataElementSummariesResponse{" +
                 "elements=" + elements +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -109,7 +136,8 @@ public class RelatedMetadataElementSummariesResponse extends FFDCResponseBase
         {
             return false;
         }
-        return Objects.equals(this.getElements(), that.getElements());
+        return Objects.equals(this.elements, that.elements) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -121,6 +149,6 @@ public class RelatedMetadataElementSummariesResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(elements, super.hashCode());
+        return Objects.hash(elements, mermaidGraph, super.hashCode());
     }
 }

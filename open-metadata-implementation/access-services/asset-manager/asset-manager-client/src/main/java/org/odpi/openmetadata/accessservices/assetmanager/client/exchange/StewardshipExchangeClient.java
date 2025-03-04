@@ -2394,9 +2394,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     {
         final String methodName                 = "getElementsByClassification";
         final String classificationNameProperty = "classificationName";
-        final String findPropertiesProperty     = "findProperties";
 
-        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
 

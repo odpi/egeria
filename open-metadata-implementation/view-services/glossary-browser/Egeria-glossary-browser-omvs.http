@@ -1,7 +1,7 @@
 # Egeria-glossary-browser-omvs
 
 @baseURL=https://localhost:9443
-@viewServer=view-server
+@viewServer=qs-view-server
 
 ###
 # =====================================================================================================================
@@ -73,6 +73,7 @@ Content-Type: application/json
   "class" : "NameRequestBody",
   "name" : "Sustainability Glossary"
 }
+
 
 
 ###
@@ -210,6 +211,21 @@ Content-Type: application/json
 
 ###
 # group: GlossaryTerms
+# @name getGlossaryTermByName
+# Retrieve the list of glossary metadata elements with an exactly matching qualified or display name.
+# There are no wildcards supported on this request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-name?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "Carbon Dioxide"
+}
+
+
+###
+# group: GlossaryTerms
 # @name Retrieve a glossary term's relationships
 # This call retrieves details of the glossary terms linked to this glossary term.  Notice the original org 1 glossary term is linked via the "SourcedFrom" relationship..
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/related-terms?
@@ -284,7 +300,7 @@ Content-Type: application/json
 ###
 # group: GlossaryTerms
 # @name Search for term by version identifier
-POST {{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?
+POST {{baseURL}}/servers/{{viewServer}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?
     startFrom=0&pageSize=0&
     forLineage=false&
     forDuplicateProcessing=false&

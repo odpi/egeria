@@ -4,6 +4,8 @@ package org.odpi.openmetadata.opentypes;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ByteOrdering;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeAction;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -168,7 +170,6 @@ public class OpenMetadataTypesArchive2_4
         update04xxGovernanceEnums();
         update05xxSchemaAttributes();
         update0545ReferenceData();
-        update06xxDiscovery();
         updateClashingControlProperties();
     }
 
@@ -195,127 +196,29 @@ public class OpenMetadataTypesArchive2_4
 
     private EnumDef getLatestChangeTargetEnum()
     {
-        final String guid            = "a0b7d7a0-4af5-4539-9b81-cbef52d8cc5d";
-        final String name            = "LatestChangeTarget";
-        final String description     = "Defines the type of repository element that has changed.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(LatestChangeTarget.getOpenTypeGUID(),
+                                                        LatestChangeTarget.getOpenTypeName(),
+                                                        LatestChangeTarget.getOpenTypeDescription(),
+                                                        LatestChangeTarget.getOpenTypeDescriptionGUID(),
+                                                        LatestChangeTarget.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element0Ordinal         = 0;
-        final String element0Value           = "EntityStatus";
-        final String element0Description     = "The status of the anchor entity has changed.";
-        final String element0DescriptionGUID = null;
+        for (LatestChangeTarget enumValue : LatestChangeTarget.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element0Ordinal,
-                                                     element0Value,
-                                                     element0Description,
-                                                     element0DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element1Ordinal         = 1;
-        final String element1Value           = "EntityProperty";
-        final String element1Description     = "A property in the anchor entity has changed.";
-        final String element1DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element2Ordinal         = 2;
-        final String element2Value           = "EntityClassification";
-        final String element2Description     = "A classification attached to the anchor entity has changed.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 3;
-        final String element3Value           = "EntityRelationship";
-        final String element3Description     = "A relationship linking the anchor entity to an attachment has changed.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 4;
-        final String element4Value           = "Attachment";
-        final String element4Description     = "An entity attached either directly or indirectly to the anchor entity has changed.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 5;
-        final String element5Value           = "AttachmentStatus";
-        final String element5Description     = "The status of an entity attached either directly or indirectly to the anchor entity has changed.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 6;
-        final String element6Value           = "AttachmentProperty";
-        final String element6Description     = "A property in an entity attached either directly or indirectly to the anchor entity has changed.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element7Ordinal         = 7;
-        final String element7Value           = "AttachmentClassification";
-        final String element7Description     = "A classification attached to an entity that is, in turn, attached either directly or indirectly to " +
-                "the anchor entity has changed.";
-        final String element7DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element7Ordinal,
-                                                     element7Value,
-                                                     element7Description,
-                                                     element7DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element8Ordinal         = 8;
-        final String element8Value           = "AttachmentRelationship";
-        final String element8Description     = "A relationship linking to an entity that is, in turn, attached either directly or indirectly to " +
-                "the anchor entity has changed.";
-        final String element8DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
-                                                     element8Value,
-                                                     element8Description,
-                                                     element8DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another type of change.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -324,59 +227,29 @@ public class OpenMetadataTypesArchive2_4
 
     private EnumDef getLatestChangeActionEnum()
     {
-        final String guid            = "032d844b-868f-4c4a-bc5d-81f0f9704c4d";
-        final String name            = "LatestChangeAction";
-        final String description     = "Defines the type of change that was made to a repository instance.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(LatestChangeAction.getOpenTypeGUID(),
+                                                        LatestChangeAction.getOpenTypeName(),
+                                                        LatestChangeAction.getOpenTypeDescription(),
+                                                        LatestChangeAction.getOpenTypeDescriptionGUID(),
+                                                        LatestChangeAction.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Created";
-        final String element1Description     = "The target element has been created.";
-        final String element1DescriptionGUID = null;
+        for (LatestChangeAction enumValue : LatestChangeAction.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Updated";
-        final String element2Description     = "The properties of the target element have been changed.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Deleted";
-        final String element3Description     = "The target element has been deleted.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 99;
-        final String element6Value           = "Other";
-        final String element6Description     = "Another type of action.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -385,18 +258,8 @@ public class OpenMetadataTypesArchive2_4
 
     private ClassificationDef addLatestChangeClassification()
     {
-        final String guid            = OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeGUID;
-        final String name            = OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName;
-        final String description     = OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.description;
-        final String descriptionGUID = OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.wikiURL;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.LATEST_CHANGE_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
@@ -404,67 +267,16 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.CHANGE_TARGET.name;
-        final String attribute1Description     = OpenMetadataProperty.CHANGE_TARGET.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.CHANGE_TARGET.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.CHANGE_ACTION.name;
-        final String attribute2Description     = OpenMetadataProperty.CHANGE_ACTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.CHANGE_ACTION.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.CLASSIFICATION_NAME.name;
-        final String attribute3Description     = OpenMetadataProperty.CLASSIFICATION_NAME.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.CLASSIFICATION_NAME.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.ATTACHMENT_GUID.name;
-        final String attribute4Description     = OpenMetadataProperty.ATTACHMENT_GUID.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.ATTACHMENT_GUID.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.ATTACHMENT_TYPE.name;
-        final String attribute5Description     = OpenMetadataProperty.ATTACHMENT_TYPE.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.ATTACHMENT_TYPE.descriptionGUID;
-        final String attribute6Name            = OpenMetadataProperty.RELATIONSHIP_TYPE.name;
-        final String attribute6Description     = OpenMetadataProperty.RELATIONSHIP_TYPE.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.RELATIONSHIP_TYPE.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.USER.name;
-        final String attribute7Description     = OpenMetadataProperty.USER.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.USER.descriptionGUID;
-        final String attribute8Name            = OpenMetadataProperty.ACTION_DESCRIPTION.name;
-        final String attribute8Description     = OpenMetadataProperty.ACTION_DESCRIPTION.description;
-        final String attribute8DescriptionGUID = OpenMetadataProperty.ACTION_DESCRIPTION.descriptionGUID;
 
-        property = archiveHelper.getEnumTypeDefAttribute("LatestChangeTarget",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("LatestChangeAction",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
-                                                           attribute8Description,
-                                                           attribute8DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.CHANGE_TARGET));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.CHANGE_ACTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CLASSIFICATION_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACHMENT_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACHMENT_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_DESCRIPTION));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -473,12 +285,6 @@ public class OpenMetadataTypesArchive2_4
 
     private ClassificationDef addAnchorsClassification()
     {
-        final String guid            = OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID;
-        final String name            = OpenMetadataType.ANCHORS_CLASSIFICATION.typeName;
-        final String description     = OpenMetadataType.ANCHORS_CLASSIFICATION.description;
-        final String descriptionGUID = OpenMetadataType.ANCHORS_CLASSIFICATION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.ANCHORS_CLASSIFICATION.wikiURL;
-
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
@@ -487,12 +293,8 @@ public class OpenMetadataTypesArchive2_4
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.LIKE.typeName));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.RATING.typeName));
 
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ANCHORS_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 descriptionWiki,
                                                                                  linkedToEntities,
                                                                                  true);
 
@@ -500,16 +302,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.ANCHOR_GUID.name;
-        final String attribute1Description     = OpenMetadataProperty.ANCHOR_GUID.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.ANCHOR_GUID.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -518,18 +312,8 @@ public class OpenMetadataTypesArchive2_4
 
     private RelationshipDef addSourcedFromRelationship()
     {
-        final String guid            = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOURCED_FROM_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -585,37 +369,16 @@ public class OpenMetadataTypesArchive2_4
 
     private EntityDef getSearchKeywordEntity()
     {
-        final String guid            = OpenMetadataType.SEARCH_KEYWORD.typeGUID;
-        final String name            = OpenMetadataType.SEARCH_KEYWORD.typeName;
-        final String description     = OpenMetadataType.SEARCH_KEYWORD.description;
-        final String descriptionGUID = OpenMetadataType.SEARCH_KEYWORD.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.SEARCH_KEYWORD.wikiURL;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                null,
-                                                                description,
-                                                                descriptionGUID,
-                                                                descriptionWiki);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SEARCH_KEYWORD,
+                                                                null);
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.KEYWORD.name;
-        final String attribute1Description     = OpenMetadataProperty.KEYWORD.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.KEYWORD.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.KEYWORD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -630,12 +393,8 @@ public class OpenMetadataTypesArchive2_4
         final String descriptionGUID = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.wikiURL;
 
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -658,12 +417,11 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.SEARCH_KEYWORD.typeName;
         final String                     end2AttributeName            = "searchKeywords";
         final String                     end2AttributeDescription     = "Keywords to describe the element.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SEARCH_KEYWORD.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -675,18 +433,8 @@ public class OpenMetadataTypesArchive2_4
 
     private RelationshipDef addRelatedKeywordRelationship()
     {
-        final String guid            = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -694,12 +442,11 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.SEARCH_KEYWORD.typeName;
         final String                     end1AttributeName            = "relatedKeyword";
         final String                     end1AttributeDescription     = "Keyword with similar meaning or usage.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SEARCH_KEYWORD.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -710,12 +457,11 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.SEARCH_KEYWORD.typeName;
         final String                     end2AttributeName            = "relatedKeyword";
         final String                     end2AttributeDescription     = "Keyword with similar meaning or usage.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SEARCH_KEYWORD.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -759,24 +505,17 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "endianness";
         final String attribute1Description     = "Deprecated attribute. Use the byteOrdering attribute instead.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = OpenMetadataProperty.BYTE_ORDERING.name;
-        final String attribute2Description     = OpenMetadataProperty.BYTE_ORDERING.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.BYTE_ORDERING.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute2Name);
+        property.setReplacedByAttribute(OpenMetadataProperty.BYTE_ORDERING.name);
 
         properties.add(property);
 
-        property = archiveHelper.getEnumTypeDefAttribute(ByteOrdering.getOpenTypeName(),
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.BYTE_ORDERING);
         properties.add(property);
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -842,35 +581,7 @@ public class OpenMetadataTypesArchive2_4
      */
     private void update0150Feedback()
     {
-        this.archiveBuilder.addTypeDefPatch(updateLikeEntity());
         this.archiveBuilder.addTypeDefPatch(updateCommentEntity());
-        this.archiveBuilder.addTypeDefPatch(updateRatingEntity());
-    }
-
-
-    private TypeDefPatch updateLikeEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LIKE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
     }
 
     private TypeDefPatch updateCommentEntity()
@@ -878,9 +589,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "Comment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COMMENT.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -889,61 +598,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
-
-        final String attribute2Name            = "type";
-        final String attribute2Description     = "Deprecated attribute. Use the commentType attribute to describe the type of comment.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute2ReplacedBy      = "commentType";
-
-        property = archiveHelper.getEnumTypeDefAttribute("CommentType",
-                attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute2ReplacedBy);
-        properties.add(property);
-
-        final String attribute3Name            = "commentType";
-        final String attribute3Description     = "Type of comment.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("CommentType",
-                attribute3Name,
-                attribute3Description,
-                attribute3DescriptionGUID);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateRatingEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RATING.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.COMMENT_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -965,12 +621,8 @@ public class OpenMetadataTypesArchive2_4
 
     private EntityDef addDeployedConnectorEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR.typeGUID,
-                                                 OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName),
-                                                 OpenMetadataType.DEPLOYED_CONNECTOR.description,
-                                                 OpenMetadataType.DEPLOYED_CONNECTOR.descriptionGUID,
-                                                 OpenMetadataType.DEPLOYED_CONNECTOR.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName));
     }
 
 
@@ -985,12 +637,6 @@ public class OpenMetadataTypesArchive2_4
      */
     private void update04xxGovernanceEnums()
     {
-        archiveBuilder.addEntityDef(addGovernanceDomainDescriptionEntity());
-        archiveBuilder.addEntityDef(addGovernanceClassificationLevelEntity());
-
-        archiveBuilder.addClassificationDef(addGovernanceDomainSetClassification());
-        archiveBuilder.addClassificationDef(addGovernanceClassificationSetClassification());
-
         archiveBuilder.addRelationshipDef(getGovernedByRelationship());
 
         archiveBuilder.addTypeDefPatch(updateCriticalityClassification());
@@ -1003,164 +649,6 @@ public class OpenMetadataTypesArchive2_4
         archiveBuilder.addTypeDefPatch(updateGovernanceMetricEntity());
         archiveBuilder.addTypeDefPatch(updateGovernanceZoneEntity());
         archiveBuilder.addTypeDefPatch(updateSubjectAreaDefinitionEntity());
-        archiveBuilder.addTypeDefPatch(deprecateGovernanceConfidentialityLevelEntity());
-        archiveBuilder.addTypeDefPatch(deprecateZoneGovernanceRelationship());
-        archiveBuilder.addTypeDefPatch(deprecateSubjectAreaGovernanceRelationship());
-    }
-
-    /*
-     * Deprecated
-     */
-    private EntityDef addGovernanceDomainDescriptionEntity()
-    {
-        final String guid            = "084cd115-5d0d-4f12-8093-697526a120ea";
-        final String name            = "GovernanceDomainDescription";
-        final String description     = "A description of a governance domain along with an identifier for use in governance definitions.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "domainIdentifier";
-        final String attribute1Description     = "Identifier used in governance definitions to show which governance domain they belong to.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
-    }
-
-    /*
-     * Deprecated
-     */
-    private EntityDef addGovernanceClassificationLevelEntity()
-    {
-        final String guid            = "8af91d61-2ae8-4255-992e-14d7f745a556";
-        final String name            = "GovernanceClassificationLevel";
-        final String description     = "A value to represent a specific level in a governance classification definition.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LEVEL_IDENTIFIER));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
-    }
-
-    /*
-     * Deprecated
-     */
-    private ClassificationDef addGovernanceDomainSetClassification()
-    {
-        final String guid = "e66bb681-99a1-4712-a2c9-712c8b0f83ae";
-
-        final String name            = "GovernanceDomainSet";
-        final String description     = "Identifies the definitions for the different governance domains in use by the organization.";
-        final String descriptionGUID = null;
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Collection"));
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  linkedToEntities,
-                                                  false);
-    }
-
-    /*
-     * Deprecated
-     */
-    private ClassificationDef addGovernanceClassificationSetClassification()
-    {
-        final String guid = "d92b7f31-c92d-418d-b345-ea45bb3f73f5";
-
-        final String name            = "GovernanceClassificationSet";
-        final String description     = "Identifies the set of levels that are used within a specific governance classification.";
-        final String descriptionGUID = null;
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Collection"));
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
-                                                                                 null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 linkedToEntities,
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "domainIdentifier";
-        final String attribute1Description     = "Identifier of the governance domain that recognizes this set of levels.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "classificationName";
-        final String attribute2Description     = "Name of the classification where this set of levels is used.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "classificationPropertyName";
-        final String attribute3Description     = "Name of the property in the classification where this value is used.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
     }
 
 
@@ -1452,73 +940,17 @@ public class OpenMetadataTypesArchive2_4
         return typeDefPatch;
     }
 
-    private TypeDefPatch deprecateGovernanceConfidentialityLevelEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceConfidentialityLevel";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateSubjectAreaGovernanceRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SubjectAreaGovernance";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateZoneGovernanceRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ZoneGovernance";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
     /**
-     * 05xx - Deprecate RelationalView classification and replace it with CalculatedValue.  This is because the expression
-     * rally belongs on the SchemaType and calculated values are possible on other types of schema.  Also enable
+     * 05xx - Add CalculatedValue.  Also enable
      * all schema types to be in a TypeEmbeddedAttribute classification.
      */
     private void update05xxSchemaAttributes()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateAnchorGUID());
-        this.archiveBuilder.addTypeDefPatch(deprecateRelationalViewClassification());
-        this.archiveBuilder.addTypeDefPatch(deprecateDerivedSchemaAttributeEntity());
-        this.archiveBuilder.addTypeDefPatch(deprecateDerivedRelationalColumnEntity());
-        this.archiveBuilder.addTypeDefPatch(deprecateSchemaLinkElementEntity());
-        this.archiveBuilder.addTypeDefPatch(deprecateSchemaLinkToTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateLinkedTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSchemaQueryImplementationRelationship());
         this.archiveBuilder.addTypeDefPatch(addPrecisionToSchemaAttributeEntity());
         this.archiveBuilder.addClassificationDef(getCalculatedValueClassification());
         this.archiveBuilder.addEntityDef(getExternalSchemaTypeEntity());
@@ -1529,144 +961,6 @@ public class OpenMetadataTypesArchive2_4
         this.archiveBuilder.addRelationshipDef(getLinkedExternalSchemaTypeRelationship());
     }
 
-
-    private TypeDefPatch deprecateAnchorGUID()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ELEMENT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateRelationalViewClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "RelationalView";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateDerivedSchemaAttributeEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DerivedSchemaAttribute";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateSchemaLinkElementEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaLinkElement";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateDerivedRelationalColumnEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DerivedRelationalColumn";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateSchemaLinkToTypeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaLinkToType";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateLinkedTypeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "LinkedType";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateSchemaQueryImplementationRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaQueryImplementation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     private TypeDefPatch addPrecisionToSchemaAttributeEntity()
     {
@@ -1890,103 +1184,6 @@ public class OpenMetadataTypesArchive2_4
         return typeDefPatch;
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * 0505 - Deprecate RelationalView classification and replace it with CalculatedValue.  This is because the expression
-     * rally belongs on the SchemaType and calculated values are possible on other types of schema
-     */
-    private void update06xxDiscovery()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDiscoveryReportEntity());
-        this.archiveBuilder.addTypeDefPatch(updateAnnotationEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDataFieldEntity());
-    }
-
-
-
-    private TypeDefPatch updateDiscoveryReportEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "OpenDiscoveryAnalysisReport";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateAnnotationEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANNOTATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDataFieldEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FIELD.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -2038,18 +1235,13 @@ public class OpenMetadataTypesArchive2_4
     {
         this.archiveBuilder.addTypeDefPatch(updateSoftwareServerPlatformEntity());
         this.archiveBuilder.addTypeDefPatch(updateSoftwareServerEntity());
-        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerCapabilityEntity());
         this.archiveBuilder.addTypeDefPatch(updateCloudPlatformClassification());
         this.archiveBuilder.addTypeDefPatch(updateCloudTenantClassification());
         this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
         // Comment entity's clashing properties are updated as part of other updates to Comment above
-        this.archiveBuilder.addTypeDefPatch(updateGraphStoreEntity());
         this.archiveBuilder.addTypeDefPatch(updateLogFileEntity());
         this.archiveBuilder.addTypeDefPatch(updateDatabaseEntity());
         this.archiveBuilder.addTypeDefPatch(updateDatabaseServerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateMetadataRepositoryEntity());
-        this.archiveBuilder.addTypeDefPatch(updateMetadataServerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateRepositoryProxyClassification());
         this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
         this.archiveBuilder.addTypeDefPatch(updateEnterpriseAccessLayerEntity());
         this.archiveBuilder.addTypeDefPatch(updateMetadataCollectionEntity());
@@ -2083,33 +1275,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of software server platform.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "deployedImplementationType";
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute3Name            = "version";
-        final String attribute3Description     = "Deprecated attribute. Use the platformVersion attribute to define the version number of software server platform.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.PLATFORM_VERSION.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLATFORM_VERSION));
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -2134,84 +1301,14 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of software server.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
-
-        final String attribute3Name            = "version";
-        final String attribute3Description     = "Deprecated attribute. Use the serverVersion attribute to define the version number of software server.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.SERVER_VERSION.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVER_VERSION));
 
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateSoftwareServerCapabilityEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of software server capability.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.CAPABILITY_TYPE.name);
-        properties.add(property);
-
-        final String attribute3Name            = "version";
-        final String attribute3Description     = "Deprecated attribute. Use the capabilityVersion attribute to define the version number of software server capability.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.CAPABILITY_VERSION.name);
-        properties.add(property);
-
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
+
 
 
     /**
@@ -2232,18 +1329,6 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of cloud platform.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
@@ -2270,18 +1355,6 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the tenantType attribute to describe the type of cloud tenant.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.TENANT_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TENANT_TYPE));
 
@@ -2309,56 +1382,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the serviceType attribute to describe the type of cloud service.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.SERVICE_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateGraphStoreEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GRAPH_STORE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of graph store.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -2383,18 +1408,6 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of log file.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSE));
 
@@ -2421,30 +1434,6 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of database.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
-
-        final String attribute3Name            = "version";
-        final String attribute3Description     = "Deprecated attribute. Use the databaseVersion attribute to define the version number of database.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute3ReplacedBy      = OpenMetadataProperty.DATABASE_VERSION.name;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute3ReplacedBy);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATABASE_VERSION));
 
@@ -2471,139 +1460,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of database server.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
-
-        final String attribute3Name            = "version";
-        final String attribute3Description     = "Deprecated attribute. Use the softwareVersion attribute to define the version number of database server software.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.SOFTWARE_VERSION.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOFTWARE_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateMetadataRepositoryEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.METADATA_REPOSITORY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of metadata repository.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateMetadataServerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of metadata server.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateRepositoryProxyClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of repository proxy.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-        properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -2628,22 +1486,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the businessCapabilityType attribute to describe the type of business capability.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE));
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -2772,18 +1616,6 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "version";
-        final String attribute1Description     = "Deprecated attribute. Use the referenceVersion attribute to define the version number of the external reference.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "referenceVersion";
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
         final String attribute2Name            = "referenceVersion";
         final String attribute2Description     = "Version number of the external reference.";
         final String attribute2DescriptionGUID = null;
@@ -2818,25 +1650,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "version";
-        final String attribute1Description     = "Deprecated attribute. Use the schemaVersion attribute to define the version number of the property facet schema.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.SCHEMA_VERSION.name);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SCHEMA_VERSION.name,
-                                                           OpenMetadataProperty.SCHEMA_VERSION.description,
-                                                           OpenMetadataProperty.SCHEMA_VERSION.descriptionGUID);
-
-        properties.add(property);
-
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCHEMA_VERSION));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -2891,18 +1706,6 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "version";
-        final String attribute1Description     = "Deprecated attribute. Use the snippetVersion attribute to define the version number of the snippet.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "snippetVersion";
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
         final String attribute2Name            = "snippetVersion";
         final String attribute2Description     = "Version number of the snippet.";
         final String attribute2DescriptionGUID = null;
@@ -2937,21 +1740,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy administration point.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.POINT_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -2976,18 +1766,6 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy decision point.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.POINT_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
 
@@ -3014,23 +1792,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy enforcement point.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.POINT_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        properties.add(property);
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -3055,23 +1818,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy information point.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.POINT_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        properties.add(property);
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -3096,18 +1844,6 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy retrieval point.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.POINT_TYPE.name);
-        properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
 

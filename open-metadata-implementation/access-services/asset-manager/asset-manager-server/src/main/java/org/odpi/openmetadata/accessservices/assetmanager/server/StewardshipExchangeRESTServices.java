@@ -250,7 +250,7 @@ public class StewardshipExchangeRESTServices
                                                                boolean                     forDuplicateProcessing,
                                                                FindByPropertiesRequestBody requestBody)
     {
-        final String methodName = "getConfidenceClassifiedElements";
+        final String methodName = "getDataFieldClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -264,7 +264,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                if (requestBody.getProperties() instanceof LevelIdentifierQueryProperties properties)
                 {
                     response.setElements(handler.getGovernanceActionClassifiedElements(userId,
                                                                                        OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
@@ -292,7 +292,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierQueryProperties.class.getName(), methodName);
                 }
             }
             else
@@ -566,7 +566,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                if (requestBody.getProperties() instanceof LevelIdentifierQueryProperties properties)
                 {
                     response.setElements(handler.getGovernanceActionClassifiedElements(userId,
                                                                                        OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
@@ -594,7 +594,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierQueryProperties.class.getName(), methodName);
                 }
             }
             else
@@ -867,7 +867,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                if (requestBody.getProperties() instanceof LevelIdentifierQueryProperties properties)
                 {
                     response.setElements(handler.getGovernanceActionClassifiedElements(userId,
                                                                                        OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
@@ -895,7 +895,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierQueryProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1170,7 +1170,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                if (requestBody.getProperties() instanceof LevelIdentifierQueryProperties properties)
                 {
                     response.setElements(handler.getGovernanceActionClassifiedElements(userId,
                                                                                        OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
@@ -1198,7 +1198,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierQueryProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1468,7 +1468,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                if (requestBody.getProperties() instanceof LevelIdentifierQueryProperties properties)
                 {
                     response.setElements(handler.getRetentionClassifiedElements(userId,
                                                                                 properties.getReturnSpecificLevel(),
@@ -1494,7 +1494,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierQueryProperties.class.getName(), methodName);
                 }
             }
             else

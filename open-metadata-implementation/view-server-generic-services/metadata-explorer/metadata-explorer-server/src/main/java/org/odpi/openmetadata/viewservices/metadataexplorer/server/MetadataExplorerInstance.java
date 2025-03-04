@@ -40,7 +40,6 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @param activeViewServices list of view services active in this server
-     * @throws InvalidParameterException problem with server name or platform URL
      */
     public MetadataExplorerInstance(String                  serverName,
                                     AuditLog                auditLog,
@@ -48,7 +47,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
                                     int                     maxPageSize,
                                     String                  remoteServerName,
                                     String                  remoteServerURL,
-                                    List<ViewServiceConfig> activeViewServices) throws InvalidParameterException
+                                    List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceName(),

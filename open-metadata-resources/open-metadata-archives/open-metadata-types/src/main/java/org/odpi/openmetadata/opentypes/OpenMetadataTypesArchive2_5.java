@@ -528,12 +528,8 @@ public class OpenMetadataTypesArchive2_5
 
     private ClassificationDef addAssetManagerClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.ASSET_MANAGER.typeGUID,
-                                                  OpenMetadataType.ASSET_MANAGER.typeName,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ASSET_MANAGER,
                                                   null,
-                                                  OpenMetadataType.ASSET_MANAGER.description,
-                                                  OpenMetadataType.ASSET_MANAGER.descriptionGUID,
-                                                  OpenMetadataType.ASSET_MANAGER.wikiURL,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
@@ -613,39 +609,9 @@ public class OpenMetadataTypesArchive2_5
 
     private void update0750DataPassing()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateProcessInputRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateProcessOutputRelationship());
         this.archiveBuilder.addTypeDefPatch(updateProcessCallRelationship());
         this.archiveBuilder.addRelationshipDef(addDataFlowRelationship());
         this.archiveBuilder.addRelationshipDef(addControlFlowRelationship());
-    }
-
-
-    private TypeDefPatch deprecateProcessInputRelationship()
-    {
-        final String typeName = "ProcessInput";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateProcessOutputRelationship()
-    {
-        final String typeName = "ProcessInput";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 

@@ -286,8 +286,6 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
         this.archiveBuilder.addTypeDefPatch(updateCertification());
         this.archiveBuilder.addTypeDefPatch(updateLicense());
-        this.archiveBuilder.addTypeDefPatch(deprecateAssetOwnershipClassification());
-        this.archiveBuilder.addTypeDefPatch(deprecateResponsibilityStaffContact());
     }
 
 
@@ -805,44 +803,6 @@ public class OpenMetadataTypesArchive2_10
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSEE_PROPERTY_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the ResponsibilityStaffContact relationship in favour of GovernanceResponsibilityAssignment.
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateResponsibilityStaffContact()
-    {
-        final String typeName = "ResponsibilityStaffContact";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the AssetOwnership classification in favour of the Ownership classification.
-     *
-     * @return patch
-     */
-    private TypeDefPatch deprecateAssetOwnershipClassification()
-    {
-        final String typeName = "AssetOwnership";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
         return typeDefPatch;
     }

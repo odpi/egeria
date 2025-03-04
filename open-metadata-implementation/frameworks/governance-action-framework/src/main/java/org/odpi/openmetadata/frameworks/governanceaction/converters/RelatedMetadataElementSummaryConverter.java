@@ -104,16 +104,16 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     public List<B> getNewBeans(Class<B>                     beanClass,
-                               RelatedMetadataElementList relatedMetadataElements,
+                               List<RelatedMetadataElement> relatedMetadataElements,
                                String                       methodName) throws PropertyServerException
     {
         List<B> results = null;
 
-        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+        if (relatedMetadataElements != null)
         {
             results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
             {
                 if (relatedMetadataElement != null)
                 {
@@ -123,5 +123,28 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
         }
 
         return results;
+    }
+
+
+    /**
+     * Using the supplied openMetadataElement, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
+     *
+     * @param beanClass name of the class to create
+     * @param relatedMetadataElements list of relatedMetadataElements containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public List<B> getNewBeans(Class<B>                     beanClass,
+                               RelatedMetadataElementList relatedMetadataElements,
+                               String                       methodName) throws PropertyServerException
+    {
+        if (relatedMetadataElements != null)
+        {
+            return this.getNewBeans(beanClass, relatedMetadataElements.getElementList(), methodName);
+        }
+
+        return null;
     }
 }

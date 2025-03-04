@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction;
 
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;

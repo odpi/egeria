@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeAction;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.SupplementaryPropertiesValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -1138,10 +1140,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             /*
              * Classify the asset
              */
-            int latestChangeActionOrdinal;
+            LatestChangeAction latestChangeActionOrdinal;
             if (existingClassification == null)
             {
-                latestChangeActionOrdinal = OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
+                latestChangeActionOrdinal = LatestChangeAction.CREATED;
 
                 repositoryHandler.classifyEntity(userId,
                                                  externalSourceGUID,
@@ -1162,7 +1164,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             }
             else
             {
-                latestChangeActionOrdinal = OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+                latestChangeActionOrdinal = LatestChangeAction.UPDATED;
 
                 InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                       classificationProperties,
@@ -1216,7 +1218,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_CLASSIFICATION,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              beanEntity.getGUID(),
@@ -1232,7 +1234,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(beanEntity,
-                                             OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ENTITY_CLASSIFICATION,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              null,
@@ -1448,8 +1450,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (anchorEntity != null)
                 {
                     this.addLatestChangeToAnchor(anchorEntity,
-                                                 OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ATTACHMENT_CLASSIFICATION,
+                                                 LatestChangeAction.DELETED,
                                                  classificationTypeName,
                                                  beanGUID,
                                                  beanGUIDTypeName,
@@ -1464,8 +1466,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(beanEntity,
-                                                 OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ENTITY_CLASSIFICATION,
+                                                 LatestChangeAction.DELETED,
                                                  classificationTypeName,
                                                  null,
                                                  null,
@@ -1579,7 +1581,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             invalidParameterHandler.validateObject(existingClassification, classificationTypeName, methodName);
 
-            int latestChangeActionOrdinal = OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+            LatestChangeAction latestChangeActionOrdinal = LatestChangeAction.UPDATED;
 
             InstanceProperties newProperties = existingClassification.getProperties();
 
@@ -1609,7 +1611,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_CLASSIFICATION,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              beanGUID,
@@ -1625,7 +1627,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(beanEntity,
-                                             OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ENTITY_CLASSIFICATION,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              null,
@@ -1751,8 +1753,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_PROPERTY,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              beanGUID,
                                              beanGUIDTypeName,
@@ -1767,8 +1769,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(beanEntity,
-                                             OpenMetadataType.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_PROPERTY,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              null,
                                              null,
@@ -2167,16 +2169,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         InstanceProperties properties =  repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                     null,
                                                                                     OpenMetadataProperty.CHANGE_TARGET.name,
-                                                                                    OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_GUID,
-                                                                                    OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME,
+                                                                                    LatestChangeTarget.getOpenTypeGUID(),
+                                                                                    LatestChangeTarget.getOpenTypeName(),
                                                                                     latestChangeTargetOrdinal,
                                                                                     methodName);
 
         properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                 properties,
                                                                 OpenMetadataProperty.CHANGE_ACTION.name,
-                                                                OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_GUID,
-                                                                OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME,
+                                                                LatestChangeAction.getOpenTypeGUID(),
+                                                                LatestChangeAction.getOpenTypeName(),
                                                                 latestChangeActionOrdinal,
                                                                 methodName);
 
@@ -2219,8 +2221,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * Add details of an update to the anchor entity in the latest change classification.
      *
      * @param anchorEntity the entity to update
-     * @param latestChangeTargetOrdinal the type of instance
-     * @param latestChangeActionOrdinal the type of change
+     * @param latestChangeTarget the type of instance
+     * @param latestChangeAction the type of change
      * @param classificationName if a classification has changed, what is its name
      * @param attachmentGUID if a new relationship has been established, what is the unique identifier of the entity it is connecting to
      * @param attachmentTypeName if a new relationship has been established, what is the type name of the entity it is connecting to
@@ -2234,20 +2236,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws UserNotAuthorizedException local server user id not authorized to update LatestChange
      * @throws PropertyServerException logic error because classification type not recognized
      */
-    private void addLatestChangeToAnchor(EntityDetail anchorEntity,
-                                         int          latestChangeTargetOrdinal,
-                                         int          latestChangeActionOrdinal,
-                                         String       classificationName,
-                                         String       attachmentGUID,
-                                         String       attachmentTypeName,
-                                         String       relationshipTypeName,
-                                         String       userId,
-                                         String       actionDescription,
-                                         boolean      forLineage,
-                                         boolean      forDuplicateProcessing,
-                                         Date         effectiveTime,
-                                         String       methodName) throws UserNotAuthorizedException,
-                                                                         PropertyServerException
+    private void addLatestChangeToAnchor(EntityDetail       anchorEntity,
+                                         LatestChangeTarget latestChangeTarget,
+                                         LatestChangeAction latestChangeAction,
+                                         String             classificationName,
+                                         String             attachmentGUID,
+                                         String             attachmentTypeName,
+                                         String             relationshipTypeName,
+                                         String             userId,
+                                         String             actionDescription,
+                                         boolean            forLineage,
+                                         boolean            forDuplicateProcessing,
+                                         Date               effectiveTime,
+                                         String             methodName) throws UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String  guidParameterName = "anchorEntity.getGUID()";
 
@@ -2271,8 +2273,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 {
                     invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
 
-                    newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
-                                                                                 latestChangeActionOrdinal,
+                    newProperties = this.getLatestChangeClassificationProperties(latestChangeTarget.getOrdinal(),
+                                                                                 latestChangeAction.getOrdinal(),
                                                                                  classificationName,
                                                                                  attachmentGUID,
                                                                                  attachmentTypeName,
@@ -2364,8 +2366,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                     methodName);
 
                 this.addLatestChangeToAnchor(parentAnchorEntity,
-                                             latestChangeTargetOrdinal,
-                                             latestChangeActionOrdinal,
+                                             latestChangeTarget,
+                                             latestChangeAction,
                                              classificationName,
                                              attachmentGUID,
                                              attachmentTypeName,
@@ -3249,8 +3251,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_PROPERTY,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              originalEntity.getGUID(),
                                              entityTypeName,
@@ -3265,8 +3267,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(originalEntity,
-                                             OpenMetadataType.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_PROPERTY,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              null,
                                              null,
@@ -3469,8 +3471,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_STATUS,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              entityGUID,
                                              entityTypeName,
@@ -3485,8 +3487,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(originalEntity,
-                                             OpenMetadataType.ENTITY_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_STATUS,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              null,
                                              null,
@@ -3724,8 +3726,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_PROPERTY,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              originalEntity.getGUID(),
                                              entityTypeName,
@@ -3740,8 +3742,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(originalEntity,
-                                             OpenMetadataType.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_PROPERTY,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              null,
                                              null,
@@ -3992,8 +3994,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_CLASSIFICATION,
+                                             LatestChangeAction.CREATED,
                                              OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                              entityGUID,
                                              entityTypeName,
@@ -4008,8 +4010,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else if (entity != null)
             {
                 this.addLatestChangeToAnchor(entity,
-                                             OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_CLASSIFICATION,
+                                             LatestChangeAction.CREATED,
                                              OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                              entityGUID,
                                              entityTypeName,
@@ -4422,11 +4424,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 final String actionDescriptionTemplate = "Deleting %s %s";
 
                 String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
-                int    latestChangeTarget = OpenMetadataType.ATTACHMENT_LATEST_CHANGE_TARGET_ORDINAL;
 
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             latestChangeTarget,
-                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT,
+                                             LatestChangeAction.DELETED,
                                              null,
                                              entityGUID,
                                              entityTypeName,
@@ -11277,14 +11278,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         Relationship newRelationship;
         String actionDescriptionTemplate;
-        int    actionOrdinal;
+        LatestChangeAction actionOrdinal;
 
         if (existingRelationships != null)
         {
             if (existingRelationships.size() == 1)
             {
                 actionDescriptionTemplate = "Updating link from %s %s to %s %s";
-                actionOrdinal = OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+                actionOrdinal = LatestChangeAction.UPDATED;
 
                 newRelationship = repositoryHandler.updateRelationshipProperties(userId,
                                                                                  externalSourceGUID,
@@ -11339,7 +11340,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         else
         {
             actionDescriptionTemplate = "Linking %s %s to %s %s";
-            actionOrdinal = OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
+            actionOrdinal = LatestChangeAction.CREATED;
 
             newRelationship = repositoryHandler.createRelationship(userId,
                                                                    attachmentTypeGUID,
@@ -11461,7 +11462,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if (! anchor1Entity.getGUID().equals(bean1Entity.getGUID()))
         {
             this.addLatestChangeToAnchor(anchor1Entity,
-                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
                                          actionOrdinal,
                                          null,
                                          bean2Entity.getGUID(),
@@ -11479,7 +11480,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (repositoryHelper.isTypeOf(serviceName, startingElementTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(bean1Entity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
                                              actionOrdinal,
                                              null,
                                              bean2Entity.getGUID(),
@@ -11497,7 +11498,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if (! anchor2Entity.getGUID().equals(bean2Entity.getGUID()))
         {
             this.addLatestChangeToAnchor(anchor2Entity,
-                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
                                          actionOrdinal,
                                          null,
                                          bean1Entity.getGUID(),
@@ -11518,7 +11519,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                  * The attaching element is an anchor in its own right.
                  */
                 this.addLatestChangeToAnchor(bean2Entity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
                                              actionOrdinal,
                                              null,
                                              bean1Entity.getGUID(),
@@ -11737,7 +11738,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
         String actionDescriptionTemplate = "Linking %s %s to %s %s";
-        int    actionOrdinal = OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
+        LatestChangeAction actionOrdinal = LatestChangeAction.CREATED;
 
         Relationship newRelationship = repositoryHandler.createRelationship(userId,
                                                                             attachmentTypeGUID,
@@ -11858,7 +11859,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if (! anchor1Entity.getGUID().equals(bean1Entity.getGUID()))
         {
             this.addLatestChangeToAnchor(anchor1Entity,
-                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
                                          actionOrdinal,
                                          null,
                                          bean2Entity.getGUID(),
@@ -11876,7 +11877,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (repositoryHelper.isTypeOf(serviceName, startingElementTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(bean1Entity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
                                              actionOrdinal,
                                              null,
                                              bean2Entity.getGUID(),
@@ -11894,7 +11895,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if (! anchor2Entity.getGUID().equals(bean2Entity.getGUID()))
         {
             this.addLatestChangeToAnchor(anchor2Entity,
-                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
                                          actionOrdinal,
                                          null,
                                          bean1Entity.getGUID(),
@@ -11915,7 +11916,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                  * The attaching element is an anchor in its own right.
                  */
                 this.addLatestChangeToAnchor(bean2Entity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
                                              actionOrdinal,
                                              null,
                                              bean1Entity.getGUID(),
@@ -12090,8 +12091,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (startingElementAnchorEntity != null)
             {
                 this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              attachingGUID,
                                              attachingElementTypeName,
@@ -12108,8 +12109,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(startingElementEntity,
-                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                                 LatestChangeAction.UPDATED,
                                                  null,
                                                  attachingGUID,
                                                  attachingElementTypeName,
@@ -12144,8 +12145,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
                 {
                     this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                                 LatestChangeAction.UPDATED,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -12163,8 +12164,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(attachingElementEntity,
-                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                                 LatestChangeAction.UPDATED,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -12415,8 +12416,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (startingElementAnchorEntity != null)
             {
                 this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                             LatestChangeAction.UPDATED,
                                              null,
                                              attachingGUID,
                                              attachingElementTypeName,
@@ -12433,8 +12434,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(startingElementEntity,
-                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                                 LatestChangeAction.UPDATED,
                                                  null,
                                                  attachingGUID,
                                                  attachingElementTypeName,
@@ -12469,8 +12470,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
                 {
                     this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                                 LatestChangeAction.UPDATED,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -12488,8 +12489,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(attachingElementEntity,
-                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                                 LatestChangeAction.UPDATED,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -12794,8 +12795,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if (startingElementAnchorEntity != null)
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                         OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                         LatestChangeAction.CREATED,
                                          null,
                                          newAttachingGUID,
                                          newAttachingElementTypeName,
@@ -12825,8 +12826,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                             LatestChangeAction.CREATED,
                                              null,
                                              newAttachingGUID,
                                              newAttachingElementTypeName,
@@ -12861,8 +12862,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (! newAttachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
             {
                 this.addLatestChangeToAnchor(newAttachingElementAnchorEntity,
-                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                             LatestChangeAction.CREATED,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -12893,8 +12894,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (repositoryHelper.isTypeOf(serviceName, newAttachingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(newAttachingElementEntity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                             LatestChangeAction.CREATED,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -13305,8 +13306,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if ((startingElementAnchorEntity != null) && (! startingElementEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                         OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                         LatestChangeAction.DELETED,
                                          null,
                                          attachedGUID,
                                          attachedElementTypeName,
@@ -13335,8 +13336,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                             LatestChangeAction.DELETED,
                                              null,
                                              attachedGUID,
                                              attachedElementTypeName,
@@ -13358,8 +13359,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (! attachedElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
             {
                 this.addLatestChangeToAnchor(attachedElementAnchorEntity,
-                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ATTACHMENT_RELATIONSHIP,
+                                             LatestChangeAction.DELETED,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -13389,8 +13390,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             LatestChangeTarget.ENTITY_RELATIONSHIP,
+                                             LatestChangeAction.DELETED,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,

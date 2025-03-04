@@ -186,7 +186,6 @@ public class OpenMetadataTypesArchive3_5
     {
         this.archiveBuilder.addEntityDef(getSoftwareCapabilityEntity());
         this.archiveBuilder.addRelationshipDef(getSupportedSoftwareCapabilityRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSoftwareServerSupportedCapabilityRelationship());
         this.archiveBuilder.addTypeDefPatch(updateSoftwareServerCapabilityEntity());
         this.archiveBuilder.addTypeDefPatch(updateFileSystemClassification());
         this.archiveBuilder.addTypeDefPatch(updateFileManagerClassification());
@@ -198,7 +197,6 @@ public class OpenMetadataTypesArchive3_5
         this.archiveBuilder.addTypeDefPatch(updateContentCollectionManagerClassification());
         this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
         this.archiveBuilder.addTypeDefPatch(updateServerAssetUseRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerDeploymentRelationship());
     }
 
 
@@ -264,18 +262,8 @@ public class OpenMetadataTypesArchive3_5
 
     private RelationshipDef getSupportedSoftwareCapabilityRelationship()
     {
-        final String guid            = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -314,66 +302,17 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYMENT_TIME.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYMENT_TIME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYMENT_TIME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DEPLOYER.name;
-        final String attribute2Description     = OpenMetadataProperty.DEPLOYER.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DEPLOYER.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.DEPLOYER_TYPE_NAME.name;
-        final String attribute3Description     = OpenMetadataProperty.DEPLOYER_TYPE_NAME.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.DEPLOYER_TYPE_NAME.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name;
-        final String attribute4Description     = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.OPERATIONAL_STATUS.name;
-        final String attribute5Description     = OpenMetadataProperty.OPERATIONAL_STATUS.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.OPERATIONAL_STATUS.descriptionGUID;
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_PROPERTY_NAME));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.OPERATIONAL_STATUS));
 
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(OperationalStatus.getOpenTypeName(),
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
-    }
-
-
-    private TypeDefPatch deprecateSoftwareServerSupportedCapabilityRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SoftwareServerSupportedCapability";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 
@@ -661,39 +600,6 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
-    private TypeDefPatch updateSoftwareServerDeploymentRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SoftwareServerDeployment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "SoftwareServerPlatform";
-        final String                     end1AttributeName            = "hostingPlatforms";
-        final String                     end1AttributeDescription     = "Supporting platforms for the software server.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -721,12 +627,8 @@ public class OpenMetadataTypesArchive3_5
 
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
 
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeGUID,
-                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION,
                                                                                  null,
-                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.description,
-                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.descriptionGUID,
-                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.wikiURL,
                                                                                  linkedToEntities,
                                                                                  false);
 
@@ -734,17 +636,8 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -757,19 +650,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
 
@@ -782,19 +671,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.WEBSERVER_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.WEBSERVER_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
 
@@ -807,19 +692,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;
@@ -831,19 +712,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;
@@ -855,19 +732,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;
@@ -879,19 +752,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
 
@@ -904,19 +773,15 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName;
-        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
-        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(superTypeName));
+        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
 
@@ -926,17 +791,9 @@ public class OpenMetadataTypesArchive3_5
 
     private ClassificationDef addIntegrationServerClassification()
     {
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
-
-        return archiveHelper.getClassificationDef(OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeGUID,
-                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
+        return archiveHelper.getClassificationDef(OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION,
                                                   archiveBuilder.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName),
-                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.description,
-                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.descriptionGUID,
-                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.wikiURL,
-                                                  linkedToEntities,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
                                                   false);
     }
 
@@ -968,36 +825,14 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.COURTESY_TITLE.name,
-                                                           OpenMetadataProperty.COURTESY_TITLE.description,
-                                                           OpenMetadataProperty.COURTESY_TITLE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.GIVEN_NAMES.name,
-                                                           OpenMetadataProperty.GIVEN_NAMES.description,
-                                                           OpenMetadataProperty.GIVEN_NAMES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SURNAME.name,
-                                                           OpenMetadataProperty.SURNAME.description,
-                                                           OpenMetadataProperty.SURNAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_NUMBER.name,
-                                                           OpenMetadataProperty.EMPLOYEE_NUMBER.description,
-                                                           OpenMetadataProperty.EMPLOYEE_NUMBER.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_TYPE.name,
-                                                           OpenMetadataProperty.EMPLOYEE_TYPE.description,
-                                                           OpenMetadataProperty.EMPLOYEE_TYPE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PREFERRED_LANGUAGE.name,
-                                                           OpenMetadataProperty.PREFERRED_LANGUAGE.description,
-                                                           OpenMetadataProperty.PREFERRED_LANGUAGE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.INITIALS.name,
-                                                           OpenMetadataProperty.INITIALS.description,
-                                                           OpenMetadataProperty.INITIALS.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COURTESY_TITLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GIVEN_NAMES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SURNAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_NUMBER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PREFERRED_LANGUAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INITIALS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -1014,6 +849,7 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
+    /* Deprecated */
     private TypeDefPatch updateProjectManagementRelationship()
     {
         /*

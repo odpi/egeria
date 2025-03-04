@@ -336,18 +336,7 @@ public class OpenMetadataTypesArchive3_15
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name = "syncDatesByKey";
-        final String attribute1Description = "Collection of synchronization dates identified by a key (deprecated, added in error).";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
-                                                                  attribute1Description,
-                                                                  attribute1DescriptionGUID);
-
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTRODUCTION_DATE));

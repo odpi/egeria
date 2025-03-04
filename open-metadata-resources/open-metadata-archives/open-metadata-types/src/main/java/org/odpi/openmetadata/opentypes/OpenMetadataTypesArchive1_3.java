@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -153,7 +155,6 @@ public class OpenMetadataTypesArchive1_3
         previousTypes.getOriginalTypes();
 
         this.update0205ConnectionLinkage();
-        this.update0605OpenDiscoveryAnalysisReports();
     }
 
     /**
@@ -173,55 +174,8 @@ public class OpenMetadataTypesArchive1_3
         /*
          * Create the Patch
          */
-        final String typeName = "EmbeddedConnection";
 
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name = "position";
-        final String attribute1Description = "Position that embedded connection should be processed.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * 0605 Open Discovery Analysis Reports group annotations
-     */
-    private void update0605OpenDiscoveryAnalysisReports()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateOpenDiscoveryAnalysisReport());
-    }
-
-
-    /**
-     * 0605 Add discovery request step for long-running discovery services
-     */
-    private TypeDefPatch updateOpenDiscoveryAnalysisReport()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "OpenDiscoveryAnalysisReport";
-
-        TypeDefPatch  typeDefPatch =  archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -231,20 +185,13 @@ public class OpenMetadataTypesArchive1_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name = "discoveryRequestStep";
-        final String attribute1Description = "Current Step that an in-progress discovery service request has reached.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSITION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
+
 }
 

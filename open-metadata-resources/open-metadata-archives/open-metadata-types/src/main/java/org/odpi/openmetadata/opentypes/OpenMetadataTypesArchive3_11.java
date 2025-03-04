@@ -555,12 +555,8 @@ public class OpenMetadataTypesArchive3_11
 
     private RelationshipDef getProfileLocationRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.description,
-                                                                                OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -597,12 +593,8 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_TYPE.name,
-                                                           OpenMetadataProperty.ASSOCIATION_TYPE.description,
-                                                           OpenMetadataProperty.ASSOCIATION_TYPE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_TYPE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -635,23 +627,9 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-
-        final String attribute2Name            = "status";
-        final String attribute2Description     = "(Deprecated) Short description on current status of the project.";
-        final String attribute2DescriptionGUID = null;
-
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_STATUS));
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.PROJECT_STATUS.name);
-        properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -722,46 +700,12 @@ public class OpenMetadataTypesArchive3_11
 
     /**
      * Add new relationship called AssignmentScope to show the scope of someone or a team's responsibility.
-     * Deprecate more specialist relationships: ProjectScope and GovernanceRoleAssignment.
      */
     private void updateResponsibilityAssignments()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateProjectScope());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceRoleAssignment());
         this.archiveBuilder.addRelationshipDef(getAssignmentScopeRelationship());
     }
 
-    private TypeDefPatch deprecateProjectScope()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ProjectScope";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateGovernanceRoleAssignment()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceRoleAssignment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     private RelationshipDef getAssignmentScopeRelationship()
     {
@@ -824,7 +768,6 @@ public class OpenMetadataTypesArchive3_11
         this.archiveBuilder.addTypeDefPatch(updateGovernanceZoneDefinition());
         this.archiveBuilder.addTypeDefPatch(updateSubjectAreaDefinition());
         this.archiveBuilder.addTypeDefPatch(updateBusinessCapability());
-        this.archiveBuilder.addTypeDefPatch(deprecateBusinessCapabilityControls());
     }
 
 
@@ -893,23 +836,6 @@ public class OpenMetadataTypesArchive3_11
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateBusinessCapabilityControls()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "BusinessCapabilityControls";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
         return typeDefPatch;
     }
@@ -1241,69 +1167,12 @@ public class OpenMetadataTypesArchive3_11
      * -------------------------------------------------------------------------------------------------------
      */
 
-    /**
-     * Replace DigitalServiceImplementation, InformationSupplyChainImplementation and SolutionComponentImplementation with
-     * a more generic ImplementedBy relationship.
-     */
+
     private void update07xxImplementationRelationships()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateDigitalServiceImplementationRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateInformationSupplyChainImplementationRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSolutionComponentImplementationRelationship());
         this.archiveBuilder.addRelationshipDef(getImplementedByRelationship());
         this.archiveBuilder.addTypeDefPatch(updateDigitalServiceManagementRelationship());
 
-    }
-
-
-    private TypeDefPatch deprecateDigitalServiceImplementationRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DigitalServiceImplementation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateInformationSupplyChainImplementationRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "InformationSupplyChainImplementation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateSolutionComponentImplementationRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SolutionComponentImplementation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 

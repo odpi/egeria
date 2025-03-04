@@ -4251,7 +4251,7 @@ public class GlossaryExchangeRESTServices
                                                                    glossaryTermGUID,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
-                                                                  null,
+                                                                   new Date(),
                                                                    methodName));
             }
         }

@@ -51,8 +51,8 @@ public class OpenMetadataTypesArchive1_6
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -159,7 +159,6 @@ public class OpenMetadataTypesArchive1_6
          */
         update0501SchemaElements();
         update0505SchemaAttributes();
-        update0512DerivedSchemaAttributes();
     }
 
 
@@ -229,55 +228,11 @@ public class OpenMetadataTypesArchive1_6
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "minimumLength";
-        final String attribute1Description     = "Minimum length of the data value (zero means unlimited).";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "length";
-        final String attribute2Description     = "Length of the data field (zero means unlimited).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "significantDigits";
-        final String attribute3Description     = "Number of significant digits before the decimal point (zero means it is an integer).";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "isNullable";
-        final String attribute4Description     = "Accepts null values or not.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute6Name            = "cardinality";
-        final String attribute6Description     = "Number of occurrences of this attribute allowed (deprecated).";
-        final String attribute6DescriptionGUID = null;
-        final String attribute6ReplacedBy      = "maxCardinality";
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
-                                                            attribute4Description,
-                                                            attribute4DescriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        property.setReplacedByAttribute(attribute6ReplacedBy);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
-                                                           OpenMetadataProperty.NAME.description,
-                                                           OpenMetadataProperty.NAME.descriptionGUID);
-        property.setReplacedByAttribute(OpenMetadataProperty.DISPLAY_NAME.name);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_LENGTH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LENGTH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SIGNIFICANT_DIGITS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -361,69 +316,6 @@ public class OpenMetadataTypesArchive1_6
                                                             attribute11Description,
                                                             attribute11DescriptionGUID);
         properties.add(property);
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    /**
-     * 0512 - DerivedSchemaAttributes
-     */
-    private void update0512DerivedSchemaAttributes()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDerivedSchemaAttributeEntity());
-    }
-
-    /**
-     * 0512 - SchemaAttribute entity is changed to show deprecated properties
-     */
-    /* Deprecated */
-    private TypeDefPatch updateDerivedSchemaAttributeEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DerivedSchemaAttribute";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "comment";
-        final String attribute1Description     = "Comment from source system (deprecated).";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "id";
-        final String attribute2Description     = "Id of derived schema attribute (deprecated).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "aggregatingFunction";
-        final String attribute3Description     = "Aggregating function of derived schema attribute (deprecated).";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;

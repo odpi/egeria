@@ -189,7 +189,6 @@ public class OpenMetadataTypesArchive4_0
     private void update0385ControlledGlossaries()
     {
         this.archiveBuilder.addTypeDefPatch(updateControlledGlossaryTermEntity());
-        this.archiveBuilder.addRelationshipDef(addGlossaryTermEvolutionRelationship());
     }
 
 
@@ -232,71 +231,6 @@ public class OpenMetadataTypesArchive4_0
         return typeDefPatch;
     }
 
-
-    /*
-     * Deprecated next release
-     */
-    private RelationshipDef addGlossaryTermEvolutionRelationship()
-    {
-        final String guid            = "b323c9cf-f254-49c7-a391-11222e9da70f";
-        final String name            = "GlossaryTermEvolution";
-        final String description     = "Links a live glossary term with a future version of the term.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "ControlledGlossaryTerm";
-        final String                     end1AttributeName            = "glossaryTermUpdates";
-        final String                     end1AttributeDescription     = "A glossary term that contains proposed updates to the live glossary term.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "liveGlossaryTerm";
-        final String                     end2AttributeDescription     = "The approved term that is in use.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

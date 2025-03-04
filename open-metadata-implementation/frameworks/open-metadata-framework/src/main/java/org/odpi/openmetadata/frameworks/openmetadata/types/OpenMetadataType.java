@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * OpenMetadataType provides property name mapping for the open metadata types.
@@ -1059,15 +1057,6 @@ public enum OpenMetadataType
                     "A connection point enabling network traffic to pass between two networks."),
 
     /**
-     * f2bd7401-c064-41ac-862c-e5bcdc98fa1e
-     */
-   HOST_NETWORK("f2bd7401-c064-41ac-862c-e5bcdc98fa1e",
-                "HostNetwork",
-                OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
-                "575f2f35-a81d-4fdc-94d8-6a043bc9631d",
-                "One of the hosts connected to a network."),
-
-    /**
      * Link from a network to one of its network gateways.
      */
     NETWORK_GATEWAY_LINK_RELATIONSHIP("5bece460-1fa6-41fb-a29f-fdaf65ec8ce3",
@@ -1563,7 +1552,7 @@ public enum OpenMetadataType
           "An action assigned to an individual."),
 
     /**
-     * Associates a To Do with one or more elements to work on.
+     * Associates a To-Do with one or more elements to work on.
      */
     ACTION_TARGET_RELATIONSHIP("207e2594-e3e4-4be8-a12c-4c401656e241",
                                "ActionTarget",
@@ -1875,16 +1864,6 @@ public enum OpenMetadataType
                               OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                               "b734ba5c-ce2c-4b02-b54d-9232db2f1c51",
                               "Identifies the scope of the data stored in the digital resource(s)."),
-
-
-    /**
-     * Description for how data is organized and represented in a data store. (Deprecated)
-     */
-    DATA_STORE_ENCODING_CLASSIFICATION("f08e48b5-6b66-40f5-8ff6-c2bfe527330b",
-                                       "DataStoreEncoding",
-                                       OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
-                                       "327553db-b35b-49cc-8435-d2c665f5e260",
-                                       "Description for how data is organized and represented in a data store. (Deprecated)"),
 
     /**
      * Description for how data is organized and represented in a data asset.
@@ -2607,13 +2586,13 @@ public enum OpenMetadataType
                                         "Identifies a glossary that contains unique terms with consistent granularity."),
 
     /**
-     * Link between an open metadata glossary and a related glossary stored outside of the open metadata ecosystem.
+     * Link between an open metadata glossary and a related glossary stored outside the open metadata ecosystem.
      */
     EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP("7786a39c-436b-4538-acc7-d595b5856add",
                                              "ExternallySourcedGlossary",
                                              OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
                                              "1b2136b8-089a-456e-b84a-f2d3e4620137",
-                                             "Link between an open metadata glossary and a related glossary stored outside of the open metadata ecosystem."),
+                                             "Link between an open metadata glossary and a related glossary stored outside the open metadata ecosystem."),
 
     /**
      * A collection of related glossary terms.
@@ -3158,7 +3137,7 @@ public enum OpenMetadataType
      */
     CONFIDENTIALITY_CLASSIFICATION("742ddb7d-9a4a-4eb5-8ac2-1d69953bd2b6",
                                    "Confidentiality",
-                                   OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
+                                   OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                                    "0d791cad-bac5-4df3-8e0b-9bf326b4faf1",
                                    "Defines the level of confidentiality of related data items."),
 
@@ -3168,7 +3147,7 @@ public enum OpenMetadataType
      */
     CONFIDENCE_CLASSIFICATION("25d8f8d5-2998-4983-b9ef-265f58732965",
                               "Confidence",
-                              OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
+                              OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                               "50c33566-ec2d-488c-91f3-87c66648857a",
                               "Defines the level of confidence that should be placed in the accuracy of related data items."),
 
@@ -3177,7 +3156,7 @@ public enum OpenMetadataType
      */
     RETENTION_CLASSIFICATION("83dbcdf2-9445-45d7-bb24-9fa661726553",
                              "Retention",
-                             OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
+                             OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                              "6615bfa4-ed4f-40f8-8ab9-3fd9fd3600ac",
                              "Defines the retention requirements for related data items."),
 
@@ -3186,7 +3165,7 @@ public enum OpenMetadataType
      */
     CRITICALITY_CLASSIFICATION("d46d211a-bd22-40d5-b642-87b4954a167e",
                                "Criticality",
-                               OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
+                               OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                                "12f769eb-f0a1-4d21-8afb-e005cc6ca2c5",
                                "Defines how critical the related data items are to the organization."),
 
@@ -3863,7 +3842,7 @@ public enum OpenMetadataType
                       "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
 
     /**
-     * Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship..
+     * Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship.
      */
     GOVERNANCE_ACTION_PROCESS_INSTANCE("206a6e44-ffe7-408b-8e59-79842d362776",
                               "GovernanceActionProcessInstance",
@@ -4683,13 +4662,13 @@ public enum OpenMetadataType
                   "Description of an API operation."),
 
     /**
-     * A data value that is part of a API definition.
+     * A data value that is part of an API definition.
      */
     API_PARAMETER("10277b13-509c-480e-9829-bc16d0eafc53",
                   "APIParameter",
                   OpenMetadataWikiPages.MODEL_0536_API_SCHEMAS,
                   "abd1f9d3-1389-43d8-882e-ece7bea79265",
-                  "A data value that is part of a API definition."),
+                  "A data value that is part of an API definition."),
 
     /**
      * A list of parameters for an API operation.
@@ -4854,16 +4833,6 @@ public enum OpenMetadataType
                                   "An asset that contains trusted values for use as a reference."),
 
     /**
-     * Defines a data field that contains metadata for the row/record/object.
-     */
-    INSTANCE_METADATA_CLASSIFICATION("e6d5c097-a5e9-4bc4-a614-2506276059af",
-                                     "InstanceMetadata",
-                                     OpenMetadataWikiPages.MODEL_0550_INSTANCE_METADATA,
-                                     "2045991b-e043-42b7-9424-a0b81d1b29ff",
-                                     "Defines a data field that contains metadata for the row/record/object."),
-
-
-    /**
      * Links a referenceable to its valid values.
      */
     VALID_VALUES_ASSIGNMENT_RELATIONSHIP("c5d48b73-eadd-47db-ab64-3be99b2fb32d",
@@ -4936,37 +4905,193 @@ public enum OpenMetadataType
                                       "b1e75f5d-0c80-49ee-8550-8e1a54b91cb6",
                                       "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another."),
 
+
+    /**
+     * Defines a data field that contains metadata for the row/record/object.
+     */
+    INSTANCE_METADATA_CLASSIFICATION("e6d5c097-a5e9-4bc4-a614-2506276059af",
+                                     "InstanceMetadata",
+                                     OpenMetadataWikiPages.MODEL_0550_INSTANCE_METADATA,
+                                     "2045991b-e043-42b7-9424-a0b81d1b29ff",
+                                     "Defines a data field that contains metadata for the row/record/object."),
+
+    /**
+     * An abstract, but well-formed representation of a concept, activity, architecture or other design element.
+     */
+    DESIGN_MODEL_ELEMENT("492e343f-2516-43b8-94b0-5bae0760dda6",
+                         "DesignModelElement",
+                         OpenMetadataWikiPages.MODEL_0565_DESIGN_MODEL_ELEMENTS,
+                         "ba357440-145c-4325-a33c-01e648513c23",
+                         "An abstract, but well-formed representation of a concept, activity, architecture or other design element."),
+
+    /**
+     * A curated collection of design model elements.
+     */
+    DESIGN_MODEL("bf17143d-8605-48c2-ba80-64c2ac8f8379",
+                 "DesignModel",
+                 OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                 "dc91fec8-3ef1-47f3-acdf-7c6ce51f4351",
+                 "A curated collection of design model elements."),
+
+    /**
+     * A collection of related design model elements within a model.
+     */
+    DESIGN_MODEL_GROUP("b144ee2a-fa71-4897-b51a-dd5239c26910",
+                       "DesignModelGroup",
+                       OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                       "cf76adbb-3a46-4fb6-a9a6-080b879a63d1",
+                       "A collection of related design model elements within a model."),
+
+    /**
+     * Links a design model element to a group.
+     */
+    DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP("2dcfe62b-341c-4c3d-b336-a94a52c20556",
+                                               "DesignModelGroupMembership",
+                                               OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                                               "1dc7aa5a-f708-42fe-8de4-0da5059a9fb8",
+                                               "Links a design model element to a group."),
+
+    /**
+     * Links design model elements to their owning model.
+     */
+    DESIGN_MODEL_OWNERSHIP_RELATIONSHIP("d57043c2-eeab-4167-8d0d-2223af8aee93",
+                                        "DesignModelOwnership",
+                                        OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                                        "977c8b04-36f8-4eea-8550-686580bbb0aa",
+                                        "Links design model elements to their owning model."),
+
+    /**
+     * A selection of design model element needed for a project.
+     */
+    DESIGN_MODEL_SCOPE("788957f7-a203-45bd-994d-0ab018275821",
+                       "DesignModelScope",
+                       OpenMetadataWikiPages.MODEL_0568_DESIGN_MODEL_SCOPING,
+                       "0225762e-cc24-452b-af8c-1b87c5bd5805",
+                       "A selection of design model element needed for a project."),
+
+
+    /**
+     * Links a model to an implementation.
+     */
+    DESIGN_MODEL_ELEMENTS_IN_SCOPE_RELATIONSHIP("4ff6d91b-3836-4ba2-9ca9-87da91081faa",
+                                                "DesignModelElementsInScope",
+                                                OpenMetadataWikiPages.MODEL_0568_DESIGN_MODEL_SCOPING,
+                                                "59d19a45-77a9-4ea7-8c21-9f2684f383b5",
+                                                "Links a model to an implementation."),
+
+    /**
+     * Links a concept model to an implementation.
+     */
+    DESIGN_MODEL_IMPLEMENTATION_RELATIONSHIP("c5cb1362-07f6-486b-b80b-ba7922cacee9",
+                                             "DesignModelImplementation",
+                                             OpenMetadataWikiPages.MODEL_0569_DESIGN_MODEL_IMPL,
+                                             "7d16c709-552b-4843-b17e-02384c99da57",
+                                             "Links a concept model to an implementation."),
+
+    /**
+     * Identifies the element from a metadata model that this element embodies.
+     */
+    METAMODEL_INSTANCE_CLASSIFICATION("07bd0820-6b14-43b0-a625-2c89f2beb93a",
+                                      "MetamodelInstance",
+                                      OpenMetadataWikiPages.MODEL_0570_METAMODELS,
+                                      "ea796922-2a2c-411f-af5c-b60e9963d320",
+                                      "Identifies the element from a metadata model that this element embodies."),
+
+    /**
+     * Identifies that a design model as a concept model.
+     */
+    CONCEPT_MODEL_CLASSIFICATION("7149c2de-5f24-4959-9b24-9d5e67709fac",
+                                 "ConceptModel",
+                                 OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                 "afb0861f-fe08-4b68-a832-16dbe792a15f",
+                                 "Identifies that a design model as a concept model."),
+
+    /**
+     * Identifies the coverage category of a concept bead attribute.
+     */
+    CONCEPT_BEAD_ATTRIBUTE_COVERAGE_CLASSIFICATION("f8b60afe-ddef-4b6f-9628-82ebfff34d65",
+                                                   "ConceptBeadAttributeCoverage",
+                                                   OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                                   "bcb67e57-52e8-42f3-881e-3f755ca02ae7",
+                                                   "Identifies the coverage category of a concept bead attribute."),
+
+    /**
+     * An abstract, but well-formed representation of a concept.
+     */
+    CONCEPT_MODEL_ELEMENT("06659195-3111-4c91-8931-a65f655378d9",
+                          "ConceptModelElement",
+                          OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                          "bab09390-1aaf-47cf-8a5e-19363d4244e0",
+                          "An abstract, but well-formed representation of a concept."),
+
+    /**
+     * An abstract, but well-formed representation of a person, place or object.
+     */
+    CONCEPT_BEAD("f7feb509-bce6-4989-a340-5dc7e3eec313",
+                 "ConceptBead",
+                 OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                 "f3d8f1e9-22c4-4ca9-b7a7-01a43f5e64f7",
+                 "An abstract, but well-formed representation of a person, place or object."),
+
+    /**
+     * An abstract, but well-formed fact about a concept bead.
+     */
+    CONCEPT_BEAD_ATTRIBUTE("d804d406-ac74-4f92-9bde-2ba0793680ea",
+                           "ConceptBeadAttribute",
+                           OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                           "298c47b9-f843-4b62-b017-e345b8300ed8",
+                           "An abstract, but well-formed fact about a concept bead."),
+
+    /**
+     * Links one end of a concept bead link relationship to a concept bead.
+     */
+    CONCEPT_BEAD_RELATIONSHIP_END("1a379e55-a4c0-4289-a1a4-b89d257611d1",
+                                  "ConceptBeadRelationshipEnd",
+                                  OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                  "29e4ec95-1ab3-4a97-9157-1d7628ec664b",
+                                  "Links one end of a concept bead link relationship to a concept bead."),
+
+    /**
+     * Links a concept bead to its attributes.
+     */
+    CONCEPT_BEAN_ATTRIBUTE_LINK("5bad1df2-664b-407b-8036-2855e2ede92f",
+                                "ConceptBeadAttributeLink",
+                                OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                "1b6f0ca0-d9e1-4804-8f95-48e525e7f6d4",
+                                "Links a concept bead to its attributes."),
+
+    /**
+     * A relationship between concept beads.
+     */
+    CONCEPT_BEAD_LINK("13defd95-6452-4398-8382-e47f1a271eff",
+                      "ConceptBeadLink",
+                      OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                      "2b6315a9-d40d-43d7-bed9-ca1639cd826f",
+                      "A relationship between concept beads."),
+
+
+    /**
+     * A description of a common solution with details of the problems it solves and its pros and cons.
+     */
+    DESIGN_PATTERN("6b60a73e-47bc-4096-9073-f94cab975958",
+                   "DesignPattern",
+                   OpenMetadataWikiPages.MODEL_0595_DESIGN_PATTERNS,
+                   "8ad69576-a9a5-41e9-a09a-9e49f65aaad8",
+                   "A description of a common solution with details of the problems it solves and its pros and cons."),
+
+    /**
+     * Links design patterns together.
+     */
+    RELATED_DESIGN_PATTERN_RELATIONSHIP("6447c9cd-8e5a-461b-97f9-5151bcb97a9e",
+                                        "RelatedDesignPattern",
+                                        OpenMetadataWikiPages.MODEL_0595_DESIGN_PATTERNS,
+                                        "89c2f489-dfd5-4313-995e-95bfc81b8dcd",
+                                        "Links design patterns together."),
+
+
     /* ============================================================================================================================*/
     /* Area 6 - Metadata Surveys                                                                                                   */
     /* ============================================================================================================================*/
-
-
-    /**
-     * A server capability for running open discovery services.
-     */
-    OPEN_DISCOVERY_ENGINE("be650674-790b-487a-a619-0a9002488055",
-                          "OpenDiscoveryEngine",
-                          OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                          "bde9e812-35a0-49fb-b5ed-9cb1ffa48d60",
-                          "A server capability for running open discovery services."),
-
-    /**
-     * A pluggable component for discovering properties about an asset.
-     */
-    OPEN_DISCOVERY_SERVICE("2f278dfc-4640-4714-b34b-303e84e4fc40",
-                           "OpenDiscoveryService",
-                           OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                           "38b8d73d-3c60-4e86-8561-256c77e10c16",
-                           "A pluggable component for discovering properties about an asset."),
-
-    /**
-     * A pluggable component that calls multiple discovery services.
-     */
-    OPEN_DISCOVERY_PIPELINE("081abe00-740e-4143-b0d5-a1f55450fc22",
-                            "OpenDiscoveryPipeline",
-                            OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                            "85a985ab-2f07-4ffc-99d5-d423d787c51e",
-                            "A pluggable component that calls multiple discovery services."),
 
     /**
      * A set of results describing the analysis from the execution of a survey action service.
@@ -5048,6 +5173,34 @@ public enum OpenMetadataType
                OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
                "ade3a815-ab55-472e-b7e3-dbe1d68f29d3",
                "Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema)."),
+
+    /**
+     * Data field nested under a single parent data field.
+     */
+    NESTED_DATA_FIELD_RELATIONSHIP("60f2d263-e24d-4f20-8c0d-b5e12356cd54",
+                                   "NestedDataField",
+                                   OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
+                                   "9d5e3850-6f11-4a10-b912-c23a3d5dd663",
+                                   "Data field nested under a single parent data field."),
+
+    /**
+     * Link between data field analysis and the identified schema attribute definition.
+     */
+    SCHEMA_ATTRIBUTE_DEFINITION("60f1e263-e24d-4f20-8c0d-b5e21232cd54",
+                                "SchemaAttributeDefinition",
+                                OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
+                                "d21adefa-7721-4820-8f40-228647e6cbe8",
+                                "Link between data field analysis and the identified schema attribute definition."),
+
+    /**
+     * Link between schema analysis and the identified data class for a data field.
+     */
+    DATA_CLASS_DEFINITION("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
+                          "DataClassDefinition",
+                          OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
+                          "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
+                          "Link between schema analysis and the identified data class for a data field."),
+
 
     /**
      * Additional information to augment an annotation.
@@ -5432,7 +5585,7 @@ public enum OpenMetadataType
      */
     IMPLEMENTED_BY_RELATIONSHIP("28f63c94-aaef-4c84-98f7-d77aa605272e",
                                 "ImplementedBy",
-                                OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                                OpenMetadataWikiPages.MODEL_0737_SOLUTION_IMPLEMENTATION,
                                 "0aaa89b5-e05a-4b63-ba13-e05e91bd339b",
                                 "Identifies a step in the refinement of digital components and artifacts from design to concrete implementation."),
 
@@ -5501,6 +5654,15 @@ public enum OpenMetadataType
                          "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow."),
 
     /**
+     * A referenceable item that is meaningful to business users.
+     */
+    BUSINESS_SIGNIFICANT_CLASSIFICATION("085febdd-f129-4f4b-99aa-01f3e6294e9f",
+                                        "BusinessSignificant",
+                                        OpenMetadataWikiPages.MODEL_0760_BUSINESS_LINEAGE,
+                                        "a2699e90-eaa2-42aa-84a9-081b33e0ea70",
+                                        "A referenceable item that is meaningful to business users."),
+
+    /**
      * A lineage stitching link between two equivalent elements.
      */
     LINEAGE_MAPPING("a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff",
@@ -5522,29 +5684,6 @@ public enum OpenMetadataType
     ;
 
 
-    private final static Map<String, String> openMetadataTypeGUIDs = new HashMap<>();
-
-    static
-    {
-        for (OpenMetadataType openMetadataType : OpenMetadataType.values())
-        {
-            openMetadataTypeGUIDs.put(openMetadataType.typeName, openMetadataType.descriptionGUID);
-        }
-    }
-
-
-    /**
-     * Return the description GUID for the named type.
-     *
-     * @param typeName name of type
-     * @return description GUID
-     */
-    public static String getDescriptionGUIDForType(String typeName)
-    {
-        return openMetadataTypeGUIDs.get(typeName);
-    }
-
-
     public final String typeGUID;
     public final String typeName;
     public final String wikiURL;
@@ -5563,115 +5702,4 @@ public enum OpenMetadataType
         this.descriptionGUID = descriptionGUID;
         this.description     = description;
     }
-
-
-    /* ============================================================================================================================*/
-    /* Area 5 - Schemas and Models                                                                                                 */
-    /* ============================================================================================================================*/
-
-
-    public static final String DESIGN_MODEL_TYPE_NAME = "DesignModel";
-
-    public static final String TECHNICAL_NAME_PROPERTY_NAME = "technicalName";
-
-    public static final String CONCEPT_MODEL_CLASSIFICATION_NAME = "ConceptModel";
-
-    public static final String DESIGN_MODEL_SCOPE_TYPE_NAME                  = "DesignModelScope";
-    public static final String DESIGN_MODEL_ELEMENTS_IN_SCOPE_TYPE_NAME      = "DesignModelElementsInScope";
-    public static final String DESIGN_MODEL_ELEMENT_TYPE_NAME                = "DesignModelElement";
-    public static final String DESIGN_MODEL_GROUP_TYPE_NAME                  = "DesignModelGroup";
-    public static final String DESIGN_MODEL_GROUP_MEMBERSHIP_NAME            = "DesignModelGroupMembership";
-    public static final String DESIGN_MODEL_OWNERSHIP_RELATIONSHIP_TYPE_NAME = "DesignModelOwnership";
-    public static final String DESIGN_MODEL_IMPL_RELATIONSHIP_TYPE_NAME      = "DesignModelImplementation";
-
-    public static final String METAMODEL_INSTANCE_CLASSIFICATION_NAME = "MetamodelInstance";
-    public static final String METAMODEL_ELEMENT_GUID_PROPERTY_NAME   = "metamodelElementGUID";
-
-    public static final String CONCEPT_BEAD_TYPE_NAME                = "ConceptBead";
-    public static final String CONCEPT_BEAD_LINK_TYPE_NAME           = "ConceptBeadLink";
-    public static final String CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME      = "ConceptBeadAttribute";
-    public static final String CONCEPT_BEAD_RELATIONSHIP_END_NAME    = "ConceptBeadRelationshipEnd";
-    public static final String CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME = "ConceptBeadAttributeLink";
-    public static final String CONCEPT_MODEL_DECORATION_ENUM_NAME    = "ConceptModelDecoration";
-    public static final int    CONCEPT_MODEL_DECORATION_NONE         = 0;
-    public static final int    CONCEPT_MODEL_DECORATION_AGGREGATION  = 1;
-    public static final int    CONCEPT_MODEL_DECORATION_COMPOSITION  = 2;
-    public static final int    CONCEPT_MODEL_DECORATION_EXTENSION    = 3;
-
-    public static final String CONCEPT_BEAD_COVERAGE_CATEGORY_ENUM_TYPE_NAME = "ConceptBeadAttributeCoverageCategory";
-    public static final int    CONCEPT_BEAD_COVERAGE_UNKNOWN                 = 0;
-    public static final int    CONCEPT_BEAD_COVERAGE_UNIQUE_IDENTIFIER       = 1;
-    public static final int    CONCEPT_BEAD_COVERAGE_IDENTIFIER              = 2;
-    public static final int    CONCEPT_BEAD_COVERAGE_CORE_DETAIL             = 3;
-    public static final int    CONCEPT_BEAD_COVERAGE_EXTENDED_DETAIL         = 4;
-    public static final String CONCEPT_BEAD_COVERAGE_CLASSIFICATION_NAME     = "ConceptBeadAttributeCoverage";
-    public static final String CONCEPT_BEAD_COVERAGE_CATEGORY_PROPERTY_NAME  = "coverageCategory";
-
-    public static final String UNIQUE_VALUES_PROPERTY_NAME = "uniqueValues";
-    public static final String NAVIGABLE_PROPERTY_NAME     = "navigable";
-    public static final String DECORATION_PROPERTY_NAME    = "decoration";
-
-
-    /* ============================================================================================================================*/
-    /* Area 7 - Lineage                                                                                                            */
-    /* ============================================================================================================================*/
-
-
-    public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID = "28f63c94-aaef-4c84-98f7-d77aa605272e";
-    public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME = "ImplementedBy";
-    /* End1 = Referenceable; End 2 = Referenceable */
-
-    public static final String DESIGN_STEP_PROPERTY_NAME    = "designStep";
-    public static final String ROLE_PROPERTY_NAME           = "role";
-    public static final String TRANSFORMATION_PROPERTY_NAME = "transformation";
-
-    public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID = "085febdd-f129-4f4b-99aa-01f3e6294e9f";
-    public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME = "BusinessSignificance";
-    /* Linked to Referenceable */
-
-    public static final String BUSINESS_CAPABILITY_GUID_PROPERTY_NAME = "businessCapabilityGUID";  /* from BusinessSignificant entity */
-
-
-    public static final String DATA_FIELD_NAME_PROPERTY_NAME        = "dataFieldName";        /* from DataField entity */
-    public static final String DATA_FIELD_TYPE_PROPERTY_NAME        = "dataFieldType";        /* from DataField entity */
-    public static final String DATA_FIELD_DESCRIPTION_PROPERTY_NAME = "dataFieldDescription"; /* from DataField entity */
-    public static final String DATA_FIELD_ALIASES_PROPERTY_NAME     = "dataFieldAliases";     /* from DataField entity */
-    public static final String DATA_FIELD_NAMESPACE_PROPERTY_NAME   = "dataFieldNamespace";   /* from DataField entity */
-              /* from DataField entity */
-
-
-
-    /* For DiscoveredDataField relationship */
-    public static final String NESTED_DATA_FIELD_TYPE_GUID = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
-    public static final String NESTED_DATA_FIELD_TYPE_NAME = "NestedDataField";
-    /* End1 = (parent)DataField; End 2 = DataField */
-
-
-
-    /* ============================================================================================================================*/
-    /* Enums                                                                                                                       */
-    /* ============================================================================================================================*/
-
-    public static final String LATEST_CHANGE_TARGET_ENUM_TYPE_GUID                    = "a0b7d7a0-4af5-4539-9b81-cbef52d8cc5d";
-    public static final String LATEST_CHANGE_TARGET_ENUM_TYPE_NAME                    = "LatestChangeTarget";
-    public static final int    ENTITY_STATUS_LATEST_CHANGE_TARGET_ORDINAL             = 0;
-    public static final int    ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL           = 1;
-    public static final int    ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL     = 2;
-    public static final int    ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL       = 3;
-    public static final int    ATTACHMENT_LATEST_CHANGE_TARGET_ORDINAL                = 4;
-    public static final int    ATTACHMENT_STATUS_LATEST_CHANGE_TARGET_ORDINAL         = 5;
-    public static final int    ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL       = 6;
-    public static final int    ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL = 7;
-    public static final int    ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL   = 8;
-    public static final int    OTHER_LATEST_CHANGE_TARGET_ORDINAL                     = 99;
-
-    public static final String LATEST_CHANGE_ACTION_ENUM_TYPE_GUID  = "032d844b-868f-4c4a-bc5d-81f0f9704c4d";
-    public static final String LATEST_CHANGE_ACTION_ENUM_TYPE_NAME  = "LatestChangeAction";
-    public static final int    CREATED_LATEST_CHANGE_ACTION_ORDINAL = 0;
-    public static final int    UPDATED_LATEST_CHANGE_ACTION_ORDINAL = 1;
-    public static final int    DELETED_LATEST_CHANGE_ACTION_ORDINAL = 2;
-    public static final int    OTHER_LATEST_CHANGE_ACTION_ORDINAL   = 99;
-
-
-
 }

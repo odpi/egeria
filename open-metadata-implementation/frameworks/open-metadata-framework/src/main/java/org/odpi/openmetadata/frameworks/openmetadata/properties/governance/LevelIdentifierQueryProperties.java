@@ -13,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * LevelIdentifierProperties describes the properties for searching for a governance action classification by its level.
+ * LevelIdentifierQueryProperties describes the properties for searching for a governance action classification by its level.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LevelIdentifierProperties extends FindProperties
+public class LevelIdentifierQueryProperties extends FindProperties
 {
     private boolean returnSpecificLevel = false;
     private int     levelIdentifier     = 0;
@@ -27,7 +27,7 @@ public class LevelIdentifierProperties extends FindProperties
     /**
      * Default constructor
      */
-    public LevelIdentifierProperties()
+    public LevelIdentifierQueryProperties()
     {
     }
 
@@ -37,7 +37,7 @@ public class LevelIdentifierProperties extends FindProperties
      *
      * @param template object to copy
      */
-    public LevelIdentifierProperties(LevelIdentifierProperties template)
+    public LevelIdentifierQueryProperties(LevelIdentifierQueryProperties template)
     {
         super(template);
 
@@ -101,7 +101,7 @@ public class LevelIdentifierProperties extends FindProperties
     @Override
     public String toString()
     {
-        return "LevelIdentifierProperties{" +
+        return "LevelIdentifierQueryProperties{" +
                 "returnSpecificLevel=" + returnSpecificLevel +
                 ", levelIdentifier=" + levelIdentifier +
                 "} " + super.toString();
@@ -120,7 +120,7 @@ public class LevelIdentifierProperties extends FindProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
-        LevelIdentifierProperties that = (LevelIdentifierProperties) objectToCompare;
+        LevelIdentifierQueryProperties that = (LevelIdentifierQueryProperties) objectToCompare;
         return returnSpecificLevel == that.returnSpecificLevel && levelIdentifier == that.levelIdentifier;
     }
 

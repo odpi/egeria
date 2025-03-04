@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -171,42 +170,18 @@ public class OpenMetadataTypesArchive2_7
      */
 
     /**
-     * 0045 Replace AssetServerUse relationship with SeverAssetUse
+     * 0045 Add ServerAssetUse
      */
     private void update0045ServersAndAssets()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateAssetServerUse());
         this.archiveBuilder.addRelationshipDef(getServerAssetUseRelationship());
-    }
-
-    private TypeDefPatch deprecateAssetServerUse()
-    {
-        final String typeName = "AssetServerUse";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 
     private RelationshipDef getServerAssetUseRelationship()
     {
-        final String guid            = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -244,17 +219,9 @@ public class OpenMetadataTypesArchive2_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(ServerAssetUseType.getOpenTypeName(),
-                                                         OpenMetadataProperty.USE_TYPE.name,
-                                                         OpenMetadataProperty.USE_TYPE.description,
-                                                         OpenMetadataProperty.USE_TYPE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.USE_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -283,16 +250,8 @@ public class OpenMetadataTypesArchive2_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.PATH_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.PATH_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.PATH_NAME.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATH_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -347,9 +306,7 @@ public class OpenMetadataTypesArchive2_7
 
     private TypeDefPatch updateGovernanceActionProcessFlowRelationship()
     {
-        final String typeName = "GovernanceActionProcessFlow";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -358,17 +315,8 @@ public class OpenMetadataTypesArchive2_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "guard";
-        final String attribute1Description     = "The guard passed to the first governance service to run in this process.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GUARD));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

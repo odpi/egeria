@@ -17,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -174,7 +173,6 @@ public class OpenMetadataTypesArchive3_8
         update0461GovernanceEngines();
         update0566DesignModelOrganization();
         update0571ConceptModels();
-        update0615SchemaExtraction();
     }
 
 
@@ -384,18 +382,13 @@ public class OpenMetadataTypesArchive3_8
     private void update0070NetworksAndGateways()
     {
         this.archiveBuilder.addRelationshipDef(getVisibleEndpointRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateHostNetworkRelationship());
         this.archiveBuilder.addTypeDefPatch(updateNetworkGatewayLinkRelationship());
     }
 
     private RelationshipDef getVisibleEndpointRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.VISIBLE_ENDPOINT.typeGUID,
-                                                                                OpenMetadataType.VISIBLE_ENDPOINT.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.VISIBLE_ENDPOINT,
                                                                                 null,
-                                                                                OpenMetadataType.VISIBLE_ENDPOINT.description,
-                                                                                OpenMetadataType.VISIBLE_ENDPOINT.descriptionGUID,
-                                                                                OpenMetadataType.VISIBLE_ENDPOINT.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -431,21 +424,6 @@ public class OpenMetadataTypesArchive3_8
 
         return relationshipDef;
     }
-
-    private TypeDefPatch deprecateHostNetworkRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.HOST_NETWORK.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
 
     private TypeDefPatch updateNetworkGatewayLinkRelationship()
     {
@@ -595,20 +573,8 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeGUID;
-        final String name            = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName;
-        final String description     = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.description;
-        final String descriptionGUID = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName));
 
     }
 
@@ -618,20 +584,8 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeGUID;
-        final String name            = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName;
-        final String description     = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.description;
-        final String descriptionGUID = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName));
 
     }
 
@@ -645,73 +599,14 @@ public class OpenMetadataTypesArchive3_8
      */
     private void update0566DesignModelOrganization()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateDesignModelElementOwnershipRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateDesignModelGroupOwnershipRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateDesignModelGroupHierarchyRelationship());
         this.archiveBuilder.addRelationshipDef(addDesignModelOwnershipRelationship());
     }
 
-    private TypeDefPatch deprecateDesignModelElementOwnershipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DesignModelElementOwnership";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateDesignModelGroupOwnershipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DesignModelGroupOwnership";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch deprecateDesignModelGroupHierarchyRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DesignModelGroupHierarchy";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     private RelationshipDef addDesignModelOwnershipRelationship()
     {
-        final String guid            = "d57043c2-eeab-4167-8d0d-2223af8aee93";
-        final String name            = "DesignModelOwnership";
-        final String description     = "Links design model elements to their owning model.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DESIGN_MODEL_OWNERSHIP_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -719,12 +614,11 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "DesignModel";
         final String                     end1AttributeName            = "owningDesignModel";
         final String                     end1AttributeDescription     = "Owning model.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -735,12 +629,11 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "DesignModelElement";
         final String                     end2AttributeName            = "designModelElements";
         final String                     end2AttributeDescription     = "List of elements that belong to this model.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -764,19 +657,9 @@ public class OpenMetadataTypesArchive3_8
 
     private ClassificationDef addConceptModelClassification()
     {
-        final String guid            = "7149c2de-5f24-4959-9b24-9d5e67709fac";
-        final String name            = "ConceptModel";
-        final String description     = "Identifies that a design model as a concept model.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "DesignModel";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.CONCEPT_MODEL_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName),
                                                   false);
 
 
@@ -785,94 +668,6 @@ public class OpenMetadataTypesArchive3_8
     /*
      * -------------------------------------------------------------------------------------------------------
      */
-
-    /**
-     * Remove obsolete relationship
-     */
-    private void update0615SchemaExtraction()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateDataClassDefinitionRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateSchemaAttributeDefinition());
-        this.archiveBuilder.addTypeDefPatch(updateRelationshipAnnotation());
-    }
-
-    private TypeDefPatch deprecateDataClassDefinitionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataClassDefinition";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateSchemaAttributeDefinition()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SchemaAttributeDefinition";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "assetGUID";
-        final String attribute1Description     = "Unique identifier for the analyzed asset.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateRelationshipAnnotation()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "RelationshipAnnotation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "discoveryReportGUID";
-        final String attribute1Description     = "Unique identifier for the discovery analysis report that this relationship belongs to.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
 
 }
 

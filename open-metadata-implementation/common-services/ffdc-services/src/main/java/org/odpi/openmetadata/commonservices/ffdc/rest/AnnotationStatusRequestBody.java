@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 
 import java.util.Objects;
 

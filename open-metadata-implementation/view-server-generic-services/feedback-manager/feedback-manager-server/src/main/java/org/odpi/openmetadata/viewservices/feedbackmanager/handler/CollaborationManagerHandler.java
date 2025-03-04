@@ -46,7 +46,7 @@ public class CollaborationManagerHandler
 
 
     /**
-     * Create a new client with no authentication embedded in the HTTP request.
+     * Create a new client.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services

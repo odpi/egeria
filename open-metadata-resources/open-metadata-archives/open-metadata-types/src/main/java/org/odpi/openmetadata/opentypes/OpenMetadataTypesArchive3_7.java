@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -181,26 +180,13 @@ public class OpenMetadataTypesArchive3_7
     {
         this.archiveBuilder.addRelationshipDef(getDeployedOnRelationship());
         this.archiveBuilder.addRelationshipDef(getOperatingPlatformUseRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSoftwareServerPlatformDeploymentRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSoftwareServerDeploymentRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateHostOperatingPlatformRelationship());
     }
 
 
     private RelationshipDef getDeployedOnRelationship()
     {
-        final String guid            = OpenMetadataType.DEPLOYED_ON.typeGUID;
-        final String name            = OpenMetadataType.DEPLOYED_ON.typeName;
-        final String description     = OpenMetadataType.DEPLOYED_ON.description;
-        final String descriptionGUID = OpenMetadataType.DEPLOYED_ON.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DEPLOYED_ON.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DEPLOYED_ON,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -208,12 +194,11 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
         final String                     end1AttributeName            = "deployedElement";
         final String                     end1AttributeDescription     = "IT infrastructure deployed to this asset.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -239,29 +224,12 @@ public class OpenMetadataTypesArchive3_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_TIME.name,
-                                                         OpenMetadataProperty.DEPLOYMENT_TIME.description,
-                                                         OpenMetadataProperty.DEPLOYMENT_TIME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYER.name,
-                                                           OpenMetadataProperty.DEPLOYER.description,
-                                                           OpenMetadataProperty.DEPLOYER.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYER_TYPE_NAME.name,
-                                                           OpenMetadataProperty.DEPLOYER_TYPE_NAME.description,
-                                                           OpenMetadataProperty.DEPLOYER_TYPE_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name,
-                                                           OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.description,
-                                                           OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(OperationalStatus.getOpenTypeName(),
-                                                         OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                         OpenMetadataProperty.OPERATIONAL_STATUS.description,
-                                                         OpenMetadataProperty.OPERATIONAL_STATUS.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_PROPERTY_NAME));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.OPERATIONAL_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -272,12 +240,8 @@ public class OpenMetadataTypesArchive3_7
 
     private RelationshipDef getOperatingPlatformUseRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.OPERATING_PLATFORM_USE.typeGUID,
-                                                                                OpenMetadataType.OPERATING_PLATFORM_USE.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.OPERATING_PLATFORM_USE,
                                                                                 null,
-                                                                                OpenMetadataType.OPERATING_PLATFORM_USE.description,
-                                                                                OpenMetadataType.OPERATING_PLATFORM_USE.descriptionGUID,
-                                                                                OpenMetadataType.OPERATING_PLATFORM_USE.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -285,12 +249,11 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.OPERATING_PLATFORM.typeName;
         final String                     end1AttributeName            = "operatingPlatforms";
         final String                     end1AttributeDescription     = "Software installed.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPERATING_PLATFORM.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -353,57 +316,6 @@ public class OpenMetadataTypesArchive3_7
 
         return relationshipDef;
     }
-
-    private TypeDefPatch deprecateSoftwareServerPlatformDeploymentRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SoftwareServerPlatformDeployment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateSoftwareServerDeploymentRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SoftwareServerDeployment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateHostOperatingPlatformRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "HostOperatingPlatform";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
 
 
     /*
@@ -519,18 +431,8 @@ public class OpenMetadataTypesArchive3_7
 
     private RelationshipDef addAssociatedLogRelationship()
     {
-        final String guid            = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;

@@ -157,92 +157,13 @@ public class OpenMetadataTypesArchive2_11
         /*
          * Calls for new and changed types go here
          */
-        update0010BaseModel();
         update0050ApplicationsAndProcesses();
-        update0380SubjectArea();
         update04xxGovernanceDefinitions();
         update0530TabularSchema();
-        update0531DocumentSchema();
         update0534RelationalSchema();
         update0535EventSchemas();
         update0536APISchemas();
         update0537DisplaySchemas();
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Mark deprecated field in Asset
-     */
-    private void update0010BaseModel()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateAsset());
-    }
-
-    /**
-     * Deprecate the ownership properties - use Ownership classification instead
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateAsset()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "owner";
-        final String attribute1Description     = "Deprecated Attribute. Person, team or engine responsible for this type of action. Use Ownership classification";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "ownerType";
-        final String attribute2Description     = "Deprecated Attribute. Type of element representing the owner. Use Ownership classification";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "zoneMembership";
-        final String attribute3Description     = "Deprecated Attribute. The list of zones that this asset belongs to. Use AssetZoneMembership classification";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "latestChange";
-        final String attribute4Description     = "Deprecated Attribute. Description of the last change to the asset's metadata. Use LatestChange classification";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
-                                                                attribute3Description,
-                                                                attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
     }
 
 
@@ -271,18 +192,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addAPIManagerEntity()
     {
-        final String guid            = OpenMetadataType.API_MANAGER.typeGUID;
-        final String name            = OpenMetadataType.API_MANAGER.typeName;
-        final String description     = OpenMetadataType.API_MANAGER.description;
-        final String descriptionGUID = OpenMetadataType.API_MANAGER.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.API_MANAGER.wikiURL;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.API_MANAGER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
 
     }
 
@@ -294,133 +205,11 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addEventBrokerEntity()
     {
-        final String guid            = OpenMetadataType.EVENT_BROKER.typeGUID;
-        final String name            = OpenMetadataType.EVENT_BROKER.typeName;
-        final String description     = OpenMetadataType.EVENT_BROKER.description;
-        final String descriptionGUID = OpenMetadataType.EVENT_BROKER.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.EVENT_BROKER.wikiURL;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EVENT_BROKER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
 
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0380SubjectArea()
-
-    {
-        this.archiveBuilder.addRelationshipDef(addIsATypeOfRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateTermIsATypeOfRelationship());
-    }
-
-    /**
-     * Defines an inheritance relationship between two spine objects. It provides a type for a Spine Object.
-     * @return RelationshipDef
-     */
-    private RelationshipDef addIsATypeOfRelationship()
-    {
-        final String guid            = "9b6a91b5-a339-4245-b208-040805f95a75";
-        final String name            = "IsATypeOfRelationship";
-        final String description     = "Defines an inheritance relationship between two spine objects.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "Inherited";
-        final String                     end1AttributeDescription     = "Inherited (Subtypes) for this object.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "InheritedFrom";
-        final String                     end2AttributeDescription     = "Inherited from type (Supertypes) for this object.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute2Name            = "status";
-        final String attribute2Description     = "The status of or confidence in the relationship.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-
-    }
-    /**
-     * Deprecate the TermIsATypeOfRelationship - use TermTypeOFRelationship
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateTermIsATypeOfRelationship()
-    {
-        final String typeName = "TermISATypeOFRelationship";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -505,26 +294,11 @@ public class OpenMetadataTypesArchive2_11
 
 
     /**
-     * The TabularColumnType only allows for a column to be primitive - could be a literal - so deprecate.
      * Add TabularFileColumn to be able to distinguish between a tabular column in a file and a relational column
      */
     private void update0530TabularSchema()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateTabularColumnType());
         this.archiveBuilder.addEntityDef(addTabularFileColumnEntity());
-    }
-
-    private TypeDefPatch deprecateTabularColumnType()
-    {
-        final String typeName = "TabularColumnType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
 
@@ -540,63 +314,6 @@ public class OpenMetadataTypesArchive2_11
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_COLUMN.typeName));
 
     }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Deprecate the specialist SchemaTypes for documents since the offer little value.
-     */
-    private void update0531DocumentSchema()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateSimpleDocumentType());
-        this.archiveBuilder.addTypeDefPatch(deprecateStructDocumentType());
-        this.archiveBuilder.addTypeDefPatch(deprecateMapDocumentType());
-    }
-
-    private TypeDefPatch deprecateSimpleDocumentType()
-    {
-        final String typeName = "SimpleDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateStructDocumentType()
-    {
-        final String typeName = "StructDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateMapDocumentType()
-    {
-        final String typeName = "MapDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

@@ -7691,7 +7691,7 @@ public class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DATA_FIELD_NAME_PROPERTY_NAME,
+                                                       OpenMetadataProperty.DATA_FIELD_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -7713,7 +7713,7 @@ public class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DATA_FIELD_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.DATA_FIELD_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -7735,7 +7735,7 @@ public class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DATA_FIELD_DESCRIPTION_PROPERTY_NAME,
+                                                       OpenMetadataProperty.DATA_FIELD_DESCRIPTION.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -7757,7 +7757,7 @@ public class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringArrayProperty(serviceName,
-                                                            OpenMetadataType.DATA_FIELD_ALIASES_PROPERTY_NAME,
+                                                            OpenMetadataProperty.DATA_FIELD_ALIASES.name,
                                                             elementProperties,
                                                             methodName);
         }

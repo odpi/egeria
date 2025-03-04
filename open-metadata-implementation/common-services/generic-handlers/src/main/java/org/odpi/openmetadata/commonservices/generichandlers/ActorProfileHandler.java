@@ -1073,8 +1073,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                             supplementaryEntities.add(entity);
                         }
                     }
-                    else if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName)) ||
-                             (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName)))
+                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.types;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 
+import javax.xml.crypto.Data;
+
 /**
  * Provides the definition for all properties defined in the open metadata types.
  */
@@ -278,16 +280,6 @@ public enum OpenMetadataProperty
     SAMPLING_METHOD("samplingMethod", DataType.STRING.getName(), "Description of the technique used to create the sample.", null, "1cb00437-adde-4b71-a655-f736f2c8989d"),
 
     /**
-     * The relationship of element that has been changed to the anchor.
-     */
-    CHANGE_TARGET("changeTarget", "LatestChangeTarget", "The relationship to the anchor that the changed element has.", null, "b3a4c3c0-f17f-4380-848a-6c6d985c2dd3"),
-
-    /**
-     * The type of change.
-     */
-    CHANGE_ACTION("changeAction", "LatestChangeAction", "The type of change.", null, "365c4667-b86a-445f-860b-dc35eac917f2"),
-
-    /**
      * The name of the associated classification.
      */
     CLASSIFICATION_NAME("classificationName", DataType.STRING.getName(), "The name of the associated classification.", "Ownership", "ef2169c4-c8f3-48b0-9051-cfb2bbb1e5f2"),
@@ -530,9 +522,54 @@ public enum OpenMetadataProperty
     ALLOWS_DUPLICATE_VALUES("allowsDuplicateValues", DataType.BOOLEAN.getName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "67a94396-93ca-4a20-94a8-78538bacaa65"),
 
     /**
+     * When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.
+     */
+    UNIQUE_VALUES("uniqueValues", DataType.BOOLEAN.getName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "a93093de-6817-43ee-ae5a-8625e8366cac"),
+
+    /**
      * When multiple occurrences are allowed, indicates whether the values are ordered or not.
      */
     ORDERED_VALUES("orderedValues", DataType.BOOLEAN.getName(), "When multiple occurrences are allowed, indicates whether the values are ordered or not.", null, "3e136e52-5afe-49ae-9e18-b88368e83ab8"),
+
+    /**
+     * Is it possible to follow the link in this direction.
+     */
+    NAVIGABLE("navigable", DataType.BOOLEAN.getName(), "Is it possible to follow the link in this direction.", null, "214c098b-ccea-4068-abe2-ab3d95368990"),
+
+    /**
+     * Usage and lifecycle for this connection between the concept bead and the link.
+     */
+    DECORATION("decoration", ConceptModelDecoration.getOpenTypeName(), "Usage and lifecycle for this connection between the concept bead and the link.", ConceptModelDecoration.AGGREGATION.getName(), "3f986ca0-c8f6-41b7-9693-53d4d228de3e"),
+
+    /**
+     * Name of processing class that can identify the data class.
+     */
+    CLASS_CODE("classCode", DataType.STRING.getName(), "Name of processing class that can identify the data class.", null, "d7703ea1-4ffb-4467-bead-a21ce78fdf31"),
+
+    /**
+     * Defined by owning organization rather than vendor.
+     */
+    USER_DEFINED("userDefined", DataType.STRING.getName(), "Defined by owning organization rather than vendor.", null, "744eeb61-4ceb-484c-84ae-c86b38624bd9"),
+
+    /**
+     * Parsing string used to identify values of this data class.
+     */
+    SPECIFICATION("specification", DataType.STRING.getName(), "Parsing string used to identify values of this data class.", null, "52ee0c75-41b8-4f7b-8369-6768058c30f5"),
+
+    /**
+     * Additional properties used in the specification.
+     */
+    SPECIFICATION_DETAILS("specificationDetails", DataType.MAP_STRING_STRING.getName(), "Additional properties used in the specification.", null, "fa18daee-00e0-43b7-9eca-509b9ff6e769"),
+
+    /**
+     * Match threshold that a data field is expected to achieve to be assigned this data class.
+     */
+    DEFAULT_THRESHOLD("defaultThreshold", DataType.FLOAT.getName(), "Match threshold that a data field is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
+
+    /**
+     * Technical name (no spaces) that can be used in artifact generation.
+     */
+    TECHNICAL_NAME("technicalName", DataType.STRING.getName(), "Technical name (no spaces) that can be used in artifact generation.", null, "fce3a665-be7e-45ec-ab08-6fcbd90f8ea0"),
 
     /**
      * Initial value for the attribute (overriding the default value of its type.
@@ -673,7 +710,7 @@ public enum OpenMetadataProperty
     /**
      * Date/time that work is expected to be complete for this element.
      */
-    PLANNED_END_DATE("startDate", DataType.DATE.getName(), "Date/time that work is expected to be complete for this element.", null, "330ae312-1e88-4c7b-810e-4b4a50e540e8"),
+    PLANNED_END_DATE("plannedEndDate", DataType.DATE.getName(), "Date/time that work is expected to be complete for this element.", null, "330ae312-1e88-4c7b-810e-4b4a50e540e8"),
 
     /**
      * Date/time that work stopped on this element.
@@ -1054,7 +1091,7 @@ public enum OpenMetadataProperty
     /**
      * Describes how the software capability uses the asset.
      */
-    USE_TYPE("useType", "ServerAssetUseType", "Describes how the software capability uses the asset.", "OWNS", "a8cfffa4-a761-4fe0-be8b-6be43ac55020"),
+    USE_TYPE("useType", ServerAssetUseType.getOpenTypeName(), "Describes how the software capability uses the asset.", "OWNS", "a8cfffa4-a761-4fe0-be8b-6be43ac55020"),
 
     /**
      * Maximum number of running asset instances controlled by the software capability.
@@ -1119,7 +1156,17 @@ public enum OpenMetadataProperty
     /**
      * Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.
      */
-    KEY_PATTERN("keyPattern", "KeyPattern", "Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.", null, "a8805753-865d-4860-ab95-1e83c3eaf01d"),
+    KEY_PATTERN("keyPattern", KeyPattern.getOpenTypeName(), "Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.", null, "a8805753-865d-4860-ab95-1e83c3eaf01d"),
+
+    /**
+     * The relationship of element that has been changed to the anchor.
+     */
+    CHANGE_TARGET("changeTarget", LatestChangeTarget.getOpenTypeName(), "The relationship to the anchor that the changed element has.", null, "b3a4c3c0-f17f-4380-848a-6c6d985c2dd3"),
+
+    /**
+     * The type of change.
+     */
+    CHANGE_ACTION("changeAction", LatestChangeAction.getOpenTypeName(), "The type of change.", null, "365c4667-b86a-445f-860b-dc35eac917f2"),
 
     /**
      * Guidance on how the element should be used.
@@ -1329,9 +1376,34 @@ public enum OpenMetadataProperty
     SORT_ORDER("sortOrder", DataItemSortOrder.getOpenTypeName(),DataItemSortOrder.getOpenTypeDescription(), DataItemSortOrder.ASCENDING.getName(), "645fd9ac-530d-4351-ab6b-73a999332a78"),
 
     /**
+     * Display name the data field.
+     */
+    DATA_FIELD_NAME("dataFieldName", DataType.STRING.getName(), "Display name the data field.", null, "5277a97f-30d2-4641-8e4b-b8f2df055cf2"),
+
+    /**
+     * Type name for the data field.
+     */
+    DATA_FIELD_TYPE("dataFieldType", DataType.STRING.getName(), "Type name for the data field.", null, "1ef7dd62-9699-4be3-b7bd-c502b8b4ad6e"),
+
+    /**
+     * Optional descriptive information about a data field.
+     */
+    DATA_FIELD_DESCRIPTION("dataFieldDescription", DataType.STRING.getName(), "Optional descriptive information about a data field.", null, "6b0dc761-336d-4e99-83c8-f5d318d61923"),
+
+    /**
+     * Optional list of aliases for the data field.
+     */
+    DATA_FIELD_ALIASES("dataFieldAliases", DataType.ARRAY_STRING.getName(), "Optional list of aliases for the data field.", null, "9ffadf7f-a549-4fa2-a079-815f2283bfdc"),
+
+    /**
      * Defines the suggested order that data values in this data item should be sorted by.
      */
     DATA_FIELD_SORT_ORDER("dataFieldSortOrder", DataItemSortOrder.getOpenTypeName(),DataItemSortOrder.getOpenTypeDescription(), DataItemSortOrder.ASCENDING.getName(), "a5458a7b-4736-4df1-9e93-42867c65f8fe"),
+
+    /**
+     * Positional order of the data field with its parent data field.
+     */
+    DATA_FIELD_POSITION("dataFieldPosition", DataType.INT.getName(), "Positional order of the data field with its parent data field.", null, "9d1d6f8c-0a97-47fe-aadd-1a001b0f663a"),
 
     /**
      * Defines the current status of an incident report.
@@ -2728,6 +2800,66 @@ public enum OpenMetadataProperty
      * Additional values for additional columns or fields in the reference data store.
      */
     ADDITIONAL_VALUES("additionalValues", DataType.MAP_STRING_STRING.getName(), "Additional values for additional columns or fields in the reference data store.", null, "59e020b4-a4f3-4a80-91e9-e08948a8578a"),
+
+    /**
+     * Method used to identify data class.
+     */
+    METHOD("method", DataType.STRING.getName(), "Method used to identify data class.", null, "116e6410-ced9-4825-8ec1-e06741304a98"),
+
+    /**
+     * Are there data values outside the data class specification?
+     */
+    PARTIAL_MATCH("partialMatch", DataType.BOOLEAN.getName(), "Are there data values outside the data class specification?", null, "2968daf0-7b53-4c9d-ae2b-01f6b1f6c287"),
+
+    /**
+     * What was the threshold result used to determine that the data class matched.
+     */
+    THRESHOLD("threshold", DataType.FLOAT.getName(), "What was the threshold result used to determine that the data class matched.", null, "af41954a-2c59-41f6-b70f-2dd55297a8f8"),
+
+    /**
+     * How often does the data class specification match the data values.
+     */
+    VALUE_FREQUENCY("valueFrequency", DataType.LONG.getName(), "How often does the data class specification match the data values.", null, "e4f0e4bc-9ca7-490e-8b88-e21cafb7b207"),
+
+    /**
+     * Description of the situation where this pattern may be useful.
+     */
+    CONTEXT("context", DataType.STRING.getName(), "Description of the situation where this pattern may be useful.", null, "08fc2def-98f5-4f32-bc4d-8b75fb044872"),
+
+    /**
+     * Description of the aspects of the situation that make the problem hard to solve.
+     */
+    FORCES("forces", DataType.ARRAY_STRING.getName(), "Description of the aspects of the situation that make the problem hard to solve.", null, "26959b3a-50d7-4085-af0b-9bb40f35e69d"),
+
+    /**
+     * Description of the types of problem that this design pattern provides a solution to.
+     */
+    PROBLEM_STATEMENT("problemStatement", DataType.STRING.getName(), "Description of the types of problem that this design pattern provides a solution to.", null, "dc09958e-de1e-4340-88e4-e2b6fee777c0"),
+
+    /**
+     * One or more examples of the problem and its consequences.
+     */
+    PROBLEM_EXAMPLE("problemExample", DataType.STRING.getName(), "One or more examples of the problem and its consequences.", null, "42ca6fc4-6991-4b23-a88f-b2bd80265317"),
+
+    /**
+     * Description of how the solution works.
+     */
+    SOLUTION_DESCRIPTION("solutionDescription", DataType.STRING.getName(), "Description of how the solution works.", null, "d4927930-dd6f-4736-8b3c-7b53cbb2bbd4"),
+
+    /**
+     * Illustrations of how the solution resolves the problem examples.
+     */
+    SOLUTION_EXAMPLE("solutionExample", DataType.STRING.getName(), "Illustrations of how the solution resolves the problem examples.", null, "2afac311-4018-41bf-8881-bca9236f7a49"),
+
+    /**
+     * The positive outcomes from using this pattern.
+     */
+    BENEFITS("benefits", DataType.ARRAY_STRING.getName(), "The positive outcomes from using this pattern.", null, "03a8bad1-e763-4473-9aa9-516806e8e901"),
+
+    /**
+     * The additional issues that need to be considered when using this pattern.
+     */
+    LIABILITIES("liabilities", DataType.ARRAY_STRING.getName(), "The additional issues that need to be considered when using this pattern.", null, "c3d38415-80a9-44b4-9d7c-c6316c23ab17"),
 
     ;
 

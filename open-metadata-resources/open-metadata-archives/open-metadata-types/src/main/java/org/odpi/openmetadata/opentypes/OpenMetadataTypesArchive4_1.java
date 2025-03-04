@@ -179,7 +179,6 @@ public class OpenMetadataTypesArchive4_1
     private void update0010BasicModel()
     {
         this.archiveBuilder.addRelationshipDef(getSampleDataRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateProcess());
     }
 
 
@@ -236,40 +235,6 @@ public class OpenMetadataTypesArchive4_1
 
         return relationshipDef;
     }
-
-
-    /**
-     * Remove displayName from process - it was added in error - use name property instead.
-     *
-     * @return type def patch
-     */
-    private TypeDefPatch updateProcess()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = OpenMetadataType.PROCESS.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -372,7 +337,6 @@ public class OpenMetadataTypesArchive4_1
     {
         this.archiveBuilder.addClassificationDef(getEditingGlossaryClassification());
         this.archiveBuilder.addClassificationDef(getStagingGlossaryClassification());
-        this.archiveBuilder.addTypeDefPatch(deprecateGlossaryTermEvolution());
         this.archiveBuilder.addTypeDefPatch(updateGlossaryTermEntity());
     }
 
@@ -413,22 +377,6 @@ public class OpenMetadataTypesArchive4_1
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
-    }
-
-    private TypeDefPatch deprecateGlossaryTermEvolution()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GlossaryTermEvolution";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
     }
 
     private TypeDefPatch updateGlossaryTermEntity()
@@ -562,22 +510,9 @@ public class OpenMetadataTypesArchive4_1
 
     private void update504ImplementationSnippets()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateSchemaTypeSnippet());
         this.archiveBuilder.addRelationshipDef(getAssociatedSnippetRelationship());
     }
 
-    private TypeDefPatch deprecateSchemaTypeSnippet()
-    {
-        final String typeName = "SchemaTypeSnippet";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
 
     private RelationshipDef getAssociatedSnippetRelationship()
     {

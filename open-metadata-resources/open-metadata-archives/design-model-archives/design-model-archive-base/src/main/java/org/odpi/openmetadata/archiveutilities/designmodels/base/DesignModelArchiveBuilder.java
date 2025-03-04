@@ -51,13 +51,13 @@ public class DesignModelArchiveBuilder
     private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
-    private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "IsATypeOfRelationship";
+    private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "TermISATYPEOFRelationship";
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
     private static final String QUALIFIED_NAME_PROPERTY  = "qualifiedName";
     private static final String DISPLAY_NAME_PROPERTY    = "displayName";
-    private static final String NAME_PROPERTY            = "Name";
+    private static final String NAME_PROPERTY            = "name";
     private static final String EXAMPLES_PROPERTY        = "examples";
     private static final String TECHNICAL_NAME_PROPERTY  = "technicalName";
     private static final String DESCRIPTION_PROPERTY     = "description";
