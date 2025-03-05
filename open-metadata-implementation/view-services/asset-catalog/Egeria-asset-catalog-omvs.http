@@ -1,7 +1,7 @@
 # Egeria-asset-catalog-omvs
 
 @baseURL=https://localhost:9443
-@viewServer=qs-view-server
+@viewServer=view-server
 
 ###
 # =====================================================================================================================
