@@ -24,6 +24,7 @@ Content-Type: application/json
 
 @assetGUID=put guid here
 
+
 ###
 # @name=getAssetGraph
 # Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
@@ -46,7 +47,7 @@ Content-Type: application/json
 
 
 ###
-# @name=getAssetLineageGraph
+# @name=getAssetLineageGraph - all of the parameters
 # Return all the elements that are linked to an asset using lineage relationships.  The relationships are
 # retrieved both from the asset, and the anchored schema elements.
 #
@@ -55,7 +56,67 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-["DataContentForDataSet"]
+{
+  "effectiveTime" : "{{isoTimestamp}}",
+  "asOfTime": "{{isoTimestamp}}",
+  "relationshipTypes" : ["DataContentForDataSet"],
+  "limitToISCQualifiedName": "",
+  "highlightISCQualifiedName": ""
+}
+
+###
+# @name get the GUID for a named asset
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "System:coco-sus",
+  "namePropertyName" : "qualifiedName"
+}
+
+> {% client.global.set("cocoSusGUID", response.body.guid); %}
+
+###
+# @name=getAssetLineageGraph coco-sus - local supply chain
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limitToISCQualifiedName": "InformationSupplyChain:Sustainability Reporting"
+}
+
+###
+# @name=getAssetLineageGraph coco-sus - highlight sustainability
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "highlightISCQualifiedName": "InformationSupplyChain:Sustainability Reporting"
+}
+
+###
+# @name=getAssetLineageGraph coco-sus - full graph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 
 ###
 # @name=findAssetsInDomain

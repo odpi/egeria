@@ -95,6 +95,57 @@ public class FindPropertyNameProperties extends FindRequest
     }
 
 
+    /*
+     * Provided for backward compatibility with original request (used to use NameRequestBody which did not
+     * support all of the parameters needed.
+     */
+
+    /**
+     * Return the name for the query request.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return propertyValue;
+    }
+
+
+    /**
+     * Set up the name for the query request.
+     *
+     * @param name string
+     */
+    public void setName(String name)
+    {
+        this.propertyValue = name;
+    }
+
+
+
+    /**
+     * Return the property name from the open metadata types.
+     *
+     * @return string name
+     */
+    public String getNamePropertyName()
+    {
+        return propertyName;
+    }
+
+
+    /**
+     * Set up the property name from the open metadata types.
+     *
+     * @param namePropertyName string
+     */
+    public void setNamePropertyName(String namePropertyName)
+    {
+        this.propertyName = namePropertyName;
+    }
+
+
+
     /**
      * Standard toString method.
      *
