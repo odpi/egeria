@@ -56,9 +56,9 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                     }
 
                     appendNewMermaidNode(currentNodeName,
-                                             currentDisplayName,
-                                             node.getElementHeader().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                         currentDisplayName,
+                                         node.getElementHeader().getType().getTypeName(),
+                                         VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
                 }
             }
 
