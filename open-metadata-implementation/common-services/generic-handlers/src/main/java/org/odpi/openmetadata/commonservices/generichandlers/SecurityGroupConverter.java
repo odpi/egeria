@@ -82,7 +82,7 @@ public class SecurityGroupConverter<B> extends OMFConverter<B>
                     securityGroupProperties.setTitle(this.removeTitle(instanceProperties));
                     securityGroupProperties.setScope(this.removeScope(instanceProperties));
                     securityGroupProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    securityGroupProperties.setPriority(this.removeImportance(instanceProperties));
+                    securityGroupProperties.setImportance(this.removeImportance(instanceProperties));
                     securityGroupProperties.setOutcomes(this.removeOutcomes(instanceProperties));
                     securityGroupProperties.setResults(this.removeResults(instanceProperties));
                     securityGroupProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));

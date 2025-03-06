@@ -14,6 +14,8 @@ public enum VisualStyle
     ANCHOR_ASSET(Colour.BLACK.getColourNumber(), Colour.MUSTARD.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
     ANCHORED_ELEMENT(Colour.WHITE.getColourNumber(), Colour.EGERIA_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
     LINKED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
+    LINEAGE_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
+
 
     INFORMATION_SUPPLY_CHAIN(Colour.WHITE.getColourNumber(), Colour.SLATE.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "flip-tri"),
     INFORMATION_SUPPLY_CHAIN_SEG(Colour.SLATE.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), Colour.SLATE.getColourNumber(), "hex"),
@@ -34,6 +36,17 @@ public enum VisualStyle
     INSIGHT_MODEL_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "stadium"),
 
     SOLUTION_PORT(Colour.WHITE.getColourNumber(), Colour.MAUVE.getColourNumber(), Colour.PINKY.getColourNumber(), "delay"),
+
+    GOVERNANCE_ACTION_PROCESS(Colour.WHITE.getColourNumber(), Colour.TEAL.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-rect"),
+    GOVERNANCE_ACTION_PROCESS_STEP(Colour.WHITE.getColourNumber(), Colour.PINK.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
+
+
+    GOVERNANCE_DEFINITION(Colour.BLACK.getColourNumber(), Colour.GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
+    SUPPORTING_GOVERNANCE_DEFINITION(Colour.BLACK.getColourNumber(), Colour.LIGHT_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
+    GOVERNANCE_METRIC(Colour.BLACK.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-pent"),
+    EXTERNAL_REFERENCES(Colour.BLACK.getColourNumber(), Colour.YELLOW.getColourNumber(), Colour.BLACK.getColourNumber(), "lin-doc"),
+    GOVERNED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
+
 
     ;
 

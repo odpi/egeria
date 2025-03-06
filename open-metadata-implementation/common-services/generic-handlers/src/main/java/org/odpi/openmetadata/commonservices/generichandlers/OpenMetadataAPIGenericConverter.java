@@ -4508,6 +4508,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the "implications" property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string list or null
+     */
+    protected List<String> removeImplications(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeImplications";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataProperty.IMPLICATIONS.name,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the "results" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

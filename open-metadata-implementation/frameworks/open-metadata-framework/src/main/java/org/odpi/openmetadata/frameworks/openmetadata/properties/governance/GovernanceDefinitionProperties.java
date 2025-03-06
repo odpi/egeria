@@ -52,21 +52,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceDefinitionProperties
 {
-    private String                           documentIdentifier   = null;
-    private Map<String, String>              additionalProperties = null;
+    private String              documentIdentifier   = null;
+    private Map<String, String> additionalProperties = null;
+    private String              title                = null;
+    private String              summary              = null;
+    private String              description          = null;
+    private String              scope                = null;
+    private int                 domainIdentifier     = 0;
+    private String              importance           = null;
+    private List<String>        implications         = null;
+    private List<String>        outcomes             = null;
+    private List<String>        results              = null;
 
-    private String                           title                = null;
-    private String                           summary              = null;
-    private String                           description          = null;
-    private String                           scope                = null;
-    private int                              domainIdentifier     = 0;
-    private String                           priority             = null;
-    private List<String>                     implications         = null;
-    private List<String>                     outcomes             = null;
-    private List<String>                     results              = null;
-
-    private String                           typeName             = null;
-    private Map<String, Object>              extendedProperties   = null;
+    private String              typeName           = null;
+    private Map<String, Object> extendedProperties = null;
 
 
     /**
@@ -94,8 +93,8 @@ public class GovernanceDefinitionProperties
             this.description = template.getDescription();
             this.scope = template.getScope();
             this.domainIdentifier = template.getDomainIdentifier();
-            this.priority = template.getPriority();
-            this.implications = template.getImplications();
+            this.importance       = template.getImportance();
+            this.implications     = template.getImplications();
             this.outcomes = template.getOutcomes();
             this.results = template.getResults();
             this.typeName = template.getTypeName();
@@ -317,9 +316,9 @@ public class GovernanceDefinitionProperties
      *
      * @return String priority
      */
-    public String getPriority()
+    public String getImportance()
     {
-        return priority;
+        return importance;
     }
 
 
@@ -327,11 +326,11 @@ public class GovernanceDefinitionProperties
      * Set up the priority of this governance definition.  This may be something like high, medium or low,
      * or maybe a time frame or more detailed explanation.
      *
-     * @param priority String priority
+     * @param importance String priority
      */
-    public void setPriority(String priority)
+    public void setImportance(String importance)
     {
-        this.priority = priority;
+        this.importance = importance;
     }
 
 
@@ -421,7 +420,7 @@ public class GovernanceDefinitionProperties
                        ", description='" + description + '\'' +
                        ", scope='" + scope + '\'' +
                        ", domainIdentifier=" + domainIdentifier +
-                       ", priority='" + priority + '\'' +
+                       ", priority='" + importance + '\'' +
                        ", implications=" + implications +
                        ", outcomes=" + outcomes +
                        ", results=" + results +
@@ -456,7 +455,7 @@ public class GovernanceDefinitionProperties
                        Objects.equals(summary, that.summary) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(scope, that.scope) &&
-                       Objects.equals(priority, that.priority) &&
+                       Objects.equals(importance, that.importance) &&
                        Objects.equals(implications, that.implications) &&
                        Objects.equals(outcomes, that.outcomes) &&
                        Objects.equals(results, that.results) &&
@@ -473,7 +472,7 @@ public class GovernanceDefinitionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, priority,
+        return Objects.hash(documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, importance,
                             implications, outcomes, results, typeName, extendedProperties);
     }
 }

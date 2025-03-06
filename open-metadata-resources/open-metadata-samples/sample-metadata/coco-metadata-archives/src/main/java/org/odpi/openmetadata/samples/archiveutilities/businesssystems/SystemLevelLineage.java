@@ -89,6 +89,11 @@ public enum SystemLevelLineage
                                InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
                                SystemDefinition.MANUFACTURING_PLANNING),
 
+    WINCH_MANUFACTURING_REQUEST(SystemDefinition.MANUFACTURING_PLANNING,
+                              OpenMetadataType.DATA_FLOW.typeName,
+                              "manufacturing request",
+                              null,
+                              SystemDefinition.WINCH_MANUFACTURING_CONTROL),
     WINCH_MANUFACTURING_GOODS_REQUEST(SystemDefinition.WINCH_MANUFACTURING_CONTROL,
                                       OpenMetadataType.DATA_FLOW.typeName,
                                       "goods request",
@@ -113,6 +118,11 @@ public enum SystemLevelLineage
                                  InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
                                  SystemDefinition.MANUFACTURING_PLANNING),
 
+    ED_MANUFACTURING_REQUEST(SystemDefinition.MANUFACTURING_PLANNING,
+                              OpenMetadataType.DATA_FLOW.typeName,
+                              "manufacturing request",
+                              null,
+                              SystemDefinition.ED_MANUFACTURING_CONTROL),
     ED_MANUFACTURING_GOODS_REQUEST(SystemDefinition.ED_MANUFACTURING_CONTROL,
                                    OpenMetadataType.DATA_FLOW.typeName,
                                    "goods request",
@@ -250,25 +260,25 @@ public enum SystemLevelLineage
 
     HAZMAT_SUS(SystemDefinition.HAZ_MAT,
                OpenMetadataType.DATA_FLOW.typeName,
-               "publish hazmat",
+               "publish hazmat levels",
                InformationSupplyChain.SUSTAINABILITY_REPORTING.getQualifiedName(),
                SystemDefinition.COCO_SUS),
 
     HAZMAT_SUS_AUS(SystemDefinition.AUS_HAZ_MAT,
                    OpenMetadataType.DATA_FLOW.typeName,
-                   "publish hazmat",
+                   "publish hazmat levels",
                    InformationSupplyChain.SUSTAINABILITY_REPORTING.getQualifiedName(),
                    SystemDefinition.COCO_SUS),
 
     DASHBOARD_QUERY(SystemDefinition.COCO_SUS,
                     OpenMetadataType.DATA_FLOW.typeName,
-                    "data request",
+                    "report request",
                     InformationSupplyChain.SUSTAINABILITY_REPORTING.getQualifiedName(),
                     SystemDefinition.COCO_SUS_DASHBOARDS),
 
     CALCULATOR_QUERY(SystemDefinition.COCO_SUS,
                      OpenMetadataType.DATA_FLOW.typeName,
-                     "data request",
+                     "raw data request",
                      InformationSupplyChain.SUSTAINABILITY_REPORTING.getQualifiedName(),
                      SystemDefinition.COCO_SUS_CALCULATORS),
 

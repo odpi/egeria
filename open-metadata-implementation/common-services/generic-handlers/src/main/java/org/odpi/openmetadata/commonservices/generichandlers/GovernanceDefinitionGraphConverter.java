@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
+import org.odpi.openmetadata.commonservices.mermaid.GovernanceDefinitionMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
@@ -110,9 +111,12 @@ public class GovernanceDefinitionGraphConverter<B> extends OMFConverter<B>
                     governanceDefinitionProperties.setDocumentIdentifier(this.removeQualifiedName(instanceProperties));
                     governanceDefinitionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     governanceDefinitionProperties.setTitle(this.removeTitle(instanceProperties));
+                    governanceDefinitionProperties.setSummary(this.removeSummary(instanceProperties));
+                    governanceDefinitionProperties.setDescription(this.removeDescription(instanceProperties));
                     governanceDefinitionProperties.setScope(this.removeScope(instanceProperties));
                     governanceDefinitionProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    governanceDefinitionProperties.setPriority(this.removeImportance(instanceProperties));
+                    governanceDefinitionProperties.setImportance(this.removeImportance(instanceProperties));
+                    governanceDefinitionProperties.setImplications(this.removeImplications(instanceProperties));
                     governanceDefinitionProperties.setOutcomes(this.removeOutcomes(instanceProperties));
                     governanceDefinitionProperties.setResults(this.removeResults(instanceProperties));
 
@@ -204,6 +208,10 @@ public class GovernanceDefinitionGraphConverter<B> extends OMFConverter<B>
                         {
                             bean.setOthers(others);
                         }
+
+                        GovernanceDefinitionMermaidGraphBuilder graphBuilder = new GovernanceDefinitionMermaidGraphBuilder(bean);
+
+                        bean.setMermaidGraph(graphBuilder.getMermaidGraph());
                     }
                 }
                 else

@@ -99,7 +99,7 @@ public enum SolutionComponentWire
                            new InformationSupplyChainSegment[]{InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT}),
     SUSTAINABILITY_REPORT_DATA_REQUEST(SolutionComponent.SUSTAINABILITY_ODS,
                                        SolutionComponent.SUSTAINABILITY_DASHBOARDS,
-                                       "travel inventory",
+                                       "report request",
                                        "Summaries of the flights and other high-carbon activities made by employees.",
                                        new InformationSupplyChainSegment[]{InformationSupplyChainSegment.DELIVER_SUSTAINABILITY_REPORT}),
 

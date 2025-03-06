@@ -83,7 +83,7 @@ public class GovernanceDefinitionConverter<B> extends AssetManagerOMASConverter<
                     governanceDefinitionProperties.setTitle(this.removeTitle(instanceProperties));
                     governanceDefinitionProperties.setScope(this.removeScope(instanceProperties));
                     governanceDefinitionProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    governanceDefinitionProperties.setPriority(this.removeImportance(instanceProperties));
+                    governanceDefinitionProperties.setImportance(this.removeImportance(instanceProperties));
                     governanceDefinitionProperties.setOutcomes(this.removeOutcomes(instanceProperties));
                     governanceDefinitionProperties.setResults(this.removeResults(instanceProperties));
 
@@ -191,7 +191,7 @@ public class GovernanceDefinitionConverter<B> extends AssetManagerOMASConverter<
                     governanceDefinitionProperties.setTitle(this.removeTitle(instanceProperties));
                     governanceDefinitionProperties.setScope(this.removeScope(instanceProperties));
                     governanceDefinitionProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    governanceDefinitionProperties.setPriority(this.removeImportance(instanceProperties));
+                    governanceDefinitionProperties.setImportance(this.removeImportance(instanceProperties));
                     governanceDefinitionProperties.setOutcomes(this.removeOutcomes(instanceProperties));
                     governanceDefinitionProperties.setResults(this.removeResults(instanceProperties));
 

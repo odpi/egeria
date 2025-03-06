@@ -26,6 +26,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
     private List<RelatedElement>           metrics            = null;
     private List<RelatedElement>           externalReferences = null;
     private List<RelatedElement>           others             = null;
+    private String                         mermaidGraph       = null;
 
 
     /**
@@ -54,6 +55,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
             metrics = template.getMetrics();
             externalReferences = template.getExternalReferences();
             others = template.getOthers();
+            mermaidGraph    = template.getMermaidGraph();
         }
     }
 
@@ -246,6 +248,27 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
 
 
     /**
+     *
+     * @return mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the information supply chain.
+     *
+     * @param mermaidGraph mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return string containing the properties and their values
@@ -263,7 +286,8 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
                        ", metrics=" + metrics +
                        ", externalReferences=" + externalReferences +
                        ", others=" + others +
-                       '}';
+                       ", mermaidGraph='" + mermaidGraph + '\'' +
+                '}';
     }
 
 
@@ -280,7 +304,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
         {
             return true;
         }
-        if (! (objectToCompare instanceof GovernanceDefinitionGraph))
+        if (! (objectToCompare instanceof GovernanceDefinitionGraph that))
         {
             return false;
         }
@@ -288,12 +312,12 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
         {
             return false;
         }
-        GovernanceDefinitionGraph that = (GovernanceDefinitionGraph) objectToCompare;
         return Objects.equals(parents, that.parents) && Objects.equals(peers, that.peers) &&
                        Objects.equals(children, that.children) &&
                        Objects.equals(metrics, that.metrics) &&
                        Objects.equals(others, that.others) &&
-                       Objects.equals(externalReferences, that.externalReferences);
+                       Objects.equals(externalReferences, that.externalReferences) &&
+                       Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -305,6 +329,6 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), parents, peers, children, metrics, externalReferences, others);
+        return Objects.hash(super.hashCode(), parents, peers, children, metrics, externalReferences, others, mermaidGraph);
     }
 }

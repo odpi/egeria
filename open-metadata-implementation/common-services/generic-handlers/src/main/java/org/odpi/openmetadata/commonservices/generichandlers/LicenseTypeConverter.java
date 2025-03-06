@@ -75,7 +75,7 @@ public class LicenseTypeConverter<B> extends OMFConverter<B>
                     licenseTypeProperties.setTitle(this.removeTitle(instanceProperties));
                     licenseTypeProperties.setScope(this.removeScope(instanceProperties));
                     licenseTypeProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    licenseTypeProperties.setPriority(this.removeImportance(instanceProperties));
+                    licenseTypeProperties.setImportance(this.removeImportance(instanceProperties));
                     licenseTypeProperties.setOutcomes(this.removeOutcomes(instanceProperties));
                     licenseTypeProperties.setResults(this.removeResults(instanceProperties));
                     licenseTypeProperties.setDetails(this.removeDetails(instanceProperties));

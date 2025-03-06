@@ -3,12 +3,15 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessGraph;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepExecutionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepLink;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuilderBase
@@ -29,8 +32,15 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
 
         List<String> usedNodeNames = new ArrayList<>();
 
-        String currentNodeName;
-        String currentDisplayName;
+        String currentNodeName = processGraph.getGovernanceActionProcess().getElementHeader().getGUID();
+        String currentDisplayName = processGraph.getGovernanceActionProcess().getProcessProperties().getDisplayName();
+
+        appendNewMermaidNode(currentNodeName,
+                             currentDisplayName,
+                             processGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName(),
+                             VisualStyle.AUTOMATED_PROCESS_SOLUTION_COMPONENT);
+
+        this.addDescription(processGraph.getGovernanceActionProcess());
 
         if (processGraph.getFirstProcessStep() != null)
         {
@@ -77,6 +87,31 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                                             line.getGuard(),
                                             this.removeSpaces(line.getNextProcessStep().getGUID()));
                 }
+            }
+        }
+    }
+
+
+    /**
+     * Add a text boxes with the description of the process (if any)
+     *
+     * @param governanceActionProcessElement element with the potential description
+     */
+    private void addDescription(GovernanceActionProcessElement governanceActionProcessElement)
+    {
+        if (governanceActionProcessElement.getProcessProperties() != null)
+        {
+            if (governanceActionProcessElement.getProcessProperties().getDescription() != null)
+            {
+                String descriptionNodeName = UUID.randomUUID().toString();
+
+                appendNewMermaidNode(descriptionNodeName,
+                                     governanceActionProcessElement.getProcessProperties().getDescription(),
+                                     "Description",
+                                     VisualStyle.DESCRIPTION);
+
+                super.appendInvisibleMermaidLine(governanceActionProcessElement.getElementHeader().getGUID(),
+                                                 descriptionNodeName);
             }
         }
     }

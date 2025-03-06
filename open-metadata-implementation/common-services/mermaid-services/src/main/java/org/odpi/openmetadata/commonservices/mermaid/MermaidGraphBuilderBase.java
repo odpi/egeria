@@ -253,7 +253,7 @@ public class MermaidGraphBuilderBase
     /**
      * Add styling for nodes as requested.  These go at the end of the graph.
      */
-    protected void addStyles()
+    protected void addStyles(Map<String, VisualStyle> nodeColours)
     {
         if (! nodeColours.isEmpty())
         {
@@ -495,7 +495,7 @@ public class MermaidGraphBuilderBase
      */
     public String getMermaidGraph()
     {
-        addStyles();
+        addStyles(nodeColours);
 
         return mermaidGraph.toString();
     }
