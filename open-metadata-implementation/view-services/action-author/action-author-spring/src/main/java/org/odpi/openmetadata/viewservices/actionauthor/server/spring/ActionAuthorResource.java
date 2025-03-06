@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/action-author/overview/"))
 
-public class ActionAuthorResource
+public class  ActionAuthorResource
 {
 
     private final ActionAuthorRESTServices restAPI = new ActionAuthorRESTServices();

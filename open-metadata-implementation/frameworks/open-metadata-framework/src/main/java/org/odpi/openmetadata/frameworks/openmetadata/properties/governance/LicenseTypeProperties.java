@@ -88,7 +88,7 @@ public class LicenseTypeProperties extends GovernanceDefinitionProperties
                        ", description='" + getDescription() + '\'' +
                        ", scope='" + getScope() + '\'' +
                        ", domainIdentifier=" + getDomainIdentifier() +
-                       ", priority='" + getPriority() + '\'' +
+                       ", priority='" + getImportance() + '\'' +
                        ", implications=" + getImplications() +
                        ", outcomes=" + getOutcomes() +
                        ", results=" + getResults() +

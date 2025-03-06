@@ -374,9 +374,10 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<AssetLineageGraphNode>         linkedAssets         = new ArrayList<>();
-            List<AssetLineageGraphRelationship> lineageRelationships = new ArrayList<>();
-            Set<String>                         processedAssets      = new HashSet<>();
+            List<AssetLineageGraphNode>         linkedAssets              = new ArrayList<>();
+            List<AssetLineageGraphRelationship> lineageRelationships      = new ArrayList<>();
+            Set<String>                         upstreamProcessedAssets   = new HashSet<>();
+            Set<String>                         downstreamProcessedAssets = new HashSet<>();
 
             List<String> lineageRelationshipTypeNames    = null;
             String       limitToInformationSupplyChain   = null;
@@ -395,6 +396,7 @@ public class AssetConsumerRESTServices
             
             this.getAssetLineageGraphNodes(userId,
                                            assetGUID,
+                                           0,
                                            lineageRelationshipTypeNames,
                                            limitToInformationSupplyChain,
                                            asOfTime,
@@ -403,7 +405,8 @@ public class AssetConsumerRESTServices
                                            pageSize,
                                            linkedAssets,
                                            lineageRelationships,
-                                           processedAssets,
+                                           upstreamProcessedAssets,
+                                           downstreamProcessedAssets,
                                            assetHandler,
                                            metadataRelationshipHandler.getConverter());
 
@@ -420,6 +423,7 @@ public class AssetConsumerRESTServices
 
                 AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph, highlightInformationSupplyChain);
                 assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+                assetLineageGraph.setEdgeMermaidGraph(graphBuilder.getEdgeMermaidGraph());
 
                 response.setAssetLineageGraph(assetLineageGraph);
             }
@@ -488,6 +492,7 @@ public class AssetConsumerRESTServices
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
+     * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param asOfTime repository time for the query
@@ -497,7 +502,8 @@ public class AssetConsumerRESTServices
      * @param assetHandler handler for retrieving entities/relationships
      * @param linkedAssets set of assets that are upstream of this asset
      * @param lineageRelationships relationships that link the assets together in the lineage graph
-     * @param processedAssets list of assets covered so far
+     * @param upstreamProcessedAssets list of assets covered so far upstream of the asset
+     * @param downstreamProcessedAssets list of assets covered so far downstream of the asset
      * @param converter relationship converter
      * @throws InvalidParameterException invalid parameter - not expected
      * @throws PropertyServerException problem accessing the repository
@@ -505,6 +511,7 @@ public class AssetConsumerRESTServices
      */
     void getAssetLineageGraphNodes(String                                                userId,
                                    String                                                assetGUID,
+                                   int                                                   direction,
                                    List<String>                                          lineageRelationshipTypeNames, 
                                    String                                                limitToInformationSupplyChain, 
                                    Date                                                  asOfTime, 
@@ -513,7 +520,8 @@ public class AssetConsumerRESTServices
                                    int                                                   pageSize,
                                    List<AssetLineageGraphNode>                           linkedAssets,
                                    List<AssetLineageGraphRelationship>                   lineageRelationships,
-                                   Set<String>                                           processedAssets,
+                                   Set<String>                                           upstreamProcessedAssets,
+                                   Set<String>                                           downstreamProcessedAssets,
                                    AssetHandler<AssetElement>                            assetHandler,
                                    OpenMetadataAPIGenericConverter<MetadataRelationship> converter) throws InvalidParameterException,
                                                                                                            PropertyServerException,
@@ -524,6 +532,7 @@ public class AssetConsumerRESTServices
 
         AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
                                                                     assetGUID,
+                                                                    direction,
                                                                     lineageRelationshipTypeNames,
                                                                     limitToInformationSupplyChain,
                                                                     asOfTime,
@@ -537,7 +546,15 @@ public class AssetConsumerRESTServices
 
         if (asset != null)
         {
-            processedAssets.add(asset.getElementHeader().getGUID());
+            if ((direction == 0) || (direction == 1))
+            {
+                downstreamProcessedAssets.add(asset.getElementHeader().getGUID());
+            }
+            if ((direction == 0) || (direction == 2))
+            {
+                upstreamProcessedAssets.add(asset.getElementHeader().getGUID());
+            }
+
             linkedAssets.add(asset);
 
             /*
@@ -566,10 +583,11 @@ public class AssetConsumerRESTServices
 
                 lineageRelationships.add(assetLineageGraphRelationship);
 
-                if (! processedAssets.contains(linkedAssetGUID))
+                if (! upstreamProcessedAssets.contains(linkedAssetGUID))
                 {
                     this.getAssetLineageGraphNodes(userId,
                                                    linkedAssetGUID,
+                                                   2,
                                                    lineageRelationshipTypeNames,
                                                    limitToInformationSupplyChain,
                                                    asOfTime,
@@ -578,7 +596,8 @@ public class AssetConsumerRESTServices
                                                    pageSize,
                                                    linkedAssets,
                                                    lineageRelationships,
-                                                   processedAssets,
+                                                   upstreamProcessedAssets,
+                                                   downstreamProcessedAssets,
                                                    assetHandler,
                                                    converter);
                 }
@@ -610,10 +629,11 @@ public class AssetConsumerRESTServices
 
                 lineageRelationships.add(assetLineageGraphRelationship);
 
-                if (! processedAssets.contains(linkedAssetGUID))
+                if (! downstreamProcessedAssets.contains(linkedAssetGUID))
                 {
                     this.getAssetLineageGraphNodes(userId,
                                                    linkedAssetGUID,
+                                                   1,
                                                    lineageRelationshipTypeNames,
                                                    limitToInformationSupplyChain,
                                                    asOfTime,
@@ -622,7 +642,8 @@ public class AssetConsumerRESTServices
                                                    pageSize,
                                                    linkedAssets,
                                                    lineageRelationships,
-                                                   processedAssets,
+                                                   upstreamProcessedAssets,
+                                                   downstreamProcessedAssets,
                                                    assetHandler,
                                                    converter);
                 }
@@ -636,6 +657,7 @@ public class AssetConsumerRESTServices
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
+     * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param asOfTime repository time for the query
@@ -653,6 +675,7 @@ public class AssetConsumerRESTServices
      */
     AssetLineageGraphNode getAssetLineageGraphNode(String                                                userId,
                                                    String                                                assetGUID,
+                                                   int                                                   direction,
                                                    List<String>                                          lineageRelationshipTypeNames,
                                                    String                                                limitToInformationSupplyChain,
                                                    Date                                                  asOfTime,
@@ -684,6 +707,7 @@ public class AssetConsumerRESTServices
              */
             List<Relationship> relationships = this.getAssetLineageRelationships(userId,
                                                                                  asset.getElementHeader().getGUID(),
+                                                                                 direction,
                                                                                  lineageRelationshipTypeNames,
                                                                                  limitToInformationSupplyChain,
                                                                                  asOfTime,
@@ -941,6 +965,7 @@ public class AssetConsumerRESTServices
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
+     * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param startFrom where to start from in retrieval
      * @param pageSize maximum number of elements to receive
      * @param assetHandler handler for retrieving entities/relationships
@@ -955,6 +980,7 @@ public class AssetConsumerRESTServices
      */
     private List<Relationship> getAssetLineageRelationships(String                     userId,
                                                             String                     assetGUID,
+                                                            int                        direction,
                                                             List<String>               lineageRelationshipTypeNames,
                                                             String                     limitToInformationSupplyChain,
                                                             Date                       asOfTime,
@@ -975,6 +1001,7 @@ public class AssetConsumerRESTServices
                                                                                                          assetGUID,
                                                                                                          assetGUIDParameterName,
                                                                                                          OpenMetadataType.ASSET.typeName,
+                                                                                                         direction,
                                                                                                          lineageRelationshipTypeNames,
                                                                                                          limitToInformationSupplyChain,
                                                                                                          asOfTime,
@@ -1041,6 +1068,7 @@ public class AssetConsumerRESTServices
                                                                                    anchoredElement.getGUID(),
                                                                                    anchoredElementGUIDParameterName,
                                                                                    OpenMetadataType.SCHEMA_ELEMENT.typeName,
+                                                                                   direction,
                                                                                    lineageRelationshipTypeNames,
                                                                                    limitToInformationSupplyChain,
                                                                                    asOfTime,
@@ -1060,6 +1088,7 @@ public class AssetConsumerRESTServices
      * @param elementGUID starting element
      * @param elementGUIDParameterName parameter name of element's unique identifier
      * @param elementTypeName type name of element
+     * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param asOfTime repository time for the query
@@ -1074,6 +1103,7 @@ public class AssetConsumerRESTServices
                                                          String                     elementGUID,
                                                          String                     elementGUIDParameterName,
                                                          String                     elementTypeName,
+                                                         int                        direction,
                                                          List<String>               lineageRelationshipTypeNames,
                                                          String                     limitToInformationSupplyChain,
                                                          Date                       asOfTime,
@@ -1106,7 +1136,11 @@ public class AssetConsumerRESTServices
         {
             for (Relationship relationship : relationships)
             {
-                if ((relationship != null) && (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName())))
+                if ((relationship != null) &&
+                        (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName())) &&
+                        ((direction == 0)
+                                || (direction == 1 && (elementGUID.equals(relationship.getEntityOneProxy().getGUID())))
+                                || (direction == 2 && (elementGUID.equals(relationship.getEntityTwoProxy().getGUID())))))
                 {
                     if (limitToInformationSupplyChain != null)
                     {

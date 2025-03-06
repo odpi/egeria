@@ -1,3 +1,15 @@
 # Egeria-governance-program-omas
 
-@guid = xxx
+@baseURL=https://localhost:9443
+@server=qs-metadata-store
+@userId=erinoverview
+
+@guid=334fc1df-692a-4960-bbff-343bf7c486d2
+
+
+###
+# @name getGovernanceDefinitionInContext
+# Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-program/users/{{userId}}/review/governance-definitions/{{guid}}/in-context
+
+

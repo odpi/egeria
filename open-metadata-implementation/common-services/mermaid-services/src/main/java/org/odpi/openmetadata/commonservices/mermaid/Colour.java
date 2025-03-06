@@ -24,6 +24,8 @@ public enum Colour
     PURPLE      ("#7d669e"),
     TEAL        ("#53bbb4"),
     GREEN       ("#51b46d"),
+    LIGHT_GREEN ("#B9E0A5"),
+
     MUSTARD     ("#e0ab18"),
     YELLOW      ("#FFFF88"),
     PINK        ("#f092b0"),
