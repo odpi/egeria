@@ -89,11 +89,6 @@ public enum SystemLevelLineage
                                InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
                                SystemDefinition.MANUFACTURING_PLANNING),
 
-    WINCH_MANUFACTURING_REQUEST(SystemDefinition.MANUFACTURING_PLANNING,
-                              OpenMetadataType.DATA_FLOW.typeName,
-                              "manufacturing request",
-                              null,
-                              SystemDefinition.WINCH_MANUFACTURING_CONTROL),
     WINCH_MANUFACTURING_GOODS_REQUEST(SystemDefinition.WINCH_MANUFACTURING_CONTROL,
                                       OpenMetadataType.DATA_FLOW.typeName,
                                       "goods request",
@@ -118,11 +113,6 @@ public enum SystemLevelLineage
                                  InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
                                  SystemDefinition.MANUFACTURING_PLANNING),
 
-    ED_MANUFACTURING_REQUEST(SystemDefinition.MANUFACTURING_PLANNING,
-                              OpenMetadataType.DATA_FLOW.typeName,
-                              "manufacturing request",
-                              null,
-                              SystemDefinition.ED_MANUFACTURING_CONTROL),
     ED_MANUFACTURING_GOODS_REQUEST(SystemDefinition.ED_MANUFACTURING_CONTROL,
                                    OpenMetadataType.DATA_FLOW.typeName,
                                    "goods request",
