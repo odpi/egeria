@@ -12,8 +12,8 @@ public enum VisualStyle
 
     PRINCIPAL_ASSET(Colour.BLACK.getColourNumber(), Colour.MUSTARD.getColourNumber(), Colour.SLATE.getColourNumber(), "hex"),
     ANCHOR_ASSET(Colour.BLACK.getColourNumber(), Colour.MUSTARD.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
-    ANCHORED_ELEMENT(Colour.WHITE.getColourNumber(), Colour.EGERIA_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
-    LINKED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
+    ANCHORED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_YELLOW.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
+    LINKED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.EGERIA_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
     LINEAGE_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
 
     HOST(Colour.WHITE.getColourNumber(), Colour.DARK_GRAY.getColourNumber(), Colour.YELLOW.getColourNumber(), "rect"),

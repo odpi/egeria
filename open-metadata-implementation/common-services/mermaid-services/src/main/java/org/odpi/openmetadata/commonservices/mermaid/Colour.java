@@ -16,6 +16,7 @@ public enum Colour
     BLUE_SKY    ("#A8C2FF"),
     LIGHT_BLUE  ("#CCE5FF"),
     LIGHT_AQUA  ("#CCFFFF"),
+    LIGHT_YELLOW("#FFFFCC"),
     PINKY       ("#E1D5E7"),
     MAUVE       ("#EFEFFF"),
     RED         ("#e15258"),

@@ -74,6 +74,13 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     {
                         visualStyle = VisualStyle.HOST;
                     }
+                    else if ((propertyHelper.isTypeOf(line, OpenMetadataType.DATA_FLOW.typeName)) ||
+                             (propertyHelper.isTypeOf(line, OpenMetadataType.PROCESS_CALL.typeName)) ||
+                             (propertyHelper.isTypeOf(line, OpenMetadataType.LINEAGE_MAPPING.typeName)) ||
+                             (propertyHelper.isTypeOf(line, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName)))
+                    {
+                        visualStyle = VisualStyle.LINEAGE_ELEMENT;
+                    }
 
                     String endName = line.getEnd1().getGUID();
                     if (line.getEnd1().getUniqueName() != null)
