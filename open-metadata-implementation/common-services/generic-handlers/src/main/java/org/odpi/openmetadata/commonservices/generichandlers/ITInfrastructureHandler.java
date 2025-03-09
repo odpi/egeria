@@ -245,8 +245,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.DEPLOYED_ON.typeGUID,
-                                  OpenMetadataType.DEPLOYED_ON.typeName,
+                                  OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
                                   relationshipProperties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -301,8 +301,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataType.SOFTWARE_SERVER.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.DEPLOYED_ON.typeGUID,
-                                      OpenMetadataType.DEPLOYED_ON.typeName,
+                                      OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }

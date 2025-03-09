@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
@@ -63,6 +64,17 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
+                    VisualStyle visualStyle = VisualStyle.LINKED_ELEMENT;
+
+                    if (propertyHelper.isTypeOf(line, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                    {
+                        visualStyle = VisualStyle.DEFAULT_SOLUTION_COMPONENT;
+                    }
+                    else if (propertyHelper.isTypeOf(line, OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName))
+                    {
+                        visualStyle = VisualStyle.HOST;
+                    }
+
                     String endName = line.getEnd1().getGUID();
                     if (line.getEnd1().getUniqueName() != null)
                     {
@@ -72,7 +84,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getEnd1().getGUID(),
                                          endName,
                                          line.getEnd1().getType().getTypeName(),
-                                         VisualStyle.LINKED_ELEMENT);
+                                         visualStyle);
 
                     endName = line.getEnd2().getGUID();
                     if (line.getEnd2().getUniqueName() != null)
@@ -83,7 +95,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getEnd2().getGUID(),
                                          endName,
                                          line.getEnd2().getType().getTypeName(),
-                                         VisualStyle.LINKED_ELEMENT);
+                                         visualStyle);
 
                     super.appendMermaidLine(this.removeSpaces(line.getEnd1().getGUID()),
                                             super.addSpacesToTypeName(line.getType().getTypeName()),

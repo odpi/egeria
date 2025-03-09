@@ -571,11 +571,11 @@ public enum OpenMetadataType
     /**
      * Identifies an IT Infrastructure asset that is deployed to a specific destination.
      */
-    DEPLOYED_ON("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
-                "DeployedOn",
-                OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
-                "d727b3ce-d58b-45d5-8abc-55b1394e030a",
-                "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
+    DEPLOYED_ON_RELATIONSHIP("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
+                             "DeployedOn",
+                             OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
+                             "d727b3ce-d58b-45d5-8abc-55b1394e030a",
+                             "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
 
     /**
      * Software services packaged as an operating system process to support a runtime environment for a virtual software server.

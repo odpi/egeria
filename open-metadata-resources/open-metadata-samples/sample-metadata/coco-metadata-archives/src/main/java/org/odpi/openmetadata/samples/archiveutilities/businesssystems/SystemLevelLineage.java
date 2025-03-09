@@ -35,9 +35,15 @@ public enum SystemLevelLineage
                InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
                SystemDefinition.MANUFACTURING_PLANNING),
 
-    NEW_SALES(SystemDefinition.COCO_CRM,
+    PERSONALIZED_TREATMENT_NEW_SALES(SystemDefinition.COCO_CRM,
+                                    OpenMetadataType.DATA_FLOW.typeName,
+                                    "new sales",
+                                    InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
+                                    SystemDefinition.COCO_LEDGERS),
+
+    PERSONALIZED_MEDICINE_PAYMENT(SystemDefinition.COCO_CRM,
               OpenMetadataType.DATA_FLOW.typeName,
-              "new sales",
+              "payment",
               InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
               SystemDefinition.COCO_LEDGERS),
 
@@ -107,12 +113,6 @@ public enum SystemLevelLineage
                                        InformationSupplyChain.PHYSICAL_INVENTORY_TRACKING.getQualifiedName(),
                                        SystemDefinition.COCO_INVENTORY),
 
-    WINCH_MANUFACTURING_COMPLETE(SystemDefinition.WINCH_MANUFACTURING_CONTROL,
-                                 OpenMetadataType.DATA_FLOW.typeName,
-                                 "manufacturing complete",
-                                 InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
-                                 SystemDefinition.MANUFACTURING_PLANNING),
-
     ED_MANUFACTURING_GOODS_REQUEST(SystemDefinition.ED_MANUFACTURING_CONTROL,
                                    OpenMetadataType.DATA_FLOW.typeName,
                                    "goods request",
@@ -130,12 +130,6 @@ public enum SystemLevelLineage
                                     "goods produced",
                                     InformationSupplyChain.PHYSICAL_INVENTORY_TRACKING.getQualifiedName(),
                                     SystemDefinition.COCO_INVENTORY),
-
-    ED_MANUFACTURING_COMPLETE(SystemDefinition.ED_MANUFACTURING_CONTROL,
-                              OpenMetadataType.DATA_FLOW.typeName,
-                              "manufacturing complete",
-                              InformationSupplyChain.PERSONALIZED_TREATMENT_ORDER.getQualifiedName(),
-                              SystemDefinition.MANUFACTURING_PLANNING),
 
     AUS_PROCUREMENT_REQUEST(SystemDefinition.AUS_INVENTORY,
                             OpenMetadataType.DATA_FLOW.typeName,
