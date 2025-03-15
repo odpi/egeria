@@ -62,7 +62,7 @@ public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.conne
     public OMAGRuntimeException(ExceptionMessageDefinition messageDefinition,
                                 String                     className,
                                 String                     actionDescription,
-                                Throwable                  caughtError)
+                                Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -81,7 +81,7 @@ public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.conne
     public OMAGRuntimeException(ExceptionMessageDefinition messageDefinition,
                                 String                     className,
                                 String                     actionDescription,
-                                Throwable                  caughtError,
+                                Exception                  caughtError,
                                 Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -132,7 +132,7 @@ public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.conne
                                 String              errorMessage,
                                 String              systemAction,
                                 String              userAction,
-                                Throwable           caughtError,
+                                Exception           caughtError,
                                 Map<String, Object> relatedProperties)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);

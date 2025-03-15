@@ -145,7 +145,7 @@ public class EnumDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }
@@ -154,7 +154,7 @@ public class EnumDefTest
         {
             validateObject(objectMapper.readValue(jsonString, EnumDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }

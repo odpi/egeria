@@ -62,7 +62,7 @@ public class EntityProxyOnlyException extends OMRSCheckedExceptionBase
     public EntityProxyOnlyException(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError)
+                                    Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -81,7 +81,7 @@ public class EntityProxyOnlyException extends OMRSCheckedExceptionBase
     public EntityProxyOnlyException(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError,
+                                    Exception                  caughtError,
                                     Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -158,7 +158,7 @@ public class EntityProxyOnlyException extends OMRSCheckedExceptionBase
      * @param caughtError  the error that resulted in this exception.
      */
     @Deprecated
-    public EntityProxyOnlyException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public EntityProxyOnlyException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

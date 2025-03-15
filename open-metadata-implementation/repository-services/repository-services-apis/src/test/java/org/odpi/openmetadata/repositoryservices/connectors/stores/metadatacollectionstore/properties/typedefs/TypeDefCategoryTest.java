@@ -85,7 +85,7 @@ public class TypeDefCategoryTest
         {
             jsonString = objectMapper.writeValueAsString(TypeDefCategory.UNKNOWN_DEF);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -94,7 +94,7 @@ public class TypeDefCategoryTest
         {
             assertTrue(objectMapper.readValue(jsonString, TypeDefCategory.class) == TypeDefCategory.UNKNOWN_DEF);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

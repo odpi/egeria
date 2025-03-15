@@ -200,7 +200,7 @@ public class TestMapSchemaType
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -209,7 +209,7 @@ public class TestMapSchemaType
         {
             validateResultObject(objectMapper.readValue(jsonString, MapSchemaType.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -223,7 +223,7 @@ public class TestMapSchemaType
         {
             jsonString = objectMapper.writeValueAsString(schemaElement);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -232,7 +232,7 @@ public class TestMapSchemaType
         {
             validateResultObject((MapSchemaType) objectMapper.readValue(jsonString, SchemaElement.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -246,7 +246,7 @@ public class TestMapSchemaType
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -255,7 +255,7 @@ public class TestMapSchemaType
         {
             validateResultObject((MapSchemaType) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -269,7 +269,7 @@ public class TestMapSchemaType
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -278,7 +278,7 @@ public class TestMapSchemaType
         {
             validateResultObject((MapSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -292,7 +292,7 @@ public class TestMapSchemaType
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -301,7 +301,7 @@ public class TestMapSchemaType
         {
             validateResultObject((MapSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

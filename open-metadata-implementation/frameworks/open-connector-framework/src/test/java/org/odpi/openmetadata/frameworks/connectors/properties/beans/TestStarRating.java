@@ -102,7 +102,7 @@ public class TestStarRating
         {
             jsonString = objectMapper.writeValueAsString(StarRating.FOUR_STARS);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -111,7 +111,7 @@ public class TestStarRating
         {
             assertTrue(objectMapper.readValue(jsonString, StarRating.class) == StarRating.FOUR_STARS);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

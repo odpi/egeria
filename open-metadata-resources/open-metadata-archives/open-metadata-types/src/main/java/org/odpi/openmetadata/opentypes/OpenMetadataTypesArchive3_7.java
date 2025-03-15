@@ -239,7 +239,7 @@ public class OpenMetadataTypesArchive3_7
 
     private RelationshipDef getOperatingPlatformUseRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.OPERATING_PLATFORM_USE,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -263,12 +263,11 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
         final String                     end2AttributeName            = "installedOn";
         final String                     end2AttributeDescription     = "Where the operating platform is running.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -279,37 +278,11 @@ public class OpenMetadataTypesArchive3_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "installTime";
-        final String attribute1Description     = "Time that the software was installed on the IT Infrastructure.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that installed the software.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "deployerTypeName";
-        final String attribute3Description     = "Type name of deployer.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "deployerPropertyName";
-        final String attribute4Description     = "Identifying property name of deployer.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INSTALL_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_PROPERTY_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

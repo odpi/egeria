@@ -467,12 +467,9 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUESTER_USER_ID);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUESTED_START_DATE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUESTER_USER_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUESTED_START_DATE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -671,9 +668,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -762,9 +757,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.DATA_FILE.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FILE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1154,9 +1147,7 @@ public class OpenMetadataTypesArchive5_0
      */
     private TypeDefPatch updateCatalogTarget()
     {
-        final String typeName = OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

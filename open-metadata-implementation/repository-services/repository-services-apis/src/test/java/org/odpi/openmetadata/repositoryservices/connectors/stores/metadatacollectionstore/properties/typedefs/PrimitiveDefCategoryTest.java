@@ -144,7 +144,7 @@ public class PrimitiveDefCategoryTest
         {
             jsonString = objectMapper.writeValueAsString(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -153,7 +153,7 @@ public class PrimitiveDefCategoryTest
         {
             assertTrue(objectMapper.readValue(jsonString, PrimitiveDefCategory.class) == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

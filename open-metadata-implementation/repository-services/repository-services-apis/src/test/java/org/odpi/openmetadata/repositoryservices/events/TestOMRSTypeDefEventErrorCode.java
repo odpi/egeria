@@ -91,7 +91,7 @@ public class TestOMRSTypeDefEventErrorCode
         {
             jsonString = objectMapper.writeValueAsString(OMRSTypeDefEventErrorCode.CONFLICTING_ATTRIBUTE_TYPEDEFS);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -100,7 +100,7 @@ public class TestOMRSTypeDefEventErrorCode
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSTypeDefEventErrorCode.class) == OMRSTypeDefEventErrorCode.CONFLICTING_ATTRIBUTE_TYPEDEFS);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

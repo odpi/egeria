@@ -228,7 +228,7 @@ public class ClassificationDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -237,7 +237,7 @@ public class ClassificationDefTest
         {
             validateObject(objectMapper.readValue(jsonString, ClassificationDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -252,7 +252,7 @@ public class ClassificationDefTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -261,7 +261,7 @@ public class ClassificationDefTest
         {
             validateObject((ClassificationDef)objectMapper.readValue(jsonString, TypeDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

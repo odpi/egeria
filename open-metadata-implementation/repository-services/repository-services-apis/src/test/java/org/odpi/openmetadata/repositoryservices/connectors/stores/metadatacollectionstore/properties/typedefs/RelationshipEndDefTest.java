@@ -93,7 +93,7 @@ public class RelationshipEndDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -102,7 +102,7 @@ public class RelationshipEndDefTest
         {
             validateObject(objectMapper.readValue(jsonString, RelationshipEndDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

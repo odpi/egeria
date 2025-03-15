@@ -174,7 +174,7 @@ public abstract class ViewServiceAdmin
                                           String       propertyValue,
                                           AuditLog     auditLog,
                                           String       methodName,
-                                          Throwable    error) throws OMAGConfigurationErrorException
+                                          Exception    error) throws OMAGConfigurationErrorException
     {
         auditLog.logMessage(methodName,
                             OMAGAdminAuditCode.BAD_CONFIG_PROPERTY.getMessageDefinition(viewServiceFullName, propertyValue, propertyName));
@@ -200,7 +200,7 @@ public abstract class ViewServiceAdmin
      */
     protected void throwUnexpectedInitializationException(String    actionDescription,
                                                           String    fullViewServiceName,
-                                                          Throwable error) throws OMAGConfigurationErrorException
+                                                          Exception error) throws OMAGConfigurationErrorException
     {
         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(fullViewServiceName,
                                                                                                                               error.getClass().getName(),

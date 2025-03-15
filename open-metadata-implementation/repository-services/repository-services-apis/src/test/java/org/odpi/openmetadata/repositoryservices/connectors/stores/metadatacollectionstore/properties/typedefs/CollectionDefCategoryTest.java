@@ -92,7 +92,7 @@ public class CollectionDefCategoryTest
         {
             jsonString = objectMapper.writeValueAsString(CollectionDefCategory.OM_COLLECTION_ARRAY);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -101,7 +101,7 @@ public class CollectionDefCategoryTest
         {
             assertTrue(objectMapper.readValue(jsonString, CollectionDefCategory.class) == CollectionDefCategory.OM_COLLECTION_ARRAY);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

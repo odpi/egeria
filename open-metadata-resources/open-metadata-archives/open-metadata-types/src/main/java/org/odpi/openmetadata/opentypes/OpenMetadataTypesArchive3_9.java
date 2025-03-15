@@ -184,9 +184,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -208,9 +206,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -233,9 +229,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.RELATED_MEDIA.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RELATED_MEDIA.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -259,9 +253,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.EXTERNAL_REFERENCE.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -270,96 +262,29 @@ public class OpenMetadataTypesArchive3_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REFERENCE_TITLE.name,
-                                                           OpenMetadataProperty.REFERENCE_TITLE.description,
-                                                           OpenMetadataProperty.REFERENCE_TITLE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REFERENCE_ABSTRACT.name,
-                                                           OpenMetadataProperty.REFERENCE_ABSTRACT.description,
-                                                           OpenMetadataProperty.REFERENCE_ABSTRACT.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(OpenMetadataProperty.AUTHORS.name,
-                                                                OpenMetadataProperty.AUTHORS.description,
-                                                                OpenMetadataProperty.AUTHORS.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.NUMBER_OF_PAGES.name,
-                                                        OpenMetadataProperty.NUMBER_OF_PAGES.description,
-                                                        OpenMetadataProperty.NUMBER_OF_PAGES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PAGE_RANGE.name,
-                                                           OpenMetadataProperty.PAGE_RANGE.description,
-                                                           OpenMetadataProperty.PAGE_RANGE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ORGANIZATION.name,
-                                                           OpenMetadataProperty.ORGANIZATION.description,
-                                                           OpenMetadataProperty.ORGANIZATION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES.name,
-                                                           OpenMetadataProperty.PUBLICATION_SERIES.description,
-                                                           OpenMetadataProperty.PUBLICATION_SERIES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.name,
-                                                           OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.description,
-                                                           OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.EDITION.name,
-                                                           OpenMetadataProperty.EDITION.description,
-                                                           OpenMetadataProperty.EDITION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REFERENCE_VERSION.name,
-                                                           OpenMetadataProperty.REFERENCE_VERSION.description,
-                                                           OpenMetadataProperty.REFERENCE_VERSION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.URL.name,
-                                                           OpenMetadataProperty.URL.description,
-                                                           OpenMetadataProperty.URL.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLISHER.name,
-                                                           OpenMetadataProperty.PUBLISHER.description,
-                                                           OpenMetadataProperty.PUBLISHER.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.FIRST_PUB_DATE.name,
-                                                         OpenMetadataProperty.FIRST_PUB_DATE.description,
-                                                         OpenMetadataProperty.FIRST_PUB_DATE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.PUBLICATION_DATE.name,
-                                                         OpenMetadataProperty.PUBLICATION_DATE.description,
-                                                         OpenMetadataProperty.PUBLICATION_DATE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_CITY.name,
-                                                           OpenMetadataProperty.PUBLICATION_CITY.description,
-                                                           OpenMetadataProperty.PUBLICATION_CITY.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_YEAR.name,
-                                                           OpenMetadataProperty.PUBLICATION_YEAR.description,
-                                                           OpenMetadataProperty.PUBLICATION_YEAR.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_NUMBERS.name,
-                                                                OpenMetadataProperty.PUBLICATION_NUMBERS.description,
-                                                                OpenMetadataProperty.PUBLICATION_NUMBERS.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.LICENSE.name,
-                                                           OpenMetadataProperty.LICENSE.description,
-                                                           OpenMetadataProperty.LICENSE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.COPYRIGHT.name,
-                                                           OpenMetadataProperty.COPYRIGHT.description,
-                                                           OpenMetadataProperty.COPYRIGHT.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ATTRIBUTION.name,
-                                                           OpenMetadataProperty.ATTRIBUTION.description,
-                                                           OpenMetadataProperty.ATTRIBUTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_TITLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_ABSTRACT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AUTHORS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NUMBER_OF_PAGES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PAGE_RANGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES_VOLUME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EDITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFERENCE_VERSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.URL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLISHER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIRST_PUB_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_CITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_YEAR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLICATION_NUMBERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COPYRIGHT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTRIBUTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

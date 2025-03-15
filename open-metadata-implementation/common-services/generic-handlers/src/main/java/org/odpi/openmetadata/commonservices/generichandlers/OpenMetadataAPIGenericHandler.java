@@ -3788,6 +3788,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param anchorEntity entity anchor to match against
+     * @param processedGUIDs entities that have already been processed
      * @param potentialAnchoredEntity entity to validate
      * @param classificationOriginGUID original entity that the Memento classification  was attached to
      * @param classificationProperties properties for the classification
@@ -3803,6 +3804,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                        String             externalSourceGUID,
                                        String             externalSourceName,
                                        EntityDetail       anchorEntity,
+                                       List<String>       processedGUIDs,
                                        EntityProxy        potentialAnchoredEntity,
                                        String             classificationOriginGUID,
                                        InstanceProperties classificationProperties,
@@ -3845,6 +3847,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                  classificationOriginGUID,
                                                  classificationProperties,
                                                  anchorEntity,
+                                                 processedGUIDs,
                                                  forLineage,
                                                  forDuplicateProcessing,
                                                  effectiveTime,
@@ -3977,6 +3980,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                            entityGUID,
                                                            classificationProperties,
                                                            anchorEntity,
+                                                           new ArrayList<>(),
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            effectiveTime,
@@ -4042,6 +4046,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param classificationOriginGUID which entity did a propagated classification originate from?
      * @param classificationProperties properties for the classification
      * @param anchorEntity anchor entity for the bean (can be null)
+     * @param processedGUIDs list of processed GUIDs
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -4061,6 +4066,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                  String               classificationOriginGUID,
                                                  InstanceProperties   classificationProperties,
                                                  EntityDetail         anchorEntity,
+                                                 List<String>         processedGUIDs,
                                                  boolean              forLineage,
                                                  boolean              forDuplicateProcessing,
                                                  Date                 effectiveTime,
@@ -4084,6 +4090,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (targetEntity != null)
         {
+            processedGUIDs.add(targetEntity.getGUID());
+
             /*
              * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is archived.
              */
@@ -4109,34 +4117,40 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             while (iterator.moreToReceive())
             {
                 Relationship relationship = iterator.getNext();
+                EntityProxy  otherEnd     = repositoryHandler.getOtherEnd(targetEntity.getGUID(), entityTypeName, relationship, 0, methodName);
 
-                if (anchorEntity == null)
+                if (! processedGUIDs.contains(otherEnd.getGUID()))
                 {
-                    this.archiveAnchoredEntity(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               targetEntity,
-                                               repositoryHandler.getOtherEnd(targetEntity.getGUID(), entityTypeName, relationship, 0, methodName),
-                                               classificationOriginGUID,
-                                               classificationProperties,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               effectiveTime,
-                                               methodName);
-                }
-                else
-                {
-                    this.archiveAnchoredEntity(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               anchorEntity,
-                                               repositoryHandler.getOtherEnd(targetEntity.getGUID(), entityTypeName, relationship, 0, methodName),
-                                               classificationOriginGUID,
-                                               classificationProperties,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               effectiveTime,
-                                               methodName);
+                    if (anchorEntity == null)
+                    {
+                        this.archiveAnchoredEntity(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   targetEntity,
+                                                   processedGUIDs,
+                                                   otherEnd,
+                                                   classificationOriginGUID,
+                                                   classificationProperties,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+                    }
+                    else
+                    {
+                        this.archiveAnchoredEntity(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   anchorEntity,
+                                                   processedGUIDs,
+                                                   otherEnd,
+                                                   classificationOriginGUID,
+                                                   classificationProperties,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+                    }
                 }
             }
 

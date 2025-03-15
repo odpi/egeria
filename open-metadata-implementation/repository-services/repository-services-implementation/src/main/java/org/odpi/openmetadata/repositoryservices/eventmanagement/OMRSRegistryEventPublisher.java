@@ -106,9 +106,9 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
         catch (CompletionException exception)
         {
             auditLog.logException(actionDescription,
-                    OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),
-                    "registryEvent : " + registryEvent,
-                    exception.getCause());
+                                  OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),
+                                  "registryEvent : " + registryEvent,
+                                  exception.getCause());
 
             log.debug("Exception: " + exception.getCause() + "; Registry Event: " + registryEvent);
         }

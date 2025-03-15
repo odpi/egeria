@@ -169,6 +169,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         return response;
     }
@@ -812,6 +816,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
             cleanUpRunningServiceInstances(userId, serverName, instance);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1729,6 +1737,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
@@ -1789,6 +1801,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1846,6 +1862,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1895,6 +1915,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -1924,9 +1948,9 @@ public class OMAGServerOperationalServices
             response.setServerName(serverName);
             response.setServerServicesList(instance.getActiveServiceListForServer());
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1989,6 +2013,10 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -2045,6 +2073,10 @@ public class OMAGServerOperationalServices
         catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2106,6 +2138,10 @@ public class OMAGServerOperationalServices
         catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

@@ -171,17 +171,8 @@ public class OpenMetadataTypesArchive3_3
 
     private ClassificationDef addIncompleteClassification()
     {
-        final String guid            = "078432fb-a889-4a51-8ebe-9797becea9f1";
-        final String name            = "Incomplete";
-        final String description     = "Accompanies a partial, incomplete Referenceable.";
-        final String descriptionGUID = null;
-
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.INCOMPLETE_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   true);
     }

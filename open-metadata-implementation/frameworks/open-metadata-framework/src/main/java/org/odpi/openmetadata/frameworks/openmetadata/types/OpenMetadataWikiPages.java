@@ -25,6 +25,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0012_SEARCH_KEYWORDS              = "https://egeria-project.org/types/0/0012-Search-Keywords/";
 
     /**
+     * <a href="https://egeria-project.org/types/0/0013-Translations/">...</a>
+     */
+    public static final String MODEL_0013_TRANSLATIONS              = "https://egeria-project.org/types/0/0013-Translations/";
+
+    /**
      * <a href="https://egeria-project.org/types/0/0015-Linked-Media-Types/">...</a>
      */
     public static final String MODEL_0015_LINKED_MEDIA_TYPES           = "https://egeria-project.org/types/0/0015-Linked-Media-Types/";

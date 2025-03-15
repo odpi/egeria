@@ -72,9 +72,9 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             response.setStatuses(Arrays.asList(GlossaryTermStatus.values()));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -108,9 +108,9 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             response.setStatuses(Arrays.asList(GlossaryTermRelationshipStatus.values()));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -144,9 +144,9 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             response.setTypes(Arrays.asList(GlossaryTermActivityType.values()));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -216,9 +216,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -282,9 +282,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NameRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -347,9 +347,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                               forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -412,9 +412,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                    forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -479,9 +479,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -552,9 +552,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, GlossarySearchStringRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -625,9 +625,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                          forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -698,9 +698,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                      forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -765,9 +765,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, GlossaryNameRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -830,9 +830,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                       forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -896,9 +896,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                       forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -969,9 +969,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                          forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1044,9 +1044,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, GlossarySearchStringRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1117,9 +1117,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                     forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1192,9 +1192,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                             forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1269,9 +1269,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                 forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1337,9 +1337,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, GlossaryNameRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1402,9 +1402,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                   forDuplicateProcessing));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1475,9 +1475,9 @@ public class GlossaryBrowserRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, HistoryRequestBody.class.getName());
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

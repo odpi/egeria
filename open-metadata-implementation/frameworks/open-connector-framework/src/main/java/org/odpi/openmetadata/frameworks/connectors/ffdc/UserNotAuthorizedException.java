@@ -75,7 +75,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
     public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError,
+                                      Exception                  caughtError,
                                       String                     userId)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -97,7 +97,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
     public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError,
+                                      Exception                  caughtError,
                                       String                     userId,
                                       Map<String, Object>        relatedProperties)
     {
@@ -225,7 +225,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
                                       String    errorMessage,
                                       String    systemAction,
                                       String    userAction,
-                                      Throwable caughtError,
+                                      Exception caughtError,
                                       String    userId)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
@@ -254,7 +254,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
                                       String              errorMessage,
                                       String              systemAction,
                                       String              userAction,
-                                      Throwable           caughtError,
+                                      Exception           caughtError,
                                       String              userId,
                                       Map<String, Object> relatedProperties)
     {

@@ -183,7 +183,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      */
     protected void logExceptionRecord(String                    actionDescription,
                                       AuditLogMessageDefinition messageDefinition,
-                                      Throwable                 exception)
+                                      Exception                 exception)
     {
         if (auditLog != null)
         {

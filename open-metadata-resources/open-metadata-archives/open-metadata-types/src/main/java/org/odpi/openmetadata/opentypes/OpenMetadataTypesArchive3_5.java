@@ -209,50 +209,14 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = OpenMetadataProperty.CAPABILITY_TYPE.name;
-        final String attribute3Description     = OpenMetadataProperty.CAPABILITY_TYPE.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.CAPABILITY_TYPE.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.CAPABILITY_VERSION.name;
-        final String attribute4Description     = OpenMetadataProperty.CAPABILITY_VERSION.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.CAPABILITY_VERSION.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.PATCH_LEVEL.name;
-        final String attribute5Description     = OpenMetadataProperty.PATCH_LEVEL.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.PATCH_LEVEL.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute7Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
-                                                           OpenMetadataProperty.NAME.description,
-                                                           OpenMetadataProperty.NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CAPABILITY_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CAPABILITY_VERSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATCH_LEVEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -271,12 +235,11 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
         final String                     end1AttributeName            = "hostedByDeployedITInfrastructure";
         final String                     end1AttributeDescription     = "IT infrastructure hosting this capability.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -406,17 +369,8 @@ public class OpenMetadataTypesArchive3_5
 
     private ClassificationDef addSourceControlLibraryClassification()
     {
-        final String guid            = "0ef3c90d-20d7-4259-8d66-9c8bb109f2ae";
-        final String name            = "SourceControlLibrary";
-        final String description     = "Defines a software source code library that provides version control.";
-        final String descriptionGUID = null;
-
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SOURCE_CONTROL_LIBRARY_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
@@ -424,16 +378,8 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "libraryType";
-        final String attribute1Description     = "The type of library - may be a product name or open source project name.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LIBRARY_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -443,16 +389,8 @@ public class OpenMetadataTypesArchive3_5
 
     private ClassificationDef addChangeManagementLibraryClassification()
     {
-        final String guid            = "4e236548-b802-4a1d-a329-4abdeaae5323";
-        final String name            = "ChangeManagementLibrary";
-        final String description     = "Defines a managed collection of requirements, defects and proposed changes to a project.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
@@ -460,16 +398,8 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "libraryType";
-        final String attribute1Description     = "The type of library - may be a product name or open source project name.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LIBRARY_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -480,16 +410,8 @@ public class OpenMetadataTypesArchive3_5
 
     private ClassificationDef addSoftwareLibraryClassification()
     {
-        final String guid            = "5708fa1a-2b64-4706-8e14-a020e4567db3";
-        final String name            = "SoftwareLibrary";
-        final String description     = "Defines a collection of software modules.  Also known as the definitive software library.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_LIBRARY_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
@@ -497,16 +419,8 @@ public class OpenMetadataTypesArchive3_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "libraryType";
-        final String attribute1Description     = "The type of library - may be a product name or open source project name.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LIBRARY_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -537,16 +451,13 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "DatabaseManager";
-        final String attachToEntity = "DataManager";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.DATA_MANAGER.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;
@@ -558,9 +469,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "ServerAssetUse";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -855,9 +764,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "ProjectManagement";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -900,9 +807,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "CommunityMembership";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

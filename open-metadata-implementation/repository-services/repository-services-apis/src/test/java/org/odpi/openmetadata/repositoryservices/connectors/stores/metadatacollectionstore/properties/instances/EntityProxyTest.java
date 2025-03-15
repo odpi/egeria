@@ -169,7 +169,7 @@ public class EntityProxyTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -178,7 +178,7 @@ public class EntityProxyTest
         {
             validateObject(objectMapper.readValue(jsonString, EntityProxy.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -193,7 +193,7 @@ public class EntityProxyTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -202,7 +202,7 @@ public class EntityProxyTest
         {
             validateSummaryObject(objectMapper.readValue(jsonString, EntitySummary.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

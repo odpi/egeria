@@ -182,9 +182,7 @@ public class OpenMetadataTypesArchive3_14
         /*
          * Create the Patch
          */
-        final String typeName = "APIOperation";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.API_OPERATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -195,13 +193,9 @@ public class OpenMetadataTypesArchive3_14
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATH);
-        properties.add(property);
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMAND);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMAND));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

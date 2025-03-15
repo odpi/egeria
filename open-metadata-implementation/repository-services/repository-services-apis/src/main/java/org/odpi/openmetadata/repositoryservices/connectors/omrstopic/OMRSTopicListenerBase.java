@@ -62,7 +62,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param actionDescription calling activity
      */
     private void logUnexpectedException(String     event,
-                                        Throwable  error,
+                                        Exception  error,
                                         String     actionDescription)
     {
         if (auditLog != null)

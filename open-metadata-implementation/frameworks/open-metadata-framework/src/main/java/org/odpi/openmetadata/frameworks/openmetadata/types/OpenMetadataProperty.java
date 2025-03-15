@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.types;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 
-import javax.xml.crypto.Data;
 
 /**
  * Provides the definition for all properties defined in the open metadata types.
@@ -96,7 +95,7 @@ public enum OpenMetadataProperty
     /**
      * Timestamp when the archive occurred or was detected.
      */
-    ARCHIVE_DATE("archiveDate", DataType.STRING.getName(), "Timestamp when the archive occurred or was detected.", null, "5235c1b1-fa03-4d17-80e2-7826242dfc75"),
+    ARCHIVE_DATE("archiveDate", DataType.DATE.getName(), "Timestamp when the archive occurred or was detected.", null, "5235c1b1-fa03-4d17-80e2-7826242dfc75"),
 
     /**
      * Name of user that performed the archive - or detected the archive.
@@ -630,7 +629,7 @@ public enum OpenMetadataProperty
     /**
      * Additional properties used in the request.
      */
-    JSON_PROPERTIES("jsonProperties", DataType.MAP_STRING_STRING.getName(), "Additional properties used in the specification.", null, "fe0c84c7-6f19-4c36-897f-9067447d0d9a"),
+    JSON_PROPERTIES("jsonProperties", DataType.STRING.getName(), "Additional properties used in the specification.", null, "fe0c84c7-6f19-4c36-897f-9067447d0d9a"),
 
     /**
      * Date of the review.
@@ -1068,6 +1067,12 @@ public enum OpenMetadataProperty
      */
     DEPLOYER("deployer", DataType.STRING.getName(), "Person, organization or engine that deployed the IT Infrastructure.", null, "c579fd34-4144-4968-b0d9-fa17bd81ca9c"),
 
+    INSTALL_TIME("installTime",
+                 DataType.DATE.getName(),
+                 "Time that the software was installed on the IT Infrastructure.",
+                 null,
+                 "6cc366b8-b871-4b8f-a4dc-e41c06a025c8"),
+
     /**
      * The operational status of the software server capability on this software server.
      */
@@ -1096,12 +1101,12 @@ public enum OpenMetadataProperty
     /**
      * Maximum number of running asset instances controlled by the software capability.
      */
-    MAXIMUM_INSTANCES("maximumInstances", "integer", "Maximum number of running asset instances controlled by the software capability.", "0", "76b06411-e3bf-4a39-9351-140e6ad0b82f"),
+    MAXIMUM_INSTANCES("maximumInstances", DataType.INT.getName(), "Maximum number of running asset instances controlled by the software capability.", "0", "76b06411-e3bf-4a39-9351-140e6ad0b82f"),
 
     /**
      * Minimum number of running asset instances controlled by the software capability.
      */
-    MINIMUM_INSTANCES("minimumInstances", "integer", "Minimum number of running asset instances controlled by the software capability.", "12", "d5033e20-3cd7-4c27-a07f-4a95feee10d8"),
+    MINIMUM_INSTANCES("minimumInstances", DataType.INT.getName(),"Minimum number of running asset instances controlled by the software capability.", "12", "d5033e20-3cd7-4c27-a07f-4a95feee10d8"),
 
     /**
      * Identifier used in an external system.
@@ -1157,6 +1162,11 @@ public enum OpenMetadataProperty
      * Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.
      */
     KEY_PATTERN("keyPattern", KeyPattern.getOpenTypeName(), "Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.", null, "a8805753-865d-4860-ab95-1e83c3eaf01d"),
+
+    /**
+     * Type of role that the attribute plays as part of the concept bead.
+     */
+    COVERAGE_CATEGORY("coverageCategory", ConceptModelAttributeCoverageCategory.getOpenTypeName(), "Type of role that the attribute plays as part of the concept bead.", null, "4cac11a2-1187-4a54-b94a-8fa493c0b860"),
 
     /**
      * The relationship of element that has been changed to the anchor.
@@ -2170,6 +2180,21 @@ public enum OpenMetadataProperty
     LANGUAGE("language", DataType.STRING.getName(), "Natural language used in the glossary.", "English", "0f6bde2f-0456-4c32-a1ef-5b7fbe9aafe3"),
 
     /**
+     * Code for identifying the language - for example from ISO-639.
+     */
+    LANGUAGE_CODE("languageCode", DataType.STRING.getName(), "Code for identifying the language - for example from ISO-639.", null, "8a7bebe1-451a-4c28-bfde-5b37701e20b5"),
+
+    /**
+     * Locale for the translation.
+     */
+    LOCALE("locale", DataType.STRING.getName(), "Locale for the translation." , null, "576520c5-0ac8-48dd-882c-4cd692bc84df"),
+
+    /**
+     * Translations of other string properties found in the linked entity.
+     */
+    ADDITIONAL_TRANSLATIONS("additionalTranslations", DataType.MAP_STRING_STRING.getName(), "Translations of other string properties found in the linked entity.", null, "25cdcc9b-c133-42f2-9224-91347177f2c9"),
+
+    /**
      * Characteristics that influence the organization of the taxonomy.
      */
     ORGANIZING_PRINCIPLE("organizingPrinciple", DataType.STRING.getName(), "Characteristics that influence the organization of the taxonomy.", "Alphabetical", "980250ab-c0e1-4cdb-851e-b6622d68fb41"),
@@ -2860,6 +2885,222 @@ public enum OpenMetadataProperty
      * The additional issues that need to be considered when using this pattern.
      */
     LIABILITIES("liabilities", DataType.ARRAY_STRING.getName(), "The additional issues that need to be considered when using this pattern.", null, "c3d38415-80a9-44b4-9d7c-c6316c23ab17"),
+
+    /**
+     * A string value that represents the content of the digital resource.
+     */
+    FINGERPRINT("fingerprint", DataType.STRING.getName(), "A string value that represents the content of the digital resource.", null, "9d9d4a02-e209-46f5-858f-8c08f21f829b"),
+
+    /**
+     * The algorithm use to generate the fingerprint.
+     */
+    FINGERPRINT_ALGORITHM("fingerprintAlgorithm", DataType.STRING.getName(), "The algorithm use to generate the fingerprint.", null, "99c237ac-e55c-424e-bc45-3f375e4c261d"),
+
+    /**
+     * An integer value that represents the content of the digital resource.
+     */
+    HASH("hash", DataType.LONG.getName(), "An long value that represents the content of the digital resource.", null, "7f62687d-482a-41a4-8f76-3ac2ec28f619"),
+
+    /**
+     * The algorithm use to generate the hash.
+     */
+    HASH_ALGORITHM("hashAlgorithm", DataType.STRING.getName(), "The algorithm use to generate the hash." , null, "d838386e-e1ad-4a9c-b33c-dde3240a7c08"),
+
+    /**
+     * Description of the background cause or activity.
+     */
+    BACKGROUND("background", DataType.STRING.getName(), "Description of the background cause or activity.", null, "5184178d-1d00-4868-81b0-3ef182b39952"),
+
+    /**
+     * Map of label to level indicator to provide customizable grouping of incidents.
+     */
+    INCIDENT_CLASSIFIERS("incidentClassifiers", DataType.MAP_STRING_INT.getName(), "Map of label to level indicator to provide customizable grouping of incidents.", null, "ff752b21-761d-406c-9e3b-60d2439b6048"),
+
+    /**
+     * Collection of synchronization dates identified by a key.
+     */
+    SYNC_DATES_BY_KEY("syncDatesByKey", DataType.MAP_STRING_LONG.getName(), "Collection of synchronization dates identified by a key.", null, "9b17445c-9566-4be7-b2d9-b9a456d5224a"),
+
+    /**
+     * Unique identifier for the item within the agreement.
+     */
+    AGREEMENT_ITEM_ID("agreementItemId",
+                      DataType.STRING.getName(),
+                      "Unique identifier for the item within the agreement.",
+                      null,
+                      "82719ab9-02d6-41ba-8b2c-c48037ba8aa3"),
+
+    /**
+     * Date/time when this item becomes active in the agreement.
+     */
+    AGREEMENT_START("agreementStart",
+                    DataType.DATE.getName(),
+                    "Date/time when this item becomes active in the agreement.",
+                    null,
+                    "399af4a9-e2eb-41b3-ad1d-616ee682be0e"),
+
+    /**
+     * Date/time when this item becomes inactive in the agreement.
+     */
+    AGREEMENT_END("agreementEnd",
+                  DataType.DATE.getName(),
+                  "Date/time when this item becomes inactive in the agreement.",
+                  null,
+                  "2a0b81aa-3040-4b6d-8862-247250ca5663"),
+
+    /**
+     * Measurements of the actual use of this item under the agreement.
+     */
+    USAGE_MEASUREMENTS("usageMeasurements",
+                       DataType.MAP_STRING_STRING.getName(),
+                       "Measurements of the actual use of this item under the agreement.",
+                       null,
+                       "00e9915d-f462-418e-9791-7e9644490ae8"),
+
+    /**
+     * Identifier for the contract used in the agreement.
+     */
+    CONTRACT_ID("contractId",
+                DataType.STRING.getName(),
+                "Identifier for the contract used in the agreement.",
+                null,
+                "ae60af8d-50e7-4691-b1e5-babfbd59f6ec"),
+
+    /**
+     * Identifier of actor to contact with queries relating to the contract.
+     */
+    CONTRACT_LIAISON("contractLiaison",
+                     DataType.STRING.getName(),
+                     "Identifier of actor to contact with queries relating to the contract.",
+                     null,
+                     "27e37260-a3fe-48f8-87db-dcde916efb32"),
+
+    /**
+     * Type name of liaison actor element.
+     */
+    CONTRACT_LIAISON_TYPE_NAME("contractLiaisonTypeName",
+                               DataType.STRING.getName(),
+                               "Type name of liaison actor element.",
+                               null,
+                               "506713ed-c2cb-436a-a47f-c466e3bcda7e"),
+
+    /**
+     * The property from the actor element used as the identifier.
+     */
+    CONTRACT_LIAISON_PROPERTY_NAME("contractLiaisonPropertyName",
+                                   DataType.STRING.getName(),
+                                   "The property from the actor element used as the identifier.",
+                                   null,
+                                   "44159873-6a37-4764-b827-6cd581c63274"),
+
+    /**
+     * The type of library - may be a product name or open source project name.
+     */
+    LIBRARY_TYPE("libraryType",
+                 DataType.STRING.getName(),
+                 "The type of library - may be a product name or open source project name.",
+                 null,
+                 "f8084a40-dd0d-4167-b4eb-6d548edfc4d7"),
+
+    /**
+     * Level of support agreed for the subscriber.
+     */
+    SUPPORT_LEVEL("supportLevel",
+                  DataType.STRING.getName(),
+                  "Level of support agreed for the subscriber.",
+                  null,
+                  "93a526db-792d-4332-aae4-03f296a06380"),
+
+    /**
+     * Levels of service agreed with the subscriber.
+     */
+    SERVICE_LEVELS("serviceLevels",
+                   DataType.MAP_STRING_STRING.getName(),
+                   "Levels of service agreed with the subscriber.",
+                   null,
+                   "82fd9acd-7b75-49e5-838b-7a0776c4ff23"),
+
+    /**
+     * Unique identifier for the subscriber.
+     */
+    SUBSCRIBER_ID("subscriberId",
+                  DataType.STRING.getName(),
+                  "Unique identifier for the subscriber.",
+                  null,
+                  "a457adf0-7034-4988-968a-dd537d0ded15"),
+
+    /**
+     * Expression used to filter data values passing through port.
+     */
+    FILTER_EXPRESSION("filterExpression",
+                      DataType.STRING.getName(),
+                      "Expression used to filter data values passing through port.",
+                      null,
+                      "67403964-08fc-4d7e-bf60-3e95a4fc15bb"),
+
+    /**
+     * The qualified name of the primary category of a GlossaryTerm.
+     */
+    CATEGORY_QUALIFIED_NAME("categoryQualifiedName",
+                            DataType.STRING.getName(),
+                            "The qualified name of the primary category of a GlossaryTerm.",
+                            null,
+                            "9a7df593-7057-4eed-aab1-868a3d2cfc28"),
+
+    /**
+     * Element in the metadata model that the attached element embodies.
+     */
+    METAMODEL_ELEMENT_GUID("metamodelElementGUID",
+                           DataType.STRING.getName(),
+                           "Element in the metadata model that the attached element embodies.",
+                           null,
+                           "67c764e9-07cd-4a85-8ce6-5fd4a2fcbf78"),
+
+    /**
+     * Name of the operation to that is controlled by the linked security group.
+     */
+    OPERATION_NAME("operationName",
+                   DataType.STRING.getName(),
+                   "Name of the operation to that is controlled by the linked security group.",
+                   null,
+                   "6bc26e25-c5c9-4552-9ab0-482cfa0317d9"),
+
+    /**
+     * Number of Kafka partitions.
+     */
+    PARTITIONS("partitions",
+               DataType.INT.getName(),
+               "Number of Kafka partitions.",
+               null,
+               "af7a04a0-d5a5-4245-8c90-7280d1f6d71e"),
+
+    /**
+     * Number of Kafka replicas.
+     */
+    REPLICAS("replicas",
+             DataType.INT.getName(),
+             "Number of Kafka replicas.",
+             null,
+             "f8739877-1c2c-461c-a8e4-cfef6a808317"),
+
+
+    /**
+     * Network address used by callers to the network gateway.
+     */
+    EXTERNAL_ENDPOINT_ADDRESS("externalEndpointAddress",
+                              DataType.STRING.getName(),
+                              "Network address used by callers to the network gateway.",
+                              null,
+                              "132a033f-0713-4e5b-9f8c-7d79fdab8e93"),
+
+    /**
+     * Network address that the network gateway maps the request to.
+     */
+    INTERNAL_ENDPOINT_ADDRESS("internalEndpointAddress",
+                              DataType.STRING.getName(),
+                              "Network address that the network gateway maps the request to.",
+                              null,
+                              "c7544b4b-b181-465e-a0ca-c090f3bfe212"),
 
     ;
 

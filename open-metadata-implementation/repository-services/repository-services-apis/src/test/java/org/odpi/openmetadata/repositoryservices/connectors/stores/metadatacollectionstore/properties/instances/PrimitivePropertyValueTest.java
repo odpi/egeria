@@ -94,7 +94,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getBooleanTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -103,7 +103,7 @@ public class PrimitivePropertyValueTest
         {
             validateBooleanObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -117,7 +117,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -126,7 +126,7 @@ public class PrimitivePropertyValueTest
         {
             validateBooleanObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -179,7 +179,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getCharTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -188,7 +188,7 @@ public class PrimitivePropertyValueTest
         {
             validateCharObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -202,7 +202,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -211,7 +211,7 @@ public class PrimitivePropertyValueTest
         {
             validateCharObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -264,7 +264,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getByteTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -273,7 +273,7 @@ public class PrimitivePropertyValueTest
         {
             validateByteObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -287,7 +287,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -296,7 +296,7 @@ public class PrimitivePropertyValueTest
         {
             validateByteObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -349,7 +349,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getShortTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -358,7 +358,7 @@ public class PrimitivePropertyValueTest
         {
             validateShortObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -372,7 +372,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -381,7 +381,7 @@ public class PrimitivePropertyValueTest
         {
             validateShortObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -434,7 +434,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getIntegerTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -443,7 +443,7 @@ public class PrimitivePropertyValueTest
         {
             validateIntegerObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -457,7 +457,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -466,7 +466,7 @@ public class PrimitivePropertyValueTest
         {
             validateIntegerObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -519,7 +519,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getLongTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -528,7 +528,7 @@ public class PrimitivePropertyValueTest
         {
             validateLongObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -542,7 +542,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -551,7 +551,7 @@ public class PrimitivePropertyValueTest
         {
             validateLongObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -604,7 +604,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getFloatTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -613,7 +613,7 @@ public class PrimitivePropertyValueTest
         {
             validateFloatObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -627,7 +627,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -636,7 +636,7 @@ public class PrimitivePropertyValueTest
         {
             validateFloatObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -689,7 +689,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getDoubleTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -698,7 +698,7 @@ public class PrimitivePropertyValueTest
         {
             validateDoubleObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -712,7 +712,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -721,7 +721,7 @@ public class PrimitivePropertyValueTest
         {
             validateDoubleObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -775,7 +775,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getBigIntegerTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -784,7 +784,7 @@ public class PrimitivePropertyValueTest
         {
             validateBigIntegerObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -798,7 +798,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -807,7 +807,7 @@ public class PrimitivePropertyValueTest
         {
             validateBigIntegerObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -860,7 +860,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getBigDecimalTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -869,7 +869,7 @@ public class PrimitivePropertyValueTest
         {
             validateBigDecimalObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -883,7 +883,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -892,7 +892,7 @@ public class PrimitivePropertyValueTest
         {
             validateBigDecimalObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -945,7 +945,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getStringTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -954,7 +954,7 @@ public class PrimitivePropertyValueTest
         {
             validateStringObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -968,7 +968,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -977,7 +977,7 @@ public class PrimitivePropertyValueTest
         {
             validateStringObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -1049,7 +1049,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(getDateTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -1058,7 +1058,7 @@ public class PrimitivePropertyValueTest
         {
             validateDateObject(objectMapper.readValue(jsonString, PrimitivePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -1072,7 +1072,7 @@ public class PrimitivePropertyValueTest
         {
             jsonString = objectMapper.writeValueAsString(testSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -1081,7 +1081,7 @@ public class PrimitivePropertyValueTest
         {
             validateDateObject((PrimitivePropertyValue)objectMapper.readValue(jsonString, InstancePropertyValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

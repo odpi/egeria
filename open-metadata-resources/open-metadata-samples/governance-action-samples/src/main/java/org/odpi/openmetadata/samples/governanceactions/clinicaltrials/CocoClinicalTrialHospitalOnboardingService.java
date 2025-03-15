@@ -61,7 +61,6 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         String landingAreaPathName              = null;
         String dataLakePathName                 = null;
         String dataLakeFileTemplateGUID         = null;
-        String newFileProcessName               = null;
         String integrationConnectorGUID         = null;
         String onboardingProcessGUID            = null;
         String stewardGUID                      = null;
@@ -151,9 +150,12 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                     landingAreaDirectoryTemplateGUID==null || landingAreaDirectoryTemplateGUID.isBlank() ||
                     landingAreaPathName==null || landingAreaPathName.isBlank() ||
                     dataLakePathName == null || dataLakePathName.isBlank() ||
-                    newFileProcessName == null || newFileProcessName.isBlank() ||
                     dataLakeFileTemplateGUID == null || dataLakeFileTemplateGUID.isBlank() ||
-                    onboardingProcessGUID == null || stewardGUID == null || integrationConnectorGUID == null || hospitalCertificationTypeGUID == null || dataQualityCertificationTypeGUID == null)
+                    onboardingProcessGUID == null ||
+                    stewardGUID == null ||
+                    integrationConnectorGUID == null ||
+                    hospitalCertificationTypeGUID == null ||
+                    dataQualityCertificationTypeGUID == null)
             {
 
                 if ((clinicalTrialId == null) || (clinicalTrialId.isBlank()))
@@ -249,6 +251,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                             "publish weekly measurements",
                                                             "A csv file containing the patient measurements for this week is sent from the hospital to the landing area folder.",
                                                             null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
                                                             landingAreaFolderGUID);
 
                 /*
@@ -272,7 +279,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                  */
                 this.provisionLandingFolder(landingAreaPathName);
 
-                newFileProcessName = this.createNewFileProcess(onboardingProcessGUID,
+                String newFileProcessName = this.createNewFileProcess(onboardingProcessGUID,
                                                                clinicalTrialId,
                                                                clinicalTrialName,
                                                                hospitalName,
@@ -303,6 +310,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                             informationSupplyChainQualifiedName,
                                                             "new file notification",
                                                             "The arrival of a new file creates a notification that is sent to the integration connector.",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
                                                             null,
                                                             integrationConnectorGUID);
 
@@ -718,6 +730,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                         "new file trigger",
                                                         "The arrival of a new file creates an instance of the onboarding pipeline process.",
                                                         null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
                                                         processGUID);
 
             RelatedMetadataElement firstProcessStep = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(onboardingProcessGUID,
@@ -758,7 +775,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                             OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                                             ActionTarget.STEWARD.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       stewardGUID,
                                                                                       null,
@@ -768,7 +785,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       dataQualityCertificationType,
                                                                                       null,

@@ -86,7 +86,7 @@ public class AttributeTypeDefCategoryTest
         {
             jsonString = objectMapper.writeValueAsString(AttributeTypeDefCategory.ENUM_DEF);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -95,7 +95,7 @@ public class AttributeTypeDefCategoryTest
         {
             assertTrue(objectMapper.readValue(jsonString, AttributeTypeDefCategory.class) == AttributeTypeDefCategory.ENUM_DEF);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

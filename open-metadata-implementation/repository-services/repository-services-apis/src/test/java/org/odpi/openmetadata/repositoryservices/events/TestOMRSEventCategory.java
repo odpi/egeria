@@ -91,7 +91,7 @@ public class TestOMRSEventCategory
         {
             jsonString = objectMapper.writeValueAsString(OMRSEventCategory.TYPEDEF);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -100,7 +100,7 @@ public class TestOMRSEventCategory
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSEventCategory.class) == OMRSEventCategory.TYPEDEF);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

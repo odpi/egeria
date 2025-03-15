@@ -207,12 +207,8 @@ public class OpenMetadataTypesArchive3_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.name,
-                                                           OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.description,
-                                                           OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -221,39 +217,17 @@ public class OpenMetadataTypesArchive3_1
 
     private ClassificationDef addSoftwarePackageManifestClassification()
     {
-        final String guid = "e328ae6e-0b16-4490-9883-c953b4258841";
-
-        final String name            = "SoftwarePackageManifest";
-        final String description     = "Identifies a collection of software packages.";
-        final String descriptionGUID = null;
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Collection"));
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_PACKAGE_MANIFEST_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  linkedToEntities,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
 
 
     private RelationshipDef addOperatingPlatformManifestRelationship()
     {
-        final String guid = "e5bd6acf-932c-4d9c-85ff-941a8e4451db";
-
-        final String name            = "OperatingPlatformManifest";
-        final String description     = "Defines the base software installed on the operating platform.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.OPERATING_PLATFORM_MANIFEST_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -261,12 +235,11 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "OperatingPlatform";
         final String                     end1AttributeName            = "packagedInOperatingPlatforms";
         final String                     end1AttributeDescription     = "The operating platforms that use this collection of software packages.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPERATING_PLATFORM.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -277,12 +250,11 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Collection";
         final String                     end2AttributeName            = "includesSoftwarePackages";
         final String                     end2AttributeDescription     = "The collection of software packages that are included in the operating platform.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -365,33 +337,15 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef addStorageVolumeEntity()
     {
-        final String guid = "14145458-f0d0-4955-8899-b8a2874708c9";
-
-        final String name            = "StorageVolume";
-        final String description     = "A persistent storage volume.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.STORAGE_VOLUME,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
 
     private RelationshipDef addAttachedStorageRelationship()
     {
-        final String guid = "2cf1e949-7189-4bf2-8ee4-e1318e59abd7";
-
-        final String name            = "AttachedStorage";
-        final String description     = "Links a host to a persistent storage volume.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_STORAGE_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -414,12 +368,11 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "StorageVolume";
         final String                     end2AttributeName            = "storageVolumes";
         final String                     end2AttributeDescription     = "The storage available to a host.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.STORAGE_VOLUME.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -448,9 +401,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -459,24 +410,9 @@ public class OpenMetadataTypesArchive3_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.MINIMUM_INSTANCES.name;
-        final String attribute1Description     = OpenMetadataProperty.MINIMUM_INSTANCES.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.MINIMUM_INSTANCES.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.MAXIMUM_INSTANCES.name;
-        final String attribute2Description     = OpenMetadataProperty.MAXIMUM_INSTANCES.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.MAXIMUM_INSTANCES.descriptionGUID;
-
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_INSTANCES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAXIMUM_INSTANCES));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -546,18 +482,8 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef addApplicationServiceEntity()
     {
-        final String guid = "5b7f340e-7dc9-45c0-a636-c20605147c94";
-
-        final String name            = "ApplicationService";
-        final String description     = "A software service supporting a single reusable business function.";
-        final String descriptionGUID = null;
-
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.APPLICATION_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
 
 
@@ -632,22 +558,14 @@ public class OpenMetadataTypesArchive3_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -669,26 +587,16 @@ public class OpenMetadataTypesArchive3_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_DATA_FORMAT);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACES);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_INTERFACES);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_VERSIONS);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_DATA_FORMAT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_INTERFACES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_VERSIONS));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;

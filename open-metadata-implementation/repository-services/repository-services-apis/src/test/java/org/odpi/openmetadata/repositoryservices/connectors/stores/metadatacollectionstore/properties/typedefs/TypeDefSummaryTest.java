@@ -104,7 +104,7 @@ public class TypeDefSummaryTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -113,7 +113,7 @@ public class TypeDefSummaryTest
         {
             validateObject(objectMapper.readValue(jsonString, TypeDefSummary.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -64,7 +64,7 @@ public class RepositoryErrorException extends OMRSCheckedExceptionBase
     public RepositoryErrorException(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError)
+                                    Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -83,7 +83,7 @@ public class RepositoryErrorException extends OMRSCheckedExceptionBase
     public RepositoryErrorException(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError,
+                                    Exception                  caughtError,
                                     Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -174,7 +174,7 @@ public class RepositoryErrorException extends OMRSCheckedExceptionBase
      * @param caughtException the exception/error that caused this exception to be raised
      */
     @Deprecated
-    public RepositoryErrorException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtException)
+    public RepositoryErrorException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtException)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtException);
     }

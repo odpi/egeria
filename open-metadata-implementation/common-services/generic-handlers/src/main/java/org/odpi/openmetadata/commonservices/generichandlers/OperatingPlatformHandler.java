@@ -306,8 +306,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.OPERATING_PLATFORM_USE.typeGUID,
-                                  OpenMetadataType.OPERATING_PLATFORM_USE.typeName,
+                                  OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -362,8 +362,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                       OpenMetadataType.OPERATING_PLATFORM.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.OPERATING_PLATFORM_USE.typeGUID,
-                                      OpenMetadataType.OPERATING_PLATFORM_USE.typeName,
+                                      OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.OPERATING_PLATFORM_USE_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }

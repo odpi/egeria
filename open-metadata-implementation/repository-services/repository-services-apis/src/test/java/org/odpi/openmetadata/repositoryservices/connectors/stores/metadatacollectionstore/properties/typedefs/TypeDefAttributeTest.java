@@ -137,7 +137,7 @@ public class TypeDefAttributeTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }
@@ -146,7 +146,7 @@ public class TypeDefAttributeTest
         {
             validateObject(objectMapper.readValue(jsonString, TypeDefAttribute.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }

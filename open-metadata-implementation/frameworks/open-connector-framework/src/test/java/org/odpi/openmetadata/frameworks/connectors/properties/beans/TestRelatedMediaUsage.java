@@ -97,7 +97,7 @@ public class TestRelatedMediaUsage
         {
             jsonString = objectMapper.writeValueAsString(MediaUsage.ICON);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -106,7 +106,7 @@ public class TestRelatedMediaUsage
         {
             assertTrue(objectMapper.readValue(jsonString, MediaUsage.class) == MediaUsage.ICON);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

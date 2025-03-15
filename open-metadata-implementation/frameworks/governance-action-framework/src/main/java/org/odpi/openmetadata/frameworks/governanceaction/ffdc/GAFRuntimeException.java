@@ -62,7 +62,7 @@ public class GAFRuntimeException extends OCFRuntimeException
     public GAFRuntimeException(ExceptionMessageDefinition messageDefinition,
                                String                     className,
                                String                     actionDescription,
-                               Throwable                  caughtError)
+                               Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -81,7 +81,7 @@ public class GAFRuntimeException extends OCFRuntimeException
     public GAFRuntimeException(ExceptionMessageDefinition messageDefinition,
                                String                     className,
                                String                     actionDescription,
-                               Throwable                  caughtError,
+                               Exception                  caughtError,
                                Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);

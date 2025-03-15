@@ -316,7 +316,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -325,7 +325,7 @@ public class TestValidValue
         {
             validateResultObject(objectMapper.readValue(jsonString, ValidValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -339,7 +339,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -348,7 +348,7 @@ public class TestValidValue
         {
             validateResultObject((ValidValue) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -362,7 +362,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -371,7 +371,7 @@ public class TestValidValue
         {
             validateResultObject((ValidValue) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -394,7 +394,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(getSetTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -403,7 +403,7 @@ public class TestValidValue
         {
             validateResultObject(objectMapper.readValue(jsonString, ValidValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -415,7 +415,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(getSetTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -424,7 +424,7 @@ public class TestValidValue
         {
             validateSetResultObject((ValidValueSet)objectMapper.readValue(jsonString, ValidValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -439,7 +439,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(validValue);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -448,7 +448,7 @@ public class TestValidValue
         {
             validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, ValidValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -463,7 +463,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -472,7 +472,7 @@ public class TestValidValue
         {
             validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -486,7 +486,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -495,7 +495,7 @@ public class TestValidValue
         {
             validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -518,7 +518,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(getDefinitionTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -527,7 +527,7 @@ public class TestValidValue
         {
             validateDefinitionResultObject(objectMapper.readValue(jsonString, ValidValueDefinition.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -541,7 +541,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(validValue);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -550,7 +550,7 @@ public class TestValidValue
         {
             validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, ValidValue.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -564,7 +564,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -573,7 +573,7 @@ public class TestValidValue
         {
             validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -587,7 +587,7 @@ public class TestValidValue
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -596,7 +596,7 @@ public class TestValidValue
         {
             validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

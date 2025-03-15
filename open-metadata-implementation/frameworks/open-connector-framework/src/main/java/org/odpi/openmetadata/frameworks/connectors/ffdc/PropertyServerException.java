@@ -70,7 +70,7 @@ public class    PropertyServerException extends OCFCheckedExceptionBase
     public PropertyServerException(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError)
+                                   Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -90,7 +90,7 @@ public class    PropertyServerException extends OCFCheckedExceptionBase
     public PropertyServerException(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError,
+                                   Exception                  caughtError,
                                    Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);

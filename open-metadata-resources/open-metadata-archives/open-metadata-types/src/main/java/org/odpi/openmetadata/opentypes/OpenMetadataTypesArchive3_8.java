@@ -193,9 +193,7 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Create the Patch
          */
-        final String typeName = "SourcedFrom";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -323,16 +321,8 @@ public class OpenMetadataTypesArchive3_8
 
     private RelationshipDef addSoftwarePackageDependencyRelationship()
     {
-        final String guid            = "2c05beaf-e313-47f8-ac18-2298140b2ad9";
-        final String name            = "SoftwarePackageDependency";
-        final String description     = "Shows the software packages being used within an asset.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOFTWARE_PACKAGE_DEPENDENCY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -355,12 +345,11 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Collection";
         final String                     end2AttributeName            = "dependsOnSoftwarePackages";
         final String                     end2AttributeDescription     = "Collection of software packages.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -441,32 +430,11 @@ public class OpenMetadataTypesArchive3_8
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "externalEndpointAddress";
-        final String attribute3Description     = "Network address used by callers to the network gateway.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "internalEndpointAddress";
-        final String attribute4Description     = "Network address that the network gateway maps the request to.";
-        final String attribute4DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
-                                                           OpenMetadataProperty.NAME.description,
-                                                           OpenMetadataProperty.NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -493,9 +461,7 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Create the Patch
          */
-        final String typeName = "NoteLogAuthorship";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -520,12 +486,11 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "NoteLog";
         final String                     end2AttributeName            = "authoredNoteLogs";
         final String                     end2AttributeDescription     = "Note log containing contributions.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.NOTE_LOG.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

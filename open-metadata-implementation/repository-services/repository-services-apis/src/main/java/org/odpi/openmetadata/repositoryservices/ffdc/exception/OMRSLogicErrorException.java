@@ -61,7 +61,7 @@ public class OMRSLogicErrorException extends OMRSRuntimeException
     public OMRSLogicErrorException(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError)
+                                   Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -78,10 +78,10 @@ public class OMRSLogicErrorException extends OMRSRuntimeException
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     public OMRSLogicErrorException(ExceptionMessageDefinition messageDefinition,
-                                    String                     className,
-                                    String                     actionDescription,
-                                    Throwable                  caughtError,
-                                    Map<String, Object>        relatedProperties)
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Exception                  caughtError,
+                                   Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
     }
@@ -157,7 +157,7 @@ public class OMRSLogicErrorException extends OMRSRuntimeException
      * @param caughtError  previous error causing this exception
      */
     @Deprecated
-    public OMRSLogicErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OMRSLogicErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

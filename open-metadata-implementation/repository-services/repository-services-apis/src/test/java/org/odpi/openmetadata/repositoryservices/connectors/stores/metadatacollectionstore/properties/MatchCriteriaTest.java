@@ -81,7 +81,7 @@ public class MatchCriteriaTest
         {
             jsonString = objectMapper.writeValueAsString(MatchCriteria.ALL);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -90,7 +90,7 @@ public class MatchCriteriaTest
         {
             assertTrue(objectMapper.readValue(jsonString, MatchCriteria.class) == MatchCriteria.ALL);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

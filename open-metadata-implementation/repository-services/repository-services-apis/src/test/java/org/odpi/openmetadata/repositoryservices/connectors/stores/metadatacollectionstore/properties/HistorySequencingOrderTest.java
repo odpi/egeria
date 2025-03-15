@@ -76,7 +76,7 @@ public class HistorySequencingOrderTest
         {
             jsonString = objectMapper.writeValueAsString(HistorySequencingOrder.FORWARDS);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -85,7 +85,7 @@ public class HistorySequencingOrderTest
         {
             assertTrue(objectMapper.readValue(jsonString, HistorySequencingOrder.class) == HistorySequencingOrder.FORWARDS);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

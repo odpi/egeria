@@ -345,7 +345,12 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @param qualifiedName qualifiedName of the information supply chain
      * @param label label for when the lineage relationship is visualized
      * @param description description of the lineage activity
-     * @param formula expression summa
+     * @param formula expression summary
+     * @param formulaType language used to express the formula
+     * @param queryId identifier for the process query - DataMapping Relationship
+     * @param query the process query - DataMapping Relationship
+     * @param guard value that indicated a control path to take - ControlFlow relationship
+     * @param lineNumber line number where the call is made - ProcessCall Relationship
      * @param targetElementGUID unique identifier of the element that describes the destination of the data.
      *
      * @return unique identifier of the relationship
@@ -360,6 +365,11 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
                                      String label,
                                      String description,
                                      String formula,
+                                     String formulaType,
+                                     String queryId,
+                                     String query,
+                                     String guard,
+                                     String lineNumber,
                                      String targetElementGUID) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException;

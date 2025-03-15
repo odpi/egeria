@@ -97,7 +97,7 @@ public class TestCommentType
         {
             jsonString = objectMapper.writeValueAsString(CommentType.ANSWER);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -106,7 +106,7 @@ public class TestCommentType
         {
             assertTrue(objectMapper.readValue(jsonString, CommentType.class) == CommentType.ANSWER);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

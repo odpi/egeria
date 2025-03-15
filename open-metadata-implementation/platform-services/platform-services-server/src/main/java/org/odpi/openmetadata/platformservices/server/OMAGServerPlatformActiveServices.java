@@ -73,9 +73,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredAccessServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -103,9 +103,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredEngineServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -133,9 +133,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredIntegrationServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -163,9 +163,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredViewServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -193,9 +193,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredGovernanceServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -223,9 +223,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredCommonServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -252,9 +252,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getAllRegisteredServices(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -301,9 +301,9 @@ public class OMAGServerPlatformActiveServices
 
             response.setConnectorType(connectorType);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -332,9 +332,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setFlag(serverInstanceMap.isServerKnown(userId, serverName));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -361,9 +361,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServerList(serverInstanceMap.getKnownServerList(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -390,9 +390,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServerList(serverInstanceMap.getActiveServerList(userId));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -429,9 +429,9 @@ public class OMAGServerPlatformActiveServices
             response.setServerEndTime(serverStatus.getServerEndTime());
             response.setServerHistory(serverStatus.getServerHistory());
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -461,9 +461,9 @@ public class OMAGServerPlatformActiveServices
             response.setServerName(serverName);
             response.setServerServicesList(serverInstanceMap.getActiveServicesForServer(userId, serverName));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -492,9 +492,9 @@ public class OMAGServerPlatformActiveServices
 
             System.exit(0);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

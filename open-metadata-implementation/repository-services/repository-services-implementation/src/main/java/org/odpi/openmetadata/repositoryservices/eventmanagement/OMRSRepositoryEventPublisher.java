@@ -169,9 +169,9 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
         catch (CompletionException exception)
         {
             auditLog.logException(actionDescription,
-                    OMRSAuditCode.SEND_TYPEDEF_EVENT_ERROR.getMessageDefinition(sourceName),
-                    "typeDefEvent {" + typeDefEvent + "}",
-                    exception.getCause());
+                                  OMRSAuditCode.SEND_TYPEDEF_EVENT_ERROR.getMessageDefinition(sourceName),
+                                  "typeDefEvent {" + typeDefEvent + "}",
+                                  exception.getCause());
             log.debug("Completion exception with cause ", exception.getCause());
         }
 

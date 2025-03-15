@@ -933,10 +933,28 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, sourceFileGUID, informationSupplyChainQualifiedName, null,null, null, processGUID);
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                        sourceFileGUID,
+                                                        informationSupplyChainQualifiedName,
+                                                        null, null,
+                                                        null, null,
+                                                        null, null,
+                                                        null, null,
+                                                        processGUID);
         }
 
-        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, processGUID, informationSupplyChainQualifiedName, null, null, null, newFileGUID);
+        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                    processGUID,
+                                                    informationSupplyChainQualifiedName,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    null,
+                                                    newFileGUID);
 
         if (columnLevelLineage)
         {
@@ -996,6 +1014,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                             sourceAttribute.getElementGUID(),
                                                                             null,
                                                                             "copy",
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
                                                                             null,
                                                                             null,
                                                                             destinationAttribute.getElementGUID());

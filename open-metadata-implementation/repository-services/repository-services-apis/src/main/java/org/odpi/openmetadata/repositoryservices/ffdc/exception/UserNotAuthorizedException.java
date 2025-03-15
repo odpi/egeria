@@ -74,7 +74,7 @@ public class UserNotAuthorizedException extends OMRSCheckedExceptionBase
     public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError,
+                                      Exception                  caughtError,
                                       String                     userId)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -97,7 +97,7 @@ public class UserNotAuthorizedException extends OMRSCheckedExceptionBase
     public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError,
+                                      Exception                  caughtError,
                                       String                     userId,
                                       Map<String, Object>        relatedProperties)
     {

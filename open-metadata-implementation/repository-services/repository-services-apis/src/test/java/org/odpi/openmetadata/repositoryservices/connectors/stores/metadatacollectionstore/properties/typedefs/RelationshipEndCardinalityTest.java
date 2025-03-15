@@ -81,7 +81,7 @@ public class RelationshipEndCardinalityTest
         {
             jsonString = objectMapper.writeValueAsString(RelationshipEndCardinality.AT_MOST_ONE);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -90,7 +90,7 @@ public class RelationshipEndCardinalityTest
         {
             assertTrue(objectMapper.readValue(jsonString, RelationshipEndCardinality.class) == RelationshipEndCardinality.AT_MOST_ONE);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

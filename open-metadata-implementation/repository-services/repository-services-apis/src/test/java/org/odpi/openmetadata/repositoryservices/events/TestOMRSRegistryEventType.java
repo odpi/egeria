@@ -96,7 +96,7 @@ public class TestOMRSRegistryEventType
         {
             jsonString = objectMapper.writeValueAsString(OMRSRegistryEventType.RE_REGISTRATION_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -105,7 +105,7 @@ public class TestOMRSRegistryEventType
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSRegistryEventType.class) == OMRSRegistryEventType.RE_REGISTRATION_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

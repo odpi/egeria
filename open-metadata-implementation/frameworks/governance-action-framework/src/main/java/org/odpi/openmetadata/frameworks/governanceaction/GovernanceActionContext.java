@@ -1764,6 +1764,12 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param sourceElementGUID unique identifier of the element that describes the source of the data.
      * @param qualifiedName     qualifiedName of the information supply chain
      * @param label label for when the lineage relationship is visualized
+     * @param formula expression summary
+     * @param formulaType language used to express the formula
+     * @param queryId identifier for the process query - DataMapping Relationship
+     * @param query the process query - DataMapping Relationship
+     * @param guard value that indicated a control path to take - ControlFlow relationship
+     * @param lineNumber line number where the call is made - ProcessCall Relationship
      * @param targetElementGUID unique identifier of the element that describes the destination of the data.
      *
      * @return unique identifier of the relationship
@@ -1779,6 +1785,11 @@ public class GovernanceActionContext implements GovernanceContext,
                                             String label,
                                             String description,
                                             String formula,
+                                            String formulaType,
+                                            String queryId,
+                                            String query,
+                                            String guard,
+                                            String lineNumber,
                                             String targetElementGUID) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -1791,11 +1802,16 @@ public class GovernanceActionContext implements GovernanceContext,
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null, "qualifiedName", qualifiedName);
+        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, qualifiedName);
 
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "label", label);
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "description", description);
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "formula", formula);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.LABEL.name, label);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.DESCRIPTION.name, description);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.FORMULA.name, formula);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.FORMULA_TYPE.name, formulaType);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.QUERY_ID.name, formulaType);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.QUERY.name, formulaType);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.GUARD.name, formulaType);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.LINE_NUMBER.name, formulaType);
 
         String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING.typeName;
         if (relationshipName != null)

@@ -59,7 +59,7 @@ public class TestConnectorProviderBase
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-001 Null connection object passed on request for new connector instance"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -81,7 +81,7 @@ public class TestConnectorProviderBase
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-001 Null connection object passed on request for new connector instance"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -105,7 +105,7 @@ public class TestConnectorProviderBase
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection <Unknown>"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -129,7 +129,7 @@ public class TestConnectorProviderBase
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection <Unknown>"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -155,7 +155,7 @@ public class TestConnectorProviderBase
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -183,7 +183,7 @@ public class TestConnectorProviderBase
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }

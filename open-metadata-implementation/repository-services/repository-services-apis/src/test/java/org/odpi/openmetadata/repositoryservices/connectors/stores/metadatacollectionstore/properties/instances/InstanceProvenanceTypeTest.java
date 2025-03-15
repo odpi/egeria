@@ -96,7 +96,7 @@ public class InstanceProvenanceTypeTest
         {
             jsonString = objectMapper.writeValueAsString(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -105,7 +105,7 @@ public class InstanceProvenanceTypeTest
         {
             assertTrue(objectMapper.readValue(jsonString, InstanceProvenanceType.class) == InstanceProvenanceType.DEREGISTERED_REPOSITORY);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -28,7 +28,7 @@ public class FVTUnexpectedCondition extends Exception
     /**
      * Any exception that occurred
      */
-    private Throwable caughtException     = null;
+    private Exception caughtException     = null;
 
     /**
      * Constructor for an unexpected exception.
@@ -37,7 +37,7 @@ public class FVTUnexpectedCondition extends Exception
      * @param activityDescription what was the action?
      * @param caughtException unexpected exception
      */
-    public FVTUnexpectedCondition(String testCaseName, String activityDescription, Throwable caughtException)
+    public FVTUnexpectedCondition(String testCaseName, String activityDescription, Exception caughtException)
     {
         super(activityDescription, caughtException);
 
@@ -89,7 +89,7 @@ public class FVTUnexpectedCondition extends Exception
      *
      * @return caught exception
      */
-    public Throwable getCaughtException()
+    public Exception getCaughtException()
     {
         return caughtException;
     }

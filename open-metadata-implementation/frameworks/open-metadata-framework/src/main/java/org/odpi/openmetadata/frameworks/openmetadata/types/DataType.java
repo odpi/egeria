@@ -129,6 +129,7 @@ public enum DataType implements OpenMetadataEnum
      * A map from string value to an array of strings
      */
     MAP_STRING_ARRAY_STRING(19, "f5fb27f1-06c7-4ea5-98c6-c45a37231b35", "map<string, array<string>>", "A map from string value to an array of strings", false),
+
     /**
      * A generic data type.
      */

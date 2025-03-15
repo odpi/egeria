@@ -145,7 +145,7 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                                         }
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION.typeName))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName))
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 

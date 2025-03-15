@@ -250,7 +250,7 @@ public class OpenMetadataTypesArchive2_9
         final String                     end2AttributeDescription     = "Elements that will be updated or used to complete the action.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -318,9 +318,7 @@ public class OpenMetadataTypesArchive2_9
         /*
          * Create the Patch
          */
-        final String typeName = "Port";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PORT.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -329,16 +327,8 @@ public class OpenMetadataTypesArchive2_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "filterExpression";
-        final String attribute1Description     = "Expression used to filter data values passing through port.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILTER_EXPRESSION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -362,16 +352,8 @@ public class OpenMetadataTypesArchive2_9
 
     private ClassificationDef addPrimaryCategoryClassification()
     {
-        final String guid            = "3a6c4ba7-3cc5-48cd-8952-bwra92da016d";
-        final String name            = "PrimaryCategory";
-        final String description     = "Defines a category as being the base category of a glossary term";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.PRIMARY_CATEGORY_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                                                  true);
 
@@ -379,16 +361,8 @@ public class OpenMetadataTypesArchive2_9
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "categoryQualifiedName";
-        final String attribute1Description     = "The qualified name of the primary category of a GlossaryTerm.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CATEGORY_QUALIFIED_NAME));
 
         classificationDef.setPropertiesDefinition(properties);
 

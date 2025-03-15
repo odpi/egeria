@@ -431,6 +431,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       KeyPattern.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(KeyPattern.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataType.CONCEPT_BEAD_ATTRIBUTE_COVERAGE_CLASSIFICATION.typeName,
+                                      OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                      ConceptModelAttributeCoverageCategory.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ConceptModelAttributeCoverageCategory.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName,
                                       OpenMetadataProperty.KEY_PATTERN.name,
                                       KeyPattern.getOpenTypeName(),
@@ -483,7 +488,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       EngineActionStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.TARGET_FOR_ACTION.typeName,
+        addOpenMetadataEnumValidNames(OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.ACTION_STATUS.name,
                                       EngineActionStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(EngineActionStatus.values())));

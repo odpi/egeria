@@ -232,7 +232,7 @@ public class RelationshipDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -241,7 +241,7 @@ public class RelationshipDefTest
         {
             validateObject(objectMapper.readValue(jsonString, RelationshipDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -256,7 +256,7 @@ public class RelationshipDefTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -265,7 +265,7 @@ public class RelationshipDefTest
         {
             validateObject((RelationshipDef)objectMapper.readValue(jsonString, TypeDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

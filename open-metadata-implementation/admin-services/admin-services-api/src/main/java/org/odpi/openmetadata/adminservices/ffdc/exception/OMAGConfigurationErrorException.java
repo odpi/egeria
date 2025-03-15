@@ -62,7 +62,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
     public OMAGConfigurationErrorException(ExceptionMessageDefinition messageDefinition,
                                            String                     className,
                                            String                     actionDescription,
-                                           Throwable                  caughtError)
+                                           Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -81,7 +81,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
     public OMAGConfigurationErrorException(ExceptionMessageDefinition messageDefinition,
                                            String                     className,
                                            String                     actionDescription,
-                                           Throwable                  caughtError,
+                                           Exception                  caughtError,
                                            Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -171,7 +171,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
      * @param caughtError the error that resulted in this exception.
      */
     @Deprecated
-    public OMAGConfigurationErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OMAGConfigurationErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

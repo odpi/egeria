@@ -35,7 +35,7 @@ public class OMRSRuntimeException extends RuntimeException
     private String[]            reportedErrorMessageParameters;
     private String              reportedSystemAction;
     private String              reportedUserAction;
-    private Throwable           reportedCaughtException = null;
+    private Exception           reportedCaughtException = null;
     private String              reportedCaughtExceptionClassName = null;
     private Map<String, Object> relatedProperties = null;
 
@@ -98,9 +98,9 @@ public class OMRSRuntimeException extends RuntimeException
      * @param caughtError   previous error causing this exception
      */
     public OMRSRuntimeException(ExceptionMessageDefinition messageDefinition,
-                                   String                     className,
-                                   String                     actionDescription,
-                                   Throwable                  caughtError)
+                                String                     className,
+                                String                     actionDescription,
+                                Exception                  caughtError)
     {
         this(messageDefinition, className, actionDescription, caughtError, null);
     }
@@ -117,10 +117,10 @@ public class OMRSRuntimeException extends RuntimeException
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     public OMRSRuntimeException(ExceptionMessageDefinition messageDefinition,
-                                   String                     className,
-                                   String                     actionDescription,
-                                   Throwable                  caughtError,
-                                   Map<String, Object>        relatedProperties)
+                                String                     className,
+                                String                     actionDescription,
+                                Exception                  caughtError,
+                                Map<String, Object>        relatedProperties)
     {
         super(messageFormatter.getFormattedMessage(messageDefinition), caughtError);
 
@@ -267,7 +267,7 @@ public class OMRSRuntimeException extends RuntimeException
      * @param caughtError  previous error causing this exception
      */
     @Deprecated
-    OMRSRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    OMRSRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;
@@ -392,9 +392,9 @@ public class OMRSRuntimeException extends RuntimeException
      * either newly created and not the result of a previous exception or the exception occurred in a remote
      * server.  If the second situation is true then reportedCaughtExceptionClassName is set.
      *
-     * @return reportedCaughtException Throwable object
+     * @return reportedCaughtException Exception object
      */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
+    public Exception getReportedCaughtException() { return reportedCaughtException; }
 
 
     /**

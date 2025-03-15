@@ -43,7 +43,7 @@ public class GovernanceServiceException extends ConnectorCheckedException
     public GovernanceServiceException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError)
+                                      Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }

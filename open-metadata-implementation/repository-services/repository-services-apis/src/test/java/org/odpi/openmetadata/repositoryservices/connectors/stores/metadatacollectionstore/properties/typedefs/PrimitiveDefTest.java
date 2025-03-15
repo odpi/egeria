@@ -82,7 +82,7 @@ public class PrimitiveDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }
@@ -91,7 +91,7 @@ public class PrimitiveDefTest
         {
             validateObject(objectMapper.readValue(jsonString, PrimitiveDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }

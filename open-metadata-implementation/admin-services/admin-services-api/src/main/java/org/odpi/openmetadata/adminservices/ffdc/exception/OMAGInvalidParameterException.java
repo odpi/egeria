@@ -62,7 +62,7 @@ public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
     public OMAGInvalidParameterException(ExceptionMessageDefinition messageDefinition,
                                            String                     className,
                                            String                     actionDescription,
-                                           Throwable                  caughtError)
+                                           Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -79,10 +79,10 @@ public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     public OMAGInvalidParameterException(ExceptionMessageDefinition messageDefinition,
-                                           String                     className,
-                                           String                     actionDescription,
-                                           Throwable                  caughtError,
-                                           Map<String, Object>        relatedProperties)
+                                         String                     className,
+                                         String                     actionDescription,
+                                         Exception                  caughtError,
+                                         Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
     }
@@ -171,7 +171,7 @@ public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
      * @param caughtError the error that resulted in this exception.
      */
     @Deprecated
-    public OMAGInvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OMAGInvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

@@ -24,7 +24,7 @@ public class RuntimeExceptionTest
     private String    reportedErrorMessage = "TestErrorMessage";
     private String    reportedSystemAction = "TestSystemAction";
     private String    reportedUserAction = "TestUserAction";
-    private Throwable reportedCaughtException = new Exception("TestReportedCaughtException");
+    private Exception reportedCaughtException = new Exception("TestReportedCaughtException");
     private Map<String, Object>  propertyMap = new HashMap<>();
 
     /**

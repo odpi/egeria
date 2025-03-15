@@ -252,10 +252,8 @@ public class OpenMetadataTypesArchive1_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.CONTAINMENT_TYPE);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.CONTAINMENT_TYPE));
 
         relationshipDef.setPropertiesDefinition(properties);
 

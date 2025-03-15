@@ -111,7 +111,7 @@ public class TestOMRSTypeDefEventType
         {
             jsonString = objectMapper.writeValueAsString(OMRSTypeDefEventType.DELETED_ATTRIBUTE_TYPEDEF_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -120,7 +120,7 @@ public class TestOMRSTypeDefEventType
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSTypeDefEventType.class) == OMRSTypeDefEventType.DELETED_ATTRIBUTE_TYPEDEF_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

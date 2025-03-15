@@ -48,7 +48,7 @@ public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
     public OMRSCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Map<String, Object> relatedProperties)
+                                    Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, relatedProperties);
     }
@@ -66,7 +66,7 @@ public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
     public OMRSCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError)
+                                    Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -85,7 +85,7 @@ public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
     public OMRSCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError,
+                                    Exception                  caughtError,
                                     Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -175,7 +175,7 @@ public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
      * @param caughtError  previous error causing this exception
      */
     @Deprecated
-    public OMRSCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OMRSCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

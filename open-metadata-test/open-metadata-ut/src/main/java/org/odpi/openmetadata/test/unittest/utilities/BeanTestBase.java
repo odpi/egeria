@@ -72,7 +72,7 @@ public class BeanTestBase
         {
             jsonString = OBJECT_WRITER.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             fail("Exception: " + exc.getMessage());
         }
@@ -81,7 +81,7 @@ public class BeanTestBase
         {
             return OBJECT_READER.readValue(jsonString, testObjectClass);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             fail("Exception: " + exc.getMessage());
         }

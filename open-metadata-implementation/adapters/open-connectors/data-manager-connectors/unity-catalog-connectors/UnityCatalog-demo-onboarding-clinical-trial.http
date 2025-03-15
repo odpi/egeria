@@ -1,5 +1,5 @@
 
-@ucURL=http://localhost:8080
+@ucURL=http://localhost:8087
 #@ucURL=http://egeria.pdr-associates.com:8070
 
 @baseURL=https://localhost:9443

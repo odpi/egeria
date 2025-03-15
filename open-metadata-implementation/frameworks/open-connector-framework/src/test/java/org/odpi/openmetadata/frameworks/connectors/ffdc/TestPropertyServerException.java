@@ -21,7 +21,7 @@ public class TestPropertyServerException
     private int       reportedHTTPCode = 400;
     private String    reportingClassName = "TestClassName";
     private String    reportingActionDescription = "TestActionDescription";
-    private Throwable reportedCaughtException = new Exception("TestReportedCaughtException");
+    private Exception reportedCaughtException = new Exception("TestReportedCaughtException");
 
     /**
      * Constructor

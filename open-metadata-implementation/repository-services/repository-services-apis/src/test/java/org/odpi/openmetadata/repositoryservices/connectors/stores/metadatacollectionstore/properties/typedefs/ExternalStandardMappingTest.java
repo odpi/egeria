@@ -76,7 +76,7 @@ public class ExternalStandardMappingTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -85,7 +85,7 @@ public class ExternalStandardMappingTest
         {
             validateObject(objectMapper.readValue(jsonString, ExternalStandardMapping.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

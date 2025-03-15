@@ -86,7 +86,7 @@ public class ClassificationPropagationRuleTest
         {
             jsonString = objectMapper.writeValueAsString(ClassificationPropagationRule.BOTH);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -95,7 +95,7 @@ public class ClassificationPropagationRuleTest
         {
             assertTrue(objectMapper.readValue(jsonString, ClassificationPropagationRule.class) == ClassificationPropagationRule.BOTH);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

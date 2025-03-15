@@ -9,17 +9,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -192,19 +182,8 @@ public class OpenMetadataTypesArchive3_2
 
     private EntityDef addSoftwareArchiveEntity()
     {
-        final String guid = "4c4bfc3f-1374-4e4c-a76d-c8e82b2cafaa";
-
-        final String name            = "SoftwareArchive";
-        final String description     = "A collection of runnable software components.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Collection";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_ARCHIVE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 
@@ -230,9 +209,7 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Create the Patch
          */
-        final String typeName = "Impact";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.IMPACT_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -241,47 +218,11 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "status";
-        final String attribute1Description     = "Deprecated attribute. Use the statusIdentifier attribute to describe the status of this classification.";
-        final String attribute1DescriptionGUID = null;
-
-        final String attribute3Name            = "level";
-        final String attribute3Description     = "Deprecated attribute. Use the severityIdentifier attribute to describe the severity level of this classification.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "levelIdentifier";
-        final String attribute4Description     = "Deprecated attribute. Use the severityIdentifier attribute to describe the severity level of this classification.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.STATUS_IDENTIFIER.name);
-        properties.add(property);
-
-        property = archiveHelper.getEnumTypeDefAttribute("ImpactSeverity",
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.SEVERITY_IDENTIFIER.name);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
-                                                        attribute4Description,
-                                                        attribute4DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.SEVERITY_IDENTIFIER.name);
-        properties.add(property);
-
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SEVERITY_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -446,16 +387,8 @@ public class OpenMetadataTypesArchive3_2
 
     private ClassificationDef getLogAnalysisClassification()
     {
-        final String guid            = "38cf214c-244d-435c-a328-251026356e6b";
-        final String name            = "LogAnalysis";
-        final String description     = "A set of results from the analysis of a log record - or collection of log records.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.LOG_ANALYSIS_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
                                                                                  false);
 
@@ -463,45 +396,13 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "process";
-        final String attribute2Description     = "Unique identifier of the automated process that produced this analysis.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute4Name            = "counts";
-        final String attribute4Description     = "A set of metric name to count value pairs.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "values";
-        final String attribute5Description     = "A set of metric name to string value pairs.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "flags";
-        final String attribute6Description     = "A set of metric name to boolean value pairs.";
-        final String attribute6DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringIntTypeDefAttribute(attribute4Name,
-                                                                 attribute4Description,
-                                                                 attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute5Name,
-                                                                    attribute5Description,
-                                                                    attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringBooleanTypeDefAttribute(attribute6Name,
-                                                                     attribute6Description,
-                                                                     attribute6DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COUNTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FLAGS));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -510,16 +411,8 @@ public class OpenMetadataTypesArchive3_2
 
     private ClassificationDef getLineageLogClassification()
     {
-        final String guid            = "876e55db-27b9-4132-ad00-bbf882ea8e8a";
-        final String name            = "LineageLog";
-        final String description     = "A collection of related lineage log records.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.LINEAGE_LOG_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
                                                                                  false);
 
@@ -527,24 +420,10 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "process";
-        final String attribute2Description     = "Unique identifier of the automated process that processes this lineage log.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -556,14 +435,10 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Create the Patch
          */
-        final String typeName       = "AuditLog";
-        final String description    = "A collection of related audit log records.";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.AUDIT_LOG_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setDescription(description);
 
         List<TypeDefLink> linkToList = new ArrayList<>();
         linkToList.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName));
@@ -573,25 +448,10 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "process";
-        final String attribute2Description     = "Unique identifier of the automated process that processes this audit log.";
-        final String attribute2DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -603,14 +463,10 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Create the Patch
          */
-        final String typeName       = "MeteringLog";
-        final String description    = "A collection of related metering log records.";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.METERING_LOG_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setDescription(description);
 
         List<TypeDefLink> linkToList = new ArrayList<>();
         linkToList.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName));
@@ -620,24 +476,10 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "process";
-        final String attribute2Description     = "Unique identifier of the automated process that processes this metering log.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -649,14 +491,10 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Create the Patch
          */
-        final String typeName       = "ExceptionBacklog";
-        final String description    = "A collection of exceptions that need to be resolved";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXCEPTION_BACKLOG_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setDescription(description);
 
         List<TypeDefLink> linkToList = new ArrayList<>();
         linkToList.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName));
@@ -666,44 +504,16 @@ public class OpenMetadataTypesArchive3_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
-        final String attribute3Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
-        final String attribute4Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
-        final String attribute5Name            = "process";
-        final String attribute5Description     = "Unique identifier of the automated process that processes this exception backlog.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
-                                                           OpenMetadataProperty.STEWARD.description,
-                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
-                                                           OpenMetadataProperty.SOURCE.description,
-                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -861,55 +671,18 @@ public class OpenMetadataTypesArchive3_2
 
     private EntityDef addFingerprintAnnotationEntity()
     {
-        final String guid = "b3adca2a-ce66-4b29-bf2e-7406ada8ab49";
-
-        final String name            = "FingerprintAnnotation";
-        final String description     = "An annotation capturing asset fingerprint information.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "DataFieldAnnotation";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.FINGERPRINT_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD_ANNOTATION.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "fingerprint";
-        final String attribute1Description     = "A string value that represents the content of the asset.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "hash";
-        final String attribute2Description     = "An integer value that represents the content of the asset.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "fingerprintAlgorithm";
-        final String attribute3Description     = "The algorithm use to generate either the fingerprint.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "hashAlgorithm";
-        final String attribute4Description     = "The algorithm use to generate either the hash.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FINGERPRINT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FINGERPRINT_ALGORITHM));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HASH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HASH_ALGORITHM));
 
         entityDef.setPropertiesDefinition(properties);
 

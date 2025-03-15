@@ -137,7 +137,7 @@ public class TestSchemaAttributeRelationship
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -146,7 +146,7 @@ public class TestSchemaAttributeRelationship
         {
             validateResultObject(objectMapper.readValue(jsonString, SchemaAttributeRelationship.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
