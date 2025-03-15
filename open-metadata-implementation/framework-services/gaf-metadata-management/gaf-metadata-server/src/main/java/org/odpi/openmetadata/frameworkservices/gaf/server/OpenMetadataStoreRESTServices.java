@@ -112,9 +112,9 @@ public class OpenMetadataStoreRESTServices
 
             auditLog.logMessage(methodName, OpenMetadataStoreAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, governanceService, message));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -156,9 +156,9 @@ public class OpenMetadataStoreRESTServices
             response.setTypeDefs(this.getTypeDefs(repositoryHelper.getKnownTypeDefs()));
             response.setAttributeTypeDefs(this.getAttributeTypeDefs(repositoryHelper.getKnownAttributeTypeDefs()));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -218,9 +218,9 @@ public class OpenMetadataStoreRESTServices
                 }
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -280,9 +280,9 @@ public class OpenMetadataStoreRESTServices
                 }
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -352,9 +352,9 @@ public class OpenMetadataStoreRESTServices
                 }
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -419,9 +419,9 @@ public class OpenMetadataStoreRESTServices
                 }
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -468,9 +468,9 @@ public class OpenMetadataStoreRESTServices
                                                           methodName);
             response.setTypeDef(this.getTypeDef(typeDef));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -515,9 +515,9 @@ public class OpenMetadataStoreRESTServices
                                                                                      methodName);
             response.setAttributeTypeDef(this.getAttributeTypeDef(attributeTypeDef));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -560,9 +560,9 @@ public class OpenMetadataStoreRESTServices
             TypeDef typeDef = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(serviceURLMarker), name);
             response.setTypeDef(this.getTypeDef(typeDef));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -605,9 +605,9 @@ public class OpenMetadataStoreRESTServices
             AttributeTypeDef attributeTypeDef = repositoryHelper.getAttributeTypeDefByName(instanceHandler.getServiceName(serviceURLMarker), name);
             response.setAttributeTypeDef(this.getAttributeTypeDef(attributeTypeDef));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -713,9 +713,9 @@ public class OpenMetadataStoreRESTServices
                                                                      methodName));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -779,9 +779,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -845,9 +845,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -941,9 +941,9 @@ public class OpenMetadataStoreRESTServices
                                                                methodName));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1012,9 +1012,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1181,9 +1181,9 @@ public class OpenMetadataStoreRESTServices
 
             response.setRelatedElementList(relatedElementList);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1348,9 +1348,9 @@ public class OpenMetadataStoreRESTServices
 
             response.setRelationshipList(relationshipList);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1440,9 +1440,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1663,9 +1663,9 @@ public class OpenMetadataStoreRESTServices
                 response.setElementGraph(elementGraph);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1763,9 +1763,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1847,9 +1847,9 @@ public class OpenMetadataStoreRESTServices
                                                                      methodName));
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1948,9 +1948,9 @@ public class OpenMetadataStoreRESTServices
             response.setRelationshipList(openMetadataRelationshipList);
             // to do add mermaid graph
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2018,9 +2018,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2089,9 +2089,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2153,9 +2153,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2215,9 +2215,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2277,9 +2277,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2345,9 +2345,9 @@ public class OpenMetadataStoreRESTServices
                                                      methodName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2413,9 +2413,9 @@ public class OpenMetadataStoreRESTServices
                                                       new Date(),
                                                       methodName);            }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2482,9 +2482,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2548,9 +2548,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2614,9 +2614,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2680,9 +2680,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2745,9 +2745,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2808,9 +2808,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2871,9 +2871,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2931,9 +2931,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3371,9 +3371,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3460,9 +3460,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3552,9 +3552,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3634,9 +3634,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3724,9 +3724,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3804,9 +3804,9 @@ public class OpenMetadataStoreRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3868,9 +3868,9 @@ public class OpenMetadataStoreRESTServices
                 response.setFlag(true);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3932,9 +3932,9 @@ public class OpenMetadataStoreRESTServices
                 response.setFlag(true);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3998,9 +3998,9 @@ public class OpenMetadataStoreRESTServices
                 response.setFlag(true);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -4070,9 +4070,9 @@ public class OpenMetadataStoreRESTServices
                                                                          methodName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -4126,9 +4126,9 @@ public class OpenMetadataStoreRESTServices
                                                           handler,
                                                           methodName));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -4184,9 +4184,9 @@ public class OpenMetadataStoreRESTServices
                                                           handler,
                                                           methodName));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -4300,9 +4300,9 @@ public class OpenMetadataStoreRESTServices
                 response.setElementList(details);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -4377,9 +4377,9 @@ public class OpenMetadataStoreRESTServices
                 response.setElementList(details);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -4474,9 +4474,9 @@ public class OpenMetadataStoreRESTServices
                                                 null,
                                                 methodName);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

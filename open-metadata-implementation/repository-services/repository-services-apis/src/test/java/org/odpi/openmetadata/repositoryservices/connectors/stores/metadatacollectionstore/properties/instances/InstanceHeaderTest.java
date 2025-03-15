@@ -116,7 +116,7 @@ public class InstanceHeaderTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -125,7 +125,7 @@ public class InstanceHeaderTest
         {
             validateObject(objectMapper.readValue(jsonString, InstanceHeaderMock.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

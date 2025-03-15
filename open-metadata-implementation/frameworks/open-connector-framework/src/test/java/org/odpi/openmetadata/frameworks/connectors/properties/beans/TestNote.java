@@ -162,7 +162,7 @@ public class TestNote
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -171,7 +171,7 @@ public class TestNote
         {
             validateResultObject(objectMapper.readValue(jsonString, Note.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -185,7 +185,7 @@ public class TestNote
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -194,7 +194,7 @@ public class TestNote
         {
             validateResultObject((Note) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -208,7 +208,7 @@ public class TestNote
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -217,7 +217,7 @@ public class TestNote
         {
             validateResultObject((Note) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -231,7 +231,7 @@ public class TestNote
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -240,7 +240,7 @@ public class TestNote
         {
             validateResultObject((Note) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

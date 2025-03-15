@@ -103,9 +103,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -167,9 +167,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                                       forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -236,9 +236,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -297,9 +297,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -368,9 +368,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -432,9 +432,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                                            forLineage,
                                                            forDuplicateProcessing);            }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -503,9 +503,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -568,9 +568,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                                      forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -636,9 +636,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -699,9 +699,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                           forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -767,9 +767,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -830,9 +830,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                        forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -898,9 +898,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -961,9 +961,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                                      forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1033,9 +1033,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1101,9 +1101,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                                 forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1164,9 +1164,9 @@ public class ClassificationManagerRESTServices extends TokenController
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1232,9 +1232,9 @@ public class ClassificationManagerRESTServices extends TokenController
                                                               forDuplicateProcessing);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

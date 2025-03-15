@@ -84,7 +84,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      * @param error exception
      * @param methodName calling activity
      */
-    private void logUnhandledException(Throwable  error,
+    private void logUnhandledException(Exception  error,
                                        String     methodName)
     {
         auditLog.logException(methodName,

@@ -83,7 +83,7 @@ public class EnumElementDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -92,7 +92,7 @@ public class EnumElementDefTest
         {
             validateObject(objectMapper.readValue(jsonString, EnumElementDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

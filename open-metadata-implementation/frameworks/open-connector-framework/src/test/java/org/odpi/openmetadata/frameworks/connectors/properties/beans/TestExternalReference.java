@@ -180,7 +180,7 @@ public class TestExternalReference
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -189,7 +189,7 @@ public class TestExternalReference
         {
             validateResultObject(objectMapper.readValue(jsonString, ExternalReference.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -203,7 +203,7 @@ public class TestExternalReference
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -212,7 +212,7 @@ public class TestExternalReference
         {
             validateResultObject((ExternalReference) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -226,7 +226,7 @@ public class TestExternalReference
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -235,7 +235,7 @@ public class TestExternalReference
         {
             validateResultObject((ExternalReference) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -249,7 +249,7 @@ public class TestExternalReference
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -258,7 +258,7 @@ public class TestExternalReference
         {
             validateResultObject((ExternalReference) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -199,7 +199,7 @@ public class TestVirtualConnection
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -208,7 +208,7 @@ public class TestVirtualConnection
         {
             validateResultObject(objectMapper.readValue(jsonString, VirtualConnection.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -222,7 +222,7 @@ public class TestVirtualConnection
         {
             jsonString = objectMapper.writeValueAsString(connection);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -231,7 +231,7 @@ public class TestVirtualConnection
         {
             validateResultObject((VirtualConnection) objectMapper.readValue(jsonString, Connection.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -245,7 +245,7 @@ public class TestVirtualConnection
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -254,7 +254,7 @@ public class TestVirtualConnection
         {
             validateResultObject((VirtualConnection) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -268,7 +268,7 @@ public class TestVirtualConnection
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -277,7 +277,7 @@ public class TestVirtualConnection
         {
             validateResultObject((VirtualConnection) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -291,7 +291,7 @@ public class TestVirtualConnection
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -300,7 +300,7 @@ public class TestVirtualConnection
         {
             validateResultObject((VirtualConnection) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

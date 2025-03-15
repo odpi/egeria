@@ -96,7 +96,7 @@ public class InstancePropertyCategoryTest
         {
             jsonString = objectMapper.writeValueAsString(InstancePropertyCategory.STRUCT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -105,7 +105,7 @@ public class InstancePropertyCategoryTest
         {
             assertTrue(objectMapper.readValue(jsonString, InstancePropertyCategory.class) == InstancePropertyCategory.STRUCT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

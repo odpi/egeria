@@ -160,7 +160,7 @@ public class TestNoteLog2
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -169,7 +169,7 @@ public class TestNoteLog2
         {
             validateResultObject(objectMapper.readValue(jsonString, NoteLogHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -183,7 +183,7 @@ public class TestNoteLog2
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -192,7 +192,7 @@ public class TestNoteLog2
         {
             validateResultObject((NoteLogHeader) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -206,7 +206,7 @@ public class TestNoteLog2
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -215,7 +215,7 @@ public class TestNoteLog2
         {
             validateResultObject((NoteLogHeader) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -229,7 +229,7 @@ public class TestNoteLog2
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -238,7 +238,7 @@ public class TestNoteLog2
         {
             validateResultObject((NoteLogHeader) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

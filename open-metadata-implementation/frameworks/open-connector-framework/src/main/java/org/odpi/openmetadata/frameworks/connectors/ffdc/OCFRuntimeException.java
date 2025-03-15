@@ -36,7 +36,7 @@ public class OCFRuntimeException extends RuntimeException
     private String[]            reportedErrorMessageParameters;
     private String              reportedSystemAction;
     private String              reportedUserAction;
-    private Throwable           reportedCaughtException = null;
+    private Exception           reportedCaughtException = null;
     private String              reportedCaughtExceptionClassName = null;
     private Map<String, Object> relatedProperties = null;
 
@@ -100,7 +100,7 @@ public class OCFRuntimeException extends RuntimeException
     public OCFRuntimeException(ExceptionMessageDefinition messageDefinition,
                                String                     className,
                                String                     actionDescription,
-                               Throwable                  caughtError)
+                               Exception                  caughtError)
     {
         this(messageDefinition, className, actionDescription, caughtError, null);
     }
@@ -119,7 +119,7 @@ public class OCFRuntimeException extends RuntimeException
     public OCFRuntimeException(ExceptionMessageDefinition messageDefinition,
                                String                     className,
                                String                     actionDescription,
-                               Throwable                  caughtError,
+                               Exception                  caughtError,
                                Map<String, Object>        relatedProperties)
     {
         super(messageFormatter.getFormattedMessage(messageDefinition), caughtError);
@@ -383,9 +383,9 @@ public class OCFRuntimeException extends RuntimeException
      * either newly created and not the result of a previous exception or the exception occurred in a remote
      * server.  If the second situation is true then reportedCaughtExceptionClassName is set.
      *
-     * @return reportedCaughtException Throwable object
+     * @return reportedCaughtException Exception object
      */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
+    public Exception getReportedCaughtException() { return reportedCaughtException; }
 
 
     /**
@@ -530,7 +530,7 @@ public class OCFRuntimeException extends RuntimeException
      * @param caughtError   previous error causing this exception
      */
     @Deprecated
-    public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;
@@ -559,7 +559,7 @@ public class OCFRuntimeException extends RuntimeException
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     @Deprecated
-    public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError, Map<String, Object> relatedProperties)
+    public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError, Map<String, Object> relatedProperties)
     {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;

@@ -65,7 +65,7 @@ public class RepositoryTimeoutException extends RepositoryErrorException
     public RepositoryTimeoutException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError)
+                                      Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -84,7 +84,7 @@ public class RepositoryTimeoutException extends RepositoryErrorException
     public RepositoryTimeoutException(ExceptionMessageDefinition messageDefinition,
                                       String                     className,
                                       String                     actionDescription,
-                                      Throwable                  caughtError,
+                                      Exception                  caughtError,
                                       Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);

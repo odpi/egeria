@@ -222,9 +222,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -322,9 +322,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -436,9 +436,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -484,9 +484,9 @@ public class EventBrokerRESTServices
 
             handler.publishAsset(userId, topicGUID, topicGUIDParameterName, false, false, new Date(), methodName);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -532,9 +532,9 @@ public class EventBrokerRESTServices
 
             handler.withdrawAsset(userId, topicGUID, topicGUIDParameterName, false, false, new Date(), methodName);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -598,9 +598,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -665,9 +665,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -732,9 +732,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -803,9 +803,9 @@ public class EventBrokerRESTServices
 
             response.setElements(setUpVendorProperties(userId, topicAssets, handler, methodName));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -855,9 +855,9 @@ public class EventBrokerRESTServices
 
             response.setElement(setUpVendorProperties(userId, topicAsset, handler, methodName));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -939,9 +939,9 @@ public class EventBrokerRESTServices
                 response.setGUID(eventTypeGUID);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1007,9 +1007,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1095,9 +1095,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1158,9 +1158,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1224,9 +1224,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1283,9 +1283,9 @@ public class EventBrokerRESTServices
             setUpVendorProperties(userId, eventTypes, handler, methodName);
             response.setElements(eventTypes);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1341,9 +1341,9 @@ public class EventBrokerRESTServices
             setUpVendorProperties(userId, eventTypes, handler, methodName);
             response.setElements(eventTypes);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1407,9 +1407,9 @@ public class EventBrokerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1460,9 +1460,9 @@ public class EventBrokerRESTServices
 
             response.setElement(eventType);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

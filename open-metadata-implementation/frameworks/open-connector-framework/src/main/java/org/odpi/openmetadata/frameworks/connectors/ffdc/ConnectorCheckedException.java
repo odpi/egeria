@@ -69,7 +69,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     public ConnectorCheckedException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError)
+                                     Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -87,7 +87,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     public ConnectorCheckedException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -166,7 +166,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
      * @param caughtError   the error that resulted in this exception.
      */
     @Deprecated
-    public ConnectorCheckedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public ConnectorCheckedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 

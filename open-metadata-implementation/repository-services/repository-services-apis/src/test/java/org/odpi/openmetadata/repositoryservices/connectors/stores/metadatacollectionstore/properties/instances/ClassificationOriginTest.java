@@ -76,7 +76,7 @@ public class ClassificationOriginTest
         {
             jsonString = objectMapper.writeValueAsString(ClassificationOrigin.ASSIGNED);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -85,7 +85,7 @@ public class ClassificationOriginTest
         {
             assertTrue(objectMapper.readValue(jsonString, ClassificationOrigin.class) == ClassificationOrigin.ASSIGNED);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

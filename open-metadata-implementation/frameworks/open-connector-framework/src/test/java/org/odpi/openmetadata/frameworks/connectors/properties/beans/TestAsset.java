@@ -210,7 +210,7 @@ public class TestAsset
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -219,7 +219,7 @@ public class TestAsset
         {
             validateResultObject(objectMapper.readValue(jsonString, Asset.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -233,7 +233,7 @@ public class TestAsset
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -242,7 +242,7 @@ public class TestAsset
         {
             validateResultObject((Asset) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -256,7 +256,7 @@ public class TestAsset
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -265,7 +265,7 @@ public class TestAsset
         {
             validateResultObject((Asset) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -279,7 +279,7 @@ public class TestAsset
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -288,7 +288,7 @@ public class TestAsset
         {
             validateResultObject((Asset) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

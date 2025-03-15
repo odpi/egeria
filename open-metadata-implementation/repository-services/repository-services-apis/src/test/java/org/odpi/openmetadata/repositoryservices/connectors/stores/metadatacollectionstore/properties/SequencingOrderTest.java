@@ -106,7 +106,7 @@ public class SequencingOrderTest
         {
             jsonString = objectMapper.writeValueAsString(SequencingOrder.CREATION_DATE_OLDEST);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -115,7 +115,7 @@ public class SequencingOrderTest
         {
             assertTrue(objectMapper.readValue(jsonString, SequencingOrder.class) == SequencingOrder.CREATION_DATE_OLDEST);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

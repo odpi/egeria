@@ -62,7 +62,7 @@ public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.fra
     public OMAGCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError)
+                                    Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -81,7 +81,7 @@ public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.fra
     public OMAGCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                     String                     className,
                                     String                     actionDescription,
-                                    Throwable                  caughtError,
+                                    Exception                  caughtError,
                                     Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);

@@ -272,10 +272,8 @@ public class OpenMetadataTypesArchive5_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_TIME_ALLOCATION_PERCENT);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_TIME_ALLOCATION_PERCENT));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

@@ -60,7 +60,7 @@ public class OMRSConnectorErrorException extends OMRSRuntimeException
     public OMRSConnectorErrorException(ExceptionMessageDefinition messageDefinition,
                                        String                     className,
                                        String                     actionDescription,
-                                       Throwable                  caughtError)
+                                       Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -79,7 +79,7 @@ public class OMRSConnectorErrorException extends OMRSRuntimeException
     public OMRSConnectorErrorException(ExceptionMessageDefinition messageDefinition,
                                        String                     className,
                                        String                     actionDescription,
-                                       Throwable                  caughtError,
+                                       Exception                  caughtError,
                                        Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -156,7 +156,7 @@ public class OMRSConnectorErrorException extends OMRSRuntimeException
      * @param caughtError  previous error causing this exception
      */
     @Deprecated
-    public OMRSConnectorErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OMRSConnectorErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

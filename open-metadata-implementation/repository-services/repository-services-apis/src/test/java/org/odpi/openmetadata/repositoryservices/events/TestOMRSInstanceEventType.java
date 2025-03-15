@@ -201,7 +201,7 @@ public class TestOMRSInstanceEventType
         {
             jsonString = objectMapper.writeValueAsString(OMRSInstanceEventType.RETYPED_ENTITY_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -210,7 +210,7 @@ public class TestOMRSInstanceEventType
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSInstanceEventType.class) == OMRSInstanceEventType.RETYPED_ENTITY_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

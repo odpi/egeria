@@ -17,7 +17,7 @@ public class UserNotAuthorizedExceptionTest
     private String    reportingClassName         = "TestClassName";
     private String    reportingActionDescription = "TestActionDescription";
     private String    userId                     = "TestUserId";
-    private Throwable reportedCaughtException    = new Exception("TestReportedCaughtException");
+    private Exception reportedCaughtException    = new Exception("TestReportedCaughtException");
 
     /**
      * Constructor

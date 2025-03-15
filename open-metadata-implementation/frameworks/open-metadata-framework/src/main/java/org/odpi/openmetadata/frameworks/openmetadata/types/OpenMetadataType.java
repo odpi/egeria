@@ -181,13 +181,23 @@ public enum OpenMetadataType
                                      "Provides a link to a keyword that helps to identify specific elements in a search."),
 
     /**
-     * Links search keywords that have similar meanings together.
+     * A collection of translated properties.
      */
-    RELATED_KEYWORD_RELATIONSHIP("f9ffa8a8-80f5-4e6d-9c05-a3a5e0277d62",
-                                 "RelatedKeyword",
-                                 OpenMetadataWikiPages.MODEL_0012_SEARCH_KEYWORDS,
-                                 "e8b2dba2-6d3a-4a83-8ebf-1f0555b5164d",
-                                 "Links search keywords that have similar meanings together."),
+    TRANSLATION_DETAIL("d7df0579-8671-48f0-a8aa-38a487d418c8",
+                       "TranslationDetail",
+                       OpenMetadataWikiPages.MODEL_0013_TRANSLATIONS,
+                       "953e0048-e4da-4056-8dd1-2cb5caa5336a",
+                       "A collection of translated properties."),
+
+    /**
+     * Links an entity to a collection of translated properties.
+     */
+    TRANSLATION_LINK_RELATIONSHIP("576228af-33ec-4588-ba4e-6a864a097e10",
+                                  "TranslationLink",
+                                  OpenMetadataWikiPages.MODEL_0013_TRANSLATIONS,
+                                  "8baaef81-c7f8-4537-9ba7-36c629998343",
+                                  "Links an entity to a collection of translated properties."),
+
 
     /**
      * Link to more information.
@@ -468,13 +478,58 @@ public enum OpenMetadataType
                       "Hardware and base software that supports an IT system."),
 
     /**
+     * Characteristics of the operating system in use within a host.
+     */
+    OPERATING_PLATFORM("bd96a997-8d78-42f6-adf7-8239bc98501c",
+                       "OperatingPlatform",
+                       OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                       "b1dc416d-7750-4ec5-88ce-b5125ebf4497",
+                       "Characteristics of the operating system in use within a host."),
+
+    /**
      * Identifies the operating platform installed on the IT Infrastructure asset.
      */
-    OPERATING_PLATFORM_USE("0943e0ba-73ac-476b-8ebe-2ef30ba44976",
-                            "OperatingPlatformUse",
-                            OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
-                            "8030885a-6639-40a6-8b02-277553ab6041",
-                            "Identifies the operating platform installed on the IT Infrastructure asset."),
+    OPERATING_PLATFORM_USE_RELATIONSHIP("0943e0ba-73ac-476b-8ebe-2ef30ba44976",
+                                        "OperatingPlatformUse",
+                                        OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                                        "8030885a-6639-40a6-8b02-277553ab6041",
+                                        "Identifies the operating platform installed on the IT Infrastructure asset."),
+
+    /**
+     * Shows the software packages being used within a digital resource.
+     */
+    SOFTWARE_PACKAGE_DEPENDENCY_RELATIONSHIP("2c05beaf-e313-47f8-ac18-2298140b2ad9",
+                                             "SoftwarePackageDependency",
+                                             OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                                             "3e483839-d163-49b5-9c63-9f47ece44af9",
+                                             "Shows the software packages being used within a digital resource."),
+
+    /**
+     * A collection of runnable software components.
+     */
+    SOFTWARE_ARCHIVE("4c4bfc3f-1374-4e4c-a76d-c8e82b2cafaa",
+                     "SoftwareArchive",
+                     OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                     "1119fa39-2097-40f1-971b-80ae11dbe436",
+                     "A collection of runnable software components."),
+
+    /**
+     * Defines the base software installed on the operating platform.
+     */
+    OPERATING_PLATFORM_MANIFEST_RELATIONSHIP("e5bd6acf-932c-4d9c-85ff-941a8e4451db",
+                                             "OperatingPlatformManifest",
+                                             OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                                             "7f9da435-57dd-41ac-a57a-a8a0a2993358",
+                                             "Defines the base software installed on the operating platform."),
+
+    /**
+     * Identifies a collection of software packages.
+     */
+    SOFTWARE_PACKAGE_MANIFEST_CLASSIFICATION("e328ae6e-0b16-4490-9883-c953b4258841",
+                                             "SoftwarePackageManifest",
+                                             OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                                             "6c6fc06b-73c7-46b1-8e4e-068559f04bac",
+                                             "Identifies a collection of software packages."),
 
     /**
      * Named IT infrastructure system that supports multiple software platforms and servers.
@@ -484,6 +539,18 @@ public enum OpenMetadataType
          OpenMetadataWikiPages.MODEL_0035_HOSTS,
          "2f97b8f6-a136-4e30-8fc2-4fc129a4f272",
          "Named IT infrastructure system that supports multiple software platforms and servers."),
+
+
+    /**
+     * Identifies an IT Infrastructure asset that is deployed to a specific destination.
+     */
+    DEPLOYED_ON_RELATIONSHIP("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
+                             "DeployedOn",
+                             OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                             "d727b3ce-d58b-45d5-8abc-55b1394e030a",
+                             "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
+
+
 
     /**
      * A group of hosts operating together to provide a scalable platform.
@@ -560,22 +627,22 @@ public enum OpenMetadataType
                        "A host cluster managing containerized applications."),
 
     /**
-     * Characteristics of the operating system in use within a host.
+     * A persistent storage volume.
      */
-    OPERATING_PLATFORM("bd96a997-8d78-42f6-adf7-8239bc98501c",
-                       "OperatingPlatform",
-                       OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
-                       "b1dc416d-7750-4ec5-88ce-b5125ebf4497",
-                       "Characteristics of the operating system in use within a host."),
+    STORAGE_VOLUME("14145458-f0d0-4955-8899-b8a2874708c9",
+                   "StorageVolume",
+                   OpenMetadataWikiPages.MODEL_0036_STORAGE,
+                   "d644ca65-53a6-40c1-9925-4c7c55d138d9",
+                   "A persistent storage volume."),
 
     /**
-     * Identifies an IT Infrastructure asset that is deployed to a specific destination.
+     * Links a host to a persistent storage volume.
      */
-    DEPLOYED_ON_RELATIONSHIP("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
-                             "DeployedOn",
-                             OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
-                             "d727b3ce-d58b-45d5-8abc-55b1394e030a",
-                             "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
+    ATTACHED_STORAGE_RELATIONSHIP("2cf1e949-7189-4bf2-8ee4-e1318e59abd7",
+                                  "AttachedStorage",
+                                  OpenMetadataWikiPages.MODEL_0036_STORAGE,
+                                  "380e749e-a406-4359-89b4-e6a96646819c",
+                                  "Links a host to a persistent storage volume."),
 
     /**
      * Software services packaged as an operating system process to support a runtime environment for a virtual software server.
@@ -703,6 +770,16 @@ public enum OpenMetadataType
                                       OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
                                       "47fc8ae9-5f6b-42e8-bb9d-c261cc9371f3",
                                       "Identifies a software capability that is deployed to an instance of IT infrastructure."),
+
+    /**
+     * Stores processing state information used by various SoftwareCapabilities.
+     */
+    PROCESSING_STATE_CLASSIFICATION("261fb0aa-b884-4ee8-87ea-a60510e9751d",
+                                    "ProcessingState",
+                                    OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
+                                    "262e70d6-08d4-4e09-87ee-5b1955d095d2",
+                                    "Stores processing state information used by various SoftwareCapabilities."),
+
 
     /**
      * Defines that a server capability is associated with an asset.
@@ -877,6 +954,33 @@ public enum OpenMetadataType
                   "Defines a capability that manages metadata about assets."),
 
     /**
+     * Defines a software source code library that provides version control.
+     */
+    SOURCE_CONTROL_LIBRARY_CLASSIFICATION("0ef3c90d-20d7-4259-8d66-9c8bb109f2ae",
+                                          "SourceControlLibrary",
+                                          OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                                          "0caee5fd-b64b-4b38-97c6-38816cc4015c",
+                                          "Defines a software source code library that provides version control."),
+
+    /**
+     * Defines a managed collection of requirements, defects and proposed changes to a project.
+     */
+    CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION("4e236548-b802-4a1d-a329-4abdeaae5323",
+                                             "ChangeManagementLibrary",
+                                             OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                                             "cd17363a-7b57-4ca5-9ed3-d07a7ddfa497",
+                                             "Defines a managed collection of requirements, defects and proposed changes to a project."),
+
+    /**
+     * Defines a collection of software modules.  Also known as the definitive software library.
+     */
+    SOFTWARE_LIBRARY_CLASSIFICATION("5708fa1a-2b64-4706-8e14-a020e4567db3",
+                                    "SoftwareLibrary",
+                                    OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                                    "db77d01b-11ba-44cf-bab3-0a9c5e980843",
+                                    "Defines a collection of software modules.  Also known as the definitive software library."),
+
+    /**
      * A capability that supports a store of files organized into a hierarchy of file folders.
      */
     FILE_SYSTEM_CLASSIFICATION("cab5ba1d-cfd3-4fca-857d-c07711fc4157",
@@ -947,6 +1051,15 @@ public enum OpenMetadataType
                      OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
                      "b3c83676-88a3-49a5-84d0-15c735dfcd91",
                      "Defines a capability that provides externally callable functions to other services."),
+
+    /**
+     * A software service supporting a single reusable business function.
+     */
+    APPLICATION_SERVICE("5b7f340e-7dc9-45c0-a636-c20605147c94",
+                        "ApplicationService",
+                        OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                        "252e4b9b-5cf0-4267-960b-a801645868bc",
+                        "A software service supporting a single reusable business function."),
 
     /**
      * Repository services for the Open Metadata Access Services (OMAS) supporting federated queries and aggregated events from the connected cohorts.
@@ -2677,6 +2790,15 @@ public enum OpenMetadataType
                            "Links a glossary term to a glossary term in an external glossary."),
 
     /**
+     * Defines a category as being the base category of a glossary term.
+     */
+    PRIMARY_CATEGORY_CLASSIFICATION("3a6c4ba7-3cc5-48cd-8952-bwra92da016d",
+                                    "PrimaryCategory",
+                                    OpenMetadataWikiPages.MODEL_0335_PRIMARY_CATEGORY,
+                                    "b2a92dff-7bd4-4695-9f79-fc31d96b90ca",
+                                    "Defines a category as being the base category of a glossary term."),
+
+    /**
      * Identifies that this glossary term describes an activity.
      */
     ACTIVITY_DESCRIPTION_CLASSIFICATION("317f0e52-1548-41e6-b90c-6ae5e6c53fed",
@@ -3170,6 +3292,15 @@ public enum OpenMetadataType
                                "Defines how critical the related data items are to the organization."),
 
     /**
+     * Defines the severity of a situation described in the attached entity.
+     */
+    IMPACT_CLASSIFICATION("3a6c4ba7-3cc5-48cd-8952-a50a92da016d",
+                          "Impact",
+                          OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
+                          "f6993c33-ccf6-4a7d-b089-d7608079ce01",
+                          "Defines the severity of a situation described in the attached entity."),
+
+    /**
      * A collection of users that should be given the same, specific security privileges.
      */
     SECURITY_GROUP("042d9b5c-677e-477b-811f-1c39bf716759",
@@ -3279,6 +3410,15 @@ public enum OpenMetadataType
                     OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
                     "d9ed4134-cad6-4d47-9613-68325fca3430",
                     "Technical control expressed as a logic expression."),
+
+    /**
+     * The set of behaviour-related objectives that an asset or capability seeks to achieve.
+     */
+    SERVICE_LEVEL_OBJECTIVE("22c4e433-1b87-4446-840a-03f83d2dc113",
+                            "ServiceLevelObjective",
+                            OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                            "6eac0c8f-1265-43b2-8307-c270053bc800",
+                            "The set of behaviour-related objectives that an asset or capability seeks to achieve."),
 
     /**
      * Technical control expressed as a sequence of tasks.
@@ -3488,6 +3628,42 @@ public enum OpenMetadataType
                     "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource."),
 
     /**
+     * A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.
+     */
+    GOVERNANCE_REPRESENTATIVE("6046bdf8-a37e-4bc4-b51d-325d8c31a96c",
+                              "GovernanceRepresentative",
+                              OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                              "d22a5441-3470-4bf9-9412-12c9a7864955",
+                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties."),
+
+    /**
+     * A role defining a responsibility for activity at a particular location.
+     */
+    LOCATION_OWNER("3437fd1d-5098-426c-9b55-c94d1fc5dc0e",
+                   "LocationOwner",
+                   OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                   "4fea5fc9-eb6e-412e-a68f-f3041dda47ad",
+                   "A role defining a responsibility for activity at a particular location."),
+
+    /**
+     * A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.
+     */
+    BUSINESS_OWNER("0e83bb5f-f2f5-4a85-92eb-f71e92a181f5",
+                   "BusinessOwner",
+                   OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                   "5707d6ff-2db5-431f-9e21-a92a9a20a62c",
+                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss."),
+
+    /**
+     * A role defining a responsibility for an IT solution.
+     */
+    SOLUTION_OWNER("e44d5019-37e5-4965-8b89-2bef412833bf",
+                   "SolutionOwner",
+                   OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                   "eef70090-0ac9-4b9c-8de1-611660ca4387",
+                   "A role defining a responsibility for an IT solution."),
+
+    /**
      * A role defining a responsibility to manage an asset.
      */
     ASSET_OWNER("ac406bf8-e53e-49f1-9088-2af28eeee285",
@@ -3615,11 +3791,30 @@ public enum OpenMetadataType
                                 "A data set containing records that can be used to identify usage of resources."),
 
     /**
+     * A set of results from the analysis of a log record - or collection of log records.
+     */
+    LOG_ANALYSIS_CLASSIFICATION("38cf214c-244d-435c-a328-251026356e6b",
+                                "LogAnalysis",
+                                OpenMetadataWikiPages.MODEL_0455_EXCEPTION_MANAGEMENT,
+                                "7e4fe202-75a8-4cb7-a1af-3b1651c369ba",
+                                "A set of results from the analysis of a log record - or collection of log records."),
+
+    /**
+     * A collection of related operational lineage log records.
+     */
+    LINEAGE_LOG_CLASSIFICATION("876e55db-27b9-4132-ad00-bbf882ea8e8a",
+                               "LineageLog",
+                               OpenMetadataWikiPages.MODEL_0455_EXCEPTION_MANAGEMENT,
+                               "a4b92966-46cf-45df-801d-f506b78b508b",
+                               "A collection of related operational lineage log records."),
+
+
+    /**
      * A task in a process where a person must make a decision on the right action to take.
      */
     CONTROL_POINT_CLASSIFICATION("acf8b73e-3545-435d-ba16-fbfae060dd28",
                                  "ControlPoint",
-                                 OpenMetadataWikiPages.MODEL_0455_EXCEPTION_MANAGEMENT,
+                                 OpenMetadataWikiPages.MODEL_0460_EXECUTION_POINTS,
                                  "2db376f2-ccaf-4bb6-a579-7502ce42d419",
                                  "A task in a process where a person must make a decision on the right action to take."),
 
@@ -3826,20 +4021,20 @@ public enum OpenMetadataType
     /**
      * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller.
      */
-    TARGET_FOR_ACTION_TYPE("059ed11f-f8dd-45cc-991e-2cf9ad3be4a7",
-                      "TargetForActionType",
-                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
-                      "433f34f5-572e-44cf-888d-653bed1bce54",
-                      "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller."),
+    TARGET_FOR_ACTION_TYPE_RELATIONSHIP("059ed11f-f8dd-45cc-991e-2cf9ad3be4a7",
+                                        "TargetForActionType",
+                                        OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                                        "433f34f5-572e-44cf-888d-653bed1bce54",
+                                        "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller."),
 
     /**
      * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller.
      */
-    TARGET_FOR_ACTION_PROCESS("7a72262e-c466-49cf-b67d-01b7b45c3f19",
-                      "TargetForActionProcess",
-                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
-                      "90dea768-2b9e-4a3c-b065-95efcfd5a48f",
-                      "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
+    TARGET_FOR_ACTION_PROCESS_RELATIONSHIP("7a72262e-c466-49cf-b67d-01b7b45c3f19",
+                                           "TargetForActionProcess",
+                                           OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                                           "90dea768-2b9e-4a3c-b065-95efcfd5a48f",
+                                           "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
 
     /**
      * Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship.
@@ -3871,11 +4066,11 @@ public enum OpenMetadataType
     /**
      * The element(s) that the engine action will work on.
      */
-    TARGET_FOR_ACTION("46ec49bf-af66-4575-aab7-06ce895120cd",
-                      "TargetForAction",
-                      OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
-                      "3ab0a122-9bbe-4c96-bb8a-e8d8dae84a12",
-                      "The element(s) that the engine action will work on."),
+    TARGET_FOR_ACTION_RELATIONSHIP("46ec49bf-af66-4575-aab7-06ce895120cd",
+                                   "TargetForAction",
+                                   OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
+                                   "3ab0a122-9bbe-4c96-bb8a-e8d8dae84a12",
+                                   "The element(s) that the engine action will work on."),
 
     /**
      * Link between an engine action and the governance engine that will execute it.
@@ -3996,6 +4191,33 @@ public enum OpenMetadataType
                     "A description of an adverse situation or activity."),
 
     /**
+     * Link between an incident report and its originator (person, process, engine, ...).
+     */
+    INCIDENT_ORIGINATOR_RELATIONSHIP("e490772e-c2c5-445a-aea6-1aab3499a76c",
+                                     "IncidentOriginator",
+                                     OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
+                                     "34229da5-6581-405e-9739-d400e964944a",
+                                     "Link between an incident report and its originator (person, process, engine, ...)."),
+
+    /**
+     * Link between an impacted referenceable and an incident report.
+     */
+    IMPACTED_RESOURCE_RELATIONSHIP("0908e153-e0fd-499c-8a30-5ea8b81395cd",
+                                   "ImpactedResource",
+                                   OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
+                                   "5bab8c09-1a03-4706-9e59-fd7ac5083a1a",
+                                   "Link between an impacted referenceable and an incident report."),
+
+    /**
+     * Link between an incident report and its predecessors.
+     */
+    INCIDENT_DEPENDENCY_RELATIONSHIP("017be6a8-0037-49d8-af5d-c45c41f25e0b",
+                                     "IncidentDependency",
+                                     OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
+                                     "a5a02778-8ad0-4149-9ecd-71273214c88e",
+                                     "Link between an incident report and its predecessors."),
+
+    /**
      * A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period.
      */
     CONTEXT_EVENT("63d2e056-2f39-40ad-b13b-fe5d8a82d6c6",
@@ -4104,6 +4326,25 @@ public enum OpenMetadataType
                                   "Identifies a certification required by a regulation."),
 
     /**
+     * The set of entitlements, restrictions and obligations associated with an agreement, license etc.
+     */
+    TERMS_AND_CONDITIONS("2ddc42d3-7791-4b4e-a064-91df9300290a",
+                         "TermsAndConditions",
+                         OpenMetadataWikiPages.MODEL_0483_TERMS_AND_CONDITIONS,
+                         "d8aca540-2868-4c9f-a1b3-899f822f3127",
+                         "The set of entitlements, restrictions and obligations associated with an agreement, license etc."),
+
+    /**
+     * The terms and conditions associated with an agreement, license etc.
+     */
+    ATTACHED_TERMS_AND_CONDITIONS_RELATIONSHIP("8292343f-6a96-4ca8-a447-38f734c75634",
+                                               "AttachedTermsAndConditions",
+                                               OpenMetadataWikiPages.MODEL_0483_TERMS_AND_CONDITIONS,
+                                               "4867c028-f9c3-4acc-95d7-062bfaf096fc",
+                                               "The terms and conditions associated with an agreement, license etc."),
+
+
+    /**
      * An agreement between parties.
      */
     AGREEMENT("88886b53-c839-48fa-bcfa-83ebcf8abbb5",
@@ -4115,11 +4356,30 @@ public enum OpenMetadataType
     /**
      * An actor identified in an agreement.
      */
-    AGREEMENT_ACTOR("1c811d0b-e9ce-44af-b6ed-133e73322e32",
-              "AgreementActor",
-              OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
-              "0a124f2b-ce46-4138-bccd-e298fda475e4",
-              "An actor identified in an agreement."),
+    AGREEMENT_ACTOR_RELATIONSHIP("1c811d0b-e9ce-44af-b6ed-133e73322e32",
+                                 "AgreementActor",
+                                 OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
+                                 "0a124f2b-ce46-4138-bccd-e298fda475e4",
+                                 "An actor identified in an agreement."),
+
+    /**
+     * An identified item in an agreement.
+     */
+    AGREEMENT_ITEM_RELATIONSHIP("a540c361-0ed1-45d6-b525-007592ae806d",
+                                "AgreementItem",
+                                OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
+                                "b467985d-4e68-4c9c-9f81-cfe62fc70ddc",
+                                "An identified item in an agreement."),
+
+    /**
+     * Link to the contract document.
+     */
+    CONTRACT_LINK_RELATIONSHIP("33937ece-5ab6-4cd3-a348-b8196ffc3b4e",
+                               "ContractLink",
+                               OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
+                               "cea41a7f-8fac-41f4-8426-d715e79d4b16",
+                               "Link to the contract document."),
+
 
     /**
      * A detailed description of the effect of some data processing.
@@ -5239,13 +5499,13 @@ public enum OpenMetadataType
                                "A description of the internal structure of an Asset."),
 
     /**
-     * Attached data field level annotations.
+     * Link between schema analysis annotation and the identified schema type definition.
      */
-    DATA_FIELD_ANALYSIS_RELATIONSHIP("833e849d-eda2-40bb-9e6b-c3ca0b56d581",
-                                     "DataFieldAnalysis",
-                                     OpenMetadataWikiPages.MODEL_0617_DATA_FIELD_ANALYSIS,
-                                     "9a845b4c-66be-4443-b750-7f7e6739e8b1",
-                                     "Attached data field level annotations."),
+    SCHEMA_TYPE_DEFINITION_RELATIONSHIP("60f2d263-e24d-4f20-8c0d-b5e24648cd54",
+                                        "SchemaTypeDefinition",
+                                        OpenMetadataWikiPages.MODEL_0615_SCHEMA_EXTRACTION,
+                                        "3be9ad33-e88a-465f-a2a9-db2228eac90c",
+                                        "Link between schema analysis annotation and the identified schema type definition."),
 
     /**
      * Attached data field level annotations.
@@ -5273,6 +5533,15 @@ public enum OpenMetadataType
                                     OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
                                     "016944a4-5a11-4351-9b09-b4e4056d4816",
                                     "A link to a log file containing profile measures for a resource."),
+
+    /**
+     * An annotation capturing digital resource fingerprint information.
+     */
+    FINGERPRINT_ANNOTATION("b3adca2a-ce66-4b29-bf2e-7406ada8ab49",
+                           "FingerprintAnnotation",
+                           OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
+                           "dde4798b-0a23-4fe1-bdf6-ab91655c55c2",
+                           "An annotation capturing digital resource fingerprint information."),
 
     /**
      * An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource.
@@ -5607,6 +5876,15 @@ public enum OpenMetadataType
                                                 "fc4c9bea-a93e-47d7-b812-25eae2fc4e65",
                                                 "Link between a solution blueprint and a solution component."),
 
+    /**
+     * Relationship identifying the solution blueprint for a digital service.
+     */
+    DIGITAL_SERVICE_DESIGN_RELATIONSHIP("a43b4c9c-52c2-4819-b3cc-9d07d49a11f2",
+                                        "DigitalServiceDesign",
+                                        OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
+                                        "490e2745-247c-4053-b50c-fff1548908e1",
+                                        "Relationship identifying the solution blueprint for a digital service."),
+
 
     /**
      * Shows that data flows in one direction from one element to another.
@@ -5680,6 +5958,15 @@ public enum OpenMetadataType
                               OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
                               "9021c6bc-7214-4580-849a-8583b11a3f2b",
                               "A mapping relationship between data values from different assets showing how data is copied/transformed from one to the other."),
+
+    /**
+     * Accompanies a partial, incomplete Referenceable.
+     */
+    INCOMPLETE_CLASSIFICATION("078432fb-a889-4a51-8ebe-9797becea9f1",
+                              "Incomplete",
+                              OpenMetadataWikiPages.MODEL_0790_INCOMPLETE,
+                              "2c65c624-0e27-4e9d-a27d-3c342e44928a",
+                              "Accompanies a partial, incomplete Referenceable."),
 
     ;
 

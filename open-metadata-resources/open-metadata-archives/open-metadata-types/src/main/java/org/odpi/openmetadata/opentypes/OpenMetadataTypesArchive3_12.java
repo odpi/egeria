@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -178,16 +179,8 @@ public class OpenMetadataTypesArchive3_12
 
     private ClassificationDef addProcessingStateClassification()
     {
-        final String guid = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
-        final String name = "ProcessingState";
-        final String description = "Stores processing state information used by various SoftwareCapabilities.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.PROCESSING_STATE_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
                                                                                  true);
 
@@ -195,17 +188,8 @@ public class OpenMetadataTypesArchive3_12
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute property;
 
-        final String attribute1Name = "syncDatesByKey";
-        final String attribute1Description = "Collection of synchronization dates identified by a key";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
-                                                                  attribute1Description,
-                                                                  attribute1DescriptionGUID);
-
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SYNC_DATES_BY_KEY));
 
         classificationDef.setPropertiesDefinition(properties);
 

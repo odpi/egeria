@@ -253,9 +253,7 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -480,16 +478,8 @@ public class OpenMetadataTypesArchive4_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "operationName";
-        final String attribute1Description     = "Name of the operation to that is controlled by the linked security group.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OPERATION_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

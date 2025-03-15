@@ -151,7 +151,7 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      */
     public void logRESTCallException(String    serverPlatformURLRoot,
                                      String    methodName,
-                                     Throwable error) throws OMAGConfigurationErrorException
+                                     Exception error) throws OMAGConfigurationErrorException
     {
         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                                      serverPlatformURLRoot,

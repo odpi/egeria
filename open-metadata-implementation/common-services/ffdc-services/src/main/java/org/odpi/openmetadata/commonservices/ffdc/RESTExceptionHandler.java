@@ -159,6 +159,7 @@ public class RESTExceptionHandler
         throw error;
     }
 
+
     /**
      * Manage a bad type name
      *
@@ -455,7 +456,7 @@ public class RESTExceptionHandler
      * @param serverURL platform URL
      * @throws PropertyServerException wrapping exception for the caught exception
      */
-    public void handleUnexpectedException(Throwable   error,
+    public void handleUnexpectedException(Exception   error,
                                           String      methodName,
                                           String      serverName,
                                           String      serverURL) throws PropertyServerException
@@ -536,20 +537,6 @@ public class RESTExceptionHandler
         response.setExceptionProperties(exceptionProperties);
     }
 
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response
-     * @param methodName calling method
-     */
-    public  void captureExceptions(FFDCResponse response,
-                                   Exception    error,
-                                   String       methodName)
-    {
-        this.captureExceptions(response, error, methodName, null);
-    }
-
 
     /**
      * Set the exception information into the response.
@@ -559,7 +546,7 @@ public class RESTExceptionHandler
      * @param methodName calling method
      * @param auditLog log location for recording an unexpected exception
      */
-    public  void captureExceptions(FFDCResponse response,
+    private void captureExceptions(FFDCResponse response,
                                    Exception    error,
                                    String       methodName,
                                    AuditLog     auditLog)
@@ -609,6 +596,41 @@ public class RESTExceptionHandler
                                       OMAGCommonAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(), methodName, message),
                                       error);
             }
+        }
+    }
+
+
+    /**
+     * A runtime error occurred.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     * @param auditLog log location for recording an unexpected exception
+     */
+    public  void captureRuntimeExceptions(FFDCResponse response,
+                                          Throwable    error,
+                                          String       methodName,
+                                          AuditLog     auditLog)
+    {
+        if (error instanceof Exception exception)
+        {
+            /*
+             * An exception is handleable ...
+             */
+            captureExceptions(response, exception, methodName, auditLog);
+        }
+        else
+        {
+            /*
+             * An error exception or worse - this typically means that the JVM is in trouble and the platform
+             * can not safely continue.
+             */
+            System.out.println("Throwable from " + methodName + " causing platform to exit");
+            log.error("Throwable from " + methodName + " causing platform to exit", error);
+
+            System.out.println(error.toString());
+            System.exit(-1);
         }
     }
 

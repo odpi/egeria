@@ -180,7 +180,7 @@ public class TypeDefPatchTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -189,7 +189,7 @@ public class TypeDefPatchTest
         {
             validateObject(objectMapper.readValue(jsonString, TypeDefPatch.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

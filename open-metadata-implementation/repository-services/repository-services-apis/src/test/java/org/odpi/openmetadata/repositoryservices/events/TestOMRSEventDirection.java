@@ -81,7 +81,7 @@ public class TestOMRSEventDirection
         {
             jsonString = objectMapper.writeValueAsString(OMRSEventDirection.INBOUND);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -90,7 +90,7 @@ public class TestOMRSEventDirection
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSEventDirection.class) == OMRSEventDirection.INBOUND);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -193,9 +193,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -259,13 +257,8 @@ public class OpenMetadataTypesArchive3_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME.name,
-                                                           OpenMetadataProperty.DISTINGUISHED_NAME.description,
-                                                           OpenMetadataProperty.DISTINGUISHED_NAME.descriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -287,21 +280,10 @@ public class OpenMetadataTypesArchive3_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ROLE_TYPE_NAME.name,
-                                                           OpenMetadataProperty.ROLE_TYPE_NAME.description,
-                                                           OpenMetadataProperty.ROLE_TYPE_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ROLE_GUID.name,
-                                                           OpenMetadataProperty.ROLE_GUID.description,
-                                                           OpenMetadataProperty.ROLE_GUID.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -328,9 +310,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "TeamMembership";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -355,12 +335,11 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Team";
         final String                     end2AttributeName            = "memberOfTeam";
         final String                     end2AttributeDescription     = "The team that this role is a member of.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -376,9 +355,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "TeamLeadership";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -403,12 +380,11 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Team";
         final String                     end2AttributeName            = "leadsTeam";
         final String                     end2AttributeDescription     = "The team lead by this person role.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -548,9 +524,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "KafkaTopic";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.KAFKA_TOPIC.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -559,23 +533,9 @@ public class OpenMetadataTypesArchive3_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "partitions";
-        final String attribute1Description     = "Number of Kafka partitions.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "replicas";
-        final String attribute2Description     = "Number of Kafka replicas.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PARTITIONS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REPLICAS));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
@@ -597,9 +557,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ENGINE_ACTION.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENGINE_ACTION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

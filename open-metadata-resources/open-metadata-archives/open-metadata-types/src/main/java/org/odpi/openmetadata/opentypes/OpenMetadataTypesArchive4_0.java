@@ -175,7 +175,6 @@ public class OpenMetadataTypesArchive4_0
         update0385ControlledGlossaries();
         update0462GovernanceActionProcesses();
         create0464DynamicIntegrationGroups();
-        update0470IncidentClassifierSet();
         update0484AgreementActor();
         update0545ReferenceData();
         update0720InformationSupplyChains();
@@ -314,9 +313,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -803,47 +800,7 @@ public class OpenMetadataTypesArchive4_0
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
 
-    private void update0470IncidentClassifierSet()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateIncidentClassifierSetClassification());
-    }
-
-    private TypeDefPatch updateIncidentClassifierSetClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "IncidentClassifierSet";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "incidentClassifierCategory";
-        final String attribute1Description     = "The category of classifiers used to set the incidentClassifiers in IncidentReport.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -859,7 +816,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.AGREEMENT_ACTOR.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

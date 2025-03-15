@@ -481,7 +481,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
             this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
             this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
         }
-        catch (Throwable error) // Typically we catch Exception, but this is a key error point for real repositories.
+        catch (Exception error)
         {
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
                                               this.getClass().getName(),

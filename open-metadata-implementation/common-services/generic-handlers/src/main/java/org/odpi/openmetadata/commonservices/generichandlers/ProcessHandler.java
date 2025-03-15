@@ -1770,7 +1770,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                 OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -1883,7 +1883,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                          OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -1945,7 +1945,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -2235,7 +2235,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                 OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -2349,7 +2349,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                          OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -2412,7 +2412,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -2702,7 +2702,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                 OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -2816,7 +2816,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                          OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -2879,7 +2879,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -3165,7 +3165,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -3273,7 +3273,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                          OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -3330,7 +3330,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

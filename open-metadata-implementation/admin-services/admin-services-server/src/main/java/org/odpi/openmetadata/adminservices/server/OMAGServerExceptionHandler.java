@@ -38,7 +38,7 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
     public void capturePlatformRuntimeException(String           serverName,
                                                 String           methodName,
                                                 FFDCResponseBase response,
-                                                Throwable        runtimeException)
+                                                Exception        runtimeException)
     {
         log.error("Unexpected exception", runtimeException);
 
@@ -65,7 +65,7 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      */
     public void capturePlatformRuntimeException(String           methodName,
                                                 FFDCResponseBase response,
-                                                Throwable        runtimeException)
+                                                Exception        runtimeException)
     {
         log.error("Unexpected platform exception", runtimeException);
 

@@ -156,7 +156,7 @@ public class InstanceStatusTest
         {
             jsonString = objectMapper.writeValueAsString(InstanceStatus.DEPRECATED);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -165,7 +165,7 @@ public class InstanceStatusTest
         {
             assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.DEPRECATED);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

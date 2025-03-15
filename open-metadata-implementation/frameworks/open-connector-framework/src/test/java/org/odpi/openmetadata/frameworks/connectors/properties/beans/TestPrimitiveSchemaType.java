@@ -216,7 +216,7 @@ public class TestPrimitiveSchemaType
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -225,7 +225,7 @@ public class TestPrimitiveSchemaType
         {
             validateResultObject(objectMapper.readValue(jsonString, PrimitiveSchemaType.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -239,7 +239,7 @@ public class TestPrimitiveSchemaType
         {
             jsonString = objectMapper.writeValueAsString(schemaElement);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -248,7 +248,7 @@ public class TestPrimitiveSchemaType
         {
             validateResultObject((PrimitiveSchemaType) objectMapper.readValue(jsonString, SchemaElement.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -262,7 +262,7 @@ public class TestPrimitiveSchemaType
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -271,7 +271,7 @@ public class TestPrimitiveSchemaType
         {
             validateResultObject((PrimitiveSchemaType) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -285,7 +285,7 @@ public class TestPrimitiveSchemaType
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -294,7 +294,7 @@ public class TestPrimitiveSchemaType
         {
             validateResultObject((PrimitiveSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -308,7 +308,7 @@ public class TestPrimitiveSchemaType
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -317,7 +317,7 @@ public class TestPrimitiveSchemaType
         {
             validateResultObject((PrimitiveSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

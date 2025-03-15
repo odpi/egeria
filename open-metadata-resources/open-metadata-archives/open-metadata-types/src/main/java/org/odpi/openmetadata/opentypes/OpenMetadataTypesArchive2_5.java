@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -222,9 +223,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "SearchKeyword";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SEARCH_KEYWORD.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -269,9 +268,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "InformalTag";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.INFORMAL_TAG.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -301,9 +298,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "AnnotationReview";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANNOTATION_REVIEW.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -318,9 +313,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ANCHORS_CLASSIFICATION.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -353,60 +346,29 @@ public class OpenMetadataTypesArchive2_5
 
     private EnumDef getPermittedSynchronizationEnum()
     {
-        final String guid            = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
-        final String name            = "PermittedSynchronization";
-        final String description     = "Defines the synchronization rules between a third party technology and open metadata.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(PermittedSynchronization.getOpenTypeGUID(),
+                                                        PermittedSynchronization.getOpenTypeName(),
+                                                        PermittedSynchronization.getOpenTypeDescription(),
+                                                        PermittedSynchronization.getOpenTypeDescriptionGUID(),
+                                                        PermittedSynchronization.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "BothDirections";
-        final String element1Description     = "Metadata exchange is permitted in both directions.";
-        final String element1DescriptionGUID = null;
+        for (PermittedSynchronization enumValue : PermittedSynchronization.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "ToThirdParty";
-        final String element2Description     = "The third party technology is logically downstream of open metadata and is just receiving metadata.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "FromThirdParty";
-        final String element3Description     = "The third party technology is logically upstream and is publishing metadata to open metadata.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-
-        final int    element8Ordinal         = 99;
-        final String element8Value           = "Other";
-        final String element8Description     = "Another synchronization rule.";
-        final String element8DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
-                                                     element8Value,
-                                                     element8Description,
-                                                     element8DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -419,9 +381,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -430,23 +390,9 @@ public class OpenMetadataTypesArchive2_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name;
-        final String attribute1Description     = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.descriptionGUID;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.type,
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -459,9 +405,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -487,24 +431,9 @@ public class OpenMetadataTypesArchive2_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.LAST_SYNCHRONIZED.name;
-        final String attribute1Description     = OpenMetadataProperty.LAST_SYNCHRONIZED.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.LAST_SYNCHRONIZED.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.MAPPING_PROPERTIES.name;
-        final String attribute2Description     = OpenMetadataProperty.MAPPING_PROPERTIES.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.MAPPING_PROPERTIES.descriptionGUID;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_SYNCHRONIZED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAPPING_PROPERTIES));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

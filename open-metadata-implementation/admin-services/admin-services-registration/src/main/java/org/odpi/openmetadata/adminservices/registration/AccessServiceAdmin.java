@@ -453,7 +453,7 @@ public abstract class AccessServiceAdmin
                                         String       propertyValue,
                                         AuditLog     auditLog,
                                         String       methodName,
-                                        Throwable    error) throws OMAGConfigurationErrorException
+                                        Exception    error) throws OMAGConfigurationErrorException
     {
         auditLog.logMessage(methodName, OMAGAdminAuditCode.BAD_CONFIG_PROPERTY.getMessageDefinition(accessServiceFullName, propertyValue, propertyName));
 
@@ -716,7 +716,7 @@ public abstract class AccessServiceAdmin
      */
     protected void throwUnexpectedInitializationException(String    actionDescription,
                                                           String    fullAccessServiceName,
-                                                          Throwable error) throws OMAGConfigurationErrorException
+                                                          Exception error) throws OMAGConfigurationErrorException
     {
         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(fullAccessServiceName,
                                                                                                                               error.getClass().getName(),

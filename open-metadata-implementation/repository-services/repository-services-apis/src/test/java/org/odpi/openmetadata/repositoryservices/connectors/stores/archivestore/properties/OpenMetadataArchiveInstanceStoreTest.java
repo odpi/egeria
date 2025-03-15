@@ -115,7 +115,7 @@ public class OpenMetadataArchiveInstanceStoreTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -124,7 +124,7 @@ public class OpenMetadataArchiveInstanceStoreTest
         {
             validateObject(objectMapper.readValue(jsonString, OpenMetadataArchiveInstanceStore.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -139,7 +139,7 @@ public class OpenMetadataArchiveInstanceStoreTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -148,7 +148,7 @@ public class OpenMetadataArchiveInstanceStoreTest
         {
             validateObject((OpenMetadataArchiveInstanceStore)objectMapper.readValue(jsonString, OpenMetadataArchiveElementHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

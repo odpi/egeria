@@ -363,8 +363,6 @@ public class OpenMetadataTypesArchive1_2
      */
     private void add0010BaseModel()
     {
-        this.archiveBuilder.addEnumDef(getAssetOwnerTypeEnum());
-
         this.archiveBuilder.addEntityDef(getReferenceableEntity());
         this.archiveBuilder.addEntityDef(getAssetEntity());
         this.archiveBuilder.addEntityDef(getInfrastructureEntity());
@@ -1318,20 +1316,10 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute4Name            = "endianness";
-        final String attribute4Description     = "Definition of byte ordering.";
-        final String attribute4DescriptionGUID = null;
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OPERATING_SYSTEM));
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -2316,12 +2304,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.DELEGATION_ESCALATION.name,
-                                                            OpenMetadataProperty.DELEGATION_ESCALATION.description,
-                                                            OpenMetadataProperty.DELEGATION_ESCALATION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELEGATION_ESCALATION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -2378,16 +2362,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTeamMembershipRelationship()
     {
-        final String guid            = "1ebc4fb2-b62a-4269-8f18-e9237a2119ca";
-        final String name            = "TeamMembership";
-        final String description     = "Relationship identifying the members of teams.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -2617,37 +2593,11 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "resourceUse";
-        final String attribute1Description     = "Identifier that describes the type of resource use.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "resourceUseDescription";
-        final String attribute2Description     = "Description of how the resource is used, or why it is useful.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "resourceUseProperties";
-        final String attribute3Description     = "Additional properties that explains how to use the resource.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "watchResource";
-        final String attribute4Description     = "Indicator whether the anchor should receive notifications of changes to the resource.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
-                                                            attribute4Description,
-                                                            attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_USE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_USE_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WATCH_RESOURCE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -3885,25 +3835,10 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute3Description     = "Is the note log visible to more than the note log authors?";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
-                                                           OpenMetadataProperty.NAME.description,
-                                                           OpenMetadataProperty.NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -4926,12 +4861,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.SUBSCRIBER_LIST.typeName;
         final String                     end1AttributeName            = "subscribers";
         final String                     end1AttributeDescription     = "The endpoints subscribed to this topic.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SUBSCRIBER_LIST.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -5414,15 +5348,9 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-
-        property = archiveHelper.getEnumTypeDefAttribute(PortType.getOpenTypeName(),
-                                                         OpenMetadataProperty.PORT_TYPE.name,
-                                                         OpenMetadataProperty.PORT_TYPE.description,
-                                                         OpenMetadataProperty.PORT_TYPE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PORT_TYPE));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -6049,14 +5977,9 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                         OpenMetadataProperty.STATUS.name,
-                                                         OpenMetadataProperty.STATUS.description,
-                                                         OpenMetadataProperty.STATUS.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -6090,12 +6013,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ExternalGlossaryLink";
         final String                     end2AttributeName            = "externalGlossaryTerms";
         final String                     end2AttributeDescription     = "Links to related external glossaries.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_GLOSSARY_LINK.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -6180,13 +6102,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermActivityType.getOpenTypeName(),
-                                                         OpenMetadataProperty.ACTIVITY_TYPE.name,
-                                                         OpenMetadataProperty.ACTIVITY_TYPE.description,
-                                                         OpenMetadataProperty.ACTIVITY_TYPE.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ACTIVITY_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -6842,14 +6759,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermAssignmentStatus.getOpenTypeName(),
-                                                         OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
-                                                         OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.description,
-                                                         OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.descriptionGUID);
-        properties.add(property);
-
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.TERM_ASSIGNMENT_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
@@ -7122,7 +7033,11 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getGovernanceOfficerEntity());
     }
 
-
+    /**
+     * This enum is used to illustrate types of governance domains.
+     *
+     * @return enum definition
+     */
     private EnumDef getGovernanceDomainEnum()
     {
         EnumDef enumDef = archiveHelper.getEmptyEnumDef(GovernanceDomain.getOpenTypeGUID(),
@@ -7163,14 +7078,6 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        /*
-         * Properties that have since been deprecated
-         */
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TITLE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUMMARY));
@@ -7180,12 +7087,6 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IMPLICATIONS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OUTCOMES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESULTS));
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -7206,28 +7107,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGovernanceOfficerEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_OFFICER,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "domain";
-        final String attribute1Description     = "Governance domain for this governance officer.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_OFFICER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
     }
 
 
@@ -7378,12 +7259,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -8449,58 +8326,6 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private EnumDef getAssetOwnerTypeEnum()
-    {
-        final String guid            = "9548390c-69f5-4dc6-950d-6feeee257b56";
-        final String name            = "AssetOwnerType";
-        final String description     = "Defines the type of identifier for an asset's owner.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
-
-        List<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef       elementDef;
-
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "UserId";
-        final String element1Description     = "The owner's userId is specified (default).";
-        final String element1DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "ProfileId";
-        final String element2Description     = "The unique identifier (guid) of the profile of the owner.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another type of owner identifier, probably not supported by open metadata.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
-
-
     private EntityDef getGovernanceRoleEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ROLE,
@@ -8641,16 +8466,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "rationale";
-        final String attribute1Description     = "Documents reasons for using the metric to measure the governance definition.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RATIONALE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -9642,23 +9459,9 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "encodingStandard";
-        final String attribute1Description     = "Format of the schema.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "dataType";
-        final String attribute2Description     = "Type name for the data stored in this schema element.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING_STANDARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -9993,34 +9796,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getRelationalColumnEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.RELATIONAL_COLUMN,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_COLUMN.typeName));
-        
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-        
-        final String attribute3Name            = "fraction";
-        final String attribute3Description     = "Number of significant digits to the right of decimal point.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute5Name            = "isUnique";
-        final String attribute5Description     = "Data is unique or not.";
-        final String attribute5DescriptionGUID = null;
-        
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute5Name,
-                                                            attribute5Description,
-                                                            attribute5DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RELATIONAL_COLUMN,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_COLUMN.typeName));
     }
 
 
@@ -10525,7 +10302,6 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METHOD));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS));
@@ -10998,16 +10774,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "metamodelElementGUID";
-        final String attribute1Description     = "Element in the metadata model that the attached element embodies.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METAMODEL_ELEMENT_GUID));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -11038,71 +10806,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getConceptModelAttributeCoverageCategoryEnum()
     {
-        final String guid            = "2c0ac237-e02e-431a-89fd-3107d94d4007";
-        final String name            = "ConceptModelAttributeCoverageCategory";
-        final String description     = "Describes the type of attribute - this is used in scoping the model.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ConceptModelAttributeCoverageCategory.getOpenTypeGUID(),
+                                                        ConceptModelAttributeCoverageCategory.getOpenTypeName(),
+                                                        ConceptModelAttributeCoverageCategory.getOpenTypeDescription(),
+                                                        ConceptModelAttributeCoverageCategory.getOpenTypeDescriptionGUID(),
+                                                        ConceptModelAttributeCoverageCategory.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unknown";
-        final String element1Description     = "The attribute's coverage category is unknown - this is the default.";
-        final String element1DescriptionGUID = null;
+        for (ConceptModelAttributeCoverageCategory enumValue : ConceptModelAttributeCoverageCategory.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "UniqueIdentifier";
-        final String element2Description     = "The attribute uniquely identifies the concept bead.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Identifier";
-        final String element3Description     = "The attribute is a good indicator of the identity of the concept bead but not guaranteed to be unique.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "CoreDetail";
-        final String element4Description     = "The attribute provides information that is typically required by all of the consumers of the concept bead.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "ExtendedDetail";
-        final String element5Description     = "The attribute contains supplementary information that is of interest to specific consumers of the concept bead.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -11291,18 +11017,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "coverageCategory";
-        final String attribute1Description     = "Type of role that the attribute plays as part of the concept bead.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute("ConceptModelAttributeCoverageCategory",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.COVERAGE_CATEGORY));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -11552,59 +11268,15 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.ANNOTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.ANNOTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.ANNOTATION_TYPE.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.CONFIDENCE_LEVEL.name;
-        final String attribute3Description     = OpenMetadataProperty.CONFIDENCE_LEVEL.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.CONFIDENCE_LEVEL.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.EXPRESSION.name;
-        final String attribute4Description     = OpenMetadataProperty.EXPRESSION.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.EXPRESSION.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.EXPLANATION.name;
-        final String attribute5Description     = OpenMetadataProperty.EXPLANATION.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.EXPLANATION.descriptionGUID;
-        final String attribute6Name            = OpenMetadataProperty.ANALYSIS_STEP.name;
-        final String attribute6Description     = OpenMetadataProperty.ANALYSIS_STEP.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.ANALYSIS_STEP.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.JSON_PROPERTIES.name;
-        final String attribute7Description     = OpenMetadataProperty.JSON_PROPERTIES.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.JSON_PROPERTIES.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SUMMARY.name,
-                                                           OpenMetadataProperty.SUMMARY.description,
-                                                           OpenMetadataProperty.SUMMARY.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANNOTATION_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUMMARY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE_LEVEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPLANATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANALYSIS_STEP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.JSON_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -11756,11 +11428,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ANNOTATION_STATUS);
-
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ANNOTATION_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -11833,16 +11502,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getSchemaTypeDefinitionRelationship()
     {
-        final String guid            = "60f2d263-e24d-4f20-8c0d-b5e24648cd54";
-        final String name            = "SchemaTypeDefinition";
-        final String description     = "Link between schema analysis annotation and the identified schema type definition.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -11850,8 +11511,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "deployedSchemaTypes";
-        final String                     end1AttributeDescription     = "The analysis of the schema type for deployed assets.";
+        final String                     end1AttributeName            = "discoveringAnnotation";
+        final String                     end1AttributeDescription     = "The analyser of the schema type.";
         final String                     end1AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName),
@@ -11865,8 +11526,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "schemaTypeDefinition";
-        final String                     end2AttributeDescription     = "Official schema type definition.";
+        final String                     end2AttributeName            = "discoveredSchema";
+        final String                     end2AttributeDescription     = "Discovered schema structure.";
         final String                     end2AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
@@ -11878,73 +11539,6 @@ public class OpenMetadataTypesArchive1_2
 
         return relationshipDef;
     }
-
-
-    private RelationshipDef getDiscoveredDataFieldRelationship()
-    {
-        final String guid            = "60f2d263-e24d-4f20-8c0d-b5e22222cd54";
-        final String name            = "DiscoveredDataField";
-        final String description     = "Data field detected in asset during schema analysis.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "schemaAnalysisAnnotation";
-        final String                     end1AttributeDescription     = "The annotation collecting the results of the schema analysis.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "discoveredDataFields";
-        final String                     end2AttributeDescription     = "The data fields discovered during schema analysis.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "dataFieldPosition";
-        final String attribute1Description     = "Location of the data field in the parent annotation's list of data fields.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
 
     private RelationshipDef getSchemaAttributeDefinitionRelationship()
     {
@@ -12088,8 +11682,6 @@ public class OpenMetadataTypesArchive1_2
     private void add0617DataFieldAnalysis()
     {
         this.archiveBuilder.addEntityDef(getDataFieldAnnotationEntity());
-
-        this.archiveBuilder.addRelationshipDef(getDataFieldAnalysisRelationship());
     }
 
 
@@ -12098,48 +11690,6 @@ public class OpenMetadataTypesArchive1_2
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FIELD_ANNOTATION,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
     }
-
-
-    private RelationshipDef getDataFieldAnalysisRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_FIELD_ANALYSIS_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "dataFieldAnnotations";
-        final String                     end1AttributeDescription     = "The annotations for this data field.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD_ANNOTATION.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "annotatedDataFields";
-        final String                     end2AttributeDescription     = "Data fields with addition properties attached.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -12167,142 +11717,26 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.LENGTH.name;
-        final String attribute1Description     = OpenMetadataProperty.LENGTH.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.LENGTH.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.INFERRED_DATA_TYPE.name;
-        final String attribute2Description     = OpenMetadataProperty.INFERRED_DATA_TYPE.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.INFERRED_DATA_TYPE.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.INFERRED_FORMAT.name;
-        final String attribute3Description     = OpenMetadataProperty.INFERRED_FORMAT.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.INFERRED_FORMAT.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.INFERRED_LENGTH.name;
-        final String attribute4Description     = OpenMetadataProperty.INFERRED_LENGTH.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.INFERRED_LENGTH.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.INFERRED_PRECISION.name;
-        final String attribute5Description     = OpenMetadataProperty.INFERRED_PRECISION.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.INFERRED_PRECISION.descriptionGUID;
-        final String attribute6Name            = OpenMetadataProperty.INFERRED_SCALE.name;
-        final String attribute6Description     = OpenMetadataProperty.INFERRED_SCALE.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.INFERRED_SCALE.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.PROFILE_PROPERTIES.name;
-        final String attribute7Description     = OpenMetadataProperty.PROFILE_PROPERTIES.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.PROFILE_PROPERTIES.descriptionGUID;
-        final String attribute8Name            = OpenMetadataProperty.PROFILE_FLAGS.name;
-        final String attribute8Description     = OpenMetadataProperty.PROFILE_FLAGS.description;
-        final String attribute8DescriptionGUID = OpenMetadataProperty.PROFILE_FLAGS.descriptionGUID;
-        final String attribute9Name            = OpenMetadataProperty.PROFILE_COUNTS.name;
-        final String attribute9Description     = OpenMetadataProperty.PROFILE_COUNTS.description;
-        final String attribute9DescriptionGUID = OpenMetadataProperty.PROFILE_COUNTS.descriptionGUID;
-        final String attribute10Name            = OpenMetadataProperty.VALUE_LIST.name;
-        final String attribute10Description     = OpenMetadataProperty.VALUE_LIST.description;
-        final String attribute10DescriptionGUID = OpenMetadataProperty.VALUE_LIST.descriptionGUID;
-        final String attribute11Name            = OpenMetadataProperty.VALUE_COUNT.name;
-        final String attribute11Description     = OpenMetadataProperty.VALUE_COUNT.description;
-        final String attribute11DescriptionGUID = OpenMetadataProperty.VALUE_COUNT.descriptionGUID;
-        final String attribute12Name            = OpenMetadataProperty.VALUE_RANGE_FROM.name;
-        final String attribute12Description     = OpenMetadataProperty.VALUE_RANGE_FROM.description;
-        final String attribute12DescriptionGUID = OpenMetadataProperty.VALUE_RANGE_FROM.descriptionGUID;
-        final String attribute13Name            = OpenMetadataProperty.VALUE_RANGE_TO.name;
-        final String attribute13Description     = OpenMetadataProperty.VALUE_RANGE_TO.description;
-        final String attribute13DescriptionGUID = OpenMetadataProperty.VALUE_RANGE_TO.descriptionGUID;
-        final String attribute14Name            = OpenMetadataProperty.AVERAGE_VALUE.name;
-        final String attribute14Description     = OpenMetadataProperty.AVERAGE_VALUE.description;
-        final String attribute14DescriptionGUID = OpenMetadataProperty.AVERAGE_VALUE.descriptionGUID;
-        final String attribute15Name            = OpenMetadataProperty.PROFILE_DOUBLES.name;
-        final String attribute15Description     = OpenMetadataProperty.PROFILE_DOUBLES.description;
-        final String attribute15DescriptionGUID = OpenMetadataProperty.PROFILE_DOUBLES.descriptionGUID;
-        final String attribute16Name            = OpenMetadataProperty.PROFILE_START_DATE.name;
-        final String attribute16Description     = OpenMetadataProperty.PROFILE_START_DATE.description;
-        final String attribute16DescriptionGUID = OpenMetadataProperty.PROFILE_START_DATE.descriptionGUID;
-        final String attribute17Name            = OpenMetadataProperty.PROFILE_END_DATE.name;
-        final String attribute17Description     = OpenMetadataProperty.PROFILE_END_DATE.description;
-        final String attribute17DescriptionGUID = OpenMetadataProperty.PROFILE_END_DATE.descriptionGUID;
-        final String attribute18Name            = OpenMetadataProperty.PROFILE_DATES.name;
-        final String attribute18Description     = OpenMetadataProperty.PROFILE_DATES.description;
-        final String attribute18DescriptionGUID = OpenMetadataProperty.PROFILE_DATES.descriptionGUID;
-        final String attribute19Name            = OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name;
-        final String attribute19Description     = OpenMetadataProperty.PROFILE_PROPERTY_NAMES.description;
-        final String attribute19DescriptionGUID = OpenMetadataProperty.PROFILE_PROPERTY_NAMES.descriptionGUID;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
-                                                        attribute4Description,
-                                                        attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute5Name,
-                                                        attribute5Description,
-                                                        attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
-                                                        attribute6Description,
-                                                        attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute7Name,
-                                                                    attribute7Description,
-                                                                    attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringBooleanTypeDefAttribute(attribute8Name,
-                                                                     attribute8Description,
-                                                                     attribute8DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute9Name,
-                                                                  attribute9Description,
-                                                                  attribute9DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute10Name,
-                                                                attribute10Description,
-                                                                attribute10DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringIntTypeDefAttribute(attribute11Name,
-                                                                 attribute11Description,
-                                                                 attribute11DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute12Name,
-                                                           attribute12Description,
-                                                           attribute12DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute13Name,
-                                                           attribute13Description,
-                                                           attribute13DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute14Name,
-                                                           attribute14Description,
-                                                           attribute14DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringDoubleTypeDefAttribute(attribute15Name,
-                                                                    attribute15Description,
-                                                                    attribute15DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute16Name,
-                                                         attribute16Description,
-                                                         attribute16DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute17Name,
-                                                         attribute17Description,
-                                                         attribute17DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringDateTypeDefAttribute(attribute18Name,
-                                                                  attribute18Description,
-                                                                  attribute18DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute19Name,
-                                                                attribute19Description,
-                                                                attribute19DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LENGTH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFERRED_DATA_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFERRED_FORMAT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFERRED_LENGTH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFERRED_PRECISION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFERRED_SCALE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_FLAGS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_COUNTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUE_LIST));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUE_RANGE_FROM));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUE_RANGE_TO));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AVERAGE_VALUE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_DOUBLES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_START_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_END_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_DATES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROFILE_PROPERTY_NAMES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12381,30 +11815,10 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.CANDIDATE_DATA_CLASS_GUIDS.name;
-        final String attribute1Description     = OpenMetadataProperty.CANDIDATE_DATA_CLASS_GUIDS.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.CANDIDATE_DATA_CLASS_GUIDS.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.MATCHING_VALUES.name;
-        final String attribute2Description     = OpenMetadataProperty.MATCHING_VALUES.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.MATCHING_VALUES.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.NON_MATCHING_VALUES.name;
-        final String attribute3Description     = OpenMetadataProperty.NON_MATCHING_VALUES.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.NON_MATCHING_VALUES.descriptionGUID;
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
-                                                                attribute1Description,
-                                                                attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getLongTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getLongTypeDefAttribute(attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_DATA_CLASS_GUIDS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MATCHING_VALUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NON_MATCHING_VALUES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12434,37 +11848,11 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.INFORMAL_TERM.name;
-        final String attribute1Description     = OpenMetadataProperty.INFORMAL_TERM.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.INFORMAL_TERM.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.CANDIDATE_GLOSSARY_TERM_GUIDS.name;
-        final String attribute2Description     = OpenMetadataProperty.CANDIDATE_GLOSSARY_TERM_GUIDS.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.CANDIDATE_GLOSSARY_TERM_GUIDS.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.INFORMAL_CATEGORY.name;
-        final String attribute3Description     = OpenMetadataProperty.INFORMAL_CATEGORY.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.INFORMAL_CATEGORY.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.CANDIDATE_GLOSSARY_CATEGORY_GUIDS.name;
-        final String attribute4Description     = OpenMetadataProperty.CANDIDATE_GLOSSARY_CATEGORY_GUIDS.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.CANDIDATE_GLOSSARY_CATEGORY_GUIDS.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute2Name,
-                                                                attribute2Description,
-                                                                attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute4Name,
-                                                                attribute4Description,
-                                                                attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFORMAL_TERM));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_GLOSSARY_TERM_GUIDS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFORMAL_CATEGORY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_GLOSSARY_CATEGORY_GUIDS));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12495,16 +11883,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.CANDIDATE_CLASSIFICATIONS.name;
-        final String attribute1Description     = OpenMetadataProperty.CANDIDATE_CLASSIFICATIONS.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.CANDIDATE_CLASSIFICATIONS.descriptionGUID;
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
-                                                                    attribute1Description,
-                                                                    attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_CLASSIFICATIONS));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12535,23 +11915,9 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.QUALITY_DIMENSION.name;
-        final String attribute1Description     = OpenMetadataProperty.QUALITY_DIMENSION.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALITY_DIMENSION.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.QUALITY_SCORE.name;
-        final String attribute2Description     = OpenMetadataProperty.QUALITY_SCORE.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.QUALITY_SCORE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALITY_DIMENSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALITY_SCORE));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12583,30 +11949,10 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.RELATIONSHIP_PROPERTIES.name;
-        final String attribute2Description     = OpenMetadataProperty.RELATIONSHIP_PROPERTIES.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.RELATIONSHIP_PROPERTIES.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.RELATED_ENTITY_GUID.name;
-        final String attribute3Description     = OpenMetadataProperty.RELATED_ENTITY_GUID.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.RELATED_ENTITY_GUID.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATED_ENTITY_GUID));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12655,67 +12001,16 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.ANNOTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.ANNOTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.ANNOTATION_TYPE.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.CONFIDENCE_LEVEL.name;
-        final String attribute3Description     = OpenMetadataProperty.CONFIDENCE_LEVEL.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.CONFIDENCE_LEVEL.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.EXPRESSION.name;
-        final String attribute4Description     = OpenMetadataProperty.EXPRESSION.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.EXPRESSION.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.EXPLANATION.name;
-        final String attribute5Description     = OpenMetadataProperty.EXPLANATION.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.EXPLANATION.descriptionGUID;
-        final String attribute6Name            = OpenMetadataProperty.ANALYSIS_STEP.name;
-        final String attribute6Description     = OpenMetadataProperty.ANALYSIS_STEP.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.ANALYSIS_STEP.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.JSON_PROPERTIES.name;
-        final String attribute7Description     = OpenMetadataProperty.JSON_PROPERTIES.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.JSON_PROPERTIES.descriptionGUID;
-        final String attribute9Name            = OpenMetadataProperty.ANNOTATION_STATUS.name;
-        final String attribute9Description     = OpenMetadataProperty.ANNOTATION_STATUS.description;
-        final String attribute9DescriptionGUID = OpenMetadataProperty.ANNOTATION_STATUS.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SUMMARY.name,
-                                                           OpenMetadataProperty.SUMMARY.description,
-                                                           OpenMetadataProperty.SUMMARY.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("AnnotationStatus",
-                                                         attribute9Name,
-                                                         attribute9Description,
-                                                         attribute9DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANNOTATION_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUMMARY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE_LEVEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPLANATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANALYSIS_STEP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.JSON_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ANNOTATION_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -12748,16 +12043,8 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.RESOURCE_PROPERTIES.name;
-        final String attribute1Description     = OpenMetadataProperty.RESOURCE_PROPERTIES.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.RESOURCE_PROPERTIES.descriptionGUID;
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
-                                                                    attribute1Description,
-                                                                    attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_PROPERTIES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12773,37 +12060,11 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.RESOURCE_CREATE_TIME.name;
-        final String attribute1Description     = OpenMetadataProperty.RESOURCE_CREATE_TIME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.RESOURCE_CREATE_TIME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.RESOURCE_UPDATE_TIME.name;
-        final String attribute2Description     = OpenMetadataProperty.RESOURCE_UPDATE_TIME.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.RESOURCE_UPDATE_TIME.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.SIZE.name;
-        final String attribute3Description     = OpenMetadataProperty.SIZE.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.SIZE.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.ENCODING.name;
-        final String attribute4Description     = OpenMetadataProperty.ENCODING.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.ENCODING.descriptionGUID;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getLongTypeDefAttribute(attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_CREATE_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_UPDATE_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SIZE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -12834,30 +12095,10 @@ public class OpenMetadataTypesArchive1_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.ACTION_SOURCE_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.ACTION_SOURCE_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.ACTION_SOURCE_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.ACTION_REQUESTED.name;
-        final String attribute2Description     = OpenMetadataProperty.ACTION_REQUESTED.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.ACTION_REQUESTED.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.ACTION_PROPERTIES.name;
-        final String attribute3Description     = OpenMetadataProperty.ACTION_PROPERTIES.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.ACTION_PROPERTIES.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_SOURCE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_REQUESTED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_PROPERTIES));
 
         entityDef.setPropertiesDefinition(properties);
 

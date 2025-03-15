@@ -107,7 +107,7 @@ public class AvroFileReaderSample
                              */
                             return (BasicFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
                         }
-                        catch (Throwable error)
+                        catch (Exception error)
                         {
                             System.out.println("Unable to create connector for asset: " + assetGUID);
                         }
@@ -119,7 +119,7 @@ public class AvroFileReaderSample
                 System.out.println("The open metadata repositories do not have an asset definition for the requested file name " + fileName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created from metadata.  Error message is: " + error.getMessage());
         }
@@ -145,7 +145,7 @@ public class AvroFileReaderSample
 
             connector = (BasicFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created with Asset Consumer OMAS.");
         }
@@ -170,7 +170,7 @@ public class AvroFileReaderSample
 
             connector = (BasicFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created with OCF.");
         }
@@ -278,7 +278,7 @@ public class AvroFileReaderSample
         {
             System.out.println("The connector is unable to retrieve the requested record because the file is not valid.");
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             System.out.println("Exception " + exception.getMessage());
         }
@@ -338,7 +338,7 @@ public class AvroFileReaderSample
 
             sample.run();
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("Exception: " + error.getClass().getName() + " with message " + error.getMessage());
             System.exit(-1);

@@ -86,7 +86,7 @@ public class TestOMRSRegistryEventErrorCode
         {
             jsonString = objectMapper.writeValueAsString(OMRSRegistryEventErrorCode.BAD_REMOTE_CONNECTION);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -95,7 +95,7 @@ public class TestOMRSRegistryEventErrorCode
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSRegistryEventErrorCode.class) == OMRSRegistryEventErrorCode.BAD_REMOTE_CONNECTION);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

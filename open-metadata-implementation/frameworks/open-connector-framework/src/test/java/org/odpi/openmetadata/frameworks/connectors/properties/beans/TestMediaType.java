@@ -97,7 +97,7 @@ public class TestMediaType
         {
             jsonString = objectMapper.writeValueAsString(MediaType.VIDEO);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -106,7 +106,7 @@ public class TestMediaType
         {
             assertTrue(objectMapper.readValue(jsonString, MediaType.class) == MediaType.VIDEO);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

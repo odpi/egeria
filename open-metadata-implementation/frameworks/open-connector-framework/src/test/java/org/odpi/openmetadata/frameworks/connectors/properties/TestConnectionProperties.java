@@ -217,7 +217,7 @@ public class TestConnectionProperties
             iterator.next();
             assertTrue(false);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(true);
         }

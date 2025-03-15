@@ -21,7 +21,7 @@ public class OCFCheckedExceptionBasedTest
 {
     private final String                     reportingClassName         = "TestClassName";
     private final String                     reportingActionDescription = "TestActionDescription";
-    private final Throwable                  reportedCaughtException    = new Exception("TestReportedCaughtException");
+    private final Exception                  reportedCaughtException    = new Exception("TestReportedCaughtException");
     private final ExceptionMessageDefinition messageDefinition;
     private final Map<String, Object>        reportedRelatedProperties  = new HashMap<>();
     private final Map<String, Object>        emptyRelatedProperties     = new HashMap<>();
@@ -57,7 +57,7 @@ public class OCFCheckedExceptionBasedTest
      * @return new instance
      */
     private <T> T getBasicException(Class<T>            exceptionClass,
-                                    Throwable           wrappedException,
+                                    Exception           wrappedException,
                                     Map<String, Object> relatedProperties)
     {
         Constructor<T> constructor;
@@ -79,7 +79,7 @@ public class OCFCheckedExceptionBasedTest
                 constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class,
                                                             String.class,
                                                             String.class,
-                                                            Throwable.class,
+                                                            Exception.class,
                                                             Map.class);
                 exception   = constructor.newInstance(messageDefinition,
                                                       reportingClassName,
@@ -92,7 +92,7 @@ public class OCFCheckedExceptionBasedTest
                 constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class,
                                                             String.class,
                                                             String.class,
-                                                            Throwable.class);
+                                                            Exception.class);
                 exception   = constructor.newInstance(messageDefinition,
                                                       reportingClassName,
                                                       reportingActionDescription,
@@ -111,7 +111,7 @@ public class OCFCheckedExceptionBasedTest
             }
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             fail(error.toString());
         }
@@ -131,7 +131,7 @@ public class OCFCheckedExceptionBasedTest
      */
     private <T> T getEnhancedException(Class<T>            exceptionClass,
                                        String              additionalProperty,
-                                       Throwable           wrappedException,
+                                       Exception           wrappedException,
                                        Map<String, Object> relatedProperties)
     {
         Constructor<T> constructor;
@@ -155,7 +155,7 @@ public class OCFCheckedExceptionBasedTest
                 constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class,
                                                             String.class,
                                                             String.class,
-                                                            Throwable.class,
+                                                            Exception.class,
                                                             String.class,
                                                             Map.class);
                 exception   = constructor.newInstance(messageDefinition,
@@ -170,7 +170,7 @@ public class OCFCheckedExceptionBasedTest
                 constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class,
                                                             String.class,
                                                             String.class,
-                                                            Throwable.class,
+                                                            Exception.class,
                                                             String.class);
                 exception   = constructor.newInstance(messageDefinition,
                                                       reportingClassName,
@@ -193,7 +193,7 @@ public class OCFCheckedExceptionBasedTest
             }
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             fail(error.toString());
         }
@@ -206,7 +206,7 @@ public class OCFCheckedExceptionBasedTest
      * Test that a new exception is properly populated
      */
     private void testExceptionValues(OCFCheckedExceptionBase  exception,
-                                     Throwable                nestedException,
+                                     Exception                nestedException,
                                      Map<String, Object>      exceptionProperties)
     {
         MessageFormatter  messageFormatter = new MessageFormatter();

@@ -64,7 +64,7 @@ class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
     OMAGCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                              String                     className,
                              String                     actionDescription,
-                             Throwable                  caughtError)
+                             Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -83,7 +83,7 @@ class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
     OMAGCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                              String                     className,
                              String                     actionDescription,
-                             Throwable                  caughtError,
+                             Exception                  caughtError,
                              Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -173,7 +173,7 @@ class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
      * @param caughtError previous error causing this exception
      */
     @Deprecated
-    OMAGCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    OMAGCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

@@ -61,7 +61,7 @@ public class HomeRelationshipException extends OMRSCheckedExceptionBase
     public HomeRelationshipException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError)
+                                     Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -80,7 +80,7 @@ public class HomeRelationshipException extends OMRSCheckedExceptionBase
     public HomeRelationshipException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -157,7 +157,7 @@ public class HomeRelationshipException extends OMRSCheckedExceptionBase
      * @param caughtError  the error that resulted in this exception.
      */
     @Deprecated
-    public HomeRelationshipException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public HomeRelationshipException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

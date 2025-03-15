@@ -86,7 +86,7 @@ public class TestOMRSInstanceEventErrorCode
         {
             jsonString = objectMapper.writeValueAsString(OMRSInstanceEventErrorCode.CONFLICTING_INSTANCES);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -95,7 +95,7 @@ public class TestOMRSInstanceEventErrorCode
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSInstanceEventErrorCode.class) == OMRSInstanceEventErrorCode.CONFLICTING_INSTANCES);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -210,7 +210,7 @@ public class TestComplexSchemaType
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -219,7 +219,7 @@ public class TestComplexSchemaType
         {
             validateResultObject(objectMapper.readValue(jsonString, ComplexSchemaType.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -233,7 +233,7 @@ public class TestComplexSchemaType
         {
             jsonString = objectMapper.writeValueAsString(schemaElement);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -242,7 +242,7 @@ public class TestComplexSchemaType
         {
             validateResultObject((ComplexSchemaType) objectMapper.readValue(jsonString, SchemaElement.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -256,7 +256,7 @@ public class TestComplexSchemaType
         {
             jsonString = objectMapper.writeValueAsString(referenceable);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -265,7 +265,7 @@ public class TestComplexSchemaType
         {
             validateResultObject((ComplexSchemaType) objectMapper.readValue(jsonString, Referenceable.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -279,7 +279,7 @@ public class TestComplexSchemaType
         {
             jsonString = objectMapper.writeValueAsString(elementBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -288,7 +288,7 @@ public class TestComplexSchemaType
         {
             validateResultObject((ComplexSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -302,7 +302,7 @@ public class TestComplexSchemaType
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -311,7 +311,7 @@ public class TestComplexSchemaType
         {
             validateResultObject((ComplexSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

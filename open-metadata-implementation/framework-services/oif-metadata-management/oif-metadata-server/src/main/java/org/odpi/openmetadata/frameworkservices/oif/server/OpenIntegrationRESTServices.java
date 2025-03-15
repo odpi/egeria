@@ -93,9 +93,9 @@ public class OpenIntegrationRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -165,9 +165,9 @@ public class OpenIntegrationRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -213,9 +213,9 @@ public class OpenIntegrationRESTServices
                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                              properties);
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -256,9 +256,9 @@ public class OpenIntegrationRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setElement(handler.getIntegrationReport(userId, reportGUID));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -308,9 +308,9 @@ public class OpenIntegrationRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setElements(handler.getIntegrationReportsForElement(userId, elementGUID, afterCompletionDate, beforeStartDate, startingFrom, maximumResults));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -358,9 +358,9 @@ public class OpenIntegrationRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setElements(handler.getIntegrationReports(userId, afterCompletionDate, beforeStartDate, startingFrom, maximumResults));
         }
-        catch (Exception error)
+        catch (Throwable error)
         {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

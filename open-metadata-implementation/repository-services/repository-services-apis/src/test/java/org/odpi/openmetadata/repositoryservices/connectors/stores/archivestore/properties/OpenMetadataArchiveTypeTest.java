@@ -78,7 +78,7 @@ public class OpenMetadataArchiveTypeTest
         {
             jsonString = objectMapper.writeValueAsString(OpenMetadataArchiveType.REPOSITORY_BACKUP);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -87,7 +87,7 @@ public class OpenMetadataArchiveTypeTest
         {
             assertTrue(objectMapper.readValue(jsonString, OpenMetadataArchiveType.class) == OpenMetadataArchiveType.REPOSITORY_BACKUP);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

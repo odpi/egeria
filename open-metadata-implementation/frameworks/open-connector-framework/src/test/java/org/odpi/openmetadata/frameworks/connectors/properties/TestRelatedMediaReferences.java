@@ -109,7 +109,7 @@ public class TestRelatedMediaReferences
         {
             assertTrue(err.getMessage().contains("OCF-PROPERTIES-400-018 "));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }

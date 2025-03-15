@@ -4,7 +4,9 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -72,6 +74,19 @@ public class LineageMappingConverter<B> extends OMFConverter<B>
                     {
                         bean.setTargetElement(super.getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName));
                     }
+
+                    /*
+                     * The rest of the properties come from the relationship.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    LineageMappingProperties lineageMappingProperties = new LineageMappingProperties();
+
+                    lineageMappingProperties.setQualifiedName(this.getISCQualifiedName(instanceProperties));
+                    lineageMappingProperties.setLabel(this.getLabel(instanceProperties));
+                    lineageMappingProperties.setDescription(this.getDescription(instanceProperties));
+
+                    bean.setLineageMappingProperties(lineageMappingProperties);
                 }
                 else
                 {

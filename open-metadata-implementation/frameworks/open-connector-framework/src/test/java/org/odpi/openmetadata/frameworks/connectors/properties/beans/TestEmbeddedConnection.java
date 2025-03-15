@@ -137,7 +137,7 @@ public class TestEmbeddedConnection
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -146,7 +146,7 @@ public class TestEmbeddedConnection
         {
             validateResultObject(objectMapper.readValue(jsonString, EmbeddedConnection.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

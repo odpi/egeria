@@ -165,7 +165,7 @@ public class EntityDetailTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -174,7 +174,7 @@ public class EntityDetailTest
         {
             validateObject(objectMapper.readValue(jsonString, EntityDetail.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -189,7 +189,7 @@ public class EntityDetailTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -198,7 +198,7 @@ public class EntityDetailTest
         {
             validateSummaryObject(objectMapper.readValue(jsonString, EntitySummary.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

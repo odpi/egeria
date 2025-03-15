@@ -180,7 +180,7 @@ public class TestVoidResponse
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -189,7 +189,7 @@ public class TestVoidResponse
         {
             validateResultObject(objectMapper.readValue(jsonString, VoidResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -203,7 +203,7 @@ public class TestVoidResponse
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -212,7 +212,7 @@ public class TestVoidResponse
         {
             validateResultObject((VoidResponse) objectMapper.readValue(jsonString, OMRSAPIResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -77,7 +77,7 @@ public class TestOMRSAuditingComponent
         {
             jsonString = objectMapper.writeValueAsString(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -86,7 +86,7 @@ public class TestOMRSAuditingComponent
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSAuditingComponent.class) == OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

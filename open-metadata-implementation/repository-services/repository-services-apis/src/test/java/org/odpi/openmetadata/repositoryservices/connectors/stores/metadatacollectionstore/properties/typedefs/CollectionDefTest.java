@@ -164,7 +164,7 @@ public class CollectionDefTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -173,7 +173,7 @@ public class CollectionDefTest
         {
             validateObject(objectMapper.readValue(jsonString, CollectionDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -187,7 +187,7 @@ public class CollectionDefTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -196,7 +196,7 @@ public class CollectionDefTest
         {
             validateObject((CollectionDef) objectMapper.readValue(jsonString, AttributeTypeDef.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

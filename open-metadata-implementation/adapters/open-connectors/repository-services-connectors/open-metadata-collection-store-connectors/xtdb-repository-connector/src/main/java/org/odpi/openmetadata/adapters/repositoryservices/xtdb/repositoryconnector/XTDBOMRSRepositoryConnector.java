@@ -289,7 +289,7 @@ public class XTDBOMRSRepositoryConnector extends OMRSRepositoryConnector {
      * @param cause the exception that triggered the problem (if any)
      * @param params providing additional details about the problem
      */
-    public void logProblem(String className, String methodName, XTDBAuditCode code, Throwable cause, String... params) {
+    public void logProblem(String className, String methodName, XTDBAuditCode code, Exception cause, String... params) {
         String location = className + "::" + methodName;
         if (auditLog != null) {
             if (cause != null) {

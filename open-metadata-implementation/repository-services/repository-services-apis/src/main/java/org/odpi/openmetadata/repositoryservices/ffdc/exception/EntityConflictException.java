@@ -62,7 +62,7 @@ public class EntityConflictException extends OMRSCheckedExceptionBase
     public EntityConflictException(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError)
+                                   Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -81,7 +81,7 @@ public class EntityConflictException extends OMRSCheckedExceptionBase
     public EntityConflictException(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError,
+                                   Exception                  caughtError,
                                    Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -161,7 +161,7 @@ public class EntityConflictException extends OMRSCheckedExceptionBase
      * @param caughtException the exception/error that caused this exception to be raised
      */
     @Deprecated
-    public EntityConflictException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtException)
+    public EntityConflictException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtException)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtException);
     }

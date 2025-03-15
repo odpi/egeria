@@ -109,7 +109,7 @@ public class CreateCSVFileAssetSample
 
             sample.run();
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("Exception: " + error.getClass().getName() + " with message " + error.getMessage());
             System.exit(-1);

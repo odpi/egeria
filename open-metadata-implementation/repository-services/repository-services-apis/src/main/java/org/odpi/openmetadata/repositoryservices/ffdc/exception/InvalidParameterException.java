@@ -74,7 +74,7 @@ public class InvalidParameterException extends OMRSCheckedExceptionBase
     public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      String                     parameterName)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -97,7 +97,7 @@ public class InvalidParameterException extends OMRSCheckedExceptionBase
     public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      String                     parameterName,
                                      Map<String, Object>        relatedProperties)
     {
@@ -215,7 +215,7 @@ public class InvalidParameterException extends OMRSCheckedExceptionBase
      * @param caughtError  the error that resulted in this exception.
      */
     @Deprecated
-    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
@@ -233,7 +233,7 @@ public class InvalidParameterException extends OMRSCheckedExceptionBase
      * @param caughtError  the error that resulted in this exception.
      */
     @Deprecated
-    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, String parameterName, Throwable caughtError)
+    public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, String parameterName, Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 

@@ -101,7 +101,7 @@ public class TestOMRSAuditLogRecordSeverity
         {
             jsonString = objectMapper.writeValueAsString(OMRSAuditLogRecordSeverity.EXCEPTION);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -110,7 +110,7 @@ public class TestOMRSAuditLogRecordSeverity
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSAuditLogRecordSeverity.class) == OMRSAuditLogRecordSeverity.EXCEPTION);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

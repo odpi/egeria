@@ -441,7 +441,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
                 RelatedMetadataElementList actionTargets = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
                                                                                                                                1,
-                                                                                                                               OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                                                                               OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
                                                                                                                                0,
                                                                                                                                0);
 
@@ -451,7 +451,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                     {
                         if (actionTarget != null)
                         {
-                            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
                                                                                                   processGUID,
                                                                                                   actionTarget.getElement().getElementGUID(),
                                                                                                   null,
@@ -506,7 +506,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
                                                                               processGUID,
                                                                               actionTargetGUID,
                                                                               null,

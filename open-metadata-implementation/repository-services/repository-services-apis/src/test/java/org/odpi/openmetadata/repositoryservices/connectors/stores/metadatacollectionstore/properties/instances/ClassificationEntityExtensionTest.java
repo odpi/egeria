@@ -88,7 +88,7 @@ public class ClassificationEntityExtensionTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -97,7 +97,7 @@ public class ClassificationEntityExtensionTest
         {
             validateObject(objectMapper.readValue(jsonString, ClassificationEntityExtension.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -112,7 +112,7 @@ public class ClassificationEntityExtensionTest
         {
             jsonString = objectMapper.writeValueAsString(testObject);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -121,7 +121,7 @@ public class ClassificationEntityExtensionTest
         {
             validateObject((ClassificationEntityExtension)objectMapper.readValue(jsonString, InstanceElementHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

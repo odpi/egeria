@@ -81,7 +81,7 @@ public class TypeDefAttributeStatusTest
         {
             jsonString = objectMapper.writeValueAsString(TypeDefAttributeStatus.RENAMED_ATTRIBUTE);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -90,7 +90,7 @@ public class TypeDefAttributeStatusTest
         {
             assertTrue(objectMapper.readValue(jsonString, TypeDefAttributeStatus.class) == TypeDefAttributeStatus.RENAMED_ATTRIBUTE);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

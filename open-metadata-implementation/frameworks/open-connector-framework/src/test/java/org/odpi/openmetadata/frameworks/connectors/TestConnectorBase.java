@@ -93,7 +93,7 @@ public class TestConnectorBase
             testObject.start();
             assertTrue(true);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -104,7 +104,7 @@ public class TestConnectorBase
         {
             assertTrue(testObject.getConnectedAssetProperties("TestUserId") == null);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -115,7 +115,7 @@ public class TestConnectorBase
         {
             assertTrue(testObject.getConnectedAssetProperties("TestUserId") != null);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -127,7 +127,7 @@ public class TestConnectorBase
             testObject.disconnect();
             assertTrue(true);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }

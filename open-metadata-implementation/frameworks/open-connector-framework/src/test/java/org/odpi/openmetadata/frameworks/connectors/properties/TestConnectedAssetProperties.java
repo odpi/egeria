@@ -27,7 +27,7 @@ public class TestConnectedAssetProperties
         {
             testObject.refresh();
         }
-        catch (Throwable exc)
+        catch (Exception exc)
         {
             assertTrue(false);
         }
@@ -55,7 +55,7 @@ public class TestConnectedAssetProperties
         {
             testObject.refresh();
         }
-        catch (Throwable exc)
+        catch (Exception exc)
         {
             assertTrue(false);
         }
@@ -71,7 +71,7 @@ public class TestConnectedAssetProperties
         {
             templateObject.refresh();
         }
-        catch (Throwable exc)
+        catch (Exception exc)
         {
             assertTrue(false);
         }

@@ -190,9 +190,7 @@ public class OpenMetadataTypesArchive2_10
         /*
          * Create the Patch
          */
-        final String typeName = "Campaign";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -229,9 +227,7 @@ public class OpenMetadataTypesArchive2_10
      */
     private TypeDefPatch updateUsedInContextRelationship()
     {
-        final String typeName = "UsedInContext";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -267,7 +263,6 @@ public class OpenMetadataTypesArchive2_10
     private void update04xxGovernanceDefinitions()
     {
         this.archiveBuilder.addClassificationDef(addOwnershipClassification());
-        this.archiveBuilder.addClassificationDef(addIncidentClassifierSetClassification());
         this.archiveBuilder.addEntityDef(addComponentOwnerEntity());
         this.archiveBuilder.addEntityDef(addDataItemOwnerEntity());
         this.archiveBuilder.addEntityDef(addRegulationArticleEntity());
@@ -275,14 +270,8 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addRelationshipDef(addGovernanceDriverLinkRelationship());
 
         this.archiveBuilder.addTypeDefPatch(updateGovernanceResponsibilityAssignmentRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceDefinitionEntity());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceZoneEntity());
-        this.archiveBuilder.addTypeDefPatch(updateSubjectAreaDefinitionEntity());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceMetricEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceOfficer());
-        this.archiveBuilder.addTypeDefPatch(updateIncidentClassifier());
-        this.archiveBuilder.addTypeDefPatch(updateIncidentReport());
         this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
         this.archiveBuilder.addTypeDefPatch(updateCertification());
         this.archiveBuilder.addTypeDefPatch(updateLicense());
@@ -317,208 +306,6 @@ public class OpenMetadataTypesArchive2_10
 
 
     /**
-     * Deprecated
-     * Add new IncidentClassifierSet classification to identify a collection as containing IncidentClassifiers
-     *
-     * @return new classification definition
-     */
-    private ClassificationDef addIncidentClassifierSetClassification()
-    {
-        final String guid            = "361158c0-ade1-4c92-a6a7-64f7ac39b87d";
-        final String name            = "IncidentClassifierSet";
-        final String description     = "A collection of incident classifiers.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "Collection";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
-    }
-
-
-    /**
-     * This change means that IncidentClassifier is a Referenceable.  This is to make it consistent with the
-     * other classifier definitions.
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateIncidentClassifier()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "IncidentClassifier";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the domain attribute
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateGovernanceDefinitionEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_DEFINITION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Deprecated. Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the domain attribute
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateGovernanceZoneEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ZONE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Deprecated. Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the domain attribute
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateSubjectAreaDefinitionEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SubjectAreaDefinition";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Deprecated. Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the domain attribute
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateGovernanceMetricEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_METRIC.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Deprecated. Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
      * Deprecate the domain attribute.
      *
      * @return patched type
@@ -537,21 +324,11 @@ public class OpenMetadataTypesArchive2_10
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Deprecated. Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER));
 
         typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -572,26 +349,6 @@ public class OpenMetadataTypesArchive2_10
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ROLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute5Name            = "domain";
-        final String attribute5Description     = "Deprecated. Governance domain for this governance definition.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(OpenMetadataProperty.DOMAIN_IDENTIFIER.name);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
@@ -804,51 +561,6 @@ public class OpenMetadataTypesArchive2_10
 
         typeDefPatch.setPropertyDefinitions(properties);
 
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the ownership properties - use Ownership classification instead
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateIncidentReport()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.INCIDENT_REPORT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "owner";
-        final String attribute1Description     = "Deprecated Attribute. Person, team or engine responsible for this type of action.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "ownerType";
-        final String attribute2Description     = "Deprecated Attribute. Type of element representing the owner.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
 }

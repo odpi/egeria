@@ -338,7 +338,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                                               methodName,
                                               unknownPrimitiveClass);
         }
-        catch (Error    invalidPrimitiveCategory)
+        catch (Exception invalidPrimitiveCategory)
         {
             /*
              * Some unexpected exception occurred when manipulating the Java Classes.  Probably a coding error.

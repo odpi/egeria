@@ -115,7 +115,7 @@ public class TestKeyPattern
         {
             jsonString = objectMapper.writeValueAsString(KeyPattern.RECYCLED_KEY);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -124,7 +124,7 @@ public class TestKeyPattern
         {
             assertTrue(objectMapper.readValue(jsonString, KeyPattern.class) == KeyPattern.RECYCLED_KEY);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

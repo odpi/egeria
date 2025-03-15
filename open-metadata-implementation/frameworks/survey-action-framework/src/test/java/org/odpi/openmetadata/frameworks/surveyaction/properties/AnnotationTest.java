@@ -168,7 +168,7 @@ public class AnnotationTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -177,7 +177,7 @@ public class AnnotationTest
         {
             validateResultObject(objectMapper.readValue(jsonString, Annotation.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -72,7 +72,7 @@ public class TestOMRSEventProtocolVersion
         {
             jsonString = objectMapper.writeValueAsString(OMRSEventProtocolVersion.V1);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -81,7 +81,7 @@ public class TestOMRSEventProtocolVersion
         {
             assertTrue(objectMapper.readValue(jsonString, OMRSEventProtocolVersion.class) == OMRSEventProtocolVersion.V1);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

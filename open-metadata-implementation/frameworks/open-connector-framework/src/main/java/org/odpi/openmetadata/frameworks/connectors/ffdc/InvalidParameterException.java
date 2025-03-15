@@ -74,7 +74,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
     public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      String                     parameterName)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -96,7 +96,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
     public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      String                     parameterName,
                                      Map<String, Object>        relatedProperties)
     {
@@ -290,7 +290,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
                                      String    errorMessage,
                                      String    systemAction,
                                      String    userAction,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String    parameterName)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
@@ -319,7 +319,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
                                      String               errorMessage,
                                      String               systemAction,
                                      String               userAction,
-                                     Throwable            caughtError,
+                                     Exception            caughtError,
                                      String               parameterName,
                                      Map<String, Object>  relatedProperties)
     {

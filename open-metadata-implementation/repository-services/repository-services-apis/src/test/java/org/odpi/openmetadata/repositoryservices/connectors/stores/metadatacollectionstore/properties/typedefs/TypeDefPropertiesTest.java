@@ -83,7 +83,7 @@ public class TypeDefPropertiesTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }
@@ -92,7 +92,7 @@ public class TypeDefPropertiesTest
         {
             validateObject(objectMapper.readValue(jsonString, TypeDefProperties.class));
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             fail("Exception: " + exc.getMessage());
         }

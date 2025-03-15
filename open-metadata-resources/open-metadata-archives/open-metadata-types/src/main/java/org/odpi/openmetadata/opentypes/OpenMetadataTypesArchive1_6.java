@@ -181,21 +181,12 @@ public class OpenMetadataTypesArchive1_6
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "isDeprecated";
-        final String attribute1Description     = "This element may still be used but is flagged that it will be removed at some point in the future.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEPRECATED));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -257,65 +248,19 @@ public class OpenMetadataTypesArchive1_6
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name             = "schemaTypeName";
-        final String attribute1Description      = "Type name for the schema type.";
-        final String attribute1DescriptionGUID  = null;
-        final String attribute5Name             = "versionNumber";
-        final String attribute5Description      = "Version of the schema type.";
-        final String attribute5DescriptionGUID  = null;
-        final String attribute6Name             = "author";
-        final String attribute6Description      = "User name of the person or process that created the schema type.";
-        final String attribute6DescriptionGUID  = null;
-        final String attribute8Name             = "defaultValue";
-        final String attribute8Description      = "Initial value for data stored in this schema type (primitive and enum types).";
-        final String attribute8DescriptionGUID  = null;
-        final String attribute9Name             = "fixedValue";
-        final String attribute9Description      = "Fixed value for data stored in this schema type (literal schema type).";
-        final String attribute9DescriptionGUID  = null;
-        final String attribute11Name            = "isDeprecated";
-        final String attribute11Description     = "This element may still be used but is flagged that it will be removed at some point in the " +
-                "future.";
-        final String attribute11DescriptionGUID = null;
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCHEMA_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AUTHOR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIXED_VALUE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEPRECATED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USAGE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
-                                                           attribute8Description,
-                                                           attribute8DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
-                                                           attribute9Description,
-                                                           attribute9DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute11Name,
-                                                            attribute11Description,
-                                                            attribute11DescriptionGUID);
-        properties.add(property);
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;

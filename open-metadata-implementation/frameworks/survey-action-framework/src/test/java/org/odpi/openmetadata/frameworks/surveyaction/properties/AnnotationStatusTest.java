@@ -114,7 +114,7 @@ public class AnnotationStatusTest
         {
             jsonString = objectMapper.writeValueAsString(AnnotationStatus.ACTIONED_ANNOTATION);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -123,7 +123,7 @@ public class AnnotationStatusTest
         {
             assertTrue(objectMapper.readValue(jsonString, AnnotationStatus.class) == AnnotationStatus.ACTIONED_ANNOTATION);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

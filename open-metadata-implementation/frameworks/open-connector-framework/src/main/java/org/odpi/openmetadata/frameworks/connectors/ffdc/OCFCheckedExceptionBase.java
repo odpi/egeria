@@ -40,7 +40,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
     private String[]            reportedErrorMessageParameters;
     private String              reportedSystemAction;
     private String              reportedUserAction;
-    private Throwable           reportedCaughtException = null;
+    private Exception           reportedCaughtException = null;
     private String              reportedCaughtExceptionClassName = null;
     private Map<String, Object> relatedProperties = null;
 
@@ -104,7 +104,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
     public OCFCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError)
+                                   Exception                  caughtError)
     {
         this(messageDefinition, className, actionDescription, caughtError, null);
     }
@@ -123,7 +123,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
     public OCFCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError,
+                                   Exception                  caughtError,
                                    Map<String, Object>        relatedProperties)
     {
         super(messageFormatter.getFormattedMessage(messageDefinition), caughtError);
@@ -267,7 +267,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                                    String    errorMessage,
                                    String    systemAction,
                                    String    userAction,
-                                   Throwable caughtError)
+                                   Exception caughtError)
     {
         this(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, null);
     }
@@ -292,7 +292,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                                    String              errorMessage,
                                    String              systemAction,
                                    String              userAction,
-                                   Throwable           caughtError,
+                                   Exception           caughtError,
                                    Map<String, Object> relatedProperties)
     {
         super(errorMessage, caughtError);
@@ -518,9 +518,9 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * either newly created and not the result of a previous exception or the exception occurred in a remote
      * server.  If the second situation is true then reportedCaughtExceptionClassName is set.
      *
-     * @return reportedCaughtException Throwable object
+     * @return reportedCaughtException Exception object
      */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
+    public Exception getReportedCaughtException() { return reportedCaughtException; }
 
 
     /**

@@ -101,7 +101,7 @@ public class AttributeCardinalityTest
         {
             jsonString = objectMapper.writeValueAsString(AttributeCardinality.AT_LEAST_ONE_ORDERED);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -110,7 +110,7 @@ public class AttributeCardinalityTest
         {
             assertTrue(objectMapper.readValue(jsonString, AttributeCardinality.class) == AttributeCardinality.AT_LEAST_ONE_ORDERED);
         }
-        catch (Throwable  exc)
+        catch (Exception   exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
