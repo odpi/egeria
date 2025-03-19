@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
  </p>
  <p>
  The Connector interface defines that a connector instance should be able to return a unique
- identifier, a connection object and a metadata object called ConnectedAssetProperties.
+ identifier, a connection object and a metadata object called ConnectedAssetDetails.
  </p>
  <p>
  Each specific implementation of a connector then extends the Connector interface to add the methods to work with the
@@ -110,7 +110,7 @@ loadScripts(document, 'script');</script>
  This calling code is also responsible for calling disconnect().
  </p>
  <p>
- ConnectedAssetProperties provides descriptive properties about the asset that the connector is accessing.
+ ConnectedAssetDetails provides descriptive properties about the asset that the connector is accessing.
  It is supplied to the connector later during its initialization through the initializeConnectedAssetProperties() method.
  See AssetConsumer OMAS for an example of this.
  </p>
@@ -171,12 +171,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Free up any resources held since the connector is no longer needed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectedAssetDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetDetails</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectedAssetProperties(java.lang.String)" class="member-name-link">getConnectedAssetProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the properties that contain the metadata for the asset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnection()" class="member-name-link">getConnection</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the connection object that was used to create the connector instance.</div>
@@ -216,13 +216,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Increment the named counter.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
+ <a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Call made by the ConnectorProvider to initialize the Connector with the base services.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)" class="member-name-link">initializeConnectedAssetProperties</a><wbr>(<a href="properties/ConnectedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetProperties</a>&nbsp;connectedAssetProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails)" class="member-name-link">initializeConnectedAssetProperties</a><wbr>(<a href="properties/ConnectedAssetDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetDetails</a>&nbsp;connectedAssetDetails)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Set up the connected asset properties object.</div>
 </div>
@@ -285,10 +285,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
+<section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</span></div>
+ <a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</span></div>
 <div class="block">Call made by the ConnectorProvider to initialize the Connector with the base services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -312,7 +312,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getConnection()">
 <h3>getConnection</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></span>&nbsp;<span class="element-name">getConnection</span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a></span>&nbsp;<span class="element-name">getConnection</span>()</div>
 <div class="block">Returns the connection object that was used to create the connector instance.  Its contents are never refreshed
  during the lifetime of a connector instance even if the connection information is updated or removed from
  the originating metadata repository.</div>
@@ -323,34 +323,34 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">
+<section class="detail" id="initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails)">
 <h3>initializeConnectedAssetProperties</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeConnectedAssetProperties</span><wbr><span class="parameters">(<a href="properties/ConnectedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetProperties</a>&nbsp;connectedAssetProperties)</span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeConnectedAssetProperties</span><wbr><span class="parameters">(<a href="properties/ConnectedAssetDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetDetails</a>&nbsp;connectedAssetDetails)</span></div>
 <div class="block">Set up the connected asset properties object.  This provides the known metadata properties stored in one or more
  metadata repositories.  The implementation of the connected asset properties object is free to determine when
  the properties are populated.  It may be as lazy as whenever getConnectedAssetProperties() is called.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>connectedAssetProperties</code> - properties of the connected asset</dd>
+<dd><code>connectedAssetDetails</code> - properties of the connected asset</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getConnectedAssetProperties(java.lang.String)">
 <h3>getConnectedAssetProperties</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetProperties</a></span>&nbsp;<span class="element-name">getConnectedAssetProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                                              throws <span class="exceptions"><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectedAssetDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetDetails</a></span>&nbsp;<span class="element-name">getConnectedAssetProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
+                                                           throws <span class="exceptions"><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
- metadata repository and cached in the ConnectedAssetProperties object each time the getConnectedAssetProperties
- method is requested by the caller.   Once the ConnectedAssetProperties object has the metadata cached, it can be
+ metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
+ method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
  used to access the asset property values many times without a return to the metadata repository.
  The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of requesting user</dd>
 <dt>Returns:</dt>
-<dd>ConnectedAssetProperties   connected asset properties</dd>
+<dd>ConnectedAssetDetails   connected asset properties</dd>
 <dt>Throws:</dt>
 <dd><code><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - indicates a problem retrieving properties from a metadata repository</dd>
 <dd><code><a href="ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - indicates that the user is not authorized to access the asset properties.</dd>

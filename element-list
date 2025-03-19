@@ -788,9 +788,6 @@ org.odpi.openmetadata.samples.archiveutilities.types
 org.odpi.openmetadata.samples.governanceactions.clinicaltrials
 org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata
 org.odpi.openmetadata.samples.governanceactions.ffdc
-org.odpi.openmetadata.serverchassis.springboot
-org.odpi.openmetadata.serverchassis.springboot.config
-org.odpi.openmetadata.serverchassis.springboot.exception
 org.odpi.openmetadata.serveroperations.client
 org.odpi.openmetadata.serveroperations.client.rest
 org.odpi.openmetadata.serveroperations.ffdc

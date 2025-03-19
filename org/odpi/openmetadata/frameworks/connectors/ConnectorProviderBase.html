@@ -166,7 +166,7 @@ implements <a href="../auditlog/AuditLoggingComponent.html" title="interface in 
 <div class="block">Creates a new instance of a connector using the name of the connector provider in the supplied connection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a new instance of a connector based on the information in the supplied connection.</div>
 </div>
@@ -185,7 +185,7 @@ implements <a href="../auditlog/AuditLoggingComponent.html" title="interface in 
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the properties about the type of connector that this ConnectorProvider supports.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/ConnectorTypeDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeDetails</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorTypeProperties()" class="member-name-link">getConnectorTypeProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the properties about the type of connector that this Connector Provider supports.</div>
@@ -365,7 +365,7 @@ implements <a href="../auditlog/AuditLoggingComponent.html" title="interface in 
 <li>
 <section class="detail" id="getConnectorTypeProperties()">
 <h3>getConnectorTypeProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeProperties</a></span>&nbsp;<span class="element-name">getConnectorTypeProperties</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/ConnectorTypeDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeDetails</a></span>&nbsp;<span class="element-name">getConnectorTypeProperties</span>()</div>
 <div class="block">Returns the properties about the type of connector that this Connector Provider supports.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -424,15 +424,15 @@ implements <a href="../auditlog/AuditLoggingComponent.html" title="interface in 
 </section>
 </li>
 <li>
-<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
+<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">
 <h3>getConnector</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</span>
                        throws <span class="exceptions"><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Creates a new instance of a connector based on the information in the supplied connection.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ConnectorProvider.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">getConnector</a></code>&nbsp;in class&nbsp;<code><a href="ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProvider</a></code></dd>
+<dd><code><a href="ConnectorProvider.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">getConnector</a></code>&nbsp;in class&nbsp;<code><a href="ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProvider</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>connection</code> - connection that should have all the properties needed by the Connector Provider
                      to create a connector instance.</dd>

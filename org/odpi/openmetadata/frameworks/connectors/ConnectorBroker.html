@@ -120,7 +120,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates a new instance of a connector using the name of the connector provider in the supplied connection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a new instance of a connector using the name of the connector provider in the supplied connection.</div>
 </div>
@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Validate that the connection has sufficient properties to attempt to create a connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnection(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)" class="member-name-link">validateConnection</a><wbr>(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnection(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)" class="member-name-link">validateConnection</a><wbr>(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate that the connection has sufficient properties to attempt to create a connector.</div>
 </div>
@@ -198,9 +198,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="validateConnection(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
+<section class="detail" id="validateConnection(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">
 <h3>validateConnection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateConnection</span><wbr><span class="parameters">(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateConnection</span><wbr><span class="parameters">(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</span>
                         throws <span class="exceptions"><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></span></div>
 <div class="block">Validate that the connection has sufficient properties to attempt to create a connector.
  Any problems found are expressed as a ConnectionCheckedException.</div>
@@ -231,9 +231,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
+<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">
 <h3>getConnector</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</span>
                        throws <span class="exceptions"><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Creates a new instance of a connector using the name of the connector provider in the supplied connection.</div>

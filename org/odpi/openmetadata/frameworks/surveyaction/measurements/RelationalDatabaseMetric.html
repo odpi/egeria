@@ -107,27 +107,61 @@ implements <a href="SurveyMetric.html" title="interface in org.odpi.openmetadata
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACTIVE_TIME" class="member-name-link">ACTIVE_TIME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The length of time (milliseconds) that the database was being actively queried.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#COLUMN_COUNT" class="member-name-link">COLUMN_COUNT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Count of all columns in the tables/views.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DATA_SIZE" class="member-name-link">DATA_SIZE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#LAST_STATISTICS_RESET" class="member-name-link">LAST_STATISTICS_RESET</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Number of stored bytes of data in the surveyed resource.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Name of the database</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#LAST_STATISTICS_RESET" class="member-name-link">LAST_STATISTICS_RESET</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Last time that the statistics were reset in the database.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MAT_VIEW_COUNT" class="member-name-link">MAT_VIEW_COUNT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Count of materialized views in the database.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ROWS_DELETED" class="member-name-link">ROWS_DELETED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Number of rows deleted from any table in the database.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ROWS_FETCHED" class="member-name-link">ROWS_FETCHED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Number of rows retrieved from any table in the database.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ROWS_INSERTED" class="member-name-link">ROWS_INSERTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Number of rows inserted from any table in the database.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ROWS_UPDATED" class="member-name-link">ROWS_UPDATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Number of rows updated from any table in the database.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SCHEMA_COUNT" class="member-name-link">SCHEMA_COUNT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Number of schemas found in the surveyed resource.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SESSION_TIME" class="member-name-link">SESSION_TIME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The length of time (milliseconds) that the database had at least one open session from an external client.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TABLE_COUNT" class="member-name-link">TABLE_COUNT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Number of tables found in the database.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VIEW_COUNT" class="member-name-link">VIEW_COUNT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Count of views in the database.</div>
+</div>
 </div>
 </section>
 </li>
@@ -228,69 +262,101 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="DATABASE_NAME">
+<h3>DATABASE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">DATABASE_NAME</span></div>
+<div class="block">Name of the database</div>
+</section>
+</li>
+<li>
 <section class="detail" id="SCHEMA_COUNT">
 <h3>SCHEMA_COUNT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">SCHEMA_COUNT</span></div>
+<div class="block">Number of schemas found in the surveyed resource.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TABLE_COUNT">
 <h3>TABLE_COUNT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">TABLE_COUNT</span></div>
+<div class="block">Number of tables found in the database.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="VIEW_COUNT">
+<h3>VIEW_COUNT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">VIEW_COUNT</span></div>
+<div class="block">Count of views in the database.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MAT_VIEW_COUNT">
+<h3>MAT_VIEW_COUNT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">MAT_VIEW_COUNT</span></div>
+<div class="block">Count of materialized views in the database.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COLUMN_COUNT">
 <h3>COLUMN_COUNT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">COLUMN_COUNT</span></div>
+<div class="block">Count of all columns in the tables/views.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_SIZE">
 <h3>DATA_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">DATA_SIZE</span></div>
+<div class="block">Number of stored bytes of data in the surveyed resource.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ROWS_FETCHED">
 <h3>ROWS_FETCHED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">ROWS_FETCHED</span></div>
+<div class="block">Number of rows retrieved from any table in the database.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ROWS_INSERTED">
 <h3>ROWS_INSERTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">ROWS_INSERTED</span></div>
+<div class="block">Number of rows inserted from any table in the database.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ROWS_UPDATED">
 <h3>ROWS_UPDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">ROWS_UPDATED</span></div>
+<div class="block">Number of rows updated from any table in the database.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ROWS_DELETED">
 <h3>ROWS_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">ROWS_DELETED</span></div>
+<div class="block">Number of rows deleted from any table in the database.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SESSION_TIME">
 <h3>SESSION_TIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">SESSION_TIME</span></div>
+<div class="block">The length of time (milliseconds) that the database had at least one open session from an external client.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACTIVE_TIME">
 <h3>ACTIVE_TIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">ACTIVE_TIME</span></div>
+<div class="block">The length of time (milliseconds) that the database was being actively queried.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LAST_STATISTICS_RESET">
 <h3>LAST_STATISTICS_RESET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalDatabaseMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalDatabaseMetric</a></span>&nbsp;<span class="element-name">LAST_STATISTICS_RESET</span></div>
+<div class="block">Last time that the statistics were reset in the database.</div>
 </section>
 </li>
 </ul>

@@ -106,14 +106,42 @@ implements <a href="SurveyMetric.html" title="interface in org.odpi.openmetadata
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#COLUMN_NAME" class="member-name-link">COLUMN_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#AVERAGE_WIDTH" class="member-name-link">AVERAGE_WIDTH</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Average width of the values in this column.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#COLUMN_NAME" class="member-name-link">COLUMN_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Name of the column within the table.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#COLUMN_NOT_NULL" class="member-name-link">COLUMN_NOT_NULL</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Is a null value prohibited in this column?</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#COLUMN_QNAME" class="member-name-link">COLUMN_QNAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Qualified name of the column showing the database name, schema name and table name.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#COLUMN_SIZE" class="member-name-link">COLUMN_SIZE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Number of stored bytes in the column.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#COLUMN_TYPE" class="member-name-link">COLUMN_TYPE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Data type of column.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#MOST_COMMON_VALUES" class="member-name-link">MOST_COMMON_VALUES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">List of the most common values stored in this column.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MOST_COMMON_VALUES_FREQUENCY" class="member-name-link">MOST_COMMON_VALUES_FREQUENCY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The frequency that each of the most common values occur.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NUMBER_OF_DISTINCT_VALUES" class="member-name-link">NUMBER_OF_DISTINCT_VALUES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Number of distinct values stored in this column.</div>
+</div>
 </div>
 </section>
 </li>
@@ -217,24 +245,63 @@ the order they are declared.</div>
 <section class="detail" id="COLUMN_QNAME">
 <h3>COLUMN_QNAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">COLUMN_QNAME</span></div>
+<div class="block">Qualified name of the column showing the database name, schema name and table name.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COLUMN_NAME">
 <h3>COLUMN_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">COLUMN_NAME</span></div>
+<div class="block">Name of the column within the table.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COLUMN_SIZE">
 <h3>COLUMN_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">COLUMN_SIZE</span></div>
+<div class="block">Number of stored bytes in the column.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COLUMN_TYPE">
 <h3>COLUMN_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">COLUMN_TYPE</span></div>
+<div class="block">Data type of column.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="AVERAGE_WIDTH">
+<h3>AVERAGE_WIDTH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">AVERAGE_WIDTH</span></div>
+<div class="block">Average width of the values in this column.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NUMBER_OF_DISTINCT_VALUES">
+<h3>NUMBER_OF_DISTINCT_VALUES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">NUMBER_OF_DISTINCT_VALUES</span></div>
+<div class="block">Number of distinct values stored in this column.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MOST_COMMON_VALUES">
+<h3>MOST_COMMON_VALUES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">MOST_COMMON_VALUES</span></div>
+<div class="block">List of the most common values stored in this column.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MOST_COMMON_VALUES_FREQUENCY">
+<h3>MOST_COMMON_VALUES_FREQUENCY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">MOST_COMMON_VALUES_FREQUENCY</span></div>
+<div class="block">The frequency that each of the most common values occur.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="COLUMN_NOT_NULL">
+<h3>COLUMN_NOT_NULL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalColumnMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalColumnMetric</a></span>&nbsp;<span class="element-name">COLUMN_NOT_NULL</span></div>
+<div class="block">Is a null value prohibited in this column?</div>
 </section>
 </li>
 </ul>

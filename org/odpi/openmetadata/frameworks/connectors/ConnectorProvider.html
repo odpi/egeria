@@ -154,7 +154,7 @@ loadScripts(document, 'script');</script>
  from the subclass(es).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)" class="member-name-link">getConnector</a><wbr>(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Creates a new instance of a connector using the information from the connection and the properties
  from the subclass(es).</div>
@@ -164,7 +164,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="properties/ConnectorTypeDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeDetails</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorTypeProperties()" class="member-name-link">getConnectorTypeProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
@@ -251,7 +251,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getConnectorTypeProperties()">
 <h3>getConnectorTypeProperties</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeProperties</a></span>&nbsp;<span class="element-name">getConnectorTypeProperties</span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectorTypeDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeDetails</a></span>&nbsp;<span class="element-name">getConnectorTypeProperties</span>()</div>
 <div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -328,9 +328,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
+<section class="detail" id="getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails)">
 <h3>getConnector</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connection)</span>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnector</span><wbr><span class="parameters">(<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;connection)</span>
                                 throws <span class="exceptions"><a href="ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Creates a new instance of a connector using the information from the connection and the properties

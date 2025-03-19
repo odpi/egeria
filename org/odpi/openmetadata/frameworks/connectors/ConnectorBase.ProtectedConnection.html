@@ -75,7 +75,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="properties/AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a>
 <div class="inheritance"><a href="properties/AssetElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetElementHeader</a>
 <div class="inheritance"><a href="properties/AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable</a>
-<div class="inheritance"><a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties</a>
+<div class="inheritance"><a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.connectors.ConnectorBase.ProtectedConnection</div>
 </div>
 </div>
@@ -89,7 +89,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">protected static class </span><span class="element-name type-name-label">ConnectorBase.ProtectedConnection</span>
-<span class="extends-implements">extends <a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></span></div>
+<span class="extends-implements">extends <a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a></span></div>
 <div class="block">ProtectedConnection provides a subclass to Connection in order to extract protected values from the
  connection in order to supply them to the Connector implementation.</div>
 </section>
@@ -100,8 +100,8 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></h3>
-<code><a href="properties/ConnectionProperties.html#connectionBean">connectionBean</a></code></div>
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a></h3>
+<code><a href="properties/ConnectionDetails.html#connectionBean">connectionBean</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a></h3>
 <code><a href="properties/AssetReferenceable.html#referenceableBean">referenceableBean</a></code></div>
@@ -127,8 +127,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></h3>
-<code><a href="properties/ConnectionProperties.html#equals(java.lang.Object)">equals</a>, <a href="properties/ConnectionProperties.html#getClearPassword()">getClearPassword</a>, <a href="properties/ConnectionProperties.html#getConfigurationProperties()">getConfigurationProperties</a>, <a href="properties/ConnectionProperties.html#getConnectionName()">getConnectionName</a>, <a href="properties/ConnectionProperties.html#getConnectorType()">getConnectorType</a>, <a href="properties/ConnectionProperties.html#getDescription()">getDescription</a>, <a href="properties/ConnectionProperties.html#getDisplayName()">getDisplayName</a>, <a href="properties/ConnectionProperties.html#getEncryptedPassword()">getEncryptedPassword</a>, <a href="properties/ConnectionProperties.html#getEndpoint()">getEndpoint</a>, <a href="properties/ConnectionProperties.html#getSecuredProperties()">getSecuredProperties</a>, <a href="properties/ConnectionProperties.html#getUserId()">getUserId</a>, <a href="properties/ConnectionProperties.html#hashCode()">hashCode</a>, <a href="properties/ConnectionProperties.html#toString()">toString</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a></h3>
+<code><a href="properties/ConnectionDetails.html#equals(java.lang.Object)">equals</a>, <a href="properties/ConnectionDetails.html#getClearPassword()">getClearPassword</a>, <a href="properties/ConnectionDetails.html#getConfigurationProperties()">getConfigurationProperties</a>, <a href="properties/ConnectionDetails.html#getConnectionName()">getConnectionName</a>, <a href="properties/ConnectionDetails.html#getConnectorType()">getConnectorType</a>, <a href="properties/ConnectionDetails.html#getDescription()">getDescription</a>, <a href="properties/ConnectionDetails.html#getDisplayName()">getDisplayName</a>, <a href="properties/ConnectionDetails.html#getEncryptedPassword()">getEncryptedPassword</a>, <a href="properties/ConnectionDetails.html#getEndpoint()">getEndpoint</a>, <a href="properties/ConnectionDetails.html#getSecuredProperties()">getSecuredProperties</a>, <a href="properties/ConnectionDetails.html#getUserId()">getUserId</a>, <a href="properties/ConnectionDetails.html#hashCode()">hashCode</a>, <a href="properties/ConnectionDetails.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a></h3>
 <code><a href="properties/AssetReferenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="properties/AssetReferenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="properties/AssetReferenceable.html#getReferenceableBean()">getReferenceableBean</a>, <a href="properties/AssetReferenceable.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">setBean</a></code></div>
@@ -156,7 +156,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a copy of the ConnectionBean.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="properties/ConnectionProperties.html#getConnectionBean()">getConnectionBean</a></code>&nbsp;in class&nbsp;<code><a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></code></dd>
+<dd><code><a href="properties/ConnectionDetails.html#getConnectionBean()">getConnectionBean</a></code>&nbsp;in class&nbsp;<code><a href="properties/ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a></code></dd>
 <dt>Returns:</dt>
 <dd>Connection bean</dd>
 </dl>

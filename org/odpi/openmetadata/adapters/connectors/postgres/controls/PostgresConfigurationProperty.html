@@ -105,25 +105,25 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME" class="member-name-link">DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Provides a list of database names that should not be catalogued.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">The name of the database being catalogued.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_PASSWORD" class="member-name-link">DATABASE_PASSWORD</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DATABASE_PASSWORD" class="member-name-link">DATABASE_PASSWORD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The password to store in the clearPassword attribute of the connection.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_USER_ID" class="member-name-link">DATABASE_USER_ID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DATABASE_USER_ID" class="member-name-link">DATABASE_USER_ID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The userId to store in the userId attribute of the connection.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXCLUDE_DATABASE_LIST" class="member-name-link">EXCLUDE_DATABASE_LIST</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_DATABASE_LIST" class="member-name-link">EXCLUDE_DATABASE_LIST</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Provides a list of database names that should not be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
 <div class="col-last odd-row-color">
@@ -328,13 +328,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME">
-<h3>DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME</span></div>
-<div class="block">Provides a list of database names that should not be catalogued.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="EXCLUDE_DATABASE_LIST">
 <h3>EXCLUDE_DATABASE_LIST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_DATABASE_LIST</span></div>
@@ -347,6 +340,13 @@ the order they are declared.</div>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_DATABASE_LIST</span></div>
 <div class="block">Provides a list of databases that should be catalogued.  If not set, or null, or *, all databases except the
  excluded databases are catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FRIENDSHIP_GUID">
+<h3>FRIENDSHIP_GUID</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">FRIENDSHIP_GUID</span></div>
+<div class="block">Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.</div>
 </section>
 </li>
 </ul>

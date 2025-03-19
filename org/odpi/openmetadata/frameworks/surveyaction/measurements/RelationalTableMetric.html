@@ -107,15 +107,65 @@ implements <a href="SurveyMetric.html" title="interface in org.odpi.openmetadata
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#COLUMN_COUNT" class="member-name-link">COLUMN_COUNT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Count of columns in the table/view.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#HAS_INDEXES" class="member-name-link">HAS_INDEXES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Is this table indexed?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#HAS_ROW_SECURITY" class="member-name-link">HAS_ROW_SECURITY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Is this table configured for row-based security?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#HAS_RULES" class="member-name-link">HAS_RULES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Does this table have rules attached?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#HAS_TRIGGERS" class="member-name-link">HAS_TRIGGERS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Does this table have triggers attached?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IS_POPULATED" class="member-name-link">IS_POPULATED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Is this table populated (typically true)?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NUMBER_OF_ROWS_DELETED" class="member-name-link">NUMBER_OF_ROWS_DELETED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Count of the number of rows deleted from this table since the last statistics reset.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NUMBER_OF_ROWS_INSERTED" class="member-name-link">NUMBER_OF_ROWS_INSERTED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Count of the number of rows inserted into this table since the last statistics reset.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NUMBER_OF_ROWS_UPDATED" class="member-name-link">NUMBER_OF_ROWS_UPDATED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Count of the number of rows updated in this table since the last statistics reset.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#QUERY_DEFINITION" class="member-name-link">QUERY_DEFINITION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which query, if any, is used to create this view or materialized view?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Name of table.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_OWNER" class="member-name-link">TABLE_OWNER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Who owns this table?</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TABLE_QNAME" class="member-name-link">TABLE_QNAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Qualified name of table showing the database name and schema name.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TABLE_SIZE" class="member-name-link">TABLE_SIZE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Number of stored bytes in the table.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TABLE_TYPE" class="member-name-link">TABLE_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Is this a standard table, view or materialized view?</div>
+</div>
 </div>
 </section>
 </li>
@@ -219,30 +269,105 @@ the order they are declared.</div>
 <section class="detail" id="TABLE_SIZE">
 <h3>TABLE_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">TABLE_SIZE</span></div>
+<div class="block">Number of stored bytes in the table.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TABLE_NAME">
 <h3>TABLE_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">TABLE_NAME</span></div>
+<div class="block">Name of table.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TABLE_QNAME">
 <h3>TABLE_QNAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">TABLE_QNAME</span></div>
+<div class="block">Qualified name of table showing the database name and schema name.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TABLE_TYPE">
 <h3>TABLE_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">TABLE_TYPE</span></div>
+<div class="block">Is this a standard table, view or materialized view?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_OWNER">
+<h3>TABLE_OWNER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">TABLE_OWNER</span></div>
+<div class="block">Who owns this table?</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COLUMN_COUNT">
 <h3>COLUMN_COUNT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">COLUMN_COUNT</span></div>
+<div class="block">Count of columns in the table/view.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NUMBER_OF_ROWS_INSERTED">
+<h3>NUMBER_OF_ROWS_INSERTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">NUMBER_OF_ROWS_INSERTED</span></div>
+<div class="block">Count of the number of rows inserted into this table since the last statistics reset.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NUMBER_OF_ROWS_UPDATED">
+<h3>NUMBER_OF_ROWS_UPDATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">NUMBER_OF_ROWS_UPDATED</span></div>
+<div class="block">Count of the number of rows updated in this table since the last statistics reset.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NUMBER_OF_ROWS_DELETED">
+<h3>NUMBER_OF_ROWS_DELETED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">NUMBER_OF_ROWS_DELETED</span></div>
+<div class="block">Count of the number of rows deleted from this table since the last statistics reset.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="IS_POPULATED">
+<h3>IS_POPULATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">IS_POPULATED</span></div>
+<div class="block">Is this table populated (typically true)?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HAS_INDEXES">
+<h3>HAS_INDEXES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">HAS_INDEXES</span></div>
+<div class="block">Is this table indexed?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HAS_RULES">
+<h3>HAS_RULES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">HAS_RULES</span></div>
+<div class="block">Does this table have rules attached?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HAS_TRIGGERS">
+<h3>HAS_TRIGGERS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">HAS_TRIGGERS</span></div>
+<div class="block">Does this table have triggers attached?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HAS_ROW_SECURITY">
+<h3>HAS_ROW_SECURITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">HAS_ROW_SECURITY</span></div>
+<div class="block">Is this table configured for row-based security?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="QUERY_DEFINITION">
+<h3>QUERY_DEFINITION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationalTableMetric.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.measurements">RelationalTableMetric</a></span>&nbsp;<span class="element-name">QUERY_DEFINITION</span></div>
+<div class="block">Which query, if any, is used to create this view or materialized view?</div>
 </section>
 </li>
 </ul>
