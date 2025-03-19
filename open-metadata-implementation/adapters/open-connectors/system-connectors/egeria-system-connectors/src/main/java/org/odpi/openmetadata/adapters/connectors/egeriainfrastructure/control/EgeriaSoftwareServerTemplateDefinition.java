@@ -45,6 +45,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                   null,
                                   null,
                                   null,
+                                  null,
                                   OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes()),
 
     ENGINE_HOST_TEMPLATE("1764a891-4234-45f1-8cc3-536af40c790d",
@@ -57,6 +58,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                          new EngineHostProvider().getConnectorType().getGUID(),
                          PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder(),
                          getOMAGServerConfigProperties(),
+                         null,
                          null,
                          null,
                          null,
@@ -77,6 +79,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                 null,
                                 null,
                                 null,
+                                null,
                                 getOMAGServerPlaceholderPropertyTypes()),
 
     METADATA_ACCESS_SERVER_TEMPLATE("bd8de890-fa79-4c24-aab8-20b41b5893dd",
@@ -93,6 +96,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                     null,
                                     null,
                                     null,
+                                    null,
                                     getOMAGServerPlaceholderPropertyTypes()),
 
     VIEW_SERVER_TEMPLATE("fd61ca01-390d-4aa2-a55d-426826aa4e1b",
@@ -105,6 +109,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                          new ViewServerProvider().getConnectorType().getGUID(),
                          PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder(),
                          getOMAGServerConfigProperties(),
+                         PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                          SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                          new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                          PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -130,7 +135,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
 
 
     /**
-     * Set up the configuration properties for an OMAG Server
+     * Set up the configuration properties for an OMAG Server Platform
      *
      * @return configuration properties map
      */
@@ -139,6 +144,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
         Map<String, Object> configurationProperties = new HashMap<>();
 
         configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), PlaceholderProperty.SECRETS_STORE.getPlaceholder());
+        configurationProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), PlaceholderProperty.SECRETS_STORE.getPlaceholder());
 
         return configurationProperties;
     }
@@ -170,6 +176,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -185,6 +192,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     private final String                               connectorTypeGUID;
     private final String                               networkAddress;
     private final Map<String, Object>                  configurationProperties;
+    private final String                               secretsCollectionName;
     private final String                               secretsStorePurpose;
     private final String                               secretsStoreConnectorTypeGUID;
     private final String                               secretsStoreFileName;
@@ -205,6 +213,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
+     * @param secretsCollectionName            name of collection of secrets to use in the secrets store
      * @param secretsStorePurpose              type of authentication information provided by the secrets store
      * @param secretsStoreConnectorTypeGUID    optional connector type for secrets store
      * @param secretsStoreFileName             location of the secrets store
@@ -221,6 +230,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                            String                               connectorTypeGUID,
                                            String                               networkAddress,
                                            Map<String, Object>                  configurationProperties,
+                                           String                               secretsCollectionName,
                                            String                               secretsStorePurpose,
                                            String                               secretsStoreConnectorTypeGUID,
                                            String                               secretsStoreFileName,
@@ -237,6 +247,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
         this.connectorTypeGUID             = connectorTypeGUID;
         this.networkAddress                = networkAddress;
         this.configurationProperties       = configurationProperties;
+        this.secretsCollectionName         = secretsCollectionName;
         this.secretsStorePurpose           = secretsStorePurpose;
         this.secretsStoreConnectorTypeGUID = secretsStoreConnectorTypeGUID;
         this.secretsStoreFileName          = secretsStoreFileName;
@@ -411,6 +422,17 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     public Map<String, Object> getConfigurationProperties()
     {
         return configurationProperties;
+    }
+
+
+    /**
+     * Return the name of the secrets collection to use to locate this asset's secrets.
+     *
+     * @return name
+     */
+    public String getSecretsCollectionName()
+    {
+        return secretsCollectionName;
     }
 
 

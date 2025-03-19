@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
@@ -61,7 +61,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
      * @param atlasDatabaseTableTypeName name of the type used to represent a database table in atlas
      * @param atlasDatabaseColumnsPropertyName name of the property used to navigate from a database table to its columns
      * @param atlasDatabaseColumnTypeName name of the type used to represent a database column in atlas
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -76,7 +76,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                          String                   atlasDatabaseTableTypeName,
                                          String                   atlasDatabaseColumnsPropertyName,
                                          String                   atlasDatabaseColumnTypeName,
-                                         ConnectionProperties     connectionProperties,
+                                         ConnectionDetails connectionDetails,
                                          AuditLog                 auditLog,
                                          CatalogIntegratorContext myContext,
                                          String                   targetRootURL,
@@ -85,7 +85,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
     {
         super(connectorName,
               moduleName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,

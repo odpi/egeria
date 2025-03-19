@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
 import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
@@ -14,7 +15,6 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -56,11 +56,11 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
          */
-        EndpointProperties  endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
-            monitorEndpoint(connectionProperties.getConfigurationProperties());
+            monitorEndpoint(connectionDetails.getConfigurationProperties());
         }
     }
 
@@ -76,7 +76,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
          */
-        EndpointProperties  endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if ((endpoint != null) && (endpoint.getAddress() != null))
         {

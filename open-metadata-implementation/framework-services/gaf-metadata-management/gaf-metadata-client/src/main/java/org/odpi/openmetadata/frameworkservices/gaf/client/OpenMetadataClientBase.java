@@ -4262,7 +4262,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     }
 
 
-
     /**
      * Create a "To Do" request for someone to work on.
      *

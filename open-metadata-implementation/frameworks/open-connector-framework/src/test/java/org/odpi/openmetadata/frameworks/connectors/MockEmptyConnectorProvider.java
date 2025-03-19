@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 
 /**
  * MockEmptyConnectorProvider is a badly behaved ConnectorProvider to force error paths in the
@@ -79,7 +79,7 @@ public class MockEmptyConnectorProvider extends ConnectorProviderBase
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
     @Override
-    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         if (connectionCheckedException != null)
         {

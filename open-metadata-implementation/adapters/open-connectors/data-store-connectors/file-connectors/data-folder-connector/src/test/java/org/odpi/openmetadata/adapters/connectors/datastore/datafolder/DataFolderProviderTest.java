@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.datastore.datafolder;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
@@ -18,10 +18,10 @@ public class DataFolderProviderTest
 
         assertTrue(provider.getConnectorClassName().equals(DataFolderConnector.class.getName()));
 
-        ConnectorTypeProperties connectorTypeProperties = provider.getConnectorTypeProperties();
+        ConnectorTypeDetails connectorTypeDetails = provider.getConnectorTypeProperties();
 
-        assertTrue(connectorTypeProperties != null);
+        assertTrue(connectorTypeDetails != null);
 
-        assertTrue(connectorTypeProperties.getConnectorProviderClassName().equals(DataFolderProvider.class.getName()));
+        assertTrue(connectorTypeDetails.getConnectorProviderClassName().equals(DataFolderProvider.class.getName()));
     }
 }

@@ -27,7 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
@@ -91,7 +91,7 @@ public abstract class AtlasIntegrationModuleBase
     protected final AuditLog                 auditLog;
     protected final String                   connectorName;
     protected final String                   moduleName;
-    protected final ConnectionProperties     connectionProperties;
+    protected final ConnectionDetails        connectionDetails;
     protected final CatalogIntegratorContext myContext;
     protected final List<Connector>          embeddedConnectors;
     protected final ApacheAtlasRESTConnector atlasClient;
@@ -110,7 +110,7 @@ public abstract class AtlasIntegrationModuleBase
      *
      * @param connectorName name of this connector
      * @param moduleName name of this module
-     * @param connectionProperties supplied connector used to configure the connector
+     * @param connectionDetails supplied connector used to configure the connector
      * @param auditLog logging destination
      * @param myContext integration context assigned to the connector
      * @param targetRootURL host name and port of Apache Atlas
@@ -120,7 +120,7 @@ public abstract class AtlasIntegrationModuleBase
      */
     public AtlasIntegrationModuleBase(String                   connectorName,
                                       String                   moduleName,
-                                      ConnectionProperties     connectionProperties,
+                                      ConnectionDetails connectionDetails,
                                       AuditLog                 auditLog,
                                       CatalogIntegratorContext myContext,
                                       String                   targetRootURL,
@@ -129,9 +129,9 @@ public abstract class AtlasIntegrationModuleBase
     {
         this.auditLog = auditLog;
         this.connectorName = connectorName;
-        this.moduleName = moduleName;
-        this.connectionProperties = connectionProperties;
-        this.myContext = myContext;
+        this.moduleName        = moduleName;
+        this.connectionDetails = connectionDetails;
+        this.myContext         = myContext;
         this.targetRootURL = targetRootURL;
         this.atlasClient = atlasClient;
         this.embeddedConnectors = embeddedConnectors;

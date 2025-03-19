@@ -80,7 +80,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
         final String methodName = "start";
 
         secretsCollectionName = super.getStringConfigurationProperty(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(),
-                                                                     connectionProperties.getConfigurationProperties());
+                                                                     connectionDetails.getConfigurationProperties());
 
         if (secretsCollectionName == null)
         {

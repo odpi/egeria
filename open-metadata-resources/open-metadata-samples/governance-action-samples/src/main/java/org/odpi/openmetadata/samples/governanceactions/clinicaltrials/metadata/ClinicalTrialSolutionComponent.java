@@ -26,6 +26,9 @@ public enum ClinicalTrialSolutionComponent
 
     SET_UP_DATA_LAKE_FOLDER("fb32bef2-e79f-4893-b500-2e547f24d482"),
 
+    POPULATE_SANDBOX("26c07ca4-3b8e-484b-812b-36c1ace4b275"),
+
+    TREATMENT_VALIDATION_SANDBOX("d48f579f-76d3-4c49-b1b4-575f5645a9d0"),
 
     ;
 

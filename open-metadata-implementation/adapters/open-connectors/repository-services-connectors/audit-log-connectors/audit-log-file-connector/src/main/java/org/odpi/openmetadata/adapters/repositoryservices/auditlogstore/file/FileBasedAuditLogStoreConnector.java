@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
 import org.apache.commons.io.FileUtils;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
@@ -50,7 +50,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
     {
         super.start();
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {

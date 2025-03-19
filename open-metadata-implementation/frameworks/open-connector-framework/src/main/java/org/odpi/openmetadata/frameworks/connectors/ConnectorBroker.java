@@ -9,10 +9,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.slf4j.Logger;
@@ -62,7 +62,7 @@ public class ConnectorBroker
      * @param connection connection properties
      * @throws ConnectionCheckedException null connection detected
      */
-    private void  validateConnectionNotNull(ConnectionProperties  connection) throws ConnectionCheckedException
+    private void  validateConnectionNotNull(ConnectionDetails connection) throws ConnectionCheckedException
     {
         final String methodName = "validateConnectionNotNull";
 
@@ -76,9 +76,9 @@ public class ConnectorBroker
                                                  methodName);
         }
 
-        if (connection instanceof VirtualConnectionProperties virtualConnection)
+        if (connection instanceof VirtualConnectionDetails virtualConnection)
         {
-            List<EmbeddedConnectionProperties>  embeddedConnections = virtualConnection.getEmbeddedConnections();
+            List<EmbeddedConnectionDetails> embeddedConnections = virtualConnection.getEmbeddedConnections();
 
             if ((embeddedConnections == null) || (embeddedConnections.isEmpty()))
             {
@@ -98,10 +98,10 @@ public class ConnectorBroker
      * @return ConnectorType object
      * @throws ConnectionCheckedException connector type not defined in connection
      */
-    private  ConnectorTypeProperties   getConnectorType(ConnectionProperties  connection,
-                                                        String                methodName) throws ConnectionCheckedException
+    private ConnectorTypeDetails getConnectorType(ConnectionDetails connection,
+                                                  String                methodName) throws ConnectionCheckedException
     {
-        ConnectorTypeProperties requestedConnectorType = connection.getConnectorType();
+        ConnectorTypeDetails requestedConnectorType = connection.getConnectorType();
 
         if (requestedConnectorType == null)
         {
@@ -127,7 +127,7 @@ public class ConnectorBroker
      * @return ConnectorProvider object
      * @throws ConnectionCheckedException unable to create the connector provider from the supplied information
      */
-    private ConnectorProvider  getConnectorProvider(ConnectorTypeProperties   requestedConnectorType,
+    private ConnectorProvider  getConnectorProvider(ConnectorTypeDetails requestedConnectorType,
                                                     String                    connectionName,
                                                     String                    methodName) throws ConnectionCheckedException
     {
@@ -212,17 +212,17 @@ public class ConnectorBroker
      * @param embeddedConnection embedded connection object.
      * @return connection object augmented with the arguments from the embedded connection.
      */
-    private ConnectionProperties   getConnection(EmbeddedConnectionProperties   embeddedConnection)
+    private ConnectionDetails getConnection(EmbeddedConnectionDetails embeddedConnection)
     {
         if (embeddedConnection != null)
         {
-            if (embeddedConnection.getConnectionProperties() instanceof VirtualConnectionProperties virtualConnectionProperties)
+            if (embeddedConnection.getConnectionProperties() instanceof VirtualConnectionDetails virtualConnectionDetails)
             {
-                AccessibleVirtualConnection accessibleConnection = new AccessibleVirtualConnection(virtualConnectionProperties);
+                AccessibleVirtualConnection accessibleConnection = new AccessibleVirtualConnection(virtualConnectionDetails);
                 VirtualConnection connectionBean = accessibleConnection.getConnectionBean();
                 connectionBean.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
                                                                                                      connectionBean.getConfigurationProperties()));
-                return new VirtualConnectionProperties(connectionBean);
+                return new VirtualConnectionDetails(connectionBean);
             }
             else
             {
@@ -230,7 +230,7 @@ public class ConnectorBroker
                 Connection connectionBean = accessibleConnection.getConnectionBean();
                 connectionBean.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
                                                                                                      connectionBean.getConfigurationProperties()));
-                return new ConnectionProperties(connectionBean);
+                return new ConnectionDetails(connectionBean);
             }
         }
 
@@ -280,11 +280,11 @@ public class ConnectorBroker
     {
         if (connection == null)
         {
-            this.validateConnection((ConnectionProperties)null);
+            this.validateConnection((ConnectionDetails)null);
         }
         else
         {
-            this.validateConnection(new ConnectionProperties(connection));
+            this.validateConnection(new ConnectionDetails(connection));
         }
     }
 
@@ -296,7 +296,7 @@ public class ConnectorBroker
      * @param connection connection properties
      * @throws ConnectionCheckedException an error with the connection.
      */
-    public void validateConnection(ConnectionProperties    connection) throws ConnectionCheckedException
+    public void validateConnection(ConnectionDetails connection) throws ConnectionCheckedException
     {
         final String   methodName = "validateConnection";
 
@@ -304,7 +304,7 @@ public class ConnectorBroker
 
         validateConnectionNotNull(connection);
 
-        ConnectorTypeProperties requestedConnectorType = this.getConnectorType(connection, methodName);
+        ConnectorTypeDetails requestedConnectorType = this.getConnectorType(connection, methodName);
 
         getConnectorProvider(requestedConnectorType, connection.getConnectionName(), methodName);
 
@@ -324,15 +324,15 @@ public class ConnectorBroker
     {
         if (connection == null)
         {
-            return this.getConnector((ConnectionProperties)null);
+            return this.getConnector((ConnectionDetails)null);
         }
         else if (connection instanceof VirtualConnection)
         {
-            return this.getConnector(new VirtualConnectionProperties((VirtualConnection)connection));
+            return this.getConnector(new VirtualConnectionDetails((VirtualConnection)connection));
         }
         else
         {
-            return this.getConnector(new ConnectionProperties(connection));
+            return this.getConnector(new ConnectionDetails(connection));
         }
     }
 
@@ -345,8 +345,8 @@ public class ConnectorBroker
      * @throws ConnectionCheckedException an error with the connection.
      * @throws ConnectorCheckedException an error initializing the connector.
      */
-    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException,
-                                                                          ConnectorCheckedException
+    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException,
+                                                                       ConnectorCheckedException
     {
         final String         methodName = "getConnector";
         String               connectionName;
@@ -361,7 +361,7 @@ public class ConnectorBroker
          * Within the connection is a structure called the connector type.  This defines the factory for a new
          * connector instance.  This factory is called the Connector Provider.
          */
-        ConnectorTypeProperties requestedConnectorType = this.getConnectorType(connection, methodName);
+        ConnectorTypeDetails requestedConnectorType = this.getConnectorType(connection, methodName);
 
 
         /*
@@ -381,15 +381,15 @@ public class ConnectorBroker
             ((AuditLoggingComponent) connectorProvider).setAuditLog(auditLog);
         }
 
-        List<Connector>                    embeddedConnectors              = new ArrayList<>();
-        ConnectionProperties               processedConnection             = connection;
-        Map<String, SecretsStoreConnector> secretsStoreConnectorMap        = new HashMap<>();
+        List<Connector>                    embeddedConnectors       = new ArrayList<>();
+        ConnectionDetails                  processedConnection      = connection;
+        Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
 
         /*
          * If a virtual connection was passed to the connector broker then the connector broker needs to create
          * connectors for its embedded connections.
          */
-        if (connection instanceof VirtualConnectionProperties virtualConnectionProperties)
+        if (connection instanceof VirtualConnectionDetails virtualConnectionDetails)
         {
             AccessibleConnection accessibleConnection = new AccessibleConnection(connection);
             Connection           connectionBean       = accessibleConnection.getConnectionBean();
@@ -403,9 +403,9 @@ public class ConnectorBroker
              */
             log.debug("Creating embedded connectors for connection name: " + connectionName);
 
-            List<EmbeddedConnectionProperties> embeddedConnections  = virtualConnectionProperties.getEmbeddedConnections();
+            List<EmbeddedConnectionDetails> embeddedConnections = virtualConnectionDetails.getEmbeddedConnections();
 
-            for (EmbeddedConnectionProperties  embeddedConnection : embeddedConnections)
+            for (EmbeddedConnectionDetails embeddedConnection : embeddedConnections)
             {
                 Connector embeddedConnector = getConnector(this.getConnection(embeddedConnection));
 
@@ -572,9 +572,9 @@ public class ConnectorBroker
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private static class AccessibleConnection extends ConnectionProperties
+    private static class AccessibleConnection extends ConnectionDetails
     {
-        AccessibleConnection(ConnectionProperties templateConnection)
+        AccessibleConnection(ConnectionDetails templateConnection)
         {
             super(templateConnection);
         }
@@ -595,9 +595,9 @@ public class ConnectorBroker
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private static class AccessibleVirtualConnection extends VirtualConnectionProperties
+    private static class AccessibleVirtualConnection extends VirtualConnectionDetails
     {
-        AccessibleVirtualConnection(VirtualConnectionProperties templateConnection)
+        AccessibleVirtualConnection(VirtualConnectionDetails templateConnection)
         {
             super(templateConnection);
         }

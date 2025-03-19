@@ -9,9 +9,9 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
@@ -39,9 +39,9 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private OMRSRepositoryEventManager         outboundRepositoryEventManager  = null;
     private OMRSRepositoryContentManager       repositoryContentManager        = null;
     private OMRSRepositoryEventExchangeRule    saveExchangeRule                = null;
-    private LocalOMRSRepositoryConnector       localRepositoryConnector        = null;
-    private final ConnectorTypeProperties      connectorTypeProperties         = null;
-    private final ConnectorType                connectorType                   = null;
+    private       LocalOMRSRepositoryConnector localRepositoryConnector = null;
+    private final ConnectorTypeDetails         connectorTypeDetails     = null;
+    private final ConnectorType                connectorType            = null;
     private AuditLog                           auditLog                        = null;
 
 
@@ -96,9 +96,9 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * and any specific connection properties that are recognized by this connector.
      */
     @Override
-    public ConnectorTypeProperties getConnectorTypeProperties()
+    public ConnectorTypeDetails getConnectorTypeProperties()
     {
-        return connectorTypeProperties;
+        return connectorTypeDetails;
     }
 
 
@@ -129,11 +129,11 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
         Connector connector;
         if (realLocalConnection instanceof VirtualConnection)
         {
-            connector = this.getConnector(new VirtualConnectionProperties((VirtualConnection)realLocalConnection));
+            connector = this.getConnector(new VirtualConnectionDetails((VirtualConnection)realLocalConnection));
 
         } else
         {
-            connector = this.getConnector(new ConnectionProperties(realLocalConnection));
+            connector = this.getConnector(new ConnectionDetails(realLocalConnection));
         }
         return connector;
     }
@@ -149,8 +149,8 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
     @Override
-    public synchronized Connector getConnector(ConnectionProperties realLocalConnection) throws ConnectionCheckedException,
-                                                                                                ConnectorCheckedException
+    public synchronized Connector getConnector(ConnectionDetails realLocalConnection) throws ConnectionCheckedException,
+                                                                                             ConnectorCheckedException
     {
         String methodName = "getConnector";
 
@@ -239,7 +239,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
                                                                         repositoryContentManager,
                                                                         saveExchangeRule);
             localRepositoryConnector.initialize(this.getNewConnectorGUID(),
-                                                new ConnectionProperties(localRepositoryRemoteConnection));
+                                                new ConnectionDetails(localRepositoryRemoteConnection));
         }
 
         return localRepositoryConnector;

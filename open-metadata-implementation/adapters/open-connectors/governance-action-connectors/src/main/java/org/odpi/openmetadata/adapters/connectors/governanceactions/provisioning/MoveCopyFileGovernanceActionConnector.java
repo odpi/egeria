@@ -221,7 +221,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             deleteFile = true;
         }
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         /*
          * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.

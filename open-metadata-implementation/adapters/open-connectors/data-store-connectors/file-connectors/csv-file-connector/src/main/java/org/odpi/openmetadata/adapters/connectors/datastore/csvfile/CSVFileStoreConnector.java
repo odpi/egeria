@@ -7,8 +7,8 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,15 +42,15 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * Initialize the connector.
      *
      * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
+     * @param connectionDetails - POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void initialize(String connectorInstanceId, ConnectionDetails connectionDetails)
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.initialize(connectorInstanceId, connectionDetails);
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-        EndpointProperties  endpoint                = connectionProperties.getEndpoint();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
+        EndpointDetails     endpoint                = connectionDetails.getEndpoint();
 
         if (configurationProperties != null)
         {

@@ -55,7 +55,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
 
         final String methodName = "start";
 
-        namespace = super.getStringConfigurationProperty("namespace", connectionProperties.getConfigurationProperties());
+        namespace = super.getStringConfigurationProperty("namespace", connectionDetails.getConfigurationProperties());
 
         if (namespace == null || namespace.isBlank())
         {

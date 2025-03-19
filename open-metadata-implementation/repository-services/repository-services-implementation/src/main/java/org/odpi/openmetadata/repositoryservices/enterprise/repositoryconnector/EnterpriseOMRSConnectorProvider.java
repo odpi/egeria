@@ -4,13 +4,12 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -18,8 +17,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
-
-import java.util.UUID;
 
 
 /**
@@ -102,7 +99,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
-    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         String   methodName = "getConnector";
 
@@ -139,10 +136,10 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
 
         connector.setMetadataCollectionId(enterpriseMetadataCollectionId);
         connector.setMetadataCollectionName(enterpriseMetadataCollectionName);
-        connector.initializeConnectedAssetProperties(new EnterpriseOMRSConnectorProperties(connector,
-                                                                                           this.connectorManager,
-                                                                                           enterpriseMetadataCollectionId,
-                                                                                           enterpriseMetadataCollectionName));
+        connector.initializeConnectedAssetProperties(new EnterpriseOMRSConnectorDetails(connector,
+                                                                                        this.connectorManager,
+                                                                                        enterpriseMetadataCollectionId,
+                                                                                        enterpriseMetadataCollectionName));
 
         log.debug(methodName + " returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
 

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
@@ -49,15 +49,15 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
     {
         super.start();
 
-        if (connectionProperties != null)
+        if (connectionDetails != null)
         {
-            if (connectionProperties.getDisplayName() != null)
+            if (connectionDetails.getDisplayName() != null)
             {
-                destinationName = connectionProperties.getDisplayName();
+                destinationName = connectionDetails.getDisplayName();
             }
-            else if (connectionProperties.getConnectorType() != null)
+            else if (connectionDetails.getConnectorType() != null)
             {
-                ConnectorTypeProperties connectorType = connectionProperties.getConnectorType();
+                ConnectorTypeDetails connectorType = connectionDetails.getConnectorType();
 
                 if (connectorType.getDisplayName() != null)
                 {

@@ -4,9 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.testng.annotations.Test;
@@ -26,13 +25,13 @@ public class TestConnectorProviderBase
      */
     @Test public void testConnectorTypeProperties()
     {
-        ConnectorType            connectorTypeBean       = new ConnectorType();
-        ConnectorTypeProperties  connectorTypeProperties = new ConnectorTypeProperties(connectorTypeBean);
-        MockConnectorProvider    mockConnectorProvider   = new MockConnectorProvider();
+        ConnectorType         connectorTypeBean     = new ConnectorType();
+        ConnectorTypeDetails  connectorTypeDetails  = new ConnectorTypeDetails(connectorTypeBean);
+        MockConnectorProvider mockConnectorProvider = new MockConnectorProvider();
 
         mockConnectorProvider.setTestConnectorTypeProperties(connectorTypeBean);
 
-        assertTrue(mockConnectorProvider.getConnectorTypeProperties().equals(connectorTypeProperties));
+        assertTrue(mockConnectorProvider.getConnectorTypeProperties().equals(connectorTypeDetails));
     }
 
 
@@ -75,7 +74,7 @@ public class TestConnectorProviderBase
 
         try
         {
-            testObject.getConnector((ConnectionProperties)null);
+            testObject.getConnector((ConnectionDetails)null);
         }
         catch (ConnectionCheckedException chk)
         {
@@ -119,7 +118,7 @@ public class TestConnectorProviderBase
     {
         MockConnectorProvider testObject = new MockConnectorProvider();
 
-        ConnectionProperties testConnection = new ConnectionProperties((Connection)null);
+        ConnectionDetails testConnection = new ConnectionDetails((Connection)null);
 
         try
         {
@@ -173,11 +172,11 @@ public class TestConnectorProviderBase
         testConnection.setQualifiedName("Test.Connection");
         testConnection.setDisplayName("Test");
 
-        ConnectionProperties testConnectionProperties = new ConnectionProperties(testConnection);
+        ConnectionDetails testConnectionDetails = new ConnectionDetails(testConnection);
 
         try
         {
-            testObject.getConnector(testConnectionProperties);
+            testObject.getConnector(testConnectionDetails);
         }
         catch (ConnectionCheckedException chk)
         {
@@ -245,11 +244,11 @@ public class TestConnectorProviderBase
     {
         MockConnectorProvider testObject = new MockConnectorProvider();
 
-        ConnectionProperties testConnectionProperties = new ConnectionProperties(getOKConnection(MockConnectorProvider.class.getName()));
+        ConnectionDetails testConnectionDetails = new ConnectionDetails(getOKConnection(MockConnectorProvider.class.getName()));
 
         try
         {
-            Connector newConnector = testObject.getConnector(testConnectionProperties);
+            Connector newConnector = testObject.getConnector(testConnectionDetails);
 
             MockConnector mockConnector = (MockConnector)newConnector;
             assertTrue(mockConnector.getMockConnectorData().contains("This is from the mock connector"));

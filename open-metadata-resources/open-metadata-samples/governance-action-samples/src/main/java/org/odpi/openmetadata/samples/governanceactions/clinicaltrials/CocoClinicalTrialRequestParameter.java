@@ -72,6 +72,11 @@ public enum CocoClinicalTrialRequestParameter
                             "string",
                             "b2ec7c9d-3462-488a-897d-8e873658dded"),
 
+    AIRFLOW_DAG_NAME("airflowDAGName",
+                     "Name of the Apache Airflow DAG that ",
+                     "string",
+                     "populateSandbox"),
+
     ;
 
     public final String           name;

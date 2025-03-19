@@ -45,7 +45,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
         super.start();
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         /*
          * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.

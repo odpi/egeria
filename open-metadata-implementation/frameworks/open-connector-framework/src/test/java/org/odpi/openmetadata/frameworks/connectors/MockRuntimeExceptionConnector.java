@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.HashMap;
@@ -35,11 +35,11 @@ import java.util.UUID;
  */
 public abstract class MockRuntimeExceptionConnector extends ConnectorBase
 {
-    protected String                   connectorInstanceId      = null;
-    protected ConnectionProperties     connectionProperties     = null;
-    protected Connection               connectionBean           = null;
-    protected ConnectedAssetProperties connectedAssetProperties = null;
-    protected boolean                  isActive                 = false;
+    protected String            connectorInstanceId = null;
+    protected ConnectionDetails connectionDetails   = null;
+    protected Connection            connectionBean        = null;
+    protected ConnectedAssetDetails connectedAssetDetails = null;
+    protected boolean               isActive              = false;
 
     /*
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
@@ -64,11 +64,11 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
     public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+                           ConnectionDetails connectionDetails)
     {
         throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                       this.getClass().getName(),
@@ -97,9 +97,9 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * @return connection properties object
      */
     @Override
-    public ConnectionProperties getConnection()
+    public ConnectionDetails getConnection()
     {
-        return connectionProperties;
+        return connectionDetails;
     }
 
 
@@ -107,36 +107,36 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * Set up the connected asset properties object.  This provides the known metadata properties stored in one or more
      * metadata repositories.  The properties are populated whenever getConnectedAssetProperties() is called.
      *
-     * @param connectedAssetProperties   properties of the connected asset
+     * @param connectedAssetDetails   properties of the connected asset
      */
     @Override
-    public void initializeConnectedAssetProperties(ConnectedAssetProperties connectedAssetProperties)
+    public void initializeConnectedAssetProperties(ConnectedAssetDetails connectedAssetDetails)
     {
-        this.connectedAssetProperties = connectedAssetProperties;
+        this.connectedAssetDetails = connectedAssetDetails;
     }
 
 
     /**
      * Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
-     * metadata repository and cached in the ConnectedAssetProperties object each time the getConnectedAssetProperties
-     * method is requested by the caller.   Once the ConnectedAssetProperties object has the metadata cached, it can be
+     * metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
+     * method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
      * used to access the asset property values many times without a return to the metadata repository.
      * The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.
      *
-     * @return ConnectedAssetProperties   connected asset properties
+     * @return ConnectedAssetDetails   connected asset properties
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
      * @throws UserNotAuthorizedException authorization error
      */
-    public ConnectedAssetProperties getConnectedAssetProperties() throws PropertyServerException, UserNotAuthorizedException
+    public ConnectedAssetDetails getConnectedAssetProperties() throws PropertyServerException, UserNotAuthorizedException
     {
-        log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
+        log.debug("ConnectedAssetDetails requested: " + connectorInstanceId + ", " + connectionDetails.getQualifiedName() + "," + connectionDetails.getDisplayName());
 
-        if (connectedAssetProperties != null)
+        if (connectedAssetDetails != null)
         {
-            connectedAssetProperties.refresh();
+            connectedAssetDetails.refresh();
         }
 
-        return connectedAssetProperties;
+        return connectedAssetDetails;
     }
 
 
@@ -204,11 +204,11 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
         {
             return false;
         }
-        if (connectionProperties != null ? !connectionProperties.equals(that.connectionProperties) : that.connectionProperties != null)
+        if (connectionDetails != null ? !connectionDetails.equals(that.connectionDetails) : that.connectionDetails != null)
         {
             return false;
         }
-        return connectedAssetProperties != null ? connectedAssetProperties.equals(that.connectedAssetProperties) : that.connectedAssetProperties == null;
+        return connectedAssetDetails != null ? connectedAssetDetails.equals(that.connectedAssetDetails) : that.connectedAssetDetails == null;
     }
 
 
@@ -222,8 +222,8 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
     {
         return "ConnectorBase{" +
                 "connectorInstanceId='" + connectorInstanceId + '\'' +
-                ", connectionProperties=" + connectionProperties +
-                ", connectedAssetProperties=" + connectedAssetProperties +
+                ", connectionDetails=" + connectionDetails +
+                ", connectedAssetDetails=" + connectedAssetDetails +
                 '}';
     }
 
@@ -232,9 +232,9 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private class ProtectedConnection extends ConnectionProperties
+    private class ProtectedConnection extends ConnectionDetails
     {
-        private ProtectedConnection(ConnectionProperties templateConnection)
+        private ProtectedConnection(ConnectionDetails templateConnection)
         {
             super(templateConnection);
         }

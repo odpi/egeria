@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
@@ -76,8 +76,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         /*
          * The name of the repository comes from the connection
          */
-        ConnectionProperties connection      = parentConnector.getConnection();
-        String               endpointAddress = null;
+        ConnectionDetails connection      = parentConnector.getConnection();
+        String            endpointAddress = null;
         String               localServerUserId = null;
         String               localServerPassword = null;
 
@@ -85,7 +85,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             localServerUserId = connection.getUserId();
             localServerPassword = connection.getClearPassword();
-            EndpointProperties endpoint = connection.getEndpoint();
+            EndpointDetails endpoint = connection.getEndpoint();
 
             if (endpoint != null)
             {

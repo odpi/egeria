@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtla
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class AtlasInformalTagsIntegrationModule extends AtlasIntegrationModuleBa
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -39,7 +39,7 @@ public class AtlasInformalTagsIntegrationModule extends AtlasIntegrationModuleBa
      * @throws UserNotAuthorizedException security problem
      */
     public AtlasInformalTagsIntegrationModule(String                   connectorName,
-                                              ConnectionProperties     connectionProperties,
+                                              ConnectionDetails connectionDetails,
                                               AuditLog                 auditLog,
                                               CatalogIntegratorContext myContext,
                                               String                   targetRootURL,
@@ -49,7 +49,7 @@ public class AtlasInformalTagsIntegrationModule extends AtlasIntegrationModuleBa
     {
         super(connectorName,
               informalTagsModuleName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,

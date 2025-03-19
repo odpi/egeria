@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.direc
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
@@ -76,14 +76,14 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * Retrieve the archive store information from the endpoint.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void initialize(String connectorInstanceId, ConnectionDetails connectionDetails)
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.initialize(connectorInstanceId, connectionDetails);
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -95,9 +95,9 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
             archiveStoreName = defaultDirectoryName;
         }
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            if (connectionProperties.getConfigurationProperties().get(DirectoryBasedOpenMetadataArchiveStoreProvider.KEEP_VERSION_HISTORY_PROPERTY) != null)
+            if (connectionDetails.getConfigurationProperties().get(DirectoryBasedOpenMetadataArchiveStoreProvider.KEEP_VERSION_HISTORY_PROPERTY) != null)
             {
                 keepVersionHistory = true;
             }

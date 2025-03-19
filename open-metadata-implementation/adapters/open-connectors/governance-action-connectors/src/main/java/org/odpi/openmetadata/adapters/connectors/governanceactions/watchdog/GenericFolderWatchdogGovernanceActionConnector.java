@@ -39,7 +39,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
         super.validateContext(governanceContext);
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         /*
          * The folder name to listen to can come from multiple sources.  The configuration properties are set when the governance service is

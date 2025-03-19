@@ -8,8 +8,8 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.slf4j.Logger;
@@ -135,7 +135,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * and any specific connection properties that are recognized by this connector.
      */
     @Override
-    public ConnectorTypeProperties getConnectorTypeProperties()
+    public ConnectorTypeDetails getConnectorTypeProperties()
     {
         if (connectorTypeBean == null)
         {
@@ -143,7 +143,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
         }
         else
         {
-            return new ConnectorTypeProperties(this.getConnectorType());
+            return new ConnectorTypeDetails(this.getConnectorType());
         }
     }
 
@@ -271,7 +271,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
     @Override
     public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        return this.getConnector(new ConnectionProperties(connection));
+        return this.getConnector(new ConnectionDetails(connection));
     }
 
 
@@ -285,7 +285,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
     @Override
-    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         final String             methodName = "getConnector";
 

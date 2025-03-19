@@ -111,6 +111,16 @@ public enum PlaceholderProperty
                         DataType.STRING.getName(),
                         "loading-bay/secrets/default.omsecrets"),
 
+
+    /**
+     * The name used to identify the collection of secrets that a particular connector is using.
+     */
+    SECRETS_COLLECTION_NAME ("secretsCollectionName",
+                             "The name used to identify the collection of secrets that a particular connector is using.",
+                             DataType.STRING.getName(),
+                             "local-postgres-db"),
+
+
     /**
      * The formula used to populate the data set.
      */
@@ -387,6 +397,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }

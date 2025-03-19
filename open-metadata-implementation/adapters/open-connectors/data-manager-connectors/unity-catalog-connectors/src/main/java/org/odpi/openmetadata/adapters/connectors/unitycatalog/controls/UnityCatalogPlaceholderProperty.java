@@ -231,7 +231,7 @@ public enum UnityCatalogPlaceholderProperty
 
 
     /**
-     * Retrieve all the defined placeholder properties
+     * Retrieve all the defined placeholder properties for a server using secrets.
      *
      * @return list of placeholder property types
      */
@@ -245,6 +245,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }

@@ -7,13 +7,13 @@ import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.io.PrintWriter;
@@ -45,10 +45,10 @@ import java.util.*;
 public abstract class ConnectorBase extends Connector implements SecureConnectorExtension,
                                                                  VirtualConnectorExtension
 {
-    protected String                             connectorInstanceId      = null;
-    protected ConnectionProperties               connectionProperties     = null;
+    protected String            connectorInstanceId = null;
+    protected ConnectionDetails connectionDetails   = null;
     protected Connection                         connectionBean           = null;
-    protected ConnectedAssetProperties           connectedAssetProperties = null;
+    protected ConnectedAssetDetails              connectedAssetDetails    = null;
     protected Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
     protected List<Connector>                    embeddedConnectors       = null;
 
@@ -84,22 +84,22 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
     public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+                           ConnectionDetails connectionDetails)
     {
         this.connectorInstanceId = connectorInstanceId;
-        this.connectionProperties = connectionProperties;
+        this.connectionDetails   = connectionDetails;
 
         /*
          * Set up the secured properties and the connection bean
          */
-        ProtectedConnection  protectedConnection = new ProtectedConnection(connectionProperties);
+        ProtectedConnection  protectedConnection = new ProtectedConnection(connectionDetails);
         this.connectionBean = protectedConnection.getConnectionBean();
 
-        log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
+        log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionDetails.getQualifiedName() + "," + connectionDetails.getDisplayName());
     }
 
 
@@ -114,9 +114,9 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     {
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            configurationProperties.putAll(connectionProperties.getConfigurationProperties());
+            configurationProperties.putAll(connectionDetails.getConfigurationProperties());
         }
 
         if (additionalConfigurationProperties != null)
@@ -237,9 +237,9 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * @return connection properties object
      */
     @Override
-    public ConnectionProperties getConnection()
+    public ConnectionDetails getConnection()
     {
-        return connectionProperties;
+        return connectionDetails;
     }
 
 
@@ -247,12 +247,12 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * Set up the connected asset properties object.  This provides the known metadata properties stored in one or more
      * metadata repositories.  The properties are populated whenever getConnectedAssetProperties() is called.
      *
-     * @param connectedAssetProperties   properties of the connected asset
+     * @param connectedAssetDetails   properties of the connected asset
      */
     @Override
-    public void initializeConnectedAssetProperties(ConnectedAssetProperties connectedAssetProperties)
+    public void initializeConnectedAssetProperties(ConnectedAssetDetails connectedAssetDetails)
     {
-        this.connectedAssetProperties = connectedAssetProperties;
+        this.connectedAssetDetails = connectedAssetDetails;
     }
 
 
@@ -279,27 +279,27 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
     /**
      * Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
-     * metadata repository and cached in the ConnectedAssetProperties object each time the getConnectedAssetProperties
-     * method is requested by the caller.   Once the ConnectedAssetProperties object has the metadata cached, it can be
+     * metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
+     * method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
      * used to access the asset property values many times without a return to the metadata repository.
      * The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.
      *
      * @param userId userId of requesting user
-     * @return ConnectedAssetProperties   connected asset properties
+     * @return ConnectedAssetDetails   connected asset properties
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
      * @throws UserNotAuthorizedException indicates that the user is not authorized to access the asset properties.
      */
     @Override
-    public ConnectedAssetProperties getConnectedAssetProperties(String userId) throws PropertyServerException, UserNotAuthorizedException
+    public ConnectedAssetDetails getConnectedAssetProperties(String userId) throws PropertyServerException, UserNotAuthorizedException
     {
-        log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
+        log.debug("ConnectedAssetDetails requested: " + connectorInstanceId + ", " + connectionDetails.getQualifiedName() + "," + connectionDetails.getDisplayName());
 
-        if (connectedAssetProperties != null)
+        if (connectedAssetDetails != null)
         {
-            connectedAssetProperties.refresh();
+            connectedAssetDetails.refresh();
         }
 
-        return connectedAssetProperties;
+        return connectedAssetDetails;
     }
 
 
@@ -939,8 +939,8 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     {
         return "ConnectorBase{" +
                 "connectorInstanceId='" + connectorInstanceId + '\'' +
-                ", connectionProperties=" + connectionProperties +
-                ", connectedAssetProperties=" + connectedAssetProperties +
+                ", connectionDetails=" + connectionDetails +
+                ", connectedAssetDetails=" + connectedAssetDetails +
                 ", isActive=" + isActive() +
                 ", hashCode=" + hashCode +
                 '}';
@@ -950,14 +950,14 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    protected static class ProtectedConnection extends ConnectionProperties
+    protected static class ProtectedConnection extends ConnectionDetails
     {
         /**
          * Copy/clone connector.
          *
          * @param templateConnection connection to copy
          */
-        ProtectedConnection(ConnectionProperties templateConnection)
+        ProtectedConnection(ConnectionDetails templateConnection)
         {
             super(templateConnection);
         }

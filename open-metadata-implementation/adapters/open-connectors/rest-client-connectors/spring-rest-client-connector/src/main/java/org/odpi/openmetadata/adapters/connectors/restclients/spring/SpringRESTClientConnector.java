@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.slf4j.Logger;
@@ -98,7 +98,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         super.start();
 
-        EndpointProperties  endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -124,8 +124,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
      */
     private void refreshAuthorizationToken() throws ConnectorCheckedException
     {
-        String userId = connectionProperties.getUserId();
-        String password = connectionProperties.getClearPassword();
+        String userId = connectionDetails.getUserId();
+        String password = connectionDetails.getClearPassword();
 
         if ((secretsStoreConnectorMap != null) && (! secretsStoreConnectorMap.isEmpty()))
         {

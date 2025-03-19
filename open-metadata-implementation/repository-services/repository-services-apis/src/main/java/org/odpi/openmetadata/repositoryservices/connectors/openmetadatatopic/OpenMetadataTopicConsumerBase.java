@@ -123,9 +123,9 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
         /*
          * Save the name of the connection for error messages.
          */
-        if (super.connectionProperties != null)
+        if (super.connectionDetails != null)
         {
-            connectionName = super.connectionProperties.getConnectionName();
+            connectionName = super.connectionDetails.getConnectionName();
         }
 
         /*

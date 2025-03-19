@@ -317,7 +317,6 @@ include(':open-metadata-implementation:integration-services:topic-integrator:top
 include(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-server')
 include(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-spring')
 include(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
-include(':open-metadata-implementation:server-chassis:server-chassis-spring')
 include(':open-metadata-implementation:user-security:user-authn')
 include(':open-metadata-implementation:user-security:token-controller')
 include(':open-metadata-implementation:user-security:token-manager')

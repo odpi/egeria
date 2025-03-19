@@ -167,8 +167,8 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
                                                                                              PropertyServerException
     {
         final String methodName                  = "createConnection";
-        final String propertiesParameterName     = "connectionProperties";
-        final String qualifiedNameParameterName  = "connectionProperties.qualifiedName";
+        final String propertiesParameterName     = "connectionDetails";
+        final String qualifiedNameParameterName  = "connectionDetails.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(connectionProperties, propertiesParameterName, methodName);
@@ -288,8 +288,8 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
     {
         final String methodName                  = "updateConnection";
         final String connectionGUIDParameterName = "connectionGUID";
-        final String propertiesParameterName     = "connectionProperties";
-        final String qualifiedNameParameterName  = "connectionProperties.qualifiedName";
+        final String propertiesParameterName     = "connectionDetails";
+        final String qualifiedNameParameterName  = "connectionDetails.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);

@@ -70,7 +70,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
 
         super.start();
 
-        connectorName = connectionProperties.getConnectionName();
+        connectorName = connectionDetails.getConnectionName();
 
         if ((embeddedConnectors != null) && (!embeddedConnectors.isEmpty()))
         {
@@ -86,7 +86,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                         }
 
                         this.databaseClient = jdbcResourceConnector;
-                        String schemaName = super.getStringConfigurationProperty(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), connectionProperties.getConfigurationProperties());
+                        String schemaName = super.getStringConfigurationProperty(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), connectionDetails.getConfigurationProperties());
 
                         loadDDL(databaseClient, schemaName);
 

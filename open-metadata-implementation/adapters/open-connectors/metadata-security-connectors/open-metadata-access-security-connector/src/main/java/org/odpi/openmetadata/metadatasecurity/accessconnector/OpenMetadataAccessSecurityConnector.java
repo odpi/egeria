@@ -92,75 +92,75 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         super.start();
 
         serverServiceGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_GROUP_NAME_PATTERN.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
+                                                                         connectionDetails.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_GROUP_NAME_PATTERN.getDefaultValue());
 
         serverServiceOperationGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN.getName(),
-                                                                                  connectionProperties.getConfigurationProperties(),
+                                                                                  connectionDetails.getConfigurationProperties(),
                                                                                   OpenMetadataSecurityConfigurationProperty.SERVER_SERVICE_OPERATION_GROUP_NAME_PATTERN.getDefaultValue());
 
         ownershipGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.OWNER_GROUP_NAME_PATTERN.getName(),
-                                                                 connectionProperties.getConfigurationProperties(),
-                                                                 OpenMetadataSecurityConfigurationProperty.OWNER_GROUP_NAME_PATTERN.getDefaultValue());
+                                                                     connectionDetails.getConfigurationProperties(),
+                                                                     OpenMetadataSecurityConfigurationProperty.OWNER_GROUP_NAME_PATTERN.getDefaultValue());
 
         elementGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.ELEMENT_GROUP_NAME_PATTERN.getName(),
-                                                                   connectionProperties.getConfigurationProperties(),
+                                                                   connectionDetails.getConfigurationProperties(),
                                                                    OpenMetadataSecurityConfigurationProperty.ELEMENT_GROUP_NAME_PATTERN.getDefaultValue());
 
         zoneGroupPattern = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.ZONE_GROUP_NAME_PATTERN.getName(),
-                                                                 connectionProperties.getConfigurationProperties(),
-                                                                 OpenMetadataSecurityConfigurationProperty.ZONE_GROUP_NAME_PATTERN.getDefaultValue());
+                                                                connectionDetails.getConfigurationProperties(),
+                                                                OpenMetadataSecurityConfigurationProperty.ZONE_GROUP_NAME_PATTERN.getDefaultValue());
 
         serverAdministratorsGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_ADMINISTRATOR_GROUP.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
+                                                                         connectionDetails.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.SERVER_ADMINISTRATOR_GROUP.getDefaultValue());
 
         serverOperatorsGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_OPERATORS_GROUP.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
-                                                                         OpenMetadataSecurityConfigurationProperty.SERVER_OPERATORS_GROUP.getDefaultValue());
+                                                                    connectionDetails.getConfigurationProperties(),
+                                                                    OpenMetadataSecurityConfigurationProperty.SERVER_OPERATORS_GROUP.getDefaultValue());
 
         serverInvestigatorsGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_INVESTIGATORS_GROUP.getName(),
-                                                                        connectionProperties.getConfigurationProperties(),
+                                                                        connectionDetails.getConfigurationProperties(),
                                                                         OpenMetadataSecurityConfigurationProperty.SERVER_INVESTIGATORS_GROUP.getDefaultValue());
 
         serverGroup = resolveServerGroupName(super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.SERVER_GROUP_NAME_PATTERN.getName(),
-                                                                                  connectionProperties.getConfigurationProperties(),
+                                                                                  connectionDetails.getConfigurationProperties(),
                                                                                   OpenMetadataSecurityConfigurationProperty.SERVER_GROUP_NAME_PATTERN.getDefaultValue()),
                                              serverName);
 
         dynamicTypeAuthorGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.DYNAMIC_TYPE_AUTHOR_GROUP.getName(),
-                                                                      connectionProperties.getConfigurationProperties(),
+                                                                      connectionDetails.getConfigurationProperties(),
                                                                       OpenMetadataSecurityConfigurationProperty.DYNAMIC_TYPE_AUTHOR_GROUP.getDefaultValue());
 
         instanceHeaderAuthorGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.INSTANCE_HEADER_AUTHOR_GROUP.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
+                                                                         connectionDetails.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.INSTANCE_HEADER_AUTHOR_GROUP.getDefaultValue());
 
         /*
          * The policy groups add simple policies to the zones - to reduce the need to list all users under certain groups.
          */
         personalZonesPolicyGroup   = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.PERSONAL_ZONES_GROUP.getName(),
-                                                                          connectionProperties.getConfigurationProperties(),
+                                                                          connectionDetails.getConfigurationProperties(),
                                                                           OpenMetadataSecurityConfigurationProperty.PERSONAL_ZONES_GROUP.getDefaultValue());
         stewardshipZonePolicyGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.STEWARDSHIP_ZONES_GROUP.getName(),
-                                                                          connectionProperties.getConfigurationProperties(),
+                                                                          connectionDetails.getConfigurationProperties(),
                                                                           OpenMetadataSecurityConfigurationProperty.STEWARDSHIP_ZONES_GROUP.getDefaultValue());
 
         allUserZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.ALL_USER_ZONES_GROUP.getName(),
-                                                                        connectionProperties.getConfigurationProperties(),
-                                                                        OpenMetadataSecurityConfigurationProperty.ALL_USER_ZONES_GROUP.getDefaultValue());
+                                                                       connectionDetails.getConfigurationProperties(),
+                                                                       OpenMetadataSecurityConfigurationProperty.ALL_USER_ZONES_GROUP.getDefaultValue());
         allEmployeeZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.EMPLOYEE_ONLY_ZONES_GROUP.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
-                                                                         OpenMetadataSecurityConfigurationProperty.EMPLOYEE_ONLY_ZONES_GROUP.getDefaultValue());
+                                                                           connectionDetails.getConfigurationProperties(),
+                                                                           OpenMetadataSecurityConfigurationProperty.EMPLOYEE_ONLY_ZONES_GROUP.getDefaultValue());
         dataLakeZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.READABLE_ZONES_GROUP.getName(),
-                                                                        connectionProperties.getConfigurationProperties(),
+                                                                        connectionDetails.getConfigurationProperties(),
                                                                         OpenMetadataSecurityConfigurationProperty.READABLE_ZONES_GROUP.getDefaultValue());
         automatedZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.AUTOMATED_ZONES_GROUP.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
+                                                                         connectionDetails.getConfigurationProperties(),
                                                                          OpenMetadataSecurityConfigurationProperty.AUTOMATED_ZONES_GROUP.getDefaultValue());
         nonExternalZonesAccessGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.NOT_EXTERNAL_ZONES_GROUP.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
-                                                                         OpenMetadataSecurityConfigurationProperty.NOT_EXTERNAL_ZONES_GROUP.getDefaultValue());
+                                                                           connectionDetails.getConfigurationProperties(),
+                                                                           OpenMetadataSecurityConfigurationProperty.NOT_EXTERNAL_ZONES_GROUP.getDefaultValue());
     }
 
 

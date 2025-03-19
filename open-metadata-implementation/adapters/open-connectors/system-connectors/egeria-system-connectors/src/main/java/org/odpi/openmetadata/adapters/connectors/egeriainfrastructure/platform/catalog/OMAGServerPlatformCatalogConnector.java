@@ -84,9 +84,9 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
         /*
          * This is the user id to call the Egeria OMAG Server Platforms to extract information from.
          */
-        if (connectionProperties.getUserId() != null)
+        if (connectionDetails.getUserId() != null)
         {
-            clientUserId = connectionProperties.getUserId();
+            clientUserId = connectionDetails.getUserId();
         }
         else
         {
@@ -594,7 +594,8 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
 
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), platformProperties.getPlatformURLRoot());
         placeholderProperties.put(PlaceholderProperty.SERVER_NAME.getName(), omagServerProperties.getServerName());
-        placeholderProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), super.getStringConfigurationProperty(OMAGServerPlatformConfigurationProperty.SECRETS_STORE.getName(), connectionProperties.getConfigurationProperties()));
+        placeholderProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), super.getStringConfigurationProperty(OMAGServerPlatformConfigurationProperty.SECRETS_STORE.getName(), connectionDetails.getConfigurationProperties()));
+        placeholderProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), super.getStringConfigurationProperty(OMAGServerPlatformConfigurationProperty.SECRETS_STORE.getName(), connectionDetails.getConfigurationProperties()));
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), platformProperties.getPlatformOrigin());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), omagServerProperties.getDescription());
         placeholderProperties.put(PlaceholderProperty.CONNECTION_USER_ID.getName(), omagServerProperties.getUserId());
@@ -616,19 +617,19 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
                                                                                              platformProperties.getPlatformOrigin());
 
 
-        EndpointProperties endpointProperties = new EndpointProperties();
+        EndpointDetails endpointProperties = new EndpointDetails();
 
         endpointProperties.setQualifiedName(softwareServerProperties.getQualifiedName() + "_endpoint");
         endpointProperties.setName(softwareServerProperties.getName() + " endpoint");
         endpointProperties.setAddress(platformProperties.getPlatformURLRoot());
 
-        ConnectionProperties serverConnectionProperties = new ConnectionProperties();
+        ConnectionDetails serverConnectionProperties = new ConnectionDetails();
 
         if (ServerTypeClassification.VIEW_SERVER.getServerTypeName().equals(omagServerProperties.getServerType()))
         {
             serverConnectionProperties.setTypeName(OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME);
 
-            ConnectionProperties secretStoreConnection = new ConnectionProperties();
+            ConnectionDetails secretStoreConnection = new ConnectionDetails();
 
             secretStoreConnection.setQualifiedName(softwareServerProperties.getQualifiedName() + "_secretStoreConnection");
             secretStoreConnection.setDisplayName(softwareServerProperties.getName() + " secret store connection");
@@ -637,12 +638,12 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
             configProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), softwareServerProperties.getQualifiedName());
             secretStoreConnection.setConfigurationProperties(configProperties);
 
-            EndpointProperties secretStoreEndpoint = new EndpointProperties();
+            EndpointDetails secretStoreEndpoint = new EndpointDetails();
 
             secretStoreEndpoint.setQualifiedName(softwareServerProperties.getQualifiedName() + "_secretStoreEndpoint");
             secretStoreEndpoint.setName(softwareServerProperties.getName() + " secret store endpoint");
             secretStoreEndpoint.setAddress(super.getStringConfigurationProperty(OMAGServerPlatformConfigurationProperty.SECRETS_STORE.getName(),
-                                                                                connectionProperties.getConfigurationProperties()));
+                                                                                connectionDetails.getConfigurationProperties()));
 
             String endpointGUID   = super.getContext().createEndpoint(null, endpointProperties);
             String secretStoreConnectionGUID = super.getContext().createConnection(secretStoreConnection);
@@ -656,7 +657,7 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
         Map<String,Object> configProperties = new HashMap<>();
         configProperties.put(OMAGServerPlatformConfigurationProperty.SERVER_NAME.getName(), omagServerProperties.getServerName());
         serverConnectionProperties.setConfigurationProperties(configProperties);
-        serverConnectionProperties.setUserId(connectionProperties.getUserId()); // default userId
+        serverConnectionProperties.setUserId(connectionDetails.getUserId()); // default userId
 
         String serverGUID     = super.getContext().createSoftwareServer(softwareServerProperties);
         String connectionGUID = super.getContext().createConnection(serverConnectionProperties);

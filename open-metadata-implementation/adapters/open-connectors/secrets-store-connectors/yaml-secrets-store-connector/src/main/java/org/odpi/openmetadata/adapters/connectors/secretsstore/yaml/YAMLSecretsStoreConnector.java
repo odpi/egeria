@@ -12,7 +12,7 @@ import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore.
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
@@ -43,15 +43,15 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
     public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+                           ConnectionDetails connectionDetails)
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.initialize(connectorInstanceId, connectionDetails);
 
-        secretsStoreFile = new File(connectionProperties.getEndpoint().getAddress());
+        secretsStoreFile = new File(connectionDetails.getEndpoint().getAddress());
     }
 
 

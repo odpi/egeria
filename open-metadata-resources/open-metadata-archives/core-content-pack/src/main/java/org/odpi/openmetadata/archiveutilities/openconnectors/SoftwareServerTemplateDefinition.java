@@ -50,6 +50,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                      PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                      PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
                              null,
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                              SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                              new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                              PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -68,6 +69,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                           null,
+                          PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                           SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -90,6 +92,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   null,
                                   null,
                                   null,
+                                  null,
                                   UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes(),
                                   ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
@@ -104,6 +107,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                           PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                   null,
+                                  PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                   SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                                   new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                                   PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -126,6 +130,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           null,
                           null,
                           null,
+                          null,
                           KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes(),
                           ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
@@ -142,6 +147,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     private final String                               connectorTypeGUID;
     private final String                               networkAddress;
     private final Map<String, Object>                  configurationProperties;
+    private final String                               secretsCollectionName;
     private final String                               secretsStorePurpose;
     private final String                               secretsStoreConnectorTypeGUID;
     private final String                               secretsStoreFileName;
@@ -163,6 +169,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
+     * @param secretsCollectionName            name of collection of secrets to use in the secrets store
      * @param secretsStorePurpose              type of authentication information provided by the secrets store
      * @param secretsStoreConnectorTypeGUID    optional connector type for secrets store
      * @param secretsStoreFileName             location of the secrets store
@@ -180,6 +187,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                      String                               connectorTypeGUID,
                                      String                               networkAddress,
                                      Map<String, Object>                  configurationProperties,
+                                     String                               secretsCollectionName,
                                      String                               secretsStorePurpose,
                                      String                               secretsStoreConnectorTypeGUID,
                                      String                               secretsStoreFileName,
@@ -197,6 +205,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
         this.connectorTypeGUID             = connectorTypeGUID;
         this.networkAddress                = networkAddress;
         this.configurationProperties       = configurationProperties;
+        this.secretsCollectionName         = secretsCollectionName;
         this.secretsStorePurpose           = secretsStorePurpose;
         this.secretsStoreConnectorTypeGUID = secretsStoreConnectorTypeGUID;
         this.secretsStoreFileName          = secretsStoreFileName;
@@ -290,7 +299,6 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     }
 
 
-
     /**
      * Return the type of associated capability.
      *
@@ -300,6 +308,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     {
         return softwareCapabilityType;
     }
+
 
     /**
      * Return the name for the associated capability.
@@ -375,6 +384,17 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     public Map<String, Object> getConfigurationProperties()
     {
         return configurationProperties;
+    }
+
+
+    /**
+     * Return the name of the secrets collection to use to locate this asset's secrets.
+     *
+     * @return name
+     */
+    public String getSecretsCollectionName()
+    {
+        return secretsCollectionName;
     }
 
 

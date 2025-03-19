@@ -201,7 +201,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                                                                      PropertyServerException
     {
         final String methodName                  = "createConnection";
-        final String propertiesParameterName     = "connectionProperties";
+        final String propertiesParameterName     = "connectionDetails";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -304,7 +304,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     {
         final String methodName                  = "updateConnection";
         final String elementGUIDParameterName    = "connectionGUID";
-        final String propertiesParameterName     = "connectionProperties";
+        final String propertiesParameterName     = "connectionDetails";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);

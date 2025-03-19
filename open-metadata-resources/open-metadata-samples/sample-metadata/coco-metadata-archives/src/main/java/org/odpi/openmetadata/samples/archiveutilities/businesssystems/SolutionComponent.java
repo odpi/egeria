@@ -71,7 +71,7 @@ public enum SolutionComponent
                                                  InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX,
                                                  InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
 
-    POPULATE_SANDBOX("26c07ca4-3b8e-484b-812b-36c1ace4b275",
+    POPULATE_SANDBOX(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(),
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
                      "Airflow DAG",
                      "Populate Sandbox",
@@ -82,7 +82,7 @@ public enum SolutionComponent
                      new InformationSupplyChainSegment[]{
                              InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX}),
 
-    TREATMENT_VALIDATION_SANDBOX("d48f579f-76d3-4c49-b1b4-575f5645a9d0",
+    TREATMENT_VALIDATION_SANDBOX(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(),
                                  SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
                                  "PostgreSQL Database",
                                  "Treatment Validation Sandbox",

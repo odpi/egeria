@@ -32,7 +32,7 @@ public class MockConnectorProvider extends ConnectorProviderBase
 
 
     /**
-     * Pass the supplied ConnectorTypeProperties object to the super class.
+     * Pass the supplied ConnectorTypeDetails object to the super class.
      *
      * @param connectorType properties from metadata repository
      */

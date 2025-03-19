@@ -9,8 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -100,7 +100,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     {
         super.start();
 
-        catalogTargetsManager = new RequestedCatalogTargetsManager(connectionProperties.getConfigurationProperties(),
+        catalogTargetsManager = new RequestedCatalogTargetsManager(connectionDetails.getConfigurationProperties(),
                                                                    connectorName,
                                                                    auditLog);
     }
@@ -114,15 +114,15 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      */
     protected String getNetworkAddress(Connector assetConnector)
     {
-        ConnectionProperties assetConnection = assetConnector.getConnection();
+        ConnectionDetails assetConnection = assetConnector.getConnection();
 
         if (assetConnection != null)
         {
-            EndpointProperties endpointProperties = assetConnection.getEndpoint();
+            EndpointDetails endpointDetails = assetConnection.getEndpoint();
 
-            if (endpointProperties != null)
+            if (endpointDetails != null)
             {
-                return endpointProperties.getAddress();
+                return endpointDetails.getAddress();
             }
         }
 

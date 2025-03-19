@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
@@ -97,15 +97,15 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
 
         final String methodName = "start";
 
-        if (connectionProperties.getConnectionName() != null)
+        if (connectionDetails.getConnectionName() != null)
         {
-            connectorName = connectionProperties.getConnectionName();
+            connectorName = connectionDetails.getConnectionName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -121,10 +121,10 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
 
         String serverName = null;
 
-        if ((connectionProperties.getConfigurationProperties() != null) &&
-                (connectionProperties.getConfigurationProperties().get("serverName") != null))
+        if ((connectionDetails.getConfigurationProperties() != null) &&
+                (connectionDetails.getConfigurationProperties().get("serverName") != null))
         {
-            serverName = connectionProperties.getConfigurationProperties().get("serverName").toString();
+            serverName = connectionDetails.getConfigurationProperties().get("serverName").toString();
         }
 
         if (serverName == null)
@@ -151,7 +151,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
                 extractor = new EgeriaExtractor(targetRootURL,
                                                 null,
                                                 serverName,
-                                                connectionProperties.getUserId());
+                                                connectionDetails.getUserId());
             }
         }
         catch (Exception error)

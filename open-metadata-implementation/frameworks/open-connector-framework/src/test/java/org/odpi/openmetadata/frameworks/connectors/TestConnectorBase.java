@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.MockConnectedAssetProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.MockConnectedAssetDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.testng.annotations.Test;
@@ -26,9 +26,9 @@ public class TestConnectorBase
     /**
      * Return a filled out connection
      *
-     * @return connectionProperties object
+     * @return connectionDetails object
      */
-    private ConnectionProperties   getOKConnection()
+    private ConnectionDetails getOKConnection()
     {
         ConnectorType testConnType = new ConnectorType();
 
@@ -42,16 +42,16 @@ public class TestConnectorBase
         testConnection.setDisplayName("Test");
         testConnection.setConnectorType(testConnType);
 
-        return new ConnectionProperties(testConnection);
+        return new ConnectionDetails(testConnection);
     }
 
 
     /**
      * Return a filled out connection
      *
-     * @return connectionProperties object
+     * @return connectionDetails object
      */
-    private ConnectionProperties   getSecuredConnection()
+    private ConnectionDetails getSecuredConnection()
     {
         ConnectorType testConnType = new ConnectorType();
 
@@ -69,24 +69,24 @@ public class TestConnectorBase
         securedProperties.put("testProperty", "testPropertyValue");
         testConnection.setSecuredProperties(securedProperties);
 
-        return new ConnectionProperties(testConnection);
+        return new ConnectionDetails(testConnection);
     }
 
 
     @Test public void testLifecycle()
     {
-        String         connectorInstanceId = UUID.randomUUID().toString();
-        ConnectionProperties connectionProperties = getOKConnection();
+        String            connectorInstanceId = UUID.randomUUID().toString();
+        ConnectionDetails connectionDetails   = getOKConnection();
 
         ConnectorBase  testObject = new MockConnector();
 
         assertFalse(testObject.isActive());
 
-        testObject.initialize(connectorInstanceId, connectionProperties);
+        testObject.initialize(connectorInstanceId, connectionDetails);
 
         assertFalse(testObject.isActive());
         assertTrue(connectorInstanceId.equals(testObject.getConnectorInstanceId()));
-        assertTrue(connectionProperties.equals(testObject.getConnection()));
+        assertTrue(connectionDetails.equals(testObject.getConnection()));
 
         try
         {
@@ -109,7 +109,7 @@ public class TestConnectorBase
             assertTrue(false);
         }
 
-        testObject.initializeConnectedAssetProperties(new MockConnectedAssetProperties());
+        testObject.initializeConnectedAssetProperties(new MockConnectedAssetDetails());
 
         try
         {
@@ -139,18 +139,18 @@ public class TestConnectorBase
     @Test
     public void testSecureConnection()
     {
-        String               connectorInstanceId = UUID.randomUUID().toString();
-        ConnectionProperties connectionProperties = getSecuredConnection();
+        String            connectorInstanceId = UUID.randomUUID().toString();
+        ConnectionDetails connectionDetails   = getSecuredConnection();
 
         ConnectorBase  testObject = new MockConnector();
 
         assertFalse(testObject.isActive());
 
-        testObject.initialize(connectorInstanceId, connectionProperties);
+        testObject.initialize(connectorInstanceId, connectionDetails);
 
         assertFalse(testObject.isActive());
         assertTrue(connectorInstanceId.equals(testObject.getConnectorInstanceId()));
-        assertTrue(connectionProperties.equals(testObject.getConnection()));
+        assertTrue(connectionDetails.equals(testObject.getConnection()));
     }
 
 

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutT
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
@@ -27,7 +28,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -82,7 +82,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -91,7 +91,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
      * @throws UserNotAuthorizedException security problem
      */
     public AtlasGlossaryIntegrationModule(String                   connectorName,
-                                          ConnectionProperties     connectionProperties,
+                                          ConnectionDetails connectionDetails,
                                           AuditLog                 auditLog,
                                           CatalogIntegratorContext myContext,
                                           String                   targetRootURL,
@@ -100,7 +100,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
     {
         super(connectorName,
               moduleName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,
@@ -111,7 +111,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
         final String methodName = "AtlasGlossaryIntegrationModule()";
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         if (configurationProperties != null)
         {

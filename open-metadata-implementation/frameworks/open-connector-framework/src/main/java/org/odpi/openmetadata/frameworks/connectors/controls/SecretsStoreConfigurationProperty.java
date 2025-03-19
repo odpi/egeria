@@ -17,7 +17,7 @@ public enum SecretsStoreConfigurationProperty
      * The name used to identify the collection of properties that a particular connector is using.
      */
     SECRETS_COLLECTION_NAME("secretsCollectionName",
-                            "The name used to identify the collection of properties that a particular connector is using.",
+                            "The name used to identify the collection of secrets that a particular connector is using.",
                             DataType.STRING.getName(),
                             "DatabricksServerOne",
                             true),

@@ -15,7 +15,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
@@ -55,7 +55,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -69,7 +69,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
      * @throws UserNotAuthorizedException security problem
      */
     public AtlasRelatedElementsIntegrationModule(String                   connectorName,
-                                                 ConnectionProperties     connectionProperties,
+                                                 ConnectionDetails connectionDetails,
                                                  AuditLog                 auditLog,
                                                  CatalogIntegratorContext myContext,
                                                  String                   targetRootURL,
@@ -83,7 +83,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
     {
         super(connectorName,
               relatedElementsModuleName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,

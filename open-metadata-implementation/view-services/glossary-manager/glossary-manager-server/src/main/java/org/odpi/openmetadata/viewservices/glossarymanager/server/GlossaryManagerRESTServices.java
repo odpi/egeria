@@ -2099,8 +2099,8 @@ public class GlossaryManagerRESTServices extends TokenController
                     GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
 
                     handler.updateTermRelationship(userId,
-                                                   glossaryTermOneGUID,
                                                    relationshipTypeName,
+                                                   glossaryTermOneGUID,
                                                    glossaryTermTwoGUID,
                                                    properties,
                                                    requestBody.getEffectiveTime(),
@@ -2172,8 +2172,8 @@ public class GlossaryManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 handler.clearTermRelationship(userId,
-                                              glossaryTermOneGUID,
                                               relationshipTypeName,
+                                              glossaryTermOneGUID,
                                               glossaryTermTwoGUID,
                                               requestBody.getEffectiveTime(),
                                               forLineage,
@@ -2182,8 +2182,8 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermRelationship(userId,
-                                              glossaryTermOneGUID,
                                               relationshipTypeName,
+                                              glossaryTermOneGUID,
                                               glossaryTermTwoGUID,
                                               null,
                                               forLineage,

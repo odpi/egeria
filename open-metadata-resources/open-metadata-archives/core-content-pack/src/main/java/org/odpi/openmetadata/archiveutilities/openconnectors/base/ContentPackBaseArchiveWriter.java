@@ -19,8 +19,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -36,7 +34,7 @@ import java.util.*;
  */
 public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWriter
 {
-    private static final Date creationDate = new Date(1639984840038L);
+    private static final Date creationDate = new Date();
     protected final Map<String, String> deployedImplementationTypeQNAMEs = new HashMap<>();
 
 
@@ -255,6 +253,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                     templateDefinition.getConnectorTypeGUID(),
                                                     templateDefinition.getNetworkAddress(),
                                                     templateDefinition.getConfigurationProperties(),
+                                                    templateDefinition.getSecretsCollectionName(),
                                                     templateDefinition.getSecretsStorePurpose(),
                                                     templateDefinition.getSecretsStoreConnectorTypeGUID(),
                                                     templateDefinition.getSecretsStoreFileName(),
@@ -290,6 +289,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                templateDefinition.getConnectorTypeGUID(),
                                                templateDefinition.getNetworkAddress(),
                                                templateDefinition.getConfigurationProperties(),
+                                               templateDefinition.getSecretsCollectionName(),
                                                templateDefinition.getSecretsStorePurpose(),
                                                templateDefinition.getSecretsStoreConnectorTypeGUID(),
                                                templateDefinition.getSecretsStoreFileName(),
@@ -320,6 +320,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
+     * @param secretsStoreCollectionName       name of the collection to use within the secrets store
      * @param secretsStorePurpose              purpose for the secrets store
      * @param secretsStoreConnectorTypeGUID    optional name for the secrets store connector provider to include in the template
      * @param secretsStoreFileName             location of the secrets store
@@ -341,6 +342,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                        String                               connectorTypeGUID,
                                                        String                               networkAddress,
                                                        Map<String, Object>                  configurationProperties,
+                                                       String                               secretsStoreCollectionName,
                                                        String                               secretsStorePurpose,
                                                        String                               secretsStoreConnectorTypeGUID,
                                                        String                               secretsStoreFileName,
@@ -456,7 +458,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
             Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
 
-            secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), qualifiedName);
+            secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsStoreCollectionName);
 
             String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                                        deployedImplementationType.getAssociatedTypeName(),
@@ -765,6 +767,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param connectorTypeGUID connector type to link to the connection
      * @param networkAddress network address for the endpoint
      * @param configurationProperties  additional properties for the connection
+     * @param secretsStoreCollectionName name of the collection to use in the secrets store
      * @param secretsStorePurpose              purpose for the secrets store
      * @param secretsStoreConnectorTypeGUID    optional name for the secrets store connector provider to include in the template
      * @param secretsStoreFileName             location of the secrets store
@@ -784,6 +787,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                   String                               connectorTypeGUID,
                                                   String                               networkAddress,
                                                   Map<String, Object>                  configurationProperties,
+                                                  String                               secretsStoreCollectionName,
                                                   String                               secretsStorePurpose,
                                                   String                               secretsStoreConnectorTypeGUID,
                                                   String                               secretsStoreFileName,
@@ -878,7 +882,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
                 Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
 
-                secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), qualifiedName);
+                secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsStoreCollectionName);
 
                 String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                                            deployedImplementationType.getAssociatedTypeName(),

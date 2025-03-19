@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +88,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         /*
          * Retrieve the connection string
          */
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -97,12 +97,12 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         if (jdbcDatabaseURL == null)
         {
-            throw new ConnectorCheckedException(JDBCErrorCode.NULL_URL.getMessageDefinition(connectionProperties.getConnectionName()),
+            throw new ConnectorCheckedException(JDBCErrorCode.NULL_URL.getMessageDefinition(connectionDetails.getConnectionName()),
                                                 this.getClass().getName(),
                                                 methodName);
         }
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         if (configurationProperties != null)
         {
@@ -149,15 +149,15 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                 {
                     throw new ConnectorCheckedException(JDBCErrorCode.BAD_DRIVER_MANAGER_CLASS.getMessageDefinition(jdbcDatabaseName,
                                                                                                                     driverManagerClassName.toString(),
-                                                                                                                    connectionProperties.getConnectionName(),
+                                                                                                                    connectionDetails.getConnectionName(),
                                                                                                                     error.getMessage()),
                                                         this.getClass().getName(),
                                                         methodName);
                 }
             }
-
-            jdbcDataSource = new JDBCConnectorAsDataSource(jdbcDatabaseName, auditLog);
         }
+
+        jdbcDataSource = new JDBCConnectorAsDataSource(jdbcDatabaseName, auditLog);
     }
 
 
@@ -865,13 +865,13 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
                 if ((jdbcConnection == null) || (jdbcConnection.isClosed()))
                 {
-                    if ((connectionProperties.getUserId() == null) || (connectionProperties.getClearPassword() == null))
+                    if ((connectionDetails.getUserId() == null) || (connectionDetails.getClearPassword() == null))
                     {
-                        jdbcConnection = DriverManager.getConnection(connectionProperties.getEndpoint().getAddress());
+                        jdbcConnection = DriverManager.getConnection(connectionDetails.getEndpoint().getAddress());
                     }
                     else
                     {
-                        jdbcConnection = DriverManager.getConnection(connectionProperties.getEndpoint().getAddress(),
+                        jdbcConnection = DriverManager.getConnection(connectionDetails.getEndpoint().getAddress(),
                                                                      connectionBean.getUserId(),
                                                                      connectionBean.getClearPassword());
                     }

@@ -43,6 +43,15 @@ public enum OMAGServerPlatformPlaceholderProperty
                    PlaceholderProperty.SECRETS_STORE.getDataType(),
                    PlaceholderProperty.SECRETS_STORE.getExample()),
 
+
+    /**
+     * Collection within the secrets store.
+     */
+    SECRETS_COLLECTION_NAME (PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getDescription(),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getDataType(),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getExample()),
+
     /**
      * The name of the server being catalogued.
      */

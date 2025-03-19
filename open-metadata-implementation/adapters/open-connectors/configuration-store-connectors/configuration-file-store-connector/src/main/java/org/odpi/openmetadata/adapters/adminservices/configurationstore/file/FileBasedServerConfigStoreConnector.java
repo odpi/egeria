@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.apache.commons.io.FileUtils;
 
@@ -87,7 +87,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      */
     private String getStoreTemplateName()
     {
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         String configStoreTemplateName = null;
         if (endpoint != null)

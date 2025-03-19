@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
@@ -102,22 +102,22 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
         final String methodName = "start";
         
-        if ((connectionProperties.getUserId() == null) || (connectionProperties.getClearPassword() == null))
+        if ((connectionDetails.getUserId() == null) || (connectionDetails.getClearPassword() == null))
         {
             throw new ConnectorCheckedException(ApacheAtlasErrorCode.NULL_USER.getMessageDefinition(connectorName),
                                                 this.getClass().getName(),
                                                 methodName);
         }
         
-        if (connectionProperties.getConnectionName() != null)
+        if (connectionDetails.getConnectionName() != null)
         {
-            connectorName = connectionProperties.getConnectionName();
+            connectorName = connectionDetails.getConnectionName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -131,7 +131,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
                                                 methodName);
         }
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         if (configurationProperties != null)
         {
@@ -148,8 +148,8 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
              */
             RESTClientFactory  factory = new RESTClientFactory(atlasServerName,
                                                                targetRootURL,
-                                                               connectionProperties.getUserId(),
-                                                               connectionProperties.getClearPassword(),
+                                                               connectionDetails.getUserId(),
+                                                               connectionDetails.getClearPassword(),
                                                                secretsStoreConnectorMap,
                                                                auditLog);
 

@@ -177,7 +177,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
     }
 
     /**
-     * Static factory method used by EgeriaConnectedAssetProperties.refresh() to instantiate a ConnectedAssetUniverse object
+     * Static factory method used by EgeriaConnectedAssetDetails.refresh() to instantiate a ConnectedAssetUniverse object
      * with no authentication information being attached to the HTTP requests.
      *
      * @param serviceName calling service
@@ -213,7 +213,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
     }
 
     /**
-     * Static factory method used by EgeriaConnectedAssetProperties.refresh() to instantiate a ConnectedAssetUniverse object
+     * Static factory method used by EgeriaConnectedAssetDetails.refresh() to instantiate a ConnectedAssetUniverse object
      * where a usedId and password of the local calling server are embedded in the HTTP request.
      *
      * @param serviceName calling service

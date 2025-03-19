@@ -146,7 +146,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
                 if (UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType().equals(deployedImplementationType))
                 {
-                    CatalogInfo info = null;
+                    CatalogInfo catalogInfo = null;
 
                     String name = propertyHelper.getStringProperty(catalogName,
                                                                    OpenMetadataProperty.NAME.name,
@@ -157,7 +157,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                     {
                         try
                         {
-                            info = ucConnector.getCatalog(name);
+                            catalogInfo = ucConnector.getCatalog(name);
                         }
                         catch (Exception missing)
                         {
@@ -165,16 +165,16 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                         }
 
                         MemberAction memberAction = MemberAction.NO_ACTION;
-                        if (info == null)
+                        if (catalogInfo == null)
                         {
                             memberAction = nextElement.getMemberAction(null, null);
                         }
-                        else if (noMismatchInExternalIdentifier(info.getId(), nextElement))
+                        else if (noMismatchInExternalIdentifier(catalogInfo.getId(), nextElement))
                         {
-                            memberAction = nextElement.getMemberAction(this.getDateFromLong(info.getCreated_at()), this.getDateFromLong(info.getUpdated_at()));
+                            memberAction = nextElement.getMemberAction(this.getDateFromLong(catalogInfo.getCreated_at()), this.getDateFromLong(catalogInfo.getUpdated_at()));
                         }
 
-                        this.takeAction(memberAction, nextElement, info);
+                        this.takeAction(memberAction, nextElement, catalogInfo);
                     }
                     else if (friendshipConnectorGUID != null)
                     {

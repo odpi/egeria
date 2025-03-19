@@ -881,6 +881,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                 templateDefinition.getConnectorTypeGUID(),
                                                 templateDefinition.getNetworkAddress(),
                                                 templateDefinition.getConfigurationProperties(),
+                                                templateDefinition.getSecretsCollectionName(),
                                                 templateDefinition.getSecretsStorePurpose(),
                                                 templateDefinition.getSecretsStoreConnectorTypeGUID(),
                                                 templateDefinition.getSecretsStoreFileName(),

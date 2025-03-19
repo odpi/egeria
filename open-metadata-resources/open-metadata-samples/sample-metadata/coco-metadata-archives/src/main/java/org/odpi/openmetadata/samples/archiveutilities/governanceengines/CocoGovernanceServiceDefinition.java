@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
+import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
@@ -82,6 +83,15 @@ public enum CocoGovernanceServiceDefinition
                                      ResourceUse.VALIDATE_RESOURCE,
                                      DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
 
+    /**
+     * File Copy Governance Action Service
+     */
+    FILE_PROVISIONER("11192250-eaf6-4e3a-9ded-a3432c4b0e3d",
+                     "simulate-ftp-governance-action-service",
+                     "File Copy Governance Action Service",
+                     new MoveCopyFileGovernanceActionProvider(),
+                     ResourceUse.PROVISION_RESOURCE,
+                     DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
     ;
 
     private final String            guid;

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
@@ -123,7 +124,7 @@ public enum IntegrationConnectorDefinition
                                "postgrescatnpa",
                                null,
                                null,
-                               null,
+                               getPostgreSQLServerConfigProperties(),
                                60,
                                new String[]{PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName()},
                                ContentPackDefinition.POSTGRES_CONTENT_PACK),
@@ -323,6 +324,20 @@ public enum IntegrationConnectorDefinition
     {
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(), UC_CATALOG_CATALOGUER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Get the configuration properties for the PostgreSQL Server Cataloguer.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getPostgreSQLServerConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName(), JDBC_CATALOGUER.getGUID());
 
         return configurationProperties;
     }

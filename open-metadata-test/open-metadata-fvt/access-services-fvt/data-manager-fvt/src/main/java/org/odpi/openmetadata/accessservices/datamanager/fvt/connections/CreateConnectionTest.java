@@ -301,7 +301,7 @@ public class CreateConnectionTest
 
             if (retrievedConnection == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectionProperties from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectionDetails from Retrieve)");
             }
 
             if (! connectionName.equals(retrievedConnection.getQualifiedName()))
@@ -513,7 +513,7 @@ public class CreateConnectionTest
 
             if (retrievedEndpoint == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no EndpointProperties from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no EndpointDetails from Retrieve)");
             }
 
             if (! endpointName.equals(retrievedEndpoint.getQualifiedName()))
@@ -692,7 +692,7 @@ public class CreateConnectionTest
 
             if (retrievedConnectorType == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectorTypeProperties from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectorTypeDetails from Retrieve)");
             }
 
             if (! connectorTypeQName.equals(retrievedConnectorType.getQualifiedName()))

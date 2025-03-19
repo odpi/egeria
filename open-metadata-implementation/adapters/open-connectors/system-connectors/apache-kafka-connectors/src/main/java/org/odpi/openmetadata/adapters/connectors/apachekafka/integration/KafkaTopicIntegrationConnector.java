@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.apachekafka.integration;
 
 import org.apache.kafka.clients.admin.Admin;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TopicElement;
@@ -17,7 +18,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -110,7 +110,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
             /*
              * Retrieve the configuration
              */
-            EndpointProperties endpoint = apacheKafkaAdminConnector.getConnection().getEndpoint();
+            EndpointDetails endpoint = apacheKafkaAdminConnector.getConnection().getEndpoint();
 
             if ((endpoint != null) && (endpoint.getAddress() != null))
             {
@@ -223,7 +223,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
                 if ((connector != null) && (connector.getConnection() != null) && (connector.getConnection().getEndpoint() != null))
                 {
                     String targetRootURL         = connector.getConnection().getEndpoint().getAddress();
-                    String templateQualifiedName = getTemplateQualifiedName(connectionProperties.getConfigurationProperties());
+                    String templateQualifiedName = getTemplateQualifiedName(connectionDetails.getConfigurationProperties());
                     String templateGUID          = null;
 
                     if (templateQualifiedName != null)

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectD
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialActionTarget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +96,30 @@ public enum CocoRequestTypeDefinition
                           "23ceab08-f644-49c7-b7f3-95f39fe41c84",
                           ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
 
+    /**
+     * simulate-ftp
+     */
+    SIMULATE_FTP("simulate-ftp",
+                 "copy-file",
+                 getNoLineageRequestParameter(),
+                 null,
+                 CocoGovernanceEngineDefinition.CLINICAL_TRIALS_ENGINE,
+                 CocoGovernanceServiceDefinition.FILE_PROVISIONER,
+                 "286599f7-8f05-4378-84f0-7e9af5dfad7f",
+                 ProjectDefinition.CLINICAL_TRIALS.getQualifiedName()),
+
     ;
+
+    static Map<String, String> getNoLineageRequestParameter()
+    {
+        final String noLineagePropertyName = "noLineage";
+
+        Map<String, String> requestParameters = new HashMap<>();
+
+        requestParameters.put(noLineagePropertyName, "");
+
+        return requestParameters;
+    }
 
     static List<NewActionTarget> getSetUpActionTargets()
     {

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
@@ -199,9 +199,9 @@ public class RESTClientFactory
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    private static class AccessibleConnection extends ConnectionProperties
+    private static class AccessibleConnection extends ConnectionDetails
     {
-        AccessibleConnection(ConnectionProperties templateConnection)
+        AccessibleConnection(ConnectionDetails templateConnection)
         {
             super(templateConnection);
         }
