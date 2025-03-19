@@ -320,6 +320,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.STEWARD.getName(), stewardGUID);
+                addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName(), dataQualityCertificationTypeGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName(), lastUpdateConnectorGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.ONBOARD_HOSPITAL_PROCESS.getName(), onboardHospitalGUID);
 

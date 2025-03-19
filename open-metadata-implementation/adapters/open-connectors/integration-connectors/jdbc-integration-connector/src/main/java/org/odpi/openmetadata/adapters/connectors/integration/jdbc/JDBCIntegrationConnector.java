@@ -52,7 +52,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
                         refreshDatabase(jdbcResourceConnector,
                                         jdbcResourceConnector.getConnection().getConnectionName(),
                                         null,
-                                        connectionProperties.getConfigurationProperties());
+                                        connectionDetails.getConfigurationProperties());
                     }
                     catch (ConnectorCheckedException exception)
                     {
@@ -99,6 +99,8 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
                 Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
+
+                assetConnector.start();
 
                 refreshDatabase(assetConnector,
                                 databaseName,

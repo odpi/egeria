@@ -1,9 +1,0 @@
-${AnsiColor.CYAN} Project Egeria - Open Metadata and Governance
-${AnsiColor.CYAN}    ____   __  ___ ___    ______   _____
-${AnsiColor.CYAN}   / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____
-${AnsiColor.CYAN}  / / / // /|_/ // /| | / / __    \__ \ / _ \ / __/| | / // _ \ / __/
-${AnsiColor.CYAN} / /_/ // /  / // ___ |/ /_/ /   ___/ //  __// /   | |/ //  __// /
-${AnsiColor.CYAN} \____//_/  /_//_/  |_|\____/   /____/ \___//_/    |___/ \___//_/
-${AnsiColor.CYAN}
-${AnsiColor.CYAN} :: Powered by Spring Boot${spring-boot.formatted-version} ::
-${Ansi.DEFAULT}

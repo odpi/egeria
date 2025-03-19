@@ -18,7 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -53,7 +53,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -62,7 +62,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
      * @throws UserNotAuthorizedException security problem
      */
     public AtlasLineageIntegrationModule(String                   connectorName,
-                                         ConnectionProperties     connectionProperties,
+                                         ConnectionDetails connectionDetails,
                                          AuditLog                 auditLog,
                                          CatalogIntegratorContext myContext,
                                          String                   targetRootURL,
@@ -71,7 +71,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
     {
         super(connectorName,
               lineageModuleName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,

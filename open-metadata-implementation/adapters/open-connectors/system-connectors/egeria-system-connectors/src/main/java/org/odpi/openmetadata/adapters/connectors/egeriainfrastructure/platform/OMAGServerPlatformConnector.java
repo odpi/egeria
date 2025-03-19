@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 import java.util.*;
@@ -110,15 +110,15 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
         final String methodName = "start";
 
-        if (connectionProperties.getConnectionName() != null)
+        if (connectionDetails.getConnectionName() != null)
         {
-            connectorName = connectionProperties.getConnectionName();
+            connectorName = connectionDetails.getConnectionName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
@@ -137,12 +137,12 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
          */
         try
         {
-            if (connectionProperties.getUserId() != null)
+            if (connectionDetails.getUserId() != null)
             {
                 extractor = new EgeriaExtractor(targetRootURL,
                                                 platformName,
                                                 null,
-                                                connectionProperties.getUserId());
+                                                connectionDetails.getUserId());
             }
             else
             {

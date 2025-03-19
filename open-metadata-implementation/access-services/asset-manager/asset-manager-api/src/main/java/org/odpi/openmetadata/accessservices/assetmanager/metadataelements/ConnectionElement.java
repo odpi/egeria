@@ -234,7 +234,7 @@ public class ConnectionElement implements CorrelatedMetadataElement
     public String toString()
     {
         return "ConnectionElement{" +
-                       "connectionProperties=" + connectionProperties +
+                       "connectionDetails=" + connectionProperties +
                        ", correlationHeaders=" + correlationHeaders +
                        ", elementHeader=" + elementHeader +
                        ", connectorType=" + connectorType +

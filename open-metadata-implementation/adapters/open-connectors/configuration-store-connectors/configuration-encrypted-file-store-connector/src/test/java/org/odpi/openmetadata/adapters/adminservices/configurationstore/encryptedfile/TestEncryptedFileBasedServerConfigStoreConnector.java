@@ -4,11 +4,7 @@ package org.odpi.openmetadata.adapters.adminservices.configurationstore.encrypte
 
 import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;

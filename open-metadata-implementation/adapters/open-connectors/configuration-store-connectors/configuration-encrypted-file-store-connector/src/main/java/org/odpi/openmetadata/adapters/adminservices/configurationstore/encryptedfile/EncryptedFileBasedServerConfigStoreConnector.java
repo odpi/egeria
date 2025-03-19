@@ -12,10 +12,10 @@ import com.google.crypto.tink.proto.KeyTemplate;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.apache.commons.io.FileUtils;
 
@@ -106,8 +106,8 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * @return the store template name
      */
     private String getStoreTemplateName() {
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
-        String configStoreTemplateName = null;
+        EndpointDetails endpoint                = connectionDetails.getEndpoint();
+        String          configStoreTemplateName = null;
         if (endpoint != null) {
             configStoreTemplateName = endpoint.getAddress();
         }

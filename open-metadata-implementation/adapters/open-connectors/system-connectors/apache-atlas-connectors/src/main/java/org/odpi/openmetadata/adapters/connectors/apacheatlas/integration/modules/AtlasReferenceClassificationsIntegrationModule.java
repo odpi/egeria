@@ -17,7 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 import org.odpi.openmetadata.integrationservices.catalog.connector.ValidValuesExchangeService;
@@ -54,7 +54,7 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -65,7 +65,7 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
      * @throws UserNotAuthorizedException security problem
      */
     public AtlasReferenceClassificationsIntegrationModule(String                   connectorName,
-                                                          ConnectionProperties     connectionProperties,
+                                                          ConnectionDetails connectionDetails,
                                                           AuditLog                 auditLog,
                                                           CatalogIntegratorContext myContext,
                                                           String                   targetRootURL,
@@ -76,7 +76,7 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
     {
         super(connectorName,
               referenceClassificationsModuleName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,

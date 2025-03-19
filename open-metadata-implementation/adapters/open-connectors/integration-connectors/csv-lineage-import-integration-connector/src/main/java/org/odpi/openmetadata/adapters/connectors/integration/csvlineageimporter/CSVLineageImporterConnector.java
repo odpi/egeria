@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
@@ -57,7 +57,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
         /*
          * Extract the configuration
          */
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {

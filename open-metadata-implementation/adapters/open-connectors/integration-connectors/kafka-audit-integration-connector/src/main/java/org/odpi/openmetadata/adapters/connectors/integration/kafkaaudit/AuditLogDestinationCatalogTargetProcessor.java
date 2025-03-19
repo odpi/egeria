@@ -11,7 +11,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
@@ -43,7 +43,7 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
 
         final String methodName = "AuditLogDestinationCatalogTargetProcessor constructor";
 
-        ConnectionProperties auditLogConnection;
+        ConnectionDetails auditLogConnection;
 
         if (connectorToTarget instanceof JDBCResourceConnector)
         {
@@ -85,10 +85,10 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
      * @param auditLogConnectorType appropriate audit log connector
      * @return connection
      */
-    private ConnectionProperties getAuditLogConnection(Connector     assetConnector,
-                                                       ConnectorType auditLogConnectorType)
+    private ConnectionDetails getAuditLogConnection(Connector     assetConnector,
+                                                    ConnectorType auditLogConnectorType)
     {
-        return new ConnectionProperties(assetConnector.getConnection(), auditLogConnectorType);
+        return new ConnectionDetails(assetConnector.getConnection(), auditLogConnectorType);
     }
 
 

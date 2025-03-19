@@ -7,7 +7,7 @@ import org.apache.kafka.clients.admin.DescribeClusterResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.common.Node;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
@@ -147,12 +147,12 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
         final String actionDescription = "initializeTopic";
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
         if (endpoint != null)
         {
             topicName = endpoint.getAddress();
 
-            Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+            Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
             if (configurationProperties != null)
             {
                 this.initializeKafkaProperties(configurationProperties);
@@ -567,7 +567,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         /*
          * waits for a list of running kafaka brokers
-         * @param connectionProperties The kafka connection properties
+         * @param connectionDetails The kafka connection properties
          * Performs a sanity check that the services Egeria requires are available
          *         */
         public boolean waitForBrokers(Properties connectionProperties ) {

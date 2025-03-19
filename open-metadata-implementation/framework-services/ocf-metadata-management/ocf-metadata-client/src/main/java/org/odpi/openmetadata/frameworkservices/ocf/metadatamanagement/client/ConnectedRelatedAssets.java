@@ -141,13 +141,13 @@ public class ConnectedRelatedAssets extends RelatedAssets
                 {
                     if (bean != null)
                     {
-                        resultList.add(new ConnectedAssetRelatedAssetProperties(bean,
-                                                                                serviceName,
-                                                                                serverName,
-                                                                                userId,
-                                                                                platformURLRoot,
-                                                                                assetGUID,
-                                                                                restClient));
+                        resultList.add(new ConnectedAssetRelatedAssetDetails(bean,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             userId,
+                                                                             platformURLRoot,
+                                                                             assetGUID,
+                                                                             restClient));
                     }
                 }
 

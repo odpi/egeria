@@ -161,6 +161,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -202,6 +203,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -224,6 +226,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }

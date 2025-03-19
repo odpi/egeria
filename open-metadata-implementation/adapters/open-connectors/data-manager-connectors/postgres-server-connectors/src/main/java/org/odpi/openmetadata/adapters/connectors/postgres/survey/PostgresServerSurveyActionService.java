@@ -96,7 +96,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                                                                                                    jdbcConnection,
                                                                                                    this);
 
-                List<Annotation> databaseStatistics = statsExtractor.getStatistics();
+                List<Annotation> databaseStatistics = statsExtractor.getDatabaseStatistics();
 
                 if (databaseStatistics != null)
                 {

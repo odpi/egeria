@@ -109,7 +109,6 @@ The Egeria core repository contains the core Egeria functionality, and is organi
 
   * **[platform-chassis](open-metadata-implementation/platform-chassis)** - the platform chassis provides the runtime framework for the OMAG Server Platform.
   * **[platform-services](open-metadata-implementation/platform-services)** - the services for querying the status of the OMAG Server Platform that can run multiple OMAG Servers simultaneously.
-  * **[server-chassis](open-metadata-implementation/server-chassis)** - the service chassis provides the runtime framework for a single OMAG Server.  This is call the OMAG Server Runtime.
   * **[server-operations](open-metadata-implementation/server-operations)** - the services to start and stop OMAG Server's in either the OMAG Server Runtime or OMAG Server Platform.
 
   * **[user-interfaces](open-metadata-implementation/user-interfaces)** - browser based user interfaces.

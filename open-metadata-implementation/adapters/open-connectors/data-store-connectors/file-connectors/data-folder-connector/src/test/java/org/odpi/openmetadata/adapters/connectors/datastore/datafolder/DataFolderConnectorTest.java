@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.datastore.datafolder;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -79,9 +79,9 @@ public class DataFolderConnectorTest
     }
 
 
-    private ConnectionProperties getConnectionProperties(String   fileName)
+    private ConnectionDetails getConnectionProperties(String   fileName)
     {
-        return new ConnectionProperties(getConnection(fileName));
+        return new ConnectionDetails(getConnection(fileName));
     }
 
 

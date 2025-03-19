@@ -805,7 +805,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTION(400, "OMRS-CONNECTOR-400-002",
             "The connection passed to OMASConnectedAssetProperties for connector {0} is null",
-            "The system is unable to populate the ConnectedAssetProperties object because it needs the connection to identify the asset.",
+            "The system is unable to populate the ConnectedAssetDetails object because it needs the connection to identify the asset.",
             "Look for other error messages to identify what caused this error.  When the issue is resolved, retry the request."),
 
     /**

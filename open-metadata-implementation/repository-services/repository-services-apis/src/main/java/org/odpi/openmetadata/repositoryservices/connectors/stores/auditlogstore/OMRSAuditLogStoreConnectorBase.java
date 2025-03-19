@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
@@ -324,23 +324,23 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @SuppressWarnings("unchecked")
     public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+                           ConnectionDetails connectionDetails)
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.initialize(connectorInstanceId, connectionDetails);
 
-        if (connectionProperties != null)
+        if (connectionDetails != null)
         {
-            if (connectionProperties.getDisplayName() != null)
+            if (connectionDetails.getDisplayName() != null)
             {
-                destinationName = connectionProperties.getDisplayName();
+                destinationName = connectionDetails.getDisplayName();
             }
-            else if (connectionProperties.getConnectorType() != null)
+            else if (connectionDetails.getConnectorType() != null)
             {
-                ConnectorTypeProperties connectorType = connectionProperties.getConnectorType();
+                ConnectorTypeDetails connectorType = connectionDetails.getConnectorType();
 
                 if (connectorType.getDisplayName() != null)
                 {
@@ -348,7 +348,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
                 }
             }
 
-            Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+            Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
             if (configurationProperties != null)
             {

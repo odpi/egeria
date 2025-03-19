@@ -3,30 +3,30 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.infrastructure.connector.InfrastructureIntegratorConnector;
 
 import javax.sql.DataSource;
@@ -47,6 +47,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
     List<String> defaultExcludeDatabases = null;
     List<String> defaultIncludeDatabases = null;
+    String       defaultFriendshipGUID   = null;
+    Map<String, String> defaultTemplates = new HashMap<>();
 
 
     /**
@@ -57,13 +59,29 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     @Override
     public void start() throws ConnectorCheckedException
     {
+        final String methodName = "start";
+
         super.start();
 
         defaultExcludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionProperties.getConfigurationProperties());
+                                                                      connectionDetails.getConfigurationProperties());
 
         defaultIncludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionProperties.getConfigurationProperties());
+                                                                      connectionDetails.getConfigurationProperties());
+
+        defaultFriendshipGUID = this.getFriendshipGUID(connectionDetails.getConfigurationProperties());
+
+        if (defaultFriendshipGUID != null)
+        {
+            auditLog.logMessage(methodName,
+                                PostgresAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                                       defaultFriendshipGUID));
+        }
+
+        for (PostgreSQLTemplateType templateType : PostgreSQLTemplateType.values())
+        {
+            defaultTemplates.put(templateType.getTemplateName(), templateType.getTemplateGUID());
+        }
     }
 
 
@@ -94,7 +112,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                         catalogDatabases(null,
                                          null,
-                                         connectionProperties.getConfigurationProperties(),
+                                         defaultTemplates,
+                                         connectionDetails.getConfigurationProperties(),
                                          jdbcResourceConnector);
                     }
                     catch (ConnectorCheckedException exception)
@@ -143,6 +162,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                 catalogDatabases(databaseServerGUID,
                                  databaseManagerGUID,
+                                 requestedCatalogTarget.getTemplateProperties(),
                                  requestedCatalogTarget.getConfigurationProperties(),
                                  assetConnector);
 
@@ -257,12 +277,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      *
      * @param databaseServerGUID unique identifier of the entity representing the PostgreSQL Server
      * @param databaseManagerGUID name of the associated database manager.
+     * @param configuredTemplates list of templates
      * @param configurationProperties configuration properties
      * @param assetConnector connector to the database server
      * @throws ConnectorCheckedException unrecoverable error
      */
     private void catalogDatabases(String                databaseServerGUID,
                                   String                databaseManagerGUID,
+                                  Map<String, String>   configuredTemplates,
                                   Map<String, Object>   configurationProperties,
                                   JDBCResourceConnector assetConnector) throws ConnectorCheckedException
     {
@@ -276,8 +298,12 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                              configurationProperties,
                                                                              defaultIncludeDatabases);
 
-        String catalogTemplateName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME.getName(),
-                                                                          configurationProperties);
+        Map<String, String>   templates = defaultTemplates;
+
+        if (configuredTemplates != null)
+        {
+            templates = configuredTemplates;
+        }
 
         try
         {
@@ -305,7 +331,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                         catalogDatabase(databaseName,
                                         databaseServerGUID,
                                         databaseManagerGUID,
-                                        catalogTemplateName,
+                                        templates,
                                         configurationProperties);
                     }
                 }
@@ -337,7 +363,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      * @param databaseName name of the retrieved database
      * @param databaseServerGUID unique identifier of the entity representing the PostgreSQL Server
      * @param databaseManagerGUID name of the associated database manager
-     * @param catalogTemplateName unique identifier of the catalog template to use
+     * @param templates list of templates
      * @param configurationProperties configuration properties
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
@@ -347,7 +373,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     private   void catalogDatabase(String              databaseName,
                                    String              databaseServerGUID,
                                    String              databaseManagerGUID,
-                                   String              catalogTemplateName,
+                                   Map<String, String> templates,
                                    Map<String, Object> configurationProperties) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException,
@@ -355,154 +381,150 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     {
         final String methodName = "catalogDatabase";
 
+        String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
+
         OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
         ElementProperties   serverAssetUseProperties = propertyHelper.addEnumProperty(null,
                                                                                       OpenMetadataProperty.USE_TYPE.name,
                                                                                       ServerAssetUseType.getOpenTypeName(),
                                                                                       ServerAssetUseType.OWNS.getName());
+
+        String databaseTemplateGUID = templates.get(PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID());
+
+        if (databaseTemplateGUID == null)
         {
-            if (catalogTemplateName != null)
+            databaseTemplateGUID = PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID();
+        }
+
+        Map<String, String> placeholderProperties = super.getSuppliedPlaceholderProperties(configurationProperties);
+
+        if (placeholderProperties == null)
+        {
+            placeholderProperties = new HashMap<>();
+        }
+
+        placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
+
+        OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByGUID(databaseTemplateGUID);
+
+        String qualifiedName = propertyHelper.getResolvedStringPropertyFromTemplate(connectorName,
+                                                                                    templateElement,
+                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                    placeholderProperties);
+
+        OpenMetadataElement databaseElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        if (databaseElement != null)
+        {
+            auditLog.logMessage(methodName, PostgresAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                                     databaseElement.getElementGUID(),
+                                                                                                     qualifiedName));
+        }
+        else
+        {
+            String databaseGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
+                                                                                    databaseServerGUID,
+                                                                                    false,
+                                                                                    null,
+                                                                                    null,
+                                                                                    databaseTemplateGUID,
+                                                                                    null,
+                                                                                    placeholderProperties,
+                                                                                    databaseManagerGUID,
+                                                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                    serverAssetUseProperties,
+                                                                                    true);
+
+            auditLog.logMessage(methodName, PostgresAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                                      qualifiedName,
+                                                                                                      databaseGUID));
+
+            addCatalogTarget(friendshipConnectorGUID,
+                             databaseGUID,
+                             databaseManagerGUID,
+                             databaseName,
+                             templates,
+                             configurationProperties);
+        }
+    }
+
+
+    /**
+     * Extract the friendship GUID from the configuration properties - or use the default.
+     *
+     * @param configurationProperties configuration properties for connection to UC
+     * @return friendship GUID or null
+     */
+    private String getFriendshipGUID(Map<String, Object> configurationProperties)
+    {
+        String friendshipGUID = defaultFriendshipGUID;
+
+        if ((configurationProperties != null) &&
+                (configurationProperties.get(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName()) != null))
+        {
+            friendshipGUID = connectionDetails.getConfigurationProperties().get(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
+        }
+
+        return friendshipGUID;
+    }
+
+
+    /**
+     * Add a catalog target relationship between the PostgreSQL server's asset and the connector that is able to
+     * catalog inside a PostgreSQL Database.  This will start the cataloging of the schemas tables and columns within the database.
+     *
+     * @param friendshipConnectorGUID guid of database connector
+     * @param databaseGUID unique identifier of the catalog
+     * @param dbmsQualifiedName qualified name of the database's software capability - becomes metadataSourceQualifiedName
+     * @param databaseName name of the catalog - may be used as a placeholder property
+     * @param templates list of templates
+     * @param configurationProperties configuration properties for this server
+     *
+     * @throws InvalidParameterException error from call to the metadata store
+     * @throws PropertyServerException error from call to the metadata store
+     * @throws UserNotAuthorizedException error from call to the metadata store
+     */
+    private void addCatalogTarget(String              friendshipConnectorGUID,
+                                  String              databaseGUID,
+                                  String              dbmsQualifiedName,
+                                  String              databaseName,
+                                  Map<String, String> templates,
+                                  Map<String, Object> configurationProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "addCatalogTarget";
+
+        if (databaseGUID != null)
+        {
+            if (friendshipConnectorGUID != null)
             {
-                Map<String, String> placeholderProperties = super.getSuppliedPlaceholderProperties(configurationProperties);
+                CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
-                if (placeholderProperties == null)
+                catalogTargetProperties.setCatalogTargetName(databaseName);
+                catalogTargetProperties.setMetadataSourceQualifiedName(dbmsQualifiedName);
+                catalogTargetProperties.setTemplateProperties(templates);
+
+                Map<String, Object> targetConfigurationProperties = new HashMap<>();
+
+                if (configurationProperties != null)
                 {
-                    placeholderProperties = new HashMap<>();
+                    targetConfigurationProperties.putAll(configurationProperties);
                 }
 
-                placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
+                targetConfigurationProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
+                targetConfigurationProperties.put(OpenMetadataProperty.GUID.name, databaseGUID);
 
-                OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByUniqueName(catalogTemplateName,
-                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name);
+                catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
 
-                String qualifiedName = propertyHelper.getResolvedStringPropertyFromTemplate(connectorName,
-                                                                                            templateElement,
-                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                            placeholderProperties);
+                String relationshipGUID = integrationContext.addCatalogTarget(friendshipConnectorGUID, databaseGUID, catalogTargetProperties);
 
-                OpenMetadataElement databaseElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
-
-                if (databaseElement != null)
-                {
-                    auditLog.logMessage(methodName, PostgresAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
-                                                                                                             databaseElement.getElementGUID(),
-                                                                                                             qualifiedName));
-                }
-                else
-                {
-                    String databaseGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
-                                                                                            databaseServerGUID,
-                                                                                            false,
-                                                                                            null,
-                                                                                            null,
-                                                                                            catalogTemplateName,
-                                                                                            null,
-                                                                                            placeholderProperties,
-                                                                                            databaseManagerGUID,
-                                                                                            OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                            serverAssetUseProperties,
-                                                                                            true);
-
-                    auditLog.logMessage(methodName, PostgresAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
-                                                                                                              qualifiedName,
-                                                                                                              databaseGUID));
-                }
-            }
-            else
-            {
-                String hostIdentifier = super.getStringConfigurationProperty(PostgresConfigurationProperty.HOST_IDENTIFIER.getName(), configurationProperties);
-                String portNumber = super.getStringConfigurationProperty(PostgresConfigurationProperty.PORT_NUMBER.getName(), configurationProperties);
-                String serverName = super.getStringConfigurationProperty(PostgresConfigurationProperty.SERVER_NAME.getName(), configurationProperties);
-                String databaseUserId = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_USER_ID.getName(), configurationProperties);
-                String databasePassword = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_PASSWORD.getName(), configurationProperties);
-
-                String qualifiedName = "PostgreSQLDatabase:" + serverName + ":" + databaseName;
-
-                if (openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name) == null)
-                {
-                    ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                           qualifiedName);
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.NAME.name,
-                                                                         databaseName);
-
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                         PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
-
-                    String databaseGUID = openMetadataAccess.createMetadataElementInStore(PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
-                                                                                          ElementStatus.ACTIVE,
-                                                                                          null,
-                                                                                          databaseServerGUID,
-                                                                                          false,
-                                                                                          null,
-                                                                                          null,
-                                                                                          elementProperties,
-                                                                                          databaseManagerGUID,
-                                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                          serverAssetUseProperties,
-                                                                                          true);
-
-                    elementProperties = propertyHelper.addStringProperty(null,
-                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                         "PostgreSQLDatabase:" + serverName + ":" + databaseName + ":Connection");
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                         databaseName + " connection");
-
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.USER_ID.name,
-                                                                         databaseUserId);
-
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.CLEAR_PASSWORD.name,
-                                                                         databasePassword);
-
-                    String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION.typeName,
-                                                                                            ElementStatus.ACTIVE,
-                                                                                            null,
-                                                                                            databaseGUID,
-                                                                                            false,
-                                                                                            null,
-                                                                                            null,
-                                                                                            elementProperties,
-                                                                                            databaseGUID,
-                                                                                            OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                                            null,
-                                                                                            false);
-
-
-                    JDBCResourceConnectorProvider jdbcResourceConnectorProvider = new JDBCResourceConnectorProvider();
-
-                    ConnectorType connectorType = jdbcResourceConnectorProvider.getConnectorType();
-
-                    getContext().setupConnectorType(connectionGUID, connectorType.getGUID());
-
-                    elementProperties = propertyHelper.addStringProperty(null,
-                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                         "PostgreSQLDatabase:" + serverName + ":" + databaseName + ":Endpoint");
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.NAME.name,
-                                                                         databaseName + " endpoint");
-
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                                         "jdbc:postgresql://" + hostIdentifier + ":" + portNumber + "/" + databaseName);
-
-                    openMetadataAccess.createMetadataElementInStore(OpenMetadataType.ENDPOINT.typeName,
-                                                                    ElementStatus.ACTIVE,
-                                                                    null,
-                                                                    databaseGUID,
-                                                                    false,
-                                                                    null,
-                                                                    null,
-                                                                    elementProperties,
-                                                                    connectionGUID,
-                                                                    OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
-                                                                    null,
-                                                                    false);
-                }
+                auditLog.logMessage(methodName,
+                                    PostgresAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                              relationshipGUID,
+                                                                                              friendshipConnectorGUID,
+                                                                                              databaseGUID,
+                                                                                              databaseName));
             }
         }
     }

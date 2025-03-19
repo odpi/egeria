@@ -86,9 +86,9 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
         final String methodName = "start";
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
+            Object finalAnalysisStepPropertyObject = connectionDetails.getConfigurationProperties().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
             if (finalAnalysisStepPropertyObject != null)
             {

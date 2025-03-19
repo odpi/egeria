@@ -50,13 +50,13 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
 
         super.start();
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            defaultFriendshipGUID = this.getFriendshipGUID(connectionProperties.getConfigurationProperties());
+            defaultFriendshipGUID = this.getFriendshipGUID(connectionDetails.getConfigurationProperties());
             defaultExcludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_CATALOG_NAMES.getName(),
-                                                                         connectionProperties.getConfigurationProperties());
+                                                                         connectionDetails.getConfigurationProperties());
             defaultIncludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_CATALOG_NAMES.getName(),
-                                                                         connectionProperties.getConfigurationProperties());
+                                                                         connectionDetails.getConfigurationProperties());
         }
 
         if (defaultFriendshipGUID != null)
@@ -127,7 +127,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                                         "endpoint",
                                         this.getContext().getPermittedSynchronization(),
                                         this.getTemplates(null),
-                                        connectionProperties.getConfigurationProperties(),
+                                        connectionDetails.getConfigurationProperties(),
                                         unityCatalogResourceConnector);
                     }
                     catch (ConnectorCheckedException exception)
@@ -334,7 +334,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         if ((configurationProperties != null) &&
                 (configurationProperties.get(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName()) != null))
         {
-            friendshipGUID = connectionProperties.getConfigurationProperties().get(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
+            friendshipGUID = connectionDetails.getConfigurationProperties().get(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName()).toString();
         }
 
         return friendshipGUID;

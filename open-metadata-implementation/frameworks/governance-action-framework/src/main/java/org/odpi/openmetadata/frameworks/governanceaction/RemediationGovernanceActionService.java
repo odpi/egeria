@@ -43,7 +43,7 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
     protected String getProperty(String propertyName, String defaultValue)
     {
         Map<String, String> requestParameters       = governanceContext.getRequestParameters();
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         String propertyValue = defaultValue;
 

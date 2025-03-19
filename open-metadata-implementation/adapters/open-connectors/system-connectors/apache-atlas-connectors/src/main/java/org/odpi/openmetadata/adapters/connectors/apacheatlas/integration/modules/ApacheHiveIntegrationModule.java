@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
 
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity;
@@ -13,7 +14,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -48,7 +48,7 @@ public class ApacheHiveIntegrationModule extends DatabaseIntegrationModuleBase
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-     * @param connectionProperties connection properties used to start the connector
+     * @param connectionDetails connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas
@@ -57,7 +57,7 @@ public class ApacheHiveIntegrationModule extends DatabaseIntegrationModuleBase
      * @throws UserNotAuthorizedException security problem
      */
     public ApacheHiveIntegrationModule(String                   connectorName,
-                                       ConnectionProperties     connectionProperties,
+                                       ConnectionDetails connectionDetails,
                                        AuditLog                 auditLog,
                                        CatalogIntegratorContext myContext,
                                        String                   targetRootURL,
@@ -71,7 +71,7 @@ public class ApacheHiveIntegrationModule extends DatabaseIntegrationModuleBase
               hiveDatabaseTableTypeName,
               hiveDatabaseColumnsPropertyName,
               hiveDatabaseColumnTypeName,
-              connectionProperties,
+              connectionDetails,
               auditLog,
               myContext,
               targetRootURL,

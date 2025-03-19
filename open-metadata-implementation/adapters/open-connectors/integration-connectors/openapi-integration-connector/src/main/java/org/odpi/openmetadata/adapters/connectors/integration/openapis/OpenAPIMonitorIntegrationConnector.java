@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
@@ -65,14 +66,14 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
         /*
          * Retrieve information from the supplied connection.
          */
-        org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties  endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {
             targetRootURL = endpoint.getAddress();
         }
 
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = connectionDetails.getConfigurationProperties();
 
         if (configurationProperties != null)
         {

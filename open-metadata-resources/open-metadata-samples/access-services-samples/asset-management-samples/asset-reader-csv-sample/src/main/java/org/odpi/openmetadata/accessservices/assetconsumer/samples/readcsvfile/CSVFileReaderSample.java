@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreP
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -289,7 +289,7 @@ public class CSVFileReaderSample
 
             System.out.println("------------------------------------------------------------------------");
 
-            ConnectedAssetProperties assetProperties = connector.getConnectedAssetProperties(clientUserId);
+            ConnectedAssetDetails assetProperties = connector.getConnectedAssetProperties(clientUserId);
 
             if (assetProperties != null)
             {

@@ -307,15 +307,15 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
             /*
              * If the connector is successfully created, set up the Connected Asset Properties for the connector.
              * The properties should be retrieved from the open metadata repositories, so use an OMAS implementation
-             * of the EgeriaConnectedAssetProperties object.
+             * of the EgeriaConnectedAssetDetails object.
              */
-            EgeriaConnectedAssetProperties connectedAssetProperties = new EgeriaConnectedAssetProperties(serviceName,
-                                                                                                         serverName,
-                                                                                                         userId,
-                                                                                                         serverPlatformURLRoot,
-                                                                                                         newConnector.getConnectorInstanceId(),
-                                                                                                         newConnector.getConnection(),
-                                                                                                         assetGUID);
+            EgeriaConnectedAssetDetails connectedAssetProperties = new EgeriaConnectedAssetDetails(serviceName,
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   serverPlatformURLRoot,
+                                                                                                   newConnector.getConnectorInstanceId(),
+                                                                                                   newConnector.getConnection(),
+                                                                                                   assetGUID);
 
             /*
              * Pass the new connected asset properties to the connector
@@ -325,13 +325,13 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         catch (Exception  error)
         {
             /*
-             * Ignore error - connectedAssetProperties is left at null.
+             * Ignore error - connectedAssetDetails is left at null.
              */
         }
 
         /*
          * At this stage, the asset properties are not retrieved from the server.  This does not happen until the caller
-         * issues a connector.getConnectedAssetProperties.  This causes the connectedAssetProperties.refresh() call
+         * issues a connector.getConnectedAssetProperties.  This causes the connectedAssetDetails.refresh() call
          * to be made, which contacts the OMAG server and retrieves the asset properties.
          *
          * Delaying the population of the connected asset properties ensures the latest values are returned to the

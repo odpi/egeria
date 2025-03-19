@@ -6,8 +6,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.Op
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -58,18 +58,18 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
          */
         topicConnector.registerListener(listener);
 
-        ConnectionProperties connectionProperties = topicConnector.getConnection();
+        ConnectionDetails connectionDetails = topicConnector.getConnection();
 
-        if (connectionProperties != null)
+        if (connectionDetails != null)
         {
-            EndpointProperties endpoint = connectionProperties.getEndpoint();
+            EndpointDetails endpoint = connectionDetails.getEndpoint();
 
             if (endpoint != null)
             {
                 auditLog.logMessage(methodName,
                                     OpenLineageIntegrationConnectorAuditCode.KAFKA_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                                endpoint.getAddress(),
-                                                                                                                               connectionProperties.getConnectionName()));
+                                                                                                                               connectionDetails.getConnectionName()));
             }
 
 

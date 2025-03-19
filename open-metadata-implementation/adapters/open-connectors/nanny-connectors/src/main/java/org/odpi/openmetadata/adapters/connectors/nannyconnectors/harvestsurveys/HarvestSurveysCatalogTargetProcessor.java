@@ -1630,12 +1630,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                         RelationalDataManagerMeasurement relationalSchemaMeasurement = OBJECT_READER.readValue(jsonProperties, RelationalDataManagerMeasurement.class);
 
                         Map<String, JDBCDataValue> openMetadataRecord = this.getRelationalDataManagerMeasurementsDataValues(surveyReportGUID,
-                                                                                                                       subjectGUID,
-                                                                                                                       subjectType,
-                                                                                                                       subjectMetadataCollectionId,
-                                                                                                                       dataSourceMeasurementsAnnotation.getElementGUID(),
-                                                                                                                       dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
-                                                                                                                       relationalSchemaMeasurement);
+                                                                                                                            subjectGUID,
+                                                                                                                            subjectType,
+                                                                                                                            subjectMetadataCollectionId,
+                                                                                                                            dataSourceMeasurementsAnnotation.getElementGUID(),
+                                                                                                                            dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
+                                                                                                                            relationalSchemaMeasurement);
 
                         databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.RELATIONAL_DATA_MANAGER_MEASUREMENTS.getTableName(), openMetadataRecord);
                     }

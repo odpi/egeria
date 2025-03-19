@@ -329,8 +329,8 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String propertiesParameterName     = "connectionProperties";
-        final String qualifiedNameParameterName  = "connectionProperties.qualifiedName";
+        final String propertiesParameterName     = "connectionDetails";
+        final String qualifiedNameParameterName  = "connectionDetails.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(connectionProperties, propertiesParameterName, methodName);
@@ -475,8 +475,8 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                                                   PropertyServerException
     {
         final String connectionGUIDParameterName = "connectionGUID";
-        final String propertiesParameterName     = "connectionProperties";
-        final String qualifiedNameParameterName  = "connectionProperties.qualifiedName";
+        final String propertiesParameterName     = "connectionDetails";
+        final String qualifiedNameParameterName  = "connectionDetails.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);

@@ -2802,7 +2802,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
     {
         final String methodName = "createConnection";
         final String nameParameter = "qualifiedName";
-        final String propertiesParameter = "connectionProperties";
+        final String propertiesParameter = "connectionDetails";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(connectionProperties, propertiesParameter, methodName);
@@ -2881,8 +2881,8 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
     {
         final String methodName = "updateConnection";
         final String guidParameter = "connectionGUID";
-        final String propertiesParameter = "connectionProperties";
-        final String qualifiedNameParameter = "connectionProperties.qualifiedName";
+        final String propertiesParameter = "connectionDetails";
+        final String qualifiedNameParameter = "connectionDetails.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);

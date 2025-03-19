@@ -86,16 +86,6 @@ public enum PostgresConfigurationProperty
                 PostgresPlaceholderProperty.TABLE_NAME.getExample(),
                 true),
 
-    /**
-     * Provides a list of database names that should not be catalogued.
-     */
-    DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME ("databaseCatalogTemplate",
-                "A configuration property that describes the qualified name of the catalog template to use for each database. " +
-                        "The connector will pass the supplied configuration properties to the template as placeholder property values. " +
-                        "If this property is not specified/null then a standard asset, server capability and connection is set up for the database.",
-                "string",
-                "SoftwareServer:PostgreSQLDatabaseServer:Template",
-                false),
 
     /**
      * Provides a list of database names that should not be catalogued.
@@ -117,6 +107,15 @@ public enum PostgresConfigurationProperty
                         "array<string>",
                         "*",
                         false),
+
+    /**
+     * Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.
+     */
+    FRIENDSHIP_GUID ("PostgreSQLFriendshipGUID",
+                     "Unique identifier of the integration connector that is able to catalog the contents of a PostgreSQL Database.",
+                     "string",
+                     "48886e79-a822-45a5-ab37-b5cefade9d8a",
+                     false),
 
     ;
 
@@ -214,7 +213,6 @@ public enum PostgresConfigurationProperty
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
-        recognizedConfigurationProperties.add(PostgresConfigurationProperty.DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.HOST_IDENTIFIER.getName());
@@ -222,6 +220,7 @@ public enum PostgresConfigurationProperty
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.SERVER_NAME.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.DATABASE_USER_ID.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.DATABASE_PASSWORD.getName());
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.FRIENDSHIP_GUID.getName());
 
         return recognizedConfigurationProperties;
     }
@@ -236,7 +235,6 @@ public enum PostgresConfigurationProperty
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
-        configurationPropertyTypes.add(PostgresConfigurationProperty.DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.HOST_IDENTIFIER.getConfigurationPropertyType());
@@ -244,6 +242,7 @@ public enum PostgresConfigurationProperty
         configurationPropertyTypes.add(PostgresConfigurationProperty.SERVER_NAME.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.DATABASE_USER_ID.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.DATABASE_PASSWORD.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.FRIENDSHIP_GUID.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }

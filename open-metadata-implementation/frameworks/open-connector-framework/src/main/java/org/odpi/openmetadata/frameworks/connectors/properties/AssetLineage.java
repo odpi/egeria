@@ -10,7 +10,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  *     <li>Operational lineage - showing the jobs that ran to create this asset</li>
  * </ul>
  *
- * Currently lineage is not implemented in the ConnectedAssetProperties interface because more design work is needed.
+ * Currently lineage is not implemented in the ConnectedAssetDetails interface because more design work is needed.
  * This class is therefore a placeholder for lineage information.
  */
 public class AssetLineage extends AssetPropertyElementBase

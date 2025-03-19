@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -231,9 +231,9 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         {
             topicListeners.add(topicListener);
 
-            if (super.connectionProperties != null)
+            if (super.connectionDetails != null)
             {
-                EndpointProperties endpoint = super.connectionProperties.getEndpoint();
+                EndpointDetails endpoint = super.connectionDetails.getEndpoint();
 
                 if (endpoint != null)
                 {
@@ -264,9 +264,9 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
         keepRunning = true;
 
-        if (super.connectionProperties != null)
+        if (super.connectionDetails != null)
         {
-            EndpointProperties endpoint = super.connectionProperties.getEndpoint();
+            EndpointDetails endpoint = super.connectionDetails.getEndpoint();
 
             if (endpoint != null)
             {
@@ -274,7 +274,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                 listenerThreadName = defaultThreadName + ": " + topicName;
             }
 
-            Map<String, Object> configurationProperties = super.connectionProperties.getConfigurationProperties();
+            Map<String, Object> configurationProperties = super.connectionDetails.getConfigurationProperties();
 
             if (configurationProperties != null)
             {

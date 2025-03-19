@@ -7,8 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 import java.util.Date;
@@ -28,7 +28,7 @@ import java.util.Map;
  * </p>
  * <p>
  * The Connector interface defines that a connector instance should be able to return a unique
- * identifier, a connection object and a metadata object called ConnectedAssetProperties.
+ * identifier, a connection object and a metadata object called ConnectedAssetDetails.
  * </p>
  * <p>
  * Each specific implementation of a connector then extends the Connector interface to add the methods to work with the
@@ -44,7 +44,7 @@ import java.util.Map;
  * This calling code is also responsible for calling disconnect().
  * </p>
  * <p>
- * ConnectedAssetProperties provides descriptive properties about the asset that the connector is accessing.
+ * ConnectedAssetDetails provides descriptive properties about the asset that the connector is accessing.
  * It is supplied to the connector later during its initialization through the initializeConnectedAssetProperties() method.
  * See AssetConsumer OMAS for an example of this.
  * </p>
@@ -78,7 +78,7 @@ public abstract class Connector
      * @param connection   POJO for the configuration used to create the connector.
      */
     public abstract void initialize(String               connectorInstanceId,
-                                    ConnectionProperties connection);
+                                    ConnectionDetails connection);
 
 
     /**
@@ -97,7 +97,7 @@ public abstract class Connector
      *
      * @return connection properties object
      */
-    public abstract ConnectionProperties getConnection();
+    public abstract ConnectionDetails getConnection();
 
 
     /**
@@ -105,25 +105,25 @@ public abstract class Connector
      * metadata repositories.  The implementation of the connected asset properties object is free to determine when
      * the properties are populated.  It may be as lazy as whenever getConnectedAssetProperties() is called.
      *
-     * @param connectedAssetProperties   properties of the connected asset
+     * @param connectedAssetDetails   properties of the connected asset
      */
-    public abstract void initializeConnectedAssetProperties(ConnectedAssetProperties connectedAssetProperties);
+    public abstract void initializeConnectedAssetProperties(ConnectedAssetDetails connectedAssetDetails);
 
 
     /**
      * Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
-     * metadata repository and cached in the ConnectedAssetProperties object each time the getConnectedAssetProperties
-     * method is requested by the caller.   Once the ConnectedAssetProperties object has the metadata cached, it can be
+     * metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
+     * method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
      * used to access the asset property values many times without a return to the metadata repository.
      * The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.
      *
      * @param userId userId of requesting user
-     * @return ConnectedAssetProperties   connected asset properties
+     * @return ConnectedAssetDetails   connected asset properties
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
      * @throws UserNotAuthorizedException indicates that the user is not authorized to access the asset properties.
      */
-    public abstract ConnectedAssetProperties getConnectedAssetProperties(String userId) throws PropertyServerException,
-                                                                                               UserNotAuthorizedException;
+    public abstract ConnectedAssetDetails getConnectedAssetProperties(String userId) throws PropertyServerException,
+                                                                                            UserNotAuthorizedException;
 
 
     /**

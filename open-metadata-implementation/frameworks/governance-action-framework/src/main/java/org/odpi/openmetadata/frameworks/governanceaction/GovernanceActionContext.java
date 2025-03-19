@@ -2679,7 +2679,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                            null,
                                            assignToGUID,
                                            null,
-                                           null,
+                                           engineActionGUID,
                                            actionTargets);
     }
 

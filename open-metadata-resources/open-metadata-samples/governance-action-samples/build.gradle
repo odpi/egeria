@@ -11,6 +11,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     compileOnly project(':open-metadata-implementation:frameworks:survey-action-framework')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')

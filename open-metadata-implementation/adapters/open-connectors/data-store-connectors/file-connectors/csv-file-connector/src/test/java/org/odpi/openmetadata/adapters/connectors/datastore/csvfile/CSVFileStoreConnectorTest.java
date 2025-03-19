@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -81,9 +81,9 @@ public class CSVFileStoreConnectorTest
     }
 
 
-    private ConnectionProperties getConnectionProperties(String   fileName)
+    private ConnectionDetails getConnectionProperties(String   fileName)
     {
-        return new ConnectionProperties(getConnection(fileName));
+        return new ConnectionDetails(getConnection(fileName));
     }
 
 
@@ -186,9 +186,9 @@ public class CSVFileStoreConnectorTest
 
 
             connectionBean.setConfigurationProperties(configurationProperties);
-            ConnectionProperties connectionProperties = new ConnectionProperties(connectionBean);
+            ConnectionDetails connectionDetails = new ConnectionDetails(connectionBean);
 
-            connector.initialize(UUID.randomUUID().toString(), connectionProperties);
+            connector.initialize(UUID.randomUUID().toString(), connectionDetails);
             assertFalse(connector.isActive());
 
             connector.start();

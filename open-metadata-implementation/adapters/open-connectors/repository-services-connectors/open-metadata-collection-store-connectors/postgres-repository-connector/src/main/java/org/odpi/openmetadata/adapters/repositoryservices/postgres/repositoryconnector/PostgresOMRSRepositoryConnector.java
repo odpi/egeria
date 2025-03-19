@@ -18,7 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
-import java.sql.Connection;
 import java.util.Date;
 
 /**
@@ -52,7 +51,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         final String methodName = "setMetadataCollectionId";
 
         super.metadataCollectionId = metadataCollectionId;
-        super.repositoryName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(), connectionProperties.getConfigurationProperties());
+        super.repositoryName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(), connectionDetails.getConfigurationProperties());
 
         if (metadataCollectionId != null)
         {
@@ -126,7 +125,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         auditLog.logMessage(methodName, PostgresAuditCode.STARTING_REPOSITORY.getMessageDefinition(repositoryName, jdbcResourceConnector.getDatabaseName()));
 
         String schemaName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(),
-                                                                 connectionProperties.getConfigurationProperties());
+                                                                 connectionDetails.getConfigurationProperties());
 
         if (schemaName == null)
         {
@@ -251,7 +250,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         final String methodName = "getRepositoryMode";
 
         String repositoryMode = super.getStringConfigurationProperty(PostgresConfigurationProperty.REPOSITORY_MODE.getName(),
-                                                                     connectionProperties.getConfigurationProperties());
+                                                                     connectionDetails.getConfigurationProperties());
 
         if ("readOnly".equals(repositoryMode))
         {
@@ -279,7 +278,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         final String methodName = "getDefaultAsOfTime";
 
         Date defaultAsOfTime = super.getDateConfigurationProperty(PostgresConfigurationProperty.REPOSITORY_MODE.getName(),
-                                                                  connectionProperties.getConfigurationProperties());
+                                                                  connectionDetails.getConfigurationProperties());
 
         if (defaultAsOfTime == null)
         {

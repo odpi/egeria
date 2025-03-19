@@ -58,6 +58,25 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                         "The integration connector continues, looking for another database.",
                         "This is an information message showing that the integration connector is working, but does not need to do any processing on this database."),
 
+
+    /**
+     * POSTGRES-CONNECTOR-0007 - The {0} PostgreSQL Server Connector has been supplied with a friendship connector with GUID {1}
+     */
+    FRIENDSHIP_GUID("POSTGRES-CONNECTOR-0007",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} PostgreSQL Server Connector has been supplied with a friendship connector with GUID {1}",
+                    "The friendship connector is an integration connector that is able to catalog a JDBC database.  Therefore, they will cooperate to synchronize the contents of the PostgreSQL Server with the open metadata ecosystem.",
+                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of the PostgreSQL Server."),
+
+    /**
+     * POSTGRES-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Unity Catalog Server Asset {3} for Unity Catalog (UC) {4}
+     */
+    NEW_CATALOG_TARGET("POSTGRES-CONNECTOR-0009",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to PostgreSQL Database Asset {3} for Database {4}",
+                       "The connector has requested that its friendship connector starts to catalog a new PostgreSQL Database.",
+                       "Verify that the cataloguing starts the next time that the friendship connector refreshes."),
+
     ;
 
     private final String                     logMessageId;

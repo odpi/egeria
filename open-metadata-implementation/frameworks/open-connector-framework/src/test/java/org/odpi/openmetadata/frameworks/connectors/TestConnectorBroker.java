@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.testng.annotations.Test;
@@ -48,7 +48,7 @@ public class TestConnectorBroker
 
         try
         {
-            cb.getConnector((ConnectionProperties)null);
+            cb.getConnector((ConnectionDetails)null);
         }
         catch (ConnectionCheckedException chk)
         {
@@ -92,7 +92,7 @@ public class TestConnectorBroker
     {
         ConnectorBroker cb = new ConnectorBroker();
 
-        ConnectionProperties testConnection = new ConnectionProperties((Connection)null);
+        ConnectionDetails testConnection = new ConnectionDetails((Connection)null);
 
         try
         {
@@ -146,11 +146,11 @@ public class TestConnectorBroker
         testConnection.setQualifiedName("Test.Connection");
         testConnection.setDisplayName("Test");
 
-        ConnectionProperties testConnectionProperties = new ConnectionProperties(testConnection);
+        ConnectionDetails testConnectionDetails = new ConnectionDetails(testConnection);
 
         try
         {
-            cb.getConnector(testConnectionProperties);
+            cb.getConnector(testConnectionDetails);
         }
         catch (ConnectionCheckedException chk)
         {
@@ -398,13 +398,13 @@ public class TestConnectorBroker
         testConnection.setDisplayName("Test");
         testConnection.setConnectorType(testConnType);
 
-        ConnectionProperties testConnectionProperties = new ConnectionProperties(testConnection);
+        ConnectionDetails testConnectionDetails = new ConnectionDetails(testConnection);
 
         ConnectorBroker cb = new ConnectorBroker();
 
         try
         {
-            cb.getConnector(testConnectionProperties);
+            cb.getConnector(testConnectionDetails);
         }
         catch (ConnectionCheckedException chk)
         {
@@ -470,13 +470,13 @@ public class TestConnectorBroker
         testConnection.setDisplayName("Test");
         testConnection.setConnectorType(testConnType);
 
-        ConnectionProperties testConnectionProperties = new ConnectionProperties(testConnection);
+        ConnectionDetails testConnectionDetails = new ConnectionDetails(testConnection);
 
         ConnectorBroker cb = new ConnectorBroker();
 
         try
         {
-            cb.getConnector(testConnectionProperties);
+            cb.getConnector(testConnectionDetails);
         }
         catch (ConnectionCheckedException chk)
         {
@@ -542,11 +542,11 @@ public class TestConnectorBroker
         testConnection.setDisplayName("Test");
         testConnection.setConnectorType(testConnType);
 
-        ConnectionProperties testConnectionProperties = new ConnectionProperties(testConnection);
+        ConnectionDetails testConnectionDetails = new ConnectionDetails(testConnection);
 
         try
         {
-            Connector newConnector = cb.getConnector(testConnectionProperties);
+            Connector newConnector = cb.getConnector(testConnectionDetails);
 
             MockConnector mockConnector = (MockConnector)newConnector;
             assertTrue(mockConnector.getMockConnectorData().contains("This is from the mock connector"));

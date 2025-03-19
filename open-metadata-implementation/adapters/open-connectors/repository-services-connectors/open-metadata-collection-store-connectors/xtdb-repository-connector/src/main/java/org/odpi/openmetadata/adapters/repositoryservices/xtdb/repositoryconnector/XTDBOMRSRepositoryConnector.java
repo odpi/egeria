@@ -87,7 +87,7 @@ public class XTDBOMRSRepositoryConnector extends OMRSRepositoryConnector {
         // Retrieve the configuration from the configurationProperties, and serialise it directly into a .json file
         File configFile = null;
         Map<?, ?> configMap = null;
-        Map<String, Object> configProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configProperties = connectionDetails.getConfigurationProperties();
         if (configProperties != null && !configProperties.isEmpty()) {
             if (configProperties.containsKey(XTDBOMRSRepositoryConnectorProvider.XTDB_CONFIG)) {
                 // JSON-style configuration

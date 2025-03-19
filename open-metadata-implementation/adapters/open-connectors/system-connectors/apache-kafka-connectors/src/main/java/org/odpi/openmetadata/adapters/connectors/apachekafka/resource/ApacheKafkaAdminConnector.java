@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 
 import java.util.Map;
 import java.util.Properties;
@@ -87,15 +87,15 @@ public class ApacheKafkaAdminConnector extends ConnectorBase implements AuditLog
 
         final String methodName = "start";
         
-        if (connectionProperties.getConnectionName() != null)
+        if (connectionDetails.getConnectionName() != null)
         {
-            connectorName = connectionProperties.getConnectionName();
+            connectorName = connectionDetails.getConnectionName();
         }
 
         /*
          * Retrieve the configuration
          */
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if (endpoint != null)
         {

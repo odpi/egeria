@@ -36,7 +36,7 @@ Connection is a bean implementation of the connection used in REST API requests 
 set up and retrieved.
 
 ```
-org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties
+org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails
 ```
 
 ConnectionProperties is a read-only wrapper for the Connection properties that is used in client interfaces that do not allow the 

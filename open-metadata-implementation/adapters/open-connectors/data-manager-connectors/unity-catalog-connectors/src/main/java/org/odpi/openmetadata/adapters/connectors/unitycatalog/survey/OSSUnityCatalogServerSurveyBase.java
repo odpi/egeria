@@ -49,9 +49,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      */
     protected void setFinalAnalysisStep() throws ConnectorCheckedException
     {
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
+            Object finalAnalysisStepPropertyObject = connectionDetails.getConfigurationProperties().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
             if (finalAnalysisStepPropertyObject != null)
             {
@@ -122,9 +122,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 
         String catalogName = null;
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            Object catalogNamePropertyObject = connectionProperties.getConfigurationProperties().get(UnityCatalogConfigurationProperty.CATALOG_NAME.getName());
+            Object catalogNamePropertyObject = connectionDetails.getConfigurationProperties().get(UnityCatalogConfigurationProperty.CATALOG_NAME.getName());
 
             if (catalogNamePropertyObject != null)
             {
@@ -166,9 +166,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 
         String schemaName = null;
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            Object schemaNamePropertyObject = connectionProperties.getConfigurationProperties().get(UnityCatalogConfigurationProperty.SCHEMA_NAME.getName());
+            Object schemaNamePropertyObject = connectionDetails.getConfigurationProperties().get(UnityCatalogConfigurationProperty.SCHEMA_NAME.getName());
 
             if (schemaNamePropertyObject != null)
             {

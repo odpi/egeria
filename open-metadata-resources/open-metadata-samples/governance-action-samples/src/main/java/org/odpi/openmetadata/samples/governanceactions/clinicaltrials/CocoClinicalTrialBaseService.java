@@ -3,11 +3,13 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
@@ -209,4 +211,77 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                               properties);
     }
 
+
+    /**
+     * Link the certification type to the schema.
+     *
+     * @param dataQualityCertificationTypeGUID certification type
+     * @param sandboxSchemaGUID database schema for the sandbox
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    protected void addGovernedByRelationship(String dataQualityCertificationTypeGUID,
+                                             String sandboxSchemaGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                                              dataQualityCertificationTypeGUID,
+                                                                              sandboxSchemaGUID,
+                                                                              null,
+                                                                              null,
+                                                                              null);
+    }
+
+
+    /**
+     * Create a process to represent the Airflow DAG that populates the sandbox.
+     *
+     * @param airflowDAGName name
+     * @return guid
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    protected String createPopulateSandboxDAG(String airflowDAGName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        "Apache Airflow DAG:" + airflowDAGName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.NAME.name,
+                                                      airflowDAGName);
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                      DeployedImplementationType.AIRFLOW_DAG.getDeployedImplementationType());
+
+        return governanceContext.getOpenMetadataStore().createMetadataElementInStore(DeployedImplementationType.AIRFLOW_DAG.getAssociatedTypeName(),
+                                                                                     ElementStatus.ACTIVE,
+                                                                                     properties);
+    }
+
+
+    /**
+     * Create the sandbox database schema - it is assumed that details of the schema are passed in the request parameters.
+     *
+     * @return guid
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    protected String createSandboxSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                                          null,
+                                                                                          true,
+                                                                                          null,
+                                                                                          null,
+                                                                                          PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID(),
+                                                                                          null,
+                                                                                          governanceContext.getRequestParameters(),
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          true);
+    }
 }

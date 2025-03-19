@@ -75,11 +75,6 @@ and the [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that ru
 implementation of the metadata exchange and federation capabilities for a metadata
 repository that supports the open metadata standards.
 
-* **[server-chassis](platform-chassis)** - the server chassis is the base component for the
-[OMAG Server Runtime](https://egeria-project.org/concepts/omag-server-runtime/).
-This minimal runtime supports the execution of a single OMAG Server and is set up to run in a cloud-native manner.
-It includes the web server that receives the REST API requests for the OMAG Server that runs on it.
-
 * **[server-operations](server-operations)** - the server operations supports the starting and shutdown of
 [OMAG Servers](https://egeria-project.org/concepts/omag-server/) on either the OMAG Server Platform or 
 OMAG Server Runtime.

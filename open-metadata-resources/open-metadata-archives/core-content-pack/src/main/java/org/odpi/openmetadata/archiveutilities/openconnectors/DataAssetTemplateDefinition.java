@@ -50,6 +50,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                        PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                        PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                null,
+                               PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                                PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -72,6 +73,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                      PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
                                      PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                              getPostgresSchemaConfigurationProperties(),
+                             PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                              SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                              new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                              PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -94,6 +96,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          null,
                          null,
                          null,
+                         null,
                          KafkaPlaceholderProperty.getKafkaTopicPlaceholderPropertyTypes(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -107,6 +110,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          null,
                          new BasicFolderProvider().getConnectorType().getGUID(),
                          PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder(),
+                         null,
                          null,
                          null,
                          null,
@@ -130,6 +134,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          null,
                          null,
                          null,
+                         null,
                          PlaceholderProperty.getFolderPlaceholderPropertyTypes(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -143,6 +148,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                   null,
                   new BasicFileStoreProvider().getConnectorType().getGUID(),
                   PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                  null,
                   null,
                   null,
                   null,
@@ -166,6 +172,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                        null,
                        null,
                        null,
+                       null,
                        PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                        ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -179,6 +186,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                       null,
                       new CSVFileStoreProvider().getConnectorType().getGUID(),
                       PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                      null,
                       null,
                       null,
                       null,
@@ -202,6 +210,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                        null,
                        null,
                        null,
+                       null,
                        PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                        ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -215,6 +224,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                        null,
                        new BasicFileStoreProvider().getConnectorType().getGUID(),
                        PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                       null,
                        null,
                        null,
                        null,
@@ -238,6 +248,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                           null,
                           null,
                           null,
+                          null,
                           PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                           ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -251,6 +262,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               null,
                               new BasicFileStoreProvider().getConnectorType().getGUID(),
                               PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                              null,
                               null,
                               null,
                               null,
@@ -274,6 +286,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                       null,
                       null,
                       null,
+                      null,
                       PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                       ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -287,6 +300,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                       null,
                       new BasicFileStoreProvider().getConnectorType().getGUID(),
                       PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                      null,
                       null,
                       null,
                       null,
@@ -310,6 +324,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              null,
                              null,
+                             null,
                              PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                              ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -323,6 +338,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
                              PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                             null,
                              null,
                              null,
                              null,
@@ -346,6 +362,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                      null,
                                      null,
                                      null,
+                                     null,
                                      PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                                      ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -359,6 +376,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               null,
                               new BasicFileStoreProvider().getConnectorType().getGUID(),
                               PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                              null,
                               null,
                               null,
                               null,
@@ -382,6 +400,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               null,
                               null,
                               null,
+                              null,
                               PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                               ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -395,6 +414,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                           null,
                           new BasicFileStoreProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                          null,
                           null,
                           null,
                           null,
@@ -418,6 +438,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                            null,
                            null,
                            null,
+                           null,
                            PlaceholderProperty.getDataFilesPlaceholderPropertyTypes(),
                            ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -431,6 +452,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                           PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                           new BasicFileStoreProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                          null,
                           null,
                           null,
                           null,
@@ -454,6 +476,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                               null,
                               null,
                               null,
+                              null,
                               PlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes(),
                               ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -467,6 +490,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                         PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                         new BasicFileStoreProvider().getConnectorType().getGUID(),
                         PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                        null,
                         null,
                         null,
                         null,
@@ -490,6 +514,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              null,
                              null,
+                             null,
                              PlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes(),
                              ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -503,6 +528,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                          new BasicFileStoreProvider().getConnectorType().getGUID(),
                          PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                         null,
                          null,
                          null,
                          null,
@@ -526,6 +552,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              null,
                              null,
+                             null,
                              PlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes(),
                              ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -539,6 +566,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                              new BasicFileStoreProvider().getConnectorType().getGUID(),
                              PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                             null,
                              null,
                              null,
                              null,
@@ -637,6 +665,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     private final String                               connectorTypeGUID;
     private final String                               networkAddress;
     private final Map<String, Object>                  configurationProperties;
+    private final String                               secretsCollectionName;
     private final String                               secretsStorePurpose;
     private final String                               secretsStoreConnectorTypeGUID;
     private final String                               secretsStoreFileName;
@@ -658,6 +687,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
      * @param encodingLanguage           language used to encode the contents of the file
      * @param connectorTypeGUID connector type to link to the connection
      * @param networkAddress network address for the endpoint
+     * @param secretsCollectionName name of collection of secrets to use in the secrets store
      * @param secretsStorePurpose              type of authentication information provided by the secrets store
      * @param secretsStoreConnectorTypeGUID    optional connector type for secrets store
      * @param secretsStoreFileName             location of the secrets store
@@ -677,6 +707,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                 String                               connectorTypeGUID,
                                 String                               networkAddress,
                                 Map<String, Object>                  configurationProperties,
+                                String                               secretsCollectionName,
                                 String                               secretsStorePurpose,
                                 String                               secretsStoreConnectorTypeGUID,
                                 String                               secretsStoreFileName,
@@ -695,6 +726,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
         this.connectorTypeGUID             = connectorTypeGUID;
         this.networkAddress                = networkAddress;
         this.configurationProperties       = configurationProperties;
+        this.secretsCollectionName         = secretsCollectionName;
         this.secretsStorePurpose           = secretsStorePurpose;
         this.secretsStoreConnectorTypeGUID = secretsStoreConnectorTypeGUID;
         this.secretsStoreFileName          = secretsStoreFileName;
@@ -869,6 +901,17 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     public Map<String, Object> getConfigurationProperties()
     {
         return configurationProperties;
+    }
+
+
+    /**
+     * Return the name of the secrets collection to use to locate this asset's secrets.
+     *
+     * @return name
+     */
+    public String getSecretsCollectionName()
+    {
+        return secretsCollectionName;
     }
 
 

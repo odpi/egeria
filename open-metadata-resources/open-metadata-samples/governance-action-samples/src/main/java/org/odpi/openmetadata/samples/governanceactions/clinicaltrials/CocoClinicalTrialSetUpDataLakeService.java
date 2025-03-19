@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialInformationSupplyChain;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
@@ -54,12 +55,15 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         String dataLakeSchemaDescription    = "Example clinical trial used for education and testing of governance procedures.";
         String serverNetworkAddress         = null;
 
+        String dataQualityCertificationTypeGUID = null;
+
         String dataLakeVolumePathName       = null;
         String dataLakeVolumeName           = "weekly_measurements";
         String dataLakeVolumeDescription    = "Weekly measurements for clinical trial";
         String schemaTemplateGUID           = "5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e";
         String volumeTemplateGUID           = "92d2d2dc-0798-41f0-9512-b10548d312b7";
         String lastUpdateConnectorGUID      = null;
+        String airflowDAGName               = null;
 
         String hospitalOnboardingProcessGUID = null;
 
@@ -67,21 +71,6 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
         try
         {
-            /*
-             * Retrieve template information from the request parameters.
-             */
-            if (governanceContext.getRequestParameters() != null)
-            {
-                if (governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName()) != null)
-                {
-                    volumeTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
-                }
-                if (governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName()) != null)
-                {
-                    schemaTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName());
-                }
-            }
-
             /*
              * Retrieve the values needed from the action targets.
              */
@@ -101,6 +90,10 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                  OpenMetadataProperty.NAME.name,
                                                                                  actionTargetElement.getTargetElement().getElementProperties(),
                                                                                  methodName);
+                        }
+                        else if (CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            dataQualityCertificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                         else if (CocoClinicalTrialActionTarget.CATALOG.getName().equals(actionTargetElement.getActionTargetName()))
                         {
@@ -154,6 +147,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 schemaTemplateGUID     = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName());
                 volumeTemplateGUID     = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
 
+                airflowDAGName = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.AIRFLOW_DAG_NAME.getName());
+
                 dataLakeSchemaName        = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_NAME.getName());
                 dataLakeSchemaDescription = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_DESCRIPTION.getName());
                 dataLakeVolumePathName    = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_PATH_NAME.getName());
@@ -167,6 +162,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
             if ((clinicalTrialId == null) ||
                     (clinicalTrialName == null) ||
+                    (dataQualityCertificationTypeGUID == null) ||
+                    (airflowDAGName == null) ||
                     (dataLakeCatalogQualifiedGUID == null) ||
                     (dataLakeCatalogName == null) ||
                     (serverNetworkAddress == null) ||
@@ -190,6 +187,16 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getName());
+                }
+                if ((dataQualityCertificationTypeGUID == null) || (dataQualityCertificationTypeGUID.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
+                }
+                if ((airflowDAGName == null) || (airflowDAGName.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.AIRFLOW_DAG_NAME.getName());
                 }
                 if ((dataLakeCatalogName == null) || (dataLakeCatalogName.isBlank()))
                 {
@@ -233,31 +240,91 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
             }
             else
             {
-                String schemaGUID = this.createSchema(dataLakeCatalogQualifiedGUID,
-                                                      dataLakeCatalogQualifiedName,
-                                                      schemaTemplateGUID,
-                                                      serverNetworkAddress,
-                                                      dataLakeCatalogQualifiedGUID,
-                                                      dataLakeCatalogName,
-                                                      dataLakeSchemaName,
-                                                      dataLakeSchemaDescription);
+                /*
+                 * Create a schema in Unity Catalog
+                 */
+                String ucSchemaGUID = this.createUCSchema(dataLakeCatalogQualifiedGUID,
+                                                          dataLakeCatalogQualifiedName,
+                                                          schemaTemplateGUID,
+                                                          serverNetworkAddress,
+                                                          dataLakeCatalogQualifiedGUID,
+                                                          dataLakeCatalogName,
+                                                          dataLakeSchemaName,
+                                                          dataLakeSchemaDescription);
 
-                String volumeAssetGUID = this.createVolume(dataLakeCatalogQualifiedGUID,
-                                                           dataLakeCatalogQualifiedName,
-                                                           volumeTemplateGUID,
-                                                           serverNetworkAddress,
-                                                           dataLakeCatalogName,
-                                                           schemaGUID,
-                                                           dataLakeSchemaName,
-                                                           dataLakeVolumeName,
-                                                           dataLakeVolumeDescription + ": " + clinicalTrialId + " - " + clinicalTrialName,
-                                                           dataLakeVolumePathName);
+                /*
+                 * Create a volume in Unity Catalog
+                 */
+                String ucVolumeAssetGUID = this.createVolume(dataLakeCatalogQualifiedGUID,
+                                                             dataLakeCatalogQualifiedName,
+                                                             volumeTemplateGUID,
+                                                             serverNetworkAddress,
+                                                             dataLakeCatalogName,
+                                                             ucSchemaGUID,
+                                                             dataLakeSchemaName,
+                                                             dataLakeVolumeName,
+                                                             dataLakeVolumeDescription + ": " + clinicalTrialId + " - " + clinicalTrialName,
+                                                             dataLakeVolumePathName);
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), volumeAssetGUID);
+                /*
+                 * Link the volume to the data lake folder solution component.
+                 */
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), ucVolumeAssetGUID);
 
-                monitorVolumeAsset(lastUpdateConnectorGUID, volumeAssetGUID, dataLakeCatalogQualifiedName);
+                monitorVolumeAsset(lastUpdateConnectorGUID, ucVolumeAssetGUID, dataLakeCatalogQualifiedName);
 
                 passOnDestinationFolder(dataLakeVolumePathName, hospitalOnboardingProcessGUID);
+
+                /*
+                 * Create the database schema for the sandbox
+                 */
+                String sandboxSchemaGUID = createSandboxSchema();
+
+                /*
+                 * Link the sandbox schema to the sandbox solution component
+                 */
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), ucVolumeAssetGUID);
+
+                /*
+                 * Indicate that the sandbox is governed by the data quality certification.
+                 */
+                addGovernedByRelationship(dataQualityCertificationTypeGUID, sandboxSchemaGUID);
+
+                /*
+                 * Create a process to represent the Airflow DAG
+                 */
+                String populateSandboxGUID = createPopulateSandboxDAG(airflowDAGName);
+
+                /*
+                 * Link the airflow DAG to the solution component
+                 */
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID);
+
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                            ucVolumeAssetGUID,
+                                                            ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName(),
+                                                            "Copy Certified Data",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            populateSandboxGUID);
+
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                                                            populateSandboxGUID,
+                                                            ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName(),
+                                                            "Save Certified Data",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            sandboxSchemaGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -303,14 +370,14 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
      * @throws PropertyServerException problem with repository
      * @throws UserNotAuthorizedException access problem
      */
-    private String createSchema(String  externalSourceGUID,
-                                String  externalSourceName,
-                                String  templateGUID,
-                                String  serverNetworkAddress,
-                                String  catalogGUID,
-                                String  catalogName,
-                                String  schemaName,
-                                String  description) throws InvalidParameterException,
+    private String createUCSchema(String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  templateGUID,
+                                  String  serverNetworkAddress,
+                                  String  catalogGUID,
+                                  String  catalogName,
+                                  String  schemaName,
+                                  String  description) throws InvalidParameterException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
     {

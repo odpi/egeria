@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -75,14 +75,14 @@ public class TestFileBasedRegistryStoreConnector
     }
 
 
-    private ConnectionProperties getGoodConnectionProperties()
+    private ConnectionDetails getGoodConnectionProperties()
     {
         Connection  connection = getGoodConnection();
 
-        return new ConnectionProperties(connection);
+        return new ConnectionDetails(connection);
     }
 
-    private ConnectionProperties getNullEndpointConnectionProperties()
+    private ConnectionDetails getNullEndpointConnectionProperties()
     {
         Connection  connection = getGoodConnection();
         Endpoint    endpoint   = connection.getEndpoint();
@@ -90,7 +90,7 @@ public class TestFileBasedRegistryStoreConnector
         endpoint.setAddress(null);
         connection.setEndpoint(endpoint);
 
-        return new ConnectionProperties(connection);
+        return new ConnectionDetails(connection);
     }
 
 

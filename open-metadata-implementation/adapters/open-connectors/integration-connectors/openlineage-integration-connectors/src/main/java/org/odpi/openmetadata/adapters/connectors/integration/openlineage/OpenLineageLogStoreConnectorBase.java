@@ -10,9 +10,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
@@ -121,23 +121,23 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @param connectionDetails   POJO for the configuration used to create the connector.
      */
     @Override
     public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+                           ConnectionDetails connectionDetails)
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.initialize(connectorInstanceId, connectionDetails);
 
-        if (connectionProperties != null)
+        if (connectionDetails != null)
         {
-            if (connectionProperties.getDisplayName() != null)
+            if (connectionDetails.getDisplayName() != null)
             {
-                distributorName = connectionProperties.getDisplayName();
+                distributorName = connectionDetails.getDisplayName();
             }
-            else if (connectionProperties.getConnectorType() != null)
+            else if (connectionDetails.getConnectorType() != null)
             {
-                ConnectorTypeProperties connectorType = connectionProperties.getConnectorType();
+                ConnectorTypeDetails connectorType = connectionDetails.getConnectorType();
 
                 if (connectorType.getDisplayName() != null)
                 {
@@ -158,7 +158,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
     {
         super.start();
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        EndpointDetails endpoint = connectionDetails.getEndpoint();
 
         if ((endpoint != null) && (endpoint.getAddress() != null))
         {

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtla
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public abstract class AtlasRegisteredIntegrationModuleBase extends AtlasIntegrat
      *
      * @param connectorName name of this connector
      * @param moduleName name of this module
-     * @param connectionProperties supplied connector used to configure the connector
+     * @param connectionDetails supplied connector used to configure the connector
      * @param auditLog logging destination
      * @param myContext integration context assigned to the connector
      * @param targetRootURL host name and port of Apache Atlas
@@ -39,7 +39,7 @@ public abstract class AtlasRegisteredIntegrationModuleBase extends AtlasIntegrat
      */
     public AtlasRegisteredIntegrationModuleBase(String                   connectorName,
                                                 String                   moduleName,
-                                                ConnectionProperties     connectionProperties,
+                                                ConnectionDetails connectionDetails,
                                                 AuditLog                 auditLog,
                                                 CatalogIntegratorContext myContext,
                                                 String                   targetRootURL,
@@ -48,7 +48,7 @@ public abstract class AtlasRegisteredIntegrationModuleBase extends AtlasIntegrat
                                                 String[]                 supportedEntityTypes,
                                                 String[]                 listenForTypes) throws UserNotAuthorizedException
     {
-        super(connectorName, moduleName, connectionProperties, auditLog, myContext, targetRootURL, atlasClient, embeddedConnectors);
+        super(connectorName, moduleName, connectionDetails, auditLog, myContext, targetRootURL, atlasClient, embeddedConnectors);
 
         if (supportedEntityTypes == null)
         {

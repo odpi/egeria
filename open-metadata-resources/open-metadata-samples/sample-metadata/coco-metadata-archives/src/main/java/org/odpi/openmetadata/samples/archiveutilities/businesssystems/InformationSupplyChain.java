@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialInformationSupplyChain;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,7 @@ public enum InformationSupplyChain
      * Delivering data relating to a clinical trial from the hospitals to the Coco Researchers.
      */
     CLINICAL_TRIALS_TREATMENT_VALIDATION("1f71e403-1187-4f03-a1dd-ae7dc105f06f",
-                                         "Clinical Trial Treatment Validation",
+                                         ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName(),
                                          "Delivering data relating to a clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
                                          ScopeDefinition.WITHIN_PROJECT,
                                          new String[]
@@ -46,7 +47,7 @@ public enum InformationSupplyChain
      * Delivering the data necessary to add a person as a subject in a clinical trial
      */
     CLINICAL_TRIAL_SUBJECT_ONBOARDING("39a035f0-3b2b-45fe-adb8-ee8a19581f6a",
-                                      "Clinical Trial Subject Onboarding",
+                                      ClinicalTrialInformationSupplyChain.CLINICAL_TRIAL_SUBJECT_ONBOARDING.getDisplayName(),
                                       "Delivering the data necessary to add a person as a subject in a clinical trial.",
                                       ScopeDefinition.WITHIN_PROJECT,
                                       new String[]

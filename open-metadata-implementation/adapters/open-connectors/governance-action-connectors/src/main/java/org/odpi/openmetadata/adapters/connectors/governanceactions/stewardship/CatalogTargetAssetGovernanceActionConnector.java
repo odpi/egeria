@@ -152,9 +152,9 @@ public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernan
     {
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        if (connectionProperties.getConfigurationProperties() != null)
+        if (connectionDetails.getConfigurationProperties() != null)
         {
-            configurationProperties.putAll(connectionProperties.getConfigurationProperties());
+            configurationProperties.putAll(connectionDetails.getConfigurationProperties());
         }
 
         if (governanceContext.getRequestParameters() != null)

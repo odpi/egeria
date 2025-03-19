@@ -86,7 +86,7 @@ public enum UCAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} Unity Catalog Connector has been supplied with a friendship connector with GUID {1}",
                     "The friendship connector is an integration connector that is able to synchronize the contents inside a Unity Catalog (UC) connector.  Therefore, they will cooperate to synchronize the contents of the Unity Catalog with the open metadata ecosystem.",
-                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of Unity Catalog"),
+                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of Unity Catalog."),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0008 - The {0} OSS Unity Inside Catalog Synchronizer Connector only works with catalog targets
