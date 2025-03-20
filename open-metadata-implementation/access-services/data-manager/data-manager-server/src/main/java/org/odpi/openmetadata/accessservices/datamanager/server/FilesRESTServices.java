@@ -528,7 +528,6 @@ public class FilesRESTServices
                                             requestBody.getArchiveProcess(),
                                             requestBody.getArchiveProperties(),
                                              false,
-                                             false,
                                              new Date(),
                                             methodName);
             }
@@ -880,7 +879,6 @@ public class FilesRESTServices
                                                requestBody.getArchiveDate(),
                                                requestBody.getArchiveProcess(),
                                                requestBody.getArchiveProperties(),
-                                               false,
                                                false,
                                                new Date(),
                                                methodName);

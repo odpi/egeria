@@ -120,7 +120,7 @@ public class ConnectionDetails extends AssetReferenceable
      * @param connectorType connector type to replace in the connection
      */
     public ConnectionDetails(ConnectionDetails templateConnection,
-                             ConnectorType        connectorType)
+                             ConnectorType     connectorType)
     {
         super(templateConnection);
 
@@ -138,6 +138,43 @@ public class ConnectionDetails extends AssetReferenceable
         }
 
         this.connectionBean.setConnectorType(connectorType);
+    }
+
+
+    /**
+     * Copy/clone Constructor to return a copy of a connection object but with a replacement network address
+     * found in the attached Endpoint.
+     *
+     * @param templateConnection template object to copy.
+     * @param networkAddress network address to replace in the connection's endpoint
+     */
+    public ConnectionDetails(ConnectionDetails templateConnection,
+                             String            networkAddress)
+    {
+        super(templateConnection);
+
+        if (templateConnection == null)
+        {
+            this.connectionBean = new Connection();
+        }
+        else if (templateConnection instanceof VirtualConnectionDetails virtualConnectionDetails)
+        {
+            this.connectionBean = new VirtualConnection(virtualConnectionDetails.getConnectionBean());
+        }
+        else
+        {
+            this.connectionBean = new Connection(templateConnection.getConnectionBean());
+        }
+
+        Endpoint endpoint = this.getEndpoint().getEndpointBean();
+
+        if (endpoint == null)
+        {
+            endpoint = new Endpoint();
+        }
+        endpoint.setAddress(networkAddress);
+
+        this.connectionBean.setEndpoint(endpoint);
     }
 
 

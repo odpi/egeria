@@ -3,10 +3,13 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
@@ -19,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,6 +34,8 @@ import java.util.List;
  */
 public class PostgresServerSurveyActionService extends SurveyActionServiceConnector
 {
+    private final List<JDBCResourceConnector> jdbcResourceConnectors = new ArrayList<>();
+
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
      *
@@ -92,15 +98,46 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             }
             else
             {
-                PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(validDatabases,
-                                                                                                   jdbcConnection,
+                List<String> excludedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                     connectionDetails.getConfigurationProperties(),
+                                                                                     Collections.singletonList("postgres"));
+
+                List<String> includedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                     connectionDetails.getConfigurationProperties());
+
+                List<String> surveyDatabases = new ArrayList<>();
+
+                for (String databaseName : validDatabases)
+                {
+                    if (surveyContext.elementShouldBeSurveyed(databaseName, excludedDatabases, includedDatabases))
+                    {
+                        surveyDatabases.add(databaseName);
+                    }
+                }
+
+                PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(surveyDatabases,
                                                                                                    this);
 
-                List<Annotation> databaseStatistics = statsExtractor.getDatabaseStatistics();
+                statsExtractor.getDatabaseStatistics(jdbcConnection);
 
-                if (databaseStatistics != null)
+                jdbcConnection.commit();
+
+                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
+
+                for (String databaseName : surveyDatabases)
                 {
-                    for (Annotation annotation : databaseStatistics)
+                    java.sql.Connection databaseSpecificConnection = this.getDatabaseConnection(assetConnector, databaseName);
+
+                    if (databaseSpecificConnection != null)
+                    {
+                        statsExtractor.getSchemaStatistics(databaseName, databaseSpecificConnection);
+                    }
+                }
+
+                List<Annotation> annotations = statsExtractor.getAnnotations();
+                if (annotations != null)
+                {
+                    for (Annotation annotation : annotations)
                     {
                         if (super.isActive())
                         {
@@ -109,8 +146,6 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                     }
                 }
             }
-
-            jdbcConnection.commit();
         }
         catch (ConnectorCheckedException error)
         {
@@ -119,6 +154,72 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
         catch (Exception error)
         {
             super.handleUnexpectedException(methodName, error);
+        }
+    }
+
+
+    /**
+     * Return a JDBC connection that connects to a specific database.  This code is needed
+     * because the databases are not catalogued at this time so we are creating connections to
+     * each database based on the name of the database and the databaseURL used to connect to the
+     * "postgres" database which describes the whole server.
+     *
+     * @param databaseName name of the database
+     * @return jdbc connection
+     */
+    private java.sql.Connection getDatabaseConnection(JDBCResourceConnector serverConnector,
+                                                      String databaseName)
+    {
+        final String methodName = "getDatabaseConnection";
+
+        try
+        {
+            String serverNetworkAddress = serverConnector.getConnection().getEndpoint().getAddress();
+            String databaseSpecificURL  = serverNetworkAddress.replace("/postgres", "/" + databaseName);
+
+            ConnectionDetails databaseConnectionDetails = new ConnectionDetails(serverConnector.getConnection(),
+                                                                                databaseSpecificURL);
+
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
+
+            JDBCResourceConnector newConnector = (JDBCResourceConnector) connectorBroker.getConnector(databaseConnectionDetails);
+
+            newConnector.start();
+
+            jdbcResourceConnectors.add(newConnector);
+
+            return newConnector.getDataSource().getConnection();
+        }
+        catch (Exception error)
+        {
+            logExceptionRecord(methodName,
+                               PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(surveyActionServiceName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()),
+                               error);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    @Override
+    public synchronized void disconnect() throws ConnectorCheckedException
+    {
+        super.disconnect();
+
+        for (JDBCResourceConnector resourceConnector: jdbcResourceConnectors)
+        {
+            if ((resourceConnector != null) && (resourceConnector.isActive()))
+            {
+                resourceConnector.disconnect();
+            }
         }
     }
 }

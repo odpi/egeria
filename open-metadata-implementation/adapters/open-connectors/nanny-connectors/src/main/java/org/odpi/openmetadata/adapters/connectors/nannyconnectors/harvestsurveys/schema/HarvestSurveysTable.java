@@ -91,7 +91,7 @@ public enum HarvestSurveysTable implements PostgreSQLTable
     /**
      * Details of a Data Manager Catalog survey.
      */
-    RELATIONAL_DATA_MANAGER_MEASUREMENTS("sr_relational_manager_measurements",
+    RELATIONAL_DATA_MANAGER_MEASUREMENTS("sr_relational_data_manager_measurements",
                               "Details of the measurements collected by a survey of a relational data manager.",
                               new HarvestSurveysColumn[]{
                                       HarvestSurveysColumn.SURVEY_REPORT_GUID,
@@ -104,6 +104,8 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                                       HarvestSurveysColumn.CREATION_TIME,
                                       HarvestSurveysColumn.SCHEMA_COUNT,
                                       HarvestSurveysColumn.TABLE_COUNT,
+                                      HarvestSurveysColumn.VIEW_COUNT,
+                                      HarvestSurveysColumn.MAT_VIEW_COUNT,
                                       HarvestSurveysColumn.COLUMN_COUNT,
                                       HarvestSurveysColumn.DATA_SIZE,
                                       HarvestSurveysColumn.ROWS_FETCHED,
@@ -113,6 +115,79 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                                       HarvestSurveysColumn.SESSION_TIME,
                                       HarvestSurveysColumn.ACTIVE_TIME,
                                       HarvestSurveysColumn.LAST_STATS_RESET}),
+
+    /**
+     * Details of a Relational Schema.
+     */
+    RELATIONAL_SCHEMA_MEASUREMENTS("sr_relational_schema_measurements",
+                                         "Details of the measurements collected by a survey of a relational schema.",
+                                         new HarvestSurveysColumn[]{
+                                                 HarvestSurveysColumn.SURVEY_REPORT_GUID,
+                                                 HarvestSurveysColumn.SUBJECT_GUID,
+                                                 HarvestSurveysColumn.ANNOTATION_GUID,
+                                                 HarvestSurveysColumn.RESOURCE_NAME},
+                                         new HarvestSurveysColumn[]{
+                                                 HarvestSurveysColumn.METADATA_COLLECTION_ID,
+                                                 HarvestSurveysColumn.SUBJECT_TYPE,
+                                                 HarvestSurveysColumn.CREATION_TIME,
+                                                 HarvestSurveysColumn.DISPLAY_NAME,
+                                                 HarvestSurveysColumn.TABLE_COUNT,
+                                                 HarvestSurveysColumn.VIEW_COUNT,
+                                                 HarvestSurveysColumn.MAT_VIEW_COUNT,
+                                                 HarvestSurveysColumn.COLUMN_COUNT,
+                                                 HarvestSurveysColumn.DATA_SIZE}),
+
+    /**
+     * Details of a Relational Table.
+     */
+    RELATIONAL_TABLE_MEASUREMENTS("sr_relational_table_measurements",
+                                   "Details of the measurements collected by a survey of a relational table.",
+                                   new HarvestSurveysColumn[]{
+                                           HarvestSurveysColumn.SURVEY_REPORT_GUID,
+                                           HarvestSurveysColumn.SUBJECT_GUID,
+                                           HarvestSurveysColumn.ANNOTATION_GUID,
+                                           HarvestSurveysColumn.RESOURCE_NAME},
+                                   new HarvestSurveysColumn[]{
+                                           HarvestSurveysColumn.METADATA_COLLECTION_ID,
+                                           HarvestSurveysColumn.SUBJECT_TYPE,
+                                           HarvestSurveysColumn.CREATION_TIME,
+                                           HarvestSurveysColumn.DISPLAY_NAME,
+                                           HarvestSurveysColumn.DATA_SIZE,
+                                           HarvestSurveysColumn.TABLE_TYPE,
+                                           HarvestSurveysColumn.COLUMN_COUNT,
+                                           HarvestSurveysColumn.ROWS_INSERTED,
+                                           HarvestSurveysColumn.ROWS_UPDATED,
+                                           HarvestSurveysColumn.ROWS_DELETED,
+                                           HarvestSurveysColumn.RESOURCE_OWNER,
+                                           HarvestSurveysColumn.IS_POPULATED,
+                                           HarvestSurveysColumn.HAS_INDEXES,
+                                           HarvestSurveysColumn.HAS_RULES,
+                                           HarvestSurveysColumn.HAS_TRIGGERS,
+                                           HarvestSurveysColumn.HAS_ROW_SECURITY,
+                                           HarvestSurveysColumn.QUERY_DEFINITION}),
+
+    /**
+     * Details of a Relational Column.
+     */
+    RELATIONAL_COLUMN_MEASUREMENTS("sr_relational_column_measurements",
+                                  "Details of the measurements collected by a survey of a relational column.",
+                                  new HarvestSurveysColumn[]{
+                                          HarvestSurveysColumn.SURVEY_REPORT_GUID,
+                                          HarvestSurveysColumn.SUBJECT_GUID,
+                                          HarvestSurveysColumn.ANNOTATION_GUID,
+                                          HarvestSurveysColumn.RESOURCE_NAME},
+                                  new HarvestSurveysColumn[]{
+                                          HarvestSurveysColumn.METADATA_COLLECTION_ID,
+                                          HarvestSurveysColumn.SUBJECT_TYPE,
+                                          HarvestSurveysColumn.CREATION_TIME,
+                                          HarvestSurveysColumn.DISPLAY_NAME,
+                                          HarvestSurveysColumn.DATA_TYPE,
+                                          HarvestSurveysColumn.DATA_SIZE,
+                                          HarvestSurveysColumn.NOT_NULL,
+                                          HarvestSurveysColumn.AVERAGE_WIDTH,
+                                          HarvestSurveysColumn.NUMBER_OF_DISTINCT_VALUES,
+                                          HarvestSurveysColumn.MOST_COMMON_VALUES,
+                                          HarvestSurveysColumn.MOST_COMMON_VALUES_FREQUENCY}),
 
     FILE_MEASUREMENTS("sr_file_measurements",
                       "Details of individual files surveyed.",

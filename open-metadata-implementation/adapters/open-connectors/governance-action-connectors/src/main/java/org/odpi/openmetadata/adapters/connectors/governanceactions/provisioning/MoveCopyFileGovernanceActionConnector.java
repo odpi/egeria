@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -208,9 +209,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         super.start();
 
-        List<String>     outputGuards = new ArrayList<>();
-        CompletionStatus completionStatus;
-        String           completionMessage = null;
+        List<String>              outputGuards = new ArrayList<>();
+        CompletionStatus          completionStatus;
+        AuditLogMessageDefinition completionMessage = null;
 
         if (MoveCopyFileRequestType.MOVE_FILE.requestType.equals(governanceContext.getRequestType()))
         {
@@ -459,19 +460,17 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
         catch (Exception  error)
         {
-            super.logExceptionRecord(methodName,
-                                     GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                     error.getClass().getName(),
-                                                                                                                     sourceFileName,
-                                                                                                                     destinationFolderName,
-                                                                                                                     destinationFileNamePattern,
-                                                                                                                     error.getMessage()),
-                                     error);
+            completionMessage = GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                sourceFileName,
+                                                                                                                destinationFolderName,
+                                                                                                                destinationFileNamePattern,
+                                                                                                                error.getMessage());
+            super.logExceptionRecord(methodName, completionMessage, error);
 
 
             outputGuards.add(MoveCopyFileGuard.PROVISIONING_FAILED_EXCEPTION.getName());
             completionStatus = MoveCopyFileGuard.PROVISIONING_FAILED_EXCEPTION.getCompletionStatus();
-            completionMessage = error.getMessage();
         }
 
         try

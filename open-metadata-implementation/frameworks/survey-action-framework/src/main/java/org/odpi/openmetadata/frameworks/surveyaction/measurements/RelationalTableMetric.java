@@ -35,9 +35,9 @@ public enum RelationalTableMetric implements SurveyMetric
     TABLE_TYPE ("tableType", DataType.STRING.getName(),"Table Type", "Is this a standard table, view or materialized view?"),
 
     /**
-     * Who owns this table?
+     * Who owns this resource?
      */
-    TABLE_OWNER("tableOwner", DataType.STRING.getName(),"Table Owner", "Who owns this table?"),
+    TABLE_OWNER("tableOwner", DataType.STRING.getName(),"Resource Owner", "Who owns this resource?"),
 
     /**
      * Count of columns in the table/view.

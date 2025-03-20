@@ -86,7 +86,7 @@ public class PostgresServerSurveyActionProvider extends SurveyActionServiceProvi
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{PostgresDeployedImplementationType.POSTGRESQL_SERVER});
         super.supportedActionTargetTypes = PostgresTarget.getPostgresServerActionTargetTypes();
-        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
+        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {AnalysisStep.CHECK_ASSET, AnalysisStep.PRODUCE_INVENTORY, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
         super.producedAnnotationTypes    = SurveyDatabaseAnnotationType.getPostgresServerAnnotationTypeTypes();
     }
 }

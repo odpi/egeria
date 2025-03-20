@@ -5,9 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLColumn;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDatabaseMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
 
 /**
  * Describes the different types of columns found in the audit log database schema
@@ -91,13 +89,29 @@ public enum HarvestSurveysColumn implements PostgreSQLColumn
     LAST_FILE_ACCESSED_TIME     ("last_file_accessed_time", ColumnType.DATE, FileDirectoryMetric.LAST_FILE_ACCESSED_TIME.getDescription(), false),
     RESOURCE_NAME               ("resource_name", ColumnType.STRING, "Fully qualified name of the resource.", true),
     SCHEMA_COUNT                ("schema_count", ColumnType.INT, RelationalDatabaseMetric.SCHEMA_COUNT.getDescription(), false),
-    TABLE_COUNT                 ("table_count", ColumnType.INT, RelationalDatabaseMetric.TABLE_COUNT.getDescription(), false),
-    COLUMN_COUNT                ("column_count", ColumnType.INT, RelationalDatabaseMetric.COLUMN_COUNT.getDescription(), false),
-    DATA_SIZE                   ("data_size", ColumnType.INT, RelationalDatabaseMetric.DATA_SIZE.getDescription(), false),
-    ROWS_FETCHED                ("rows_fetched", ColumnType.INT, RelationalDatabaseMetric.ROWS_FETCHED.getDescription(), false),
-    ROWS_INSERTED               ("rows_inserted", ColumnType.INT, RelationalDatabaseMetric.ROWS_INSERTED.getDescription(), false),
-    ROWS_UPDATED                ("rows_updated", ColumnType.INT, RelationalDatabaseMetric.ROWS_UPDATED.getDescription(), false),
-    ROWS_DELETED                ("rows_deleted", ColumnType.INT, RelationalDatabaseMetric.ROWS_DELETED.getDescription(), false),
+    TABLE_COUNT                 ("table_count", ColumnType.LONG, RelationalDatabaseMetric.TABLE_COUNT.getDescription(), false),
+    VIEW_COUNT                  ("view_count", ColumnType.LONG, RelationalDatabaseMetric.VIEW_COUNT.getDescription(), false),
+    MAT_VIEW_COUNT              ("materialized_view_count", ColumnType.LONG, RelationalDatabaseMetric.MAT_VIEW_COUNT.getDescription(), false),
+    COLUMN_COUNT                ("column_count", ColumnType.LONG, RelationalDatabaseMetric.COLUMN_COUNT.getDescription(), false),
+    DATA_SIZE                   ("data_size", ColumnType.LONG, RelationalDatabaseMetric.DATA_SIZE.getDescription(), false),
+    DATA_TYPE                   ("data_type", ColumnType.STRING, RelationalColumnMetric.COLUMN_TYPE.getDescription(), false),
+    TABLE_TYPE                  ("table_type", ColumnType.STRING, RelationalTableMetric.TABLE_TYPE.getDescription(), false),
+    RESOURCE_OWNER              ("resource_owner", ColumnType.STRING, RelationalTableMetric.TABLE_OWNER.getDescription(), false),
+    NOT_NULL                    ("not_null", ColumnType.BOOLEAN, RelationalColumnMetric.COLUMN_NOT_NULL.getDescription(), false),
+    AVERAGE_WIDTH               ("data_width", ColumnType.INT, RelationalColumnMetric.AVERAGE_WIDTH.getDescription(), false),
+    NUMBER_OF_DISTINCT_VALUES   ("distinct_value_count", ColumnType.LONG, RelationalColumnMetric.NUMBER_OF_DISTINCT_VALUES.getDescription(), false),
+    MOST_COMMON_VALUES          ("most_common_values", ColumnType.STRING, RelationalColumnMetric.MOST_COMMON_VALUES.getDescription(), false),
+    MOST_COMMON_VALUES_FREQUENCY("most_common_values_frequency", ColumnType.STRING, RelationalColumnMetric.MOST_COMMON_VALUES_FREQUENCY.getDescription(), false),
+    ROWS_FETCHED                ("rows_fetched", ColumnType.LONG, RelationalDatabaseMetric.ROWS_FETCHED.getDescription(), false),
+    ROWS_INSERTED               ("rows_inserted", ColumnType.LONG, RelationalDatabaseMetric.ROWS_INSERTED.getDescription(), false),
+    ROWS_UPDATED                ("rows_updated", ColumnType.LONG, RelationalDatabaseMetric.ROWS_UPDATED.getDescription(), false),
+    ROWS_DELETED                ("rows_deleted", ColumnType.LONG, RelationalDatabaseMetric.ROWS_DELETED.getDescription(), false),
+    IS_POPULATED                ("is_populated", ColumnType.BOOLEAN, RelationalTableMetric.IS_POPULATED.getDescription(), false),
+    HAS_INDEXES                 ("has_indexes", ColumnType.BOOLEAN, RelationalTableMetric.HAS_INDEXES.getDescription(), false),
+    HAS_RULES                   ("has_rules", ColumnType.BOOLEAN, RelationalTableMetric.HAS_RULES.getDescription(), false),
+    HAS_TRIGGERS                ("has_triggers", ColumnType.BOOLEAN, RelationalTableMetric.HAS_TRIGGERS.getDescription(), false),
+    HAS_ROW_SECURITY            ("has_row_security", ColumnType.BOOLEAN, RelationalTableMetric.HAS_ROW_SECURITY.getDescription(), false),
+    QUERY_DEFINITION            ("query_definition", ColumnType.STRING, RelationalTableMetric.QUERY_DEFINITION.getDescription(), false),
     SESSION_TIME                ("session_time", ColumnType.INT, RelationalDatabaseMetric.SESSION_TIME.getDescription(), false),
     ACTIVE_TIME                 ("active_time", ColumnType.INT, RelationalDatabaseMetric.ACTIVE_TIME.getDescription(), false),
     LAST_STATS_RESET            ("last_statistics_reset", ColumnType.DATE, RelationalDatabaseMetric.LAST_STATISTICS_RESET.getDescription(), false),

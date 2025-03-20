@@ -39,12 +39,12 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
 
         if (solutionComponentElement.getContext() != null)
         {
-            String currentNodeName = solutionComponentElement.getElementHeader().getGUID();
-
             for (InformationSupplyChainContext informationSupplyChainContext : solutionComponentElement.getContext())
             {
                 if (informationSupplyChainContext != null)
                 {
+                    String currentNodeName = solutionComponentElement.getElementHeader().getGUID();
+
                     if (informationSupplyChainContext.parentComponents() != null)
                     {
                         for (RelatedMetadataElementSummary parentComponent : informationSupplyChainContext.parentComponents())
@@ -98,8 +98,6 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendMermaidLine(iscName,
                                           informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getType().getTypeName(),
                                           currentNodeName);
-
-                        currentNodeName = iscName;
                     }
                 }
             }

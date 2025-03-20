@@ -15,8 +15,6 @@ import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 
 /**
@@ -66,17 +64,18 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
                 List<String> validDatabases = Collections.singletonList(databaseName);
 
                 PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(validDatabases,
-                                                                                                   jdbcConnection,
                                                                                                    this);
 
+                statsExtractor.getDatabaseStatistics(jdbcConnection);
 
                 annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                List<Annotation> schemaStatistics = statsExtractor.getSchemaStatistics(databaseName);
+                statsExtractor.getSchemaStatistics(databaseName, jdbcConnection);
 
-                if (schemaStatistics != null)
+                List<Annotation> annotations = statsExtractor.getAnnotations();
+                if (annotations != null)
                 {
-                    for (Annotation annotation : schemaStatistics)
+                    for (Annotation annotation : annotations)
                     {
                         if (super.isActive())
                         {
