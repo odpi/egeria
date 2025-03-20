@@ -176,9 +176,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone Constructor to return a copy of a connection object that is connected to an asset.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails,org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)" class="member-name-link">ConnectionDetails</a><wbr>(<a href="ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;templateConnection,
- <a href="beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;connectorType)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails,java.lang.String)" class="member-name-link">ConnectionDetails</a><wbr>(<a href="ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;templateConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Copy/clone Constructor to return a copy of a connection object but with a replacement network address
+ found in the attached Endpoint.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails,org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)" class="member-name-link">ConnectionDetails</a><wbr>(<a href="ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;templateConnection,
+ <a href="beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;connectorType)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Copy/clone Constructor to return a copy of a connection object but with a replacement connector type.</div>
 </div>
 </div>
@@ -334,6 +340,20 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>templateConnection</code> - template object to copy.</dd>
 <dd><code>connectorType</code> - connector type to replace in the connection</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails,java.lang.String)">
+<h3>ConnectionDetails</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ConnectionDetails</span><wbr><span class="parameters">(<a href="ConnectionDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionDetails</a>&nbsp;templateConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</span></div>
+<div class="block">Copy/clone Constructor to return a copy of a connection object but with a replacement network address
+ found in the attached Endpoint.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>templateConnection</code> - template object to copy.</dd>
+<dd><code>networkAddress</code> - network address to replace in the connection's endpoint</dd>
 </dl>
 </section>
 </li>
