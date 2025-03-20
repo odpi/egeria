@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         super.start();
 
         defaultExcludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionDetails.getConfigurationProperties());
+                                                                      connectionDetails.getConfigurationProperties(),
+                                                                      Collections.singletonList("postgres"));
 
         defaultIncludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
                                                                       connectionDetails.getConfigurationProperties());

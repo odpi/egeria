@@ -2973,8 +2973,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
-     * Archive a DataFile asset description.  This adds the Memento classification to the DataFile entity
-     * and removes the attached connection (if any).
+     * Archive a DataFile asset description.  This adds the Memento classification to the DataFile entity.
      *
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -2984,7 +2983,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param archiveDate date that the file was archived or discovered to have been archived.  Null means now.
      * @param archiveProcess name of archiving process
      * @param archiveProperties properties to help locate the archive copy
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
@@ -3001,7 +2999,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      Date                archiveDate,
                                      String              archiveProcess,
                                      Map<String, String> archiveProperties,
-                                     boolean             forLineage,
                                      boolean             forDuplicateProcessing,
                                      Date                effectiveTime,
                                      String              methodName) throws InvalidParameterException,
@@ -3024,54 +3021,16 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                          archiveProcess,
                                                                          archiveProperties,
                                                                          methodName),
-                                            forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime,
                                             methodName);
-
-        String connectionGUID = fileHandler.getAttachedElementGUID(userId,
-                                                                   dataFileGUID,
-                                                                   dataFileGUIDParameterName,
-                                                                   OpenMetadataType.DATA_FILE.typeName,
-                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                   OpenMetadataType.CONNECTION.typeName,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   effectiveTime,
-                                                                   methodName);
-
-        if (connectionGUID != null)
-        {
-            final String connectionGUIDParameterName = "connectionGUID";
-
-            connectionHandler.deleteBeanInRepository(userId,
-                                                     externalSourceGUID,
-                                                     externalSourceName,
-                                                     connectionGUID,
-                                                     connectionGUIDParameterName,
-                                                     OpenMetadataType.CONNECTION.typeGUID,
-                                                     OpenMetadataType.CONNECTION.typeName,
-                                                     null,
-                                                     null,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     effectiveTime,
-                                                     methodName);
-        }
     }
 
 
 
 
     /**
-     * Archive a DataFolder asset description.  This adds the Memento classification to the DataFolder entity
-     * and removes the attached connection (if any).
+     * Archive a DataFolder asset description.  This adds the Memento classification to the DataFolder entity.
      *
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -3081,7 +3040,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param archiveDate date that the file was archived or discovered to have been archived.  Null means now.
      * @param archiveProcess name of archiving process
      * @param archiveProperties properties to help locate the archive copy
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
@@ -3098,7 +3056,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                        Date                archiveDate,
                                        String              archiveProcess,
                                        Map<String, String> archiveProperties,
-                                       boolean             forLineage,
                                        boolean             forDuplicateProcessing,
                                        Date                effectiveTime,
                                        String              methodName) throws InvalidParameterException,
@@ -3121,46 +3078,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                          archiveProcess,
                                                                          archiveProperties,
                                                                          methodName),
-                                            forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime,
                                             methodName);
-
-        String connectionGUID = fileHandler.getAttachedElementGUID(userId,
-                                                                   dataFolderGUID,
-                                                                   dataFolderGUIDParameterName,
-                                                                   OpenMetadataType.DATA_FOLDER.typeName,
-                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                   OpenMetadataType.CONNECTION.typeName,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   effectiveTime,
-                                                                   methodName);
-
-        if (connectionGUID != null)
-        {
-            final String connectionGUIDParameterName = "connectionGUID";
-
-            connectionHandler.deleteBeanInRepository(userId,
-                                                     externalSourceGUID,
-                                                     externalSourceName,
-                                                     connectionGUID,
-                                                     connectionGUIDParameterName,
-                                                     OpenMetadataType.CONNECTION.typeGUID,
-                                                     OpenMetadataType.CONNECTION.typeName,
-                                                     null,
-                                                     null,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     effectiveTime,
-                                                     methodName);
-        }
     }
 
 

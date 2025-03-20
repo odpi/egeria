@@ -212,6 +212,37 @@ public class SurveyContext
 
 
     /**
+     * Determine whether a particular element should be surveyed.  The include list takes precedent over
+     * the exclude list.
+     *
+     * @param elementName name of the element
+     * @param excludedNames list of names to exclude (null means ignore value)
+     * @param includedNames list of names to include (null means ignore value)
+     * @return flag indicating whether to work with the database
+     */
+    public boolean elementShouldBeSurveyed(String       elementName,
+                                           List<String> excludedNames,
+                                           List<String> includedNames)
+    {
+        if (elementName == null)
+        {
+            return false;
+        }
+
+        if (includedNames != null)
+        {
+            return includedNames.contains(elementName);
+        }
+        else if (excludedNames != null)
+        {
+            return ! excludedNames.contains(elementName);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Free up any resources held since the connector is no longer needed.
      */
     public void disconnect() throws ConnectorCheckedException

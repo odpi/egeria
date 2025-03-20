@@ -32,9 +32,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMeasurement;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMeasurement;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDataManagerMeasurement;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
 import org.odpi.openmetadata.integrationservices.catalog.connector.ConnectorFactoryService;
 
 import java.util.*;
@@ -1657,6 +1655,108 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                             error);
                     }
                 }
+                else if (SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName().equals(measurementName))
+                {
+                    try
+                    {
+                        RelationalSchemaMeasurement relationalSchemaMeasurement = OBJECT_READER.readValue(jsonProperties, RelationalSchemaMeasurement.class);
+
+                        Map<String, JDBCDataValue> openMetadataRecord = this.getRelationalSchemaMeasurementsDataValues(surveyReportGUID,
+                                                                                                                       subjectGUID,
+                                                                                                                       subjectType,
+                                                                                                                       subjectMetadataCollectionId,
+                                                                                                                       dataSourceMeasurementsAnnotation.getElementGUID(),
+                                                                                                                       dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
+                                                                                                                       relationalSchemaMeasurement);
+
+                        databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.RELATIONAL_SCHEMA_MEASUREMENTS.getTableName(), openMetadataRecord);
+                    }
+                    catch (Exception error)
+                    {
+                        auditLog.logException(methodName,
+                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()),
+                                              error);
+
+                        throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                              error.getClass().getName(),
+                                                                                                                              methodName,
+                                                                                                                              error.getMessage()),
+                                                            error.getClass().getName(),
+                                                            methodName,
+                                                            error);
+                    }
+                }
+                else if (SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName().equals(measurementName))
+                {
+                    try
+                    {
+                        RelationalTableMeasurement relationalTableMeasurement = OBJECT_READER.readValue(jsonProperties, RelationalTableMeasurement.class);
+
+                        Map<String, JDBCDataValue> openMetadataRecord = this.getRelationalTableMeasurementsDataValues(surveyReportGUID,
+                                                                                                                            subjectGUID,
+                                                                                                                            subjectType,
+                                                                                                                            subjectMetadataCollectionId,
+                                                                                                                            dataSourceMeasurementsAnnotation.getElementGUID(),
+                                                                                                                            dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
+                                                                                                                            relationalTableMeasurement);
+
+                        databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.RELATIONAL_TABLE_MEASUREMENTS.getTableName(), openMetadataRecord);
+                    }
+                    catch (Exception error)
+                    {
+                        auditLog.logException(methodName,
+                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()),
+                                              error);
+
+                        throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                              error.getClass().getName(),
+                                                                                                                              methodName,
+                                                                                                                              error.getMessage()),
+                                                            error.getClass().getName(),
+                                                            methodName,
+                                                            error);
+                    }
+                }
+                else if (SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName().equals(measurementName))
+                {
+                    try
+                    {
+                        RelationalColumnMeasurement relationalColumnMeasurement = OBJECT_READER.readValue(jsonProperties, RelationalColumnMeasurement.class);
+
+                        Map<String, JDBCDataValue> openMetadataRecord = this.getRelationalColumnMeasurementsDataValues(surveyReportGUID,
+                                                                                                                       subjectGUID,
+                                                                                                                       subjectType,
+                                                                                                                       subjectMetadataCollectionId,
+                                                                                                                       dataSourceMeasurementsAnnotation.getElementGUID(),
+                                                                                                                       dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
+                                                                                                                       relationalColumnMeasurement);
+
+                        databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.RELATIONAL_COLUMN_MEASUREMENTS.getTableName(), openMetadataRecord);
+                    }
+                    catch (Exception error)
+                    {
+                        auditLog.logException(methodName,
+                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()),
+                                              error);
+
+                        throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                              error.getClass().getName(),
+                                                                                                                              methodName,
+                                                                                                                              error.getMessage()),
+                                                            error.getClass().getName(),
+                                                            methodName,
+                                                            error);
+                    }
+                }
             }
 
             Map<String, String> resourceProperties = propertyHelper.getStringMapFromProperty(connectorName,
@@ -1915,7 +2015,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Convert the description of an annotation into columns for the file measurements table.
+     * Convert the description of an annotation into columns for the data manager summary table.
      *
      * @param surveyReportGUID unique identifier of the survey report
      * @param subjectGUID unique identifier of the element that this annotation describes
@@ -1945,8 +2045,10 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_NAME, relationalDataManagerMeasurement.getResourceName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SCHEMA_COUNT, relationalDataManagerMeasurement.getSchemaCount());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.TABLE_COUNT, relationalDataManagerMeasurement.getTableCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.VIEW_COUNT, relationalDataManagerMeasurement.getViewCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MAT_VIEW_COUNT, relationalDataManagerMeasurement.getMaterializedViewCount());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.COLUMN_COUNT, relationalDataManagerMeasurement.getColumnCount());
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_SIZE, relationalDataManagerMeasurement.getSize());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DATA_SIZE, relationalDataManagerMeasurement.getSize());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_FETCHED, relationalDataManagerMeasurement.getRowsFetched());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_INSERTED, relationalDataManagerMeasurement.getRowsInserted());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_UPDATED, relationalDataManagerMeasurement.getRowsUpdated());
@@ -1954,6 +2056,138 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SESSION_TIME, relationalDataManagerMeasurement.getSessionTime());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTIVE_TIME, relationalDataManagerMeasurement.getActiveTime());
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_STATS_RESET, relationalDataManagerMeasurement.getStatsReset());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Convert the description of an annotation into columns for the relational schema summary table.
+     *
+     * @param surveyReportGUID unique identifier of the survey report
+     * @param subjectGUID unique identifier of the element that this annotation describes
+     * @param subjectType unique type name of the element that this annotation describes
+     * @param annotationGUID unique identifier for the annotation
+     * @param creationTime time that the annotation was created
+     * @param subjectMetadataCollectionId  home
+     * @param relationalSchemaMeasurement properties to save
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getRelationalSchemaMeasurementsDataValues(String                      surveyReportGUID,
+                                                                                 String                      subjectGUID,
+                                                                                 String                      subjectType,
+                                                                                 String                      subjectMetadataCollectionId,
+                                                                                 String                      annotationGUID,
+                                                                                 Date                        creationTime,
+                                                                                 RelationalSchemaMeasurement relationalSchemaMeasurement)
+    {
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_NAME, relationalSchemaMeasurement.getQualifiedSchemaName());
+
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DISPLAY_NAME, relationalSchemaMeasurement.getSchemaName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.TABLE_COUNT, relationalSchemaMeasurement.getTableCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.VIEW_COUNT, relationalSchemaMeasurement.getViewCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MAT_VIEW_COUNT, relationalSchemaMeasurement.getMaterializedViewCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.COLUMN_COUNT, relationalSchemaMeasurement.getColumnCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DATA_SIZE, relationalSchemaMeasurement.getTotalTableSize());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Convert the description of an annotation into columns for the relational table summary table.
+     *
+     * @param surveyReportGUID unique identifier of the survey report
+     * @param subjectGUID unique identifier of the element that this annotation describes
+     * @param subjectType unique type name of the element that this annotation describes
+     * @param annotationGUID unique identifier for the annotation
+     * @param creationTime time that the annotation was created
+     * @param subjectMetadataCollectionId  home
+     * @param relationalTableMeasurement properties to save
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getRelationalTableMeasurementsDataValues(String                     surveyReportGUID,
+                                                                                String                     subjectGUID,
+                                                                                String                     subjectType,
+                                                                                String                     subjectMetadataCollectionId,
+                                                                                String                     annotationGUID,
+                                                                                Date                       creationTime,
+                                                                                RelationalTableMeasurement relationalTableMeasurement)
+    {
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_NAME, relationalTableMeasurement.getQualifiedTableName());
+
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DISPLAY_NAME, relationalTableMeasurement.getTableName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DATA_SIZE, relationalTableMeasurement.getTableSize());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.TABLE_TYPE, relationalTableMeasurement.getTableType());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.COLUMN_COUNT, relationalTableMeasurement.getColumnCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_INSERTED, relationalTableMeasurement.getNumberOfRowsInserted());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_UPDATED, relationalTableMeasurement.getNumberOfRowsUpdated());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_DELETED, relationalTableMeasurement.getNumberOfRowsDeleted());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_OWNER, relationalTableMeasurement.getTableOwner());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.IS_POPULATED, relationalTableMeasurement.getIsPopulated());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.HAS_INDEXES, relationalTableMeasurement.getHasIndexes());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.HAS_RULES, relationalTableMeasurement.getHasRules());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.HAS_TRIGGERS, relationalTableMeasurement.getHasTriggers());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.HAS_ROW_SECURITY, relationalTableMeasurement.getHasRowSecurity());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.QUERY_DEFINITION, relationalTableMeasurement.getQueryDefinition());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Convert the description of an annotation into columns for the relational column summary table.
+     *
+     * @param surveyReportGUID unique identifier of the survey report
+     * @param subjectGUID unique identifier of the element that this annotation describes
+     * @param subjectType unique type name of the element that this annotation describes
+     * @param annotationGUID unique identifier for the annotation
+     * @param creationTime time that the annotation was created
+     * @param subjectMetadataCollectionId  home
+     * @param relationalColumnMeasurement properties to save
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getRelationalColumnMeasurementsDataValues(String                      surveyReportGUID,
+                                                                                 String                      subjectGUID,
+                                                                                 String                      subjectType,
+                                                                                 String                      subjectMetadataCollectionId,
+                                                                                 String                      annotationGUID,
+                                                                                 Date                        creationTime,
+                                                                                 RelationalColumnMeasurement relationalColumnMeasurement)
+    {
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_NAME, relationalColumnMeasurement.getQualifiedColumnName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DISPLAY_NAME, relationalColumnMeasurement.getColumnName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DATA_TYPE, relationalColumnMeasurement.getColumnDataType());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DATA_SIZE, relationalColumnMeasurement.getColumnSize());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.NOT_NULL, relationalColumnMeasurement.getColumnNotNull());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.AVERAGE_WIDTH, relationalColumnMeasurement.getAverageColumnWidth());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.NUMBER_OF_DISTINCT_VALUES, relationalColumnMeasurement.getNumberOfDistinctValues());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MOST_COMMON_VALUES, relationalColumnMeasurement.getMostCommonValues());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MOST_COMMON_VALUES_FREQUENCY, relationalColumnMeasurement.getMostCommonValuesFrequency());
 
         return openMetadataRecord;
     }

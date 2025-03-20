@@ -217,7 +217,11 @@ public enum CocoClinicalTrialRequestParameter
         requestParameterTypes.add(DATA_LAKE_SCHEMA_DESCRIPTION.getRequestParameterType());
         requestParameterTypes.add(DATA_LAKE_VOLUME_NAME.getRequestParameterType());
         requestParameterTypes.add(DATA_LAKE_VOLUME_DESCRIPTION.getRequestParameterType());
+        requestParameterTypes.add(AIRFLOW_DAG_NAME.getRequestParameterType());
 
+        /*
+         * Need to
+         */
         return requestParameterTypes;
     }
 

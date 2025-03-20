@@ -3869,7 +3869,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param entityGUIDParameterName name of parameter supplying the GUID
      * @param entityTypeName unique name of the entity's type
      * @param classificationProperties properties for the classification
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
@@ -3885,7 +3884,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                         String             entityGUIDParameterName,
                                         String             entityTypeName,
                                         InstanceProperties classificationProperties,
-                                        boolean            forLineage,
                                         boolean            forDuplicateProcessing,
                                         Date               effectiveTime,
                                         String             methodName) throws InvalidParameterException,
@@ -3899,7 +3897,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                      entityGUIDParameterName,
                                      entityTypeName,
                                      classificationProperties,
-                                     forLineage,
+                                     true,
                                      forDuplicateProcessing,
                                      supportedZones,
                                      effectiveTime,

@@ -19,7 +19,6 @@ import java.util.Map;
 public class PostgresDatabaseStatsExtractor
 {
     private final List<String>                 validDatabases;
-    private final Connection                   jdbcConnection;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
@@ -27,28 +26,26 @@ public class PostgresDatabaseStatsExtractor
     /**
      * Constructor sets up the list of databases to process and the connection to the database.
      *
-     * @param validDatabases list of database names
-     * @param jdbcConnection connection to the database
+     * @param validDatabases               list of database names
+     * @param surveyActionServiceConnector calling connector
      */
-    public PostgresDatabaseStatsExtractor(List<String>                 validDatabases,
-                                          Connection                   jdbcConnection,
+    public PostgresDatabaseStatsExtractor(List<String>                validDatabases,
                                           SurveyActionServiceConnector surveyActionServiceConnector)
     {
-        this.validDatabases = validDatabases;
-        this.jdbcConnection = jdbcConnection;
+        this.validDatabases               = validDatabases;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
     }
 
 
     /**
-     * Retrieve statistics about each requested database and convert them to annotations.
+     * Retrieve statistics about each requested database.
      * This works if connected to either the postgres database or a user database.
      *
-     * @return list of annotations
-     * @throws SQLException problem accessing the database
+     * @param serverJDBCConnection connection to the postgres database
+     * @throws SQLException            problem accessing the database
      * @throws PropertyServerException problem create JSON properties
      */
-    List<Annotation> getDatabaseStatistics() throws SQLException, PropertyServerException
+    void getDatabaseStatistics(java.sql.Connection serverJDBCConnection) throws SQLException, PropertyServerException
     {
         final String pg_stat_databaseSQLCommand = "SELECT datname, tup_fetched, tup_inserted, tup_updated, tup_deleted, session_time, active_time, stats_reset FROM pg_catalog.pg_stat_database;";
 
@@ -57,7 +54,7 @@ public class PostgresDatabaseStatsExtractor
             /*
              * Extract key stats about each database
              */
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(pg_stat_databaseSQLCommand);
+            PreparedStatement preparedStatement = serverJDBCConnection.prepareStatement(pg_stat_databaseSQLCommand);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -96,7 +93,7 @@ public class PostgresDatabaseStatsExtractor
                 {
                     final String databaseSizeSQLCommand = "SELECT pg_database_size('" + databaseName + "');";
 
-                    preparedStatement = jdbcConnection.prepareStatement(databaseSizeSQLCommand);
+                    preparedStatement = serverJDBCConnection.prepareStatement(databaseSizeSQLCommand);
 
                     resultSet = preparedStatement.executeQuery();
 
@@ -116,7 +113,7 @@ public class PostgresDatabaseStatsExtractor
         {
             try
             {
-                jdbcConnection.rollback();
+                serverJDBCConnection.rollback();
             }
             catch (Exception error)
             {
@@ -125,36 +122,6 @@ public class PostgresDatabaseStatsExtractor
 
             throw sqlException;
         }
-
-        List<Annotation>  annotations = new ArrayList<>();
-
-        for (String databaseName : databaseResults.keySet())
-        {
-            DatabaseDetails currentDatabase = databaseResults.get(databaseName);
-
-            if (currentDatabase != null)
-            {
-                ResourceMeasureAnnotation annotation = new ResourceMeasureAnnotation();
-
-                annotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
-                annotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
-                annotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
-                annotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
-
-                annotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentDatabase.getDatabaseMeasurements()));
-
-                annotation.setResourceProperties(currentDatabase.getDatabaseResourceProperties());
-
-                annotations.add(annotation);
-            }
-        }
-
-        if (! annotations.isEmpty())
-        {
-            return annotations;
-        }
-
-        return null;
     }
 
 
@@ -163,18 +130,17 @@ public class PostgresDatabaseStatsExtractor
      * This only returns information from the connected database - so it needs to be connected
      * from a user database - rather than the postgres database.
      *
-     * @param databaseName name of database that is connected to
-     * @return list of annotations
-     *
-     * @throws SQLException problem accessing the database
-     * @throws PropertyServerException another issue
+     * @param databaseName          name of database that is connected to
+     * @param databaseSQLConnection connection to the named database
+     * @throws SQLException            problem accessing the database
      */
-    public List<Annotation> getSchemaStatistics(String databaseName) throws SQLException, PropertyServerException
+    void getSchemaStatistics(String databaseName,
+                             java.sql.Connection databaseSQLConnection) throws SQLException
     {
-        final String pg_tablesSQLCommand        = "select pg_stat_user_tables.relid,pg_stat_user_tables.schemaname,pg_tables.tablename, pg_tables.tableowner, pg_tables.hasindexes, pg_tables.hasrules, pg_tables.hastriggers, pg_tables.rowsecurity, pg_stat_user_tables.n_tup_ins, pg_stat_user_tables.n_tup_upd, pg_stat_user_tables.n_tup_del from pg_catalog.pg_statio_user_tables left outer join egeria.pg_catalog.pg_stat_user_tables on pg_stat_user_tables.schemaname = pg_statio_user_tables.schemaname and pg_stat_user_tables.relname = pg_statio_user_tables.relname left outer join egeria.pg_catalog.pg_tables on pg_stat_user_tables.schemaname = pg_tables.schemaname and pg_stat_user_tables.relname = pg_tables.tablename where (egeria.pg_catalog.pg_statio_user_tables.schemaname != 'pg_catalog') and (egeria.pg_catalog.pg_statio_user_tables.schemaname != 'information_schema') ;";
-        final String pg_columnStatsSQLCommand   = "select pg_stats.schemaname, pg_stats.tablename, pg_statio_user_tables.relid, pg_stats.attname, pg_stats.avg_width, pg_stats.n_distinct, pg_stats.most_common_vals, pg_stats.most_common_freqs, pg_attribute.atttypid, pg_type.typname, pg_attribute.attnotnull from egeria.pg_catalog.pg_stats left outer join pg_catalog.pg_statio_user_tables on pg_stats.schemaname = pg_statio_user_tables.schemaname and pg_stats.tablename = pg_statio_user_tables.relname left outer join pg_catalog.pg_attribute on pg_statio_user_tables.relid = pg_attribute.attrelid and pg_stats.attname = pg_attribute.attname left outer join pg_type on pg_attribute.atttypid = pg_type.oid where (pg_stats.schemaname != 'pg_catalog') and (pg_stats.schemaname != 'information_schema') ;";
-        final String pg_viewsSQLCommand         = "SELECT schemaname, viewname, viewowner, definition FROM pg_catalog.pg_views;";
-        final String pg_matViewsSQLCommand      = "SELECT schemaname, matviewname, matviewowner, hasindexes, ispopulated, definition FROM pg_catalog.pg_matviews;";
+        final String pg_tablesSQLCommand      = "select pg_stat_user_tables.relid,pg_stat_user_tables.schemaname,pg_tables.tablename, pg_tables.tableowner, pg_tables.hasindexes, pg_tables.hasrules, pg_tables.hastriggers, pg_tables.rowsecurity, pg_stat_user_tables.n_tup_ins, pg_stat_user_tables.n_tup_upd, pg_stat_user_tables.n_tup_del from pg_catalog.pg_statio_user_tables left outer join pg_catalog.pg_stat_user_tables on pg_stat_user_tables.schemaname = pg_statio_user_tables.schemaname and pg_stat_user_tables.relname = pg_statio_user_tables.relname left outer join pg_catalog.pg_tables on pg_stat_user_tables.schemaname = pg_tables.schemaname and pg_stat_user_tables.relname = pg_tables.tablename where (pg_catalog.pg_statio_user_tables.schemaname != 'pg_catalog') and (pg_catalog.pg_statio_user_tables.schemaname != 'information_schema') ;";
+        final String pg_columnStatsSQLCommand = "select pg_stats.schemaname, pg_stats.tablename, pg_statio_user_tables.relid, pg_stats.attname, pg_stats.avg_width, pg_stats.n_distinct, pg_stats.most_common_vals, pg_stats.most_common_freqs, pg_attribute.atttypid, pg_type.typname, pg_attribute.attnotnull from pg_catalog.pg_stats left outer join pg_catalog.pg_statio_user_tables on pg_stats.schemaname = pg_statio_user_tables.schemaname and pg_stats.tablename = pg_statio_user_tables.relname left outer join pg_catalog.pg_attribute on pg_statio_user_tables.relid = pg_attribute.attrelid and pg_stats.attname = pg_attribute.attname left outer join pg_type on pg_attribute.atttypid = pg_type.oid where (pg_stats.schemaname != 'pg_catalog') and (pg_stats.schemaname != 'information_schema') ;";
+        final String pg_viewsSQLCommand       = "SELECT schemaname, viewname, viewowner, definition FROM pg_catalog.pg_views;";
+        final String pg_matViewsSQLCommand    = "SELECT schemaname, matviewname, matviewowner, hasindexes, ispopulated, definition FROM pg_catalog.pg_matviews;";
 
         try
         {
@@ -187,7 +153,7 @@ public class PostgresDatabaseStatsExtractor
                  * schemas, tables and columns and enables the calculation of the total number of schemas, tables
                  * and columns to be determined.
                  */
-                PreparedStatement preparedStatement = jdbcConnection.prepareStatement(pg_columnStatsSQLCommand);
+                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(pg_columnStatsSQLCommand);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -206,9 +172,9 @@ public class PostgresDatabaseStatsExtractor
                         String  columnTypeName         = resultSet.getString("typname");
                         boolean columnNotNull          = resultSet.getBoolean("attnotnull");
 
-                        SchemaDetails schemaDetails  = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails   = schemaDetails.getTableDetails(tableName);
-                        ColumnDetails columnDetails  = tableDetails.getColumnDetails(columnName);
+                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                        TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
+                        ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
 
                         columnDetails.setColumnMeasurement(averageColumnWidth,
                                                            numberOfDistinctValues,
@@ -225,8 +191,8 @@ public class PostgresDatabaseStatsExtractor
                 /*
                  * Extract core information about the tables
                  */
-                preparedStatement = jdbcConnection.prepareStatement(pg_tablesSQLCommand);
-                resultSet = preparedStatement.executeQuery();
+                preparedStatement = databaseSQLConnection.prepareStatement(pg_tablesSQLCommand);
+                resultSet         = preparedStatement.executeQuery();
 
                 while (resultSet.next())
                 {
@@ -234,18 +200,18 @@ public class PostgresDatabaseStatsExtractor
 
                     if ((schemaName != null) && (!schemaName.equals("pg_catalog")) && (!schemaName.equals("information_schema")))
                     {
-                        String  tableName      = resultSet.getString("tablename");
-                        String  tableOwner     = resultSet.getString("tableowner");
-                        boolean hasIndexes     = resultSet.getBoolean("hasindexes");
-                        boolean hasRules       = resultSet.getBoolean("hasrules");
-                        boolean hasTriggers    = resultSet.getBoolean("hastriggers");
-                        boolean hasRowSecurity = resultSet.getBoolean("rowsecurity");
+                        String  tableName            = resultSet.getString("tablename");
+                        String  tableOwner           = resultSet.getString("tableowner");
+                        boolean hasIndexes           = resultSet.getBoolean("hasindexes");
+                        boolean hasRules             = resultSet.getBoolean("hasrules");
+                        boolean hasTriggers          = resultSet.getBoolean("hastriggers");
+                        boolean hasRowSecurity       = resultSet.getBoolean("rowsecurity");
                         long    numberOfRowsInserted = resultSet.getLong("n_tup_ins");
                         long    numberOfRowsUpdated  = resultSet.getLong("n_tup_upd");
                         long    numberOfRowsDeleted  = resultSet.getLong("n_tup_del");
 
-                        SchemaDetails schemaDetails  = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails   = schemaDetails.getTableDetails(tableName);
+                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                        TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
 
                         tableDetails.setTableMeasurements(tableOwner,
                                                           hasIndexes,
@@ -265,8 +231,8 @@ public class PostgresDatabaseStatsExtractor
                 /*
                  * Extract stats about the views
                  */
-                preparedStatement = jdbcConnection.prepareStatement(pg_viewsSQLCommand);
-                resultSet = preparedStatement.executeQuery();
+                preparedStatement = databaseSQLConnection.prepareStatement(pg_viewsSQLCommand);
+                resultSet         = preparedStatement.executeQuery();
 
                 while (resultSet.next())
                 {
@@ -274,12 +240,12 @@ public class PostgresDatabaseStatsExtractor
 
                     if ((schemaName != null) && (!schemaName.equals("pg_catalog")) && (!schemaName.equals("information_schema")))
                     {
-                        String  viewName    = resultSet.getString("viewname");
-                        String  viewOwner   = resultSet.getString("viewowner");
-                        String  definition  = resultSet.getString("definition");
+                        String viewName   = resultSet.getString("viewname");
+                        String viewOwner  = resultSet.getString("viewowner");
+                        String definition = resultSet.getString("definition");
 
-                        SchemaDetails schemaDetails  = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails   = schemaDetails.getTableDetails(viewName);
+                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                        TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
 
                         tableDetails.setViewDetails(viewOwner, definition);
                     }
@@ -291,8 +257,8 @@ public class PostgresDatabaseStatsExtractor
                 /*
                  * Extract stats about the views
                  */
-                preparedStatement = jdbcConnection.prepareStatement(pg_matViewsSQLCommand);
-                resultSet = preparedStatement.executeQuery();
+                preparedStatement = databaseSQLConnection.prepareStatement(pg_matViewsSQLCommand);
+                resultSet         = preparedStatement.executeQuery();
 
                 while (resultSet.next())
                 {
@@ -300,14 +266,14 @@ public class PostgresDatabaseStatsExtractor
 
                     if ((schemaName != null) && (!schemaName.equals("pg_catalog")) && (!schemaName.equals("information_schema")))
                     {
-                        String  viewName   = resultSet.getString("matviewname");
-                        String  viewOwner  = resultSet.getString("matviewowner");
+                        String  viewName    = resultSet.getString("matviewname");
+                        String  viewOwner   = resultSet.getString("matviewowner");
                         boolean hasIndexes  = resultSet.getBoolean("hasindexes");
                         boolean isPopulated = resultSet.getBoolean("ispopulated");
-                        String  definition = resultSet.getString("definition");
+                        String  definition  = resultSet.getString("definition");
 
-                        SchemaDetails schemaDetails  = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails   = schemaDetails.getTableDetails(viewName);
+                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                        TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
 
                         tableDetails.setMaterializedViewDetails(viewOwner,
                                                                 hasIndexes,
@@ -335,19 +301,20 @@ public class PostgresDatabaseStatsExtractor
 
                         if (currentSchema != null)
                         {
-                            this.getSchemaSize(currentSchema);
-
                             List<String> tableNames = currentSchema.getTableNames();
 
                             if (tableNames != null)
                             {
+                                long schemaSize = 0L;
+
                                 for (String tableName : tableNames)
                                 {
                                     TableDetails currentTable = currentSchema.getTableDetails(tableName);
 
                                     if (currentTable != null)
                                     {
-                                        this.getTableSize(currentTable);
+                                        this.getTableSize(databaseSQLConnection, currentTable);
+                                        schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
 
                                         List<String> columnNames = currentTable.getColumnNames();
 
@@ -357,11 +324,13 @@ public class PostgresDatabaseStatsExtractor
                                             {
                                                 ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
 
-                                                this.getColumnSize(currentColumn);
+                                                this.getColumnSize(databaseSQLConnection, currentColumn);
                                             }
                                         }
                                     }
                                 }
+
+                                currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
                             }
                         }
                     }
@@ -370,101 +339,6 @@ public class PostgresDatabaseStatsExtractor
                      * Count up instances of schema, tables and columns in database
                      */
                     databaseDetails.setUpCounts();
-
-                    /*
-                     * All information has been assembled so create the annotations.
-                     */
-
-                    List<Annotation>  annotations = new ArrayList<>();
-
-                    ResourceMeasureAnnotation databaseAnnotation = new ResourceMeasureAnnotation();
-
-                    databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
-                    databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
-                    databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
-                    databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
-
-                    databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
-
-                    databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
-
-                    annotations.add(databaseAnnotation);
-
-                    for (String schemaName : schemaNames)
-                    {
-                        SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
-
-                        if (currentSchema != null)
-                        {
-                            ResourceMeasureAnnotation schemaAnnotation = new ResourceMeasureAnnotation();
-
-                            schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
-                            schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
-                            schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
-                            schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
-
-                            schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
-
-                            schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
-
-                            annotations.add(schemaAnnotation);
-
-
-                            List<String> tableNames = currentSchema.getTableNames();
-
-                            if (tableNames != null)
-                            {
-                                for (String tableName : tableNames)
-                                {
-                                    TableDetails currentTable = currentSchema.getTableDetails(tableName);
-
-                                    if (currentTable != null)
-                                    {
-                                        ResourceMeasureAnnotation tableAnnotation = new ResourceMeasureAnnotation();
-
-                                        tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
-                                        tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
-                                        tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
-                                        tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
-
-                                        tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
-
-                                        tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
-
-                                        annotations.add(tableAnnotation);
-
-                                        List<String> columnNames = currentTable.getColumnNames();
-
-                                        if (columnNames != null)
-                                        {
-                                            for (String columnName : columnNames)
-                                            {
-                                                ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
-
-                                                ResourceMeasureAnnotation columnAnnotation = new ResourceMeasureAnnotation();
-
-                                                columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
-                                                columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
-                                                columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
-                                                columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
-
-                                                columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
-
-                                                columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
-
-                                                annotations.add(columnAnnotation);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (!annotations.isEmpty())
-                    {
-                        return annotations;
-                    }
                 }
             }
         }
@@ -475,7 +349,7 @@ public class PostgresDatabaseStatsExtractor
              */
             try
             {
-                jdbcConnection.rollback();
+                databaseSQLConnection.rollback();
             }
             catch (Exception error)
             {
@@ -484,6 +358,123 @@ public class PostgresDatabaseStatsExtractor
 
             throw sqlException;
         }
+    }
+
+
+    /**
+     * Convert the information retrieve from the database server into annotations recognized by the
+     * survey action framework.
+     *
+     * @return list of annotations
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    List<Annotation> getAnnotations() throws PropertyServerException
+    {
+        /*
+         * All information has been assembled so create the annotations.
+         */
+        List<Annotation>  annotations = new ArrayList<>();
+
+        for (String databaseName : databaseResults.keySet())
+        {
+            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+
+            if (databaseDetails != null)
+            {
+                List<String> schemaNames = databaseDetails.getSchemaNames();
+
+                ResourceMeasureAnnotation databaseAnnotation = new ResourceMeasureAnnotation();
+
+                databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+                databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
+                databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
+                databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
+
+                databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
+
+                databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+
+                annotations.add(databaseAnnotation);
+
+                for (String schemaName : schemaNames)
+                {
+                    SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
+
+                    if (currentSchema != null)
+                    {
+                        ResourceMeasureAnnotation schemaAnnotation = new ResourceMeasureAnnotation();
+
+                        schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
+                        schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
+                        schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
+                        schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
+
+                        schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
+
+                        schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
+
+                        annotations.add(schemaAnnotation);
+
+
+                        List<String> tableNames = currentSchema.getTableNames();
+
+                        if (tableNames != null)
+                        {
+                            for (String tableName : tableNames)
+                            {
+                                TableDetails currentTable = currentSchema.getTableDetails(tableName);
+
+                                if (currentTable != null)
+                                {
+                                    ResourceMeasureAnnotation tableAnnotation = new ResourceMeasureAnnotation();
+
+                                    tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
+                                    tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
+                                    tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
+                                    tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
+
+                                    tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
+
+                                    tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
+
+                                    annotations.add(tableAnnotation);
+
+                                    List<String> columnNames = currentTable.getColumnNames();
+
+                                    if (columnNames != null)
+                                    {
+                                        for (String columnName : columnNames)
+                                        {
+                                            ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
+
+                                            ResourceMeasureAnnotation columnAnnotation = new ResourceMeasureAnnotation();
+
+                                            columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
+                                            columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
+                                            columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
+                                            columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
+
+                                            columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
+
+                                            columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
+
+                                            annotations.add(columnAnnotation);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!annotations.isEmpty())
+        {
+            return annotations;
+        }
+
+
 
         /*
          * Empty or uncontactable database
@@ -493,79 +484,45 @@ public class PostgresDatabaseStatsExtractor
 
 
     /**
-     * Retrieve information about a schema size.
-     *
-     * @param schemaDetails collected information about a schema
-     * @throws SQLException errors accessing the database
-     */
-    void getSchemaSize(SchemaDetails schemaDetails) throws SQLException
-    {
-        final String databaseSizeSQLCommand = "SELECT pg_schema_size('" + schemaDetails.getQualifiedSchemaName() + "');";
-
-        try
-        {
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(databaseSizeSQLCommand);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next())
-            {
-                schemaDetails.setSize(resultSet.getLong("pg_schema_size"));
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-        }
-        catch (SQLException sqlException)
-        {
-            try
-            {
-                jdbcConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
-
-            throw sqlException;
-        }
-    }
-
-
-    /**
      * Retrieve information about a table size.
      *
+     * @param databaseSQLConnection connection to the appropriate database
      * @param tableDetails collected information about a table
      * @throws SQLException errors accessing the database
      */
-    void getTableSize(TableDetails tableDetails) throws SQLException
+    void getTableSize(java.sql.Connection databaseSQLConnection,
+                      TableDetails        tableDetails) throws SQLException
     {
         final String databaseSizeSQLCommand = "SELECT pg_table_size('" + tableDetails.getQualifiedTableName() + "');";
 
-        try
-        {
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(databaseSizeSQLCommand);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next())
-            {
-                tableDetails.setTableSize(resultSet.getLong("pg_table_size"));
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-        }
-        catch (SQLException sqlException)
+        if (! tableDetails.columns.isEmpty())
         {
             try
             {
-                jdbcConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
+                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(databaseSizeSQLCommand);
+                ResultSet         resultSet         = preparedStatement.executeQuery();
 
-            throw sqlException;
+                if (resultSet.next())
+                {
+                    tableDetails.setTableSize(resultSet.getLong("pg_table_size"));
+                }
+
+                resultSet.close();
+                preparedStatement.close();
+            }
+            catch (SQLException sqlException)
+            {
+                try
+                {
+                    databaseSQLConnection.rollback();
+                }
+                catch (Exception error)
+                {
+                    // ignore
+                }
+
+                throw sqlException;
+            }
         }
     }
 
@@ -573,16 +530,18 @@ public class PostgresDatabaseStatsExtractor
     /**
      * Retrieve information about a column size.
      *
+     * @param databaseSQLConnection connection to the appropriate database
      * @param columnDetails collected information about a column
      * @throws SQLException errors accessing the database
      */
-    void getColumnSize(ColumnDetails columnDetails) throws SQLException
+    void getColumnSize(java.sql.Connection databaseSQLConnection,
+                       ColumnDetails       columnDetails) throws SQLException
     {
         final String databaseSizeSQLCommand = "SELECT pg_column_size('" + columnDetails.getQualifiedColumnName() + "');";
 
         try
         {
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(databaseSizeSQLCommand);
+            PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(databaseSizeSQLCommand);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next())
@@ -597,7 +556,7 @@ public class PostgresDatabaseStatsExtractor
         {
             try
             {
-                jdbcConnection.rollback();
+                databaseSQLConnection.rollback();
             }
             catch (Exception error)
             {
