@@ -97,9 +97,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap,org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient,org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EngineConfigurationRefreshThread</a><wbr>(<a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;engineHandlers,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap,org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EngineConfigurationRefreshThread</a><wbr>(<a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;engineHandlers,
  <a href="../../../accessservices/governanceserver/client/GovernanceServerEventClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">GovernanceServerEventClient</a>&nbsp;eventClient,
- <a href="../../../accessservices/governanceserver/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">OpenGovernanceClient</a>&nbsp;openGovernanceClient,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
@@ -151,11 +150,10 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap,org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient,org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap,org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>EngineConfigurationRefreshThread</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EngineConfigurationRefreshThread</span><wbr><span class="parameters">(<a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;engineHandlers,
  <a href="../../../accessservices/governanceserver/client/GovernanceServerEventClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">GovernanceServerEventClient</a>&nbsp;eventClient,
- <a href="../../../accessservices/governanceserver/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">OpenGovernanceClient</a>&nbsp;openGovernanceClient,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
@@ -167,7 +165,6 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dt>Parameters:</dt>
 <dd><code>engineHandlers</code> - list of governance engine handlers running locally mapped to their names</dd>
 <dd><code>eventClient</code> - client for accessing the Governance Server OMAS OutTopic</dd>
-<dd><code>openGovernanceClient</code> - client for working with engine actions</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>localServerUserId</code> - userId for configuration requests</dd>
 <dd><code>localServerName</code> - this server's name</dd>
