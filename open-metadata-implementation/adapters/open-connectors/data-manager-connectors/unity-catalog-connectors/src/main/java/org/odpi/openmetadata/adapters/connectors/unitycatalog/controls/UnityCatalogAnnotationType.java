@@ -29,7 +29,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
 
     CATALOG_LIST("Capture List of Unity Catalog (UC) Catalogs",
                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                 "Extract the list of visible catalog in a Unity Catalog (UC) server.",
+                 "Extract the list of visible catalogs in a Unity Catalog (UC) server.",
                  "If catalogs are missing, check the security permissions of the survey service's userId.",
                  AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
                  getProfilePropertiesPropertyName(),

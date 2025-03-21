@@ -30,6 +30,9 @@ public class SolutionComponentElement implements MetadataElement
     private List<WiredSolutionComponent>        wiredFromLinks  = null; // SolutionLinkingWires to the component or ports
     private List<SolutionPortElement>           ports           = null;
     private List<RelatedMetadataElementSummary> actors          = null;
+    private List<RelatedMetadataElementSummary> blueprints      = null;
+    private List<RelatedMetadataElementSummary> implementations = null;
+    private List<RelatedMetadataElementSummary> otherElements   = null;
     private List<InformationSupplyChainContext> context         = null;
     private String                              mermaidTimeline = null;
     private String                              mermaidGraph    = null;
@@ -59,6 +62,9 @@ public class SolutionComponentElement implements MetadataElement
             wiredFromLinks  = template.getWiredFromLinks();
             ports           = template.getPorts();
             actors          = template.getActors();
+            blueprints      = template.getBlueprints();
+            implementations = template.getImplementations();
+            otherElements   = template.getOtherElements();
             context         = template.getContext();
             mermaidTimeline = template.getMermaidTimeline();
             mermaidGraph    = template.getMermaidGraph();
@@ -199,6 +205,7 @@ public class SolutionComponentElement implements MetadataElement
         this.ports = ports;
     }
 
+
     /**
      * Return the actors associated with the solution component.
      *
@@ -209,6 +216,7 @@ public class SolutionComponentElement implements MetadataElement
         return actors;
     }
 
+
     /**
      * Set up the actors associated with the solution component.
      *
@@ -217,6 +225,74 @@ public class SolutionComponentElement implements MetadataElement
     public void setActors(List<RelatedMetadataElementSummary> actors)
     {
         this.actors = actors;
+    }
+
+
+    /**
+     * Return the list of solution blueprints that this component is consumed by.
+     *
+     * @return list of related elements
+     */
+    public List<RelatedMetadataElementSummary> getBlueprints()
+    {
+        return blueprints;
+    }
+
+
+    /**
+     * Set up the list of solution blueprints that this component is consumed by.
+     *
+     * @param blueprints list of related elements
+     */
+    public void setBlueprints(List<RelatedMetadataElementSummary> blueprints)
+    {
+        this.blueprints = blueprints;
+    }
+
+
+    /**
+     * Return the list of elements that implement this solution component (related by the ImplementedBy relationship).
+     *
+     * @return list of related elements
+     */
+    public List<RelatedMetadataElementSummary> getImplementations()
+    {
+        return implementations;
+    }
+
+
+    /**
+     * Set up the list of elements that implement this solution component (related by the ImplementedBy relationship).
+     *
+     * @param implementations list of related elements
+     */
+    public void setImplementations(List<RelatedMetadataElementSummary> implementations)
+    {
+        this.implementations = implementations;
+    }
+
+
+    /**
+     * Return the list of other elements connected to the solution component.  This may governance information,
+     * comments, or other feedback.
+     *
+     * @return list of related elements
+     */
+    public List<RelatedMetadataElementSummary> getOtherElements()
+    {
+        return otherElements;
+    }
+
+
+    /**
+     * Set up the list of other elements connected to the solution component.  This may governance information,
+     * comments, or other feedback.
+     *
+     * @param otherElements list of related elements
+     */
+    public void setOtherElements(List<RelatedMetadataElementSummary> otherElements)
+    {
+        this.otherElements = otherElements;
     }
 
 
@@ -302,6 +378,9 @@ public class SolutionComponentElement implements MetadataElement
                 ", wiredFromLinks=" + wiredFromLinks +
                 ", ports=" + ports +
                 ", actors=" + actors +
+                ", blueprints=" + blueprints +
+                ", implementations=" + implementations +
+                ", otherElements=" + otherElements +
                 ", context=" + context +
                 ", mermaidTimeline='" + mermaidTimeline + '\'' +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
@@ -328,6 +407,9 @@ public class SolutionComponentElement implements MetadataElement
                 Objects.equals(wiredFromLinks, that.wiredFromLinks) &&
                 Objects.equals(ports, that.ports) &&
                 Objects.equals(actors, that.actors) &&
+                Objects.equals(blueprints, that.blueprints) &&
+                Objects.equals(implementations, that.implementations) &&
+                Objects.equals(otherElements, that.otherElements) &&
                 Objects.equals(context, that.context) &&
                 Objects.equals(mermaidTimeline, that.mermaidTimeline) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
@@ -342,6 +424,7 @@ public class SolutionComponentElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, properties, subComponents, wiredToLinks, wiredFromLinks, ports, actors, context, mermaidTimeline, mermaidGraph);
+        return Objects.hash(elementHeader, properties, subComponents, wiredToLinks, wiredFromLinks, ports, actors,
+                            blueprints, implementations, otherElements, context, mermaidTimeline, mermaidGraph);
     }
 }

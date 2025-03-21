@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.properties.*;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -335,7 +334,7 @@ public class AssetOwnerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/assets/assets/relationships/{relationshipTypeName}/to-asset/{toAssetGUID}/retrieve/end1")
+    @PostMapping(path = "/assets/relationships/{relationshipTypeName}/to-asset/{toAssetGUID}/retrieve/end1")
 
     public RelationshipElementsResponse getRelatedAssetsAtEnd1(@PathVariable String                        serverName,
                                                                @PathVariable String                        userId,

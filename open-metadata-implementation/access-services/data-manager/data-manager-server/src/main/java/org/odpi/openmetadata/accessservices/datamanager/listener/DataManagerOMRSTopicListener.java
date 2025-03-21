@@ -276,7 +276,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                 ElementStub endOneElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityOneProxy(), methodName);
                 ElementStub endTwoElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName)) ||
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName)) ||

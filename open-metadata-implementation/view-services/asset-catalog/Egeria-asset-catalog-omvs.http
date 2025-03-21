@@ -59,7 +59,7 @@ Content-Type: application/json
 {
   "effectiveTime" : "{{isoTimestamp}}",
   "asOfTime": "{{isoTimestamp}}",
-  "relationshipTypes" : ["DataContentForDataSet"],
+  "relationshipTypes" : ["DataSetContent"],
   "limitToISCQualifiedName": "",
   "highlightISCQualifiedName": ""
 }

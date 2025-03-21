@@ -77,7 +77,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     else if ((propertyHelper.isTypeOf(line, OpenMetadataType.DATA_FLOW.typeName)) ||
                              (propertyHelper.isTypeOf(line, OpenMetadataType.PROCESS_CALL.typeName)) ||
                              (propertyHelper.isTypeOf(line, OpenMetadataType.LINEAGE_MAPPING.typeName)) ||
-                             (propertyHelper.isTypeOf(line, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName)))
+                             (propertyHelper.isTypeOf(line, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName)))
                     {
                         visualStyle = VisualStyle.LINEAGE_ELEMENT;
                     }

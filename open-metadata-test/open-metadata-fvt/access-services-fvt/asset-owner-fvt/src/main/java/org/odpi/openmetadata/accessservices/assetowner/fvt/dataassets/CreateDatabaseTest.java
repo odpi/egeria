@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt.dataassets;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -570,11 +572,11 @@ public class CreateDatabaseTest
             properties.setDisplayName(databaseDisplayName);
             properties.setResourceDescription(databaseDescription);
 
-            properties.setTypeName("Database");
+            properties.setTypeName(OpenMetadataType.DATABASE.typeName);
 
             Map<String, Object> extendedProperties = new HashMap<>();
-            extendedProperties.put("deployedImplementationType", databaseType);
-            extendedProperties.put("databaseVersion" , databaseVersion);
+            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
+            extendedProperties.put(OpenMetadataProperty.DATABASE_VERSION.name, databaseVersion);
             properties.setExtendedProperties(extendedProperties);
 
             String databaseGUID = client.addAssetToCatalog(userId, properties);
@@ -648,7 +650,7 @@ public class CreateDatabaseTest
                 /*
                  * Only one schema created so nothing should be tied to the database.
                  */
-                List<RelationshipElement> relationshipList = client.getRelatedAssetsAtEnd2(userId, "DataContentForDataSet", databaseGUID, 0, maxPageSize);
+                List<RelationshipElement> relationshipList = client.getRelatedAssetsAtEnd1(userId, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, databaseGUID, 0, maxPageSize);
 
                 if (relationshipList != null)
                 {
@@ -750,7 +752,7 @@ public class CreateDatabaseTest
 
             if (databaseGUID != null)
             {
-                List<RelationshipElement> relationshipElements = client.getRelatedAssetsAtEnd2(userId, "DataContentForDataSet", databaseGUID, 0, maxPageSize);
+                List<RelationshipElement> relationshipElements = client.getRelatedAssetsAtEnd1(userId, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, databaseGUID, 0, maxPageSize);
 
                 if (relationshipElements == null)
                 {
@@ -801,11 +803,11 @@ public class CreateDatabaseTest
             properties.setQualifiedName(databaseSchemaName);
             properties.setDisplayName(databaseSchemaDisplayName);
             properties.setResourceDescription(databaseSchemaDescription);
-            properties.setTypeName("DeployedDatabaseSchema");
+            properties.setTypeName(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName);
 
             String databaseSchemaGUID = client.addAssetToCatalog(userId, properties);
 
-            client.setupRelatedAsset(userId, "DataContentForDataSet", databaseGUID, databaseSchemaGUID, null);
+            client.setupRelatedAsset(userId, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, databaseSchemaGUID, databaseGUID, null);
 
             if (databaseSchemaGUID == null)
             {

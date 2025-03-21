@@ -90,7 +90,7 @@ Content-Type: application/json
 ###
 # Navigating the relationships to related elements
 
-@relationshipTypeName=DataContentForDataSet
+@relationshipTypeName=DataSetContent
 
 
 ###

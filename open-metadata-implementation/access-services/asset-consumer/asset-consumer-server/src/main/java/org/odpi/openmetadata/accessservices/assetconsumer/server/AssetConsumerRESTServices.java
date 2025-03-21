@@ -477,7 +477,7 @@ public class AssetConsumerRESTServices
             lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
         }
         return lineageRelationshipTypeNames;

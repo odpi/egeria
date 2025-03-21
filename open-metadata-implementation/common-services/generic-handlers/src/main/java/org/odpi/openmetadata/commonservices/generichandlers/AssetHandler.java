@@ -1984,7 +1984,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Remove any data sets connected to the asset by the DataContentForDataSet relationship.
+     * Remove any data sets connected to the asset by the DataSetContent relationship.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -2017,9 +2017,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                        userId,
                                                                                        assetGUID,
                                                                                        assetTypeName,
-                                                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
-                                                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                                                       2,
+                                                                                       OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                                       1,
                                                                                        null,
                                                                                        null,
                                                                                        SequencingOrder.CREATION_DATE_RECENT,
@@ -2037,12 +2037,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
             if (relationship != null)
             {
-                final String elementGUIDParameterName = "relationship.getEntityTwoProxy().getGUID()";
+                final String elementGUIDParameterName = "relationship.getEntityOneProxy().getGUID()";
 
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
-                                            relationship.getEntityTwoProxy().getGUID(),
+                                            relationship.getEntityOneProxy().getGUID(),
                                             elementGUIDParameterName,
                                             OpenMetadataType.DATA_SET.typeGUID,
                                             OpenMetadataType.DATA_SET.typeName,

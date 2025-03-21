@@ -563,7 +563,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                         {
                             List<String> recordValues = csvFileStoreConnector.readRecord(recordNumber);
 
-                            if ((recordValues != null) && (recordValues.size() > 1))
+                            if ((recordValues != null) && (recordValues.size() == 2))
                             {
                                 try
                                 {
@@ -573,27 +573,21 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                 }
                                 catch (NumberFormatException notIntError)
                                 {
-                                    if (auditLog != null)
-                                    {
-                                        auditLog.logException(methodName,
-                                                              HarvestSurveysAuditCode.NOT_A_NUMBER.getMessageDefinition(connectorName,
-                                                                                                                        recordValues.get(1),
-                                                                                                                        Long.toString(recordNumber),
-                                                                                                                        csvFileStoreConnector.getFileName(),
-                                                                                                                        notIntError.getMessage()),
-                                                              notIntError);
-                                    }
+                                    // skip value
                                 }
                             }
                         }
 
-                        for (RelatedMetadataElement relatedAnnotationSubject : relatedAnnotationSubjects)
+                        if (! measurementValues.isEmpty())
                         {
-                            syncValueProfile(databaseConnection,
-                                             surveyReportGUID,
-                                             relatedAnnotationElement.getElement(),
-                                             relatedAnnotationSubject,
-                                             measurementValues);
+                            for (RelatedMetadataElement relatedAnnotationSubject : relatedAnnotationSubjects)
+                            {
+                                syncValueProfile(databaseConnection,
+                                                 surveyReportGUID,
+                                                 relatedAnnotationElement.getElement(),
+                                                 relatedAnnotationSubject,
+                                                 measurementValues);
+                            }
                         }
                     }
                 }

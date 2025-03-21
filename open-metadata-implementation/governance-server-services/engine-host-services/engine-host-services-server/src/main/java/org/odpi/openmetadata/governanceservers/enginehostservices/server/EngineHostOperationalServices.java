@@ -226,7 +226,6 @@ public class EngineHostOperationalServices
              */
             EngineConfigurationRefreshThread configurationRefreshThread = new EngineConfigurationRefreshThread(governanceEngineHandlers,
                                                                                                                eventClient,
-                                                                                                               openGovernanceClient,
                                                                                                                auditLog,
                                                                                                                localServerUserId,
                                                                                                                localServerName,
