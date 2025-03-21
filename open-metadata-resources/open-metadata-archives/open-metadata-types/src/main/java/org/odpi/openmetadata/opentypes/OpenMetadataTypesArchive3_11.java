@@ -15,9 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -188,7 +186,7 @@ public class OpenMetadataTypesArchive3_11
     private void update0010BaseModel()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataSet());
-        this.archiveBuilder.addTypeDefPatch(updateDataContentForDataSet());
+        this.archiveBuilder.addTypeDefPatch(updateDataSetContentRelationship());
     }
 
     private TypeDefPatch updateDataSet()
@@ -214,12 +212,12 @@ public class OpenMetadataTypesArchive3_11
     }
 
 
-    private TypeDefPatch updateDataContentForDataSet()
+    private TypeDefPatch updateDataSetContentRelationship()
     {
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

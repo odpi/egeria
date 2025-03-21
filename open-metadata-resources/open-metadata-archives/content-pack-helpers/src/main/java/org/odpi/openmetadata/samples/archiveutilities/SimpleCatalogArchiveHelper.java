@@ -3633,25 +3633,44 @@ public class SimpleCatalogArchiveHelper
                                          String queryId,
                                          String query)
     {
-        final String methodName = "addDataContentForDataSet";
+        addDataSetContent(dataSetGUID, dataContentGUID, queryId, query, null);
+    }
 
-        EntityDetail dataContentEntity = archiveBuilder.getEntity(dataContentGUID);
+
+    /**
+     * Create the relationship between a data set and an asset that is providing all or part of its content.
+     *
+     * @param dataContentGUID unique identifier of the data store
+     * @param dataSetGUID unique identifier of the consuming data set
+     * @param queryId identifier of the query used to combine results in a broader formula of the data set
+     * @param query query to issue against this data content
+     * @param queryType type of encoding/language used by the query (eg SQL)
+     */
+    public void addDataSetContent(String dataSetGUID,
+                                  String dataContentGUID,
+                                  String queryId,
+                                  String query,
+                                  String queryType)
+    {
+        final String methodName = "addSetDataContent";
+
         EntityDetail dataSetEntity = archiveBuilder.getEntity(dataSetGUID);
+        EntityDetail dataContentEntity = archiveBuilder.getEntity(dataContentGUID);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(dataContentEntity);
-        EntityProxy end2 = archiveHelper.getEntityProxy(dataSetEntity);
+        EntityProxy end1 = archiveHelper.getEntityProxy(dataSetEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(dataContentEntity);
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUERY_ID.name, queryId, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.QUERY.name, query, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.QUERY_TYPE.name, queryType, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(dataContentGUID + "_to_" + dataSetGUID + "_data_content_for_data_set_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(dataSetGUID + "_to_" + dataContentGUID + "_data_set_content_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
     }
-
 
 
 

@@ -1360,6 +1360,17 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     }
 
 
+    /**
+     * Navigate through the ImplementedBy and ImplementationSupplyChainComposition relationships to locate
+     * the Information Supply Chains associated with the originally requested element
+     * @param userId calling userId
+     * @param relatedParentElements list of parents for requested element
+     * @param asOfTime repository time
+     * @param effectiveTime effective time for subsequent queries
+     * @param methodName calling method
+     * @return supply chain context
+     * @throws PropertyServerException problem in converter
+     */
     private List<InformationSupplyChainContext> getInformationSupplyChainContext(String                       userId,
                                                                                  List<RelatedMetadataElement> relatedParentElements,
                                                                                  Date                         asOfTime,
@@ -1401,17 +1412,18 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                           relatedMetadataElement,
                                                                                           methodName);
 
-                                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
-                                {
-                                    parentComponents.add(bean);
-                                }
-                                else if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName))
+
+                                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName))
                                 {
                                     linkedSegment = bean;
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
                                 {
                                     informationSupplyChain = bean;
+                                }
+                                else
+                                {
+                                    parentComponents.add(bean);
                                 }
                             }
                         }
@@ -1478,14 +1490,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                 {
                     if (relatedMetadataElement != null)
                     {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
+                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName))
                         {
                             fullParentContext.add(relatedMetadataElement);
                         }
                         else
                         {
-                            if ((propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName)) ||
-                                    (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                            if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
                             {
                                 List<RelatedMetadataElement> higherParents = this.getFullParentContext(userId, relatedMetadataElement, asOfTime, effectiveTime, methodName);
 

@@ -998,12 +998,13 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
                     properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
                     properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));
+                    properties.setQueryType(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY_TYPE.name, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());

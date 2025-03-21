@@ -4280,7 +4280,7 @@ public class OpenMetadataTypesArchive1_2
     {
         this.archiveBuilder.addEntityDef(getDataStoreEntity());
 
-        this.archiveBuilder.addRelationshipDef(getDataContentForDataSetRelationship());
+        this.archiveBuilder.addRelationshipDef(getDataSetContentRelationship());
     }
 
     private EntityDef getDataStoreEntity()
@@ -4301,9 +4301,9 @@ public class OpenMetadataTypesArchive1_2
         return entityDef;
     }
 
-    private RelationshipDef getDataContentForDataSetRelationship()
+    private RelationshipDef getDataSetContentRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -4311,21 +4311,6 @@ public class OpenMetadataTypesArchive1_2
 
         /*
          * Set up end 1.
-         */
-        final String                     end1AttributeName            = "dataContent";
-        final String                     end1AttributeDescription     = "Assets supporting a data set.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
          */
         final String                     end2AttributeName            = "supportedDataSets";
         final String                     end2AttributeDescription     = "Data sets that use this asset.";
@@ -4336,7 +4321,23 @@ public class OpenMetadataTypesArchive1_2
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end1AttributeName            = "dataContent";
+        final String                     end1AttributeDescription     = "Assets supporting a data set.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+
 
         return relationshipDef;
     }

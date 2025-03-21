@@ -1096,12 +1096,13 @@ public class AssetOwnerRESTServices
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
                     properties.setQueryId(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
                     properties.setQuery(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));
+                    properties.setQueryType(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY_TYPE.name, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());

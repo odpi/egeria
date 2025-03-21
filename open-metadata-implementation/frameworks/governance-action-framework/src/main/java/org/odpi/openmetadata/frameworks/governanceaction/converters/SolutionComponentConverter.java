@@ -108,9 +108,12 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
 
                     if (relationships != null)
                     {
-                        List<WiredSolutionComponent>        wiredFrom  = new ArrayList<>();
-                        List<WiredSolutionComponent>        wiredTo    = new ArrayList<>();
-                        List<RelatedMetadataElementSummary> actors     = new ArrayList<>();
+                        List<WiredSolutionComponent>        wiredFrom       = new ArrayList<>();
+                        List<WiredSolutionComponent>        wiredTo         = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> actors          = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> blueprints      = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> implementations = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> otherElements   = new ArrayList<>();
 
                         for (RelatedMetadataElement relatedMetadataElement : relationships)
                         {
@@ -119,6 +122,14 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName))
                                 {
                                     actors.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName))
+                                {
+                                    blueprints.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                                {
+                                    implementations.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName))
                                 {
@@ -153,6 +164,10 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                                         wiredFrom.add(link);
                                     }
                                 }
+                                else
+                                {
+                                    otherElements.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                }
                             }
                         }
 
@@ -169,6 +184,21 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                         if (! actors.isEmpty())
                         {
                             bean.setActors(actors);
+                        }
+
+                        if (! blueprints.isEmpty())
+                        {
+                            bean.setBlueprints(blueprints);
+                        }
+
+                        if (! implementations.isEmpty())
+                        {
+                            bean.setImplementations(implementations);
+                        }
+
+                        if (! otherElements.isEmpty())
+                        {
+                            bean.setOtherElements(otherElements);
                         }
                     }
                 }

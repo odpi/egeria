@@ -1997,13 +1997,13 @@ public enum OpenMetadataType
              "A data source that provides a constant stream of data, such as a sensor monitoring the environment."),
 
     /**
-     * The assets that provides data for a data set.
+     * The assets that provide data for a data set.
      */
-    DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP("b827683c-2924-4df3-a92d-7be1888e23c0",
-                                           "DataContentForDataSet",
-                                           OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
-                                           "64b044b3-f765-447a-aca7-5f72d0f3f9d0",
-                                           "The assets that provides data for a data set."),
+    DATA_SET_CONTENT_RELATIONSHIP("202e583b-40cf-4b04-93f0-84e3ddbb83ce",
+                                  "DataSetContent",
+                                  OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+                                  "373a03e2-3a3c-407e-8f98-24fc7ff0dfde",
+                                  "The assets that provide data for a data set."),
 
     /**
      * A callable interface running at an endpoint.

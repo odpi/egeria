@@ -319,19 +319,19 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
                                                      super.getProperty(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), null));
 
         String elementGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(catalogGUID,
-                                                                                       catalogQualifiedName,
-                                                                                       openMetadataTypeName,
-                                                                                       schemaGUID,
-                                                                                       false,
-                                                                                       null,
-                                                                                       null,
-                                                                                       templateGUID,
-                                                                                       null,
-                                                                                       governanceContext.getRequestParameters(),
-                                                                                       schemaGUID,
-                                                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                                                       null,
-                                                                                       false);
+                                                                                                     catalogQualifiedName,
+                                                                                                     openMetadataTypeName,
+                                                                                                     schemaGUID,
+                                                                                                     false,
+                                                                                                     null,
+                                                                                                     null,
+                                                                                                     templateGUID,
+                                                                                                     null,
+                                                                                                     governanceContext.getRequestParameters(),
+                                                                                                     schemaGUID,
+                                                                                                     OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                                                     null,
+                                                                                                     true);
 
         String rootSchemaTypeQualifiedName = this.getProperty(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getName(), null);
 

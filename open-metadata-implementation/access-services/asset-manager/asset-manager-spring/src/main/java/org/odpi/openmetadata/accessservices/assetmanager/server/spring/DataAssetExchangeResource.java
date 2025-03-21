@@ -477,7 +477,7 @@ public class DataAssetExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/data-assets/data-assets/relationships/{relationshipTypeName}/to-asset/{toAssetGUID}/retrieve/end1")
+    @PostMapping(path = "/data-assets/relationships/{relationshipTypeName}/to-asset/{toAssetGUID}/retrieve/end1")
 
     public RelationshipElementsResponse getRelatedAssetsAtEnd1(@PathVariable String                        serverName,
                                                                @PathVariable String                        userId,

@@ -422,6 +422,64 @@ public abstract class GovernanceEngineHandler
 
 
     /**
+     * Look for engine actions that were skipped - typically because the events were missed.
+     */
+    public void startMissedEngineActions()
+    {
+        final String methodName = "startMissedEngineActions";
+
+        int startFrom = 0;
+        int pageSize  = 10;
+
+        try
+        {
+            List<EngineActionElement> activeEngineActions = engineActionClient.getActiveEngineActions(serverUserId,
+                                                                                                      startFrom,
+                                                                                                      pageSize);
+
+            while (activeEngineActions != null)
+            {
+                for (EngineActionElement engineActionElement : activeEngineActions)
+                {
+                    if ((engineActionElement != null) &&
+                            (engineActionElement.getActionStatus() == EngineActionStatus.APPROVED) &&
+                            (governanceEngineGUID.equals(engineActionElement.getGovernanceEngineGUID())))
+                    {
+
+                        try
+                        {
+                            this.executeEngineAction(engineActionElement.getElementHeader().getGUID());
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logException(methodName,
+                                                  EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionElement.getGovernanceEngineName(),
+                                                                                                                        error.getClass().getName(),
+                                                                                                                        error.getMessage()),
+                                                  engineActionElement.toString(),
+                                                  error);
+                        }
+                    }
+                }
+
+                startFrom           = startFrom + pageSize;
+                activeEngineActions = engineActionClient.getActiveEngineActions(serverUserId,
+                                                                                startFrom,
+                                                                                pageSize);
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  EngineHostServicesAuditCode.UNEXPECTED_EXCEPTION_DURING_RESTART.getMessageDefinition(methodName,
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       error.getMessage()),
+                                  error);
+        }
+    }
+
+
+    /**
      * Retrieve the governance service for the requested type.
      *
      * @param governanceRequestType governance request type.

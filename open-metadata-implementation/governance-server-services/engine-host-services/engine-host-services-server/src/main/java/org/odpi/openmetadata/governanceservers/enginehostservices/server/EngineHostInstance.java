@@ -94,6 +94,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
                 if (governanceEngineHandler != null)
                 {
                     governanceEngineHandler.refreshConfig();
+                    governanceEngineHandler.startMissedEngineActions();
                 }
 
                 auditLog.logMessage(serviceOperationName,
@@ -116,6 +117,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
                                 EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));
 
             governanceEngineHandler.refreshConfig();
+            governanceEngineHandler.startMissedEngineActions();
 
             auditLog.logMessage(serviceOperationName,
                                 EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));

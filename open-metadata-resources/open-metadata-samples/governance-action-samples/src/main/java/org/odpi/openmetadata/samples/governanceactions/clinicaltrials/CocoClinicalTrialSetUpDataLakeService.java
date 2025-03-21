@@ -467,9 +467,9 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                                      null,
                                                                                                      placeholderProperties,
                                                                                                      schemaGUID,
-                                                                                                     OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
+                                                                                                     OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
                                                                                                      null,
-                                                                                                     false);
+                                                                                                     true);
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
 

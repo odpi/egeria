@@ -278,8 +278,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String parentLinkTypeName = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName;
-        final boolean parentAtEnd1 = false;
+        final String parentLinkTypeName = OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName;
+        final boolean parentAtEnd1 = true;
 
         String ucFunctionGUID;
 
