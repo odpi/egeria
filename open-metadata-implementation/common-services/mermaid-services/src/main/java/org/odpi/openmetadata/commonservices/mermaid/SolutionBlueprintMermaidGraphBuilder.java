@@ -51,7 +51,8 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
                     super.addSolutionComponentToGraph(null,
                                                       null,
                                                       node.getSolutionComponent(),
-                                                      solutionLinkingWireGUIDs);
+                                                      solutionLinkingWireGUIDs,
+                                                      false);
                 }
             }
 
@@ -92,7 +93,8 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
 
                 if (linkToBlueprint)
                 {
-                    super.appendMermaidLine(solutionBlueprintElement.getElementHeader().getGUID(),
+                    super.appendMermaidLine(null,
+                                            solutionBlueprintElement.getElementHeader().getGUID(),
                                             null,
                                             descriptionNodeName);
                 }

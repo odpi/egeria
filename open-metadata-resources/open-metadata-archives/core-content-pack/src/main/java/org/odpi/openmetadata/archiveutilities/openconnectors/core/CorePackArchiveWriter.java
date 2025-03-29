@@ -863,6 +863,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addEndpointCatalogTemplates();
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
+        this.addDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
 
         for (EgeriaSoftwareServerTemplateDefinition templateDefinition : EgeriaSoftwareServerTemplateDefinition.values())
         {

@@ -3633,7 +3633,7 @@ public class SimpleCatalogArchiveHelper
                                          String queryId,
                                          String query)
     {
-        addDataSetContent(dataSetGUID, dataContentGUID, queryId, query, null);
+        addDataSetContent(dataSetGUID, dataContentGUID, queryId, query, null, null);
     }
 
 
@@ -3645,14 +3645,16 @@ public class SimpleCatalogArchiveHelper
      * @param queryId identifier of the query used to combine results in a broader formula of the data set
      * @param query query to issue against this data content
      * @param queryType type of encoding/language used by the query (eg SQL)
+     * @param iscQualifiedName qualified name of associated information supply chain
      */
     public void addDataSetContent(String dataSetGUID,
                                   String dataContentGUID,
                                   String queryId,
                                   String query,
-                                  String queryType)
+                                  String queryType,
+                                  String iscQualifiedName)
     {
-        final String methodName = "addSetDataContent";
+        final String methodName = "addDataSetContent";
 
         EntityDetail dataSetEntity = archiveBuilder.getEntity(dataSetGUID);
         EntityDetail dataContentEntity = archiveBuilder.getEntity(dataContentGUID);
@@ -3663,6 +3665,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUERY_ID.name, queryId, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.QUERY.name, query, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.QUERY_TYPE.name, queryType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, iscQualifiedName, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(dataSetGUID + "_to_" + dataContentGUID + "_data_set_content_relationship"),

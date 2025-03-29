@@ -73,12 +73,12 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                         {
                             certificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
-                        else if (CocoClinicalTrialActionTarget.CUSTODIAN.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             custodianGUID = actionTargetElement.getTargetElement().getElementGUID();
                             custodianTypeName = actionTargetElement.getTargetElement().getType().getTypeName();
                         }
-                        else if (CocoClinicalTrialActionTarget.PROCESS_OWNER.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.CLINICAL_TRIAL_OWNER.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             processOwnerGUID = actionTargetElement.getTargetElement().getElementGUID();
                             processOwnerTypeName =  actionTargetElement.getTargetElement().getType().getTypeName();
@@ -117,12 +117,12 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                 if ((custodianGUID == null) || (custodianGUID.isBlank()))
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                            CocoClinicalTrialActionTarget.CUSTODIAN.getName());
+                                                                                                            CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName());
                 }
                 if ((processOwnerGUID == null) || (processOwnerGUID.isBlank()))
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                            CocoClinicalTrialActionTarget.PROCESS_OWNER.getName());
+                                                                                                            CocoClinicalTrialActionTarget.CLINICAL_TRIAL_OWNER.getName());
                 }
                 if ((hospitalContactGUID == null) || (hospitalContactGUID.isBlank()))
                 {

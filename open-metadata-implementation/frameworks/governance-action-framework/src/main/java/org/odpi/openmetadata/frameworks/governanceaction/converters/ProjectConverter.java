@@ -3,15 +3,18 @@
 package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,19 +38,21 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
 
 
     /**
-     * Using the supplied openMetadataElement, return a new instance of the bean. This is used for most beans that have
-     * a one to one correspondence with the repository instances.
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
-     * @param openMetadataElement openMetadataElement containing the properties
+     * @param primaryElement element that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @Override
-    public B getNewBean(Class<B>            beanClass,
-                        OpenMetadataElement openMetadataElement,
-                        String              methodName) throws PropertyServerException
+    public B getNewComplexBean(Class<B>                     beanClass,
+                               OpenMetadataElement          primaryElement,
+                               List<RelatedMetadataElement> relationships,
+                               String                       methodName) throws PropertyServerException
     {
         try
         {
@@ -60,16 +65,16 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
             {
                 ProjectProperties projectProperties = new ProjectProperties();
 
-                bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, primaryElement, methodName));
 
                 ElementProperties elementProperties;
 
                 /*
                  * The initial set of values come from the openMetadataElement.
                  */
-                if (openMetadataElement != null)
+                if (primaryElement != null)
                 {
-                    elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
+                    elementProperties = new ElementProperties(primaryElement.getElementProperties());
 
                     projectProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     projectProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
@@ -79,8 +84,8 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
                     projectProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
                     projectProperties.setStartDate(this.removeStartDate(elementProperties));
                     projectProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
-                    projectProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
-                    projectProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
+                    projectProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
+                    projectProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -95,6 +100,7 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
                 }
 
                 bean.setProperties(projectProperties);
+                bean.setResourceList(this.getResourceList(beanClass, relationships));
             }
 
             return returnBean;
@@ -108,21 +114,155 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
     }
 
 
+    /**
+     * Retrieve the project properties from the
+     * @param primaryElement
+     * @return
+     */
+    protected ProjectProperties getProjectProperties(OpenMetadataElement primaryElement)
+    {
+        if (primaryElement.getElementProperties() != null)
+        {
+            ElementProperties elementProperties = new ElementProperties(primaryElement.getElementProperties());
+            ProjectProperties projectProperties = new ProjectProperties();
+
+            projectProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
+            projectProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            projectProperties.setIdentifier(this.removeIdentifier(elementProperties));
+            projectProperties.setName(this.removeName(elementProperties));
+            projectProperties.setDescription(this.removeDescription(elementProperties));
+            projectProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
+            projectProperties.setStartDate(this.removeStartDate(elementProperties));
+            projectProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
+            projectProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
+            projectProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
+
+            /*
+             * Any remaining properties are returned in the extended properties.  They are
+             * assumed to be defined in a subtype.
+             */
+            projectProperties.setTypeName(primaryElement.getType().getTypeName());
+            projectProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+
+            return projectProperties;
+        }
+
+        return null;
+    }
+
 
     /**
-     * Using the supplied openMetadataElement, return a new instance of the bean. This is used for most beans that have
-     * a one to one correspondence with the repository instances.
+     * Summarize the elements linked off of the project in the resource list.
+     *
+     * @param beanClass bean class
+     * @param resourceListElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getResourceList(Class<B>                     beanClass,
+                                                                List<RelatedMetadataElement> resourceListElements) throws PropertyServerException
+    {
+        final String methodName = "getResourceList";
+
+        if (resourceListElements != null)
+        {
+            List<RelatedMetadataElementSummary> resourceList = new ArrayList<>();
+
+            for (RelatedMetadataElement resourceListElement: resourceListElements)
+            {
+                if ((resourceListElement != null) && (propertyHelper.isTypeOf(resourceListElement, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName)))
+                {
+                    resourceList.add(super.getRelatedElementSummary(beanClass, resourceListElement, methodName));
+                }
+            }
+            return resourceList;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the elements linked off of the project in the project management list.
+     *
+     * @param beanClass bean class
+     * @param projectManagerElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getProjectManagers(Class<B>                     beanClass,
+                                                                   List<RelatedMetadataElement> projectManagerElements) throws PropertyServerException
+    {
+        final String methodName = "getProjectManagers";
+
+        if (projectManagerElements != null)
+        {
+            List<RelatedMetadataElementSummary> projectManagers = new ArrayList<>();
+
+            for (RelatedMetadataElement projectManagerElement: projectManagerElements)
+            {
+                if ((projectManagerElement != null) && (propertyHelper.isTypeOf(projectManagerElement, OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName)))
+                {
+                    projectManagers.add(super.getRelatedElementSummary(beanClass, projectManagerElement, methodName));
+                }
+            }
+
+            return projectManagers;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the elements linked off of the project in the project team list.
+     *
+     * @param beanClass bean class
+     * @param projectTeamElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getProjectTeam(Class<B>                     beanClass,
+                                                                 List<RelatedMetadataElement> projectTeamElements) throws PropertyServerException
+    {
+        final String methodName = "getProjectTeam";
+
+        if (projectTeamElements != null)
+        {
+            List<RelatedMetadataElementSummary> projectTeam = new ArrayList<>();
+
+            for (RelatedMetadataElement projectTeamElement: projectTeamElements)
+            {
+                if ((projectTeamElement != null) && (propertyHelper.isTypeOf(projectTeamElement, OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName)))
+                {
+                    projectTeam.add(super.getRelatedElementSummary(beanClass, projectTeamElement, methodName));
+                }
+            }
+
+            return projectTeam;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
-     * @param relatedMetadataElement the properties of an open metadata element plus details of the relationship used to navigate to it
+     * @param primaryElement element that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @Override
-    public B getNewBean(Class<B>               beanClass,
-                        RelatedMetadataElement relatedMetadataElement,
-                        String                 methodName) throws PropertyServerException
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>                     beanClass,
+                               RelatedMetadataElement       primaryElement,
+                               List<RelatedMetadataElement> relationships,
+                               String                       methodName) throws PropertyServerException
     {
         try
         {
@@ -134,7 +274,7 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
             if (returnBean instanceof ProjectElement bean)
             {
                 ProjectProperties    projectProperties    = new ProjectProperties();
-                OpenMetadataElement  openMetadataElement  = relatedMetadataElement.getElement();
+                OpenMetadataElement  openMetadataElement  = primaryElement.getElement();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
 
@@ -173,9 +313,15 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
 
-                bean.setProperties(projectProperties);
+                if (relationships != null)
+                {
+                    bean.setResourceList(this.getResourceList(beanClass, relationships));
+                    bean.setProjectManagers(this.getProjectManagers(beanClass, relationships));
+                    bean.setProjectTeam(this.getProjectTeam(beanClass, relationships));
+                }
 
-                bean.setRelatedElement(super.getRelatedElement(beanClass, relatedMetadataElement, methodName));
+                bean.setProperties(projectProperties);
+                bean.setStartingElement(super.getRelatedElement(beanClass, primaryElement, methodName));
             }
 
             return returnBean;
@@ -186,33 +332,5 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
         }
 
         return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that
-     * contain a combination of the properties from an element and that of a connected relationship.
-     *
-     * @param beanClass name of the class to create
-     * @param element element containing the properties
-     * @param relationship relationship containing the properties
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    @SuppressWarnings(value = "unused")
-    public B getNewBean(Class<B>                beanClass,
-                        OpenMetadataElement     element,
-                        OpenMetadataRelationship relationship,
-                        String                  methodName) throws PropertyServerException
-    {
-        B returnBean = this.getNewBean(beanClass, element, methodName);
-
-        if (returnBean instanceof ProjectElement bean)
-        {
-            bean.setRelatedElement(super.getRelatedElement(beanClass, element, relationship, methodName));
-        }
-
-        return returnBean;
     }
 }

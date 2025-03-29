@@ -8,10 +8,9 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepExecutionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepLink;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuilderBase
@@ -30,15 +29,13 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
         mermaidGraph.append(processGraph.getGovernanceActionProcess().getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
-
         String currentNodeName = processGraph.getGovernanceActionProcess().getElementHeader().getGUID();
         String currentDisplayName = processGraph.getGovernanceActionProcess().getProcessProperties().getDisplayName();
 
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              processGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName(),
-                             VisualStyle.AUTOMATED_PROCESS_SOLUTION_COMPONENT);
+                             VisualStyle.GOVERNANCE_ACTION_PROCESS);
 
         this.addDescription(processGraph.getGovernanceActionProcess());
 
@@ -47,11 +44,11 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             currentNodeName    = processGraph.getFirstProcessStep().getElement().getElementHeader().getGUID();
             currentDisplayName = processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getDisplayName();
 
-            appendMermaidNode(currentNodeName,
-                              currentDisplayName,
-                              processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName());
-
-            usedNodeNames.add(currentNodeName);
+            appendNewMermaidNode(currentNodeName,
+                                 currentDisplayName,
+                                 processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName(),
+                                 this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
+                                 VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
         }
 
         if (processGraph.getNextProcessSteps() != null)
@@ -68,14 +65,11 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                         currentDisplayName = node.getProcessStepProperties().getProcessStepName();
                     }
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getElementHeader().getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
+                    appendNewMermaidNode(currentNodeName,
+                                         currentDisplayName,
+                                         node.getElementHeader().getType().getTypeName(),
+                                         this.getAdditionalProcessStepProperties(node),
+                                         VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
                 }
             }
 
@@ -83,7 +77,8 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             {
                 if (line != null)
                 {
-                    super.appendMermaidLine(this.removeSpaces(line.getPreviousProcessStep().getGUID()),
+                    super.appendMermaidLine(null,
+                                            this.removeSpaces(line.getPreviousProcessStep().getGUID()),
                                             line.getGuard(),
                                             this.removeSpaces(line.getNextProcessStep().getGUID()));
                 }
@@ -91,6 +86,40 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
         }
     }
 
+    /**
+     * Extract some additional properties for a process step.
+     *
+     * @param processStep retrieved process step
+     * @return map of additional properties
+     */
+    private Map<String, String> getAdditionalProcessStepProperties(GovernanceActionProcessStepExecutionElement processStep)
+    {
+        if ((processStep != null) && (processStep.getProcessStepProperties() != null))
+        {
+            Map<String, String> additionalProperties = new HashMap<>();
+
+            if (processStep.getProcessStepProperties().getActionStatus() != null)
+            {
+                additionalProperties.put(OpenMetadataProperty.ACTION_STATUS.name,
+                                         processStep.getProcessStepProperties().getActionStatus().getName());
+            }
+            if ((processStep.getProcessStepProperties().getCompletionGuards() != null) &&
+                (! processStep.getProcessStepProperties().getCompletionGuards().isEmpty()))
+            {
+                additionalProperties.put(OpenMetadataProperty.COMPLETION_GUARDS.name,
+                                         processStep.getProcessStepProperties().getCompletionGuards().toString());
+            }
+            if (processStep.getProcessStepProperties().getCompletionMessage() != null)
+            {
+                additionalProperties.put(OpenMetadataProperty.COMPLETION_MESSAGE.name,
+                                         processStep.getProcessStepProperties().getCompletionMessage());
+            }
+
+            return additionalProperties;
+        }
+
+        return null;
+    }
 
     /**
      * Add a text boxes with the description of the process (if any)

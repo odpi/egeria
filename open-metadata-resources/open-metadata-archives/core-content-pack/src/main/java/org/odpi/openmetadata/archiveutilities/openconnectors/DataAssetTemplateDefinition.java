@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A description of the default software server templates.
+ * A description of the templates for technology specific data assets.
  * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
  * to the supplied connector type and an endpoint,
  */

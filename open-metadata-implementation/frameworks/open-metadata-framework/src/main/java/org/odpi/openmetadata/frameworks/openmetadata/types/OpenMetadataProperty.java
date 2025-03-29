@@ -2488,7 +2488,7 @@ public enum OpenMetadataProperty
     /**
      * Root of the file path name that is due to the resource manager's view of the file system.
      */
-    ACTUAL_MOUNT_POINT("actualMountPoint", DataType.STRING.getName(), "Root of the file path name that is due to the resource manager's view of the file system.", null, "e5fe3d87-0ff1-4435-aa06-7bf2570102dd"),
+    LOCAL_MOUNT_POINT("localMountPoint", DataType.STRING.getName(), "Root of the file path name that is due to the resource manager's view of the file system.", null, "e5fe3d87-0ff1-4435-aa06-7bf2570102dd"),
 
     /**
      * Value to replace the actual mount point with when storing/retrieving metadata about a file within the file system.

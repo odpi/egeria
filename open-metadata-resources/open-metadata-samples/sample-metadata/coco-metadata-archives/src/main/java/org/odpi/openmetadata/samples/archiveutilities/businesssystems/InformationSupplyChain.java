@@ -4,13 +4,15 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialInformationSupplyChain;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * A description of the predefined information supply chains.
+ * A description of the predefined information supply chains.  There are two formats - one for templates and
+ * the other for normal information supply chains.
  */
 public enum InformationSupplyChain
 {
@@ -22,16 +24,17 @@ public enum InformationSupplyChain
                                       PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                       ScopeDefinition.TEMPLATE_PLACEHOLDER,
                                       null,
-                                      true),
+                                      "Standard information supply chain template",
+                                      "Create a new type of information supply chain"),
 
     /**
-     * Delivering data relating to a clinical trial from the hospitals to the Coco Researchers.
+     * Delivering data relating to the teddy bear drop foot clinical trial from the hospitals to the Coco Researchers.
      */
-    CLINICAL_TRIALS_TREATMENT_VALIDATION("1f71e403-1187-4f03-a1dd-ae7dc105f06f",
-                                         ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName(),
-                                         "Delivering data relating to a clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
-                                         ScopeDefinition.WITHIN_PROJECT,
-                                         new String[]
+    CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE(ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getGUID(),
+                                                  ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName() + ":" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
+                                                  "Delivering data relating to the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
+                                                  ScopeDefinition.WITHIN_PROJECT,
+                                                  new String[]
                                                  {
                                                          "Deliver patient measurement data from hospitals to data scientists in research.",
                                                          "Ensure incoming data is only from certified hospitals.",
@@ -40,15 +43,16 @@ public enum InformationSupplyChain
                                                          "Ensure the process of data capture and treatment validation is transparent and auditable.",
                                                          "Ensure the treatment validation report is complete and regulatory compliant."
                                                  },
-                                         false),
+                                                  "Clinical Trial Validation Information Supply Chain Template",
+                                                  "Template for a new clinical trial validation information supply chain"),
 
 
     /**
      * Delivering the data necessary to add a person as a subject in a clinical trial
      */
-    CLINICAL_TRIAL_SUBJECT_ONBOARDING("39a035f0-3b2b-45fe-adb8-ee8a19581f6a",
+    CLINICAL_TRIAL_SUBJECT_ONBOARDING(ClinicalTrialInformationSupplyChain.CLINICAL_TRIAL_SUBJECT_ONBOARDING.getGUID(),
                                       ClinicalTrialInformationSupplyChain.CLINICAL_TRIAL_SUBJECT_ONBOARDING.getDisplayName(),
-                                      "Delivering the data necessary to add a person as a subject in a clinical trial.",
+                                      "Delivering the data necessary to add a person as a subject in the teddy bear drop foot clinical trial.",
                                       ScopeDefinition.WITHIN_PROJECT,
                                       new String[]
                                               {
@@ -58,7 +62,8 @@ public enum InformationSupplyChain
                                                       "Ensure data and process owners are informed of key milestones and issues requiring attention.",
                                                       "Ensure the process of data capture and validation is transparent and auditable."
                                               },
-                                      false),
+                                      "Clinical Trial Subject Onboarding Information Supply Chain Template",
+                                      "Template for onboarding patient information into a new clinical trial."),
 
     /**
      * Adding information about a new employee to all appropriate systems and directories.
@@ -70,8 +75,7 @@ public enum InformationSupplyChain
                             new String[]
                                     {
                                             "Ensure a new employee is productive and engaged in a timely manner."
-                                    },
-                            false),
+                                    }),
 
 
     NEW_DRUG_PRODUCT_INFO_DISTRIBUTION("b0491fd4-6324-4ed8-9a1c-7cbd9892e21b",
@@ -81,8 +85,7 @@ public enum InformationSupplyChain
                                        new String[]
                                                {
                                                        "Ensuring information about a new product is distributed to all of the appropriate system so that it is visible for ordering, manufacturing and invoicing."
-                                               },
-                                       false),
+                                               }),
     PERSONALIZED_TREATMENT_ORDER("adbae740-57a3-41b8-a722-266b895794e6",
                                  "Personalized Treatment Ordering",
                                  "Delivering information about a new personalized medicine order so that it fulfilled and invoiced.",
@@ -90,8 +93,7 @@ public enum InformationSupplyChain
                                  new String[]
                                          {
                                                  "Ensuring orders are fulfilled effectively."
-                                         },
-                                 false),
+                                         }),
 
 
     SUSTAINABILITY_REPORTING("dd15b286-a38d-4f03-8625-aaded8596048",
@@ -101,8 +103,7 @@ public enum InformationSupplyChain
                              new String[]
                                      {
                                              "Ensuring sustainability reporting is accurate."
-                                     },
-                             false),
+                                     }),
 
 
     PHYSICAL_INVENTORY_TRACKING("7480a3b1-8d6c-4062-ae59-f3b81e146ed0",
@@ -113,8 +114,7 @@ public enum InformationSupplyChain
                                         {
                                                 "Ensuring effective management of physical inventory.",
                                                 "Ensuring hazardous materials are properly identified, reported and managed."
-                                        },
-                                false),
+                                        }),
 
 
     EMPLOYEE_EXPENSE_PAYMENT("79d1d83f-6a37-4c32-bf3f-eb8b4358027c",
@@ -124,8 +124,7 @@ public enum InformationSupplyChain
                              new String[]
                                      {
                                              "Ensure employees are reimbursed for their expenses in a timely manner."
-                                     },
-                             false),
+                                     }),
 
 
     ;
@@ -136,32 +135,63 @@ public enum InformationSupplyChain
     private final String          description;
     private final ScopeDefinition scope;
     private final String[]        purposes;
-    private final boolean         isTemplate;
+
+
+    private boolean               isTemplate = false;
+    private String                templateName = null;
+    private String                templateDescription = null;
 
 
     /**
-     * Construct an enum instance.
+     * Construct an enum instance (non-template).
      *
      * @param guid unique identifier
      * @param displayName display name of information supply chain
      * @param description description of information supply chain
      * @param scope scope of information supply chain
      * @param purposes purposes of information supply chain
-     * @param isTemplate is this a template?
      */
     InformationSupplyChain(String          guid,
                            String          displayName,
                            String          description,
                            ScopeDefinition scope,
-                           String[]        purposes,
-                           boolean         isTemplate)
+                           String[]        purposes)
     {
         this.guid        = guid;
         this.displayName = displayName;
         this.description = description;
         this.scope       = scope;
         this.purposes    = purposes;
-        this.isTemplate  = isTemplate;
+    }
+
+
+    /**
+     * Construct an enum instance (template).
+     *
+     * @param guid unique identifier
+     * @param displayName display name of information supply chain
+     * @param description description of information supply chain
+     * @param scope scope of information supply chain
+     * @param purposes purposes of information supply chain
+     * @param templateName is this a template? What is it called?
+     * @param templateDescription describe how this template is used
+     */
+    InformationSupplyChain(String          guid,
+                           String          displayName,
+                           String          description,
+                           ScopeDefinition scope,
+                           String[]        purposes,
+                           String          templateName,
+                           String          templateDescription)
+    {
+        this.guid                = guid;
+        this.displayName         = displayName;
+        this.description         = description;
+        this.scope               = scope;
+        this.purposes            = purposes;
+        this.isTemplate          = true;
+        this.templateName        = templateName;
+        this.templateDescription = templateDescription;
     }
 
 
@@ -235,6 +265,29 @@ public enum InformationSupplyChain
     {
         return isTemplate;
     }
+
+
+    /**
+     * Return the template name.
+     *
+     * @return string
+     */
+    public String getTemplateName()
+    {
+        return templateName;
+    }
+
+
+    /**
+     * Return the template description.
+     *
+     * @return string
+     */
+    public String getTemplateDescription()
+    {
+        return templateDescription;
+    }
+
 
 
     /**

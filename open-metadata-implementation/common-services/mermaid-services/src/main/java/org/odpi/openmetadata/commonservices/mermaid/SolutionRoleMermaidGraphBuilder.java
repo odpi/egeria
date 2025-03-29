@@ -56,7 +56,8 @@ public class SolutionRoleMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
 
-                    super.appendMermaidLine(solutionRoleElement.getElementHeader().getGUID(),
+                    super.appendMermaidLine(node.getRelationshipHeader().getGUID(),
+                                            solutionRoleElement.getElementHeader().getGUID(),
                                             this.getListLabel(Collections.singletonList(node.getRelationshipProperties().get(OpenMetadataProperty.ROLE.name))),
                                             node.getRelatedElement().getElementHeader().getGUID());
                 }

@@ -236,6 +236,28 @@ public class ProjectManagerResource
 
 
     /**
+     * Returns the graph of related projects and resources starting with a supplied project guid..
+     *
+     * @param serverName         name of called server
+     * @param projectGUID     unique identifier of the starting project
+     *
+     * @return a graph of projects or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/projects/{projectGUID}/graph")
+    @Operation(summary="getProjectGraph",
+            description="Returns the graph of related projects and resources starting with a supplied project guid.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+    public ProjectGraphResponse getProjectGraph(@PathVariable String serverName,
+                                                @PathVariable String projectGUID)
+    {
+        return restAPI.getProjectGraph(serverName, projectGUID);
+    }
+
+    /**
      * Create a new generic project.
      *
      * @param serverName                 name of called server.

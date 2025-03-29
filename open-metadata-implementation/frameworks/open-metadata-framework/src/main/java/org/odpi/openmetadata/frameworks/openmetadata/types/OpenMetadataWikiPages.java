@@ -669,6 +669,18 @@ public class OpenMetadataWikiPages
      */
     public static final String MODEL_0571_CONCEPT_MODELS               = "https://egeria-project.org/types/5/0571-Concept-Models/";
 
+
+    /**
+     * <a href="https://egeria-project.org/types/5/0580-Data-Dictionaries/">...</a>
+     */
+    public static final String MODEL_0580_DATA_DICTIONARIES    = "https://egeria-project.org/types/5/0580-Data-Dictionaries/";
+
+
+    /**
+     * <a href="https://egeria-project.org/types/5/0581-Data-Field-Implementation/">...</a>
+     */
+    public static final String MODEL_0581_DATA_FIELD_IMPLEMENTATION    = "https://egeria-project.org/types/5/0581-Data-Field-Implementation/";
+
     /**
      * <a href="https://egeria-project.org/types/5/0595-Design-Patterns/">...</a>
      */
@@ -694,11 +706,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/6/0615-Schema-Extraction/">...</a>
      */
     public static final String MODEL_0615_SCHEMA_EXTRACTION            = "https://egeria-project.org/types/6/0615-Schema-Extraction/";
-
-    /**
-     * <a href="https://egeria-project.org/types/6/0616-Data-Field-Discovery">...</a>
-     */
-    public static final String MODEL_0616_DATA_FIELD_MODELLING            = "https://egeria-project.org/types/6/0616-Data-Field-Discovery/";
 
     /**
      * <a href="https://egeria-project.org/types/6/0617-Data-Field-Analysis/">...</a>

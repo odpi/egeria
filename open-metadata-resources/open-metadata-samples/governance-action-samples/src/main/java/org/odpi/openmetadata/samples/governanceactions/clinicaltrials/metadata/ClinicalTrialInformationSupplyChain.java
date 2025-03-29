@@ -12,17 +12,20 @@ public enum ClinicalTrialInformationSupplyChain
     /**
      * Delivering data relating to a clinical trial from the hospitals to the Coco Researchers.
      */
-    CLINICAL_TRIALS_TREATMENT_VALIDATION("Clinical Trial Treatment Validation"),
+    CLINICAL_TRIALS_TREATMENT_VALIDATION("1f71e403-1187-4f03-a1dd-ae7dc105f06f",
+                                         "Clinical Trial Treatment Validation"),
 
 
     /**
      * Delivering the data necessary to add a person as a subject in a clinical trial
      */
-    CLINICAL_TRIAL_SUBJECT_ONBOARDING("Clinical Trial Subject Onboarding"),
+    CLINICAL_TRIAL_SUBJECT_ONBOARDING("39a035f0-3b2b-45fe-adb8-ee8a19581f6a",
+                                      "Clinical Trial Subject Onboarding"),
 
     ;
 
 
+    private final String guid;
     private final String displayName;
 
 
@@ -31,11 +34,20 @@ public enum ClinicalTrialInformationSupplyChain
      *
      * @param displayName unique identifier
      */
-    ClinicalTrialInformationSupplyChain(String displayName)
+    ClinicalTrialInformationSupplyChain(String guid,
+                                        String displayName)
     {
+        this.guid = guid;
         this.displayName = displayName;
-
     }
+
+
+    /**
+     * Return the unique identifier of this information supply chain.
+     *
+     * @return string
+     */
+    public String getGUID() { return  guid; }
 
 
     /**

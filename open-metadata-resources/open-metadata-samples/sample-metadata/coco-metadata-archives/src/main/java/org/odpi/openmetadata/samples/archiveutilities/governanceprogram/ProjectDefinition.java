@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ProjectStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
@@ -23,7 +24,7 @@ public enum ProjectDefinition
                       true,
                       false,
                       null,
-                      ProjectStatusDefinition.ACTIVATING,
+                      ProjectStatus.ACTIVATING,
                       null,
                       null,
                       PersonDefinition.STEW_FASTER,
@@ -39,75 +40,12 @@ public enum ProjectDefinition
                     true,
                     false,
                     OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION.typeName,
-                    ProjectStatusDefinition.ACTIVE,
+                    ProjectStatus.ACTIVE,
                     null,
                     null,
                     PersonDefinition.TANYA_TIDIE,
                     null),
 
-    /**
-     * PROJ-CT-TBDF - Clinical trial related to the new treatment for Teddy Bear Drop Foot.
-     */
-    DROP_FOOT_CLINICAL_TRIAL("Clinical Trial:Teddy Bear Drop Foot",
-                             "PROJ-CT-TBDF",
-                             "Teddy Bear Drop Foot Clinical Trial",
-                             "Clinical trial related to the new treatment for Teddy Bear Drop Foot.",
-                             false,
-                             false,
-                             OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION.typeName,
-                             ProjectStatusDefinition.ACTIVE,
-                             CLINICAL_TRIALS,
-                             null,
-                             PersonDefinition.TANYA_TIDIE,
-                             null),
-
-    /**
-     * PROJ-CT-TBDF-001 - Setting up the systems that will support the clinical trial related to the new treatment for Teddy Bear Drop Foot.
-     */
-    DROP_FOOT_CLINICAL_TRIAL_IT("Clinical Trial:Teddy Bear Drop Foot:IT Setup",
-                                "PROJ-CT-TBDF-001",
-                                "Teddy Bear Drop Foot Clinical Trial IT Setup",
-                                "Setting up the systems that will support the clinical trial related to the new treatment for Teddy Bear Drop Foot.",
-                                false,
-                                false,
-                                null,
-                                ProjectStatusDefinition.COMPLETED,
-                                DROP_FOOT_CLINICAL_TRIAL,
-                                null,
-                                PersonDefinition.ERIN_OVERVIEW,
-                                null),
-
-    /**
-     * PROJ-CT-TBDF-002 - Templates for onboarding of Teddy Bear Drop Foot related data.
-     */
-    DROP_FOOT_TEMPLATES("Clinical Trial:Teddy Bear Drop Foot:Templates",
-                        "PROJ-CT-TBDF-002",
-                        "Teddy Bear Drop Foot Clinical Trial Templates",
-                        "Templates for onboarding of Teddy Bear Drop Foot related data.",
-                        false,
-                        true,
-                        null,
-                        ProjectStatusDefinition.ACTIVATING,
-                        DROP_FOOT_CLINICAL_TRIAL_IT,
-                        null,
-                        PersonDefinition.PETER_PROFILE,
-                        null),
-
-    /**
-     * PROJ-CT-TBDF-003 - Pipelines for onboarding of Teddy Bear Drop Foot related data.
-     */
-    DROP_FOOT_DATA_PIPELINES("Clinical Trial:Teddy Bear Drop Foot:Data Pipelines",
-                             "PROJ-CT-TBDF-003",
-                             "Teddy Bear Drop Foot Clinical Trial Data Pipelines",
-                             "Pipelines for onboarding of Teddy Bear Drop Foot related data.",
-                             false,
-                             true,
-                             null,
-                             ProjectStatusDefinition.PLANNED,
-                             DROP_FOOT_CLINICAL_TRIAL_IT,
-                             new ProjectDefinition[]{ProjectDefinition.DROP_FOOT_TEMPLATES},
-                             PersonDefinition.BOB_NITTER,
-                             null),
     ;
 
     private final String                  qualifiedName;
@@ -117,7 +55,7 @@ public enum ProjectDefinition
     private final boolean                 isCampaign;
     private final boolean                 isTask;
     private final String                  projectTypeClassification;
-    private final ProjectStatusDefinition projectStatus;
+    private final ProjectStatus           projectStatus;
     private final ProjectDefinition       controllingProject;
     private final ProjectDefinition[]     dependentOn;
     private final PersonDefinition        leader;
@@ -146,7 +84,7 @@ public enum ProjectDefinition
                       boolean                    isCampaign,
                       boolean                    isTask,
                       String                     projectTypeClassification,
-                      ProjectStatusDefinition    projectStatus,
+                      ProjectStatus              projectStatus,
                       ProjectDefinition          controllingProject,
                       ProjectDefinition[]        dependentOn,
                       PersonDefinition           leader,
@@ -243,7 +181,7 @@ public enum ProjectDefinition
      *
      * @return status
      */
-    public ProjectStatusDefinition getProjectStatus()
+    public ProjectStatus getProjectStatus()
     {
         return projectStatus;
     }

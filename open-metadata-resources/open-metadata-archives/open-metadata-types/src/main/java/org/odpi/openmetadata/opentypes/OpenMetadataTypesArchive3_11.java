@@ -230,6 +230,7 @@ public class OpenMetadataTypesArchive3_11
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -1056,6 +1057,7 @@ public class OpenMetadataTypesArchive3_11
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TRANSFORMATION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

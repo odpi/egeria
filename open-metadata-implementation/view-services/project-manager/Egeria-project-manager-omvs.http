@@ -97,6 +97,13 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}
 Authorization: Bearer {{token}}
 
+###
+# @name getProjectGraph
+# Returns the graph of related projects and resources starting with a supplied project guid..
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
 # =====================================================================================================================
 # Create Projects: https://egeria-project.org/concepts/project
 # These requests use the following parameters:

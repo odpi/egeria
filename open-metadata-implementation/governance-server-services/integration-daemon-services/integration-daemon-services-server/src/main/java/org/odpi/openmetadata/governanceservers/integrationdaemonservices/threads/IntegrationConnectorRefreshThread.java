@@ -5,14 +5,11 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.thread
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -109,7 +106,7 @@ public class IntegrationConnectorRefreshThread implements Runnable
                         }
                     }
                 }
-                catch (Exception error)
+                catch (Exception | NoClassDefFoundError error)
                 {
                     auditLog.logException(actionDescription,
                                           IntegrationDaemonServicesAuditCode.REFRESH_THREAD_CONNECTOR_ERROR.getMessageDefinition(connectorHandler.getIntegrationConnectorName(),

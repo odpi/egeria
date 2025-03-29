@@ -73,7 +73,8 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
                                          node.getElementHeader().getType().getTypeName(),
                                          VisualStyle.LINKED_ELEMENT);
 
-                    super.appendMermaidLine(currentNodeName,
+                    super.appendMermaidLine(null,
+                                            currentNodeName,
                                             OpenMetadataType.ULTIMATE_SOURCE.typeName,
                                             centreNodeName);
                 }
@@ -106,7 +107,8 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
                                          node.getElementHeader().getType().getTypeName(),
                                          VisualStyle.LINKED_ELEMENT);
 
-                    super.appendMermaidLine(centreNodeName,
+                    super.appendMermaidLine(null,
+                                            centreNodeName,
                                             OpenMetadataType.ULTIMATE_DESTINATION.typeName,
                                             currentNodeName);
                 }

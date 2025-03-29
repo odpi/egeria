@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
@@ -29,7 +30,33 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
     }
 
 
-    protected String informationSupplyChainQualifiedName = "InformationSupplyChain:Clinical Trial Treatment Validation";
+    /**
+     * Extract the qualified name for the information supply chain.
+     * 
+     * @param informationSupplyChainGUID unique identifier of the information supply chain element
+     * @return string
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem accessing the metadata repository/server
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected String getInformationSupplyChainQualifiedName(String informationSupplyChainGUID) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "getInformationSupplyChainQualifiedName";
+        
+        OpenMetadataElement informationSupplyChain = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(informationSupplyChainGUID);
+        
+        if (informationSupplyChain != null)
+        {
+            return propertyHelper.getStringProperty(governanceServiceName,
+                                                    OpenMetadataProperty.QUALIFIED_NAME.name, 
+                                                    informationSupplyChain.getElementProperties(),
+                                                    methodName);
+        }
+        
+        return null;
+    }
 
     /**
      * Retrieve the email for a specific person.
@@ -37,7 +64,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      * @param personGUID unique identifier of the person entity for the individual
      * @return email address for the individual; or null if it is not found
      * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem access the metadata repository/server
+     * @throws PropertyServerException problem accessing the metadata repository/server
      * @throws UserNotAuthorizedException security problem
      */
     protected PersonContactDetails getContactDetailsForPersonGUID(String personGUID) throws InvalidParameterException,
@@ -144,6 +171,33 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
 
     /**
+     * Link an action target to a process.  This action target will be available for all steps in the process.
+     *
+     * @param processGUID unique identifier of the process
+     * @param actionTargetName name of the target for action relationship
+     * @param actionTargetGUID unique identifier of the target
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    protected void addActionTargetToProcess(String processGUID,
+                                            String actionTargetName,
+                                            String actionTargetGUID) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                                                                              processGUID,
+                                                                              actionTargetGUID,
+                                                                              null,
+                                                                              null,
+                                                                              propertyHelper.addStringProperty(null,
+                                                                                                               OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                               actionTargetName));
+    }
+
+
+    /**
      * Create the governance action process asset.
      *
      * @param processQualifiedName new qualified name for the process
@@ -192,16 +246,25 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      *
      * @param solutionComponentGUID unique identifier of the solution component
      * @param implementationGUID unique identifier of the newly set up governance action process
+     * @param informationSupplyChainQualifiedName option name of information supply chain - used to identify solution component
+     *                         implementations that are specific to a particular information supply chain
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
     protected void addSolutionComponentRelationship(String solutionComponentGUID,
-                                                    String implementationGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+                                                    String implementationGUID,
+                                                    String informationSupplyChainQualifiedName) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.DESIGN_STEP.name,
                                                                         this.getClass().getName());
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                      informationSupplyChainQualifiedName);
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                                                               solutionComponentGUID,
@@ -209,6 +272,52 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                               null,
                                                                               null,
                                                                               properties);
+    }
+
+
+    /**
+     * Set up the ResourceList relationship between an implementation component and a solution component.
+     *
+     * @param consumerGUID unique identifier of the element that is to use the element
+     * @param resourceGUID unique identifier of the resource
+     * @param resourceUse how is the resource to be used?
+     *
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    protected void addResourceListRelationship(String      consumerGUID,
+                                               String      resourceGUID,
+                                               ResourceUse resourceUse) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                              consumerGUID,
+                                                                              resourceGUID,
+                                                                              null,
+                                                                              null,
+                                                                              this.getResourceUseProperties(resourceUse));
+    }
+
+
+    /**
+     * Set up the properties for a resource use enum.
+     *
+     * @param resourceUse enum
+     * @return element properties
+     */
+    protected ElementProperties getResourceUseProperties(ResourceUse resourceUse)
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.RESOURCE_USE.name,
+                                                                        resourceUse.getResourceUse());
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
+                                                      resourceUse.getResourceUse());
+
+        return properties;
     }
 
 

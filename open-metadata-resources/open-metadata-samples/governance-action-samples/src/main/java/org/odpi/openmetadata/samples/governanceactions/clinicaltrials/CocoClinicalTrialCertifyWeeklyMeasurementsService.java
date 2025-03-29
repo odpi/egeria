@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -61,11 +63,17 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
             AuditLogMessageDefinition messageDefinition = null;
             String                    certificationTypeGUID = null;
             String                    stewardGUID = null;
+            String                    validateDataFilesDataSetGUID = null;
+            String                    informationSupplyChainQualifiedName = null;
 
             AnnotationStore         annotationStore   = surveyContext.getAnnotationStore();
 
             annotationStore.setAnalysisStep(AnalysisStep.CHECK_ACTION_TARGETS.getName());
 
+            if (surveyContext.getRequestParameters() != null)
+            {
+                informationSupplyChainQualifiedName = surveyContext.getRequestParameters().get(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName());
+            }
             /*
              * Retrieve the values needed from the action targets.
              */
@@ -79,9 +87,13 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                         {
                             certificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
-                        else if (CocoClinicalTrialActionTarget.STEWARD.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (ActionTarget.STEWARD.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             stewardGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
+                        else if (CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            validateDataFilesDataSetGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                     }
                 }
@@ -97,7 +109,21 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
             else if (stewardGUID == null)
             {
                 messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(surveyActionServiceName,
-                                                                                                        CocoClinicalTrialActionTarget.STEWARD.getName());
+                                                                                                        CocoClinicalTrialActionTarget.DATA_ENGINEER.getName());
+                completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
+                outputGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getName());
+            }
+            else if (validateDataFilesDataSetGUID == null)
+            {
+                messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(surveyActionServiceName,
+                                                                                                        CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getName());
+                completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
+                outputGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getName());
+            }
+            else if (informationSupplyChainQualifiedName == null)
+            {
+                messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(surveyActionServiceName,
+                                                                                                        MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName());
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getName());
             }
@@ -328,6 +354,15 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                       null,
                                                                                       null,
                                                                                       elementProperties);
+
+                    surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                                      validateDataFilesDataSetGUID,
+                                                                                      assetUniverse.getGUID(),
+                                                                                      null,
+                                                                                      null,
+                                                                                      propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, informationSupplyChainQualifiedName));
+
+
                     outputGuards.add(SurveyActionGuard.DATA_CERTIFIED.getName());
                 }
                 else

@@ -107,7 +107,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                             auditLog.logMessage(methodName,
                                                 GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
                                                                                                                        element.getElementGUID(),
-                                                                                                                       publishZones.toString()));
+                                                                                                                       "<null>"));
                         }
 
                         governanceContext.declassifyMetadataElement(element.getElementGUID(),
@@ -134,6 +134,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                             (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName))))
                     {
                         OpenMetadataElement element = actionTarget.getTargetElement();
+
 
                         auditLog.logMessage(methodName,
                                             GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,

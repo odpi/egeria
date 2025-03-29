@@ -161,7 +161,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                            null,
                                                            null);
 
-        archiveHelper.addDataSetContent(databaseSchemaGUID, databaseGUID, null, null, null);
+        archiveHelper.addDataSetContent(databaseSchemaGUID, databaseGUID, null, null, null, null);
 
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(databaseSchemaGUID,
                                                                             databaseSchemaAssetTypeName,

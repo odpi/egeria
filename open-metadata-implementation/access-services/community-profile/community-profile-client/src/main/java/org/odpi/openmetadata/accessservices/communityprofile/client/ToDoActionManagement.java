@@ -827,7 +827,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                     else
                     {
                         toDoElement = toDoConverter.getNewComplexBean(toDoBeanClass,
-                                                                      null,
+                                                                      (RelatedMetadataElement) null,
                                                                       relatedElements,
                                                                       methodName);
                     }

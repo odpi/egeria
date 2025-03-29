@@ -104,7 +104,8 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          line.getEnd2().getType().getTypeName(),
                                          visualStyle);
 
-                    super.appendMermaidLine(this.removeSpaces(line.getEnd1().getGUID()),
+                    super.appendMermaidLine(line.getGUID(),
+                                            this.removeSpaces(line.getEnd1().getGUID()),
                                             super.addSpacesToTypeName(line.getType().getTypeName()),
                                             this.removeSpaces(line.getEnd2().getGUID()));
                 }

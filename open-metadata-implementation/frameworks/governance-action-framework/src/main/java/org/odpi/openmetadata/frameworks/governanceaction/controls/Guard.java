@@ -26,6 +26,11 @@ public enum Guard
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
 
     /**
+     * The implementation of the governance service is incomplete.   The missing class(es) need to be added to the governance service's JAR file before this service will operate.
+     */
+    SERVICE_IMPLEMENTATION_INVALID("service-implementation-invalid", CompletionStatus.INVALID, "The implementation of the governance service is incomplete.   The missing class(es) need to be added to the governance service's JAR file before this service will operate."),
+
+    /**
      * One or all of the action targets passed to this service are not of the correct type and so the service has failed to start.
      */
     INVALID_ACTION_TARGET_TYPE(  "invalid-action-target-type", CompletionStatus.INVALID, "One or all of the action targets passed to this service are not of the correct type and so the service has failed to start."),

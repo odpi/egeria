@@ -313,16 +313,6 @@ public enum OpenMetadataType
 
 
     /**
-     * This is a collection of data fields that describe some desired data.
-     */
-    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
-                         "DataSpec",
-                         OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
-                         "This is a collection of data fields that describe some desired data."),
-
-
-    /**
      * This collection is the home collection for a referenceable.
      */
     HOME_COLLECTION("16274db0-ebd8-4a2b-b8ba-134a3f4d6130",
@@ -5331,6 +5321,90 @@ public enum OpenMetadataType
 
 
     /**
+     * This is a collection of data fields that describe some desired data.
+     */
+    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
+                         "DataSpec",
+                         OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
+                         "This is a collection of data fields that describe some desired data."),
+
+
+    /**
+     * This is an organized collection of defined data fields that can be used in a data specification to describe some desired data.
+     */
+    DATA_DICTIONARY_COLLECTION("7eec329e-e2de-481a-bd00-b1f6a5009dc9",
+                               "DataDictionary",
+                               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                               "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
+                               "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
+
+    /**
+     * A list of data fields that describe a data structure.
+     */
+    DATA_STRUCTURE("99fbb751-853e-442f-ba7c-530bea17db9c",
+               "DataStructure",
+               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+               "4bd1faa7-90b5-409b-8f5e-5458d1075fea",
+               "A list of data fields that describe a data structure."),
+
+    /**
+     * A description of a data field.
+     */
+    DATA_FIELD("3c5bbc8b-d562-4b04-b189-c7b7f0bf2cea",
+               "DataField",
+               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+               "3ae9c615-b214-46e2-b8d6-2f5eae14e0a3",
+               "A description of a data field."),
+
+    /**
+     * Represents an association between a data structure and one of its data fields.
+     */
+    MEMBER_DATA_FIELD_RELATIONSHIP("f72284df-3347-4c62-8195-1f02ba2e5ddb",
+                                   "MemberDataField",
+                                   OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                                   "604abf7a-4456-447f-8232-a3e5782dba36",
+                                   "Represents an association between a data structure and one of its data fields."),
+
+    /**
+     * Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).
+     */
+    LINKED_DATA_FIELD_RELATIONSHIP("cca4b116-4490-44c4-84e1-535231ae46a1",
+                                   "LinkedDataField",
+                                   OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                                   "ade3a815-ab55-472e-b7e3-dbe1d68f29d3",
+                                   "Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema)."),
+
+    /**
+     * Data field nested under a single parent data field.
+     */
+    NESTED_DATA_FIELD_RELATIONSHIP("60f2d263-e24d-4f20-8c0d-b5e12356cd54",
+                                   "NestedDataField",
+                                   OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                                   "9d5e3850-6f11-4a10-b912-c23a3d5dd663",
+                                   "Data field nested under a single parent data field."),
+
+    /**
+     * Link between data field analysis and the identified schema attribute definition.
+     */
+    SCHEMA_ATTRIBUTE_DEFINITION("60f1e263-e24d-4f20-8c0d-b5e21232cd54",
+                                "SchemaAttributeDefinition",
+                                OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                                "d21adefa-7721-4820-8f40-228647e6cbe8",
+                                "Link between data field analysis and the identified schema attribute definition."),
+
+    /**
+     * Link between schema analysis and the identified data class for a data field.
+     */
+    DATA_CLASS_DEFINITION("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
+                          "DataClassDefinition",
+                          OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                          "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
+                          "Link between schema analysis and the identified data class for a data field."),
+
+
+
+    /**
      * A description of a common solution with details of the problems it solves and its pros and cons.
      */
     DESIGN_PATTERN("6b60a73e-47bc-4096-9073-f94cab975958",
@@ -5407,14 +5481,6 @@ public enum OpenMetadataType
                "42de3ec5-b76f-45b7-98b3-7b09d3d4e76a",
                "A set of results from specific analysis of a resource by a survey action service."),
 
-    /**
-     * A description of a data field.
-     */
-    DATA_FIELD("3c5bbc8b-d562-4b04-b189-c7b7f0bf2cea",
-               "DataField",
-               OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
-               "3ae9c615-b214-46e2-b8d6-2f5eae14e0a3",
-               "A description of a data field."),
 
     /**
      * A collection of properties about a data field, or number of data fields, in an Asset.
@@ -5424,43 +5490,6 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                           "772b7c96-0838-4b96-8547-6e581b93e8d2",
                           "A collection of properties about a data field, or number of data fields, in an Asset."),
-
-    /**
-     * Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).
-     */
-    LINKED_DATA_FIELD_RELATIONSHIP("cca4b116-4490-44c4-84e1-535231ae46a1",
-               "LinkedDataField",
-               OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
-               "ade3a815-ab55-472e-b7e3-dbe1d68f29d3",
-               "Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema)."),
-
-    /**
-     * Data field nested under a single parent data field.
-     */
-    NESTED_DATA_FIELD_RELATIONSHIP("60f2d263-e24d-4f20-8c0d-b5e12356cd54",
-                                   "NestedDataField",
-                                   OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
-                                   "9d5e3850-6f11-4a10-b912-c23a3d5dd663",
-                                   "Data field nested under a single parent data field."),
-
-    /**
-     * Link between data field analysis and the identified schema attribute definition.
-     */
-    SCHEMA_ATTRIBUTE_DEFINITION("60f1e263-e24d-4f20-8c0d-b5e21232cd54",
-                                "SchemaAttributeDefinition",
-                                OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
-                                "d21adefa-7721-4820-8f40-228647e6cbe8",
-                                "Link between data field analysis and the identified schema attribute definition."),
-
-    /**
-     * Link between schema analysis and the identified data class for a data field.
-     */
-    DATA_CLASS_DEFINITION("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
-                          "DataClassDefinition",
-                          OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
-                          "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
-                          "Link between schema analysis and the identified data class for a data field."),
-
 
     /**
      * Additional information to augment an annotation.

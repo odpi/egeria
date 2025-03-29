@@ -56,6 +56,16 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                "https://egeria-project.org/concepts/asset/"),
 
     /**
+     * A collection of data, either at rest or in motion.
+     */
+    DATA_SET("Data Set",
+               DeployedImplementationType.DATA_ASSET,
+               OpenMetadataType.DATA_ASSET.typeName,
+               null,
+               "A logical collection of data, either at rest or in motion.",
+               "https://egeria-project.org/concepts/asset/"),
+
+    /**
      * A file containing externally accessible data - other fields provide information on the internal format.
      */
     FILE("File",
@@ -331,6 +341,15 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                 "A directory (folder) that holds files representing a single data source.",
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
+    /**
+     * A collection of logically related files representing a single data source.
+     */
+    DATA_FILE_COLLECTION("Data File Collection",
+                DeployedImplementationType.DATA_SET,
+                OpenMetadataType.DATA_FILE_COLLECTION.typeName,
+                null,
+                "A collection of logically related files representing a single data source.",
+                OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
     /**
      * A database hosted on a relational database server capable of being called through a JDBC Driver.

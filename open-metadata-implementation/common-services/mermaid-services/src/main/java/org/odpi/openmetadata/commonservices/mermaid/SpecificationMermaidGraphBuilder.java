@@ -67,7 +67,8 @@ public class SpecificationMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                                 mermaidGraph.append("`\")\n");
 
-                                super.appendMermaidLine(this.removeSpaces(propertyType),
+                                super.appendMermaidLine(null,
+                                                        this.removeSpaces(propertyType),
                                                         null,
                                                         this.removeSpaces(propertyDescriptionId));
                             }

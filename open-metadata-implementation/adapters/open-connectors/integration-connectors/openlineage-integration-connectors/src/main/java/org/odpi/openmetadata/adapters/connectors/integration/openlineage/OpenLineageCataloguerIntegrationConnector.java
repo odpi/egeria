@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
@@ -134,7 +135,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                                 }
                             }
 
-                            processProperties.setTypeName("DeployedSoftwareComponent");
+                            processProperties.setTypeName(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName);
                             processProperties.setQualifiedName(qualifiedName);
 
                             processGUID = myContext.createProcess(false, ProcessStatus.ACTIVE, processProperties);
@@ -146,7 +147,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
                             processGUID = existingProcess.getElementHeader().getGUID();
 
-                            if (existingProcess.getProcessProperties().getDisplayDescription() == null)
+                            if (existingProcess.getProcessProperties().getResourceDescription() == null)
                             {
                                 if (job.getFacets() != null)
                                 {

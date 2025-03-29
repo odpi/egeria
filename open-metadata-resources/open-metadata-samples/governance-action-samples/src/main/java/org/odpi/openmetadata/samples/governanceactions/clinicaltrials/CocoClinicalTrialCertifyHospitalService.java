@@ -82,7 +82,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                         {
                             certificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
-                        else if (CocoClinicalTrialActionTarget.CUSTODIAN.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             custodianGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
@@ -114,7 +114,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                 else
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                            CocoClinicalTrialActionTarget.CUSTODIAN.getName());
+                                                                                                            CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName());
                 }
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();

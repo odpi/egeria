@@ -342,7 +342,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertSolutionComponents(userId, openMetadataElements, true, asOfTime, effectiveTime, methodName);
+        return convertSolutionComponents(userId, openMetadataElements, true, asOfTime, effectiveTime, true, methodName);
     }
 
 
@@ -523,6 +523,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param addParentContext should parent information supply chains, segments and solution components be added?
      * @param asOfTime repository time to use
      * @param effectiveTime effectivity dating for elements
+     * @param fullDisplay print all elements
      * @param methodName calling method
      * @return list of solution components (or null)
      */
@@ -531,6 +532,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                      boolean                   addParentContext,
                                                                      Date                      asOfTime,
                                                                      Date                      effectiveTime,
+                                                                     boolean                   fullDisplay,
                                                                      String                    methodName)
     {
         if (openMetadataElements != null)
@@ -541,7 +543,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    solutionComponentElements.add(convertSolutionComponent(userId, openMetadataElement, addParentContext, asOfTime, effectiveTime, methodName));
+                    solutionComponentElements.add(convertSolutionComponent(userId, openMetadataElement, addParentContext, asOfTime, effectiveTime, fullDisplay, methodName));
                 }
             }
 
@@ -1095,7 +1097,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                         relationshipProperties.setExtendedProperties(solutionBlueprintConverter.getRemainingExtendedProperties(elementProperties));
 
                         solutionBlueprintComponent.setProperties(relationshipProperties);
-                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), false, asOfTime, effectiveTime, methodName));
+                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), false, asOfTime, effectiveTime, false, methodName));
                         solutionBlueprintComponents.add(solutionBlueprintComponent);
                     }
                 }
@@ -1239,6 +1241,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param addParentContext should parent information supply chains, segments and solution components be added?
      * @param asOfTime repository time to use
      * @param effectiveTime effectivity dating for elements
+     * @param fullDisplay print all elements
      * @param methodName calling method
      * @return bean or null
      */
@@ -1247,6 +1250,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                               boolean             addParentContext,
                                                               Date                asOfTime,
                                                               Date                effectiveTime,
+                                                              boolean             fullDisplay,
                                                               String              methodName)
     {
         try
@@ -1284,7 +1288,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                             }
                             else
                             {
-                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), addParentContext, asOfTime, effectiveTime, methodName));
+                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), addParentContext, asOfTime, effectiveTime, fullDisplay, methodName));
                             }
                         }
                         else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
@@ -1292,6 +1296,10 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                             if (relatedMetadataElement.getElementAtEnd1())
                             {
                                 relatedParentElements.add(relatedMetadataElement);
+                            }
+                            else
+                            {
+                                relatedMetadataElements.add(relatedMetadataElement);
                             }
                         }
                         else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName))
@@ -1338,7 +1346,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                               methodName));
                 }
 
-                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement);
+                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement,
+                                                                                                             fullDisplay);
 
                 solutionComponentElement.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
