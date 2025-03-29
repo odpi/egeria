@@ -4311,6 +4311,110 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Retrieve the valid value entities that have the right type name.
+     *
+     * @param retrievedValues entities from repository
+     * @param repositoryHelper entity helper
+     * @param serviceName this service
+     * @return list of filtered entities
+     */
+    private List<EntityDetail> filterByType(List<EntityDetail>   retrievedValues,
+                                            OMRSRepositoryHelper repositoryHelper,
+                                            String               serviceName)
+    {
+        final String methodName = "filterByType";
+
+        if (retrievedValues != null)
+        {
+            List<EntityDetail> filteredValues = new ArrayList<>();
+
+            for (EntityDetail retrievedEntity : retrievedValues)
+            {
+                if (retrievedEntity != null)
+                {
+                    Map<String, String> additionalProperties = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                                         retrievedEntity.getProperties(),
+                                                                                                         methodName);
+                    String typeName = null;
+
+                    if (additionalProperties != null)
+                    {
+                        typeName = additionalProperties.get(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name);
+                    }
+
+                    if ((typeName == null) || (repositoryHelper.isTypeOf(serviceName,
+                                                                         retrievedEntity.getType().getTypeDefName(),
+                                                                         typeName)))
+                    {
+                        filteredValues.add(retrievedEntity);
+                    }
+                }
+            }
+
+            return filteredValues;
+        }
+
+        return null;
+    }
+
+    /**
+     * Build out a set of search conditions for finding one or more valid values.
+     *
+     * @param propertyValue value to search for
+     * @param propertyName property name
+     * @param operator comparison operator
+     * @return search properties
+     */
+    private SearchProperties getValidValueConditions(String                     propertyValue,
+                                                     String                     propertyName,
+                                                     PropertyComparisonOperator operator)
+    {
+        SearchProperties        searchProperties   = new SearchProperties();
+        List<PropertyCondition> propertyConditions = new ArrayList<>();
+
+        if (propertyValue != null)
+        {
+            PropertyCondition preferredValueCondition = new PropertyCondition();
+            PrimitivePropertyValue  preferredValue    = new PrimitivePropertyValue();
+            preferredValueCondition.setProperty(OpenMetadataProperty.PREFERRED_VALUE.name);
+            preferredValueCondition.setOperator(operator);
+            preferredValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            preferredValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+            preferredValue.setPrimitiveValue(propertyValue);
+            preferredValueCondition.setValue(preferredValue);
+            propertyConditions.add(preferredValueCondition);
+        }
+
+        PropertyCondition scopeCondition = new PropertyCondition();
+        PrimitivePropertyValue  scope          = new PrimitivePropertyValue();
+        scopeCondition.setProperty(OpenMetadataProperty.SCOPE.name);
+        scopeCondition.setOperator(PropertyComparisonOperator.EQ);
+        scope.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        scope.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        scope.setPrimitiveValue(OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE);
+        scopeCondition.setValue(scope);
+        propertyConditions.add(scopeCondition);
+
+        PropertyCondition categoryCondition = new PropertyCondition();
+        PrimitivePropertyValue   category          = new PrimitivePropertyValue();
+        categoryCondition.setProperty(OpenMetadataProperty.CATEGORY.name);
+        categoryCondition.setOperator(PropertyComparisonOperator.LIKE);
+        category.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        category.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        category.setPrimitiveValue(".*" + propertyName);
+        categoryCondition.setValue(category);
+        propertyConditions.add(categoryCondition);
+
+        searchProperties.setConditions(propertyConditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        return searchProperties;
+    }
+
+
+
+    /**
      * Retrieve all the consistent valid values for the requested property.
      *
      * @param serverName     name of server instance to route request to

@@ -136,6 +136,12 @@ public class InformationSupplyChainElement implements MetadataElement
         return implementation;
     }
 
+
+    /**
+     * Set up the relationships between the asset metadata that identifies the lineage relationship as belonging to this information supply chain.
+     *
+     * @param implementation list of relationships
+     */
     public void setImplementation(List<RelationshipElement> implementation)
     {
         this.implementation = implementation;

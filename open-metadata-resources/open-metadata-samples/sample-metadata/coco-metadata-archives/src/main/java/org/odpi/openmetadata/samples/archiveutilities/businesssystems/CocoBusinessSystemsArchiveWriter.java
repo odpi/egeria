@@ -283,8 +283,8 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             if (informationSupplyChain.isTemplate())
             {
                 archiveHelper.addTemplateClassification(iscGUID,
-                                                        "Standard Information Supply Chain Template",
-                                                        null,
+                                                        informationSupplyChain.getTemplateName(),
+                                                        informationSupplyChain.getTemplateDescription(),
                                                         "V1.0",
                                                         null,
                                                         methodName);

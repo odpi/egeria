@@ -58,7 +58,8 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
                     usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidLine(this.removeSpaces(parent.getRelatedElement().getGUID()),
+                    super.appendMermaidLine(parent.getRelationshipHeader().getGUID(),
+                                            this.removeSpaces(parent.getRelatedElement().getGUID()),
                                             parent.getRelationshipHeader().getType().getTypeName(),
                                             this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()));
                 }
@@ -81,7 +82,8 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
                     usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidThinLine(this.removeSpaces(peer.getRelatedElement().getGUID()),
+                    super.appendMermaidThinLine(peer.getRelationshipHeader().getGUID(),
+                                                this.removeSpaces(peer.getRelatedElement().getGUID()),
                                                 peer.getRelationshipHeader().getType().getTypeName(),
                                                 this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()));
                 }
@@ -104,7 +106,8 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
                     usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidLine(this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
+                    super.appendMermaidLine(child.getRelationshipHeader().getGUID(),
+                                            this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
                                             child.getRelationshipHeader().getType().getTypeName(),
                                             this.removeSpaces(child.getRelatedElement().getGUID()));
                 }
@@ -127,7 +130,8 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
                     usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidLine(this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
+                    super.appendMermaidLine(metrics.getRelationshipHeader().getGUID(),
+                                            this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
                                             metrics.getRelationshipHeader().getType().getTypeName(),
                                             this.removeSpaces(metrics.getRelatedElement().getGUID()));
                 }
@@ -150,7 +154,8 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
                     usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidLine(this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
+                    super.appendMermaidLine(externalReference.getRelationshipHeader().getGUID(),
+                                            this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
                                             externalReference.getRelationshipHeader().getType().getTypeName(),
                                             this.removeSpaces(externalReference.getRelatedElement().getGUID()));
                 }
@@ -173,7 +178,8 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
                     usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidLine(this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
+                    super.appendMermaidLine(other.getRelationshipHeader().getGUID(),
+                                            this.removeSpaces(governanceDefinitionGraph.getElementHeader().getGUID()),
                                             other.getRelationshipHeader().getType().getTypeName(),
                                             this.removeSpaces(other.getRelatedElement().getGUID()));
                 }

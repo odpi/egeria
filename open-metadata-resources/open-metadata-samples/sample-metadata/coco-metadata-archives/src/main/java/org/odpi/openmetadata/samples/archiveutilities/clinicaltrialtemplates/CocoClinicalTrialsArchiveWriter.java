@@ -7,15 +7,16 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreP
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.businesssystems.*;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.*;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceZoneDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.DataProcessingPurposeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
@@ -361,11 +362,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_RIGHT.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
-
-        archiveHelper.addResourceListRelationship(ProjectDefinition.DROP_FOOT_CLINICAL_TRIAL.getQualifiedName(),
-                                                  qualifiedName,
-                                                  ResourceUse.SUPPORTING_TEMPLATE.getResourceUse(),
-                                                  ResourceUse.SUPPORTING_TEMPLATE.getDescription());
     }
 
 
@@ -406,7 +402,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
         List<String> zones = new ArrayList<>();
         zones.add(CocoGovernanceZoneDefinition.QUARANTINE.getZoneName());
-        zones.add(ProjectDefinition.DROP_FOOT_CLINICAL_TRIAL.getIdentifier());
+        zones.add("PROJ-CT-TBDF");
         classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
 
         classifications.add(archiveHelper.getTemplateClassification("Data Lake weekly teddy bear measurements for drop foot clinical trial",

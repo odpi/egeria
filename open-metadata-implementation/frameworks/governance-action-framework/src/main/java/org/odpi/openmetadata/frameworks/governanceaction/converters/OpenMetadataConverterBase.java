@@ -175,8 +175,65 @@ public class OpenMetadataConverterBase<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>                   beanClass,
+                               RelatedMetadataElement     primaryElement,
+                               RelatedMetadataElementList relationships,
+                               String                     methodName) throws PropertyServerException
+    {
+        final String thisMethodName = "getNewComplexBean";
+
+        if ((relationships != null) && (relationships.getElementList() != null))
+        {
+            return getNewComplexBean(beanClass, primaryElement, relationships.getElementList(), methodName);
+        }
+        else
+        {
+            return getNewComplexBean(beanClass, primaryElement, (List<RelatedMetadataElement>)null, methodName);
+        }
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryElement element that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
     public B getNewComplexBean(Class<B>                     beanClass,
                                OpenMetadataElement          primaryElement,
+                               List<RelatedMetadataElement> relationships,
+                               String                       methodName) throws PropertyServerException
+    {
+        final String thisMethodName = "getNewComplexBean";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryElement element that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>                     beanClass,
+                               RelatedMetadataElement       primaryElement,
                                List<RelatedMetadataElement> relationships,
                                String                       methodName) throws PropertyServerException
     {

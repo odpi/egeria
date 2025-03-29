@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialInformationSupplyChain;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
@@ -57,15 +56,23 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
         String dataQualityCertificationTypeGUID = null;
 
-        String dataLakeVolumePathName       = null;
-        String dataLakeVolumeName           = "weekly_measurements";
-        String dataLakeVolumeDescription    = "Weekly measurements for clinical trial";
-        String schemaTemplateGUID           = "5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e";
-        String volumeTemplateGUID           = "92d2d2dc-0798-41f0-9512-b10548d312b7";
-        String lastUpdateConnectorGUID      = null;
-        String airflowDAGName               = null;
+        String landingAreaDirectoryTemplateGUID = null;
+        String landingAreaFileTemplateGUID      = null;
+        String dataLakeFileTemplateGUID         = null;
 
-        String hospitalOnboardingProcessGUID = null;
+        String dataLakeVolumePathName           = null;
+        String dataLakeVolumeName               = "weekly_measurements";
+        String dataLakeVolumeDescription        = "Weekly measurements for clinical trial";
+        String schemaTemplateGUID               = "5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e";
+        String volumeTemplateGUID               = "92d2d2dc-0798-41f0-9512-b10548d312b7";
+        String lastUpdateConnectorGUID          = null;
+        String airflowDAGName                   = null;
+        String validatedFilesDataSetName        = null;
+        String validatedWeeklyFilesTemplateGUID = null;
+        String informationSupplyChainGUID       = null;
+
+        String hospitalOnboardingProcessGUID    = null;
+        String genericOnboardingPipelineGUID    = null;
 
         super.start();
 
@@ -134,6 +141,14 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                         {
                             hospitalOnboardingProcessGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
+                        else if (CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            informationSupplyChainGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
+                        else if (CocoClinicalTrialActionTarget.GENERIC_ONBOARDING_PIPELINE.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            genericOnboardingPipelineGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
                     }
                 }
              }
@@ -147,7 +162,14 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 schemaTemplateGUID     = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName());
                 volumeTemplateGUID     = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
 
-                airflowDAGName = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.AIRFLOW_DAG_NAME.getName());
+                landingAreaDirectoryTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_TEMPLATE.getName());
+                landingAreaFileTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.LANDING_AREA_FILE_TEMPLATE.getName());
+                dataLakeFileTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_FILE_TEMPLATE.getName());
+
+                validatedFilesDataSetName        = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.VALIDATED_WEEKLY_MEASUREMENT_FILES_DATA_SET_NAME.getName());
+                validatedWeeklyFilesTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.VALIDATED_DATA_FILES_COLLECTION_TEMPLATE.getName());
+
+                airflowDAGName            = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.AIRFLOW_DAG_NAME.getName());
 
                 dataLakeSchemaName        = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_NAME.getName());
                 dataLakeSchemaDescription = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_DESCRIPTION.getName());
@@ -164,15 +186,22 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                     (clinicalTrialName == null) ||
                     (dataQualityCertificationTypeGUID == null) ||
                     (airflowDAGName == null) ||
+                    (validatedFilesDataSetName == null) ||
+                    (validatedWeeklyFilesTemplateGUID == null) ||
                     (dataLakeCatalogQualifiedGUID == null) ||
                     (dataLakeCatalogName == null) ||
                     (serverNetworkAddress == null) ||
                     (lastUpdateConnectorGUID == null) ||
                     (hospitalOnboardingProcessGUID == null) ||
+                    (informationSupplyChainGUID == null) ||
                     (dataLakeSchemaName == null) ||
                     (dataLakeVolumePathName == null) ||
                     (schemaTemplateGUID == null) || (schemaTemplateGUID.isBlank()) ||
-                    (volumeTemplateGUID == null) || (volumeTemplateGUID.isBlank()))
+                    (volumeTemplateGUID == null) || (volumeTemplateGUID.isBlank()) ||
+                    landingAreaDirectoryTemplateGUID == null || landingAreaDirectoryTemplateGUID.isBlank() ||
+                    landingAreaFileTemplateGUID == null || landingAreaFileTemplateGUID.isBlank() ||
+                    dataLakeFileTemplateGUID == null || dataLakeFileTemplateGUID.isBlank() ||
+                    genericOnboardingPipelineGUID == null)
             {
                 if (dataLakeCatalogQualifiedGUID == null)
                 {
@@ -197,6 +226,16 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialRequestParameter.AIRFLOW_DAG_NAME.getName());
+                }
+                if ((validatedFilesDataSetName == null) || (validatedFilesDataSetName.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.VALIDATED_WEEKLY_MEASUREMENT_FILES_DATA_SET_NAME.getName());
+                }
+                if ((validatedWeeklyFilesTemplateGUID == null) || (validatedWeeklyFilesTemplateGUID.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.VALIDATED_DATA_FILES_COLLECTION_TEMPLATE.getName());
                 }
                 if ((dataLakeCatalogName == null) || (dataLakeCatalogName.isBlank()))
                 {
@@ -233,13 +272,39 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialActionTarget.ONBOARD_HOSPITAL_PROCESS.getName());
                 }
-
+                if (informationSupplyChainGUID == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName());
+                }
+                else if ((landingAreaDirectoryTemplateGUID == null) || (landingAreaDirectoryTemplateGUID.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_TEMPLATE.getName());
+                }
+                else if ((landingAreaFileTemplateGUID == null) || (landingAreaFileTemplateGUID.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.LANDING_AREA_FILE_TEMPLATE.getName());
+                }
+                else if ((dataLakeFileTemplateGUID == null) || (dataLakeFileTemplateGUID.isBlank()))
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.DATA_LAKE_FILE_TEMPLATE.getName());
+                }
+                else if (genericOnboardingPipelineGUID == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.GENERIC_ONBOARDING_PIPELINE.getName());
+                }
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getName());
             }
             else
             {
+                String informationSupplyChainQualifiedName = super.getInformationSupplyChainQualifiedName(informationSupplyChainGUID);
+
                 /*
                  * Create a schema in Unity Catalog
                  */
@@ -266,14 +331,35 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                              dataLakeVolumeDescription + ": " + clinicalTrialId + " - " + clinicalTrialName,
                                                              dataLakeVolumePathName);
 
+                String validatedFilesDataSetGUID = this.createValidatedFilesDataSet(validatedFilesDataSetName, validatedWeeklyFilesTemplateGUID);
+                addActionTargetToProcess(hospitalOnboardingProcessGUID, CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getName(), validatedFilesDataSetGUID);
+                addActionTargetToProcess(hospitalOnboardingProcessGUID, CocoClinicalTrialActionTarget.GENERIC_ONBOARDING_PIPELINE.getName(), genericOnboardingPipelineGUID);
+
                 /*
-                 * Link the volume to the data lake folder solution component.
+                 * Link the validated data set to the data lake folder solution component.
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), ucVolumeAssetGUID);
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), validatedFilesDataSetGUID, informationSupplyChainQualifiedName);
+
+                governanceContext.createLineageRelationship(OpenMetadataType.PROCESS_CALL.typeName,
+                                                            validatedFilesDataSetGUID,
+                                                            informationSupplyChainQualifiedName,
+                                                            "get files from storage",
+                                                            "Validated files are retrieved from the Unity Catalog Volume.",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            ucVolumeAssetGUID);
 
                 monitorVolumeAsset(lastUpdateConnectorGUID, ucVolumeAssetGUID, dataLakeCatalogQualifiedName);
 
-                passOnDestinationFolder(dataLakeVolumePathName, hospitalOnboardingProcessGUID);
+                passOnOnboardingParameters(dataLakeVolumePathName,
+                                           landingAreaDirectoryTemplateGUID,
+                                           landingAreaFileTemplateGUID,
+                                           dataLakeFileTemplateGUID,
+                                           hospitalOnboardingProcessGUID);
 
                 /*
                  * Create the database schema for the sandbox
@@ -283,7 +369,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Link the sandbox schema to the sandbox solution component
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), ucVolumeAssetGUID);
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), sandboxSchemaGUID, informationSupplyChainQualifiedName);
 
                 /*
                  * Indicate that the sandbox is governed by the data quality certification.
@@ -298,11 +384,11 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Link the airflow DAG to the solution component
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID);
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID, informationSupplyChainQualifiedName);
 
                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
                                                             ucVolumeAssetGUID,
-                                                            ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName(),
+                                                            informationSupplyChainQualifiedName,
                                                             "Copy Certified Data",
                                                             null,
                                                             null,
@@ -315,7 +401,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
                                                             populateSandboxGUID,
-                                                            ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName(),
+                                                            informationSupplyChainQualifiedName,
                                                             "Save Certified Data",
                                                             null,
                                                             null,
@@ -479,6 +565,44 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
     }
 
 
+
+    /**
+     * Create a data set asset for the list of validated weekly measurements files.  This list is populated by the
+     * data quality measurement governance action.
+     *
+     * @return guid for the new asset
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException access problem
+     */
+    private String createValidatedFilesDataSet(String validatedFilesDataSetName,
+                                               String validatedWeeklyFilesTemplateGUID) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        Map<String, String> placeholderProperties = new HashMap<>();
+
+        placeholderProperties.put(PlaceholderProperty.DISPLAY_NAME.getName(), validatedFilesDataSetName);
+        placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getDescription());
+        placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
+        placeholderProperties.put(PlaceholderProperty.FORMULA.getName(), "Certified file");
+        placeholderProperties.put(PlaceholderProperty.FORMULA_TYPE.getName(), "Java Code");
+
+        return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.DATA_FILE_COLLECTION.typeName,
+                                                                                       null,
+                                                                                       true,
+                                                                                       null,
+                                                                                       null,
+                                                                                       validatedWeeklyFilesTemplateGUID,
+                                                                                       null,
+                                                                                       placeholderProperties,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       true);
+    }
+
+
     /**
      * Create the landing area folder.
      *
@@ -542,14 +666,20 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
     /**
      * Add the volume folder to the hospital onboarding process's request parameters.
      *
-     * @param destinationDirectory directory for the volume (and where the files go.
+     * @param destinationDirectory directory for the volume (and where the files go)
+     * @param landingAreaDirectoryTemplateGUID template for the landing area directory
+     * @param landingAreaFileTemplateGUID  template for a landing area file
+     * @param dataLakeFileTemplateGUID template for a data lake file
      * @param hospitalOnboardingProcessGUID unique identifier of the hospital onboarding process.
      * @throws InvalidParameterException bad parameter
      * @throws PropertyServerException problem with repository
      * @throws UserNotAuthorizedException access problem
      */
-    private void passOnDestinationFolder(String destinationDirectory,
-                                         String hospitalOnboardingProcessGUID) throws InvalidParameterException,
+    private void passOnOnboardingParameters(String destinationDirectory,
+                                            String landingAreaDirectoryTemplateGUID,
+                                            String landingAreaFileTemplateGUID,
+                                            String dataLakeFileTemplateGUID,
+                                            String hospitalOnboardingProcessGUID) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
@@ -572,6 +702,9 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 requestParameters = new HashMap<>();
             }
 
+            requestParameters.put(CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_TEMPLATE.getName(), landingAreaDirectoryTemplateGUID);
+            requestParameters.put(CocoClinicalTrialRequestParameter.LANDING_AREA_FILE_TEMPLATE.getName(), landingAreaFileTemplateGUID);
+            requestParameters.put(CocoClinicalTrialRequestParameter.DATA_LAKE_FILE_TEMPLATE.getName(), dataLakeFileTemplateGUID);
             requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName(), destinationDirectory);
 
             governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(processFlowRelationship.getRelationshipGUID(),
@@ -581,4 +714,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                                                       requestParameters));
         }
     }
+
+
+
 }

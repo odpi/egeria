@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -24,15 +23,70 @@ public enum CocoClinicalTrialActionTarget
     /**
      * Project used to control the clinical trial.
      */
+    PARENT_PROJECT("clinicalTrialParentProject",
+            "Campaign used to control all clinical trials.",
+            OpenMetadataType.PROJECT.typeName,
+            null,
+            true),
+
+    /**
+     * Project used to control the clinical trial.
+     */
     PROJECT("clinicalTrialProject",
             "Project used to control the clinical trial.",
             OpenMetadataType.PROJECT.typeName,
             null,
             true),
 
+    DATA_SPEC_PROJECT("clinicalTrialDataSpecProject",
+                      "Effort to develop the data specifications needed by the clinical trial.",
+                      OpenMetadataType.PROJECT.typeName,
+                      null,
+                      true),
+    DEV_PROJECT("clinicalTrialComponentsProject",
+                "Effort to develop the specific templates and software components that support the data specification.",
+                OpenMetadataType.PROJECT.typeName,
+                null,
+                true),
+
+    ONBOARD_PIPELINE_PROJECT("clinicalTrialOnboardPipelinesProject",
+                "Effort to deploy the onboarding pipelines to bring data from the hospitals into the data lake.",
+                OpenMetadataType.PROJECT.typeName,
+                null,
+                true),
+
+    TEMPLATE_PROJECT("clinicalTrialTemplateProject",
+                     "Effort to build out the templates used throughout the clinical trial that support the desired data specification.",
+                     OpenMetadataType.PROJECT.typeName,
+                     null,
+                     true),
+
+    DQ_PROJECT("clinicalTrialDataQualityImplementation",
+               "Effort to develop the data quality surveyors needed to validate data that is being introduced into the clinical trial.",
+               OpenMetadataType.PROJECT.typeName,
+               null,
+               true),
+
+    ANALYSIS_PROJECT("clinicalTrialAnalysis",
+               "Effort to analyse the data coming from the clinical trial to determine efficacy and side-effects.",
+               OpenMetadataType.PROJECT.typeName,
+               null,
+               true),
+
+    HOSPITAL_MANAGEMENT_PROJECT("clinicalTrialHospitalManagement",
+                     "Effort to manage the relationship, data sharing agreements and certifications with the hospitals.",
+                     OpenMetadataType.PROJECT.typeName,
+                     null,
+                     true),
+
+    DATA_SPEC("dataSpecification",
+              "Data specification describing the data used in the clinical trial.",
+              OpenMetadataType.COLLECTION.typeName,
+              null,
+              true),
 
     /**
-     * Hospital that will be supplying data for the clinical trial..
+     * Hospital that will be supplying data for the clinical trial.
      */
     HOSPITAL("hospital",
             "Hospital that will be supplying data for the clinical trial.",
@@ -52,30 +106,56 @@ public enum CocoClinicalTrialActionTarget
     /**
      * The person who can be contacted if there are problems with the data from this hospital.
      */
-    PROCESS_OWNER("processOwner",
-                  "The person who is accountable for the correct management of the data.",
-                  OpenMetadataType.PERSON.typeName,
-                  null,
-                  true),
-
+    CLINICAL_TRIAL_OWNER("clinicalTrialOwner",
+                         "The person who is accountable for the correct management of the clinical trial.",
+                         OpenMetadataType.ACTOR.typeName,
+                         null,
+                         true),
 
     /**
      * The person who can be contacted if there are problems with the data from this hospital.
      */
-    CUSTODIAN("custodian",
-              "The person who is responsible for the correct management of data and can be contacted inside of Coco pharmaceuticals.",
-              OpenMetadataType.PERSON.typeName,
-              null,
-              true),
+    CLINICAL_TRIAL_MANAGER("clinicalTrialManager",
+                           "The person who manages the relationships and agreements with the hospitals and patients.",
+                           OpenMetadataType.ACTOR.typeName,
+                           null,
+                           true),
 
     /**
-     * The person, or team, in Coco Pharmaceuticals that sets up metadata for data.
+     * Person responsible for the delivery of the new templates and components for the clinical trial.
      */
-    STEWARD (ActionTarget.STEWARD.getName(),
-             "The person, or team in Coco Pharmaceuticals that sets up metadata for data.",
-             OpenMetadataType.ACTOR.typeName,
-             null,
-             true),
+    IT_PROJECT_MANAGER("itProjectManager",
+                       "Person responsible for the delivery of the new templates and components for the clinical trial.",
+                       OpenMetadataType.ACTOR.typeName,
+                       null,
+                       true),
+
+    /**
+     * Person responsible for the design of the data stores and templates, plus management of the data pipelines.
+     */
+    DATA_ENGINEER("dataEngineer",
+                  "Person responsible for the design of the data stores and templates, plus management of the data pipelines.",
+                  OpenMetadataType.ACTOR.typeName,
+                  null,
+                  true),
+
+    /**
+     * Person building the data quality evaluation components.
+     */
+    INTEGRATION_DEVELOPER("integrationDeveloper",
+                          "Person building the data quality evaluation components.",
+                          OpenMetadataType.ACTOR.typeName,
+                          null,
+                          true),
+
+    /**
+     * Person responsible for the analysis of the clinical trial data.
+     */
+    DATA_SCIENTIST("dataScientist",
+                          "Person responsible for the analysis of the clinical trial data.",
+                          OpenMetadataType.ACTOR.typeName,
+                          null,
+                          true),
 
     /**
      * Catalog where data for clinical trial is to reside.
@@ -177,6 +257,18 @@ public enum CocoClinicalTrialActionTarget
                                  true),
 
 
+    VALIDATED_WEEKLY_FILES_DATA_SET("validatedWeeklyFilesDataSet",
+                                    "The data set that accumulates the list of weekly measurement files that are validated.",
+                                    OpenMetadataType.DATA_FILE_COLLECTION.typeName,
+                                    null,
+                                    true),
+
+    INFORMATION_SUPPLY_CHAIN("informationSupplyChain",
+                             "The information supply chain for this clinical trial.",
+                             OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                             null,
+                             true),
+
     ;
 
     /**
@@ -238,20 +330,28 @@ public enum CocoClinicalTrialActionTarget
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
-        actionTargetTypes.add(PROJECT.getActionTargetType());
+        actionTargetTypes.add(PARENT_PROJECT.getActionTargetType());
+        actionTargetTypes.add(CLINICAL_TRIAL_OWNER.getActionTargetType());
+        actionTargetTypes.add(CLINICAL_TRIAL_MANAGER.getActionTargetType());
+        actionTargetTypes.add(DATA_SCIENTIST.getActionTargetType());
+        actionTargetTypes.add(IT_PROJECT_MANAGER.getActionTargetType());
+        actionTargetTypes.add(DATA_ENGINEER.getActionTargetType());
+        actionTargetTypes.add(INTEGRATION_DEVELOPER.getActionTargetType());
+
+
+        /*
+         * Set up in CocoCombo (see CocoRequestTypeDefinition)
+         */
         actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
-        actionTargetTypes.add(PROCESS_OWNER.getActionTargetType());
-        actionTargetTypes.add(CUSTODIAN.getActionTargetType());
-        actionTargetTypes.add(STEWARD.getActionTargetType());
+        actionTargetTypes.add(DATA_QUALITY_CERTIFICATION_TYPE.getActionTargetType());
 
-        actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
-        actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
-
-        actionTargetTypes.add(GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
         actionTargetTypes.add(GENERIC_HOSPITAL_ONBOARDING_GAT.getActionTargetType());
         actionTargetTypes.add(GENERIC_HOSPITAL_NOMINATION_GAT.getActionTargetType());
         actionTargetTypes.add(GENERIC_HOSPITAL_CERTIFICATION_GAT.getActionTargetType());
         actionTargetTypes.add(GENERIC_SET_UP_DATA_LAKE_GAT.getActionTargetType());
+
+        actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
+        actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
 
         return actionTargetTypes;
     }
@@ -270,8 +370,8 @@ public enum CocoClinicalTrialActionTarget
          * Predefined by ClinicalTrialSetup
          */
         actionTargetTypes.add(PROJECT.getActionTargetType());
-        actionTargetTypes.add(CUSTODIAN.getActionTargetType());
-        actionTargetTypes.add(PROCESS_OWNER.getActionTargetType());
+        actionTargetTypes.add(CLINICAL_TRIAL_MANAGER.getActionTargetType());
+        actionTargetTypes.add(CLINICAL_TRIAL_OWNER.getActionTargetType());
         actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
 
         /*
@@ -298,7 +398,7 @@ public enum CocoClinicalTrialActionTarget
          */
         actionTargetTypes.add(PROJECT.getActionTargetType());
         actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
-        actionTargetTypes.add(CUSTODIAN.getActionTargetType());
+        actionTargetTypes.add(CLINICAL_TRIAL_MANAGER.getActionTargetType());
 
         /*
          * Supplied by caller
@@ -322,9 +422,10 @@ public enum CocoClinicalTrialActionTarget
          * All predefined by ClinicalTrialSetUp
          */
         actionTargetTypes.add(PROJECT.getActionTargetType());
-        actionTargetTypes.add(STEWARD.getActionTargetType());
+        actionTargetTypes.add(DATA_ENGINEER.getActionTargetType());
         actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
         actionTargetTypes.add(ONBOARD_HOSPITAL_PROCESS.getActionTargetType()); // pass on destination folder
+        actionTargetTypes.add(GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
 
         /*
          * Supplied by caller
@@ -358,10 +459,16 @@ public enum CocoClinicalTrialActionTarget
                               HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
         actionTargetTypes.put(LANDING_AREA_CONNECTOR.getActionTargetType().getName(),
                               LANDING_AREA_CONNECTOR.getActionTargetType());
+        actionTargetTypes.put(DATA_ENGINEER.getActionTargetType().getName(),
+                              DATA_ENGINEER.getActionTargetType());
+
+        /*
+         * Predefined by DataLake SetUp
+         */
         actionTargetTypes.put(GENERIC_ONBOARDING_PIPELINE.getActionTargetType().getName(),
                               GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
-        actionTargetTypes.put(STEWARD.getActionTargetType().getName(),
-                              STEWARD.getActionTargetType());
+        actionTargetTypes.put(VALIDATED_WEEKLY_FILES_DATA_SET.getActionTargetType().getName(),
+                              VALIDATED_WEEKLY_FILES_DATA_SET.getActionTargetType());
 
         /*
          * Supplied by the caller

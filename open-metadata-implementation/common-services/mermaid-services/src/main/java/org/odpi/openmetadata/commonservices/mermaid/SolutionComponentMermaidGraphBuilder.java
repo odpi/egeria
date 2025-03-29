@@ -18,8 +18,10 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
      * Construct a mermaid markdown graph.
      *
      * @param solutionComponentElement content
+     * @param fullDisplay print all elements
      */
-    public SolutionComponentMermaidGraphBuilder(SolutionComponentElement solutionComponentElement)
+    public SolutionComponentMermaidGraphBuilder(SolutionComponentElement solutionComponentElement,
+                                                boolean                  fullDisplay)
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Solution Component - ");
@@ -35,7 +37,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
         this.addSolutionComponentToGraph(null,
                                          null,
                                          solutionComponentElement,
-                                         solutionWireGUIDs);
+                                         solutionWireGUIDs,
+                                         fullDisplay);
 
         if (solutionComponentElement.getContext() != null)
         {
@@ -59,7 +62,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                                                      parentComponent.getRelatedElement().getElementHeader().getType().getTypeName(),
                                                      super.getVisualStyleForSolutionComponent(parentComponent.getRelatedElement().getElementHeader().getType().getTypeName()));
 
-                                appendMermaidLine(parentComponentName,
+                                appendMermaidLine(parentComponent.getRelationshipHeader().getGUID(),
+                                                  parentComponentName,
                                                   parentComponent.getRelationshipHeader().getType().getTypeName(),
                                                   currentNodeName);
 
@@ -78,7 +82,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                                              informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getType().getTypeName(),
                                              VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
 
-                        appendMermaidLine(segmentName,
+                        appendMermaidLine(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getGUID(),
+                                          segmentName,
                                           informationSupplyChainContext.linkedSegment().getRelationshipHeader().getType().getTypeName(),
                                           currentNodeName);
 
@@ -95,7 +100,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                                              informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getType().getTypeName(),
                                              VisualStyle.INFORMATION_SUPPLY_CHAIN);
 
-                        appendMermaidLine(iscName,
+                        appendMermaidLine(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getGUID(),
+                                          iscName,
                                           informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getType().getTypeName(),
                                           currentNodeName);
                     }
@@ -112,7 +118,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                     this.addSolutionComponentToGraph(solutionComponentElement.getElementHeader().getGUID(),
                                                      super.addSpacesToTypeName(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName),
                                                      solutionComponentElement,
-                                                     solutionWireGUIDs);
+                                                     solutionWireGUIDs,
+                                                     fullDisplay);
                 }
             }
         }

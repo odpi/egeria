@@ -325,11 +325,11 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
 
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0029 - {0} request for action annotations detected in survey report {2}
+     * GOVERNANCE-ACTION-CONNECTORS-0029 - {0} request for action annotations detected in survey report {1}
      */
     RFAS_DETECTED("GOVERNANCE-ACTION-CONNECTORS-0029",
             AuditLogRecordSeverityLevel.INFO,
-            "{0} request for action annotations detected in survey report {2}",
+            "{0} request for action annotations detected in survey report {1}",
             "The governance action service will stop with a completion status of ACTIONED. A ToDo has been created for each Request for Action annotation to notify the appropriate steward.",
             "Instructions for the action to take are in the Todos and the attached requests for action."),
 

@@ -49,6 +49,10 @@ public enum VisualStyle
     GOVERNED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
 
 
+    PROJECT(Colour.WHITE.getColourNumber(), Colour.DUSKY_ROSE.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-rect"),
+    RELATED_PROJECT(Colour.BLACK.getColourNumber(), Colour.PINK.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-rect"),
+    PROJECT_RESOURCE(Colour.BLACK.getColourNumber(), Colour.PINKY.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
+
     ;
 
 

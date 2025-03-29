@@ -16,10 +16,24 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 public enum ResourceUse
 {
     /**
+     * Additional useful information.
+     */
+    RELATED_INFORMATION("Related Information",
+                        "Additional useful information.",
+                        null),
+
+    /**
+     * Create a survey report that details whether the content of the real-world resource that is attached to an asset is withing the bounds required by its data specification.
+     */
+    DATA_SPECIFICATION("Data Specification",
+                      "Details of the data required.",
+                      null),
+
+    /**
      * Create a survey report that details the content of the real-world resource that is attached to an asset.
      */
     SURVEY_RESOURCE("Survey Resource",
-           "Create a survey report that details the content of the real-world resource that is attached to an asset.",
+                    "Create a survey report that details the content of the real-world resource that is attached to an asset.",
                     null),
 
     /**

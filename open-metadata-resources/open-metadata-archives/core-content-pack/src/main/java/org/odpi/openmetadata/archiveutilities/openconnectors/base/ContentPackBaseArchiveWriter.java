@@ -163,6 +163,20 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     }
 
 
+    protected void addDataSetCatalogTemplates(ContentPackDefinition contentPackDefinition)
+    {
+        for (DataSetTemplateDefinition templateDefinition : DataSetTemplateDefinition.values())
+        {
+            if (templateDefinition.getContentPackDefinition() == contentPackDefinition)
+            {
+                createDataSetCatalogTemplate(templateDefinition.getTemplateGUID(),
+                                             templateDefinition.getDeployedImplementationType(),
+                                             templateDefinition.getQualifiedName(),
+                                             templateDefinition.getConnectorTypeGUID());
+            }
+        }
+    }
+
     /**
      * Create a template for a dataset and link it to the associated open metadata type.
      * The template consists of a DataFile asset plus an optional connection, linked
@@ -171,9 +185,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param deployedImplementationType values for the template
      * @param connectorTypeGUID          connector type to link to the connection
      */
-    protected void createDataSetCatalogTemplate(DeployedImplementationType deployedImplementationType,
-                                                String                     qualifiedName,
-                                                String                     connectorTypeGUID)
+    protected void createDataSetCatalogTemplate(String                               templateGUID,
+                                                DeployedImplementationTypeDefinition deployedImplementationType,
+                                                String                               qualifiedName,
+                                                String                               connectorTypeGUID)
     {
         final String methodName = "createDataSetCatalogTemplate";
 
@@ -187,6 +202,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                     "V1.0",
                                                                     null, methodName));
 
+        archiveHelper.setGUID(qualifiedName, templateGUID);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
@@ -195,6 +211,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                   null,
                                                   extendedProperties,
                                                   classifications);
+
+        assert(assetGUID.equals(templateGUID));
 
         if (connectorTypeGUID != null)
         {

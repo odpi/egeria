@@ -1005,6 +1005,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                     properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
                     properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));
                     properties.setQueryType(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY_TYPE.name, relationship.getProperties(), methodName));
+                    properties.setISCQualifiedName(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());

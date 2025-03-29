@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.api;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectTeamMember;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -281,6 +278,25 @@ public interface ProjectsInterface
                                            int    pageSize) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException;
+
+
+    /**
+     * Returns the graph of related projects and resources starting with a supplied project guid..
+     *
+     * @param userId         userId of user making request
+     * @param projectGUID     unique identifier of the starting project
+
+     *
+     * @return a graph of projects
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    ProjectGraph getProjectGraph(String userId,
+                                 String projectGUID) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException;
 
 
     /**

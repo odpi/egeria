@@ -469,10 +469,6 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                              info.getFull_name());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.RESOURCE_NAME.name,
-                                                             info.getFull_name());
-
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              info.getComment());
 

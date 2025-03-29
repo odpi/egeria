@@ -507,15 +507,14 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             /*
              * If the event bean is successfully created then pass it on to the registered listeners.
              */
-            if (eventBean instanceof OMRSEventV1)
+            if (eventBean instanceof OMRSEventV1 finalEventBean)
             {
-                OMRSEventBean finalEventBean = eventBean;
                 //internalTopicListeners.parallelStream().forEach((topicListener) ->
                 for (OMRSTopicListener topicListener : internalTopicListeners)
                 {
                     try
                     {
-                        this.processOMRSEvent((OMRSEventV1) finalEventBean, topicListener);
+                        this.processOMRSEvent(finalEventBean, topicListener);
                     }
                     catch (Exception  error)
                     {

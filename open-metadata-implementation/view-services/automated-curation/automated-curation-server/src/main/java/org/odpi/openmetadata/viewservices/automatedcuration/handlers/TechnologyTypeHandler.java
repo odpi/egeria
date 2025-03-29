@@ -467,7 +467,8 @@ public class TechnologyTypeHandler
             {
                 for (TechnologyTypeHierarchy subType : technologyTypeHierarchy.getSubTypes())
                 {
-                    mermaidGraphBuilder.appendMermaidLine(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                    mermaidGraphBuilder.appendMermaidLine(null,
+                                                          technologyTypeHierarchy.getTechnologyTypeGUID(),
                                                           null,
                                                           subType.getTechnologyTypeGUID());
                 }
@@ -525,7 +526,8 @@ public class TechnologyTypeHandler
                 {
                     for (TechnologyTypeHierarchy subType : technologyTypeHierarchy.getSubTypes())
                     {
-                        mermaidGraphBuilder.appendMermaidLine(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                        mermaidGraphBuilder.appendMermaidLine(null,
+                                                              technologyTypeHierarchy.getTechnologyTypeGUID(),
                                                               null,
                                                               subType.getTechnologyTypeGUID());
                     }

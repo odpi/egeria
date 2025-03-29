@@ -67,18 +67,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      */
     public List<RelatedElement> getParents()
     {
-        if (parents == null)
-        {
-            return null;
-        }
-        else if (parents.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return parents;
-        }
+        return parents;
     }
 
 
@@ -100,18 +89,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      */
     public List<RelatedElement> getPeers()
     {
-        if (peers == null)
-        {
-            return null;
-        }
-        else if (peers.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return peers;
-        }
+        return peers;
     }
 
 
@@ -133,18 +111,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      */
     public List<RelatedElement> getChildren()
     {
-        if (children == null)
-        {
-            return null;
-        }
-        else if (children.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return children;
-        }
+        return children;
     }
 
 
@@ -166,18 +133,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      */
     public List<RelatedElement> getMetrics()
     {
-        if (metrics == null)
-        {
-            return null;
-        }
-        else if (metrics.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return metrics;
-        }
+        return metrics;
     }
 
 
@@ -199,18 +155,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      */
     public List<RelatedElement> getExternalReferences()
     {
-        if (externalReferences == null)
-        {
-            return null;
-        }
-        else if (externalReferences.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return externalReferences;
-        }
+        return externalReferences;
     }
 
 

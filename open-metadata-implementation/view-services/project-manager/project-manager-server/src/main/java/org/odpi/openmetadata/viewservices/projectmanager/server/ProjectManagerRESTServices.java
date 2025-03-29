@@ -9,6 +9,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -368,6 +372,50 @@ public class ProjectManagerRESTServices extends TokenController
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
             response.setElement(handler.getProjectByGUID(userId, projectGUID));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns the graph of related projects and resources starting with a supplied project guid..
+     *
+     * @param serverName         name of called server
+     * @param projectGUID     unique identifier of the starting project
+     *
+     * @return a graph of projects or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public ProjectGraphResponse getProjectGraph(String serverName,
+                                                String projectGUID)
+
+    {
+        final String methodName = "getProjectGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ProjectGraphResponse response = new ProjectGraphResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+
+            response.setElement(handler.getProjectGraph(userId, projectGUID));
         }
         catch (Throwable error)
         {

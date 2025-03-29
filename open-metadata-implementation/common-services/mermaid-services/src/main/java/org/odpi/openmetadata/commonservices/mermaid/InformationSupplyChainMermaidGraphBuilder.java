@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                          node.getElementHeader().getType().getTypeName(),
                                          VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
 
+
                     if (node.getLinks() != null)
                     {
                         for (InformationSupplyChainLink link : node.getLinks())
@@ -77,7 +79,8 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                     labelList.add(super.addSpacesToTypeName(link.getElementHeader().getType().getTypeName()));
                                 }
 
-                                super.appendMermaidLine(link.getEnd1Element().getGUID(),
+                                super.appendMermaidLine(link.getElementHeader().getGUID(),
+                                                        link.getEnd1Element().getGUID(),
                                                         this.getListLabel(labelList),
                                                         link.getEnd2Element().getGUID());
                             }
@@ -98,15 +101,35 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         {
                             if (implementedByRelationship != null)
                             {
-                                appendNewMermaidNode(implementedByRelationship.getEnd1Element().getGUID(),
-                                                     implementedByRelationship.getEnd1Element().getUniqueName(),
-                                                     implementedByRelationship.getEnd1Element().getType().getTypeName(),
-                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                VisualStyle visualStyle = VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL;
+
+                                if (propertyHelper.isTypeOf(implementedByRelationship.getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
+                                {
+                                    visualStyle = VisualStyle.DEFAULT_SOLUTION_COMPONENT;
+                                }
 
                                 appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
                                                      implementedByRelationship.getEnd2Element().getUniqueName(),
                                                      implementedByRelationship.getEnd2Element().getType().getTypeName(),
-                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                                     visualStyle);
+
+
+                                List<String> labelList = new ArrayList<>();
+
+                                if ((implementedByRelationship.getProperties() != null) && (implementedByRelationship.getProperties().getRole() != null))
+                                {
+                                    labelList.add(implementedByRelationship.getProperties().getRole());
+                                    labelList.add("[" + super.addSpacesToTypeName(implementedByRelationship.getElementHeader().getType().getTypeName()) + "]");
+                                }
+                                else
+                                {
+                                    labelList.add(super.addSpacesToTypeName(implementedByRelationship.getElementHeader().getType().getTypeName()));
+                                }
+
+                                super.appendMermaidLine(implementedByRelationship.getElementHeader().getGUID(),
+                                                        implementedByRelationship.getEnd1Element().getGUID(),
+                                                        this.getListLabel(labelList),
+                                                        implementedByRelationship.getEnd2Element().getGUID());
                             }
                         }
                     }
@@ -141,7 +164,8 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                         labelList.add(super.addSpacesToTypeName(relationship.getElementHeader().getType().getTypeName()));
                                     }
 
-                                    super.appendMermaidLine(relationship.getEnd1Element().getGUID(),
+                                    super.appendMermaidLine(relationship.getElementHeader().getGUID(),
+                                                            relationship.getEnd1Element().getGUID(),
                                                             this.getListLabel(labelList),
                                                             relationship.getEnd2Element().getGUID());
 
@@ -202,7 +226,8 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         }
                     }
 
-                    appendMermaidLine(lineageRelationship.getEnd1().getGUID(),
+                    appendMermaidLine(lineageRelationship.getRelationshipHeader().getGUID(),
+                                      lineageRelationship.getEnd1().getGUID(),
                                       label,
                                       lineageRelationship.getEnd2().getGUID());
                 }

@@ -57,11 +57,11 @@ public class SupplementaryProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName    = template.getDisplayName();
+            displayName        = template.getDisplayName();
             displaySummary     = template.getDisplaySummary();
             displayDescription = template.getDisplayDescription();
             abbreviation       = template.getAbbreviation();
-            usage = template.getUsage();
+            usage              = template.getUsage();
         }
     }
 

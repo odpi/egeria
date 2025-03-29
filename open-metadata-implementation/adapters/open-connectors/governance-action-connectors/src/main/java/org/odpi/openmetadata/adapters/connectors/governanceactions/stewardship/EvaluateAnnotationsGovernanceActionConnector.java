@@ -54,6 +54,7 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
             AuditLogMessageDefinition messageDefinition;
             ActionTargetElement       surveyReport        = null;
             String                    stewardGUID         = null;
+            String                    sponsorGUID         = null;
 
             if (governanceContext.getActionTargetElements() != null)
             {
@@ -68,6 +69,10 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                         else if (ActionTarget.STEWARD.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             stewardGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
+                        else if (ActionTarget.SPONSOR.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            sponsorGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                     }
                 }
@@ -125,6 +130,16 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                                     actionTarget.setActionTargetGUID(toDoGUID);
 
                                     outputActionTargets.add(actionTarget);
+
+                                    if (sponsorGUID != null)
+                                    {
+                                        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                                                                              sponsorGUID,
+                                                                                                              toDoGUID,
+                                                                                                              null,
+                                                                                                              null,
+                                                                                                              null);
+                                    }
                                 }
                             }
                         }

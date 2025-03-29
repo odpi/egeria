@@ -20,10 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataContentForDataSetProperties extends RelationshipProperties
 {
-    private String queryId         = null;
-    private String query           = null;
-    private String queryType       = null;
-
+    private String queryId          = null;
+    private String query            = null;
+    private String queryType        = null;
+    private String iscQualifiedName = null;
 
 
     /**
@@ -46,9 +46,10 @@ public class DataContentForDataSetProperties extends RelationshipProperties
 
         if (template != null)
         {
-            queryId       = template.getQueryId();
-            query         = template.getQuery();
-            query         = template.getQueryType();
+            queryId          = template.getQueryId();
+            query            = template.getQuery();
+            queryType        = template.getQueryType();
+            iscQualifiedName = template.getISCQualifiedName();
         }
     }
 
@@ -113,6 +114,26 @@ public class DataContentForDataSetProperties extends RelationshipProperties
         this.queryType = queryType;
     }
 
+    /**
+     * Return associated information supply chain unique name (if relevant).
+     *
+     * @return string
+     */
+    public String getISCQualifiedName()
+    {
+        return iscQualifiedName;
+    }
+
+
+    /**
+     * Set up associated information supply chain unique name (if relevant).
+     *
+     * @param iscQualifiedName string
+     */
+    public void setISCQualifiedName(String iscQualifiedName)
+    {
+        this.iscQualifiedName = iscQualifiedName;
+    }
 
     /**
      * Standard toString method.
@@ -126,6 +147,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
                 "queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
                 "} " + super.toString();
     }
 
@@ -143,7 +165,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataContentForDataSetProperties that = (DataContentForDataSetProperties) objectToCompare;
-        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType);
+        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType) && Objects.equals(iscQualifiedName, that.iscQualifiedName);
     }
 
     /**
@@ -154,6 +176,6 @@ public class DataContentForDataSetProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), queryId, query, queryType);
+        return Objects.hash(super.hashCode(), queryId, query, queryType, iscQualifiedName);
     }
 }

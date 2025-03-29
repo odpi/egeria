@@ -103,6 +103,14 @@ public enum ActionTarget
     /**
      * The person who can be contacted if there are problems with the data from this hospital.
      */
+    SPONSOR("sponsor",
+            "The person, or team, or project who is sponsoring the overall activity associated with this resource.",
+            OpenMetadataType.REFERENCEABLE.typeName,
+            null),
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
     INTEGRATION_CONNECTOR("integrationConnector",
                           "An integration connector that the service should work with.",
                           DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),

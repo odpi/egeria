@@ -299,7 +299,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 columnLevelLineage = false;
             }
 
-            informationSupplyChainQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN.getName(), configurationProperties);
+            informationSupplyChainQualifiedName = super.getStringConfigurationProperty(MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName(), configurationProperties);
         }
 
         /*
@@ -324,7 +324,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 {
                     destinationFileTemplateQualifiedName = requestParameters.get(requestParameterName);
                 }
-                else if (MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME.getName().equals(requestParameterName))
                 {
                     informationSupplyChainQualifiedName = requestParameters.get(requestParameterName);
                 }

@@ -79,13 +79,15 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
 
                     if ((highlightInformationSupplyChain != null) && (line.getInformationSupplyChains() != null) && (! line.getInformationSupplyChains().contains(highlightInformationSupplyChain)))
                     {
-                        super.appendMermaidThinLine(line.getEnd1AssetGUID(),
+                        super.appendMermaidThinLine(null,
+                                                    line.getEnd1AssetGUID(),
                                                     this.getListLabel(line.getRelationshipTypes()),
                                                     line.getEnd2AssetGUID());
                     }
                     else
                     {
-                        super.appendMermaidLine(line.getEnd1AssetGUID(),
+                        super.appendMermaidLine(null,
+                                                line.getEnd1AssetGUID(),
                                                 this.getListLabel(line.getRelationshipTypes()),
                                                 line.getEnd2AssetGUID());
                     }

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -428,7 +427,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                      null,
                                      null,
                                      null,
-                                     projectDefinition.getProjectStatus().getPreferredValue(),
+                                     projectDefinition.getProjectStatus().getName(),
                                      projectDefinition.isCampaign(),
                                      projectDefinition.isTask(),
                                      projectDefinition.getProjectTypeClassification(),

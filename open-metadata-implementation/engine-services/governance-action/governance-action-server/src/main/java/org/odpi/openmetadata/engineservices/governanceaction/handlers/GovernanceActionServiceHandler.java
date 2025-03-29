@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.client.OpenMetadata
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.*;
@@ -259,8 +260,43 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 super.disconnect();
             }
         }
-        catch (Exception  error)
+        catch (Exception error)
         {
+            AuditLogMessageDefinition exceptionMessage = GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_FAILED.getMessageDefinition(governanceActionServiceType,
+                                                                                                                                         governanceServiceName,
+                                                                                                                                         error.getClass().getName(),
+                                                                                                                                         governanceEngineProperties.getQualifiedName(),
+                                                                                                                                         governanceEngineGUID,
+                                                                                                                                         error.getMessage());
+            auditLog.logException(actionDescription, exceptionMessage, error.toString(), error);
+
+            try
+            {
+                CompletionStatus completionStatus = governanceContext.getCompletionStatus();
+
+                if (completionStatus == null)
+                {
+                    governanceContext.recordCompletionStatus(Guard.SERVICE_FAILED.getCompletionStatus(), Collections.singletonList(Guard.SERVICE_FAILED.getName()), null, null, exceptionMessage);
+                    super.disconnect();
+                }
+            }
+            catch (Exception statusError)
+            {
+                auditLog.logException(actionDescription,
+                                      GovernanceActionAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getDisplayName(),
+                                                                                                                governanceServiceName,
+                                                                                                                statusError.getClass().getName(),
+                                                                                                                statusError.getMessage()),
+                                      statusError.toString(),
+                                      statusError);
+            }
+        }
+        catch (NoClassDefFoundError  error)
+        {
+            /*
+             * Exception NoClassDefFoundError means there is a missing class in the Jar file for the GovernanceActionService.
+             * The governance action service can not run until this build problem is corrected.
+             */
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_FAILED.getMessageDefinition(governanceActionServiceType,
                                                                                                                   governanceServiceName,
@@ -277,7 +313,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 if (completionStatus == null)
                 {
-                    governanceContext.recordCompletionStatus(Guard.SERVICE_FAILED.getCompletionStatus(), Collections.singletonList(Guard.SERVICE_FAILED.getName()), null, null, error.getMessage());
+                    governanceContext.recordCompletionStatus(Guard.SERVICE_IMPLEMENTATION_INVALID.getCompletionStatus(), Collections.singletonList(Guard.SERVICE_IMPLEMENTATION_INVALID.getName()), null, null, error.getMessage());
                     super.disconnect();
                 }
             }

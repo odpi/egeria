@@ -63,6 +63,42 @@ public enum SolutionComponentWire
                                     "The results of the clinical trial is published to various stakeholders.",
                                     new InformationSupplyChainSegment[]{InformationSupplyChainSegment.DELIVER_REPORT}),
 
+    MOVE_FILES_TO_CHECK_QUALITY(SolutionComponent.MOVE_FILE_TO_DATA_LAKE,
+                                SolutionComponent.CHECK_QUALITY_OF_DATA,
+                                "provisioning complete",
+                                "The data is in position and ready to be validated.",
+                                null),
+
+    MOVE_FILE_TO_SEEK_ORIGIN(SolutionComponent.MOVE_FILE_TO_DATA_LAKE,
+                             SolutionComponent.DETERMINE_ORIGIN_OF_DATA,
+                             "provisioning complete",
+                             "The data is in position and ready for the origin to be validated.",
+                             null),
+
+    CHECK_QUALITY_TO_REPORT_ISSUES(SolutionComponent.CHECK_QUALITY_OF_DATA,
+                                   SolutionComponent.REPORT_QUALITY_ISSUES,
+                                   "quality analysis complete",
+                                   "The quality checks have been completed and the results published.",
+                                   null),
+
+    SEEK_ORIGIN_TO_SET_RETENTION(SolutionComponent.DETERMINE_ORIGIN_OF_DATA,
+                                 SolutionComponent.SET_RETENTION_PERIOD,
+                                 "origin determined",
+                                 "The origin of the data is understood and the retention period can now be set up.",
+                                 null),
+
+    SET_RETENTION_TO_PUBLISH_ASSET(SolutionComponent.SET_RETENTION_PERIOD,
+                                   SolutionComponent.PUBLISH_ASSET,
+                                   "classifications assigned",
+                                   "Classification of the asset is complete.",
+                                   null),
+
+    REPORT_ISSUES_TO_PUBLISH_ASSET(SolutionComponent.REPORT_QUALITY_ISSUES,
+                                   SolutionComponent.PUBLISH_ASSET,
+                                   "quality assessment complete",
+                                   "The quality assessment is complete and any necessary actions are in place.",
+                                   null),
+
     GOODS_MOVEMENT(SolutionComponent.GOODS_INVENTORY,
                    SolutionComponent.SUSTAINABILITY_ODS,
                    "goods movement",

@@ -3,15 +3,14 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
+import org.odpi.openmetadata.commonservices.mermaid.ProjectGraphBuilder;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectHierarchyConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.TeamMemberConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectTeamMember;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
@@ -42,6 +41,8 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     final private TeamMemberConverter<ProjectTeamMember> teamMemberConverter;
 
     final private Class<ProjectTeamMember> projectMemberBeanClass = ProjectTeamMember.class;
+
+    final private String serviceName = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceFullName();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -674,7 +675,10 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.PROJECT.typeName))
                 {
-                    ProjectElement projectElement = projectConverter.getNewBean(projectBeanClass, relatedMetadataElement, methodName);
+                    ProjectElement projectElement = projectConverter.getNewComplexBean(projectBeanClass,
+                                                                                       relatedMetadataElement,
+                                                                                       this.getProjectResources(userId, relatedMetadataElement.getElement().getElementGUID()),
+                                                                                       methodName);
 
                     if ((projectStatus == null) || (projectStatus.isBlank()) || (projectStatus.equals(projectElement.getProperties().getProjectStatus())))
                     {
@@ -687,6 +691,217 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
             {
                 return filteredProjects;
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Returns the graph of related projects and resources starting with a supplied project guid..
+     *
+     * @param userId         userId of user making request
+     * @param projectGUID     unique identifier of the starting project
+     *
+     * @return a graph of projects
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public ProjectGraph getProjectGraph(String userId,
+                                        String projectGUID) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        OpenMetadataElement startingProject = openMetadataStoreClient.getMetadataElementByGUID(userId,
+                                                                                               projectGUID,
+                                                                                               false,
+                                                                                               false,
+                                                                                               null,
+                                                                                               new Date());
+
+        if (startingProject != null)
+        {
+            ProjectGraph projectGraph = new ProjectGraph(this.getProjectHierarchy(userId,
+                                                                                  startingProject,
+                                                                                  new ArrayList<>()));
+            ProjectGraphBuilder projectGraphBuilder = new ProjectGraphBuilder(projectGraph);
+
+            projectGraph.setMermaidGraph(projectGraphBuilder.getMermaidGraph());
+
+            return projectGraph;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the project hierarchy for a project.
+     *
+     * @param userId calling user
+     * @param project starting project
+     * @param coveredProjects unique identifiers of projects already processed
+     * @return project hierarch for the element
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private ProjectHierarchy getProjectHierarchy(String              userId,
+                                                 OpenMetadataElement project,
+                                                 List<String>        coveredProjects) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "getProjectHierarchy";
+
+        RelatedMetadataElementList projectResourceList = this.getProjectResources(userId, project.getElementGUID());
+
+        List<RelatedMetadataElement> projectResources;
+        List<ProjectHierarchy>       projectHierarchy = null;
+
+        if ((projectResourceList != null) && (projectResourceList.getElementList() != null))
+        {
+            projectResources = projectResourceList.getElementList();
+            List<RelatedMetadataElement> children = this.getChildren(projectResources);
+
+            if (children != null)
+            {
+                projectHierarchy = new ArrayList<>();
+
+                for (RelatedMetadataElement child : children)
+                {
+                    if ((child != null) && (! coveredProjects.contains(child.getElement().getElementGUID())))
+                    {
+                        coveredProjects.add(child.getElement().getElementGUID());
+
+                        ProjectHierarchy childProjectHierarchy = this.getProjectHierarchy(userId, child.getElement(), coveredProjects);
+
+                        childProjectHierarchy.setStartingElement(projectConverter.getRelatedElement(ProjectElement.class,
+                                                                                                    child,
+                                                                                                    methodName));
+
+                        projectHierarchy.add(childProjectHierarchy);
+                    }
+                }
+            }
+
+            List<RelatedMetadataElement> dependentProjects = this.getDependentProjects(userId, project.getElementGUID());
+
+            if (dependentProjects != null)
+            {
+                projectResources.addAll(dependentProjects);
+            }
+        }
+        else
+        {
+            projectResources = this.getDependentProjects(userId, project.getElementGUID());
+        }
+
+
+        ProjectHierarchyConverter<ProjectHierarchy> hierarchyConverter = new ProjectHierarchyConverter<>(propertyHelper,
+                                                                                                         serviceName,
+                                                                                                         serverName,
+                                                                                                         projectHierarchy);
+
+        return hierarchyConverter.getNewComplexBean(ProjectHierarchy.class,
+                                                    project,
+                                                    projectResources,
+                                                    methodName);
+    }
+
+
+    /**
+     * Return the list of linked resources.
+     *
+     * @param userId calling user
+     * @param projectGUID retrieved project
+     * @return list of linked resources
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private RelatedMetadataElementList getProjectResources(String userId,
+                                                           String projectGUID) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        return openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                  projectGUID,
+                                                                  1,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
+                                                                  0, 0);
+    }
+
+
+    /**
+     * Extract the project hierarch relationships.  They all refer to child projects because they
+     * were retrieved with respect to end 1.
+     *
+     * @param relatedProjectElements related elements
+     * @return list of children
+     */
+    private List<RelatedMetadataElement> getChildren(List<RelatedMetadataElement> relatedProjectElements)
+    {
+        if (relatedProjectElements != null)
+        {
+            List<RelatedMetadataElement> children = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedProjectElement : relatedProjectElements)
+            {
+                if ((relatedProjectElement != null) && (propertyHelper.isTypeOf(relatedProjectElement, OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName)))
+                {
+                    children.add(relatedProjectElement);
+                }
+            }
+
+            return children;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of projects dependent on this project.
+     *
+     * @param userId calling user
+     * @param projectGUID retrieved project
+     * @return list of linked resources
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private List<RelatedMetadataElement> getDependentProjects(String userId,
+                                                              String projectGUID) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                   projectGUID,
+                                                                                                                   2,
+                                                                                                                   null,
+                                                                                                                   null,
+                                                                                                                   null,
+                                                                                                                   null,
+                                                                                                                   null,
+                                                                                                                   false,
+                                                                                                                   false,
+                                                                                                                   new Date(),
+                                                                                                                   0, 0);
+
+        if (relatedMetadataElementList != null)
+        {
+            return relatedMetadataElementList.getElementList();
         }
 
         return null;
@@ -734,7 +949,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                                                                      new Date(),
                                                                                                                      startFrom,
                                                                                                                      pageSize);
-        return convertProjects(openMetadataElements);
+        return convertProjects(userId, openMetadataElements);
     }
 
 
@@ -831,7 +1046,8 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @return list of project elements
      * @throws PropertyServerException error in retrieved values
      */
-    private List<ProjectElement> convertProjects(List<OpenMetadataElement>  openMetadataElements) throws PropertyServerException
+    private List<ProjectElement> convertProjects(String                     userId,
+                                                 List<OpenMetadataElement>  openMetadataElements) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException
     {
         final String methodName = "convertProjects";
 
@@ -843,7 +1059,10 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
             {
                 if (openMetadataElement != null)
                 {
-                    projectElements.add(projectConverter.getNewBean(projectBeanClass, openMetadataElement, methodName));
+                    projectElements.add(projectConverter.getNewComplexBean(projectBeanClass,
+                                                                           openMetadataElement,
+                                                                           this.getProjectResources(userId, openMetadataElement.getElementGUID()),
+                                                                           methodName));
                 }
             }
 
@@ -884,22 +1103,23 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
+                                                                                                                searchString,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                false,
+                                                                                                                false,
+                                                                                                                new Date(),
+                                                                                                                startFrom,
+                                                                                                                validatedPageSize);
+        if (openMetadataElements != null)
+        {
+            return this.convertProjects(userId, openMetadataElements);
+        }
 
-        SearchStringRequestBody requestBody = new SearchStringRequestBody();
-
-        requestBody.setSearchString(searchString);
-        requestBody.setSearchStringParameterName(searchStringParameterName);
-
-        ProjectsResponse restResult = restClient.callProjectsPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          startFrom,
-                                                                          validatedPageSize);
-
-        return restResult.getElements();
+        return null;
     }
 
 
@@ -933,22 +1153,33 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
+        List<String> propertyNames = new ArrayList<>();
 
-        NameRequestBody requestBody = new NameRequestBody();
+        propertyNames.add(OpenMetadataProperty.IDENTIFIER.name);
+        propertyNames.add(OpenMetadataProperty.NAME.name);
+        propertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
-        requestBody.setName(name);
-        requestBody.setNamePropertyName(nameParameterName);
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.getMetadataElementsByPropertyValue(userId,
+                                                                                                                    OpenMetadataType.PROJECT.typeName,
+                                                                                                                    null,
+                                                                                                                    propertyNames,
+                                                                                                                    name,
+                                                                                                                    null,
+                                                                                                                    null,
+                                                                                                                    null,
+                                                                                                                    null,
+                                                                                                                    false,
+                                                                                                                    false,
+                                                                                                                    new Date(),
+                                                                                                                    startFrom,
+                                                                                                                    validatedPageSize);
 
-        ProjectsResponse restResult = restClient.callProjectsPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+        if (openMetadataElements != null)
+        {
+            return this.convertProjects(userId, openMetadataElements);
+        }
 
-        return restResult.getElements();
+        return null;
     }
 
 
@@ -977,16 +1208,25 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
+                                                                                                                null,
+                                                                                                                OpenMetadataType.PROJECT.typeName,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                false,
+                                                                                                                false,
+                                                                                                                new Date(),
+                                                                                                                startFrom,
+                                                                                                                validatedPageSize);
 
-        ProjectsResponse restResult = restClient.callProjectsGetRESTCall(methodName,
-                                                                         urlTemplate,
-                                                                         serverName,
-                                                                         userId,
-                                                                         startFrom,
-                                                                         validatedPageSize);
+        if (openMetadataElements != null)
+        {
+            return this.convertProjects(userId, openMetadataElements);
+        }
 
-        return restResult.getElements();
+        return null;
     }
 
 
@@ -1098,14 +1338,21 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(projectGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}";
+        OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId,
+                                                                                                   projectGUID,
+                                                                                                   false,
+                                                                                                   false,
+                                                                                                   null,
+                                                                                                   new Date());
 
-        ProjectResponse restResult = restClient.callProjectGetRESTCall(methodName,
-                                                                       urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       projectGUID);
+        if (openMetadataElement != null)
+        {
+            return projectConverter.getNewComplexBean(projectBeanClass,
+                                                      openMetadataElement,
+                                                      this.getProjectResources(userId, openMetadataElement.getElementGUID()),
+                                                      methodName);
+        }
 
-        return restResult.getElement();
+        return null;
     }
 }

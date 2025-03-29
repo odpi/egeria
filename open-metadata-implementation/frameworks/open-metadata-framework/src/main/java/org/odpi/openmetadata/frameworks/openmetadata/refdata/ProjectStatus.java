@@ -13,16 +13,41 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 public enum ProjectStatus
 {
     /**
-     * The project has just been created.
+     * This project has been proposed but there is no agreement to allocate resources or proceed.
      */
-    NEW("New",
-        "The project has just been created."),
+    PROPOSED ("Proposed",
+              "This project has been proposed but there is no agreement to allocate resources or proceed."),
+
+    /**
+     * This project has be approved to go ahead.  Resources a approved for it in principle, but specific resources may not have been allocated yet.
+     */
+    APPROVED ( "Approved",
+               "This project has be approved to go ahead.  Resources a approved for it in principle, but specific resources may not have been allocated yet."),
+
+    /**
+     * This project has an outline project plan and timeline.  Resources have been allocated.
+     */
+    PLANNED ( "Planned",
+              "This project has an outline project plan and timeline.  Resources have been allocated."),
+
+    /**
+     * This project is in final preparations to start.
+     */
+    ACTIVATING ( "Activating",
+                 "This project is in final preparations to start."),
+
 
     /**
      * The project is currently being worked on by the project team.
      */
     ACTIVE("Active",
             "The project is currently being worked on by the project team."),
+
+    /**
+     * This project is not able to make progress because of an external factor.
+     */
+    STALLED ("Stalled",
+             "This project is not able to make progress because of an external factor."),
 
     /**
      * Work on the project has finished, and all deliverables have either been completed, abandoned or moved to a different project.
