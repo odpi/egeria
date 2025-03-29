@@ -105,9 +105,17 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ACTIVE" class="member-name-link">ACTIVE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTIVATING" class="member-name-link">ACTIVATING</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">This project is in final preparations to start.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ACTIVE" class="member-name-link">ACTIVE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The project is currently being worked on by the project team.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#APPROVED" class="member-name-link">APPROVED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">This project has be approved to go ahead.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#CANCELLED" class="member-name-link">CANCELLED</a></code></div>
 <div class="col-last odd-row-color">
@@ -117,13 +125,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Work on the project has finished, and all deliverables have either been completed, abandoned or moved to a different project.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW" class="member-name-link">NEW</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ON_HOLD" class="member-name-link">ON_HOLD</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The project has just been created.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ON_HOLD" class="member-name-link">ON_HOLD</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">The project has not finished, and work on the project has been temporarily suspended.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PLANNED" class="member-name-link">PLANNED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">This project has an outline project plan and timeline.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PROPOSED" class="member-name-link">PROPOSED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">This project has been proposed but there is no agreement to allocate resources or proceed.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#STALLED" class="member-name-link">STALLED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">This project is not able to make progress because of an external factor.</div>
 </div>
 </div>
 </section>
@@ -196,10 +212,31 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="NEW">
-<h3>NEW</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">NEW</span></div>
-<div class="block">The project has just been created.</div>
+<section class="detail" id="PROPOSED">
+<h3>PROPOSED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">PROPOSED</span></div>
+<div class="block">This project has been proposed but there is no agreement to allocate resources or proceed.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="APPROVED">
+<h3>APPROVED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">APPROVED</span></div>
+<div class="block">This project has be approved to go ahead.  Resources a approved for it in principle, but specific resources may not have been allocated yet.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PLANNED">
+<h3>PLANNED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">PLANNED</span></div>
+<div class="block">This project has an outline project plan and timeline.  Resources have been allocated.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTIVATING">
+<h3>ACTIVATING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">ACTIVATING</span></div>
+<div class="block">This project is in final preparations to start.</div>
 </section>
 </li>
 <li>
@@ -207,6 +244,13 @@ the order they are declared.</div>
 <h3>ACTIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">ACTIVE</span></div>
 <div class="block">The project is currently being worked on by the project team.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STALLED">
+<h3>STALLED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProjectStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectStatus</a></span>&nbsp;<span class="element-name">STALLED</span></div>
+<div class="block">This project is not able to make progress because of an external factor.</div>
 </section>
 </li>
 <li>

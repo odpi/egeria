@@ -84,7 +84,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">InformationSupplyChain</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.businesssystems">InformationSupplyChain</a>&gt;</span></div>
-<div class="block">A description of the predefined information supply chains.</div>
+<div class="block">A description of the predefined information supply chains.  There are two formats - one for templates and
+ the other for normal information supply chains.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,9 +110,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Delivering the data necessary to add a person as a subject in a clinical trial</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CLINICAL_TRIALS_TREATMENT_VALIDATION" class="member-name-link">CLINICAL_TRIALS_TREATMENT_VALIDATION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE" class="member-name-link">CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Delivering data relating to a clinical trial from the hospitals to the Coco Researchers.</div>
+<div class="block">Delivering data relating to the teddy bear drop foot clinical trial from the hospitals to the Coco Researchers.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#EMPLOYEE_EXPENSE_PAYMENT" class="member-name-link">EMPLOYEE_EXPENSE_PAYMENT</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -175,6 +176,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the scope of the information supply chain.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateDescription()" class="member-name-link">getTemplateDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the template description.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateName()" class="member-name-link">getTemplateName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the template name.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTemplate()" class="member-name-link">isTemplate</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -224,10 +235,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="CLINICAL_TRIALS_TREATMENT_VALIDATION">
-<h3>CLINICAL_TRIALS_TREATMENT_VALIDATION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.businesssystems">InformationSupplyChain</a></span>&nbsp;<span class="element-name">CLINICAL_TRIALS_TREATMENT_VALIDATION</span></div>
-<div class="block">Delivering data relating to a clinical trial from the hospitals to the Coco Researchers.</div>
+<section class="detail" id="CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE">
+<h3>CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InformationSupplyChain.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.businesssystems">InformationSupplyChain</a></span>&nbsp;<span class="element-name">CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE</span></div>
+<div class="block">Delivering data relating to the teddy bear drop foot clinical trial from the hospitals to the Coco Researchers.</div>
 </section>
 </li>
 <li>
@@ -376,6 +387,28 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTemplateName()">
+<h3>getTemplateName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateName</span>()</div>
+<div class="block">Return the template name.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTemplateDescription()">
+<h3>getTemplateDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateDescription</span>()</div>
+<div class="block">Return the template description.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
 </dl>
 </section>
 </li>

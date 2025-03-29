@@ -396,6 +396,22 @@ loadScripts(document, 'script');</script>
 <div class="block">Using the supplied instances, return a new instance of the bean.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewComplexBean(java.lang.Class,org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement,java.util.List,java.lang.String)" class="member-name-link">getNewComplexBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a>&gt;&nbsp;beanClass,
+ <a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&nbsp;primaryElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;&nbsp;relationships,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Using the supplied instances, return a new instance of the bean.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewComplexBean(java.lang.Class,org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement,org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList,java.lang.String)" class="member-name-link">getNewComplexBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a>&gt;&nbsp;beanClass,
+ <a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&nbsp;primaryElement,
+ <a href="../properties/RelatedMetadataElementList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElementList</a>&nbsp;relationships,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Using the supplied instances, return a new instance of the bean.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewRelatedMetadataElementsBean(java.lang.Class,org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship,java.lang.String)" class="member-name-link">getNewRelatedMetadataElementsBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a>&gt;&nbsp;beanClass,
  <a href="../properties/OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationship</a>&nbsp;relationship,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
@@ -2075,10 +2091,58 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getNewComplexBean(java.lang.Class,org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement,org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList,java.lang.String)">
+<h3>getNewComplexBean</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a></span>&nbsp;<span class="element-name">getNewComplexBean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a>&gt;&nbsp;beanClass,
+ <a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&nbsp;primaryElement,
+ <a href="../properties/RelatedMetadataElementList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElementList</a>&nbsp;relationships,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                    throws <span class="exceptions"><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+ an Annotation or To Do bean which combine knowledge from the element and its linked relationships.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>beanClass</code> - name of the class to create</dd>
+<dd><code>primaryElement</code> - element that is the root of the collection of entities that make up the
+                      content of the bean</dd>
+<dd><code>relationships</code> - relationships linking the entities</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>bean populated with properties from the instances supplied</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem instantiating the bean</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getNewComplexBean(java.lang.Class,org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,java.util.List,java.lang.String)">
 <h3>getNewComplexBean</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a></span>&nbsp;<span class="element-name">getNewComplexBean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a>&gt;&nbsp;beanClass,
  <a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;primaryElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;&nbsp;relationships,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                    throws <span class="exceptions"><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+ an Annotation or To Do bean which combine knowledge from the element and its linked relationships.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>beanClass</code> - name of the class to create</dd>
+<dd><code>primaryElement</code> - element that is the root of the collection of entities that make up the
+                      content of the bean</dd>
+<dd><code>relationships</code> - relationships linking the entities</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>bean populated with properties from the instances supplied</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem instantiating the bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNewComplexBean(java.lang.Class,org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement,java.util.List,java.lang.String)">
+<h3>getNewComplexBean</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a></span>&nbsp;<span class="element-name">getNewComplexBean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="OpenMetadataConverterBase.html" title="type parameter in OpenMetadataConverterBase">B</a>&gt;&nbsp;beanClass,
+ <a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&nbsp;primaryElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;&nbsp;relationships,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                     throws <span class="exceptions"><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>

@@ -127,8 +127,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">An unexpected error occurred while the governance service was running.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TARGET_NOT_ASSET" class="member-name-link">TARGET_NOT_ASSET</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SERVICE_IMPLEMENTATION_INVALID" class="member-name-link">SERVICE_IMPLEMENTATION_INVALID</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The implementation of the governance service is incomplete.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TARGET_NOT_ASSET" class="member-name-link">TARGET_NOT_ASSET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The action target is not an asset.</div>
 </div>
 </div>
@@ -239,6 +243,13 @@ the order they are declared.</div>
 <h3>SERVICE_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Guard.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.controls">Guard</a></span>&nbsp;<span class="element-name">SERVICE_FAILED</span></div>
 <div class="block">An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SERVICE_IMPLEMENTATION_INVALID">
+<h3>SERVICE_IMPLEMENTATION_INVALID</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Guard.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.controls">Guard</a></span>&nbsp;<span class="element-name">SERVICE_IMPLEMENTATION_INVALID</span></div>
+<div class="block">The implementation of the governance service is incomplete.   The missing class(es) need to be added to the governance service's JAR file before this service will operate.</div>
 </section>
 </li>
 <li>
