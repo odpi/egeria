@@ -95,24 +95,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addToCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String)" class="member-name-link">addToCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addToCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String,java.util.Date)" class="member-name-link">addToCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="../../../frameworks/openmetadata/properties/collections/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionMembershipProperties</a>&nbsp;membershipProperties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Add an element to a collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties,boolean)" class="member-name-link">attachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties,boolean,java.util.Date)" class="member-name-link">attachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="../../../frameworks/openmetadata/properties/resources/ResourceListProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.resources">ResourceListProperties</a>&nbsp;collectionUse,
- boolean&nbsp;makeAnchor)</code></div>
+ boolean&nbsp;makeAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Connect an existing collection to an element using the ResourceList relationship (0019).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollection(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollection(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,java.util.Date)" class="member-name-link">createCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassification,
@@ -120,12 +122,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new generic collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollectionFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createCollectionFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollectionFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,java.util.Date)" class="member-name-link">createCollectionFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
@@ -136,12 +139,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element to represent a collection using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,java.util.Date)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
  <a href="../../../frameworks/openmetadata/properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a>&nbsp;collectionProperties,
@@ -149,7 +153,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new collection that represents a digital product.</div>
 </div>
@@ -160,9 +165,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a collection.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#detachCollection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">detachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#detachCollection(java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">detachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Detach an existing collection from an element.</div>
 </div>
@@ -199,10 +205,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the properties of a specific collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/CollectionMember.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">CollectionMember</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCollectionMembers(java.lang.String,java.lang.String,int,int)" class="member-name-link">getCollectionMembers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCollectionMembers(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getCollectionMembers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return a list of elements that are a member of a collection.</div>
 </div>
@@ -224,34 +231,38 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of collections with a particular collectionType.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeFromCollection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">removeFromCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeFromCollection(java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">removeFromCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove an element from a collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateCollection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties)" class="member-name-link">updateCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateCollection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,java.util.Date)" class="member-name-link">updateCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../frameworks/openmetadata/properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a>&nbsp;properties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the properties of a collection.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateCollectionMembership(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String)" class="member-name-link">updateCollectionMembership</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateCollectionMembership(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String,java.util.Date)" class="member-name-link">updateCollectionMembership</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
  <a href="../../../frameworks/openmetadata/properties/collections/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionMembershipProperties</a>&nbsp;membershipProperties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update an element's membership to a collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties)" class="member-name-link">updateDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties,java.util.Date)" class="member-name-link">updateDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a>&nbsp;properties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the properties of the DigitalProduct classification attached to a collection.</div>
 </div>
@@ -429,7 +440,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createCollection(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createCollection(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,java.util.Date)">
 <h3>createCollection</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
@@ -439,7 +450,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -457,6 +469,7 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt>Throws:</dt>
@@ -467,7 +480,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createCollectionFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createCollectionFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,java.util.Date)">
 <h3>createCollectionFromTemplate</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createCollectionFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
@@ -480,7 +493,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -504,6 +518,7 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -514,7 +529,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,java.util.Date)">
 <h3>createDigitalProduct</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createDigitalProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
@@ -524,7 +539,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -542,6 +558,7 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt>Throws:</dt>
@@ -552,12 +569,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateCollection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties)">
+<section class="detail" id="updateCollection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties,java.util.Date)">
 <h3>updateCollection</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../frameworks/openmetadata/properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a>&nbsp;properties)</span>
+ <a href="../../../frameworks/openmetadata/properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -569,6 +587,7 @@ loadScripts(document, 'script');</script>
 <dd><code>replaceAllProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                                the individual properties specified on the request.</dd>
 <dd><code>properties</code> - properties for the collection.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
@@ -577,12 +596,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties)">
+<section class="detail" id="updateDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties,java.util.Date)">
 <h3>updateDigitalProduct</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateDigitalProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
- <a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a>&nbsp;properties)</span>
+ <a href="../../../frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -594,6 +614,7 @@ loadScripts(document, 'script');</script>
 <dd><code>replaceAllProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                                the individual properties specified on the request.</dd>
 <dd><code>properties</code> - properties for the DigitalProduct classification.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
@@ -602,13 +623,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties,boolean)">
+<section class="detail" id="attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties,boolean,java.util.Date)">
 <h3>attachCollection</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">attachCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="../../../frameworks/openmetadata/properties/resources/ResourceListProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.resources">ResourceListProperties</a>&nbsp;collectionUse,
- boolean&nbsp;makeAnchor)</span>
+ boolean&nbsp;makeAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -620,6 +642,7 @@ loadScripts(document, 'script');</script>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to</dd>
 <dd><code>collectionUse</code> - description of how the collection will be used.</dd>
 <dd><code>makeAnchor</code> - like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
@@ -628,11 +651,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="detachCollection(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="detachCollection(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <h3>detachCollection</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">detachCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -642,6 +666,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
@@ -671,12 +696,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCollectionMembers(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getCollectionMembers(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>getCollectionMembers</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/CollectionMember.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">CollectionMember</a>&gt;</span>&nbsp;<span class="element-name">getCollectionMembers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -687,6 +713,7 @@ loadScripts(document, 'script');</script>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>list of asset details</dd>
 <dt>Throws:</dt>
@@ -697,12 +724,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addToCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String)">
+<section class="detail" id="addToCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String,java.util.Date)">
 <h3>addToCollection</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addToCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="../../../frameworks/openmetadata/properties/collections/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionMembershipProperties</a>&nbsp;membershipProperties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
               throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -713,6 +741,7 @@ loadScripts(document, 'script');</script>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>membershipProperties</code> - properties describing the membership characteristics.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>
@@ -721,13 +750,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateCollectionMembership(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String)">
+<section class="detail" id="updateCollectionMembership(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties,java.lang.String,java.util.Date)">
 <h3>updateCollectionMembership</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateCollectionMembership</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
  <a href="../../../frameworks/openmetadata/properties/collections/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionMembershipProperties</a>&nbsp;membershipProperties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -740,6 +770,7 @@ loadScripts(document, 'script');</script>
                                the individual properties specified on the request.</dd>
 <dd><code>membershipProperties</code> - properties describing the membership characteristics.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>
@@ -748,11 +779,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeFromCollection(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="removeFromCollection(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <h3>removeFromCollection</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeFromCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -762,6 +794,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>elementGUID</code> - unique identifier of the element.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>

@@ -964,26 +964,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a new IT profile.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLibraryCategoryReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">addLibraryCategoryReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;categoryGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalGlossaryLinkGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastVerified)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Link a category to an external glossary link with information on which category in the external glossary it corresponds to.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLibraryTermReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">addLibraryTermReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;termGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalGlossaryLinkGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastVerified)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Link a glossary term to an external glossary link with information on which term in the external glossary it corresponds to.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLicense(java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">addLicense</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licensedElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
@@ -4864,48 +4844,6 @@ loadScripts(document, 'script');</script>
 <dd><code>termGUID</code> - unique identifier for the term</dd>
 <dd><code>status</code> - ordinal for the relationship status</dd>
 <dd><code>description</code> - description of the relationship between the term and the category.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="addLibraryCategoryReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
-<h3>addLibraryCategoryReference</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addLibraryCategoryReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;categoryGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalGlossaryLinkGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastVerified)</span></div>
-<div class="block">Link a category to an external glossary link with information on which category in the external glossary it corresponds to.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>categoryGUID</code> - unique identifier for the category</dd>
-<dd><code>externalGlossaryLinkGUID</code> - unique identifier for the description of the external glossary (a type of external reference)</dd>
-<dd><code>identifier</code> - identifier of the category in the external glossary</dd>
-<dd><code>description</code> - description of the link</dd>
-<dd><code>steward</code> - steward who created link</dd>
-<dd><code>lastVerified</code> - last time this was verified</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="addLibraryTermReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
-<h3>addLibraryTermReference</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addLibraryTermReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;termGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalGlossaryLinkGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastVerified)</span></div>
-<div class="block">Link a glossary term to an external glossary link with information on which term in the external glossary it corresponds to.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>termGUID</code> - unique identifier for the term</dd>
-<dd><code>externalGlossaryLinkGUID</code> - unique identifier for the description of the external glossary (a type of external reference)</dd>
-<dd><code>identifier</code> - identifier of the term in the external glossary</dd>
-<dd><code>description</code> - description of the link</dd>
-<dd><code>steward</code> - steward who created link</dd>
-<dd><code>lastVerified</code> - last time this was verified</dd>
 </dl>
 </section>
 </li>

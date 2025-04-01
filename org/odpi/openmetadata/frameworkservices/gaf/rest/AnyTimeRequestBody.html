@@ -124,6 +124,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the repository date/time to use for the query.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getForDuplicateProcessing()" class="member-name-link">getForDuplicateProcessing</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this request is updating an element as part of a deduplication exercise.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getForLineage()" class="member-name-link">getForLineage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this request is to update lineage memento elements.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -133,6 +143,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAsOfTime(java.util.Date)" class="member-name-link">setAsOfTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the repository date/time to use for the query.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setForDuplicateProcessing(boolean)" class="member-name-link">setForDuplicateProcessing</a><wbr>(boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether this request is updating an element as part of a deduplication exercise.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setForLineage(boolean)" class="member-name-link">setForLineage</a><wbr>(boolean&nbsp;forLineage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether this request is to update lineage memento elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -204,6 +224,50 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>asOfTime</code> - date object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getForLineage()">
+<h3>getForLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getForLineage</span>()</div>
+<div class="block">Return whether this request is to update lineage memento elements.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setForLineage(boolean)">
+<h3>setForLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setForLineage</span><wbr><span class="parameters">(boolean&nbsp;forLineage)</span></div>
+<div class="block">Set up whether this request is to update lineage memento elements.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>forLineage</code> - flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getForDuplicateProcessing()">
+<h3>getForDuplicateProcessing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getForDuplicateProcessing</span>()</div>
+<div class="block">Return whether this request is updating an element as part of a deduplication exercise.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setForDuplicateProcessing(boolean)">
+<h3>setForDuplicateProcessing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setForDuplicateProcessing</span><wbr><span class="parameters">(boolean&nbsp;forDuplicateProcessing)</span></div>
+<div class="block">Set up whether this request is updating an element as part of a deduplication exercise.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>forDuplicateProcessing</code> - flag</dd>
 </dl>
 </section>
 </li>

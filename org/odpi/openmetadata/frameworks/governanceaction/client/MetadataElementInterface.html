@@ -146,7 +146,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a new classification to the metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
@@ -158,12 +158,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element in the metadata store using the template identified by the templateGUID.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
@@ -177,7 +180,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element in the metadata store using the template identified by the templateGUID.</div>
 </div>
@@ -194,7 +200,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
@@ -208,7 +214,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
@@ -223,7 +232,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&gt;&nbsp;initialClassifications,
@@ -235,7 +244,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
@@ -437,7 +449,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">getMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)" class="member-name-link">getMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
@@ -451,7 +463,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element in the metadata store using the template identified by the templateGUID.</div>
 </div>
@@ -1370,7 +1385,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)">
 <h3>createMetadataElementInStore</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
@@ -1384,7 +1399,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                              throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1409,6 +1427,9 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -1419,7 +1440,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)">
 <h3>createMetadataElementInStore</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
@@ -1435,7 +1456,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                              throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1462,6 +1486,9 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -1472,7 +1499,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)">
 <h3>createMetadataElementFromTemplate</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
@@ -1486,7 +1513,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                   throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1514,6 +1544,9 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -1524,7 +1557,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)">
 <h3>createMetadataElementFromTemplate</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
@@ -1540,7 +1573,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                   throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1570,6 +1606,9 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -1580,7 +1619,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean,boolean,boolean,java.util.Date)">
 <h3>getMetadataElementFromTemplate</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
@@ -1596,7 +1635,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</span>
+ boolean&nbsp;parentAtEnd1,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1626,6 +1668,9 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>

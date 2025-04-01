@@ -543,6 +543,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.collections
 org.odpi.openmetadata.frameworks.openmetadata.properties.communities
 org.odpi.openmetadata.frameworks.openmetadata.properties.connections
 org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents
+org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing
 org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness
 org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences
@@ -837,7 +838,6 @@ org.odpi.openmetadata.viewservices.classificationmanager.server
 org.odpi.openmetadata.viewservices.classificationmanager.server.spring
 org.odpi.openmetadata.viewservices.collectionmanager.admin
 org.odpi.openmetadata.viewservices.collectionmanager.ffdc
-org.odpi.openmetadata.viewservices.collectionmanager.rest
 org.odpi.openmetadata.viewservices.collectionmanager.server
 org.odpi.openmetadata.viewservices.collectionmanager.server.spring
 org.odpi.openmetadata.viewservices.datadesigner.admin

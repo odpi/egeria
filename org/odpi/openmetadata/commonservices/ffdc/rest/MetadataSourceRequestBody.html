@@ -75,10 +75,15 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="InformationSupplyChainLinkRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainLinkRequestBody</a></code>, <code><a href="InformationSupplyChainSegmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainSegmentRequestBody</a></code>, <code><a href="NewElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewElementRequestBody</a></code>, <code><a href="UpdateInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateInformationSupplyChainRequestBody</a></code>, <code><a href="UpdateSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionBlueprintRequestBody</a></code>, <code><a href="UpdateSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionComponentRequestBody</a></code>, <code><a href="UpdateSolutionPortRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionPortRequestBody</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MetadataSourceRequestBody</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">MetadataSourceRequestBody carries the parameters for marking an asset or schema as external.</div>
+<div class="block">MetadataSourceRequestBody carries the parameters for marking an element, classification or relationship as external
+ and for working with lineage/duplicate processing and effective time.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -117,20 +122,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceGUID()" class="member-name-link">getExternalSourceGUID</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEffectiveTime()" class="member-name-link">getEffectiveTime</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of the software server capability entity that represented the external source - null for local.</div>
+<div class="block">Return the effective time that this update is to occur in.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceName()" class="member-name-link">getExternalSourceName</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceGUID()" class="member-name-link">getExternalSourceGUID</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of the software server capability entity that represented the external source - null for local.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceName()" class="member-name-link">getExternalSourceName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique name of the software server capability entity that represented the external source.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getForDuplicateProcessing()" class="member-name-link">getForDuplicateProcessing</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this request is updating an element as part of a deduplication exercise.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getForLineage()" class="member-name-link">getForLineage</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this request is to update lineage memento elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEffectiveTime(java.util.Date)" class="member-name-link">setEffectiveTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the effective time that this update is to occur in.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalSourceGUID(java.lang.String)" class="member-name-link">setExternalSourceGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID)</code></div>
@@ -141,6 +166,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalSourceName(java.lang.String)" class="member-name-link">setExternalSourceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the unique name of the software server capability entity that represented the external source.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setForDuplicateProcessing(boolean)" class="member-name-link">setForDuplicateProcessing</a><wbr>(boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether this request is updating an element as part of a deduplication exercise.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setForLineage(boolean)" class="member-name-link">setForLineage</a><wbr>(boolean&nbsp;forLineage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether this request is to update lineage memento elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -231,6 +266,72 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>externalSourceName</code> - string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getForLineage()">
+<h3>getForLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getForLineage</span>()</div>
+<div class="block">Return whether this request is to update lineage memento elements.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setForLineage(boolean)">
+<h3>setForLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setForLineage</span><wbr><span class="parameters">(boolean&nbsp;forLineage)</span></div>
+<div class="block">Set up whether this request is to update lineage memento elements.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>forLineage</code> - flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getForDuplicateProcessing()">
+<h3>getForDuplicateProcessing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getForDuplicateProcessing</span>()</div>
+<div class="block">Return whether this request is updating an element as part of a deduplication exercise.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setForDuplicateProcessing(boolean)">
+<h3>setForDuplicateProcessing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setForDuplicateProcessing</span><wbr><span class="parameters">(boolean&nbsp;forDuplicateProcessing)</span></div>
+<div class="block">Set up whether this request is updating an element as part of a deduplication exercise.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>forDuplicateProcessing</code> - flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEffectiveTime()">
+<h3>getEffectiveTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getEffectiveTime</span>()</div>
+<div class="block">Return the effective time that this update is to occur in.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date/time</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEffectiveTime(java.util.Date)">
+<h3>setEffectiveTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEffectiveTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span></div>
+<div class="block">Set up the effective time that this update is to occur in.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>effectiveTime</code> - date/time</dd>
 </dl>
 </section>
 </li>

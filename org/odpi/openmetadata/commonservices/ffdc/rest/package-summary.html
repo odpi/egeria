@@ -889,6 +889,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">InformalTagProperties stores information about a tag connected to an asset.</div>
 </div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="InformationSupplyChainLinkRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainLinkRequestBody</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">InformationSupplyChainRequestBody describes the properties to update an information supply chain link relationship.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="InformationSupplyChainSegmentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainSegmentRequestBody</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">InformationSupplyChainSegmentRequestBody describes the properties to update an information supply chain segment.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ITProfileRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ITProfileRequestBody</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ITProfileRequestBody provides the request body payload for working on ActorProfile entities.</div>
@@ -990,7 +998,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">MetadataSourceRequestBody carries the parameters for marking an asset or schema as external.</div>
+<div class="block">MetadataSourceRequestBody carries the parameters for marking an element, classification or relationship as external
+ and for working with lineage/duplicate processing and effective time.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MetadataSourceResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceResponse</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -1036,13 +1045,29 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">NewFileSystemProperties describes the root node of a file system.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewMetadataElementRequestBody</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NewInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewInformationSupplyChainRequestBody</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">NewInformationSupplyChainRequestBody describes the properties to create a new information supply chain.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewMetadataElementRequestBody</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">NewMetadataElementRequestBody provides a structure for passing the properties for a new metadata element.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NewProjectRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewProjectRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NewProjectRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewProjectRequestBody</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">NewProjectRequestBody describes the properties to create a new project.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NewSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionBlueprintRequestBody</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">NewSolutionBlueprintRequestBody describes the properties to create a new solution blueprint.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NewSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionComponentRequestBody</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">NewSolutionComponentRequestBody describes the properties to create a new solution component.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NewSolutionPortRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewSolutionPortRequestBody</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">NewSolutionPortRequestBody describes the properties to create a new solution port.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -1534,9 +1559,25 @@ loadScripts(document, 'script');</script>
 <div class="block">TopicsResponse is a response object for passing back a a list of topics
  or an exception if the request failed.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UpdateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRequestBody</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UpdateInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateInformationSupplyChainRequestBody</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">UpdateInformationSupplyChainRequestBody describes the properties to update an information supply chain.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UpdateRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRequestBody</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">UpdateRequestBody carries the correlation properties and effective time for a create, update or delete request.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UpdateSolutionBlueprintRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionBlueprintRequestBody</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">UpdateSolutionBlueprintRequestBody describes the properties to update a solution blueprint.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UpdateSolutionComponentRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionComponentRequestBody</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">UpdateSolutionComponentRequestBody describes the properties to update a solution component.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UpdateSolutionPortRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateSolutionPortRequestBody</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">UpdateSolutionPortRequestBody describes the properties to update a new solution port.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="UserIdentitiesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UserIdentitiesResponse</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
