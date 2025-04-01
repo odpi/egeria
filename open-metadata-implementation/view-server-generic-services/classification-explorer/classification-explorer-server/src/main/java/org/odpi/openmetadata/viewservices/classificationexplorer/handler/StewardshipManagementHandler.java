@@ -81,108 +81,6 @@ public class StewardshipManagementHandler
 
 
     /**
-     * Return information about the elements classified with the DataField classification.
-     *
-     * @param userId calling user
-     * @param defaultValue values to match on
-     * @param sampleValues values to match on
-     * @param dataPatterns values to match on
-     * @param namePatterns values to match on
-     * @param openMetadataTypeName optional type for the resulting elements
-     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
-     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty     String name of the property that is to be used to sequence the results.
-     *                               Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder        Enum defining how the results should be ordered.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @return list of elements
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<MetadataElementSummary> getDataFieldClassifiedElements(String              userId,
-                                                                       String              defaultValue,
-                                                                       List<String>        sampleValues,
-                                                                       List<String>        dataPatterns,
-                                                                       List<String>        namePatterns,
-                                                                       String              openMetadataTypeName,
-                                                                       List<ElementStatus> limitResultsByStatus,
-                                                                       Date                asOfTime,
-                                                                       String              sequencingProperty,
-                                                                       SequencingOrder     sequencingOrder,
-                                                                       int                 startFrom,
-                                                                       int                 pageSize,
-                                                                       Date                effectiveTime,
-                                                                       boolean             forLineage,
-                                                                       boolean             forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                                          UserNotAuthorizedException,
-                                                                                                                          PropertyServerException
-    {
-        final String methodName = "getDataFieldClassifiedElements";
-
-        List<PropertyCondition> propertyConditions = propertyHelper.addStringProperty(null,
-                                                                                      OpenMetadataProperty.DEFAULT_VALUE.name,
-                                                                                      defaultValue,
-                                                                                      PropertyComparisonOperator.EQ);
-        propertyConditions = propertyHelper.addStringArrayToSearchCondition(propertyConditions,
-                                                                            OpenMetadataProperty.SAMPLE_VALUES.name,
-                                                                            sampleValues,
-                                                                            PropertyComparisonOperator.EQ);
-        propertyConditions = propertyHelper.addStringArrayToSearchCondition(propertyConditions,
-                                                                            OpenMetadataProperty.DATA_PATTERNS.name,
-                                                                            dataPatterns,
-                                                                            PropertyComparisonOperator.EQ);
-        propertyConditions = propertyHelper.addStringArrayToSearchCondition(propertyConditions,
-                                                                            OpenMetadataProperty.NAME_PATTERNS.name,
-                                                                            namePatterns,
-                                                                            PropertyComparisonOperator.EQ);
-        if (propertyConditions != null)
-        {
-            List<OpenMetadataElement> matchingElements = client.findMetadataElements(userId,
-                                                                                     openMetadataTypeName,
-                                                                                     null,
-                                                                                     null,
-                                                                                     limitResultsByStatus,
-                                                                                     asOfTime,
-                                                                                     getSearchClassifications(propertyConditions, OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION.typeName),
-                                                                                     sequencingProperty,
-                                                                                     sequencingOrder,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing,
-                                                                                     effectiveTime,
-                                                                                     startFrom,
-                                                                                     pageSize);
-
-            return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                               matchingElements,
-                                                               methodName);
-        }
-        else
-        {
-            return this.getElementsByClassification(userId,
-                                                    OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION.typeName,
-                                                    openMetadataTypeName,
-                                                    limitResultsByStatus,
-                                                    asOfTime,
-                                                    sequencingProperty,
-                                                    sequencingOrder,
-                                                    startFrom,
-                                                    pageSize,
-                                                    effectiveTime,
-                                                    forLineage,
-                                                    forDuplicateProcessing);
-        }
-    }
-
-
-    /**
      * Return information about the elements classified with the confidence classification.
      *
      * @param userId calling user
@@ -618,7 +516,7 @@ public class StewardshipManagementHandler
                                                                                      null,
                                                                                      limitResultsByStatus,
                                                                                      asOfTime,
-                                                                                     getSearchClassifications(propertyConditions, OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION.typeName),
+                                                                                     getSearchClassifications(propertyConditions, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName),
                                                                                      sequencingProperty,
                                                                                      sequencingOrder,
                                                                                      forLineage,
@@ -634,7 +532,7 @@ public class StewardshipManagementHandler
         else
         {
             return this.getElementsByClassification(userId,
-                                                    OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION.typeName,
+                                                    OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName,
                                                     openMetadataTypeName,
                                                     limitResultsByStatus,
                                                     asOfTime,
@@ -779,7 +677,7 @@ public class StewardshipManagementHandler
                                                                                      null,
                                                                                      limitResultsByStatus,
                                                                                      asOfTime,
-                                                                                     getSearchClassifications(propertyConditions, OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION.typeName),
+                                                                                     getSearchClassifications(propertyConditions, OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName),
                                                                                      sequencingProperty,
                                                                                      sequencingOrder,
                                                                                      forLineage,
@@ -795,7 +693,7 @@ public class StewardshipManagementHandler
         else
         {
             return this.getElementsByClassification(userId,
-                                                    OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION.typeName,
+                                                    OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
                                                     openMetadataTypeName,
                                                     limitResultsByStatus,
                                                     asOfTime,

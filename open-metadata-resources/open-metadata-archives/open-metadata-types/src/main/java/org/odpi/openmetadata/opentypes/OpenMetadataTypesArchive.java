@@ -160,6 +160,7 @@ public class OpenMetadataTypesArchive
         this.update0017ExternalIds();
         this.add058xDataDictionaries();
         this.update0056ResourceManagers();
+        this.update0442ProjectCharter();
         this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
         this.update0735SolutionPortsAndWires();
@@ -221,7 +222,7 @@ public class OpenMetadataTypesArchive
 
         this.archiveBuilder.addRelationshipDef(getSchemaAttributeDefinitionRelationship());
         this.archiveBuilder.addRelationshipDef(getNestedDataFieldRelationship());
-        this.archiveBuilder.addRelationshipDef(getDataClassDefinitionRelationship());
+        this.archiveBuilder.addRelationshipDef(getSchemaTypeDefinitionRelationship());
         this.archiveBuilder.addRelationshipDef(getLinkedDataFieldRelationship());
     }
 
@@ -488,9 +489,9 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private RelationshipDef getDataClassDefinitionRelationship()
+    private RelationshipDef getSchemaTypeDefinitionRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_DEFINITION,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SCHEMA_TYPE_DEFINITION,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -499,26 +500,26 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "dataFields";
-        final String                     end1AttributeDescription     = "The mapped data fields from deployed assets.";
+        final String                     end1AttributeName            = "dataStructure";
+        final String                     end1AttributeDescription     = "The description of the structure.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_STRUCTURE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "dataClassDefinition";
-        final String                     end2AttributeDescription     = "Official data class definition.";
+        final String                     end2AttributeName            = "equivalentSchemaType";
+        final String                     end2AttributeDescription     = "Equivalent schema type.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_CLASS.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -730,6 +731,43 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0442 Project Charter
+     */
+    private void update0442ProjectCharter()
+    {
+        this.archiveBuilder.addTypeDefPatch(update0442ProjectCharterEntity());
+    }
+
+    private TypeDefPatch update0442ProjectCharterEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT_CHARTER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
 
     /*

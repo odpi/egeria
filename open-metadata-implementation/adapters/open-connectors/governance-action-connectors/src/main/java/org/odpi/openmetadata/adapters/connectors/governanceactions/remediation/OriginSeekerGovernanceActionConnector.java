@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -165,7 +166,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                      */
                     governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
                                                               OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION.typeName,
-                                                              false,
+                                                              true,
                                                               false,
                                                               originClassifications.get(0),
                                                               new Date());
@@ -226,6 +227,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
          * The lineage is explored by repeatedly retrieving the lineage from the metadata store.
          */
         OpenMetadataStore store = governanceContext.getOpenMetadataStore();
+        store.setForLineage(true);
 
         /*
          * Retrieving from end 2 means it is working upstream on the lineage relationships.

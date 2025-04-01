@@ -171,6 +171,7 @@ public interface CollectionsInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the newly created Collection
      *
@@ -186,9 +187,10 @@ public interface CollectionsInterface
                             String               parentGUID,
                             String               parentRelationshipTypeName,
                             ElementProperties    parentRelationshipProperties,
-                            boolean              parentAtEnd1) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException;
+                            boolean              parentAtEnd1,
+                            Date                 effectiveTime) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException;
 
 
 
@@ -212,6 +214,7 @@ public interface CollectionsInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -219,20 +222,21 @@ public interface CollectionsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createCollectionFromTemplate(String                         userId,
-                                        String                         anchorGUID,
-                                        boolean                        isOwnAnchor,
-                                        Date                           effectiveFrom,
-                                        Date                           effectiveTo,
-                                        String                         templateGUID,
-                                        ElementProperties              replacementProperties,
-                                        Map<String, String>            placeholderProperties,
-                                        String                         parentGUID,
-                                        String                         parentRelationshipTypeName,
-                                        ElementProperties              parentRelationshipProperties,
-                                        boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    String createCollectionFromTemplate(String              userId,
+                                        String              anchorGUID,
+                                        boolean             isOwnAnchor,
+                                        Date                effectiveFrom,
+                                        Date                effectiveTo,
+                                        String              templateGUID,
+                                        ElementProperties   replacementProperties,
+                                        Map<String, String> placeholderProperties,
+                                        String              parentGUID,
+                                        String              parentRelationshipTypeName,
+                                        ElementProperties   parentRelationshipProperties,
+                                        boolean             parentAtEnd1,
+                                        Date                effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
 
 
 
@@ -250,6 +254,7 @@ public interface CollectionsInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the newly created Collection
      *
@@ -265,9 +270,10 @@ public interface CollectionsInterface
                                 String                   parentGUID,
                                 String                   parentRelationshipTypeName,
                                 ElementProperties        parentRelationshipProperties,
-                                boolean                  parentAtEnd1) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException;
+                                boolean                  parentAtEnd1,
+                                Date                     effectiveTime) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException;
 
 
     /**
@@ -278,6 +284,7 @@ public interface CollectionsInterface
      * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                               the individual properties specified on the request.
      * @param properties             properties for the collection.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
@@ -286,9 +293,10 @@ public interface CollectionsInterface
     void   updateCollection(String               userId,
                             String               collectionGUID,
                             boolean              replaceAllProperties,
-                            CollectionProperties properties) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException;
+                            CollectionProperties properties,
+                            Date                 effectiveTime) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException;
 
 
     /**
@@ -299,6 +307,7 @@ public interface CollectionsInterface
      * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                               the individual properties specified on the request.
      * @param properties             properties for the DigitalProduct classification.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
@@ -307,9 +316,10 @@ public interface CollectionsInterface
     void   updateDigitalProduct(String                   userId,
                                 String                   collectionGUID,
                                 boolean                  replaceAllProperties,
-                                DigitalProductProperties properties) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException;
+                                DigitalProductProperties properties,
+                                Date                     effectiveTime) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException;
 
 
     /**
@@ -320,6 +330,7 @@ public interface CollectionsInterface
      * @param parentGUID      unique identifier of referenceable object that the collection should be attached to
      * @param collectionUse   description of how the collection will be used.
      * @param makeAnchor      like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
@@ -329,9 +340,10 @@ public interface CollectionsInterface
                           String                 collectionGUID,
                           String                 parentGUID,
                           ResourceListProperties collectionUse,
-                          boolean                makeAnchor) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException;
+                          boolean                makeAnchor,
+                          Date                   effectiveTime) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException;
 
 
     /**
@@ -340,6 +352,7 @@ public interface CollectionsInterface
      * @param userId          userId of user making request.
      * @param collectionGUID  unique identifier of the collection.
      * @param parentGUID      unique identifier of referenceable object that the collection should be attached to.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
@@ -347,9 +360,10 @@ public interface CollectionsInterface
      */
     void detachCollection(String userId,
                           String collectionGUID,
-                          String parentGUID) throws InvalidParameterException,
-                                                    PropertyServerException,
-                                                    UserNotAuthorizedException;
+                          String parentGUID,
+                          Date   effectiveTime) throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException;
 
 
     /**
@@ -375,6 +389,7 @@ public interface CollectionsInterface
      * @param collectionGUID  unique identifier of the collection.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of asset details
      *
@@ -385,9 +400,10 @@ public interface CollectionsInterface
     List<CollectionMember> getCollectionMembers(String userId,
                                                 String collectionGUID,
                                                 int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException;
+                                                int    pageSize,
+                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
 
 
     /**
@@ -397,6 +413,7 @@ public interface CollectionsInterface
      * @param collectionGUID  unique identifier of the collection.
      * @param membershipProperties properties describing the membership characteristics.
      * @param elementGUID  unique identifier of the element.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
@@ -405,9 +422,10 @@ public interface CollectionsInterface
     void  addToCollection(String                         userId,
                           String                         collectionGUID,
                           CollectionMembershipProperties membershipProperties,
-                          String                         elementGUID) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+                          String                         elementGUID,
+                          Date                           effectiveTime) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException;
 
 
     /**
@@ -419,6 +437,7 @@ public interface CollectionsInterface
      *                               the individual properties specified on the request.
      * @param membershipProperties properties describing the membership characteristics.
      * @param elementGUID  unique identifier of the element.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
@@ -428,9 +447,10 @@ public interface CollectionsInterface
                                      String                         collectionGUID,
                                      boolean                        replaceAllProperties,
                                      CollectionMembershipProperties membershipProperties,
-                                     String                         elementGUID) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException;
+                                     String                         elementGUID,
+                                     Date                           effectiveTime) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException;
 
 
     /**
@@ -439,6 +459,7 @@ public interface CollectionsInterface
      * @param userId     userId of user making request.
      * @param collectionGUID  unique identifier of the collection.
      * @param elementGUID  unique identifier of the element.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
@@ -446,7 +467,8 @@ public interface CollectionsInterface
      */
     void  removeFromCollection(String userId,
                                String collectionGUID,
-                               String elementGUID) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException;
+                               String elementGUID,
+                               Date   effectiveTime) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException;
 }

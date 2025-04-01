@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.viewservices.classificationexplorer.server.ClassificationExplorerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -39,46 +38,6 @@ public class ClassificationExplorerResource
      */
     public ClassificationExplorerResource()
     {
-    }
-
-
-    /**
-     * Return information about the elements classified with the DataFieldValues classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-data-field")
-
-    @Operation(summary="getDataFieldClassifiedElements",
-            description="Return information about the elements classified with the DataFieldValues classification.",
-            externalDocs=@ExternalDocumentation(description="DataFieldValues classification", url="https://egeria-project.org/types/3/0340-Dictionary/"))
-
-
-    public MetadataElementSummariesResponse getDataFieldClassifiedElements(@PathVariable String                      serverName,
-                                                                           @PathVariable String                        urlMarker,
-                                                                           @RequestParam(required = false, defaultValue = "0")
-                                                               int                         startFrom,
-                                                                           @RequestParam(required = false, defaultValue = "0")
-                                                               int                         pageSize,
-                                                                           @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forLineage,
-                                                                           @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forDuplicateProcessing,
-                                                                           @RequestBody(required = false)
-                                                                               DataFieldQueryProperties requestBody)
-    {
-        return restAPI.getDataFieldClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

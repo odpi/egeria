@@ -29,6 +29,7 @@ public class ProjectElement implements MetadataElement
     private List<RelatedMetadataElementSummary> projectManagers = null;
     private List<RelatedMetadataElementSummary> projectTeam     = null;
 
+    protected String                              mermaidGraph = null;
 
     /**
      * Default constructor
@@ -54,6 +55,7 @@ public class ProjectElement implements MetadataElement
             resourceList    = template.getResourceList();
             projectManagers = template.getProjectManagers();
             projectTeam     = template.getProjectTeam();
+            mermaidGraph    = template.getMermaidGraph();
         }
     }
 
@@ -195,6 +197,28 @@ public class ProjectElement implements MetadataElement
 
 
     /**
+     * Return the graph view of the project.
+     *
+     * @return mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the project.
+     *
+     * @param mermaidGraph mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -209,6 +233,7 @@ public class ProjectElement implements MetadataElement
                 ", resourceList=" + resourceList +
                 ", projectManagers=" + projectManagers +
                 ", projectTeam=" + projectTeam +
+                ", mermaidGraph='" + mermaidGraph +
                 '}';
     }
 
@@ -236,7 +261,8 @@ public class ProjectElement implements MetadataElement
                 Objects.equals(resourceList, that.resourceList) &&
                 Objects.equals(projectManagers, that.projectManagers) &&
                 Objects.equals(projectTeam, that.projectTeam) &&
-                Objects.equals(startingElement, that.startingElement);
+                Objects.equals(startingElement, that.startingElement) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -248,6 +274,6 @@ public class ProjectElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, startingElement, resourceList, projectManagers, projectTeam);
+        return Objects.hash(super.hashCode(), elementHeader, properties, startingElement, resourceList, projectManagers, projectTeam, mermaidGraph);
     }
 }

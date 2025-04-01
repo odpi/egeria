@@ -6,22 +6,26 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceRequestBody carries the parameters for marking an asset or schema as external.
+ * MetadataSourceRequestBody carries the parameters for marking an element, classification or relationship as external
+ * and for working with lineage/duplicate processing and effective time.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MetadataSourceRequestBody
 {
-    private String externalSourceGUID = null;
-    private String externalSourceName = null;
-
+    private String  externalSourceGUID     = null;
+    private String  externalSourceName     = null;
+    private boolean forLineage             = false;
+    private boolean forDuplicateProcessing = false;
+    private Date    effectiveTime          = null;
 
     /**
      * Default constructor
@@ -43,6 +47,10 @@ public class MetadataSourceRequestBody
         {
             externalSourceGUID = template.getExternalSourceGUID();
             externalSourceName = template.getExternalSourceName();
+
+            forLineage = template.getForLineage();
+            forDuplicateProcessing = template.getForDuplicateProcessing();
+            effectiveTime = template.getEffectiveTime();
         }
     }
 
@@ -92,6 +100,73 @@ public class MetadataSourceRequestBody
 
 
     /**
+     * Return whether this request is to update lineage memento elements.
+     *
+     * @return flag
+     */
+    public boolean getForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether this request is to update lineage memento elements.
+     *
+     * @param forLineage flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /**
+     * Return whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @return flag
+     */
+    public boolean getForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @param forDuplicateProcessing flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
+    }
+
+
+    /**
+     * Return the effective time that this update is to occur in.
+     *
+     * @return date/time
+     */
+    public Date getEffectiveTime()
+    {
+        return effectiveTime;
+    }
+
+
+    /**
+     * Set up the effective time that this update is to occur in.
+     *
+     * @param effectiveTime date/time
+     */
+    public void setEffectiveTime(Date effectiveTime)
+    {
+        this.effectiveTime = effectiveTime;
+    }
+
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -102,7 +177,9 @@ public class MetadataSourceRequestBody
         return "MetadataSourceRequestBody{" +
                 "externalSourceGUID='" + externalSourceGUID + '\'' +
                 ", externalSourceName='" + externalSourceName + '\'' +
-                '}';
+                ", forLineage=" + forLineage +
+                ", forDuplicateProcessing=" + forDuplicateProcessing +
+                ", effectiveTime=" + effectiveTime +  '}';
     }
 
     /**
@@ -123,7 +200,10 @@ public class MetadataSourceRequestBody
             return false;
         }
         MetadataSourceRequestBody that = (MetadataSourceRequestBody) objectToCompare;
-        return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
+        return forLineage == that.forLineage &&
+                forDuplicateProcessing == that.forDuplicateProcessing &&
+                Objects.equals(effectiveTime, that.effectiveTime) &&
+                Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName);
     }
 
@@ -136,6 +216,7 @@ public class MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName);
+        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName,
+                            forLineage, forDuplicateProcessing, effectiveTime);
     }
 }

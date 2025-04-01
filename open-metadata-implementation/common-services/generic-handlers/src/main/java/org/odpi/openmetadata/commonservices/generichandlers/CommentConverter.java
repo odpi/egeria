@@ -198,6 +198,7 @@ public class CommentConverter<B> extends OMFConverter<B>
                         case 2 -> CommentType.ANSWER;
                         case 3 -> CommentType.SUGGESTION;
                         case 4 -> CommentType.USAGE_EXPERIENCE;
+                        case 5 -> CommentType.REQUIREMENT;
                         case 99 -> CommentType.OTHER;
                         default -> commentType;
                     };

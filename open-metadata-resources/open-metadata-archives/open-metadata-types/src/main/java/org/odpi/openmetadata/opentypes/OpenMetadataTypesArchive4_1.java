@@ -159,7 +159,6 @@ public class OpenMetadataTypesArchive4_1
          */
         update0010BasicModel();
         update0011ManagingReferenceables();
-        update0210DataStores();
         update0320CategoryHierarchy();
         update0385ControlledGlossaryDevelopment();
         update0423SecurityAccessControl();
@@ -276,37 +275,6 @@ public class OpenMetadataTypesArchive4_1
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0210DataStores()
-    {
-        this.archiveBuilder.addClassificationDef(getDataFieldValuesClassification());
-    }
-
-    private ClassificationDef getDataFieldValuesClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SAMPLE_VALUES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_PATTERNS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERNS));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
     }
 
     /*

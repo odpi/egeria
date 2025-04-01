@@ -2661,14 +2661,6 @@ public enum OpenMetadataType
              "a4b5347b-f9af-4669-bcc9-67eeb70fa6ed",
              "A collection of related glossary terms."),
 
-    /**
-     * The location of a glossary stored outside the open metadata ecosystem.
-     */
-    EXTERNAL_GLOSSARY_LINK("183d2935-a950-4d74-b246-eac3664b5a9d",
-                           "ExternalGlossaryLink",
-                           OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
-                           "dc807f35-522d-45f2-9a0d-f5bc4567a75e",
-                           "The location of a glossary stored outside the open metadata ecosystem."),
 
     /**
      * Identifies a glossary that is organized as a taxonomy.
@@ -2687,15 +2679,6 @@ public enum OpenMetadataType
                                         OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
                                         "dd3c036e-e254-4337-9b71-b0db08b287b8",
                                         "Identifies a glossary that contains unique terms with consistent granularity."),
-
-    /**
-     * Link between an open metadata glossary and a related glossary stored outside the open metadata ecosystem.
-     */
-    EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP("7786a39c-436b-4538-acc7-d595b5856add",
-                                             "ExternallySourcedGlossary",
-                                             OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
-                                             "1b2136b8-089a-456e-b84a-f2d3e4620137",
-                                             "Link between an open metadata glossary and a related glossary stored outside the open metadata ecosystem."),
 
     /**
      * A collection of related glossary terms.
@@ -2734,16 +2717,6 @@ public enum OpenMetadataType
                                          "Relationship between two glossary categories used to create nested categories."),
 
     /**
-     * Links a glossary category to a corresponding category in an external glossary.
-     */
-    LIBRARY_CATEGORY_REFERENCE("3da21cc9-3cdc-4d87-89b5-c501740f00b2",
-                               "LibraryCategoryReference",
-                               OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
-                               "295198e7-b0ed-49dc-97e0-5fd0fb4a843b",
-                               "Links a glossary category to a corresponding category in an external glossary."),
-
-
-    /**
      * A semantic description of something, such as a concept, object, asset, technology, role or group.
      */
     GLOSSARY_TERM("0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a",
@@ -2771,24 +2744,6 @@ public enum OpenMetadataType
                         "Links a glossary term into a glossary category."),
 
     /**
-     * Links a glossary term to a glossary term in an external glossary.
-     */
-    LIBRARY_TERM_REFERENCE("38c346e4-ddd2-42ef-b4aa-55d53c078d22",
-                           "LibraryTermReference",
-                           OpenMetadataWikiPages.MODEL_0330_TERMS,
-                           "5a1eac69-6f48-443c-8a19-4f3c0efc637a",
-                           "Links a glossary term to a glossary term in an external glossary."),
-
-    /**
-     * Defines a category as being the base category of a glossary term.
-     */
-    PRIMARY_CATEGORY_CLASSIFICATION("3a6c4ba7-3cc5-48cd-8952-bwra92da016d",
-                                    "PrimaryCategory",
-                                    OpenMetadataWikiPages.MODEL_0335_PRIMARY_CATEGORY,
-                                    "b2a92dff-7bd4-4695-9f79-fc31d96b90ca",
-                                    "Defines a category as being the base category of a glossary term."),
-
-    /**
      * Identifies that this glossary term describes an activity.
      */
     ACTIVITY_DESCRIPTION_CLASSIFICATION("317f0e52-1548-41e6-b90c-6ae5e6c53fed",
@@ -2805,15 +2760,6 @@ public enum OpenMetadataType
                                     OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
                                     "a47a2a76-9212-47fd-ae4a-a8043eb5c417",
                                     "Identifies that this glossary term describes an abstract concept."),
-
-    /**
-     * Characterizations of a collection of data values.
-     */
-    DATA_FIELD_VALUES_CLASSIFICATION("740e76e1-77b4-4426-ad52-d0a4ed15fff9",
-                                        "DataFieldValues",
-                                        OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
-                                        "697126ea-977d-48c7-aadd-7c52d6463466",
-                                        "Characterizations of a collection of data values."),
 
     /**
      * Identifies that this glossary term describes a data value.
@@ -2967,15 +2913,6 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
                                    "3ef02bfa-1963-458a-95f0-674ec2684d37",
                                    "Identifies a glossary term that describes an attribute of a spine object."),
-
-    /**
-     * Identifies a glossary term that describes an attribute that can be used to identify an instance.
-     */
-    OBJECT_IDENTIFIER_CLASSIFICATION("3d1e4389-27de-44fa-8df4-d57bfaf809ea",
-                                     "ObjectIdentifier",
-                                     OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
-                                     "b5de9a9d-f4d9-4248-ba2f-24bcb817a6d2",
-                                     "Identifies a glossary term that describes an attribute that can be used to identify an instance."),
 
     /**
      * Defines a glossary term that is developed through a controlled workflow.
@@ -5023,19 +4960,19 @@ public enum OpenMetadataType
      * A logical data type specification.
      */
     DATA_CLASS("6bc727dc-e855-4979-8736-78ac3cfcd32f",
-                           "DataClass",
-                           OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
-                           "b5ee2d50-c30f-4cf1-869b-d83294fab681",
-                           "A logical data type specification."),
+               "DataClass",
+               OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+               "b5ee2d50-c30f-4cf1-869b-d83294fab681",
+               "A logical data type specification."),
 
     /**
      * Links a data class to an asset or schema element to define its logical data type.
      */
     DATA_CLASS_ASSIGNMENT("4df37335-7f0c-4ced-82df-3b2fd07be1bd",
-               "DataClassAssignment",
-               OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
-               "296c55bc-0d5e-4a84-bb58-c5484d363ec2",
-               "Links a data class to an asset or schema element to define its logical data type."),
+                          "DataClassAssignment",
+                          OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+                          "296c55bc-0d5e-4a84-bb58-c5484d363ec2",
+                          "Links a data class to an asset or schema element to define its logical data type."),
 
     /**
      * Links a data class to another in a parent child hierarchy.
@@ -5357,6 +5294,17 @@ public enum OpenMetadataType
                "3ae9c615-b214-46e2-b8d6-2f5eae14e0a3",
                "A description of a data field."),
 
+
+    /**
+     * Identifies a data item that describes an attribute that can be used to identify an instance.
+     */
+    OBJECT_IDENTIFIER_CLASSIFICATION("3d1e4389-27de-44fa-8df4-d57bfaf809ea",
+                                     "ObjectIdentifier",
+                                     OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                                     "b5de9a9d-f4d9-4248-ba2f-24bcb817a6d2",
+                                     "Identifies a data item that describes an attribute that can be used to identify an instance."),
+
+
     /**
      * Represents an association between a data structure and one of its data fields.
      */
@@ -5394,13 +5342,13 @@ public enum OpenMetadataType
                                 "Link between data field analysis and the identified schema attribute definition."),
 
     /**
-     * Link between schema analysis and the identified data class for a data field.
+     * Link between data structure and an equivalent schema type.
      */
-    DATA_CLASS_DEFINITION("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
-                          "DataClassDefinition",
-                          OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
-                          "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
-                          "Link between schema analysis and the identified data class for a data field."),
+    SCHEMA_TYPE_DEFINITION("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
+                           "SchemaTypeDefinition",
+                           OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                           "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
+                           "Link between data structure and an equivalent schema type."),
 
 
 
@@ -5530,8 +5478,8 @@ public enum OpenMetadataType
     /**
      * Link between schema analysis annotation and the identified schema type definition.
      */
-    SCHEMA_TYPE_DEFINITION_RELATIONSHIP("60f2d263-e24d-4f20-8c0d-b5e24648cd54",
-                                        "SchemaTypeDefinition",
+    DISCOVERED_SCHEMA_TYPE_RELATIONSHIP("60f2d263-e24d-4f20-8c0d-b5e24648cd54",
+                                        "DiscoveredSchemaType",
                                         OpenMetadataWikiPages.MODEL_0615_SCHEMA_EXTRACTION,
                                         "3be9ad33-e88a-465f-a2a9-db2228eac90c",
                                         "Link between schema analysis annotation and the identified schema type definition."),

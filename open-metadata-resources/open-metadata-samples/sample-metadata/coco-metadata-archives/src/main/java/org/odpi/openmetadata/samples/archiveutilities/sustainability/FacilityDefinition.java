@@ -427,7 +427,7 @@ public enum FacilityDefinition
                       WorkLocationDefinition.OAK_DENE_HOSPITAL,
                       null,
                       null,
-                      OrganizationDefinition.OAK_DENE),
+                      OrganizationDefinition.OAK_DENE_HOSPITAL),
 
     /**
      * Old Market Hospital

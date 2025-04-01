@@ -1608,8 +1608,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * effectivity dates.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementTypeName type name of the new metadata element
      * @param initialStatus initial status of the metadata element
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
@@ -1624,6 +1624,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1649,6 +1651,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                ElementProperties              parentRelationshipProperties,
                                                boolean                        parentAtEnd1,
                                                List<String>                   serviceSupportedZones,
+                                               boolean                        forLineage,
+                                               boolean                        forDuplicateProcessing,
                                                Date                           effectiveTime,
                                                String                         methodName) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
@@ -1708,8 +1712,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                      null,
                                                                      null,
-                                                                     false,
-                                                                     false,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
                                                                      serviceSupportedZones,
                                                                      effectiveTime,
                                                                      methodName);
@@ -1782,10 +1786,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                   pathName,
                                   parentGUID,
                                   parentRelationshipTypeGUID,
-                                  parentRelationshipTypeName,
                                   parentRelationshipProperties,
                                   parentAtEnd1,
-                                  serviceSupportedZones,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   effectiveTime,
                                   methodName);
 
@@ -1797,17 +1801,17 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Add parent relationships.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementTypeName type name of the new metadata element
      * @param metadataElementGUID     newly created element
      * @param pathName                path name property of element (if available)
      * @param parentGUID              requested parent
      * @param parentRelationshipTypeGUID requested parent relationship type GUID
-     * @param parentRelationshipTypeName requested parent relationship type name
      * @param parentRelationshipProperties  requested parent relationship properties
      * @param parentAtEnd1            which end to attach the parent
-     * @param serviceSupportedZones zones
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1823,10 +1827,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                            String            pathName,
                                            String            parentGUID,
                                            String            parentRelationshipTypeGUID,
-                                           String            parentRelationshipTypeName,
                                            ElementProperties parentRelationshipProperties,
                                            boolean           parentAtEnd1,
-                                           List<String>      serviceSupportedZones,
+                                           boolean           forLineage,
+                                           boolean           forDuplicateProcessing,
                                            Date              effectiveTime,
                                            String            methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
@@ -1885,8 +1889,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                             metadataElementTypeName,
                                                             pathName,
                                                             OpenMetadataProperty.PATH_NAME.name,
-                                                            false,
-                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
                                                             effectiveTime,
                                                             methodName);
                 }
@@ -1902,8 +1906,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * effectivity dates.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param suppliedMetadataElementTypeName type name of the new metadata element
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
@@ -1920,6 +1924,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1946,6 +1952,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                     ElementProperties              parentRelationshipProperties,
                                                     boolean                        parentAtEnd1,
                                                     List<String>                   serviceSupportedZones,
+                                                    boolean                        forLineage,
+                                                    boolean                        forDuplicateProcessing,
                                                     Date                           effectiveTime,
                                                     String                         methodName) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
@@ -1981,8 +1989,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                        null,
                                                                        null,
-                                                                       false,
-                                                                       false,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
                                                                        serviceSupportedZones,
                                                                        effectiveTime,
                                                                        methodName);
@@ -2021,8 +2029,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                      null,
                                                                      null,
-                                                                     false,
-                                                                     false,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
                                                                      serviceSupportedZones,
                                                                      effectiveTime,
                                                                      methodName);
@@ -2086,10 +2094,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      metadataElementTypeName,
                                                                      null,
                                                                      null,
-                                                                     false,
-                                                                     false,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
                                                                      serviceSupportedZones,
-                                                                     null,
+                                                                     effectiveTime,
                                                                      methodName);
 
             List<Relationship> existingRelationships = null;
@@ -2134,10 +2142,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                           pathName,
                                           parentGUID,
                                           parentRelationshipTypeGUID,
-                                          parentRelationshipTypeName,
                                           parentRelationshipProperties,
                                           parentAtEnd1,
-                                          serviceSupportedZones,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
             }
@@ -2153,8 +2161,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * the value used in the replaceProperties flag.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
@@ -2215,8 +2223,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * assigned when it was created.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param newElementStatus new status value - or null to leave as is
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -2269,8 +2277,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -2324,8 +2332,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Delete a specific metadata element.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -2375,8 +2383,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Archive a specific metadata element.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param archiveProperties description of the archiving process
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -2455,8 +2463,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * a metadata element.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
      * @param effectiveFrom the date when this classification is active - null for active now
@@ -2531,8 +2539,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Update the properties of a classification that is currently attached to a specific metadata element.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
@@ -2606,8 +2614,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
      * @param forLineage the query is to support lineage retrieval
@@ -2672,8 +2680,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Remove the named classification from a specific metadata element.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param metadataElementGUIDParameterName name of parameter for GUID
      * @param metadataElementTypeName type of the metadata element
@@ -2736,8 +2744,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * according to the type definition since this will affect how the relationship is interpreted.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
@@ -2855,8 +2863,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Update the properties associated with a relationship.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
@@ -2917,8 +2925,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param relationshipGUID unique identifier of the relationship to update
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -2971,8 +2979,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Delete a relationship between two metadata elements.
      *
      * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
-     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
      * @param relationshipGUID unique identifier of the relationship to delete
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?

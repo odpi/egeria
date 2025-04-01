@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewClassificationRequestBody extends UpdateRequestBody
+public class NewClassificationRequestBody extends MetadataSourceRequestBody
 {
     private Date              effectiveFrom = null;
     private Date              effectiveTo   = null;
@@ -129,15 +129,10 @@ public class NewClassificationRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "NewClassificationRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", properties=" + properties +
-                       ", forLineage=" + getForLineage() +
-                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       '}';
+                "effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                ", properties=" + properties +
+                "} " + super.toString();
     }
 
 

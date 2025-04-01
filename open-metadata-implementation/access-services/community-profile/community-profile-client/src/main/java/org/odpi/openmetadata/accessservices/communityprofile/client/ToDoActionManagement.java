@@ -187,7 +187,10 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                originatorGUID,
                                                                                OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
                                                                                null,
-                                                                               true);
+                                                                               true,
+                                                                               true,
+                                                                               false,
+                                                                               null);
 
         if (toDoGUID != null)
         {

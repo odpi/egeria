@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryCate
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalGlossaryLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
@@ -21,7 +20,6 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryCategoryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -2976,6 +2974,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                       glossaryTermTwoGUID,
                                                       glossaryTermTwoGUIDParameterName,
                                                       relationshipsProperties.getExpression(),
+                                                      relationshipsProperties.getConfidence(),
                                                       relationshipsProperties.getDescription(),
                                                       this.getTermRelationshipStatus(relationshipsProperties.getStatus()),
                                                       relationshipsProperties.getSteward(),
@@ -2999,6 +2998,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                       glossaryTermTwoGUID,
                                                       glossaryTermTwoGUIDParameterName,
                                                       null,
+                                                      0,
                                                       null,
                                                       GlossaryTermRelationshipStatus.ACTIVE.getOrdinal(),
                                                       null,
@@ -3071,6 +3071,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        glossaryTermTwoGUID,
                                                        glossaryTermTwoGUIDParameterName,
                                                        relationshipsProperties.getExpression(),
+                                                       relationshipsProperties.getConfidence(),
                                                        relationshipsProperties.getDescription(),
                                                        this.getTermRelationshipStatus(relationshipsProperties.getStatus()),
                                                        relationshipsProperties.getSteward(),
@@ -3095,6 +3096,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        glossaryTermTwoGUID,
                                                        glossaryTermTwoGUIDParameterName,
                                                        null,
+                                                       0,
                                                        null,
                                                        GlossaryTermRelationshipStatus.ACTIVE.getOrdinal(),
                                                        null,
@@ -3270,129 +3272,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        forDuplicateProcessing,
                                                        effectiveTime,
                                                        methodName);
-    }
-
-
-    /**
-     * Classify the glossary term to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param userId calling user
-     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
-     * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param properties characterizations of the data values stored in the data field
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setTermAsDataField(String                        userId,
-                                   MetadataCorrelationProperties correlationProperties,
-                                   String                        glossaryTermGUID,
-                                   DataFieldValuesProperties     properties,
-                                   boolean                       forLineage,
-                                   boolean                       forDuplicateProcessing,
-                                   Date                          effectiveTime,
-                                   String                        methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
-
-        this.validateExternalIdentifier(userId,
-                                        glossaryTermGUID,
-                                        glossaryTermGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_TERM.typeName,
-                                        correlationProperties,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        effectiveTime,
-                                        methodName);
-
-        if (properties != null)
-        {
-            glossaryTermHandler.addDataFieldValuesClassification(userId,
-                                                                 glossaryTermGUID,
-                                                                 glossaryTermGUIDParameterName,
-                                                                 OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                 properties.getDefaultValue(),
-                                                                 properties.getSampleValues(),
-                                                                 properties.getDataPatterns(),
-                                                                 properties.getNamePatterns(),
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
-        }
-        else
-        {
-            glossaryTermHandler.addDataFieldValuesClassification(userId,
-                                                                 glossaryTermGUID,
-                                                                 glossaryTermGUIDParameterName,
-                                                                 OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
-        }
-    }
-
-
-    /**
-     * Remove the data field designation from the glossary term.
-     *
-     * @param userId calling user
-     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
-     * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearTermAsDataField(String                        userId,
-                                     MetadataCorrelationProperties correlationProperties,
-                                     String                        glossaryTermGUID,
-                                     boolean                       forLineage,
-                                     boolean                       forDuplicateProcessing,
-                                     Date                          effectiveTime,
-                                     String                        methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
-
-        this.validateExternalIdentifier(userId,
-                                        glossaryTermGUID,
-                                        glossaryTermGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_TERM.typeName,
-                                        correlationProperties,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        effectiveTime,
-                                        methodName);
-
-        glossaryTermHandler.removeDataFieldValuesClassification(userId,
-                                                                glossaryTermGUID,
-                                                                glossaryTermGUIDParameterName,
-                                                                OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                forLineage,
-                                                                forDuplicateProcessing,
-                                                                effectiveTime,
-                                                                methodName);
     }
 
 
@@ -4785,382 +4664,5 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                      methodName);
 
         return results;
-    }
-
-
-    /* =========================================================================================
-     * Support for linkage to external glossary resources.  These glossary resources are not
-     * stored as metadata - they could be web pages, ontologies or some other format.
-     * It is possible that the external glossary resource may have been generated by the metadata
-     * representation or vice versa.
-     */
-
-
-    /**
-     * Create a link to an external glossary resource.  This is associated with a glossary to show that they have equivalent content.
-     * It is possible that this resource was generated from the glossary content or was the source for it.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param linkProperties properties of the link
-     * @param methodName calling method
-     *
-     * @return unique identifier of the external reference
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createExternalGlossaryLink(String                         userId,
-                                             String                         assetManagerGUID,
-                                             String                         assetManagerName,
-                                             ExternalGlossaryLinkProperties linkProperties,
-                                             String                         methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Update the properties of a reference to an external glossary resource.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param linkProperties properties of the link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateExternalGlossaryLink(String                         userId,
-                                           String                         assetManagerGUID,
-                                           String                         assetManagerName,
-                                           String                         externalLinkGUID,
-                                           ExternalGlossaryLinkProperties linkProperties,
-                                           boolean                        forLineage,
-                                           boolean                        forDuplicateProcessing,
-                                           Date                           effectiveTime,
-                                           String                         methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Remove information about a link to an external glossary resource (and the relationships that attached it to the glossaries).
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeExternalGlossaryLink(String  userId,
-                                           String  assetManagerGUID,
-                                           String  assetManagerName,
-                                           String  externalLinkGUID,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing,
-                                           Date    effectiveTime,
-                                           String  methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Connect a glossary to a reference to an external glossary resource.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryGUID unique identifier of the metadata element to attach
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void attachExternalLinkToGlossary(String  userId,
-                                             String  assetManagerGUID,
-                                             String  assetManagerName,
-                                             String  glossaryGUID,
-                                             String  externalLinkGUID,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime,
-                                             String  methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Disconnect a glossary from a reference to an external glossary resource.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void detachExternalLinkFromGlossary(String  userId,
-                                               String  assetManagerGUID,
-                                               String  assetManagerName,
-                                               String  glossaryGUID,
-                                               String  externalLinkGUID,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing,
-                                               Date    effectiveTime,
-                                               String  methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Retrieve the list of links to external glossary resources attached to a glossary.
-     *
-     * @param userId calling user
-     * @param glossaryGUID unique identifier of the metadata element for the glossary of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @return list of attached links to external glossary resources
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<ExternalGlossaryLinkElement> getExternalLinksForGlossary(String  userId,
-                                                                         String  glossaryGUID,
-                                                                         int     startFrom,
-                                                                         int     pageSize,
-                                                                         boolean forLineage,
-                                                                         boolean forDuplicateProcessing,
-                                                                         Date    effectiveTime,
-                                                                         String  methodName) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Return the glossaries connected to an external glossary source.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @return list of glossaries
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<GlossaryElement> getGlossariesForExternalLink(String  userId,
-                                                              String  assetManagerGUID,
-                                                              String  assetManagerName,
-                                                              String  externalLinkGUID,
-                                                              int     startFrom,
-                                                              int     pageSize,
-                                                              boolean forLineage,
-                                                              boolean forDuplicateProcessing,
-                                                              Date    effectiveTime,
-                                                              String  methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Create a link to an external glossary category resource.  This is associated with a category to show that they have equivalent content.
-     * It is possible that this resource was generated from the glossary content or was the source for it.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the glossary category
-     * @param linkProperties properties of the link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void attachExternalCategoryLink(String                                userId,
-                                           String                                assetManagerGUID,
-                                           String                                assetManagerName,
-                                           String                                glossaryCategoryGUID,
-                                           String                                externalLinkGUID,
-                                           ExternalGlossaryElementLinkProperties linkProperties,
-                                           boolean                               forLineage,
-                                           boolean                               forDuplicateProcessing,
-                                           Date                                  effectiveTime,
-                                           String                                methodName) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Remove the link to an external glossary category resource.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryCategoryGUID unique identifier for the glossary category
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void detachExternalCategoryLink(String  userId,
-                                           String  assetManagerGUID,
-                                           String  assetManagerName,
-                                           String  glossaryCategoryGUID,
-                                           String  externalLinkGUID,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing,
-                                           Date    effectiveTime,
-                                           String  methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Create a link to an external glossary term resource.  This is associated with a term to show that they have equivalent content.
-     * It is possible that this resource was generated from the glossary content or was the source for it.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the glossary category
-     * @param linkProperties properties of the link
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void attachExternalTermLink(String                                userId,
-                                       String                                assetManagerGUID,
-                                       String                                assetManagerName,
-                                       String                                glossaryTermGUID,
-                                       String                                externalLinkGUID,
-                                       ExternalGlossaryElementLinkProperties linkProperties,
-                                       boolean                               forLineage,
-                                       boolean                               forDuplicateProcessing,
-                                       Date                                  effectiveTime,
-                                       String                                methodName) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
-     * Remove the link to an external glossary term resource.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalLinkGUID unique identifier of the external reference
-     * @param glossaryTermGUID unique identifier for the glossary category
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void detachExternalTermLink(String  userId,
-                                       String  assetManagerGUID,
-                                       String  assetManagerName,
-                                       String  glossaryTermGUID,
-                                       String  externalLinkGUID,
-                                       boolean forLineage,
-                                       boolean forDuplicateProcessing,
-                                       Date    effectiveTime,
-                                       String  methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        // todo
     }
 }

@@ -823,16 +823,32 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String assetTypeName = destinationFileClassification.getAssetTypeName();
         String qualifiedName = assetTypeName + ":" + destinationFilePathName;
 
-        String parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.PATH_NAME.name);
+        OpenMetadataElement parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.PATH_NAME.name);
 
-        if (parentGUID == null)
+        if (parentElement == null)
         {
-            parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.RESOURCE_NAME.name);
+            parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.RESOURCE_NAME.name);
         }
 
-        if (parentGUID == null)
+        if (parentElement == null)
         {
-            parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.NAME.name);
+            parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.NAME.name);
+        }
+
+        String parentGUID = null;
+        boolean isOwnAnchor = true;
+        String anchorGUID = null;
+
+
+        if (parentElement != null)
+        {
+            parentGUID = parentElement.getElementGUID();
+
+            if (propertyHelper.isTypeOf(parentElement, OpenMetadataType.DATA_FOLDER.typeName))
+            {
+                isOwnAnchor = false;
+                anchorGUID = parentGUID;
+            }
         }
 
         ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
@@ -892,8 +908,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
 
             newFileGUID = metadataStore.getMetadataElementFromTemplate(assetTypeName,
-                                                                       null,
-                                                                       true,
+                                                                       anchorGUID,
+                                                                       isOwnAnchor,
                                                                        null,
                                                                        null,
                                                                        assetTemplateGUID,
@@ -1011,7 +1027,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                             {
                                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
                                                                             sourceAttribute.getElementGUID(),
-                                                                            null,
+                                                                            informationSupplyChainQualifiedName,
                                                                             "copy",
                                                                             null,
                                                                             null,

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessGraph;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepExecutionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepLink;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
@@ -44,11 +45,22 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             currentNodeName    = processGraph.getFirstProcessStep().getElement().getElementHeader().getGUID();
             currentDisplayName = processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getDisplayName();
 
-            appendNewMermaidNode(currentNodeName,
-                                 currentDisplayName,
-                                 processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName(),
-                                 this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
-                                 VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
+            if (processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getActionStatus() == EngineActionStatus.FAILED)
+            {
+                appendNewMermaidNode(currentNodeName,
+                                     currentDisplayName,
+                                     processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName(),
+                                     this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
+                                     VisualStyle.FAILED_GOVERNANCE_ACTION_PROCESS_STEP);
+            }
+            else
+            {
+                appendNewMermaidNode(currentNodeName,
+                                     currentDisplayName,
+                                     processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName(),
+                                     this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
+                                     VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
+            }
         }
 
         if (processGraph.getNextProcessSteps() != null)
@@ -65,11 +77,22 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                         currentDisplayName = node.getProcessStepProperties().getProcessStepName();
                     }
 
-                    appendNewMermaidNode(currentNodeName,
-                                         currentDisplayName,
-                                         node.getElementHeader().getType().getTypeName(),
-                                         this.getAdditionalProcessStepProperties(node),
-                                         VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
+                    if (node.getProcessStepProperties().getActionStatus() == EngineActionStatus.FAILED)
+                    {
+                        appendNewMermaidNode(currentNodeName,
+                                             currentDisplayName,
+                                             node.getElementHeader().getType().getTypeName(),
+                                             this.getAdditionalProcessStepProperties(node),
+                                             VisualStyle.FAILED_GOVERNANCE_ACTION_PROCESS_STEP);
+                    }
+                    else
+                    {
+                        appendNewMermaidNode(currentNodeName,
+                                             currentDisplayName,
+                                             node.getElementHeader().getType().getTypeName(),
+                                             this.getAdditionalProcessStepProperties(node),
+                                             VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
+                    }
                 }
             }
 

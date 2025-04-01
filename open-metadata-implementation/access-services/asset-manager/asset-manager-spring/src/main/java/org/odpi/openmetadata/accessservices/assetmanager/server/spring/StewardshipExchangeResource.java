@@ -48,69 +48,6 @@ public class StewardshipExchangeResource
 
 
     /**
-     * Classify the element to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to classify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return void or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/data-field")
-
-    public VoidResponse setDataFieldClassification(@PathVariable String                    serverName,
-                                                   @PathVariable String                    userId,
-                                                   @PathVariable String                    elementGUID,
-                                                   @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                   forLineage,
-                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                   forDuplicateProcessing,
-                                                   @RequestBody  (required = false)
-                                                                 ClassificationRequestBody requestBody)
-    {
-        return restAPI.setDataFieldClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Remove the data field classification from the element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return void or
-     *       InvalidParameterException full path or userId is null or
-     *       PropertyServerException problem accessing property server or
-     *       UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/data-field/remove")
-
-    public VoidResponse clearDataFieldClassification(@PathVariable String                    serverName,
-                                                     @PathVariable String                    userId,
-                                                     @PathVariable String                    elementGUID,
-                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                   boolean                   forLineage,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                   forDuplicateProcessing,
-                                                      @RequestBody  (required = false)
-                                                                   ClassificationRequestBody requestBody)
-    {
-        return restAPI.clearDataFieldClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
      * Return information about the elements classified with the data field classification.
      *
      * @param serverName  name of the server instance to connect to

@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
-import org.odpi.openmetadata.commonservices.mermaid.ProjectGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.ProjectGraphMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.ProjectMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectHierarchyConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.TeamMemberConverter;
@@ -43,6 +44,9 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     final private Class<ProjectTeamMember> projectMemberBeanClass = ProjectTeamMember.class;
 
     final private String serviceName = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceFullName();
+
+    final private boolean forLineage = false;
+    final private boolean forDuplicateProcessing = true;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -292,7 +296,10 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                     parentGUID,
                                                                     parentRelationshipTypeName,
                                                                     parentRelationshipProperties,
-                                                                    parentAtEnd1);
+                                                                    parentAtEnd1,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    new Date());
     }
 
 
@@ -411,7 +418,10 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                          parentGUID,
                                                                          parentRelationshipTypeName,
                                                                          parentRelationshipProperties,
-                                                                         parentAtEnd1);
+                                                                         parentAtEnd1,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         new Date());
     }
 
 
@@ -682,6 +692,9 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
                     if ((projectStatus == null) || (projectStatus.isBlank()) || (projectStatus.equals(projectElement.getProperties().getProjectStatus())))
                     {
+                        ProjectMermaidGraphBuilder mermaidGraphBuilder = new ProjectMermaidGraphBuilder(projectElement);
+
+                        projectElement.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
                         filteredProjects.add(projectElement);
                     }
                 }
@@ -727,7 +740,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
             ProjectGraph projectGraph = new ProjectGraph(this.getProjectHierarchy(userId,
                                                                                   startingProject,
                                                                                   new ArrayList<>()));
-            ProjectGraphBuilder projectGraphBuilder = new ProjectGraphBuilder(projectGraph);
+            ProjectGraphMermaidGraphBuilder projectGraphBuilder = new ProjectGraphMermaidGraphBuilder(projectGraph);
 
             projectGraph.setMermaidGraph(projectGraphBuilder.getMermaidGraph());
 
@@ -1059,10 +1072,16 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
             {
                 if (openMetadataElement != null)
                 {
-                    projectElements.add(projectConverter.getNewComplexBean(projectBeanClass,
-                                                                           openMetadataElement,
-                                                                           this.getProjectResources(userId, openMetadataElement.getElementGUID()),
-                                                                           methodName));
+                    ProjectElement projectElement = projectConverter.getNewComplexBean(projectBeanClass,
+                                                                                       openMetadataElement,
+                                                                                       this.getProjectResources(userId, openMetadataElement.getElementGUID()),
+                                                                                       methodName);
+
+                    ProjectMermaidGraphBuilder mermaidGraphBuilder = new ProjectMermaidGraphBuilder(projectElement);
+
+                    projectElement.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
+
+                    projectElements.add(projectElement);
                 }
             }
 
@@ -1105,6 +1124,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
+                                                                                                                OpenMetadataType.PROJECT.typeName,
                                                                                                                 null,
                                                                                                                 null,
                                                                                                                 null,
@@ -1347,10 +1367,16 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         if (openMetadataElement != null)
         {
-            return projectConverter.getNewComplexBean(projectBeanClass,
-                                                      openMetadataElement,
-                                                      this.getProjectResources(userId, openMetadataElement.getElementGUID()),
-                                                      methodName);
+            ProjectElement projectElement = projectConverter.getNewComplexBean(projectBeanClass,
+                                                                               openMetadataElement,
+                                                                               this.getProjectResources(userId, openMetadataElement.getElementGUID()),
+                                                                               methodName);
+
+            ProjectMermaidGraphBuilder mermaidGraphBuilder = new ProjectMermaidGraphBuilder(projectElement);
+
+            projectElement.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
+
+            return projectElement;
         }
 
         return null;

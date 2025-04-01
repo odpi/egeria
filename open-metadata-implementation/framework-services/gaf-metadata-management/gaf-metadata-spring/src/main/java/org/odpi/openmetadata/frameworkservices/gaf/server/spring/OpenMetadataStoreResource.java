@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationD
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.server.OpenMetadataStoreRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -373,7 +373,17 @@ public class OpenMetadataStoreResource
                                                                 @RequestParam (required = false, defaultValue = "0")
                                                                               long    effectiveTime)
     {
-        return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, effectiveTime);
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
+
+        if (effectiveTime != 0)
+        {
+            requestBody.setEffectiveTime(new Date(effectiveTime));
+        }
+
+        return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, requestBody);
     }
 
 
@@ -384,8 +394,6 @@ public class OpenMetadataStoreResource
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -404,14 +412,10 @@ public class OpenMetadataStoreResource
                                                                 @PathVariable String  serviceURLMarker,
                                                                 @PathVariable String  userId,
                                                                 @PathVariable String  elementGUID,
-                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                boolean forLineage,
-                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                boolean forDuplicateProcessing,
                                                                 @RequestBody (required = false)
                                                                     AnyTimeRequestBody requestBody)
     {
-        return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, requestBody);
     }
 
 
@@ -1084,8 +1088,6 @@ public class OpenMetadataStoreResource
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId the userId of the requesting user
      * @param elementGUID  unique identifier for the element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      * @param requestBody effective time and asOfTime
@@ -1101,10 +1103,6 @@ public class OpenMetadataStoreResource
                                                               @PathVariable String          serviceURLMarker,
                                                               @PathVariable String          userId,
                                                               @PathVariable String          elementGUID,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean         forLineage,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean         forDuplicateProcessing,
                                                               @RequestParam(required = false, defaultValue = "0")
                                                               int             startFrom,
                                                               @RequestParam(required = false, defaultValue = "0")
@@ -1112,7 +1110,7 @@ public class OpenMetadataStoreResource
                                                               @RequestBody (required = false)
                                                               AnyTimeRequestBody requestBody)
     {
-        return restAPI.getAnchoredElementsGraph(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+        return restAPI.getAnchoredElementsGraph(serverName, serviceURLMarker, userId, elementGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -1191,17 +1189,17 @@ public class OpenMetadataStoreResource
                                                                   @RequestParam (required = false, defaultValue = "0")
                                                                                long    effectiveTime)
     {
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
+
         if (effectiveTime != 0)
         {
-            AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
             requestBody.setEffectiveTime(new Date(effectiveTime));
+        }
 
-            return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
-        }
-        else
-        {
-            return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, null);
-        }
+        return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, requestBody);
     }
 
 
@@ -1214,8 +1212,6 @@ public class OpenMetadataStoreResource
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param relationshipGUID unique identifier for the metadata element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -1235,14 +1231,9 @@ public class OpenMetadataStoreResource
                                                                   @PathVariable String  serviceURLMarker,
                                                                   @PathVariable String  userId,
                                                                   @PathVariable String  relationshipGUID,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean forLineage,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean forDuplicateProcessing,
-                                                                  @RequestBody (required = false)
-                                                                 AnyTimeRequestBody    requestBody)
+                                                                  @RequestBody (required = false) AnyTimeRequestBody    requestBody)
     {
-        return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, requestBody);
     }
 
 
@@ -1449,7 +1440,7 @@ public class OpenMetadataStoreResource
                                                       @PathVariable String            serviceURLMarker,
                                                       @PathVariable String            userId,
                                                       @PathVariable String            metadataElementGUID,
-                                                      @RequestBody(required = false)  UpdateRequestBody requestBody)
+                                                      @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.deleteMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, requestBody);
     }
@@ -1592,7 +1583,7 @@ public class OpenMetadataStoreResource
                                                          @PathVariable String            userId,
                                                          @PathVariable String            metadataElementGUID,
                                                          @PathVariable String            classificationName,
-                                                         @RequestBody  UpdateRequestBody requestBody)
+                                                         @RequestBody  MetadataSourceRequestBody requestBody)
     {
         return restAPI.declassifyMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, classificationName, requestBody);
     }
@@ -1694,11 +1685,11 @@ public class OpenMetadataStoreResource
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/delete")
 
-    public VoidResponse deleteRelatedElementsInStore(@PathVariable String            serverName,
-                                                     @PathVariable String            serviceURLMarker,
-                                                     @PathVariable String            userId,
-                                                     @PathVariable String            relationshipGUID,
-                                                     @RequestBody  UpdateRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(@PathVariable String                    serverName,
+                                                     @PathVariable String                    serviceURLMarker,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    relationshipGUID,
+                                                     @RequestBody  MetadataSourceRequestBody requestBody)
     {
         return restAPI.deleteRelatedElementsInStore(serverName, serviceURLMarker, userId, relationshipGUID, requestBody);
     }

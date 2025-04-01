@@ -1052,65 +1052,6 @@ public class GlossaryManagerResource
 
 
     /**
-     * Classify the glossary term to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-field")
-
-    public VoidResponse setTermAsDataField(@PathVariable String                       serverName,
-                                           @PathVariable String                       glossaryTermGUID,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                      forLineage,
-                                           @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                      forDuplicateProcessing,
-                                           @RequestBody(required = false)
-                                                         ClassificationRequestBody    requestBody)
-    {
-        return restAPI.setTermAsDataField(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Remove the data field designation from the glossary term.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-field/remove")
-
-    public VoidResponse clearTermAsDataField(@PathVariable String                    serverName,
-                                             @PathVariable String                    glossaryTermGUID,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                                           boolean                   forLineage,
-                                             @RequestParam (required = false, defaultValue = "false")
-                                                           boolean                   forDuplicateProcessing,
-                                             @RequestBody(required = false)
-                                                           ClassificationRequestBody requestBody)
-    {
-        return restAPI.clearTermAsDataField(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param serverName name of the server to route the request to

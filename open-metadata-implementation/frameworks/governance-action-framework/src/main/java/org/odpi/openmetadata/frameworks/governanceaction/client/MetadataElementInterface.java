@@ -597,6 +597,9 @@ public interface MetadataElementInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -616,7 +619,10 @@ public interface MetadataElementInterface
                                         String                         parentGUID,
                                         String                         parentRelationshipTypeName,
                                         ElementProperties              parentRelationshipProperties,
-                                        boolean                        parentAtEnd1) throws InvalidParameterException,
+                                        boolean                        parentAtEnd1,
+                                        boolean                        forLineage,
+                                        boolean                        forDuplicateProcessing,
+                                        Date                           effectiveTime) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
 
@@ -644,6 +650,9 @@ public interface MetadataElementInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -665,10 +674,12 @@ public interface MetadataElementInterface
                                         String                         parentGUID,
                                         String                         parentRelationshipTypeName,
                                         ElementProperties              parentRelationshipProperties,
-                                        boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
-
+                                        boolean                        parentAtEnd1,
+                                        boolean                        forLineage,
+                                        boolean                        forDuplicateProcessing,
+                                        Date                           effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
@@ -695,6 +706,9 @@ public interface MetadataElementInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -702,21 +716,24 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String createMetadataElementFromTemplate(String                         userId,
-                                             String                         metadataElementTypeName,
-                                             String                         anchorGUID,
-                                             boolean                        isOwnAnchor,
-                                             Date                           effectiveFrom,
-                                             Date                           effectiveTo,
-                                             String                         templateGUID,
-                                             ElementProperties              templateProperties,
-                                             Map<String, String>            placeholderProperties,
-                                             String                         parentGUID,
-                                             String                         parentRelationshipTypeName,
-                                             ElementProperties              parentRelationshipProperties,
-                                             boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+    String createMetadataElementFromTemplate(String              userId,
+                                             String              metadataElementTypeName,
+                                             String              anchorGUID,
+                                             boolean             isOwnAnchor,
+                                             Date                effectiveFrom,
+                                             Date                effectiveTo,
+                                             String              templateGUID,
+                                             ElementProperties   templateProperties,
+                                             Map<String, String> placeholderProperties,
+                                             String              parentGUID,
+                                             String              parentRelationshipTypeName,
+                                             ElementProperties   parentRelationshipProperties,
+                                             boolean             parentAtEnd1,
+                                             boolean             forLineage,
+                                             boolean             forDuplicateProcessing,
+                                             Date                effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
 
     /**
@@ -745,6 +762,9 @@ public interface MetadataElementInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -752,23 +772,26 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String createMetadataElementFromTemplate(String                         userId,
-                                             String                         externalSourceGUID,
-                                             String                         externalSourceName,
-                                             String                         metadataElementTypeName,
-                                             String                         anchorGUID,
-                                             boolean                        isOwnAnchor,
-                                             Date                           effectiveFrom,
-                                             Date                           effectiveTo,
-                                             String                         templateGUID,
-                                             ElementProperties              replacementProperties,
-                                             Map<String, String>            placeholderProperties,
-                                             String                         parentGUID,
-                                             String                         parentRelationshipTypeName,
-                                             ElementProperties              parentRelationshipProperties,
-                                             boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+    String createMetadataElementFromTemplate(String              userId,
+                                             String              externalSourceGUID,
+                                             String              externalSourceName,
+                                             String              metadataElementTypeName,
+                                             String              anchorGUID,
+                                             boolean             isOwnAnchor,
+                                             Date                effectiveFrom,
+                                             Date                effectiveTo,
+                                             String              templateGUID,
+                                             ElementProperties   replacementProperties,
+                                             Map<String, String> placeholderProperties,
+                                             String              parentGUID,
+                                             String              parentRelationshipTypeName,
+                                             ElementProperties   parentRelationshipProperties,
+                                             boolean             parentAtEnd1,
+                                             boolean             forLineage,
+                                             boolean             forDuplicateProcessing,
+                                             Date                effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
 
     /**
@@ -797,6 +820,9 @@ public interface MetadataElementInterface
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -804,23 +830,26 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String getMetadataElementFromTemplate(String                         userId,
-                                          String                         externalSourceGUID,
-                                          String                         externalSourceName,
-                                          String                         metadataElementTypeName,
-                                          String                         anchorGUID,
-                                          boolean                        isOwnAnchor,
-                                          Date                           effectiveFrom,
-                                          Date                           effectiveTo,
-                                          String                         templateGUID,
-                                          ElementProperties              replacementProperties,
-                                          Map<String, String>            placeholderProperties,
-                                          String                         parentGUID,
-                                          String                         parentRelationshipTypeName,
-                                          ElementProperties              parentRelationshipProperties,
-                                          boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    String getMetadataElementFromTemplate(String              userId,
+                                          String              externalSourceGUID,
+                                          String              externalSourceName,
+                                          String              metadataElementTypeName,
+                                          String              anchorGUID,
+                                          boolean             isOwnAnchor,
+                                          Date                effectiveFrom,
+                                          Date                effectiveTo,
+                                          String              templateGUID,
+                                          ElementProperties   replacementProperties,
+                                          Map<String, String> placeholderProperties,
+                                          String              parentGUID,
+                                          String              parentRelationshipTypeName,
+                                          ElementProperties   parentRelationshipProperties,
+                                          boolean             parentAtEnd1,
+                                          boolean             forLineage,
+                                          boolean             forDuplicateProcessing,
+                                          Date                effectiveTime) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -954,15 +983,15 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateMetadataElementEffectivityInStore(String        userId,
-                                                 String        metadataElementGUID,
-                                                 boolean       forLineage,
-                                                 boolean       forDuplicateProcessing,
-                                                 Date          effectiveFrom,
-                                                 Date          effectiveTo,
-                                                 Date          effectiveTime) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    void updateMetadataElementEffectivityInStore(String  userId,
+                                                 String  metadataElementGUID,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveFrom,
+                                                 Date    effectiveTo,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -982,17 +1011,17 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateMetadataElementEffectivityInStore(String        userId,
-                                                 String        externalSourceGUID,
-                                                 String        externalSourceName,
-                                                 String        metadataElementGUID,
-                                                 boolean       forLineage,
-                                                 boolean       forDuplicateProcessing,
-                                                 Date          effectiveFrom,
-                                                 Date          effectiveTo,
-                                                 Date          effectiveTime) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    void updateMetadataElementEffectivityInStore(String  userId,
+                                                 String  externalSourceGUID,
+                                                 String  externalSourceName,
+                                                 String  metadataElementGUID,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveFrom,
+                                                 Date    effectiveTo,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**

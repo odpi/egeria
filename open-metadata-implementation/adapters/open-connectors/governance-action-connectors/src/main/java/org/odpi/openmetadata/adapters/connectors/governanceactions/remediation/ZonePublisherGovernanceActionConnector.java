@@ -112,7 +112,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
                         governanceContext.declassifyMetadataElement(element.getElementGUID(),
                                                                     OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                    false,
+                                                                    true,
                                                                     false,
                                                                     new Date());
                     }
@@ -143,7 +143,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
                         governanceContext.classifyMetadataElement(element.getElementGUID(),
                                                                   OpenMetadataType.ASSET_ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                  false,
+                                                                  true,
                                                                   false,
                                                                   properties,
                                                                   new Date());

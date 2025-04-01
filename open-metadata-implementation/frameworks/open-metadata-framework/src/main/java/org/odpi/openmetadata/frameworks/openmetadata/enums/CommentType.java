@@ -48,6 +48,11 @@ public enum CommentType implements OpenMetadataEnum
     USAGE_EXPERIENCE (4,  "072f1357-f9fc-45a1-8c9d-27ee400ad2b2", "Experience", "Describes situations where this asset has been used and related hints and tips.", false),
 
     /**
+     * Requirement - Describes mandatory changes that must be made to the attached element(s).
+     */
+    REQUIREMENT (5,  "d1a1fc66-5a34-4f4b-99c3-91c4296e6c11", "Requirement", "Describes mandatory changes that must be made to the attached element(s).", false),
+
+    /**
      * Other - Unknown comment type.
      */
     OTHER            (99, "dea55b37-ba37-4aff-a193-424a67b99111", "Other", "Unknown comment type.", false);

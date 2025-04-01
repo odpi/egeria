@@ -625,7 +625,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                            dataSpecProjectGUID,
                                                                            clinicalTrialId,
                                                                            clinicalTrialName,
-                                                                           clinicalTrialManagerGUID);
+                                                                           dataEngineerGUID);
 
         projects.put(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName(), onboardPipelineGUID);
 

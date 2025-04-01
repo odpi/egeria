@@ -31,25 +31,34 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
         mermaidGraph.append(informationSupplyChainElement.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        String currentNodeName    = informationSupplyChainElement.getElementHeader().getGUID();
-        String currentDisplayName = informationSupplyChainElement.getProperties().getDisplayName();
+        boolean detailSubgraphStarted = false;
+        boolean designSubgraphStarted = false;
+        boolean implementationSubgraphStarted = false;
 
-
-        appendNewMermaidNode(currentNodeName,
-                             currentDisplayName,
-                             informationSupplyChainElement.getElementHeader().getType().getTypeName(),
-                             VisualStyle.INFORMATION_SUPPLY_CHAIN);
-
-        this.addDescription(informationSupplyChainElement);
-
-        if (informationSupplyChainElement.getSegments() != null)
+        if ((informationSupplyChainElement.getSegments() != null) &&
+                (! informationSupplyChainElement.getSegments().isEmpty()))
         {
+            String areaName = "Details";
+
+            mermaidGraph.append("subgraph ");
+            mermaidGraph.append(areaName);
+            mermaidGraph.append("\n");
+            nodeColours.put(areaName, VisualStyle.WHITE_SUBGRAPH);
+            detailSubgraphStarted = true;
+
+            areaName = "Segments";
+
+            mermaidGraph.append("subgraph ");
+            mermaidGraph.append(areaName);
+            mermaidGraph.append("\n");
+            nodeColours.put(areaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG_GRAPH);
+
             for (InformationSupplyChainSegmentElement node : informationSupplyChainElement.getSegments())
             {
                 if (node != null)
                 {
-                    currentNodeName    = node.getElementHeader().getGUID();
-                    currentDisplayName = node.getProperties().getDisplayName();
+                    String currentNodeName    = node.getElementHeader().getGUID();
+                    String currentDisplayName = node.getProperties().getDisplayName();
                     if (currentDisplayName == null)
                     {
                         currentDisplayName = node.getProperties().getQualifiedName();
@@ -89,10 +98,14 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 }
             }
 
+            mermaidGraph.append("end\n");
+
             List<String> solutionLinkingWireGUIDs = new ArrayList<>();
 
             for (InformationSupplyChainSegmentElement node : informationSupplyChainElement.getSegments())
             {
+                VisualStyle visualStyle = VisualStyle.DEFAULT_SOLUTION_COMPONENT;
+
                 if (node != null)
                 {
                     if (node.getImplementedByList() != null)
@@ -101,18 +114,59 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         {
                             if (implementedByRelationship != null)
                             {
-                                VisualStyle visualStyle = VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL;
-
-                                if (propertyHelper.isTypeOf(implementedByRelationship.getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
+                                if (propertyHelper.isTypeOf(implementedByRelationship.getEnd2Element(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
                                 {
-                                    visualStyle = VisualStyle.DEFAULT_SOLUTION_COMPONENT;
+                                    if (! designSubgraphStarted)
+                                    {
+                                        areaName = "Design";
+
+                                        mermaidGraph.append("subgraph ");
+                                        mermaidGraph.append(areaName);
+                                        mermaidGraph.append("\n");
+                                        nodeColours.put(areaName, VisualStyle.SOLUTION_SUBGRAPH);
+                                        designSubgraphStarted = true;
+                                    }
+
+                                    appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
+                                                         implementedByRelationship.getEnd2Element().getUniqueName(),
+                                                         implementedByRelationship.getEnd2Element().getType().getTypeName(),
+                                                         visualStyle);
                                 }
+                            }
+                        }
+                    }
+                }
+            }
 
-                                appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
-                                                     implementedByRelationship.getEnd2Element().getUniqueName(),
-                                                     implementedByRelationship.getEnd2Element().getType().getTypeName(),
-                                                     visualStyle);
+            for (InformationSupplyChainSegmentElement node : informationSupplyChainElement.getSegments())
+            {
+                VisualStyle visualStyle = VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL;
 
+                if (node != null)
+                {
+                    if (node.getImplementedByList() != null)
+                    {
+                        for (ImplementedByRelationship implementedByRelationship : node.getImplementedByList())
+                        {
+                            if (implementedByRelationship != null)
+                            {
+                                if (! propertyHelper.isTypeOf(implementedByRelationship.getEnd2Element(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
+                                {
+                                    if (! implementationSubgraphStarted)
+                                    {
+                                        areaName = "Implementation";
+                                        mermaidGraph.append("subgraph ");
+                                        mermaidGraph.append(areaName);
+                                        mermaidGraph.append("\n");
+                                        nodeColours.put(areaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+                                        implementationSubgraphStarted = true;
+                                    }
+
+                                    appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
+                                                         implementedByRelationship.getEnd2Element().getUniqueName(),
+                                                         implementedByRelationship.getEnd2Element().getType().getTypeName(),
+                                                         visualStyle);
+                                }
 
                                 List<String> labelList = new ArrayList<>();
 
@@ -126,10 +180,10 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                     labelList.add(super.addSpacesToTypeName(implementedByRelationship.getElementHeader().getType().getTypeName()));
                                 }
 
-                                super.appendMermaidLine(implementedByRelationship.getElementHeader().getGUID(),
-                                                        implementedByRelationship.getEnd1Element().getGUID(),
-                                                        this.getListLabel(labelList),
-                                                        implementedByRelationship.getEnd2Element().getGUID());
+                                super.appendMermaidThinLine(implementedByRelationship.getElementHeader().getGUID(),
+                                                            implementedByRelationship.getEnd1Element().getGUID(),
+                                                            this.getListLabel(labelList),
+                                                            implementedByRelationship.getEnd2Element().getGUID());
                             }
                         }
                     }
@@ -178,8 +232,35 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             }
         }
 
-        if (informationSupplyChainElement.getImplementation() != null)
+        if (designSubgraphStarted)
         {
+            mermaidGraph.append("end\n");
+        }
+
+        if ((informationSupplyChainElement.getImplementation() != null) &&
+                (! informationSupplyChainElement.getImplementation().isEmpty()))
+        {
+            if (! detailSubgraphStarted)
+            {
+                String areaName = "Details";
+
+                mermaidGraph.append("subgraph ");
+                mermaidGraph.append(areaName);
+                mermaidGraph.append("\n");
+                nodeColours.put(areaName, VisualStyle.WHITE_SUBGRAPH);
+                detailSubgraphStarted = true;
+            }
+
+            if (! implementationSubgraphStarted)
+            {
+                String areaName = "Implementation";
+                mermaidGraph.append("subgraph ");
+                mermaidGraph.append(areaName);
+                mermaidGraph.append("\n");
+                nodeColours.put(areaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+                implementationSubgraphStarted = true;
+            }
+
             for (RelationshipElement lineageRelationship : informationSupplyChainElement.getImplementation())
             {
                 if (lineageRelationship != null)
@@ -233,19 +314,51 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 }
             }
         }
+
+        if (implementationSubgraphStarted)
+        {
+            mermaidGraph.append("end\n");
+        }
+
+        if (detailSubgraphStarted)
+        {
+            mermaidGraph.append("end\n");
+        }
+
+        String currentNodeName    = informationSupplyChainElement.getElementHeader().getGUID();
+        String currentDisplayName = informationSupplyChainElement.getProperties().getDisplayName();
+
+        String areaName = "Overview";
+        mermaidGraph.append("subgraph ");
+        mermaidGraph.append(areaName);
+        mermaidGraph.append("\n");
+        nodeColours.put(areaName, VisualStyle.DESCRIPTION);
+
+        appendNewMermaidNode(currentNodeName,
+                             currentDisplayName,
+                             informationSupplyChainElement.getElementHeader().getType().getTypeName(),
+                             VisualStyle.INFORMATION_SUPPLY_CHAIN);
+
+        this.addDescriptionArea(informationSupplyChainElement);
+
+        mermaidGraph.append("end\n");
+
+        if (detailSubgraphStarted)
+        {
+            super.appendInvisibleMermaidLine("Overview", "Details");
+        }
     }
 
 
     /**
-     * Add a text boxes with the description and purposes (if any)
+     * Add a subgraph for the text boxes with the description and purposes (if any)
      *
      * @param informationSupplyChainElement element with the potential description
      */
-    private void addDescription(InformationSupplyChainElement informationSupplyChainElement)
+    private void addDescriptionArea(InformationSupplyChainElement informationSupplyChainElement)
     {
         if (informationSupplyChainElement.getProperties() != null)
         {
-            String lastNodeName = informationSupplyChainElement.getElementHeader().getGUID();
             if (informationSupplyChainElement.getProperties().getDescription() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
@@ -254,10 +367,6 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                      informationSupplyChainElement.getProperties().getDescription(),
                                      "Description",
                                      VisualStyle.DESCRIPTION);
-
-                super.appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-
-                lastNodeName = descriptionNodeName;
             }
 
             if (informationSupplyChainElement.getProperties().getPurposes() != null)
@@ -272,10 +381,6 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                              purpose,
                                              "Purpose",
                                              VisualStyle.DESCRIPTION);
-
-                        super.appendInvisibleMermaidLine(lastNodeName, purposeNodeName);
-
-                        lastNodeName = purposeNodeName;
                     }
                 }
             }

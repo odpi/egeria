@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetEleme
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -288,29 +287,6 @@ public interface AssetReviewInterface
                                              int              maximumResults) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
-
-
-    /**
-     * Return information about the elements classified with the DataField classification.
-     *
-     * @param userId calling user
-     * @param properties values to match on
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of element stubs
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    List<ElementStub> getDataFieldClassifiedElements(String                   userId,
-                                                     DataFieldQueryProperties properties,
-                                                     int                      startFrom,
-                                                     int                      pageSize) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
-
 
     /**
      * Return information about the elements classified with the confidence classification.

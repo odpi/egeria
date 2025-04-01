@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,14 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewElementRequestBody
+public class NewElementRequestBody extends MetadataSourceRequestBody
 {
-    private String                         anchorGUID                   = null;
-    private boolean                        isOwnAnchor                  = false;
-    private String                         parentGUID                   = null;
-    private String                         parentRelationshipTypeName   = null;
-    private ElementProperties              parentRelationshipProperties = null;
-    private boolean                        parentAtEnd1                 = true;
+    private String            anchorGUID                   = null;
+    private boolean           isOwnAnchor                  = false;
+    private String            parentGUID                   = null;
+    private String            parentRelationshipTypeName   = null;
+    private ElementProperties parentRelationshipProperties = null;
+    private boolean           parentAtEnd1                 = true;
 
 
     /**
@@ -45,6 +46,8 @@ public class NewElementRequestBody
      */
     public NewElementRequestBody(NewElementRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             anchorGUID = template.getAnchorGUID();
@@ -202,13 +205,13 @@ public class NewElementRequestBody
     public String toString()
     {
         return "NewElementRequestBody{" +
-                       ", anchorGUID='" + anchorGUID + '\'' +
-                       ", isOwnAnchor='" + isOwnAnchor + '\'' +
-                       ", parentGUID='" + parentGUID + '\'' +
-                       ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
-                       ", parentRelationshipProperties=" + parentRelationshipProperties +
-                       ", parentAtEnd1=" + parentAtEnd1 +
-                       '}';
+                "anchorGUID='" + anchorGUID + '\'' +
+                ", isOwnAnchor=" + isOwnAnchor +
+                ", parentGUID='" + parentGUID + '\'' +
+                ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
+                ", parentRelationshipProperties=" + parentRelationshipProperties +
+                ", parentAtEnd1=" + parentAtEnd1 +
+                "} " + super.toString();
     }
 
 

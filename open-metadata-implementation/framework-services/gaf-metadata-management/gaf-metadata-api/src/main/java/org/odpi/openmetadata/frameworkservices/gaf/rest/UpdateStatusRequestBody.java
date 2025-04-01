@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateStatusRequestBody extends UpdateRequestBody
+public class UpdateStatusRequestBody extends MetadataSourceRequestBody
 {
     private ElementStatus newStatus = null;
 
@@ -80,13 +80,8 @@ public class UpdateStatusRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "UpdateStatusRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", forLineage=" + getForLineage() +
-                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       ", newStatus=" + newStatus +
-                       '}';
+                "newStatus=" + newStatus +
+                "} " + super.toString();
     }
 
 

@@ -25,8 +25,8 @@ import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandl
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -108,7 +108,7 @@ public class OpenMetadataStoreRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, assetGUID, false, false, null);
+            this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, assetGUID, new AnyTimeRequestBody());
 
             auditLog.logMessage(methodName, OpenMetadataStoreAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, governanceService, message));
         }
@@ -622,46 +622,6 @@ public class OpenMetadataStoreRESTServices
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-     *
-     * @return metadata element properties or
-     *  InvalidParameterException the unique identifier is null or not known.
-     *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
-     */
-    public OpenMetadataElementResponse getMetadataElementByGUID(String  serverName,
-                                                                String  serviceURLMarker,
-                                                                String  userId,
-                                                                String  elementGUID,
-                                                                boolean forLineage,
-                                                                boolean forDuplicateProcessing,
-                                                                long    effectiveTime)
-    {
-        if (effectiveTime != 0)
-        {
-            AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
-            requestBody.setEffectiveTime(new Date(effectiveTime));
-
-            return this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
-        }
-        else
-        {
-            return this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, null);
-        }
-    }
-
-
-    /**
-     * Retrieve the metadata element using its unique identifier.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId
-     * @param elementGUID unique identifier for the metadata element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -673,8 +633,6 @@ public class OpenMetadataStoreRESTServices
                                                                 String             serviceURLMarker,
                                                                 String             userId,
                                                                 String             elementGUID,
-                                                                boolean            forLineage,
-                                                                boolean            forDuplicateProcessing,
                                                                 AnyTimeRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
@@ -694,8 +652,8 @@ public class OpenMetadataStoreRESTServices
             {
                 response.setElement(handler.getMetadataElementByGUID(userId,
                                                                      elementGUID,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                      requestBody.getAsOfTime(),
                                                                      requestBody.getEffectiveTime(),
@@ -705,8 +663,8 @@ public class OpenMetadataStoreRESTServices
             {
                 response.setElement(handler.getMetadataElementByGUID(userId,
                                                                      elementGUID,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
+                                                                     false,
+                                                                     false,
                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                      null,
                                                                      new Date(),
@@ -1457,8 +1415,6 @@ public class OpenMetadataStoreRESTServices
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId the userId of the requesting user
      * @param elementGUID  unique identifier for the element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      * @param requestBody effective time and asOfTime
@@ -1472,8 +1428,6 @@ public class OpenMetadataStoreRESTServices
                                                               String             serviceURLMarker,
                                                               String             userId,
                                                               String             elementGUID,
-                                                              boolean            forLineage,
-                                                              boolean            forDuplicateProcessing,
                                                               int                startFrom,
                                                               int                pageSize,
                                                               AnyTimeRequestBody requestBody)
@@ -1495,11 +1449,15 @@ public class OpenMetadataStoreRESTServices
             OpenMetadataElement anchorElement;
             Date                effectiveTime = new Date();
             Date                asOfTime = null;
+            boolean             forLineage = false;
+            boolean             forDuplicateProcessing = false;
 
             if (requestBody != null)
             {
                 effectiveTime = requestBody.getEffectiveTime();
                 asOfTime      = requestBody.getAsOfTime();
+                forLineage    = requestBody.getForLineage();
+                forDuplicateProcessing = requestBody.getForDuplicateProcessing();
 
                 anchorElement = handler.getBeanFromRepository(userId,
                                                               elementGUID,
@@ -1781,8 +1739,6 @@ public class OpenMetadataStoreRESTServices
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param relationshipGUID unique identifier for the relationship
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -1795,8 +1751,6 @@ public class OpenMetadataStoreRESTServices
                                                                   String             serviceURLMarker,
                                                                   String             userId,
                                                                   String             relationshipGUID,
-                                                                  boolean            forLineage,
-                                                                  boolean            forDuplicateProcessing,
                                                                   AnyTimeRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
@@ -1821,8 +1775,8 @@ public class OpenMetadataStoreRESTServices
                                                          guidParameterName,
                                                          null,
                                                          requestBody.getAsOfTime(),
-                                                         forLineage,
-                                                         forDuplicateProcessing,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
                                                          handler.getSupportedZones(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
@@ -1833,6 +1787,10 @@ public class OpenMetadataStoreRESTServices
                                                          relationshipGUID,
                                                          guidParameterName,
                                                          null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         handler.getSupportedZones(),
                                                          new Date(),
                                                          methodName);
             }
@@ -1974,9 +1932,9 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public GUIDResponse createMetadataElementInStore(String                        serverName,
-                                                     String                        serviceURLMarker,
-                                                     String                        userId,
+    public GUIDResponse createMetadataElementInStore(String                           serverName,
+                                                     String                            serviceURLMarker,
+                                                     String                            userId,
                                                      NewOpenMetadataElementRequestBody requestBody)
     {
         final String methodName = "createMetadataElementInStore";
@@ -2010,6 +1968,8 @@ public class OpenMetadataStoreRESTServices
                                                                       requestBody.getParentRelationshipProperties(),
                                                                       requestBody.getParentAtEnd1(),
                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                      requestBody.getForLineage(),
+                                                                      requestBody.getForDuplicateProcessing(),
                                                                       requestBody.getEffectiveTime(),
                                                                       methodName));
             }
@@ -2081,6 +2041,8 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getParentRelationshipProperties(),
                                                                            requestBody.getParentAtEnd1(),
                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           requestBody.getForLineage(),
+                                                                           requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getEffectiveTime(),
                                                                            methodName));
             }
@@ -2302,11 +2264,11 @@ public class OpenMetadataStoreRESTServices
      *  PropertyServerException there is a problem with the metadata store
      */
     @SuppressWarnings(value = "unused")
-    public  VoidResponse deleteMetadataElementInStore(String            serverName,
-                                                      String            serviceURLMarker,
-                                                      String            userId,
-                                                      String            metadataElementGUID,
-                                                      UpdateRequestBody requestBody)
+    public  VoidResponse deleteMetadataElementInStore(String                    serverName,
+                                                      String                    serviceURLMarker,
+                                                      String                    userId,
+                                                      String                    metadataElementGUID,
+                                                      MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
 
@@ -2639,14 +2601,14 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse declassifyMetadataElementInStore(String            serverName,
-                                                         String            serviceURLMarker,
-                                                         String            userId,
-                                                         String            metadataElementGUID,
-                                                         String            classificationName,
-                                                         UpdateRequestBody requestBody)
+    public VoidResponse declassifyMetadataElementInStore(String                    serverName,
+                                                         String                    serviceURLMarker,
+                                                         String                    userId,
+                                                         String                    metadataElementGUID,
+                                                         String                    classificationName,
+                                                         MetadataSourceRequestBody requestBody)
     {
-        final String methodName = "unclassifyMetadataElementInStore";
+        final String methodName = "declassifyMetadataElementInStore";
         final String metadataElementGUIDParameterName = "metadataElementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2895,11 +2857,11 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse deleteRelatedElementsInStore(String            serverName,
-                                                     String            serviceURLMarker,
-                                                     String            userId,
-                                                     String            relationshipGUID,
-                                                     UpdateRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(String                    serverName,
+                                                     String                    serviceURLMarker,
+                                                     String                    userId,
+                                                     String                    relationshipGUID,
+                                                     MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteRelatedElementsInStore";
 

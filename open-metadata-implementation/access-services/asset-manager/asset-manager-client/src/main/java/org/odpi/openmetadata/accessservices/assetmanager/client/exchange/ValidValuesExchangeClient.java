@@ -362,7 +362,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      setGUID,
                                                                                      OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                                                      null,
-                                                                                     true);
+                                                                                     true,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     effectiveTime);
 
         super.addExternalIdentifier(userId,
                                     assetManagerGUID,

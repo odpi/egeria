@@ -161,7 +161,6 @@ public class OpenMetadataTypesArchive2_9
         update0137ToDos();
         update0450GovernanceRollout();
         update0217Ports();
-        add0335PrimaryCategoryClassification();
     }
 
 
@@ -333,40 +332,6 @@ public class OpenMetadataTypesArchive2_9
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
-    }
-
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0335  Add the Primary Category Classification
-     */
-    private void add0335PrimaryCategoryClassification()
-    {
-        this.archiveBuilder.addClassificationDef(addPrimaryCategoryClassification());
-    }
-
-    private ClassificationDef addPrimaryCategoryClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.PRIMARY_CATEGORY_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                                 true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CATEGORY_QUALIFIED_NAME));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
     }
 }
 

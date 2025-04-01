@@ -43,6 +43,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
     final private Class<CollectionMember>                     collectionMemberBeanClass = CollectionMember.class;
 
+    final private boolean forLineage = false;
+    final private boolean forDuplicateProcessing = false;
+
+
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -126,8 +130,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                           String collectionType,
                                                           int    startFrom,
                                                           int    pageSize) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName = "getLinkedCollections";
         final String parentGUIDParameterName = "parentGUID";
@@ -144,8 +148,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                         null,
                                                                                                         null,
                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                        false,
-                                                                                                        false,
+                                                                                                        forLineage,
+                                                                                                        forDuplicateProcessing,
                                                                                                         new Date(),
                                                                                                         startFrom,
                                                                                                         pageSize);
@@ -475,6 +479,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the newly created Collection
      *
@@ -491,9 +496,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                    String               parentGUID,
                                    String               parentRelationshipTypeName,
                                    ElementProperties    parentRelationshipProperties,
-                                   boolean              parentAtEnd1) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+                                   boolean              parentAtEnd1,
+                                   Date                 effectiveTime) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         final String methodName = "createCollection";
         final String collectionPropertiesName = "properties";
@@ -555,7 +561,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                     parentGUID,
                                                                     parentRelationshipTypeName,
                                                                     parentRelationshipProperties,
-                                                                    parentAtEnd1);
+                                                                    parentAtEnd1,
+                                                                    false,
+                                                                    false,
+                                                                    effectiveTime);
     }
 
 
@@ -579,6 +588,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -587,20 +597,21 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createCollectionFromTemplate(String                         userId,
-                                               String                         anchorGUID,
-                                               boolean                        isOwnAnchor,
-                                               Date                           effectiveFrom,
-                                               Date                           effectiveTo,
-                                               String                         templateGUID,
-                                               ElementProperties              replacementProperties,
-                                               Map<String, String>            placeholderProperties,
-                                               String                         parentGUID,
-                                               String                         parentRelationshipTypeName,
-                                               ElementProperties              parentRelationshipProperties,
-                                               boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public String createCollectionFromTemplate(String              userId,
+                                               String              anchorGUID,
+                                               boolean             isOwnAnchor,
+                                               Date                effectiveFrom,
+                                               Date                effectiveTo,
+                                               String              templateGUID,
+                                               ElementProperties   replacementProperties,
+                                               Map<String, String> placeholderProperties,
+                                               String              parentGUID,
+                                               String              parentRelationshipTypeName,
+                                               ElementProperties   parentRelationshipProperties,
+                                               boolean             parentAtEnd1,
+                                               Date                effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
                                                                          OpenMetadataType.COLLECTION.typeName,
@@ -614,7 +625,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                          parentGUID,
                                                                          parentRelationshipTypeName,
                                                                          parentRelationshipProperties,
-                                                                         parentAtEnd1);
+                                                                         parentAtEnd1,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime);
     }
 
 
@@ -632,6 +646,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the newly created Collection
      *
@@ -648,9 +663,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                        String                   parentGUID,
                                        String                   parentRelationshipTypeName,
                                        ElementProperties        parentRelationshipProperties,
-                                       boolean                  parentAtEnd1) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+                                       boolean                  parentAtEnd1,
+                                       Date                     effectiveTime) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         final String methodName = "createDigitalProduct";
 
@@ -664,19 +680,20 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                       parentGUID,
                                                       parentRelationshipTypeName,
                                                       parentRelationshipProperties,
-                                                      parentAtEnd1);
+                                                      parentAtEnd1,
+                                                      effectiveTime);
 
         if (collectionGUID != null)
         {
             openMetadataStoreClient.classifyMetadataElementInStore(userId,
                                                                    collectionGUID,
                                                                    OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName,
-                                                                   false,
-                                                                   false,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
                                                                    digitalProductProperties.getEffectiveFrom(),
                                                                    digitalProductProperties.getEffectiveTo(),
                                                                    this.getElementProperties(digitalProductProperties),
-                                                                   new Date());
+                                                                   effectiveTime);
         }
 
         return collectionGUID;
@@ -691,6 +708,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties     properties for the collection.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -700,9 +718,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public void   updateCollection(String               userId,
                                    String               collectionGUID,
                                    boolean              replaceAllProperties,
-                                   CollectionProperties properties) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+                                   CollectionProperties properties,
+                                   Date                 effectiveTime) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         final String methodName = "updateCollection";
         final String collectionPropertiesName = "properties";
@@ -719,10 +738,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         openMetadataStoreClient.updateMetadataElementInStore(userId,
                                                              collectionGUID,
                                                              replaceAllProperties,
-                                                             false,
-                                                             false,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              this.getElementProperties(properties),
-                                                             new Date());
+                                                             effectiveTime);
     }
 
 
@@ -734,6 +753,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties     properties for the DigitalProduct classification.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -743,9 +763,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public void   updateDigitalProduct(String                   userId,
                                        String                   collectionGUID,
                                        boolean                  replaceAllProperties,
-                                       DigitalProductProperties properties) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+                                       DigitalProductProperties properties,
+                                       Date                     effectiveTime) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         final String methodName = "updateDigitalProduct";
         final String propertiesName = "properties";
@@ -757,8 +778,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  collectionGUID,
                                                                  OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName,
                                                                  replaceAllProperties,
-                                                                 false,
-                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
                                                                  this.getElementProperties(properties),
                                                                  new Date());
     }
@@ -772,6 +793,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
      * @param collectionUse  description of how the collection will be used.
      * @param makeAnchor     like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -782,9 +804,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                  String                 collectionGUID,
                                  String                 parentGUID,
                                  ResourceListProperties collectionUse,
-                                 boolean                makeAnchor) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+                                 boolean                makeAnchor,
+                                 Date                   effectiveTime) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         final String methodName = "attachCollection";
         final String collectionGUIDParameterName = "collectionGUID";
@@ -815,8 +838,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                              OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                              parentGUID,
                                                              collectionGUID,
-                                                             false,
-                                                             false,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              null,
                                                              null,
                                                              properties,
@@ -826,10 +849,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         {
             OpenMetadataElement parent = openMetadataStoreClient.getMetadataElementByGUID(userId,
                                                                                           parentGUID,
-                                                                                          false,
-                                                                                          false,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
                                                                                           null,
-                                                                                          new Date());
+                                                                                          effectiveTime);
 
             if (parent != null)
             {
@@ -848,8 +871,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                 openMetadataStoreClient.classifyMetadataElementInStore(userId,
                                                                        collectionGUID,
                                                                        OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
-                                                                       false,
-                                                                       false,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
                                                                        null,
                                                                        null,
                                                                        classificationProperties,
@@ -865,6 +888,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param userId         userId of user making request.
      * @param collectionGUID unique identifier of the collection.
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -873,9 +897,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     @Override
     public void detachCollection(String userId,
                                  String collectionGUID,
-                                 String parentGUID) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+                                 String parentGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
         final String methodName = "detachCollection";
 
@@ -934,6 +959,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param collectionGUID unique identifier of the collection.
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of asset details
      *
@@ -945,9 +971,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public List<CollectionMember> getCollectionMembers(String userId,
                                                        String collectionGUID,
                                                        int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+                                                       int    pageSize,
+                                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName = "getCollectionMembers";
         final String collectionGUIDParameterName = "collectionGUID";
@@ -1043,6 +1070,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param collectionGUID       unique identifier of the collection.
      * @param membershipProperties properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem updating information in the property server(s).
@@ -1052,9 +1080,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public void addToCollection(String                         userId,
                                 String                         collectionGUID,
                                 CollectionMembershipProperties membershipProperties,
-                                String                         elementGUID) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+                                String                         elementGUID,
+                                Date                           effectiveTime) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName = "addToCollection";
         final String collectionGUIDParameterName = "collectionGUID";
@@ -1077,11 +1106,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  null,
                                                                  null,
                                                                  this.getElementProperties(membershipProperties),
-                                                                 new Date());
+                                                                 effectiveTime);
         }
         else
         {
-            this.updateCollectionMembership(userId, relationshipGUID, true, membershipProperties);
+            this.updateCollectionMembership(userId, relationshipGUID, true, membershipProperties, effectiveTime);
         }
     }
 
@@ -1095,6 +1124,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      *                               the individual properties specified on the request.
      * @param membershipProperties properties describing the membership characteristics.
      * @param elementGUID          unique identifier of the element.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem updating information in the property server(s).
@@ -1105,9 +1135,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                            String                         collectionGUID,
                                            boolean                        replaceAllProperties,
                                            CollectionMembershipProperties membershipProperties,
-                                           String                         elementGUID) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                                           String                         elementGUID,
+                                           Date                           effectiveTime) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
         final String methodName = "updateCollectionMembership";
 
@@ -1122,11 +1153,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         if (relationshipGUID != null)
         {
-            this.updateCollectionMembership(userId, relationshipGUID, replaceAllProperties, membershipProperties);
+            this.updateCollectionMembership(userId, relationshipGUID, replaceAllProperties, membershipProperties, effectiveTime);
         }
         else
         {
-            this.addToCollection(userId, collectionGUID, membershipProperties, elementGUID);
+            this.addToCollection(userId, collectionGUID, membershipProperties, elementGUID, effectiveTime);
         }
     }
 
@@ -1139,21 +1170,23 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      *                               the individual properties specified on the request.
      * @param relationshipGUID unique identifier of the collection
      * @param membershipProperties properties describing the membership characteristics.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      */
     private void updateCollectionMembership(String                         userId,
                                             String                         relationshipGUID,
                                             boolean                        replaceAllProperties,
-                                            CollectionMembershipProperties membershipProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                            CollectionMembershipProperties membershipProperties,
+                                            Date                           effectiveTime) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
     {
         openMetadataStoreClient.updateRelatedElementsInStore(userId,
                                                              relationshipGUID,
                                                              replaceAllProperties,
-                                                             false,
-                                                             false,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              this.getElementProperties(membershipProperties),
-                                                             new Date());
+                                                             effectiveTime);
     }
 
 
@@ -1163,6 +1196,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param userId         userId of user making request.
      * @param collectionGUID unique identifier of the collection.
      * @param elementGUID    unique identifier of the element.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem updating information in the property server(s).
@@ -1171,9 +1205,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     @Override
     public void removeFromCollection(String userId,
                                      String collectionGUID,
-                                     String elementGUID) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+                                     String elementGUID,
+                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         final String methodName = "removeFromCollection";
 
@@ -1190,9 +1225,9 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         {
             openMetadataStoreClient.deleteRelatedElementsInStore(userId,
                                                                  relationshipGUID,
-                                                                 false,
-                                                                 false,
-                                                                 new Date());
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime);
         }
     }
 

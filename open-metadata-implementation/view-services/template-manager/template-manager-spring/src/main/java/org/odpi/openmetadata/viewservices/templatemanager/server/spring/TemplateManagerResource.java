@@ -163,7 +163,7 @@ public class TemplateManagerResource
 
     public  VoidResponse deleteMetadataElementInStore(@PathVariable String            serverName,
                                                       @PathVariable String            metadataElementGUID,
-                                                      @RequestBody(required = false)  UpdateRequestBody requestBody)
+                                                      @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
         return restAPI.deleteMetadataElementInStore(serverName,metadataElementGUID, requestBody);
     }
@@ -284,9 +284,9 @@ public class TemplateManagerResource
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
 
     public VoidResponse declassifyMetadataElementInStore(@PathVariable String            serverName,
-                                                         @PathVariable String            metadataElementGUID,
-                                                         @PathVariable String            classificationName,
-                                                         @RequestBody  UpdateRequestBody requestBody)
+                                                         @PathVariable String               metadataElementGUID,
+                                                         @PathVariable String                    classificationName,
+                                                         @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
         return restAPI.declassifyMetadataElementInStore(serverName, metadataElementGUID, classificationName, requestBody);
     }
@@ -376,9 +376,8 @@ public class TemplateManagerResource
 
     public VoidResponse deleteRelatedElementsInStore(@PathVariable String            serverName,
                                                      @PathVariable String            relationshipGUID,
-                                                     @RequestBody  UpdateRequestBody requestBody)
+                                                     @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
         return restAPI.deleteRelatedElementsInStore(serverName, relationshipGUID, requestBody);
     }
-
 }

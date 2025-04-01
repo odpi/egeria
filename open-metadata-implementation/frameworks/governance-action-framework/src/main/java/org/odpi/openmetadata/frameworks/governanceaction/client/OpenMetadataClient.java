@@ -806,6 +806,9 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -826,9 +829,12 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                         String                         parentGUID,
                                                         String                         parentRelationshipTypeName,
                                                         ElementProperties              parentRelationshipProperties,
-                                                        boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException;
+                                                        boolean                        parentAtEnd1,
+                                                        boolean                        forLineage,
+                                                        boolean                        forDuplicateProcessing,
+                                                        Date                           effectiveTime) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
 
 
     /**
@@ -855,6 +861,9 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new metadata element
      *
@@ -863,21 +872,24 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public abstract String createMetadataElementFromTemplate(String                         userId,
-                                                             String                         metadataElementTypeName,
-                                                             String                         anchorGUID,
-                                                             boolean                        isOwnAnchor,
-                                                             Date                           effectiveFrom,
-                                                             Date                           effectiveTo,
-                                                             String                         templateGUID,
-                                                             ElementProperties              templateProperties,
-                                                             Map<String, String>            placeholderProperties,
-                                                             String                         parentGUID,
-                                                             String                         parentRelationshipTypeName,
-                                                             ElementProperties              parentRelationshipProperties,
-                                                             boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException;
+    public abstract String createMetadataElementFromTemplate(String              userId,
+                                                             String              metadataElementTypeName,
+                                                             String              anchorGUID,
+                                                             boolean             isOwnAnchor,
+                                                             Date                effectiveFrom,
+                                                             Date                effectiveTo,
+                                                             String              templateGUID,
+                                                             ElementProperties   templateProperties,
+                                                             Map<String, String> placeholderProperties,
+                                                             String              parentGUID,
+                                                             String              parentRelationshipTypeName,
+                                                             ElementProperties   parentRelationshipProperties,
+                                                             boolean             parentAtEnd1,
+                                                             boolean             forLineage,
+                                                             boolean             forDuplicateProcessing,
+                                                             Date                effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException;
 
 
 

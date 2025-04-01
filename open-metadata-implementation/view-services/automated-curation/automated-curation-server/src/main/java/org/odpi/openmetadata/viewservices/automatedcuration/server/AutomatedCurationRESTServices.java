@@ -466,7 +466,10 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                requestBody.getParentGUID(),
                                                                                requestBody.getParentRelationshipTypeName(),
                                                                                requestBody.getParentRelationshipProperties(),
-                                                                               requestBody.getParentAtEnd1()));
+                                                                               requestBody.getParentAtEnd1(),
+                                                                               requestBody.getForLineage(),
+                                                                               requestBody.getForDuplicateProcessing(),
+                                                                               requestBody.getEffectiveTime()));
             }
             else
             {
@@ -531,7 +534,10 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                             requestBody.getParentGUID(),
                                                                             requestBody.getParentRelationshipTypeName(),
                                                                             requestBody.getParentRelationshipProperties(),
-                                                                            requestBody.getParentAtEnd1()));
+                                                                            requestBody.getParentAtEnd1(),
+                                                                            requestBody.getForLineage(),
+                                                                            requestBody.getForDuplicateProcessing(),
+                                                                            requestBody.getEffectiveTime()));
             }
             else
             {

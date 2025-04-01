@@ -20,7 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectGraph extends ProjectHierarchy
 {
-    private String  mermaidGraph = null;
     private String  mermaidTimeline= null;
 
 
@@ -44,7 +43,6 @@ public class ProjectGraph extends ProjectHierarchy
 
         if (template != null)
         {
-            mermaidGraph    = template.getMermaidGraph();
             mermaidTimeline = template.getMermaidTimeline();
         }
     }
@@ -58,27 +56,6 @@ public class ProjectGraph extends ProjectHierarchy
     public ProjectGraph(ProjectHierarchy template)
     {
         super(template);
-    }
-
-
-    /**
-     *
-     * @return mermaid markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the graph view of the information supply chain.
-     *
-     * @param mermaidGraph mermaid markdown
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -113,7 +90,6 @@ public class ProjectGraph extends ProjectHierarchy
     public String toString()
     {
         return "ProjectGraph{" +
-                "mermaidGraph='" + mermaidGraph + '\'' +
                 ", mermaidTimeline='" + mermaidTimeline + '\'' +
                 "} " + super.toString();
     }
@@ -141,8 +117,7 @@ public class ProjectGraph extends ProjectHierarchy
         {
             return false;
         }
-        return Objects.equals(mermaidTimeline, that.mermaidTimeline) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+        return Objects.equals(mermaidTimeline, that.mermaidTimeline);
     }
 
 
@@ -154,6 +129,6 @@ public class ProjectGraph extends ProjectHierarchy
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), mermaidTimeline, mermaidGraph);
+        return Objects.hash(super.hashCode(), mermaidTimeline);
     }
 }

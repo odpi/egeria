@@ -30,6 +30,7 @@ public enum Colour
 
     MUSTARD     ("#e0ab18"),
     YELLOW      ("#FFFF88"),
+    LIGHT_ORANGE("FFE599"),
     PINK        ("#f092b0"),
     LIGHT_GRAY  ("#b7c0c7"),
     DARK_GRAY   ("#637a91"),

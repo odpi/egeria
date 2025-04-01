@@ -1507,6 +1507,47 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                     relationshipTypeGUID = OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeGUID;
                     relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName;
                 }
+                else
+                {
+                    final String folderParameterName = "fileParentGUID";
+                    final String fileParameterName = "fileAssetGUID";
+                    EntityDetail parentEntity = folderHandler.getEntityFromRepository(userId,
+                                                                                      fileParentGUID,
+                                                                                      folderParameterName,
+                                                                                      OpenMetadataType.FILE_FOLDER.typeName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      effectiveTime,
+                                                                                      methodName);
+
+                    EntityDetail fileEntity = folderHandler.getEntityFromRepository(userId,
+                                                                                    fileAssetGUID,
+                                                                                    fileParameterName,
+                                                                                    OpenMetadataType.DATA_FILE.typeName,
+                                                                                    null,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+
+                    if ((parentEntity != null) && (fileEntity != null) &&
+                            (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.DATA_FOLDER.typeName)))
+                    {
+                        folderHandler.addAnchorsClassification(userId,
+                                                               fileEntity,
+                                                               fileParameterName,
+                                                               fileParentGUID,
+                                                               parentEntity.getType().getTypeDefName(),
+                                                               OpenMetadataType.ASSET.typeName,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+                    }
+                }
 
                 folderHandler.linkElementToElement(userId,
                                                    externalSourceGUID,

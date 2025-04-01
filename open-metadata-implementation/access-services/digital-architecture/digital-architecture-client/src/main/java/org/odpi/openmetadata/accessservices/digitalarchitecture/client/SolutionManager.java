@@ -19,15 +19,17 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainSegmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * ManageSolutions provides methods to define information supply chains, solution components and their supporting objects
@@ -44,10 +46,6 @@ import java.util.List;
  */
 public class SolutionManager extends DigitalArchitectureClientBase implements ManageSolutions
 {
-    final boolean forLineage = true;
-    final boolean forDuplicateProcessing = false;
-
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -152,6 +150,700 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
 
 
     /**
+     * Create a new information supply chain.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param properties             properties for the new element.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return unique identifier of the newly created element
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public String createInformationSupplyChain(String                           userId,
+                                               String                           externalSourceGUID,
+                                               String                           externalSourceName,
+                                               String                           anchorGUID,
+                                               boolean                          isOwnAnchor,
+                                               InformationSupplyChainProperties properties,
+                                               String                           parentGUID,
+                                               String                           parentRelationshipTypeName,
+                                               ElementProperties                parentRelationshipProperties,
+                                               boolean                          parentAtEnd1,
+                                               boolean                          forLineage,
+                                               boolean                          forDuplicateProcessing,
+                                               Date                             effectiveTime) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "createInformationSupplyChain";
+        final String propertiesName = "properties";
+        final String qualifiedNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String elementTypeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName;
+
+        if (properties.getTypeName() != null)
+        {
+            elementTypeName = properties.getTypeName();
+        }
+
+
+        return openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    elementTypeName,
+                                                                    ElementStatus.ACTIVE,
+                                                                    null,
+                                                                    anchorGUID,
+                                                                    isOwnAnchor,
+                                                                    properties.getEffectiveFrom(),
+                                                                    properties.getEffectiveTo(),
+                                                                    this.getElementProperties(properties),
+                                                                    parentGUID,
+                                                                    parentRelationshipTypeName,
+                                                                    parentRelationshipProperties,
+                                                                    parentAtEnd1,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveTime);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an information supply chain using an existing  element as a template.
+     * The template defines additional classifications and relationships that should be added to the new information supply chain.
+     *
+     * @param userId             calling user
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createInformationSupplyChainFromTemplate(String              userId,
+                                                           String              externalSourceGUID,
+                                                           String              externalSourceName,
+                                                           String              anchorGUID,
+                                                           boolean             isOwnAnchor,
+                                                           Date                effectiveFrom,
+                                                           Date                effectiveTo,
+                                                           String              templateGUID,
+                                                           ElementProperties   replacementProperties,
+                                                           Map<String, String> placeholderProperties,
+                                                           String              parentGUID,
+                                                           String              parentRelationshipTypeName,
+                                                           ElementProperties   parentRelationshipProperties,
+                                                           boolean             parentAtEnd1,
+                                                           boolean             forLineage,
+                                                           boolean             forDuplicateProcessing,
+                                                           Date                effectiveTime) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                                         anchorGUID,
+                                                                         isOwnAnchor,
+                                                                         effectiveFrom,
+                                                                         effectiveTo,
+                                                                         templateGUID,
+                                                                         replacementProperties,
+                                                                         placeholderProperties,
+                                                                         parentGUID,
+                                                                         parentRelationshipTypeName,
+                                                                         parentRelationshipProperties,
+                                                                         parentAtEnd1,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime);
+    }
+
+
+    /**
+     * Update the properties of an information supply chain.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param informationSupplyChainGUID         unique identifier of the information supply chain (returned from create)
+     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                               the individual properties specified on the request.
+     * @param properties             properties for the element.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void   updateInformationSupplyChain(String                           userId,
+                                               String                           externalSourceGUID,
+                                               String                           externalSourceName,
+                                               String                           informationSupplyChainGUID,
+                                               boolean                          replaceAllProperties,
+                                               InformationSupplyChainProperties properties,
+                                               boolean                          forLineage,
+                                               boolean                          forDuplicateProcessing,
+                                               Date                             effectiveTime) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "updateInformationSupplyChain";
+        final String propertiesName = "properties";
+        final String qualifiedNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
+
+        if (replaceAllProperties)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        openMetadataStoreClient.updateMetadataElementInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             informationSupplyChainGUID,
+                                                             replaceAllProperties,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             this.getElementProperties(properties),
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Create a new information supply chain segment.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param properties             properties for the new element.
+     * @param informationSupplyChainGUID unique identifier of optional parent information supply chain
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier of the newly created element
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public String createInformationSupplyChainSegment(String                                  userId,
+                                                      String                                  externalSourceGUID,
+                                                      String                                  externalSourceName,
+                                                      InformationSupplyChainSegmentProperties properties,
+                                                      String                                  informationSupplyChainGUID,
+                                                      boolean                                 forLineage,
+                                                      boolean                                 forDuplicateProcessing,
+                                                      Date                                    effectiveTime) throws InvalidParameterException,
+                                                                                                                    PropertyServerException,
+                                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "createInformationSupplyChain";
+        final String propertiesName = "properties";
+        final String qualifiedNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String elementTypeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName;
+
+        if (properties.getTypeName() != null)
+        {
+            elementTypeName = properties.getTypeName();
+        }
+
+        if (informationSupplyChainGUID != null)
+        {
+            return openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                        externalSourceGUID,
+                                                                        externalSourceName,
+                                                                        elementTypeName,
+                                                                        ElementStatus.ACTIVE,
+                                                                        null,
+                                                                        informationSupplyChainGUID,
+                                                                        false,
+                                                                        properties.getEffectiveFrom(),
+                                                                        properties.getEffectiveTo(),
+                                                                        this.getElementProperties(properties),
+                                                                        informationSupplyChainGUID,
+                                                                        OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                        null,
+                                                                        true,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime);
+        }
+        else
+        {
+            return openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                        externalSourceGUID,
+                                                                        externalSourceName,
+                                                                        elementTypeName,
+                                                                        ElementStatus.ACTIVE,
+                                                                        null,
+                                                                        null,
+                                                                        true,
+                                                                        properties.getEffectiveFrom(),
+                                                                        properties.getEffectiveTo(),
+                                                                        this.getElementProperties(properties),
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        true,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime);
+        }
+    }
+
+
+    /**
+     * Update the properties of an information supply chain.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param segmentGUID         unique identifier of the information supply chain segment (returned from create)
+     * @param replaceAllProperties   flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                               the individual properties specified on the request.
+     * @param properties             properties for the element.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void   updateInformationSupplyChainSegment(String                                  userId,
+                                                      String                                  externalSourceGUID,
+                                                      String                                  externalSourceName,
+                                                      String                                  segmentGUID,
+                                                      boolean                                 replaceAllProperties,
+                                                      InformationSupplyChainSegmentProperties properties,
+                                                      boolean                                 forLineage,
+                                                      boolean                                 forDuplicateProcessing,
+                                                      Date                                    effectiveTime) throws InvalidParameterException,
+                                                                                                                    PropertyServerException,
+                                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "updateInformationSupplyChainSegment";
+        final String propertiesName = "properties";
+        final String qualifiedNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesName, methodName);
+
+        if (replaceAllProperties)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        openMetadataStoreClient.updateMetadataElementInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             segmentGUID,
+                                                             replaceAllProperties,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             this.getElementProperties(properties),
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Connect two information supply chain segments.
+     *
+     * @param userId          userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param segment1GUID  unique identifier of the first segment
+     * @param segment2GUID      unique identifier of the second segment
+     * @param linkProperties   description of the relationship.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void linkSegments(String                               userId,
+                             String                               externalSourceGUID,
+                             String                               externalSourceName,
+                             String                               segment1GUID,
+                             String                               segment2GUID,
+                             InformationSupplyChainLinkProperties linkProperties,
+                             boolean                              forLineage,
+                             boolean                              forDuplicateProcessing,
+                             Date                                 effectiveTime) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "linkSegments";
+        final String end1GUIDParameterName = "segment1GUID";
+        final String end2GUIDParameterName = "segment2GUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(segment1GUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(segment2GUID, end2GUIDParameterName, methodName);
+
+        if (linkProperties != null)
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                 segment1GUID,
+                                                                 segment2GUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 linkProperties.getEffectiveFrom(),
+                                                                 linkProperties.getEffectiveTo(),
+                                                                 this.getElementProperties(linkProperties),
+                                                                 effectiveTime);
+        }
+    }
+
+
+    /**
+     * Detach two information supply chain segments from one another.
+     *
+     * @param userId          userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param segment1GUID  unique identifier of the first segment.
+     * @param segment2GUID      unique identifier of the second segment.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void detachSegments(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  segment1GUID,
+                               String  segment2GUID,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
+        final String methodName = "detachSegments";
+
+        final String end1GUIDParameterName = "segment1GUID";
+        final String end2GUIDParameterName = "segment2GUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(segment1GUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(segment2GUID, end2GUIDParameterName, methodName);
+
+        OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
+                                                                                                                segment1GUID,
+                                                                                                                segment2GUID,
+                                                                                                                OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                forLineage,
+                                                                                                                forDuplicateProcessing,
+                                                                                                                effectiveTime,
+                                                                                                                0,
+                                                                                                                0);
+
+        if ((relationshipList != null) && (relationshipList.getElementList() != null))
+        {
+            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
+            {
+                if (relationship != null)
+                {
+                    openMetadataStoreClient.deleteRelatedElementsInStore(userId,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         relationship.getRelationshipGUID(),
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Delete an information supply chain segment.
+     *
+     * @param userId   userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param segmentGUID  unique identifier of the obsolete element
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void deleteInformationSupplyChainSegment(String  userId,
+                                                    String  externalSourceGUID,
+                                                    String  externalSourceName,
+                                                    String  segmentGUID,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "deleteInformationSupplyChainSegment";
+        final String guidParameterName = "segmentGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(segmentGUID, guidParameterName, methodName);
+
+        openMetadataStoreClient.deleteMetadataElementInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             segmentGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Delete an information supply chain and all of its segments.
+     *
+     * @param userId   userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param informationSupplyChainGUID  unique identifier of the required element.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void deleteInformationSupplyChain(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  informationSupplyChainGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "deleteInformationSupplyChain";
+        final String guidParameterName = "informationSupplyChainGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(informationSupplyChainGUID, guidParameterName, methodName);
+
+        openMetadataStoreClient.deleteMetadataElementInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             informationSupplyChainGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Returns the list of information supply chains with a particular name.
+     *
+     * @param userId     userId of user making request
+     * @param name       name of the element to return - match is full text match in qualifiedName or name
+     * @param addImplementation    should details of the implementation of the information supply chain be extracted too?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return a list of elements
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<InformationSupplyChainElement> getInformationSupplyChainsByName(String              userId,
+                                                                                String              name,
+                                                                                boolean             addImplementation,
+                                                                                List<ElementStatus> limitResultsByStatus,
+                                                                                Date                asOfTime,
+                                                                                SequencingOrder     sequencingOrder,
+                                                                                String              sequencingProperty,
+                                                                                int                 startFrom,
+                                                                                int                 pageSize,
+                                                                                boolean             forLineage,
+                                                                                boolean             forDuplicateProcessing,
+                                                                                Date                effectiveTime) throws InvalidParameterException,
+                                                                                                                          PropertyServerException,
+                                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "getInformationSupplyChainsByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.NAME.name);
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
+                                                                                                      OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                                                                      null,
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
+                                                                                                      limitResultsByStatus,
+                                                                                                      asOfTime,
+                                                                                                      null,
+                                                                                                      sequencingProperty,
+                                                                                                      sequencingOrder,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
+                                                                                                      effectiveTime,
+                                                                                                      startFrom,
+                                                                                                      pageSize);
+
+        return convertInformationSupplyChains(userId,
+                                              openMetadataElements,
+                                              addImplementation,
+                                              asOfTime,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
+    }
+
+
+    /**
+     * Return the properties of a specific information supply chain.
+     *
+     * @param userId            userId of user making request
+     * @param informationSupplyChainGUID    unique identifier of the required element
+     * @param addImplementation    should details of the implementation of the information supply chain be extracted too?
+     * @param asOfTime             repository time to use
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @return retrieved properties
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public InformationSupplyChainElement getInformationSupplyChainByGUID(String  userId,
+                                                                         String  informationSupplyChainGUID,
+                                                                         boolean addImplementation,
+                                                                         Date    asOfTime,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "getInformationSupplyChain";
+        final String guidParameterName = "informationSupplyChainGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(informationSupplyChainGUID, guidParameterName, methodName);
+
+        OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId,
+                                                                                                   informationSupplyChainGUID,
+                                                                                                   forLineage,
+                                                                                                   forDuplicateProcessing,
+                                                                                                   asOfTime,
+                                                                                                   effectiveTime);
+
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+        {
+            return convertInformationSupplyChain(userId,
+                                                 openMetadataElement,
+                                                 addImplementation,
+                                                 asOfTime,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Retrieve the list of information supply chains metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
@@ -164,25 +856,29 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param sequencingProperty   property to use for sequencing order
      * @param startFrom            paging start point
      * @param pageSize             maximum results that can be returned
-     * @param effectiveTime        effectivity dating for elements
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<InformationSupplyChainElement> findInformationSupplyChains(String userId,
-                                                                           String searchString,
-                                                                           boolean addImplementation,
+    public List<InformationSupplyChainElement> findInformationSupplyChains(String              userId,
+                                                                           String              searchString,
+                                                                           boolean             addImplementation,
                                                                            List<ElementStatus> limitResultsByStatus,
-                                                                           Date asOfTime,
-                                                                           SequencingOrder sequencingOrder,
+                                                                           Date                asOfTime,
+                                                                           SequencingOrder     sequencingOrder,
                                                                            String              sequencingProperty,
-                                                                           int startFrom,
-                                                                           int pageSize,
-                                                                           Date effectiveTime) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+                                                                           int                 startFrom,
+                                                                           int                 pageSize,
+                                                                           boolean             forLineage,
+                                                                           boolean             forDuplicateProcessing,
+                                                                           Date                effectiveTime) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
     {
         final String methodName = "findInformationSupplyChains";
         final String searchStringParameterName = "searchString";
@@ -204,7 +900,14 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertInformationSupplyChains(userId, openMetadataElements, addImplementation, asOfTime, effectiveTime, methodName);
+        return convertInformationSupplyChains(userId,
+                                              openMetadataElements,
+                                              addImplementation,
+                                              asOfTime,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
     }
 
 
@@ -221,14 +924,28 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param sequencingProperty   property to use for sequencing order
      * @param startFrom            paging start point
      * @param pageSize             maximum results that can be returned
-     * @param effectiveTime        effectivity dating for elements
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<SolutionBlueprintElement> findSolutionBlueprints(String userId, String searchString, List<ElementStatus> limitResultsByStatus, Date asOfTime, SequencingOrder sequencingOrder, String sequencingProperty, int startFrom, int pageSize, Date effectiveTime) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    public List<SolutionBlueprintElement> findSolutionBlueprints(String              userId,
+                                                                 String              searchString,
+                                                                 List<ElementStatus> limitResultsByStatus,
+                                                                 Date                asOfTime,
+                                                                 SequencingOrder     sequencingOrder,
+                                                                 String              sequencingProperty,
+                                                                 int                 startFrom,
+                                                                 int                 pageSize,
+                                                                 boolean             forLineage,
+                                                                 boolean             forDuplicateProcessing,
+                                                                 Date                effectiveTime) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName = "findSolutionBlueprints";
         final String searchStringParameterName = "searchString";
@@ -250,7 +967,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertSolutionBlueprints(userId, openMetadataElements, asOfTime, effectiveTime, methodName);
+        return convertSolutionBlueprints(userId,
+                                         openMetadataElements,
+                                         asOfTime,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
     }
 
 
@@ -267,14 +990,28 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param sequencingProperty   property to use for sequencing order
      * @param startFrom            paging start point
      * @param pageSize             maximum results that can be returned
-     * @param effectiveTime        effectivity dating for elements
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<SolutionRoleElement> findSolutionRoles(String userId, String searchString, List<ElementStatus> limitResultsByStatus, Date asOfTime, SequencingOrder sequencingOrder, String sequencingProperty, int startFrom, int pageSize, Date effectiveTime) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    public List<SolutionRoleElement> findSolutionRoles(String              userId,
+                                                       String              searchString,
+                                                       List<ElementStatus> limitResultsByStatus,
+                                                       Date                asOfTime,
+                                                       SequencingOrder     sequencingOrder,
+                                                       String              sequencingProperty,
+                                                       int                 startFrom,
+                                                       int                 pageSize,
+                                                       boolean             forLineage,
+                                                       boolean             forDuplicateProcessing,
+                                                       Date                effectiveTime) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName = "findSolutionRoles";
         final String searchStringParameterName = "searchString";
@@ -296,7 +1033,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertSolutionRoles(userId, openMetadataElements, asOfTime, effectiveTime, methodName);
+        return convertSolutionRoles(userId,
+                                    openMetadataElements,
+                                    asOfTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
     }
 
 
@@ -313,14 +1056,28 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param sequencingProperty   property to use for sequencing order
      * @param startFrom            paging start point
      * @param pageSize             maximum results that can be returned
-     * @param effectiveTime        effectivity dating for elements
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<SolutionComponentElement> findSolutionComponents(String userId, String searchString, List<ElementStatus> limitResultsByStatus, Date asOfTime, SequencingOrder sequencingOrder, String sequencingProperty, int startFrom, int pageSize, Date effectiveTime) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    public List<SolutionComponentElement> findSolutionComponents(String              userId,
+                                                                 String              searchString,
+                                                                 List<ElementStatus> limitResultsByStatus,
+                                                                 Date                asOfTime,
+                                                                 SequencingOrder     sequencingOrder,
+                                                                 String              sequencingProperty,
+                                                                 int                 startFrom,
+                                                                 int                 pageSize,
+                                                                 boolean             forLineage,
+                                                                 boolean             forDuplicateProcessing,
+                                                                 Date                effectiveTime) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName = "findSolutionComponents";
         final String searchStringParameterName = "searchString";
@@ -342,7 +1099,15 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertSolutionComponents(userId, openMetadataElements, true, asOfTime, effectiveTime, true, methodName);
+        return convertSolutionComponents(userId,
+                                         openMetadataElements,
+                                         true,
+                                         asOfTime,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         true,
+                                         methodName);
     }
 
 
@@ -357,7 +1122,9 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param sequencingProperty    property to use for sequencing order
      * @param startFrom             paging start point
      * @param pageSize              maximum results that can be returned
-     * @param effectiveTime         effectivity dating for elements
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -372,6 +1139,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                    String              sequencingProperty,
                                                                                    int                 startFrom,
                                                                                    int                 pageSize,
+                                                                                   boolean             forLineage,
+                                                                                   boolean             forDuplicateProcessing,
                                                                                    Date                effectiveTime) throws InvalidParameterException,
                                                                                                                              UserNotAuthorizedException,
                                                                                                                              PropertyServerException
@@ -408,6 +1177,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param openMetadataElements elements extracted from the repository
      * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of information supply chains (or null)
@@ -416,6 +1187,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                List<OpenMetadataElement> openMetadataElements,
                                                                                boolean                   addImplementation,
                                                                                Date                      asOfTime,
+                                                                               boolean                   forLineage,
+                                                                               boolean                   forDuplicateProcessing,
                                                                                Date                      effectiveTime,
                                                                                String                    methodName)
     {
@@ -427,7 +1200,14 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    informationSupplyChainElements.add(convertInformationSupplyChain(userId, openMetadataElement, addImplementation, asOfTime, effectiveTime, methodName));
+                    informationSupplyChainElements.add(convertInformationSupplyChain(userId,
+                                                                                     openMetadataElement,
+                                                                                     addImplementation,
+                                                                                     asOfTime,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     effectiveTime,
+                                                                                     methodName));
                 }
             }
 
@@ -444,6 +1224,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId calling user
      * @param openMetadataElements elements extracted from the repository
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of solution blueprints (or null)
@@ -451,6 +1233,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private List<SolutionBlueprintElement> convertSolutionBlueprints(String                    userId,
                                                                      List<OpenMetadataElement> openMetadataElements,
                                                                      Date                      asOfTime,
+                                                                     boolean                   forLineage,
+                                                                     boolean                   forDuplicateProcessing,
                                                                      Date                      effectiveTime,
                                                                      String                    methodName)
     {
@@ -462,7 +1246,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    solutionBlueprintElements.add(convertSolutionBlueprint(userId, openMetadataElement, asOfTime, effectiveTime, methodName));
+                    solutionBlueprintElements.add(convertSolutionBlueprint(userId,
+                                                                           openMetadataElement,
+                                                                           asOfTime,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           effectiveTime,
+                                                                           methodName));
                 }
             }
 
@@ -479,6 +1269,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId calling user
      * @param openMetadataElements elements extracted from the repository
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return list of solution roles (or null)
@@ -486,6 +1278,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private List<SolutionRoleElement> convertSolutionRoles(String                    userId,
                                                            List<OpenMetadataElement> openMetadataElements,
                                                            Date                      asOfTime,
+                                                           boolean                   forLineage,
+                                                           boolean                   forDuplicateProcessing,
                                                            Date                      effectiveTime,
                                                            String                    methodName)
     {
@@ -497,7 +1291,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    SolutionRoleElement solutionRoleElement = convertSolutionRole(userId, openMetadataElement, asOfTime, effectiveTime, methodName);
+                    SolutionRoleElement solutionRoleElement = convertSolutionRole(userId,
+                                                                                  openMetadataElement,
+                                                                                  asOfTime,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  effectiveTime,
+                                                                                  methodName);
                     if (solutionRoleElement != null)
                     {
                         /*
@@ -522,6 +1322,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param openMetadataElements elements extracted from the repository
      * @param addParentContext should parent information supply chains, segments and solution components be added?
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param fullDisplay print all elements
      * @param methodName calling method
@@ -531,6 +1333,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                      List<OpenMetadataElement> openMetadataElements,
                                                                      boolean                   addParentContext,
                                                                      Date                      asOfTime,
+                                                                     boolean                   forLineage,
+                                                                     boolean                   forDuplicateProcessing,
                                                                      Date                      effectiveTime,
                                                                      boolean                   fullDisplay,
                                                                      String                    methodName)
@@ -543,7 +1347,15 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    solutionComponentElements.add(convertSolutionComponent(userId, openMetadataElement, addParentContext, asOfTime, effectiveTime, fullDisplay, methodName));
+                    solutionComponentElements.add(convertSolutionComponent(userId,
+                                                                           openMetadataElement,
+                                                                           addParentContext,
+                                                                           asOfTime,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           effectiveTime,
+                                                                           fullDisplay,
+                                                                           methodName));
                 }
             }
 
@@ -590,6 +1402,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param openMetadataElement element extracted from the repository
      * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
@@ -598,6 +1412,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                         OpenMetadataElement openMetadataElement,
                                                                         boolean             addImplementation,
                                                                         Date                asOfTime,
+                                                                        boolean             forLineage,
+                                                                        boolean             forDuplicateProcessing,
                                                                         Date                effectiveTime,
                                                                         String              methodName)
     {
@@ -625,7 +1441,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                 {
                     if (relatedMetadataElement != null)
                     {
-                        relatedSegments.add(this.convertInformationSupplyChainSegment(userId, relatedMetadataElement.getElement(), asOfTime, effectiveTime, methodName));
+                        relatedSegments.add(this.convertInformationSupplyChainSegment(userId,
+                                                                                      relatedMetadataElement.getElement(),
+                                                                                      asOfTime,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      effectiveTime,
+                                                                                      methodName));
                     }
                 }
 
@@ -735,6 +1557,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId calling user
      * @param openMetadataElement element extracted from the repository
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
@@ -742,6 +1566,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private InformationSupplyChainSegmentElement convertInformationSupplyChainSegment(String              userId,
                                                                                       OpenMetadataElement openMetadataElement,
                                                                                       Date                asOfTime,
+                                                                                      boolean             forLineage,
+                                                                                      boolean             forDuplicateProcessing,
                                                                                       Date                effectiveTime,
                                                                                       String              methodName)
     {
@@ -776,6 +1602,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                             List<RelatedMetadataElementSummary> componentPorts = this.convertPortSummaries(userId,
                                                                                                            relatedMetadataElement.getElement().getElementGUID(),
                                                                                                            asOfTime,
+                                                                                                           forLineage,
+                                                                                                           forDuplicateProcessing,
                                                                                                            effectiveTime,
                                                                                                            methodName);
 
@@ -787,6 +1615,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                             List<SolutionLinkingWireRelationship> solutionLinkingWireRelationships = this.convertSolutionLinkingWires(userId,
                                                                                                                                       relatedMetadataElement.getElement(),
                                                                                                                                       asOfTime,
+                                                                                                                                      forLineage,
+                                                                                                                                      forDuplicateProcessing,
                                                                                                                                       effectiveTime,
                                                                                                                                       methodName);
 
@@ -850,6 +1680,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private List<SolutionLinkingWireRelationship> convertSolutionLinkingWires(String              userId,
                                                                               OpenMetadataElement solutionComponent,
                                                                               Date                asOfTime,
+                                                                              boolean             forLineage,
+                                                                              boolean             forDuplicateProcessing,
                                                                               Date                effectiveTime,
                                                                               String              methodName)
     {
@@ -967,11 +1799,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param methodName calling method
      * @return list
      */
-    private List<RelatedMetadataElementSummary> convertPortSummaries(String userId,
-                                                                     String solutionComponentGUID,
-                                                                     Date   asOfTime,
-                                                                     Date   effectiveTime,
-                                                                     String methodName)
+    private List<RelatedMetadataElementSummary> convertPortSummaries(String  userId,
+                                                                     String  solutionComponentGUID,
+                                                                     Date    asOfTime,
+                                                                     boolean forLineage,
+                                                                     boolean forDuplicateProcessing,
+                                                                     Date    effectiveTime,
+                                                                     String  methodName)
     {
         try
         {
@@ -1045,6 +1879,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId calling user
      * @param openMetadataElement element extracted from the repository
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
@@ -1052,6 +1888,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private SolutionBlueprintElement convertSolutionBlueprint(String              userId,
                                                               OpenMetadataElement openMetadataElement,
                                                               Date                asOfTime,
+                                                              boolean             forLineage,
+                                                              boolean             forDuplicateProcessing,
                                                               Date                effectiveTime,
                                                               String              methodName)
     {
@@ -1097,7 +1935,15 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                         relationshipProperties.setExtendedProperties(solutionBlueprintConverter.getRemainingExtendedProperties(elementProperties));
 
                         solutionBlueprintComponent.setProperties(relationshipProperties);
-                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), false, asOfTime, effectiveTime, false, methodName));
+                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId,
+                                                                                                      relatedMetadataElement.getElement(),
+                                                                                                      false,
+                                                                                                      asOfTime,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
+                                                                                                      effectiveTime,
+                                                                                                      false,
+                                                                                                      methodName));
                         solutionBlueprintComponents.add(solutionBlueprintComponent);
                     }
                 }
@@ -1152,6 +1998,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId calling user
      * @param openMetadataElement element extracted from the repository
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
      * @return bean or null
@@ -1159,6 +2007,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private SolutionRoleElement convertSolutionRole(String              userId,
                                                     OpenMetadataElement openMetadataElement,
                                                     Date                asOfTime,
+                                                    boolean             forLineage,
+                                                    boolean             forDuplicateProcessing,
                                                     Date                effectiveTime,
                                                     String              methodName)
     {
@@ -1240,6 +2090,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param openMetadataElement element extracted from the repository
      * @param addParentContext should parent information supply chains, segments and solution components be added?
      * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity dating for elements
      * @param fullDisplay print all elements
      * @param methodName calling method
@@ -1249,6 +2101,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                               OpenMetadataElement openMetadataElement,
                                                               boolean             addParentContext,
                                                               Date                asOfTime,
+                                                              boolean             forLineage,
+                                                              boolean             forDuplicateProcessing,
                                                               Date                effectiveTime,
                                                               boolean             fullDisplay,
                                                               String              methodName)
@@ -1288,7 +2142,15 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                             }
                             else
                             {
-                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId, relatedMetadataElement.getElement(), addParentContext, asOfTime, effectiveTime, fullDisplay, methodName));
+                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId,
+                                                                                               relatedMetadataElement.getElement(),
+                                                                                               addParentContext,
+                                                                                               asOfTime,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               fullDisplay,
+                                                                                               methodName));
                             }
                         }
                         else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
@@ -1342,6 +2204,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                     solutionComponentElement.setContext(this.getInformationSupplyChainContext(userId,
                                                                                               relatedParentElements,
                                                                                               asOfTime,
+                                                                                              forLineage,
+                                                                                              forDuplicateProcessing,
                                                                                               effectiveTime,
                                                                                               methodName));
                 }
@@ -1375,6 +2239,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId calling userId
      * @param relatedParentElements list of parents for requested element
      * @param asOfTime repository time
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effective time for subsequent queries
      * @param methodName calling method
      * @return supply chain context
@@ -1383,6 +2249,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private List<InformationSupplyChainContext> getInformationSupplyChainContext(String                       userId,
                                                                                  List<RelatedMetadataElement> relatedParentElements,
                                                                                  Date                         asOfTime,
+                                                                                 boolean                      forLineage,
+                                                                                 boolean                      forDuplicateProcessing,
                                                                                  Date                         effectiveTime,
                                                                                  String                       methodName) throws PropertyServerException
     {
@@ -1408,7 +2276,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                     }
                     else
                     {
-                        List<RelatedMetadataElement> fullParentContext = this.getFullParentContext(userId, parentElement, asOfTime, effectiveTime, methodName);
+                        List<RelatedMetadataElement> fullParentContext = this.getFullParentContext(userId, parentElement, asOfTime, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                         RelatedMetadataElementSummary informationSupplyChain = null;
                         RelatedMetadataElementSummary linkedSegment = null;
                         List<RelatedMetadataElementSummary> parentComponents = new ArrayList<>();
@@ -1463,6 +2331,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param userId caller
      * @param initialParentElement first parent element
      * @param asOfTime repository retrieval time
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime effectivity data
      * @param methodName calling method
      * @return list of parent elements (including the starting one)
@@ -1470,6 +2340,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     private List<RelatedMetadataElement> getFullParentContext(String                 userId,
                                                               RelatedMetadataElement initialParentElement,
                                                               Date                   asOfTime,
+                                                              boolean                forLineage,
+                                                              boolean                forDuplicateProcessing,
                                                               Date                   effectiveTime,
                                                               String                 methodName)
     {
@@ -1487,8 +2359,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                               asOfTime,
                                                                                                               null,
                                                                                                               SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                              true,
-                                                                                                              false,
+                                                                                                              forLineage,
+                                                                                                              forDuplicateProcessing,
                                                                                                               effectiveTime,
                                                                                                               0,
                                                                                                               0);
@@ -1507,7 +2379,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                         {
                             if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
                             {
-                                List<RelatedMetadataElement> higherParents = this.getFullParentContext(userId, relatedMetadataElement, asOfTime, effectiveTime, methodName);
+                                List<RelatedMetadataElement> higherParents = this.getFullParentContext(userId, relatedMetadataElement, asOfTime, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
                                 fullParentContext.addAll(higherParents);
                             }
@@ -1579,5 +2451,434 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
 
             return null;
         }
+    }
+
+
+    /*
+     * Mapping functions
+     */
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(InformationSupplyChainProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   properties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                 properties.getDisplayName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                 properties.getScope());
+
+            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                      OpenMetadataProperty.PURPOSES.name,
+                                                                      properties.getPurposes());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    properties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(InformationSupplyChainSegmentProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   properties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                 properties.getDisplayName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                 properties.getScope());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name,
+                                                                    properties.getEstimatedVolumetrics());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    properties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(InformationSupplyChainLinkProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.LABEL.name,
+                                                                                   properties.getLabel());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SolutionBlueprintProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   properties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                 properties.getDisplayName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.VERSION.name,
+                                                                 properties.getVersion());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    properties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SolutionBlueprintCompositionProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.ROLE.name,
+                                                                                   properties.getRole());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SolutionComponentProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   properties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                 properties.getDisplayName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.VERSION.name,
+                                                                 properties.getVersion());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
+                                                                 properties.getSolutionComponentType());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                 properties.getPlannedDeployedImplementationType());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    properties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SolutionLinkingWireProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.LABEL.name,
+                                                                                   properties.getLabel());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                      OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name,
+                                                                      properties.getInformationSupplyChainSegmentGUIDs());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SolutionPortProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   properties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                 properties.getDisplayName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.VERSION.name,
+                                                                 properties.getVersion());
+
+            if (properties.getSolutionPortDirection() != null)
+            {
+                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                   OpenMetadataProperty.DIRECTION.name,
+                                                                   SolutionPortDirection.getOpenTypeName(),
+                                                                   properties.getSolutionPortDirection().getName());
+            }
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    properties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(ActorRoleProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   properties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.NAME.name,
+                                                                 properties.getTitle());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.IDENTIFIER.name,
+                                                                 properties.getRoleId());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                 properties.getScope());
+
+            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                              OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                              properties.getDomainIdentifier());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    properties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SolutionComponentActorRelationshipProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.ROLE.name,
+                                                                                   properties.getRole());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the specific properties into a set of element properties for the open metadata client.
+     *
+     * @param properties supplied properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(ImplementedByProperties properties)
+    {
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.DESIGN_STEP.name,
+                                                                                   properties.getDesignStep());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.ROLE.name,
+                                                                 properties.getRole());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 properties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.TRANSFORMATION.name,
+                                                                 properties.getTransformation());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              properties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
     }
 }

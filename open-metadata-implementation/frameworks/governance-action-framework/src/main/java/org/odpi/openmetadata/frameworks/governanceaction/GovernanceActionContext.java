@@ -1204,7 +1204,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                null,
                                                                null,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1250,7 +1253,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                null,
                                                                null,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1299,7 +1305,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     null,
                                                                     null,
                                                                     null,
-                                                                    false);
+                                                                    false,
+                                                                    true,
+                                                                    true,
+                                                                    null);
     }
 
 
@@ -1355,7 +1364,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     null,
                                                                     null,
                                                                     null,
-                                                                    false);
+                                                                    false,
+                                                                    true,
+                                                                    true,
+                                                                    null);
     }
 
 
@@ -1399,7 +1411,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                null,
                                                                null,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1451,7 +1466,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                null,
                                                                null,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1496,7 +1514,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     null,
                                                                     null,
                                                                     null,
-                                                                    false);
+                                                                    false,
+                                                                    true,
+                                                                    true,
+                                                                    null);
     }
 
 
@@ -1549,7 +1570,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     null,
                                                                     null,
                                                                     null,
-                                                                    false);
+                                                                    false,
+                                                                    true,
+                                                                    true,
+                                                                    null);
     }
 
 
@@ -1600,7 +1624,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                parentGUID,
                                                                OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                                relationshipProperties,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1660,7 +1687,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                parentGUID,
                                                                OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                                relationshipProperties,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1711,7 +1741,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                processGUID,
                                                                OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
                                                                null,
-                                                               true);
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 
@@ -1922,7 +1955,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                parentGUID,
                                                                parentRelationshipTypeName,
                                                                parentRelationshipProperties,
-                                                               parentAtEnd1);
+                                                               parentAtEnd1,
+                                                               true,
+                                                               true,
+                                                               null);
     }
 
 

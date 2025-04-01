@@ -24,6 +24,8 @@ public class HistoryRequestBody extends EffectiveTimeRequestBody
     private Date fromTime = null;
     private Date toTime   = null;
 
+    private boolean forLineage             = false;
+    private boolean forDuplicateProcessing = false;
 
     /**
      * Default constructor
@@ -47,6 +49,8 @@ public class HistoryRequestBody extends EffectiveTimeRequestBody
         {
             fromTime = template.getFromTime();
             toTime = template.getToTime();
+            forLineage = template.getForLineage();
+            forDuplicateProcessing = template.getForDuplicateProcessing();
         }
     }
 
@@ -93,6 +97,52 @@ public class HistoryRequestBody extends EffectiveTimeRequestBody
     }
 
 
+
+
+    /**
+     * Return whether this request is to update lineage memento elements.
+     *
+     * @return flag
+     */
+    public boolean getForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether this request is to update lineage memento elements.
+     *
+     * @param forLineage flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /**
+     * Return whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @return flag
+     */
+    public boolean getForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @param forDuplicateProcessing flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -104,6 +154,8 @@ public class HistoryRequestBody extends EffectiveTimeRequestBody
         return "HistoryRequestBody{" +
                 "fromTime=" + fromTime +
                 ", toTime=" + toTime +
+                ", forLineage=" + forLineage +
+                ", forDuplicateProcessing=" + forDuplicateProcessing +
                 "} " + super.toString();
     }
 
@@ -130,7 +182,9 @@ public class HistoryRequestBody extends EffectiveTimeRequestBody
             return false;
         }
         HistoryRequestBody that = (HistoryRequestBody) objectToCompare;
-        return Objects.equals(fromTime, that.fromTime) &&
+        return forLineage == that.forLineage &&
+                forDuplicateProcessing == that.forDuplicateProcessing &&
+                Objects.equals(fromTime, that.fromTime) &&
                Objects.equals(toTime, that.toTime);
     }
 
@@ -143,6 +197,6 @@ public class HistoryRequestBody extends EffectiveTimeRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), fromTime, toTime);
+        return Objects.hash(super.hashCode(), forLineage, forDuplicateProcessing, fromTime, toTime);
     }
 }

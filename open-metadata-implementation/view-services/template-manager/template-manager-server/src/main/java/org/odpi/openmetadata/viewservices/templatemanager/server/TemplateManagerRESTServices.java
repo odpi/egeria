@@ -86,7 +86,10 @@ public class TemplateManagerRESTServices extends TokenController
                                                                       requestBody.getParentGUID(),
                                                                       requestBody.getParentRelationshipTypeName(),
                                                                       requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1()));
+                                                                      requestBody.getParentAtEnd1(),
+                                                                      requestBody.getForLineage(),
+                                                                      requestBody.getForDuplicateProcessing(),
+                                                                      requestBody.getEffectiveTime()));
             }
             else
             {
@@ -150,7 +153,10 @@ public class TemplateManagerRESTServices extends TokenController
                                                                            requestBody.getParentGUID(),
                                                                            requestBody.getParentRelationshipTypeName(),
                                                                            requestBody.getParentRelationshipProperties(),
-                                                                           requestBody.getParentAtEnd1()));
+                                                                           requestBody.getParentAtEnd1(),
+                                                                           requestBody.getForLineage(),
+                                                                           requestBody.getForDuplicateProcessing(),
+                                                                           requestBody.getEffectiveTime()));
             }
             else
             {
@@ -359,9 +365,9 @@ public class TemplateManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public  VoidResponse deleteMetadataElementInStore(String            serverName,
-                                                      String            metadataElementGUID,
-                                                      UpdateRequestBody requestBody)
+    public  VoidResponse deleteMetadataElementInStore(String                    serverName,
+                                                      String                    metadataElementGUID,
+                                                      MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
 
@@ -667,10 +673,10 @@ public class TemplateManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse declassifyMetadataElementInStore(String            serverName,
-                                                         String            metadataElementGUID,
-                                                         String            classificationName,
-                                                         UpdateRequestBody requestBody)
+    public VoidResponse declassifyMetadataElementInStore(String                    serverName,
+                                                         String                    metadataElementGUID,
+                                                         String                    classificationName,
+                                                         MetadataSourceRequestBody requestBody)
     {
         final String methodName = "declassifyMetadataElementInStore";
 
@@ -908,9 +914,9 @@ public class TemplateManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse deleteRelatedElementsInStore(String            serverName,
-                                                     String            relationshipGUID,
-                                                     UpdateRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(String                    serverName,
+                                                     String                    relationshipGUID,
+                                                     MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteRelatedElementsInStore";
 
