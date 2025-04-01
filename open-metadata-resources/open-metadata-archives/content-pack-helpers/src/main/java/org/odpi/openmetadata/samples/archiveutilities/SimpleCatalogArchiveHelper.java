@@ -5279,7 +5279,7 @@ public class SimpleCatalogArchiveHelper
             classifications = new ArrayList<>();
             classifications.add(anchorClassification);
 
-            EntityDetail  externalLinkEntity = archiveHelper.getEntityDetail(OpenMetadataType.EXTERNAL_GLOSSARY_LINK.typeName,
+            EntityDetail  externalLinkEntity = archiveHelper.getEntityDetail(OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                              idToGUIDMap.getGUID(externalLinkQualifiedName),
                                                                              properties,
                                                                              InstanceStatus.ACTIVE,
@@ -5290,8 +5290,8 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end1 = archiveHelper.getEntityProxy(glossaryEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(externalLinkEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP.typeName,
-                                                                         idToGUIDMap.getGUID(qualifiedName + "_externally_sourced_link_relationship"),
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                         idToGUIDMap.getGUID(qualifiedName + "_external_reference_link_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
                                                                          end1,
@@ -5746,80 +5746,6 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_CATEGORIZATION.typeName,
                                                                      idToGUIDMap.getGUID(categoryGUID + "_to_" + termGUID + "_term_categorization_relationship"),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-
-    /**
-     * Link a category to an external glossary link with information on which category in the external glossary it corresponds to.
-     *
-     * @param categoryGUID unique identifier for the category
-     * @param externalGlossaryLinkGUID unique identifier for the description of the external glossary (a type of external reference)
-     * @param identifier identifier of the category in the external glossary
-     * @param description description of the link
-     * @param steward steward who created link
-     * @param lastVerified last time this was verified
-     */
-    public void addLibraryCategoryReference(String categoryGUID,
-                                            String externalGlossaryLinkGUID,
-                                            String identifier,
-                                            String description,
-                                            String steward,
-                                            Date   lastVerified)
-    {
-        final String methodName = "addLibraryCategoryReference";
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(externalGlossaryLinkGUID));
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LAST_VERIFIED.name, lastVerified, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LIBRARY_CATEGORY_REFERENCE.typeName,
-                                                                     idToGUIDMap.getGUID(categoryGUID + "_to_" + externalGlossaryLinkGUID + "_library_category_reference_relationship"),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-
-
-
-    /**
-     * Link a glossary term to an external glossary link with information on which term in the external glossary it corresponds to.
-     *
-     * @param termGUID unique identifier for the term
-     * @param externalGlossaryLinkGUID unique identifier for the description of the external glossary (a type of external reference)
-     * @param identifier identifier of the term in the external glossary
-     * @param description description of the link
-     * @param steward steward who created link
-     * @param lastVerified last time this was verified
-     */
-    public void addLibraryTermReference(String termGUID,
-                                        String externalGlossaryLinkGUID,
-                                        String identifier,
-                                        String description,
-                                        String steward,
-                                        Date   lastVerified)
-    {
-        final String methodName = "addLibraryTermReference";
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(externalGlossaryLinkGUID));
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LAST_VERIFIED.name, lastVerified, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LIBRARY_TERM_REFERENCE.typeName,
-                                                                     idToGUIDMap.getGUID(termGUID + "_to_" + externalGlossaryLinkGUID + "_library_term_reference_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

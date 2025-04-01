@@ -61,8 +61,10 @@ Content-Type: application/json
   "asOfTime": "{{isoTimestamp}}",
   "relationshipTypes" : ["DataSetContent"],
   "limitToISCQualifiedName": "",
-  "highlightISCQualifiedName": ""
+  "highlightISCQualifiedName": "",
+  "allAnchors" : true
 }
+
 
 ###
 # @name get the GUID for a named asset

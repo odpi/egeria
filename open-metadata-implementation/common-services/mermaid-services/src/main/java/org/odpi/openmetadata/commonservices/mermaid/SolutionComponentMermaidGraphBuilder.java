@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -64,7 +63,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
 
                                 appendMermaidLine(parentComponent.getRelationshipHeader().getGUID(),
                                                   parentComponentName,
-                                                  parentComponent.getRelationshipHeader().getType().getTypeName(),
+                                                  super.addSpacesToTypeName(parentComponent.getRelationshipHeader().getType().getTypeName()),
                                                   currentNodeName);
 
                                 currentNodeName = parentComponentName;
@@ -84,7 +83,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
 
                         appendMermaidLine(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getGUID(),
                                           segmentName,
-                                          informationSupplyChainContext.linkedSegment().getRelationshipHeader().getType().getTypeName(),
+                                          super.addSpacesToTypeName(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getType().getTypeName()),
                                           currentNodeName);
 
                         currentNodeName = segmentName;
@@ -109,19 +108,30 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
             }
         }
 
-        if (solutionComponentElement.getSubComponents() != null)
+        if ((solutionComponentElement.getSubComponents() != null) &&
+                (! solutionComponentElement.getSubComponents().isEmpty()))
         {
+            final String subcomponentArea = "Subcomponents";
+            mermaidGraph.append("subgraph ");
+            mermaidGraph.append(subcomponentArea);
+            mermaidGraph.append("\n");
+            nodeColours.put(subcomponentArea, VisualStyle.SOLUTION_SUBGRAPH);
+
             for (SolutionComponentElement node : solutionComponentElement.getSubComponents())
             {
                 if (node != null)
                 {
-                    this.addSolutionComponentToGraph(solutionComponentElement.getElementHeader().getGUID(),
-                                                     super.addSpacesToTypeName(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName),
-                                                     solutionComponentElement,
+                    this.addSolutionComponentToGraph(null,
+                                                     null,
+                                                     node,
                                                      solutionWireGUIDs,
-                                                     fullDisplay);
+                                                     false);
                 }
             }
+
+            mermaidGraph.append("end\n");
+            mermaidGraph.append(solutionComponentElement.getElementHeader().getGUID());
+            mermaidGraph.append(" ===> Subcomponents\n");
         }
     }
 

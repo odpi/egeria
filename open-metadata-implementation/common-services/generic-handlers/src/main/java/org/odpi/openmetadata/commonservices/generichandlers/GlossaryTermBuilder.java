@@ -333,6 +333,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * Return the supplied bean properties in an InstanceProperties object.
      *
      * @param description description of the relationship
+     * @param confidence is the relationship correct?
      * @param expression expression that describes the relationship
      * @param relationshipStatus ordinal for the relationship status enum (draft, active, deprecated, obsolete, other)
      * @param steward user id or name of steward id who assigned the relationship (or approved the discovered value).
@@ -342,6 +343,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException there is a problem with the properties
      */
     InstanceProperties getTermRelationshipProperties(String expression,
+                                                     int    confidence,
                                                      String description,
                                                      int    relationshipStatus,
                                                      String steward,
@@ -356,6 +358,11 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                                   expression,
                                                                   methodName);
 
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataProperty.CONFIDENCE.name,
+                                                               confidence,
+                                                               methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

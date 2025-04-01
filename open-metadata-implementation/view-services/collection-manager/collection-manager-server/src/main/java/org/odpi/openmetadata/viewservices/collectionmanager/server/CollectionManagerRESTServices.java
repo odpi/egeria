@@ -16,8 +16,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.collectionmanager.rest.*;
-import org.odpi.openmetadata.viewservices.collectionmanager.rest.TemplateRequestBody;
 import org.slf4j.LoggerFactory;
 
 
@@ -422,7 +420,8 @@ public class CollectionManagerRESTServices extends TokenController
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
                                                           requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1()));
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
@@ -481,7 +480,8 @@ public class CollectionManagerRESTServices extends TokenController
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
                                                           requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1()));
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
@@ -540,7 +540,8 @@ public class CollectionManagerRESTServices extends TokenController
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
                                                           requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1()));
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
@@ -599,7 +600,8 @@ public class CollectionManagerRESTServices extends TokenController
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
                                                           requestBody.getParentRelationshipProperties(),
-                                                          requestBody.getParentAtEnd1()));
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
@@ -661,7 +663,8 @@ public class CollectionManagerRESTServices extends TokenController
                                                                       requestBody.getParentGUID(),
                                                                       requestBody.getParentRelationshipTypeName(),
                                                                       requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1()));
+                                                                      requestBody.getParentAtEnd1(),
+                                                                      requestBody.getEffectiveTime()));
             }
             else
             {
@@ -719,7 +722,8 @@ public class CollectionManagerRESTServices extends TokenController
                                                               requestBody.getParentGUID(),
                                                               requestBody.getParentRelationshipTypeName(),
                                                               requestBody.getParentRelationshipProperties(),
-                                                              requestBody.getParentAtEnd1()));
+                                                              requestBody.getParentAtEnd1(),
+                                                              requestBody.getEffectiveTime()));
             }
             else
             {
@@ -777,7 +781,8 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.updateCollection(userId,
                                          collectionGUID,
                                          replaceAllProperties,
-                                         requestBody);
+                                         requestBody,
+                                         null);
             }
             else
             {
@@ -835,7 +840,8 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.updateDigitalProduct(userId,
                                              collectionGUID,
                                              replaceAllProperties,
-                                             requestBody);
+                                             requestBody,
+                                             null);
             }
             else
             {
@@ -895,7 +901,8 @@ public class CollectionManagerRESTServices extends TokenController
                                          collectionGUID,
                                          parentGUID,
                                          requestBody,
-                                         makeAnchor);
+                                         makeAnchor,
+                                         null);
             }
             else
             {
@@ -948,7 +955,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            handler.detachCollection(userId, collectionGUID, parentGUID);
+            handler.detachCollection(userId, collectionGUID, parentGUID, null);
         }
         catch (Throwable error)
         {
@@ -1042,7 +1049,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElements(handler.getCollectionMembers(userId, collectionGUID, startFrom, pageSize));
+            response.setElements(handler.getCollectionMembers(userId, collectionGUID, startFrom, pageSize, null));
         }
         catch (Throwable error)
         {
@@ -1092,7 +1099,7 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-                handler.addToCollection(userId, collectionGUID, requestBody, elementGUID);
+                handler.addToCollection(userId, collectionGUID, requestBody, elementGUID, null);
             }
             else
             {
@@ -1149,7 +1156,7 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-                handler.updateCollectionMembership(userId, collectionGUID, replaceAllProperties, requestBody, elementGUID);
+                handler.updateCollectionMembership(userId, collectionGUID, replaceAllProperties, requestBody, elementGUID, null);
             }
             else
             {
@@ -1203,7 +1210,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            handler.removeFromCollection(userId, collectionGUID, elementGUID);
+            handler.removeFromCollection(userId, collectionGUID, elementGUID, null);
         }
         catch (Throwable error)
         {

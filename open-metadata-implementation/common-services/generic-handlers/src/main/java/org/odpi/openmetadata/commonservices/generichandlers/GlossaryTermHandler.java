@@ -948,6 +948,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryTermTwoGUIDParameterName parameter supplying glossaryTermTwoGUID
      * @param description description of the relationship
      * @param expression expression that describes the relationship
+     * @param confidence level of confidence that relationship is correct
      * @param relationshipStatus ordinal for the relationship status enum (draft, active, deprecated, obsolete, other)
      * @param steward user id or name of steward id who assigned the relationship (or approved the discovered value).
      * @param source id of the source of the knowledge of the relationship
@@ -972,6 +973,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       String  glossaryTermTwoGUID,
                                       String  glossaryTermTwoGUIDParameterName,
                                       String  expression,
+                                      int     confidence,
                                       String  description,
                                       int     relationshipStatus,
                                       String  steward,
@@ -1013,6 +1015,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   relationshipTypeGUID,
                                   relationshipTypeName,
                                   builder.getTermRelationshipProperties(expression,
+                                                                        confidence,
                                                                         description,
                                                                         relationshipStatus,
                                                                         steward,
@@ -1039,6 +1042,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryTermTwoGUIDParameterName parameter supplying glossaryTermTwoGUID
      * @param description description of the relationship
      * @param expression expression that describes the relationship
+     * @param confidence is the relationship correct?
      * @param relationshipStatus ordinal for the relationship status enum (draft, active, deprecated, obsolete, other)
      * @param steward user id or name of steward id who assigned the relationship (or approved the discovered value).
      * @param source id of the source of the knowledge of the relationship
@@ -1064,6 +1068,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                        String  glossaryTermTwoGUID,
                                        String  glossaryTermTwoGUIDParameterName,
                                        String  expression,
+                                       int     confidence,
                                        String  description,
                                        int     relationshipStatus,
                                        String  steward,
@@ -1109,6 +1114,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         relationshipTypeName,
                                         isMergeUpdate,
                                         builder.getTermRelationshipProperties(expression,
+                                                                              confidence,
                                                                               description,
                                                                               relationshipStatus,
                                                                               steward,

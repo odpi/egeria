@@ -54,28 +54,309 @@ content-packs/CocoComboArchive.omarchive
 
 ###
 # =====================================================================================================================
-# Review Solutions
+# Work with Information Supply Chains
+# https://egeria-project.org/concepts/information-supply-chain
+
+@informationSupplyChainGUID=add guid here
+@segmentGUID=add guid here
+@segment1GUID=add guid here
+@segment2GUID=add guid here
+
+###
+# @name createInformationSupplyChain
+# Create an information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewInformationSupplyChainRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability.",
+    "purposes": ["purpose1", "purpose2"],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": {{isotime}},
+    "effectiveTo": {{isotime}}
+  }
+}
+                                                     
+###
+# @name createInformationSupplyChainFromTemplate
+# Create a new metadata element to represent an information supply chain using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
 
 
 ###
-# group: Review
+# @name updateInformationSupplyChain
+# Update the properties of an information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateInformationSupplyChainRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability.",
+    "purposes": ["purpose1", "purpose2"],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": {{isotime}},
+    "effectiveTo": {{isotime}}
+  }
+}
+
+
+###
+# @name createInformationSupplyChainSegment
+# Create an information supply chain segment and link it to its owning information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/segments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InformationSupplyChainSegmentRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability.",
+    "integrationStyle": "style",
+    "estimatedVolumetrics": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": {{isotime}},
+    "effectiveTo": {{isotime}}
+  }
+}
+
+
+###
+# @name updateInformationSupplyChainSegment
+# Update the properties of an information supply chain segment.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segmentGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InformationSupplyChainSegmentRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability.",
+    "integrationStyle": "style",
+    "estimatedVolumetrics": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": {{isotime}},
+    "effectiveTo": {{isotime}}
+  }
+}
+
+                                                              
+###
+# @name linkSegments
+# Connect two information supply chain segments.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segment1GUID}}/link-to/{{segment2GUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InformationSupplyChainLinkRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": {{isotime}},
+    "effectiveTo": {{isotime}}
+  }
+}
+
+                                     
+###
+
+# @name detachSegments
+# Detach two information supply chain segments from one another. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segment1GUID}}/link-to/{{segment2GUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteInformationSupplyChainSegment
+# Delete an information supply chain segment. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/segments/{{segmentGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteInformationSupplyChain
+# Delete an information supply chain. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
 # @name findAllInformationSupplyChains
 # Retrieve the list of information supply chain metadata elements that contain the search string.
-# https://egeria-project.org/concepts/information-supply-chain
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findAllInformationSupplyChains - with full request body
+# Retrieve the list of information supply chain metadata elements that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "class" : "FilterRequestBody",
+  "asOfTime" : {{isotime}},
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
-# group: Review
 # @name findInformationSupplyChains
 # Retrieve the list of information supply chain metadata elements that contain the search string.
-# https://egeria-project.org/concepts/information-supply-chain
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -85,7 +366,89 @@ Content-Type: application/json
 
 
 ###
-# group: Review
+# @name findInformationSupplyChains - with full request body
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : {{isotime}},
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+###
+
+# @name getInformationSupplyChainsByName
+# Returns the list of information supply chains with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10addImplementation=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getInformationSupplyChainsByName - with full request body
+# Returns the list of information supply chains with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10addImplementation=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "asOfTime" : {{isotime}},
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName",
+  "filter" : "Add name here"
+}
+
+
+###
+# @name getInformationSupplyChainByGUID
+# Return the properties of a specific information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getInformationSupplyChainByGUID - with request body
+# Return the properties of a specific information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AnyTimeRequestBody",
+  "asOfTime" : {{isotime}},
+  "effectiveTime" : {{isotime}},
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+
+###
+# =====================================================================================================================
+# Review Solutions
+
+
+###
 # @name findSolutionBlueprints
 # Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.
 # https://egeria-project.org/concepts/solution-blueprint
@@ -99,7 +462,6 @@ Content-Type: application/json
 
 
 ###
-# group: Review
 # @name findSolutionRoles
 # Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
 # https://egeria-project.org/concepts/actor
@@ -112,7 +474,6 @@ Content-Type: application/json
 }
 
 ###
-# group: Review
 # @name findSolutionComponents
 # Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.
 # https://egeria-project.org/concepts/solution-components
@@ -129,7 +490,6 @@ Content-Type: application/json
 @solutionComponentGUID=fb32bef2-e79f-4893-b500-2e547f24d482
 
 ###
-# group: Review
 # @name getSolutionComponentImplementations
 # Retrieve the list of metadata elements that are associated with the solution component via the ImplementedBy relationship.
 # https://egeria-project.org/concepts/solution-components

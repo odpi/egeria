@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetE
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
@@ -14,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
 import java.util.Date;
@@ -27,97 +25,6 @@ import java.util.List;
  */
 public interface StewardshipExchangeInterface
 {
-    /**
-     * Classify the element to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param externalIdentifier unique identifier of the element in the external asset manager
-     * @param properties descriptive properties for the data field
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void setElementAsDataField(String                    userId,
-                               String                    assetManagerGUID,
-                               String                    assetManagerName,
-                               String                    elementGUID,
-                               String                    externalIdentifier,
-                               DataFieldValuesProperties properties,
-                               Date                      effectiveTime,
-                               boolean                   forLineage,
-                               boolean                   forDuplicateProcessing) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException;
-
-
-    /**
-     * Remove the data field designation from the element.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param externalIdentifier unique identifier of the element in the external asset manager
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void clearElementAsDataField(String  userId,
-                                 String  assetManagerGUID,
-                                 String  assetManagerName,
-                                 String  elementGUID,
-                                 String  externalIdentifier,
-                                 Date    effectiveTime,
-                                 boolean forLineage,
-                                 boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
-
-
-    /**
-     * Return information about the elements classified with the DataField classification.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param properties values to match on
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @return list of element stubs
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    List<ElementStub> getDataFieldClassifiedElements(String                   userId,
-                                                     String                   assetManagerGUID,
-                                                     String                   assetManagerName,
-                                                     DataFieldQueryProperties properties,
-                                                     int                      startFrom,
-                                                     int                      pageSize,
-                                                     Date                     effectiveTime,
-                                                     boolean                  forLineage,
-                                                     boolean                  forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException;
-
-
     /**
      * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
      * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the

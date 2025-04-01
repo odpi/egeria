@@ -25,6 +25,7 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
     private List<String> relationshipTypes         = null;
     private String       limitToISCQualifiedName   = null;
     private String       highlightISCQualifiedName = null;
+    private boolean      allAnchors                = false;
 
 
     /**
@@ -145,6 +146,28 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
 
 
     /**
+     * Return whether all anchors should be added - or just those to known nodes? Default is false.
+     *
+     * @return flag
+     */
+    public boolean getAllAnchors()
+    {
+        return allAnchors;
+    }
+
+
+    /**
+     * Set up whether all anchors should be added - or just those to known nodes? Default is false.
+     *
+     * @param allAnchors flag
+     */
+    public void setAllAnchors(boolean allAnchors)
+    {
+        this.allAnchors = allAnchors;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -153,10 +176,11 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
     public String toString()
     {
         return "AssetLineageGraphRequestBody{" +
-                "relationshipTypes=" + relationshipTypes +
-                ", asOfTime=" + asOfTime +
+                "asOfTime=" + asOfTime +
+                ", relationshipTypes=" + relationshipTypes +
                 ", limitToISCQualifiedName='" + limitToISCQualifiedName + '\'' +
                 ", highlightISCQualifiedName='" + highlightISCQualifiedName + '\'' +
+                ", allAnchors=" + allAnchors +
                 "} " + super.toString();
     }
 
@@ -183,7 +207,8 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
             return false;
         }
         AssetLineageGraphRequestBody that = (AssetLineageGraphRequestBody) objectToCompare;
-        return  Objects.equals(asOfTime, that.asOfTime) &&
+        return  allAnchors == that.allAnchors &&
+                Objects.equals(asOfTime, that.asOfTime) &&
                 Objects.equals(relationshipTypes, that.relationshipTypes) &&
                 Objects.equals(limitToISCQualifiedName, that.limitToISCQualifiedName) &&
                 Objects.equals(highlightISCQualifiedName, that.highlightISCQualifiedName);
@@ -198,6 +223,6 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), asOfTime, relationshipTypes, limitToISCQualifiedName, highlightISCQualifiedName);
+        return Objects.hash(super.hashCode(), allAnchors, asOfTime, relationshipTypes, limitToISCQualifiedName, highlightISCQualifiedName);
     }
 }

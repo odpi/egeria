@@ -150,7 +150,7 @@ public class RetentionClassifierGovernanceActionConnector extends RemediationGov
 
                             governanceContext.classifyMetadataElement(element.getElementGUID(),
                                                                       OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
-                                                                      false,
+                                                                      true,
                                                                       false,
                                                                       properties,
                                                                       new Date());

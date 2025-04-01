@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -45,93 +44,6 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public ClassificationExplorerRESTServices()
     {
-    }
-
-
-    /**
-     * Return information about the elements classified with the data field classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return void or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    public MetadataElementSummariesResponse getDataFieldClassifiedElements(String                   serverName,
-                                                                           String                   urlMarker,
-                                                                           int                      startFrom,
-                                                                           int                      pageSize,
-                                                                           boolean                  forLineage,
-                                                                           boolean                  forDuplicateProcessing,
-                                                                           DataFieldQueryProperties requestBody)
-    {
-        final String methodName = "getDataFieldClassifiedElements";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
-        AuditLog                         auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.getDataFieldClassifiedElements(userId,
-                                                                            requestBody.getDefaultValue(),
-                                                                            requestBody.getSampleValues(),
-                                                                            requestBody.getDataPattern(),
-                                                                            requestBody.getNamePattern(),
-                                                                            requestBody.getOpenMetadataTypeName(),
-                                                                            requestBody.getLimitResultsByStatus(),
-                                                                            requestBody.getAsOfTime(),
-                                                                            requestBody.getSequencingProperty(),
-                                                                            requestBody.getSequencingOrder(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElements(handler.getDataFieldClassifiedElements(userId,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            new Date(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
     }
 
 

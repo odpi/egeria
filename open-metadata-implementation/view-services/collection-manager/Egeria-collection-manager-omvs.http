@@ -312,7 +312,7 @@ Content-Type: application/json
 
 {
   "class" : "CollectionProperties",
-  "qualifiedName": "Must provide a unique name here",
+  "qualifiedName": "Must provide a unique name here if replaceAllProperties=true",
   "name" : "Add display name here",
   "description" : "Add description of the collection here",
   "collectionType": "Add appropriate valid value for type"

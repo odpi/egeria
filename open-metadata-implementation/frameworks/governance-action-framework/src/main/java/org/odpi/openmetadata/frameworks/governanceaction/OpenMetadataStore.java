@@ -948,7 +948,10 @@ public class OpenMetadataStore
                                                                parentGUID,
                                                                parentRelationshipTypeName,
                                                                parentRelationshipProperties,
-                                                               parentAtEnd1);
+                                                               parentAtEnd1,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               getEffectiveTime());
     }
 
 
@@ -1012,7 +1015,10 @@ public class OpenMetadataStore
                                                                parentGUID,
                                                                parentRelationshipTypeName,
                                                                parentRelationshipProperties,
-                                                               parentAtEnd1);
+                                                               parentAtEnd1,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               getEffectiveTime());
     }
 
 
@@ -1075,7 +1081,10 @@ public class OpenMetadataStore
                                                                     parentGUID,
                                                                     parentRelationshipTypeName,
                                                                     parentRelationshipProperties,
-                                                                    parentAtEnd1);
+                                                                    parentAtEnd1,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    getEffectiveTime());
     }
 
 
@@ -1142,7 +1151,10 @@ public class OpenMetadataStore
                                                                     parentGUID,
                                                                     parentRelationshipTypeName,
                                                                     parentRelationshipProperties,
-                                                                    parentAtEnd1);
+                                                                    parentAtEnd1,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    getEffectiveTime());
     }
 
 
@@ -1205,7 +1217,10 @@ public class OpenMetadataStore
                                                                  parentGUID,
                                                                  parentRelationshipTypeName,
                                                                  parentRelationshipProperties,
-                                                                 parentAtEnd1);
+                                                                 parentAtEnd1,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 getEffectiveTime());
     }
 
 
@@ -1255,8 +1270,8 @@ public class OpenMetadataStore
                                                  String                         parentRelationshipTypeName,
                                                  ElementProperties              parentRelationshipProperties,
                                                  boolean                        parentAtEnd1) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         return openMetadataClient.getMetadataElementFromTemplate(userId,
                                                                  externalSourceGUID,
@@ -1272,7 +1287,10 @@ public class OpenMetadataStore
                                                                  parentGUID,
                                                                  parentRelationshipTypeName,
                                                                  parentRelationshipProperties,
-                                                                 parentAtEnd1);
+                                                                 parentAtEnd1,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 getEffectiveTime());
     }
 
 

@@ -596,24 +596,6 @@ Content-Type: application/json
 
 ###
 # group: Glossaries
-# @name Add the data field values classification to the glossary term
-POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/is-data-field
-Content-Type: application/json
-
-{
-	"class" : "ClassificationRequestBody",
-	"properties" : 
-		{
-			"class" : "DataFieldValuesProperties",
-			"defaultValue" : "Add default value here",
-            "sampleValues" : [ "Sample Value 1", "Sample Value 2"],
-            "dataPatterns" : ["add data pattern here"],
-            "namePatterns" : ["add column pattern here"]
-		}
-}
-
-###
-# group: Glossaries
 # @name Add the confidentiality classification to the glossary term
 POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/elements/{{glossaryTermGUID}}/confidentiality
 Content-Type: application/json

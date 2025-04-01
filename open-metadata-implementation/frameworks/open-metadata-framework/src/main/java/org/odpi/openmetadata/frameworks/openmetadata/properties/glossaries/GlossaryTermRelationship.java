@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GlossaryTermRelationship extends RelationshipProperties
 {
     private String                         expression  = null;
+    private int                            confidence  = 0;
     private String                         description = null;
     private GlossaryTermRelationshipStatus status      = null;
     private String                         steward     = null;
@@ -51,6 +52,7 @@ public class GlossaryTermRelationship extends RelationshipProperties
         {
             expression = template.getExpression();
             description = template.getDescription();
+            confidence = template.getConfidence();
             status = template.getStatus();
             steward = template.getSteward();
             source = template.getSource();
@@ -99,6 +101,31 @@ public class GlossaryTermRelationship extends RelationshipProperties
     public String getDescription()
     {
         return description;
+    }
+
+
+
+    /**
+     * Return the level of confidence that the relationship is correct.  0 means unassigned. Typical assigned values are usually between 1-100
+     * as a percentage scale.
+     *
+     * @return int
+     */
+    public int getConfidence()
+    {
+        return confidence;
+    }
+
+
+    /**
+     * Set up the level of confidence that the relationship is correct.  0 means unassigned. Typical assigned values are usually between 1-100
+     * as a percentage scale.
+     *
+     * @param confidence int
+     */
+    public void setConfidence(int confidence)
+    {
+        this.confidence = confidence;
     }
 
 
@@ -180,6 +207,7 @@ public class GlossaryTermRelationship extends RelationshipProperties
                 "expression='" + expression + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", confidence=" + confidence +
                 ", steward='" + steward + '\'' +
                 ", source='" + source + '\'' +
                 "} " + super.toString();
@@ -208,7 +236,8 @@ public class GlossaryTermRelationship extends RelationshipProperties
             return false;
         }
         GlossaryTermRelationship that = (GlossaryTermRelationship) objectToCompare;
-        return Objects.equals(expression, that.expression) &&
+        return confidence == that.confidence &&
+                       Objects.equals(expression, that.expression) &&
                        Objects.equals(description, that.description) && status == that.status &&
                        Objects.equals(steward, that.steward) && Objects.equals(source, that.source);
     }
@@ -222,6 +251,6 @@ public class GlossaryTermRelationship extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), expression, description, status, steward, source);
+        return Objects.hash(super.hashCode(), expression, confidence, description, status, steward, source);
     }
 }

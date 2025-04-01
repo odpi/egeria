@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.viewservices.collectionmanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.viewservices.collectionmanager.server.CollectionManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 

@@ -126,7 +126,15 @@ public class TemplateRequestBody extends NewElementRequestBody
      *
      * @return list of properties and their values.
      */
-
+    @Override
+    public String toString()
+    {
+        return "TemplateRequestBody{" +
+                "templateGUID='" + templateGUID + '\'' +
+                ", replacementProperties=" + replacementProperties +
+                ", placeholderPropertyValues=" + placeholderPropertyValues +
+                "} " + super.toString();
+    }
 
 
     /**

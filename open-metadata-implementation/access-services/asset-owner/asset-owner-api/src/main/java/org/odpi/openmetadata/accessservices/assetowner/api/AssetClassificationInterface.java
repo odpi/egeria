@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.RetentionClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
@@ -295,41 +294,6 @@ public interface AssetClassificationInterface
                                       String assetGUID) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException;
-
-
-    /**
-     * Classify the element to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param properties descriptive properties for the data field
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void setElementAsDataField(String                    userId,
-                               String                    elementGUID,
-                               DataFieldValuesProperties properties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
-
-
-    /**
-     * Remove the data field designation from the element.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void clearElementAsDataField(String  userId,
-                                 String  elementGUID) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException;
 
 
     /**

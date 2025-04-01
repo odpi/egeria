@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,23 +15,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataFieldQueryProperties is used to provide the properties that can be used to extract an element by the data values classification.
+ * DataClassProperties is used to provide the characterizations of the data values stored in a data field
+ * described by the attached element.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataFieldQueryProperties extends FindProperties
+public class DataClassProperties extends ReferenceableProperties
 {
     private String       defaultValue = null;
     private List<String> sampleValues = null;
-    private List<String> dataPattern = null;
-    private List<String> namePattern = null;
+    private List<String> dataPatterns = null;
+    private List<String> namePatterns = null;
 
 
     /**
      * Default constructor
      */
-    public DataFieldQueryProperties()
+    public DataClassProperties()
     {
         super();
     }
@@ -42,7 +43,7 @@ public class DataFieldQueryProperties extends FindProperties
      *
      * @param template template object to copy.
      */
-    public DataFieldQueryProperties(DataFieldQueryProperties template)
+    public DataClassProperties(DataClassProperties template)
     {
         super(template);
 
@@ -50,8 +51,8 @@ public class DataFieldQueryProperties extends FindProperties
         {
             defaultValue = template.getDefaultValue();
             sampleValues = template.getSampleValues();
-            dataPattern = template.getDataPattern();
-            namePattern = template.getNamePattern();
+            dataPatterns = template.getDataPatterns();
+            namePatterns = template.getNamePatterns();
         }
     }
 
@@ -105,20 +106,20 @@ public class DataFieldQueryProperties extends FindProperties
      *
      * @return string
      */
-    public List<String> getDataPattern()
+    public List<String> getDataPatterns()
     {
-        return dataPattern;
+        return dataPatterns;
     }
 
 
     /**
      * Set up a regular expression that characterizes the data values stored in this data field.
      *
-     * @param dataPattern string
+     * @param dataPatterns string
      */
-    public void setDataPattern(List<String> dataPattern)
+    public void setDataPatterns(List<String> dataPatterns)
     {
-        this.dataPattern = dataPattern;
+        this.dataPatterns = dataPatterns;
     }
 
 
@@ -127,20 +128,20 @@ public class DataFieldQueryProperties extends FindProperties
      *
      * @return string
      */
-    public List<String> getNamePattern()
+    public List<String> getNamePatterns()
     {
-        return namePattern;
+        return namePatterns;
     }
 
 
     /**
      * Set up  a regular expression that characterizes the name used for this type of data field.
      *
-     * @param namePattern string
+     * @param namePatterns string
      */
-    public void setNamePattern(List<String> namePattern)
+    public void setNamePatterns(List<String> namePatterns)
     {
-        this.namePattern = namePattern;
+        this.namePatterns = namePatterns;
     }
 
 
@@ -152,13 +153,14 @@ public class DataFieldQueryProperties extends FindProperties
     @Override
     public String toString()
     {
-        return "DataFieldQueryProperties{" +
+        return "DataClassProperties{" +
                 "defaultValue='" + defaultValue + '\'' +
                 ", sampleValues=" + sampleValues +
-                ", dataPattern=" + dataPattern +
-                ", namePattern=" + namePattern +
+                ", dataPattern=" + dataPatterns +
+                ", namePattern=" + namePatterns +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -173,7 +175,7 @@ public class DataFieldQueryProperties extends FindProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof DataFieldQueryProperties that))
+        if (! (objectToCompare instanceof DataClassProperties that))
         {
             return false;
         }
@@ -183,8 +185,8 @@ public class DataFieldQueryProperties extends FindProperties
         }
         return Objects.equals(defaultValue, that.defaultValue) &&
                        Objects.equals(sampleValues, that.sampleValues) &&
-                       Objects.equals(dataPattern, that.dataPattern) &&
-                       Objects.equals(namePattern, that.namePattern);
+                       Objects.equals(dataPatterns, that.dataPatterns) &&
+                       Objects.equals(namePatterns, that.namePatterns);
     }
 
 
@@ -196,6 +198,6 @@ public class DataFieldQueryProperties extends FindProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), defaultValue, sampleValues, dataPattern, namePattern);
+        return Objects.hash(super.hashCode(), defaultValue, sampleValues, dataPatterns, namePatterns);
     }
 }

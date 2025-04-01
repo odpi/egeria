@@ -128,7 +128,10 @@ public class AnnotationStore
                                                                                assetGUID,
                                                                                OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
                                                                                null,
-                                                                               true);
+                                                                               true,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               getEffectiveTime());
 
         if ((surveyReportGUID != null) && (engineActionGUID != null))
         {
@@ -703,7 +706,10 @@ public class AnnotationStore
                                                                                    surveyReportGUID,
                                                                                    OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                    null,
-                                                                                   true);
+                                                                                   true,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   getEffectiveTime());
 
             if (annotationGUID != null)
             {

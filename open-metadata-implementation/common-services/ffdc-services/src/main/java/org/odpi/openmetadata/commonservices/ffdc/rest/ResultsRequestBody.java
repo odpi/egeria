@@ -23,11 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResultsRequestBody
 {
-    private Date                effectiveTime        = null;
-    private List<ElementStatus> limitResultsByStatus = null;
-    private Date                asOfTime             = null;
-    private SequencingOrder     sequencingOrder      = null;
-    private String              sequencingProperty   = null;
+    private boolean             forLineage             = false;
+    private boolean             forDuplicateProcessing = false;
+    private Date                effectiveTime          = null;
+    private List<ElementStatus> limitResultsByStatus   = null;
+    private Date                asOfTime               = null;
+    private SequencingOrder     sequencingOrder        = null;
+    private String              sequencingProperty     = null;
 
     /**
      * Default constructor
@@ -47,12 +49,58 @@ public class ResultsRequestBody
     {
         if (template != null)
         {
-            effectiveTime = template.getEffectiveTime();
-            limitResultsByStatus = template.getLimitResultsByStatus();
-            asOfTime = template.getAsOfTime();
-            sequencingOrder = template.getSequencingOrder();
-            sequencingProperty = template.getSequencingProperty();
+            forLineage             = template.getForLineage();
+            forDuplicateProcessing = template.getForDuplicateProcessing();
+            effectiveTime          = template.getEffectiveTime();
+            limitResultsByStatus   = template.getLimitResultsByStatus();
+            asOfTime               = template.getAsOfTime();
+            sequencingOrder        = template.getSequencingOrder();
+            sequencingProperty     = template.getSequencingProperty();
         }
+    }
+
+
+    /**
+     * Return whether this request is to update lineage memento elements.
+     *
+     * @return flag
+     */
+    public boolean getForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether this request is to update lineage memento elements.
+     *
+     * @param forLineage flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /**
+     * Return whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @return flag
+     */
+    public boolean getForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @param forDuplicateProcessing flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
     }
 
 
@@ -181,7 +229,9 @@ public class ResultsRequestBody
     public String toString()
     {
         return "ResultsRequestBody{" +
-                "effectiveTime=" + effectiveTime +
+                "forLineage=" + forLineage +
+                ", forDuplicateProcessing=" + forDuplicateProcessing +
+                ", effectiveTime=" + effectiveTime +
                 ", limitResultsByStatus=" + limitResultsByStatus +
                 ", asOfTime=" + asOfTime +
                 ", sequencingOrder=" + sequencingOrder +
@@ -202,7 +252,9 @@ public class ResultsRequestBody
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         ResultsRequestBody that = (ResultsRequestBody) objectToCompare;
-        return Objects.equals(effectiveTime, that.effectiveTime) &&
+        return forLineage == that.forLineage &&
+                forDuplicateProcessing == that.forDuplicateProcessing &&
+                Objects.equals(effectiveTime, that.effectiveTime) &&
                 Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
                 Objects.equals(asOfTime, that.asOfTime) &&
                 sequencingOrder == that.sequencingOrder &&
@@ -219,6 +271,7 @@ public class ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveTime, limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty);
+        return Objects.hash(forLineage, forDuplicateProcessing, effectiveTime,
+                            limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty);
     }
 }

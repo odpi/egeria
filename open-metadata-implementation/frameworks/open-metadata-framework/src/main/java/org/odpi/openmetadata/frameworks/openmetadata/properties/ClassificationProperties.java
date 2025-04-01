@@ -4,8 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -13,14 +11,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberL
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -44,7 +39,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
                 @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
                 @JsonSubTypes.Type(value = DatabasePrimaryKeyProperties.class, name = "DatabasePrimaryKeyProperties"),
-                @JsonSubTypes.Type(value = DataFieldValuesProperties.class, name = "DataFieldValuesProperties"),
                 @JsonSubTypes.Type(value = DigitalLocationProperties.class, name = "DigitalLocationProperties"),
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
                 @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),

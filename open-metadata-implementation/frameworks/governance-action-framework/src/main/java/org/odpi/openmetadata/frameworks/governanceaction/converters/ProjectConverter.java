@@ -63,44 +63,19 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
 
             if (returnBean instanceof ProjectElement bean)
             {
-                ProjectProperties projectProperties = new ProjectProperties();
-
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, primaryElement, methodName));
 
-                ElementProperties elementProperties;
-
-                /*
-                 * The initial set of values come from the openMetadataElement.
-                 */
-                if (primaryElement != null)
-                {
-                    elementProperties = new ElementProperties(primaryElement.getElementProperties());
-
-                    projectProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
-                    projectProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    projectProperties.setIdentifier(this.removeIdentifier(elementProperties));
-                    projectProperties.setName(this.removeName(elementProperties));
-                    projectProperties.setDescription(this.removeDescription(elementProperties));
-                    projectProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
-                    projectProperties.setStartDate(this.removeStartDate(elementProperties));
-                    projectProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
-                    projectProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
-                    projectProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    projectProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    projectProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
-                }
-                else
+                if (primaryElement == null)
                 {
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
-
-                bean.setProperties(projectProperties);
-                bean.setResourceList(this.getResourceList(beanClass, relationships));
+                else
+                {
+                    bean.setProperties(this.getProjectProperties(primaryElement));
+                    bean.setResourceList(this.getResourceList(beanClass, relationships));
+                    bean.setProjectManagers(this.getProjectManagers(beanClass, relationships));
+                    bean.setProjectTeam(this.getProjectTeam(beanClass, relationships));
+                }
             }
 
             return returnBean;
@@ -115,9 +90,11 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
 
 
     /**
-     * Retrieve the project properties from the
-     * @param primaryElement
-     * @return
+     * Retrieve the project properties from the retrieved element.
+     *
+     * @param primaryElement element
+     *
+     * @return project properties
      */
     protected ProjectProperties getProjectProperties(OpenMetadataElement primaryElement)
     {

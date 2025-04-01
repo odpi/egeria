@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewRelatedElementsRequestBody extends UpdateRequestBody
+public class NewRelatedElementsRequestBody extends MetadataSourceRequestBody
 {
     private String            typeName             = null;
     private String            metadataElement1GUID = null;
@@ -205,18 +205,13 @@ public class NewRelatedElementsRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "NewRelatedElementsRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", typeName='" + typeName + '\'' +
-                       ", metadataElement1GUID='" + metadataElement1GUID + '\'' +
-                       ", metadataElement2GUID='" + metadataElement2GUID + '\'' +
-                       ", effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", properties=" + properties +
-                       ", forLineage=" + getForLineage() +
-                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       '}';
+                "typeName='" + typeName + '\'' +
+                ", metadataElement1GUID='" + metadataElement1GUID + '\'' +
+                ", metadataElement2GUID='" + metadataElement2GUID + '\'' +
+                ", effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                ", properties=" + properties +
+                "} " + super.toString();
     }
 
 

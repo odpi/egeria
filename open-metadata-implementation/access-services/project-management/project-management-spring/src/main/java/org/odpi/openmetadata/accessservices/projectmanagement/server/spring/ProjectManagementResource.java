@@ -215,60 +215,6 @@ public class ProjectManagementResource
 
 
     /**
-     * Retrieve the list of project metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param requestBody string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/projects/by-search-string")
-
-    public ProjectsResponse findProjects(@PathVariable String                  serverName,
-                                         @PathVariable String                  userId,
-                                         @RequestBody  SearchStringRequestBody requestBody,
-                                         @RequestParam int                     startFrom,
-                                         @RequestParam int                     pageSize)
-    {
-        return restAPI.findProjects(serverName, userId, requestBody, startFrom, pageSize);
-    }
-
-
-    /**
-     * Retrieve the list of project metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param requestBody name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/projects/by-name")
-
-    public ProjectsResponse getProjectsByName(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @RequestBody NameRequestBody requestBody,
-                                              @RequestParam int             startFrom,
-                                              @RequestParam int             pageSize)
-    {
-        return restAPI.getProjectsByName(serverName, userId, requestBody, startFrom, pageSize);
-    }
-
-
-    /**
      * Return information about a person role connected to the named project.
      *
      * @param serverName called server
@@ -318,53 +264,6 @@ public class ProjectManagementResource
     {
         return restAPI.getProjectActors(serverName, userId, projectGUID, startFrom, pageSize);
     }
-
-
-    /**
-     * Retrieve the list of project metadata elements.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @GetMapping(path = "/projects")
-
-    public ProjectsResponse getProjectsByName(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @RequestParam int             startFrom,
-                                              @RequestParam int             pageSize)
-    {
-        return restAPI.getProjects(serverName, userId, startFrom, pageSize);
-    }
-
-
-    /**
-     * Retrieve the project metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     *
-     * @return matching metadata element or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @GetMapping(path = "/projects/{guid}")
-
-    public ProjectResponse getProjectByGUID(@PathVariable String serverName,
-                                            @PathVariable String userId,
-                                            @PathVariable String guid)
-    {
-        return restAPI.getProjectByGUID(serverName, userId, guid);
-    }
-
 
 
     /**

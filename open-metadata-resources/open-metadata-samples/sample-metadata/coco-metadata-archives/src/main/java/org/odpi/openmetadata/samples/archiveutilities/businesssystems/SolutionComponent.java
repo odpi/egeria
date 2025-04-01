@@ -54,7 +54,7 @@ public enum SolutionComponent
                            "Move File To Data Lake",
                            "Move landing area files to data lake, catalog files in data lake with lineage from the landing area and validate/certify that the data contains valid values.  The cataloguing includes lineage, retention, origin, governance zones.  The quality validation survey will add a certification to the file asset if the data contains valid values.",
                            "V1.0",
-                           new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                           null,
                            null,
                            null),
 
@@ -64,7 +64,7 @@ public enum SolutionComponent
                           "Check Quality of Data",
                           "Validate that the data contains valid values. The quality validation survey will add a certification to the file asset if the data contains valid values.",
                           "V1.0",
-                          new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                          null,
                           null,
                           null),
 
@@ -74,7 +74,7 @@ public enum SolutionComponent
                           "Report Quality Issues",
                           "Create alerts to interested parties if quality issues are detected.",
                           "V1.0",
-                          new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                          null,
                           null,
                           null),
 
@@ -84,7 +84,7 @@ public enum SolutionComponent
                              "Determine Origin of Data",
                              "Add details of the originating hospital.",
                              "V1.0",
-                             new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                             null,
                              null,
                              null),
 
@@ -94,7 +94,7 @@ public enum SolutionComponent
                          "Set Retention Period",
                          "Define when this file can be archived and then deleted.",
                          "V1.0",
-                         new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                         null,
                          null,
                          null),
 
@@ -104,7 +104,7 @@ public enum SolutionComponent
                   "Publish Asset",
                   "Make the new file visible in the data lake catalog.",
                   "V1.0",
-                  new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                  null,
                   null,
                   null),
 

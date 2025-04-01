@@ -44,6 +44,8 @@ public class CollaborationManagerHandler
     private final NoteLogConverter<NoteLogElement>         noteLogConverter;
     private final NoteConverter<NoteElement>               noteConverter;
 
+    private final boolean forLineage = true;
+    private final boolean forDuplicateProcessing = false;
 
     /**
      * Create a new client.
@@ -124,23 +126,26 @@ public class CollaborationManagerHandler
                                                 elementGUID,
                                                 relationshipTypeName,
                                                 relationshipProperties,
-                                                true);
+                                                true,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime);
         }
         else
         {
             client.updateMetadataElementInStore(userId,
                                                 existingFeedback.getElement().getElementGUID(),
                                                 false,
-                                                false,
-                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
                                                 elementProperties,
                                                 effectiveTime);
 
             client.updateRelatedElementsInStore(userId,
                                                 existingFeedback.getRelationshipGUID(),
                                                 false,
-                                                false,
-                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
                                                 relationshipProperties,
                                                 effectiveTime);
         }
@@ -175,8 +180,8 @@ public class CollaborationManagerHandler
                                                                                          null,
                                                                                          null,
                                                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                                                         false,
-                                                                                         false,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
                                                                                          effectiveTime,
                                                                                          startFrom,
                                                                                          invalidParameterHandler.getMaxPagingSize());
@@ -206,8 +211,8 @@ public class CollaborationManagerHandler
                                                                   null,
                                                                   null,
                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                  false,
-                                                                  false,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
                                                                   effectiveTime,
                                                                   startFrom,
                                                                   invalidParameterHandler.getMaxPagingSize());
@@ -294,8 +299,8 @@ public class CollaborationManagerHandler
         {
             client.deleteMetadataElementInStore(userId,
                                                 existingRating.getElement().getElementGUID(),
-                                                false,
-                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
                                                 effectiveTime);
         }
     }
@@ -326,18 +331,18 @@ public class CollaborationManagerHandler
         final String methodName = "getAttachedRatings";
 
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 elementGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               elementGUID,
+                                                                                               1,
+                                                                                               OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
         return this.getRatingsFromRelatedMetadataElement(relatedMetadataElements, methodName);
     }
 
@@ -428,8 +433,8 @@ public class CollaborationManagerHandler
         {
             client.deleteMetadataElementInStore(userId,
                                                 existingLike.getElement().getElementGUID(),
-                                                false,
-                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
                                                 effectiveTime);
         }
     }
@@ -459,18 +464,18 @@ public class CollaborationManagerHandler
         final String methodName = "getAttachedLikes";
 
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 elementGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               elementGUID,
+                                                                                               1,
+                                                                                               OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
         return this.getLikesFromRelatedMetadataElement(relatedMetadataElements, methodName);
     }
 
@@ -484,7 +489,7 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException error formatting bean
      */
     private List<LikeElement> getLikesFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
-                                                                 String                      methodName) throws PropertyServerException
+                                                                 String                     methodName) throws PropertyServerException
     {
         if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
@@ -548,7 +553,10 @@ public class CollaborationManagerHandler
                                                    elementGUID,
                                                    OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                    relationshipProperties,
-                                                   true);
+                                                   true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   new Date());
     }
 
 
@@ -639,7 +647,10 @@ public class CollaborationManagerHandler
                                                    commentGUID,
                                                    OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                    relationshipProperties,
-                                                   true);
+                                                   true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   new Date());
     }
 
 
@@ -671,8 +682,8 @@ public class CollaborationManagerHandler
         client.updateMetadataElementInStore(userId,
                                             commentGUID,
                                             ! isMergeUpdate,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             elementProperties,
                                             effectiveTime);
     }
@@ -704,18 +715,18 @@ public class CollaborationManagerHandler
                                                                                      isPublic);
 
         OpenMetadataRelationshipList relationships = client.getMetadataElementRelationships(userId,
-                                                                                              parentGUID,
-                                                                                              commentGUID,
-                                                                                              OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                                                              false,
-                                                                                              false,
-                                                                                              null,
-                                                                                              0,
-                                                                                              0);
+                                                                                            parentGUID,
+                                                                                            commentGUID,
+                                                                                            OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            effectiveTime,
+                                                                                            0,
+                                                                                            0);
 
         if ((relationships != null) && (relationships.getElementList() != null))
         {
@@ -726,8 +737,8 @@ public class CollaborationManagerHandler
                     client.updateRelatedElementsInStore(userId,
                                                         relationship.getRelationshipGUID(),
                                                         false,
-                                                        false,
-                                                        false,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         relationshipProperties,
                                                         effectiveTime);
 
@@ -767,8 +778,8 @@ public class CollaborationManagerHandler
                                             OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                             questionCommentGUID,
                                             answerCommentGUID,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             null,
                                             null,
                                             relationshipProperties,
@@ -796,18 +807,18 @@ public class CollaborationManagerHandler
                                                                   PropertyServerException
     {
         OpenMetadataRelationshipList relationships = client.getMetadataElementRelationships(userId,
-                                                                                              questionCommentGUID,
-                                                                                              answerCommentGUID,
-                                                                                              OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                                                              false,
-                                                                                              false,
-                                                                                              effectiveTime,
-                                                                                              0,
-                                                                                              0);
+                                                                                            questionCommentGUID,
+                                                                                            answerCommentGUID,
+                                                                                            OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            effectiveTime,
+                                                                                            0,
+                                                                                            0);
 
         if ((relationships != null) && (relationships.getElementList() != null))
         {
@@ -870,8 +881,8 @@ public class CollaborationManagerHandler
 
         OpenMetadataElement commentElement = client.getMetadataElementByGUID(userId,
                                                                              commentGUID,
-                                                                             false,
-                                                                             false,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
                                                                              null,
                                                                              effectiveTime);
 
@@ -910,18 +921,18 @@ public class CollaborationManagerHandler
         final String methodName = "getAttachedComments";
 
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 elementGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               elementGUID,
+                                                                                               1,
+                                                                                               OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
         return this.getCommentsFromRelatedMetadataElement(relatedMetadataElements, methodName);
     }
 
@@ -990,8 +1001,8 @@ public class CollaborationManagerHandler
                                                                                                null,
                                                                                                null,
                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                               false,
-                                                                                               false,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
                                                                                                effectiveTime,
                                                                                                startFrom,
                                                                                                pageSize);
@@ -1078,7 +1089,10 @@ public class CollaborationManagerHandler
                                                    null,
                                                    null,
                                                    null,
-                                                   true);
+                                                   true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   new Date());
     }
 
 
@@ -1133,7 +1147,11 @@ public class CollaborationManagerHandler
                                                    PropertyServerException,
                                                    UserNotAuthorizedException
     {
-        client.deleteMetadataElementInStore(userId, tagGUID, false, false, effectiveTime);
+        client.deleteMetadataElementInStore(userId,
+                                            tagGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime);
     }
 
 
@@ -1159,8 +1177,8 @@ public class CollaborationManagerHandler
 
         OpenMetadataElement openMetadataElement = client.getMetadataElementByGUID(userId,
                                                                                   tagGUID,
-                                                                                  false,
-                                                                                  false,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
                                                                                   null,
                                                                                   effectiveTime);
 
@@ -1215,8 +1233,8 @@ public class CollaborationManagerHandler
                                                                                      null,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                     false,
-                                                                                     false,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
                                                                                      effectiveTime,
                                                                                      startFrom,
                                                                                      pageSize);
@@ -1291,8 +1309,8 @@ public class CollaborationManagerHandler
                                                                                                null,
                                                                                                null,
                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                               false,
-                                                                                               false,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
                                                                                                effectiveTime,
                                                                                                startFrom,
                                                                                                pageSize);
@@ -1372,8 +1390,8 @@ public class CollaborationManagerHandler
                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                             elementGUID,
                                             tagGUID,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             null,
                                             null,
                                             relationshipProperties,
@@ -1401,18 +1419,18 @@ public class CollaborationManagerHandler
                                                                     UserNotAuthorizedException
     {
         OpenMetadataRelationshipList relationships = client.getMetadataElementRelationships(userId,
-                                                                                              elementGUID,
-                                                                                              tagGUID,
-                                                                                              OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                                                              false,
-                                                                                              false,
-                                                                                              effectiveTime,
-                                                                                              0,
-                                                                                              0);
+                                                                                            elementGUID,
+                                                                                            tagGUID,
+                                                                                            OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            effectiveTime,
+                                                                                            0,
+                                                                                            0);
 
         if (relationships != null)
         {
@@ -1422,8 +1440,8 @@ public class CollaborationManagerHandler
                 {
                     client.deleteRelatedElementsInStore(userId,
                                                         relationship.getRelationshipGUID(),
-                                                        false,
-                                                        false,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         effectiveTime);
                 }
             }
@@ -1456,18 +1474,18 @@ public class CollaborationManagerHandler
                                                                                            UserNotAuthorizedException
     {
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 tagGUID,
-                                                                                                 2,
-                                                                                                 OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               tagGUID,
+                                                                                               2,
+                                                                                               OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
 
         if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
@@ -1515,18 +1533,18 @@ public class CollaborationManagerHandler
         final String methodName = "getAttachedTags";
 
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 elementGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               elementGUID,
+                                                                                               1,
+                                                                                               OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
         return this.getTagsFromRelatedMetadataElement(relatedMetadataElements, methodName);
     }
 
@@ -1540,7 +1558,7 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException error formatting bean
      */
     private List<InformalTagElement> getTagsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
-                                                                       String                      methodName) throws PropertyServerException
+                                                                       String                     methodName) throws PropertyServerException
     {
         if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
@@ -1612,7 +1630,10 @@ public class CollaborationManagerHandler
                                                    elementGUID,
                                                    OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
                                                    relationshipProperties,
-                                                   true);
+                                                   true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   new Date());
     }
 
 
@@ -1681,8 +1702,8 @@ public class CollaborationManagerHandler
         client.updateMetadataElementInStore(userId,
                                             noteLogGUID,
                                             ! isMergeUpdate,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             elementProperties,
                                             effectiveTime);
     }
@@ -1705,7 +1726,11 @@ public class CollaborationManagerHandler
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        client.deleteMetadataElementInStore(userId, noteLogGUID, false, false, effectiveTime);
+        client.deleteMetadataElementInStore(userId,
+                                            noteLogGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime);
     }
 
 
@@ -1742,8 +1767,8 @@ public class CollaborationManagerHandler
                                                                                                null,
                                                                                                null,
                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                               false,
-                                                                                               false,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
                                                                                                effectiveTime,
                                                                                                startFrom,
                                                                                                pageSize);
@@ -1854,8 +1879,8 @@ public class CollaborationManagerHandler
                                                                                      null,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                     false,
-                                                                                     false,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
                                                                                      effectiveTime,
                                                                                      startFrom,
                                                                                      pageSize);
@@ -1895,18 +1920,18 @@ public class CollaborationManagerHandler
         final String methodName = "getNoteLogsForElement";
 
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 elementGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               elementGUID,
+                                                                                               1,
+                                                                                               OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
         return this.getNoteLogsFromRelatedMetadataElements(relatedMetadataElements, methodName);
     }
 
@@ -1934,8 +1959,8 @@ public class CollaborationManagerHandler
 
         OpenMetadataElement openMetadataElement = client.getMetadataElementByGUID(userId,
                                                                                   noteLogGUID,
-                                                                                  false,
-                                                                                  false,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
                                                                                   null,
                                                                                   effectiveTime);
 
@@ -1992,7 +2017,10 @@ public class CollaborationManagerHandler
                                                    noteLogGUID,
                                                    OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
                                                    null,
-                                                   true);
+                                                   true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   new Date());
 
     }
 
@@ -2062,8 +2090,8 @@ public class CollaborationManagerHandler
         client.updateMetadataElementInStore(userId,
                                             noteGUID,
                                             ! isMergeUpdate,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             elementProperties,
                                             effectiveTime);
     }
@@ -2086,7 +2114,11 @@ public class CollaborationManagerHandler
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        client.deleteMetadataElementInStore(userId, noteGUID, false, false, effectiveTime);
+        client.deleteMetadataElementInStore(userId,
+                                            noteGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime);
     }
 
 
@@ -2123,8 +2155,8 @@ public class CollaborationManagerHandler
                                                                                                null,
                                                                                                null,
                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                               false,
-                                                                                               false,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
                                                                                                effectiveTime,
                                                                                                startFrom,
                                                                                                pageSize);
@@ -2218,18 +2250,18 @@ public class CollaborationManagerHandler
         final String methodName = "getNotesForNoteLog";
 
         RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
-                                                                                                 noteLogGUID,
-                                                                                                 1,
-                                                                                                 OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                               noteLogGUID,
+                                                                                               1,
+                                                                                               OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
         return this.getNotesFromRelatedMetadataElements(relatedMetadataElements, methodName);
     }
 
@@ -2257,8 +2289,8 @@ public class CollaborationManagerHandler
 
         OpenMetadataElement openMetadataElement = client.getMetadataElementByGUID(userId,
                                                                                   noteGUID,
-                                                                                  false,
-                                                                                  false,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
                                                                                   null,
                                                                                   effectiveTime);
 

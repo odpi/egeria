@@ -32,8 +32,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Conn
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
@@ -2561,44 +2559,6 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
 
     /**
-     * Classify the element to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param userId      calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param properties  descriptive properties for the data field
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void setElementAsDataField(String                    userId,
-                                      String                    elementGUID,
-                                      DataFieldValuesProperties properties) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-
-    }
-
-
-    /**
-     * Remove the data field designation from the element.
-     *
-     * @param userId      calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void clearElementAsDataField(String userId, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
-    {
-
-    }
-
-
-    /**
      * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
      * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
      * levelIdentifier property.
@@ -4232,23 +4192,6 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
          return restResult.getElements();
     }
 
-    /**
-     * Return information about the elements classified with the DataField classification.
-     *
-     * @param userId     calling user
-     * @param properties values to match on
-     * @param startFrom  paging start point
-     * @param pageSize   maximum results that can be returned
-     * @return list of element stubs
-     * @throws InvalidParameterException  qualifiedName or userId is null
-     * @throws PropertyServerException    problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public List<ElementStub> getDataFieldClassifiedElements(String userId, DataFieldQueryProperties properties, int startFrom, int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
-    {
-        return null;
-    }
 
     /**
      * Return information about the elements classified with the confidence classification.

@@ -80,6 +80,12 @@ public class TestCommentType
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
+
+        testValue = CommentType.REQUIREMENT;
+
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
     }
 
 

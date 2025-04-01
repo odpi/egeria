@@ -21,8 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AnyTimeRequestBody extends EffectiveTimeRequestBody
 {
-    private Date asOfTime = null;
-
+    private Date    asOfTime               = null;
+    private boolean forLineage             = false;
+    private boolean forDuplicateProcessing = false;
 
     /**
      * Default constructor
@@ -44,7 +45,9 @@ public class AnyTimeRequestBody extends EffectiveTimeRequestBody
 
         if (template != null)
         {
-            asOfTime = template.getAsOfTime();
+            asOfTime               = template.getAsOfTime();
+            forLineage             = template.getForLineage();
+            forDuplicateProcessing = template.getForDuplicateProcessing();
         }
     }
 
@@ -70,6 +73,51 @@ public class AnyTimeRequestBody extends EffectiveTimeRequestBody
         this.asOfTime = asOfTime;
     }
 
+
+    /**
+     * Return whether this request is to update lineage memento elements.
+     *
+     * @return flag
+     */
+    public boolean getForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether this request is to update lineage memento elements.
+     *
+     * @param forLineage flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /**
+     * Return whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @return flag
+     */
+    public boolean getForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether this request is updating an element as part of a deduplication exercise.
+     *
+     * @param forDuplicateProcessing flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -78,10 +126,13 @@ public class AnyTimeRequestBody extends EffectiveTimeRequestBody
     @Override
     public String toString()
     {
-        return "AnnyTimeRequestBody{" +
+        return "AnyTimeRequestBody{" +
                 "asOfTime=" + asOfTime +
+                ", forLineage=" + forLineage +
+                ", forDuplicateProcessing=" + forDuplicateProcessing +
                 "} " + super.toString();
     }
+
 
 
     /**
@@ -106,7 +157,9 @@ public class AnyTimeRequestBody extends EffectiveTimeRequestBody
             return false;
         }
         AnyTimeRequestBody that = (AnyTimeRequestBody) objectToCompare;
-        return Objects.equals(asOfTime, that.asOfTime);
+        return forLineage == that.forLineage &&
+                forDuplicateProcessing == that.forDuplicateProcessing &&
+                Objects.equals(asOfTime, that.asOfTime);
     }
 
 
@@ -118,6 +171,6 @@ public class AnyTimeRequestBody extends EffectiveTimeRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), asOfTime);
+        return Objects.hash(super.hashCode(), asOfTime, forLineage, forDuplicateProcessing);
     }
 }

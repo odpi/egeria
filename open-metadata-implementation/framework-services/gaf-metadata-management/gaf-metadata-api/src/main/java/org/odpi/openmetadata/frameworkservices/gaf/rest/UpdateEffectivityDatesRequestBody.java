@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateEffectivityDatesRequestBody extends UpdateRequestBody
+public class UpdateEffectivityDatesRequestBody extends MetadataSourceRequestBody
 {
     private Date              effectiveFrom = null;
     private Date              effectiveTo   = null;
@@ -104,14 +104,9 @@ public class UpdateEffectivityDatesRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "UpdateEffectivityDatesRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", forLineage=" + getForLineage() +
-                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       '}';
+                "effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                "} " + super.toString();
     }
 
 

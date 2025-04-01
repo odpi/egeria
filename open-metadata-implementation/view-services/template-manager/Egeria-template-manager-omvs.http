@@ -179,7 +179,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateRequestBody",
+  "class" : "MetadataSourceRequestBody",
   "externalSourceGUID" :  "",
   "externalSourceName" : "",
   "forLineage" : false,
@@ -281,7 +281,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateRequestBody",
+  "class" : "MetadataSourceRequestBody",
   "externalSourceGUID" :  "",
   "externalSourceName" : "",
   "forLineage" : false,
@@ -357,7 +357,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateRequestBody",
+  "class" : "MetadataSourceRequestBody",
   "externalSourceGUID" :  "",
   "externalSourceName" : "",
   "forLineage" : false,

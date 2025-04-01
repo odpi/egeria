@@ -23,11 +23,69 @@ public enum OrganizationDefinition
             OrganizationTypeDefinition.PARTNER),
 
     /**
+     * Bowden Arrow Hospital
+     */
+    BOWDEN_ARROW("Bowden Arrow Hospital",
+            "Partner hospital in USA that takes part in clinical trials.",
+            OrganizationTypeDefinition.PARTNER),
+
+    /**
+     * Eagle House Hospital
+     */
+    EAGLE_HOUSE_HOSPITAL("Eagle House Hospital",
+                         "Partner hospital in USA that takes part in clinical trials.",
+                         OrganizationTypeDefinition.PARTNER),
+
+    /**
+     * Cleveland Way Hospital
+     */
+    CLEVELAND_WAY_HOSPITAL("Cleveland Way Hospital",
+                         "Partner hospital in USA that takes part in clinical trials.",
+                         OrganizationTypeDefinition.PARTNER),
+
+    /**
      * Oak Dene Hospital
      */
-    OAK_DENE("Oak Dene Hospital",
+    OAK_DENE_HOSPITAL("Oak Dene Hospital",
+                      "Partner hospital in UK that takes part in clinical trials.",
+                      OrganizationTypeDefinition.PARTNER),
+
+
+    /**
+     * Abbots Grove Hospital
+     */
+    ABBOTS_GROVE_HOSPITAL("Abbots Grove Hospital",
              "Partner hospital in UK that takes part in clinical trials.",
              OrganizationTypeDefinition.PARTNER),
+
+    /**
+     * Shipley Hospital
+     */
+    SHIPLEY_HOSPITAL("Shipley Hospital",
+               "Partner hospital in the UK that takes part in clinical trials.",
+               OrganizationTypeDefinition.PARTNER),
+
+
+    /**
+     * Bletchley Mission Hospital
+     */
+    BLETCHLEY_MISSION_HOSPITAL("Bletchley Mission Hospital",
+                     "Partner hospital in the UK that takes part in clinical trials.",
+                     OrganizationTypeDefinition.PARTNER),
+
+    /**
+     * Bushy Mead Hospital
+     */
+    BUSHY_MEAD_HOSPITAL("Bushy Mead Hospital",
+               "Partner hospital in the UK that takes part in clinical trials.",
+               OrganizationTypeDefinition.PARTNER),
+
+    /**
+     * Old Market Hospital
+     */
+    BECKON_TREE_HOSPITAL("Beckon Tree Hospital",
+               "Partner hospital in the UK that takes part in clinical trials.",
+               OrganizationTypeDefinition.PARTNER),
 
     /**
      * Old Market Hospital
@@ -35,6 +93,37 @@ public enum OrganizationDefinition
     OLD_MARKET("Old Market Hospital",
                "Partner hospital in the Netherlands that takes part in clinical trials.",
                OrganizationTypeDefinition.PARTNER),
+
+
+    /**
+     * Ferdinand Hospital
+     */
+    FERDINAND_HOSPITAL("Ferdinand Hospital",
+               "Partner hospital in the Netherlands that takes part in clinical trials.",
+               OrganizationTypeDefinition.PARTNER),
+
+
+    /**
+     * Lorne House Hospital
+     */
+    LORNE_HOUSE_HOSPITAL("Lorne House Hospital",
+               "Partner hospital in the Netherlands that takes part in clinical trials.",
+               OrganizationTypeDefinition.PARTNER),
+
+
+    /**
+     * Alexandra Hospital
+     */
+    ALEXANDRA_HOSPITAL("Alexandra Hospital",
+               "Partner hospital in the Netherlands that takes part in clinical trials.",
+               OrganizationTypeDefinition.PARTNER),
+
+    /**
+     * Portmand Clinic
+     */
+    PORTMAND_CLINIC("Portmand Clinic",
+                            "Partner hospital in the Netherlands that takes part in clinical trials.",
+                    OrganizationTypeDefinition.PARTNER),
 
     /**
      * XDC Partner IT Consultancy

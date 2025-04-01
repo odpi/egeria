@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdatePropertiesRequestBody extends UpdateRequestBody
+public class UpdatePropertiesRequestBody extends MetadataSourceRequestBody
 {
     private boolean           replaceProperties = false;
     private ElementProperties properties        = null;
@@ -106,14 +106,9 @@ public class UpdatePropertiesRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "UpdatePropertiesRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", replaceProperties=" + replaceProperties +
-                       ", properties=" + properties +
-                       ", forLineage=" + getForLineage() +
-                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       '}';
+                "replaceProperties=" + replaceProperties +
+                ", properties=" + properties +
+                "} " + super.toString();
     }
 
 

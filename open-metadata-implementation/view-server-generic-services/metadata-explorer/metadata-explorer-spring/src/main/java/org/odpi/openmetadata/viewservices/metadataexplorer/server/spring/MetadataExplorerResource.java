@@ -39,8 +39,6 @@ public class MetadataExplorerResource
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the metadata element
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -58,14 +56,10 @@ public class MetadataExplorerResource
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                 @PathVariable String  elementGUID,
                                                                 @PathVariable String  urlMarker,
-                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                boolean forLineage,
-                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                boolean forDuplicateProcessing,
                                                                 @RequestBody (required = false)
                                                                 AnyTimeRequestBody requestBody)
     {
-        return restAPI.getMetadataElementByGUID(serverName, elementGUID, urlMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementByGUID(serverName, elementGUID, urlMarker, requestBody);
     }
 
 
@@ -74,8 +68,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -92,13 +84,9 @@ public class MetadataExplorerResource
 
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          urlMarker,
-                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                      boolean         forLineage,
-                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                      boolean         forDuplicateProcessing,
                                                                       @RequestBody NameRequestBody requestBody)
     {
-        return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, requestBody);
     }
 
 
@@ -107,8 +95,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -125,13 +111,9 @@ public class MetadataExplorerResource
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          urlMarker,
-                                                           @RequestParam (required = false, defaultValue = "false")
-                                                           boolean         forLineage,
-                                                           @RequestParam (required = false, defaultValue = "false")
-                                                           boolean         forDuplicateProcessing,
                                                            @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataElementGUIDByUniqueName(serverName, urlMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, urlMarker, requestBody);
     }
 
 
@@ -146,8 +128,6 @@ public class MetadataExplorerResource
      * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
      *                 return results size.
      * @param oldestFirst  defining how the results should be ordered.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -170,14 +150,10 @@ public class MetadataExplorerResource
                                                                       int                    pageSize,
                                                                   @RequestParam (required = false, defaultValue = "false")
                                                                   boolean                oldestFirst,
-                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                forLineage,
-                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                forDuplicateProcessing,
                                                                   @RequestBody(required = false)
                                                                   HistoryRequestBody     requestBody)
     {
-        return restAPI.getMetadataElementHistory(serverName, elementGUID, urlMarker, forLineage, forDuplicateProcessing, startFrom, pageSize, oldestFirst, requestBody);
+        return restAPI.getMetadataElementHistory(serverName, elementGUID, urlMarker, startFrom, pageSize, oldestFirst, requestBody);
     }
 
 
@@ -186,8 +162,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -206,17 +180,13 @@ public class MetadataExplorerResource
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  urlMarker,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 forLineage,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 forDuplicateProcessing,
                                                                        @RequestParam (required = false, defaultValue = "0")
                                                                        int                     startFrom,
                                                                        @RequestParam (required = false, defaultValue = "0")
                                                                        int                     pageSize,
                                                                        @RequestBody SearchStringRequestBody requestBody)
     {
-        return restAPI.findMetadataElementsWithString(serverName, urlMarker, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElementsWithString(serverName, urlMarker, startFrom, pageSize, requestBody);
     }
 
 
@@ -226,8 +196,6 @@ public class MetadataExplorerResource
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the starting metadata element
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param startFrom paging start point
@@ -248,10 +216,6 @@ public class MetadataExplorerResource
     public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
                                                                             @PathVariable String  elementGUID,
                                                                             @PathVariable String  urlMarker,
-                                                                            @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean forLineage,
-                                                                            @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean forDuplicateProcessing,
                                                                             @RequestParam (required = false, defaultValue = "0")
                                                                             int     startingAtEnd,
                                                                             @RequestParam (required = false, defaultValue = "0")
@@ -265,8 +229,6 @@ public class MetadataExplorerResource
                                                   elementGUID,
                                                   null,
                                                   urlMarker,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
                                                   startingAtEnd,
                                                   startFrom,
                                                   pageSize,
@@ -281,8 +243,6 @@ public class MetadataExplorerResource
      * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param startFrom paging start point
@@ -304,10 +264,6 @@ public class MetadataExplorerResource
                                                                          @PathVariable String  elementGUID,
                                                                          @PathVariable String  relationshipTypeName,
                                                                          @PathVariable String  urlMarker,
-                                                                         @RequestParam(required = false, defaultValue = "false")
-                                                                         boolean forLineage,
-                                                                         @RequestParam(required = false, defaultValue = "false")
-                                                                         boolean forDuplicateProcessing,
                                                                          @RequestParam (required = false, defaultValue = "0")
                                                                          int     startingAtEnd,
                                                                          @RequestParam (required = false, defaultValue = "0")
@@ -321,8 +277,6 @@ public class MetadataExplorerResource
                                                   elementGUID,
                                                   relationshipTypeName,
                                                   urlMarker,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
                                                   startingAtEnd,
                                                   startFrom,
                                                   pageSize,
@@ -338,8 +292,6 @@ public class MetadataExplorerResource
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -360,10 +312,6 @@ public class MetadataExplorerResource
                                                                                    @PathVariable String  metadataElementAtEnd1GUID,
                                                                                    @PathVariable String  metadataElementAtEnd2GUID,
                                                                                    @PathVariable String  urlMarker,
-                                                                                   @RequestParam(required = false, defaultValue = "false")
-                                                                                   boolean forLineage,
-                                                                                   @RequestParam(required = false, defaultValue = "false")
-                                                                                   boolean forDuplicateProcessing,
                                                                                    @RequestParam (required = false, defaultValue = "0")
                                                                                    int     startFrom,
                                                                                    @RequestParam (required = false, defaultValue = "0")
@@ -376,8 +324,6 @@ public class MetadataExplorerResource
                                                        null,
                                                        metadataElementAtEnd2GUID,
                                                        urlMarker,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
                                                        startFrom,
                                                        pageSize,
                                                        requestBody);
@@ -390,8 +336,6 @@ public class MetadataExplorerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker      the identifier of the view service (for example runtime-manager for the Runtime Manager OMVS)
      * @param elementGUID  unique identifier for the element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      * @param requestBody effective time and asOfTime
@@ -411,10 +355,6 @@ public class MetadataExplorerResource
     public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
                                                               @PathVariable String          urlMarker,
                                                               @PathVariable String          elementGUID,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean         forLineage,
-                                                              @RequestParam(required = false, defaultValue = "false")
-                                                              boolean         forDuplicateProcessing,
                                                               @RequestParam(required = false, defaultValue = "0")
                                                               int             startFrom,
                                                               @RequestParam(required = false, defaultValue = "0")
@@ -422,7 +362,7 @@ public class MetadataExplorerResource
                                                               @RequestBody (required = false)
                                                               AnyTimeRequestBody requestBody)
     {
-        return restAPI.getAnchoredElementsGraph(serverName, urlMarker, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+        return restAPI.getAnchoredElementsGraph(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -435,8 +375,6 @@ public class MetadataExplorerResource
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -458,10 +396,6 @@ public class MetadataExplorerResource
                                                                                 @PathVariable String  relationshipTypeName,
                                                                                 @PathVariable String  metadataElementAtEnd2GUID,
                                                                                 @PathVariable String  urlMarker,
-                                                                                @RequestParam(required = false, defaultValue = "false")
-                                                                                boolean forLineage,
-                                                                                @RequestParam(required = false, defaultValue = "false")
-                                                                                boolean forDuplicateProcessing,
                                                                                 @RequestParam  (required = false, defaultValue = "0")
                                                                                 int     startFrom,
                                                                                 @RequestParam  (required = false, defaultValue = "0")
@@ -474,8 +408,6 @@ public class MetadataExplorerResource
                                                        relationshipTypeName,
                                                        metadataElementAtEnd2GUID,
                                                        urlMarker,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
                                                        startFrom,
                                                        pageSize,
                                                        requestBody);
@@ -487,8 +419,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -507,10 +437,6 @@ public class MetadataExplorerResource
 
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          urlMarker,
-                                                             @RequestParam(required = false, defaultValue = "false")
-                                                             boolean         forLineage,
-                                                             @RequestParam(required = false, defaultValue = "false")
-                                                             boolean         forDuplicateProcessing,
                                                              @RequestParam(required = false, defaultValue = "0")
                                                              int             startFrom,
                                                              @RequestParam(required = false, defaultValue = "0")
@@ -518,7 +444,7 @@ public class MetadataExplorerResource
                                                              @RequestBody (required = false)
                                                              FindRequestBody requestBody)
     {
-        return restAPI.findMetadataElements(serverName, urlMarker, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElements(serverName, urlMarker, startFrom, pageSize, requestBody);
     }
 
 
@@ -527,8 +453,6 @@ public class MetadataExplorerResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -547,17 +471,13 @@ public class MetadataExplorerResource
 
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                                          @PathVariable String          urlMarker,
-                                                                                         @RequestParam(required = false, defaultValue = "false")
-                                                                                         boolean         forLineage,
-                                                                                         @RequestParam(required = false, defaultValue = "false")
-                                                                                         boolean         forDuplicateProcessing,
                                                                                          @RequestParam (required = false, defaultValue = "0")
                                                                                          int             startFrom,
                                                                                          @RequestParam  (required = false, defaultValue = "0")
                                                                                          int             pageSize,
                                                                                          @RequestBody  FindRelationshipRequestBody requestBody)
     {
-        return restAPI.findRelationshipsBetweenMetadataElements(serverName, urlMarker, forLineage, forDuplicateProcessing,startFrom, pageSize, requestBody);
+        return restAPI.findRelationshipsBetweenMetadataElements(serverName, urlMarker, startFrom, pageSize, requestBody);
     }
 
 
@@ -567,8 +487,6 @@ public class MetadataExplorerResource
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier for the metadata element
      * @param urlMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -586,14 +504,10 @@ public class MetadataExplorerResource
     public OpenMetadataRelationshipResponse getRelationshipByGUID(@PathVariable String  serverName,
                                                                   @PathVariable String  relationshipGUID,
                                                                   @PathVariable String  urlMarker,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean forLineage,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean forDuplicateProcessing,
                                                                   @RequestBody (required = false)
                                                                  AnyTimeRequestBody    requestBody)
     {
-        return restAPI.getRelationshipByGUID(serverName, relationshipGUID, urlMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelationshipByGUID(serverName, relationshipGUID, urlMarker, requestBody);
     }
 
 
@@ -609,8 +523,6 @@ public class MetadataExplorerResource
      * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
      *                 return results size.
      * @param oldestFirst  defining how the results should be ordered.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -633,18 +545,12 @@ public class MetadataExplorerResource
                                                                            int                    pageSize,
                                                                        @RequestParam (required = false, defaultValue = "false")
                                                                        boolean                oldestFirst,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                forLineage,
-                                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                forDuplicateProcessing,
                                                                        @RequestBody(required = false)
                                                                        HistoryRequestBody     requestBody)
     {
         return restAPI.getRelationshipHistory(serverName,
                                               relationshipGUID,
                                               urlMarker,
-                                              forLineage,
-                                              forDuplicateProcessing,
                                               startFrom,
                                               pageSize,
                                               oldestFirst,

@@ -61,6 +61,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
 
                 OpenMetadataStore store = governanceContext.getOpenMetadataStore();
                 store.setForDuplicateProcessing(true);
+                store.setForLineage(true);
 
                 String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.QUALIFIED_NAME.name).valueAsString();
                 SearchProperties searchProperties = getSearchProperties(qualifiedName);

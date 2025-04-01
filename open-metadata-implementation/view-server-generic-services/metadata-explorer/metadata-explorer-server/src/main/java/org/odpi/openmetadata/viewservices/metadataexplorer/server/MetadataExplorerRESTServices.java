@@ -47,8 +47,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the metadata element
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -59,8 +58,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
                                                                 String             elementGUID,
                                                                 String             viewServiceURLMarker,
-                                                                boolean            forLineage,
-                                                                boolean            forDuplicateProcessing,
                                                                 AnyTimeRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
@@ -84,8 +81,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElement(handler.getMetadataElementByGUID(userId,
                                                                      elementGUID,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
                                                                      requestBody.getAsOfTime(),
                                                                      requestBody.getEffectiveTime()));
             }
@@ -93,8 +90,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElement(handler.getMetadataElementByGUID(userId,
                                                                      elementGUID,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
+                                                                     false,
+                                                                     false,
                                                                      null,
                                                                      new Date()));
             }
@@ -114,8 +111,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -125,8 +120,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementResponse getMetadataElementByUniqueName(String          serverName,
                                                                       String          viewServiceURLMarker,
-                                                                      boolean         forLineage,
-                                                                      boolean         forDuplicateProcessing,
                                                                       NameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
@@ -151,8 +144,8 @@ public class MetadataExplorerRESTServices extends TokenController
                 response.setElement(handler.getMetadataElementByUniqueName(userId,
                                                                            requestBody.getName(),
                                                                            requestBody.getNamePropertyName(),
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
+                                                                           requestBody.getForLineage(),
+                                                                           requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getAsOfTime(),
                                                                            requestBody.getEffectiveTime()));
             }
@@ -176,8 +169,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -187,8 +178,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String          serverName,
                                                            String          viewServiceURLMarker,
-                                                           boolean         forLineage,
-                                                           boolean         forDuplicateProcessing,
                                                            NameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementGUIDByUniqueName";
@@ -213,8 +202,8 @@ public class MetadataExplorerRESTServices extends TokenController
                 response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
                                                                             requestBody.getName(),
                                                                             requestBody.getNamePropertyName(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
+                                                                            requestBody.getForLineage(),
+                                                                            requestBody.getForDuplicateProcessing(),
                                                                             requestBody.getAsOfTime(),
                                                                             requestBody.getEffectiveTime()));
             }
@@ -239,8 +228,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the metadata element
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param oldestFirst  defining how the results should be ordered.
@@ -254,8 +241,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
                                                                   String             elementGUID,
                                                                   String             viewServiceURLMarker,
-                                                                  boolean            forLineage,
-                                                                  boolean            forDuplicateProcessing,
                                                                   int                startFrom,
                                                                   int                pageSize,
                                                                   boolean            oldestFirst,
@@ -285,8 +270,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                           requestBody.getFromTime(),
                                                                           requestBody.getToTime(),
                                                                           oldestFirst,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
+                                                                          requestBody.getForLineage(),
+                                                                          requestBody.getForDuplicateProcessing(),
                                                                           requestBody.getEffectiveTime(),
                                                                           startFrom,
                                                                           pageSize));
@@ -298,8 +283,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                           null,
                                                                           null,
                                                                           oldestFirst,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
+                                                                          false,
+                                                                          false,
                                                                           null,
                                                                           startFrom,
                                                                           pageSize));
@@ -320,8 +305,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -333,8 +316,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  viewServiceURLMarker,
-                                                                       boolean                 forLineage,
-                                                                       boolean                 forDuplicateProcessing,
                                                                        int                     startFrom,
                                                                        int                     pageSize,
                                                                        SearchStringRequestBody requestBody)
@@ -365,8 +346,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                requestBody.getAsOfTime(),
                                                                                requestBody.getSequencingProperty(),
                                                                                requestBody.getSequencingOrder(),
-                                                                               forLineage,
-                                                                               forDuplicateProcessing,
+                                                                               requestBody.getForLineage(),
+                                                                               requestBody.getForDuplicateProcessing(),
                                                                                requestBody.getEffectiveTime(),
                                                                                startFrom,
                                                                                pageSize));
@@ -394,8 +375,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param viewServiceURLMarker  view service URL marker
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -409,8 +388,6 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                          String             elementGUID,
                                                                          String             relationshipTypeName,
                                                                          String             viewServiceURLMarker,
-                                                                         boolean            forLineage,
-                                                                         boolean            forDuplicateProcessing,
                                                                          int                startingAtEnd,
                                                                          int                startFrom,
                                                                          int                pageSize,
@@ -443,8 +420,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                   requestBody.getAsOfTime(),
                                                                                   requestBody.getSequencingProperty(),
                                                                                   requestBody.getSequencingOrder(),
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
+                                                                                  requestBody.getForLineage(),
+                                                                                  requestBody.getForDuplicateProcessing(),
                                                                                   requestBody.getEffectiveTime(),
                                                                                   startFrom,
                                                                                   pageSize));
@@ -459,8 +436,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                   null,
                                                                                   null,
                                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
+                                                                                  false,
+                                                                                  false,
                                                                                   null,
                                                                                   startFrom,
                                                                                   pageSize));
@@ -483,8 +460,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName name of the server instances for this request
      * @param viewServiceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param elementGUID  unique identifier for the element
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      * @param requestBody effective time and asOfTime
@@ -497,8 +472,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
                                                               String             viewServiceURLMarker,
                                                               String             elementGUID,
-                                                              boolean            forLineage,
-                                                              boolean            forDuplicateProcessing,
                                                               int                startFrom,
                                                               int                pageSize,
                                                               AnyTimeRequestBody requestBody)
@@ -524,8 +497,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElementGraph(handler.getAnchoredElementsGraph(userId,
                                                                           elementGUID,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
+                                                                          requestBody.getForLineage(),
+                                                                          requestBody.getForDuplicateProcessing(),
                                                                           startFrom,
                                                                           pageSize,
                                                                           requestBody.getAsOfTime(),
@@ -535,8 +508,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElementGraph(handler.getAnchoredElementsGraph(userId,
                                                                           elementGUID,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
+                                                                          false,
+                                                                          false,
                                                                           startFrom,
                                                                           pageSize,
                                                                           null,
@@ -561,8 +534,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -577,8 +548,6 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                 String             relationshipTypeName,
                                                                                 String             metadataElementAtEnd2GUID,
                                                                                 String             viewServiceURLMarker,
-                                                                                boolean            forLineage,
-                                                                                boolean            forDuplicateProcessing,
                                                                                 int                startFrom,
                                                                                 int                pageSize,
                                                                                 ResultsRequestBody requestBody)
@@ -610,8 +579,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                      requestBody.getAsOfTime(),
                                                                                      requestBody.getSequencingProperty(),
                                                                                      requestBody.getSequencingOrder(),
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing,
+                                                                                     requestBody.getForLineage(),
+                                                                                     requestBody.getForDuplicateProcessing(),
                                                                                      requestBody.getEffectiveTime(),
                                                                                      startFrom,
                                                                                      pageSize));
@@ -626,8 +595,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                      null,
                                                                                      null,
                                                                                      null,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing,
+                                                                                     false,
+                                                                                     false,
                                                                                      null,
                                                                                      startFrom,
                                                                                      pageSize));
@@ -648,8 +617,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -661,8 +628,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementsResponse findMetadataElements(String          serverName,
                                                              String          viewServiceURLMarker,
-                                                             boolean         forLineage,
-                                                             boolean         forDuplicateProcessing,
                                                              int             startFrom,
                                                              int             pageSize,
                                                              FindRequestBody requestBody)
@@ -695,8 +660,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                      requestBody.getMatchClassifications(),
                                                                      requestBody.getSequencingProperty(),
                                                                      requestBody.getSequencingOrder(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
+                                                                     requestBody.getForLineage(),
+                                                                     requestBody.getForDuplicateProcessing(),
                                                                      requestBody.getEffectiveTime(),
                                                                      startFrom,
                                                                      pageSize));
@@ -721,8 +686,6 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -734,8 +697,6 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(String                      serverName,
                                                                                          String                      viewServiceURLMarker,
-                                                                                         boolean                     forLineage,
-                                                                                         boolean                     forDuplicateProcessing,
                                                                                          int                         startFrom,
                                                                                          int                         pageSize,
                                                                                          FindRelationshipRequestBody requestBody)
@@ -766,8 +727,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                               requestBody.getAsOfTime(),
                                                                                               requestBody.getSequencingProperty(),
                                                                                               requestBody.getSequencingOrder(),
-                                                                                              forLineage,
-                                                                                              forDuplicateProcessing,
+                                                                                              requestBody.getForLineage(),
+                                                                                              requestBody.getForDuplicateProcessing(),
                                                                                               requestBody.getEffectiveTime(),
                                                                                               startFrom,
                                                                                               pageSize));
@@ -794,8 +755,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier for the relationship
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -807,8 +766,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
                                                                   String             relationshipGUID,
                                                                   String             viewServiceURLMarker,
-                                                                  boolean            forLineage,
-                                                                  boolean            forDuplicateProcessing,
                                                                   AnyTimeRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
@@ -833,8 +790,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElement(handler.getRelationshipByGUID(userId,
                                                                   relationshipGUID,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
+                                                                  requestBody.getForLineage(),
+                                                                  requestBody.getForDuplicateProcessing(),
                                                                   requestBody.getAsOfTime(),
                                                                   requestBody.getEffectiveTime()));
             }
@@ -842,8 +799,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElement(handler.getRelationshipByGUID(userId,
                                                                   relationshipGUID,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
+                                                                  false,
+                                                                  false,
                                                                   null,
                                                                   new Date()));
             }
@@ -865,8 +822,6 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier for the metadata element
      * @param viewServiceURLMarker  view service URL marker
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param oldestFirst  defining how the results should be ordered.
@@ -880,8 +835,6 @@ public class MetadataExplorerRESTServices extends TokenController
     public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
                                                                        String             relationshipGUID,
                                                                        String             viewServiceURLMarker,
-                                                                       boolean            forLineage,
-                                                                       boolean            forDuplicateProcessing,
                                                                        int                startFrom,
                                                                        int                pageSize,
                                                                        boolean            oldestFirst,
@@ -911,8 +864,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                             requestBody.getFromTime(),
                                                                             requestBody.getToTime(),
                                                                             oldestFirst,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
+                                                                            requestBody.getForLineage(),
+                                                                            requestBody.getForDuplicateProcessing(),
                                                                             requestBody.getEffectiveTime(),
                                                                             startFrom,
                                                                             pageSize));
@@ -924,8 +877,8 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                             null,
                                                                             null,
                                                                             oldestFirst,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
+                                                                            false,
+                                                                            false,
                                                                             null,
                                                                             startFrom,
                                                                             pageSize));

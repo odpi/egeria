@@ -4,11 +4,9 @@
 package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionComponentElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.WiredSolutionComponent;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -22,7 +20,123 @@ public class MermaidGraphBuilderBase
     private   final Set<String>              usedLinkNames  = new HashSet<>();
     protected final Map<String, VisualStyle> nodeColours    = new HashMap<>();
     protected final PropertyHelper           propertyHelper = new PropertyHelper();
-    protected final String                   sourceName     = "MermaidGraphBuilder";
+    protected final String                   sourceName       = "MermaidGraphBuilder";
+
+    private final Map<String, AnchorNode>    extractedAnchors = new HashMap<>();
+    private final Map<String, Set<String>>   anchorLinks      = new HashMap<>();
+
+
+    /**
+     * Description of an anchor node for the lineage graph.
+     *
+     * @param anchorGUID unique identifier
+     * @param anchorTypeName type name
+     */
+    record AnchorNode (String anchorGUID, String anchorTypeName) { }
+
+
+    /**
+     * Extract any anchor information to allow the graph to include linkages to anchors.  This can help
+     * join up lineage graphs.
+     *
+     * @param elementHeader header of extracted element
+     */
+    protected void extractAnchorInfo(ElementHeader elementHeader)
+    {
+        if ((elementHeader != null) && (elementHeader.getClassifications() != null))
+        {
+            for (ElementClassification classification : elementHeader.getClassifications())
+            {
+                if (classification != null)
+                {
+                    if (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        if (classification.getClassificationProperties() != null)
+                        {
+
+                            if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name) != null)
+                            {
+                                String anchorGUID = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+
+                                if ((anchorGUID != null) && (! anchorGUID.equals(elementHeader.getGUID())))
+                                {
+                                    if (extractedAnchors.get(anchorGUID) == null)
+                                    {
+                                        String anchorTypeName;
+
+                                        if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name) != null)
+                                        {
+                                            anchorTypeName = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name).toString();
+                                        }
+                                        else
+                                        {
+                                            anchorTypeName = "null";
+                                        }
+
+                                        AnchorNode anchorNode = new AnchorNode(anchorGUID, anchorTypeName);
+
+                                        extractedAnchors.put(anchorGUID, anchorNode);
+                                    }
+
+                                    Set<String> anchoredElements = anchorLinks.get(anchorGUID);
+
+                                    if (anchoredElements == null)
+                                    {
+                                        anchoredElements = new HashSet<>();
+                                    }
+
+                                    anchoredElements.add(elementHeader.getGUID());
+
+                                    anchorLinks.put(anchorGUID, anchoredElements);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add links to anchors to the graph.
+     *
+     * @param allAnchors should all anchors be added - or just those to known nodes?
+     */
+    protected void addAnchorLinks(boolean allAnchors)
+    {
+        for (String anchorGUID : anchorLinks.keySet())
+        {
+            Set<String> anchoredElements = anchorLinks.get(anchorGUID);
+            AnchorNode  anchorNode       = extractedAnchors.get(anchorGUID);
+
+            if (allAnchors)
+            {
+                appendNewMermaidNode(anchorGUID,
+                                     anchorGUID,
+                                     anchorNode.anchorTypeName,
+                                     VisualStyle.LINEAGE_ANCHOR);
+
+                for (String anchoredElement : anchoredElements)
+                {
+                    appendMermaidDottedLine(null,
+                                            anchoredElement,
+                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                            anchorGUID);
+                }
+            }
+            else if (usedNodeNames.contains(anchorGUID))
+            {
+                for (String anchoredElement : anchoredElements)
+                {
+                    appendMermaidDottedLine(null,
+                                            anchoredElement,
+                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                            anchorGUID);
+                }
+            }
+        }
+    }
 
 
     /**
@@ -732,6 +846,19 @@ public class MermaidGraphBuilderBase
         }
     }
 
+
+    /**
+     * Add anchors, any style requests and return the built mermaid graph.
+     *
+     * @param allAnchors should all anchors be added - or just those to known nodes?
+     * @return string markdown
+     */
+    public String getMermaidGraph(boolean allAnchors)
+    {
+        addAnchorLinks(allAnchors);
+
+        return this.getMermaidGraph();
+    }
 
 
     /**

@@ -18,8 +18,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
 import java.util.Date;
@@ -135,101 +133,6 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                        int    maxPageSize) throws InvalidParameterException
     {
         client = new StewardshipExchangeClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
-    }
-
-
-    /**
-     * Classify the element to indicate that it describes a data field and supply
-     * properties that describe the characteristics of the data values found within.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param properties descriptive properties for the data field
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void setElementAsDataField(String                    userId,
-                                      String                    elementGUID,
-                                      DataFieldValuesProperties properties,
-                                      Date                      effectiveTime,
-                                      boolean                   forLineage,
-                                      boolean                   forDuplicateProcessing) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        client.setElementAsDataField(userId, null, null, elementGUID, null, properties, effectiveTime, forLineage, forDuplicateProcessing);
-    }
-
-
-    /**
-     * Remove the data field designation from the element.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void clearElementAsDataField(String  userId,
-                                        String  elementGUID,
-                                        Date    effectiveTime,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        client.clearElementAsDataField(userId, null, null, elementGUID, null, effectiveTime, forLineage, forDuplicateProcessing);
-    }
-
-
-    /**
-     * Return information about the elements classified with the DataField classification.
-     *
-     * @param userId calling user
-     * @param properties values to match on
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @return list of element stubs
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public List<ElementStub> getDataFieldClassifiedElements(String                   userId,
-                                                            DataFieldQueryProperties properties,
-                                                            int                      startFrom,
-                                                            int                      pageSize,
-                                                            Date                     effectiveTime,
-                                                            boolean                  forLineage,
-                                                            boolean                  forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
-    {
-        return client.getDataFieldClassifiedElements(userId,
-                                                     null,
-                                                     null,
-                                                     properties,
-                                                     startFrom,
-                                                     pageSize,
-                                                     effectiveTime,
-                                                     forLineage,
-                                                     forDuplicateProcessing);
     }
 
 
