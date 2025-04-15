@@ -20,6 +20,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryCategoryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -502,6 +503,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
@@ -514,6 +516,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     public void removeGlossary(String                        userId,
                                MetadataCorrelationProperties correlationProperties,
                                String                        glossaryGUID,
+                               boolean                       cascadedDelete,
                                boolean                       forLineage,
                                boolean                       forDuplicateProcessing,
                                Date                          effectiveTime,
@@ -539,6 +542,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                        getExternalSourceName(correlationProperties),
                                        glossaryGUID,
                                        glossaryGUIDParameterName,
+                                       cascadedDelete,
                                        forLineage,
                                        forDuplicateProcessing,
                                        effectiveTime,
@@ -2648,6 +2652,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param templateGUID identifier for the template glossary term
+     * @param updateDescription description of the change to the term
      * @param isMergeClassifications should the classification be merged or replace the target entity?
      * @param isMergeProperties should the properties be merged with the existing ones or replace them
      * @param forLineage return elements marked with the Memento classification?
@@ -2663,6 +2668,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                MetadataCorrelationProperties correlationProperties,
                                                String                        glossaryTermGUID,
                                                String                        templateGUID,
+                                               String                        updateDescription,
                                                boolean                       isMergeClassifications,
                                                boolean                       isMergeProperties,
                                                boolean                       forLineage,
@@ -2687,19 +2693,31 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                         effectiveTime,
                                         methodName);
 
-        glossaryTermHandler.updateGlossaryTermFromTemplate(userId,
-                                                           getExternalSourceGUID(correlationProperties),
-                                                           getExternalSourceName(correlationProperties),
-                                                           glossaryTermGUID,
-                                                           glossaryTermGUIDParameterName,
-                                                           templateGUID,
-                                                           templateGUIDParameterName,
-                                                           isMergeClassifications,
-                                                           isMergeProperties,
-                                                           effectiveTime,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           methodName);
+        EntityDetail termEntity = glossaryTermHandler.updateGlossaryTermFromTemplate(userId,
+                                                                                     getExternalSourceGUID(correlationProperties),
+                                                                                     getExternalSourceName(correlationProperties),
+                                                                                     glossaryTermGUID,
+                                                                                     glossaryTermGUIDParameterName,
+                                                                                     templateGUID,
+                                                                                     templateGUIDParameterName,
+                                                                                     isMergeClassifications,
+                                                                                     isMergeProperties,
+                                                                                     effectiveTime,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     methodName);
+
+        if (termEntity != null)
+        {
+            String revisionHistoryTitle = "Glossary term updated by " + userId + " on " + new Date() + " from template " + templateGUID;
+
+            this.updateRevisionHistory(userId,
+                                       glossaryTermGUID,
+                                       glossaryTermHandler.getRepositoryHelper().getStringProperty(serviceName, OpenMetadataProperty.QUALIFIED_NAME.name, termEntity.getProperties(), methodName),
+                                       OpenMetadataType.GLOSSARY_TERM.typeName,
+                                       revisionHistoryTitle,
+                                       updateDescription);
+        }
     }
 
 

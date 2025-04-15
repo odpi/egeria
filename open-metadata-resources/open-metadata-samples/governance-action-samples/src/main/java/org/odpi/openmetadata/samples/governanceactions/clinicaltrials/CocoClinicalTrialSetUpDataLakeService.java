@@ -46,6 +46,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
         String clinicalTrialId              = null;
         String clinicalTrialName            = null;
+        String topLevelProjectGUID          = null;
 
         String dataLakeCatalogQualifiedName = null;
         String dataLakeCatalogQualifiedGUID = null;
@@ -89,6 +90,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                     {
                         if (CocoClinicalTrialActionTarget.PROJECT.getName().equals(actionTargetElement.getActionTargetName()))
                         {
+                            topLevelProjectGUID = actionTargetElement.getTargetElement().getElementGUID();
+
                             clinicalTrialId = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
                                                                                OpenMetadataProperty.IDENTIFIER.name,
                                                                                actionTargetElement.getTargetElement().getElementProperties(),
@@ -315,7 +318,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                           dataLakeCatalogQualifiedGUID,
                                                           dataLakeCatalogName,
                                                           dataLakeSchemaName,
-                                                          dataLakeSchemaDescription);
+                                                          dataLakeSchemaDescription,
+                                                          topLevelProjectGUID);
 
                 /*
                  * Create a volume in Unity Catalog
@@ -331,16 +335,16 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                              dataLakeVolumeDescription + ": " + clinicalTrialId + " - " + clinicalTrialName,
                                                              dataLakeVolumePathName);
 
-                String validatedFilesDataSetGUID = this.createValidatedFilesDataSet(validatedFilesDataSetName, validatedWeeklyFilesTemplateGUID);
+                String validatedFilesDataSetGUID = this.createValidatedFilesDataSet(validatedFilesDataSetName, validatedWeeklyFilesTemplateGUID, topLevelProjectGUID);
                 addActionTargetToProcess(hospitalOnboardingProcessGUID, CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getName(), validatedFilesDataSetGUID);
                 addActionTargetToProcess(hospitalOnboardingProcessGUID, CocoClinicalTrialActionTarget.GENERIC_ONBOARDING_PIPELINE.getName(), genericOnboardingPipelineGUID);
 
                 /*
                  * Link the validated data set to the data lake folder solution component.
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), validatedFilesDataSetGUID, informationSupplyChainQualifiedName);
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), validatedFilesDataSetGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
-                governanceContext.createLineageRelationship(OpenMetadataType.PROCESS_CALL.typeName,
+                governanceContext.createLineageRelationship(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
                                                             validatedFilesDataSetGUID,
                                                             informationSupplyChainQualifiedName,
                                                             "get files from storage",
@@ -364,12 +368,12 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Create the database schema for the sandbox
                  */
-                String sandboxSchemaGUID = createSandboxSchema();
+                String sandboxSchemaGUID = createSandboxSchema(topLevelProjectGUID);
 
                 /*
                  * Link the sandbox schema to the sandbox solution component
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), sandboxSchemaGUID, informationSupplyChainQualifiedName);
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), sandboxSchemaGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
                 /*
                  * Indicate that the sandbox is governed by the data quality certification.
@@ -379,15 +383,15 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Create a process to represent the Airflow DAG
                  */
-                String populateSandboxGUID = createPopulateSandboxDAG(airflowDAGName);
+                String populateSandboxGUID = createPopulateSandboxDAG(airflowDAGName, topLevelProjectGUID);
 
                 /*
                  * Link the airflow DAG to the solution component
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID, informationSupplyChainQualifiedName);
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
-                                                            ucVolumeAssetGUID,
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                            validatedFilesDataSetGUID,
                                                             informationSupplyChainQualifiedName,
                                                             "Copy Certified Data",
                                                             null,
@@ -399,7 +403,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                             null,
                                                             populateSandboxGUID);
 
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                             populateSandboxGUID,
                                                             informationSupplyChainQualifiedName,
                                                             "Save Certified Data",
@@ -451,6 +455,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
      * @param catalogGUID unique identifier of the catalog
      * @param schemaName short name of the schema
      * @param description description of the schema
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return guid for the new asset
      * @throws InvalidParameterException bad parameter
      * @throws PropertyServerException problem with repository
@@ -463,9 +468,10 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                   String  catalogGUID,
                                   String  catalogName,
                                   String  schemaName,
-                                  String  description) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+                                  String  description,
+                                  String  topLevelProjectGUID) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -480,6 +486,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         String schemaGUID =  governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
                                                                                                      catalogGUID,
                                                                                                      false,
+                                                                                                     topLevelProjectGUID,
                                                                                                      null,
                                                                                                      null,
                                                                                                      templateGUID,
@@ -528,8 +535,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                 String  volumeName,
                                 String  description,
                                 String  dataLakePathName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -547,6 +554,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         String volumeGUID =  governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
                                                                                                      schemaGUID,
                                                                                                      false,
+                                                                                                     schemaGUID,
                                                                                                      null,
                                                                                                      null,
                                                                                                      templateGUID,
@@ -570,15 +578,19 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
      * Create a data set asset for the list of validated weekly measurements files.  This list is populated by the
      * data quality measurement governance action.
      *
+     * @param validatedFilesDataSetName name of new data set
+     * @param validatedWeeklyFilesTemplateGUID template for data set
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return guid for the new asset
      * @throws InvalidParameterException bad parameter
      * @throws PropertyServerException problem with repository
      * @throws UserNotAuthorizedException access problem
      */
     private String createValidatedFilesDataSet(String validatedFilesDataSetName,
-                                               String validatedWeeklyFilesTemplateGUID) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                               String validatedWeeklyFilesTemplateGUID,
+                                               String topLevelProjectGUID) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -591,6 +603,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.DATA_FILE_COLLECTION.typeName,
                                                                                        null,
                                                                                        true,
+                                                                                       topLevelProjectGUID,
                                                                                        null,
                                                                                        null,
                                                                                        validatedWeeklyFilesTemplateGUID,

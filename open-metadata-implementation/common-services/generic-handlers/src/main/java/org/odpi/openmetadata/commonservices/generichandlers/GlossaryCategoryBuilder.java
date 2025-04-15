@@ -113,10 +113,10 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
      *
      * @param userId calling user
      * @param methodName calling method
-     * @throws PropertyServerException a null anchors GUID has been supplied
+     * @throws InvalidParameterException unable to set classification
      */
     public void setRootCategory(String userId,
-                                String methodName) throws PropertyServerException
+                                String methodName) throws InvalidParameterException
     {
         try
         {
@@ -134,7 +134,7 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
         }
         catch (Exception error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION.typeName);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION.typeName);
         }
     }
 

@@ -147,15 +147,12 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       serviceName,
                                                                       serverName);
 
-        this.addAnchorGUIDToBuilder(userId,
-                                    glossaryGUID,
-                                    glossaryGUIDParameterName,
-                                    false,
-                                    false,
-                                    effectiveTime,
-                                    supportedZones,
-                                    builder,
-                                    methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                           OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                           glossaryGUID,
+                           methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
@@ -245,15 +242,12 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       serviceName,
                                                                       serverName);
 
-        this.addAnchorGUIDToBuilder(userId,
-                                    glossaryGUID,
-                                    glossaryGUIDParameterName,
-                                    false,
-                                    false,
-                                    null,
-                                    supportedZones,
-                                    builder,
-                                    methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                           OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                           glossaryGUID,
+                           methodName);
 
         String glossaryCategoryGUID = this.createBeanFromTemplate(userId,
                                                                   externalSourceGUID,
@@ -539,6 +533,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     glossaryCategoryGUIDParameterName,
                                     OpenMetadataType.GLOSSARY_CATEGORY.typeGUID,
                                     OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,
@@ -652,7 +647,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                         }
                         else
                         {
-                            AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                            AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(entity, methodName);
 
                             if (glossaryGUID.equals(anchorIdentifiers.anchorGUID))
                             {
@@ -728,9 +723,12 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,
-                                                                                          OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                          OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
                                                                                           glossaryGUID,
                                                                                           methodName);
+        /*
+         * Notice that we use a search rather than a navigation via the CategoryAnchor relationship for speed.
+         */
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeGUID,
                                                                                                   OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,

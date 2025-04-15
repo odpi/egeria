@@ -157,14 +157,49 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
+        this.update0010BaseModel();
         this.update0017ExternalIds();
         this.add058xDataDictionaries();
         this.update0056ResourceManagers();
+        this.update0201Connections();
+        this.update0205ConnectionLinkage();
         this.update0442ProjectCharter();
         this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
         this.update0735SolutionPortsAndWires();
         this.update0770LineageMapping();
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateAnchors());
+    }
+
+    private TypeDefPatch updateAnchors()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_SCOPE_GUID));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
@@ -202,6 +237,131 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0201Connections()
+    {
+        this.archiveBuilder.addRelationshipDef(getConnectToEndpointRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateConnectionEndpointRelationship());
+    }
+
+    private RelationshipDef getConnectToEndpointRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "consumingConnections";
+        final String                     end1AttributeDescription     = "Connections using endpoint.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTION.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "connectToEndpoint";
+        final String                     end2AttributeDescription     = "Location of digital resource.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ENDPOINT.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+    private TypeDefPatch deprecateConnectionEndpointRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private void update0205ConnectionLinkage()
+    {
+        this.archiveBuilder.addRelationshipDef(getAssetConnectionRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateConnectionToAssetRelationship());
+    }
+
+    private RelationshipDef getAssetConnectionRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "connectedAsset";
+        final String                     end1AttributeDescription     = "Description of digital resource.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "assetConnections";
+        final String                     end2AttributeDescription     = "Connections to digital resource.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTION.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    private TypeDefPatch deprecateConnectionToAssetRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -779,11 +939,11 @@ public class OpenMetadataTypesArchive
      */
     private void update0770LineageMapping()
     {
-        this.archiveBuilder.addRelationshipDef(getSchemaAttributeLineageMappingRelationship());
+        this.archiveBuilder.addRelationshipDef(getDataMappingRelationship());
     }
 
 
-    private RelationshipDef getSchemaAttributeLineageMappingRelationship()
+    private RelationshipDef getDataMappingRelationship()
     {
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_MAPPING_RELATIONSHIP,
                                                                                 null,
@@ -832,6 +992,7 @@ public class OpenMetadataTypesArchive
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

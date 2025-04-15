@@ -393,22 +393,25 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * elements such as schema and comments.
      *
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDataAsset(String assetGUID,
-                                Date   effectiveTime) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void removeDataAsset(String  assetGUID,
+                                boolean cascadedDelete,
+                                Date    effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         dataAssetExchangeClient.removeDataAsset(userId,
                                                 externalSourceGUID,
                                                 externalSourceName,
                                                 assetGUID,
                                                 null,
+                                                cascadedDelete,
                                                 effectiveTime,
                                                 forLineage,
                                                 forDuplicateProcessing);

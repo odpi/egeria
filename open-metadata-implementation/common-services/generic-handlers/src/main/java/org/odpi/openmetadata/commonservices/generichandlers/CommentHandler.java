@@ -413,6 +413,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     commentGUIDParameterName,
                                     OpenMetadataType.COMMENT.typeGUID,
                                     OpenMetadataType.COMMENT.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

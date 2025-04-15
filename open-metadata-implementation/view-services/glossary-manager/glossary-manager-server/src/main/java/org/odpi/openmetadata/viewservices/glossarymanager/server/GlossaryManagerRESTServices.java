@@ -261,6 +261,7 @@ public class GlossaryManagerRESTServices extends TokenController
      *
      * @param serverName name of the server to route the request to
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
@@ -272,6 +273,7 @@ public class GlossaryManagerRESTServices extends TokenController
      */
     public VoidResponse removeGlossary(String                         serverName,
                                        String                         glossaryGUID,
+                                       boolean                        cascadedDelete,
                                        boolean                        forLineage,
                                        boolean                        forDuplicateProcessing,
                                        ReferenceableUpdateRequestBody requestBody)
@@ -297,6 +299,7 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 handler.removeGlossary(userId,
                                        glossaryGUID,
+                                       cascadedDelete,
                                        requestBody.getEffectiveTime(),
                                        forLineage,
                                        forDuplicateProcessing);
@@ -305,6 +308,7 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 handler.removeGlossary(userId,
                                        glossaryGUID,
+                                       cascadedDelete,
                                        null,
                                        forLineage,
                                        forDuplicateProcessing);
@@ -1577,6 +1581,7 @@ public class GlossaryManagerRESTServices extends TokenController
                                                glossaryTermGUID,
                                                isMergeUpdate,
                                                properties,
+                                               requestBody.getUpdateDescription(),
                                                requestBody.getEffectiveTime(),
                                                forLineage,
                                                forDuplicateProcessing);
@@ -1712,6 +1717,7 @@ public class GlossaryManagerRESTServices extends TokenController
                 handler.updateGlossaryTermFromTemplate(userId,
                                                        glossaryTermGUID,
                                                        requestBody.getParentGUID(),
+                                                       requestBody.getUpdateDescription(),
                                                        isMergeClassifications,
                                                        isMergeProperties,
                                                        requestBody.getEffectiveTime(),

@@ -288,10 +288,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             if (anchorEntity != null)
             {
                 builder.setAnchors(userId,
-                                   anchorGUID,
-                                   anchorEntity.getType().getTypeDefName(),
-                                   schemaTypeHandler.getDomainName(anchorEntity),
-                                   methodName);
+                                       anchorGUID,
+                                       anchorEntity.getType().getTypeDefName(),
+                                       schemaTypeHandler.getDomainName(anchorEntity),
+                                       null,
+                                       methodName);
             }
         }
 
@@ -815,6 +816,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       schemaTypeGUIDParameterName,
                                                       OpenMetadataType.SCHEMA_TYPE.typeGUID,
                                                       OpenMetadataType.SCHEMA_TYPE.typeName,
+                                                      false,
                                                       null,
                                                       null,
                                                       forLineage,
@@ -1955,6 +1957,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       schemaAttributeGUIDParameterName,
                                                       OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
                                                       OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                      false,
                                                       null,
                                                       null,
                                                       forLineage,

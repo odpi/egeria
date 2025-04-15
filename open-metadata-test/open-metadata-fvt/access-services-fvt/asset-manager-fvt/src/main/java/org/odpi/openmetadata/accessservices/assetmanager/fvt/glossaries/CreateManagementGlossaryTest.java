@@ -214,7 +214,7 @@ public class CreateManagementGlossaryTest extends AssetManagerTestBase
 
         try
         {
-            client.removeGlossary(userId, glossaryGUID, null, false, false);
+            client.removeGlossary(userId, glossaryGUID, true, null, false, false);
         }
         catch (Exception unexpectedError)
         {

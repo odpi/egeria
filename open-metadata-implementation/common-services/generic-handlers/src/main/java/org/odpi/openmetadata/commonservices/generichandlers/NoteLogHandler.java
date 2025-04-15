@@ -343,6 +343,7 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
                                     noteLogGUIDParameterName,
                                     OpenMetadataType.NOTE_LOG.typeGUID,
                                     OpenMetadataType.NOTE_LOG.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

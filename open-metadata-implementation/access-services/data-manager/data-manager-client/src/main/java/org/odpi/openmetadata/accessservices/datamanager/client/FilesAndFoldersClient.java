@@ -770,6 +770,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
      * @param fileManagerCapabilityName unique name of the software server capability representing an owning external file manager or null
      * @param dataFolderGUID unique identifier of the data folder asset
      * @param fullPathname unique path and file name for file (optional)
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -780,9 +781,10 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                             String fileManagerCapabilityGUID,
                                             String fileManagerCapabilityName,
                                             String dataFolderGUID,
-                                            String fullPathname) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                            String fullPathname,
+                                            boolean cascadedDelete) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                  = "deleteDataFolderFromCatalog";
         final String guidParameterName           = "dataFolderGUID";
@@ -790,7 +792,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFolderGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-folders/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-folders/{2}/delete?cascadedDelete={3}";
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
@@ -802,7 +804,8 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                         requestBody,
                                         serverName,
                                         userId,
-                                        dataFolderGUID);
+                                        dataFolderGUID,
+                                        cascadedDelete);
     }
     
     

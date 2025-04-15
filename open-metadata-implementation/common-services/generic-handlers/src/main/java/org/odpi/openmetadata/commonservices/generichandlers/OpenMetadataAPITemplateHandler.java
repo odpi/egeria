@@ -269,6 +269,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         String              beanAnchorGUID             = null; /* value of the anchor to set into the new beans */
         String              beanAnchorTypeName         = null; /* value of the anchor to set into the new beans */
         String              beanAnchorDomainName       = null; /* value of the anchor to set into the new beans */
+        String              beanAnchorScopeGUID        = null; /* value of the anchor to set into the new beans */
 
         /**
          * Standard toString for logging
@@ -438,6 +439,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                     templateProgress.beanAnchorGUID = templateAnchorEntity.getGUID();
                     templateProgress.beanAnchorTypeName = templateAnchorEntity.getType().getTypeDefName();
                     templateProgress.beanAnchorDomainName = this.getDomainName(templateAnchorEntity);
+                    templateProgress.beanAnchorScopeGUID = this.getAnchorScopeGUIDFromAnchorsClassification(templateAnchorEntity, methodName);
                 }
 
                 templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
@@ -453,6 +455,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                            templateProgress.beanAnchorGUID,
                                            templateProgress.beanAnchorTypeName,
                                            templateProgress.beanAnchorDomainName,
+                                           templateProgress.beanAnchorScopeGUID,
                                            methodName);
             }
 

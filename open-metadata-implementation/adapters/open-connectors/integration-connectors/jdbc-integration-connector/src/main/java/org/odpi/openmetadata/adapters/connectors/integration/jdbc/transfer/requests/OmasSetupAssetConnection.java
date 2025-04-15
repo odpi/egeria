@@ -34,7 +34,7 @@ class OmasSetupAssetConnection implements TriConsumer<String, String, String> {
     public void accept(String assetGuid, String assetSummary, String connectionGuid){
         String methodName = "OmasSetupAssetConnection";
         try {
-            databaseIntegratorContext.setupAssetConnection(assetGuid, assetSummary, connectionGuid);
+            databaseIntegratorContext.setupAssetConnection(assetGuid, connectionGuid);
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             auditLog.logException("Setting up asset connection for asset with guid " + assetGuid
                             + ", with summary  " + assetSummary

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -208,6 +209,32 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         }
     }
 
+    /**
+     * Set up the "Anchors" classification for this entity.  This is used when a new entity is being created, and it is known to be
+     * connected to a specific anchor.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
+     * @param anchorTypeName unique name of the anchor entity's type
+     * @param anchorDomainName unique name of the anchor entity's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
+     * @param methodName calling method
+     * @throws PropertyServerException a null anchors GUID has been supplied
+     */
+    public void setAnchors(String userId,
+                           String anchorGUID,
+                           String anchorTypeName,
+                           String anchorDomainName,
+                           String anchorScopeGUID,
+                           String methodName) throws PropertyServerException
+    {
+        super.setAnchors(userId, anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName);
+
+        if (schemaTypeBuilder != null)
+        {
+            schemaTypeBuilder.setAnchors(userId, anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName);
+        }
+    }
 
     /**
      * Return the schema type builder to the handler to add any extra elements.

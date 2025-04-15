@@ -47,6 +47,7 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains")
+
     @Operation(summary="createInformationSupplyChain",
             description="Create an information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -54,7 +55,7 @@ public class SolutionArchitectResource
 
     public GUIDResponse createInformationSupplyChain(@PathVariable
                                                      String                               serverName,
-                                                     @RequestBody
+                                                     @RequestBody (required = false)
                                                      NewInformationSupplyChainRequestBody requestBody)
     {
         return restAPI.createInformationSupplyChain(serverName, requestBody);

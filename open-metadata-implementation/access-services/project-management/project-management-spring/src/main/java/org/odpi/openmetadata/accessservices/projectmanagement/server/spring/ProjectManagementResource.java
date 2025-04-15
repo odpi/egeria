@@ -196,6 +196,7 @@ public class ProjectManagementResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param projectGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete can cascade to dependent elements
      * @param requestBody external source identifiers
      *
      * @return void or
@@ -208,9 +209,11 @@ public class ProjectManagementResource
     public VoidResponse removeProject(@PathVariable String                    serverName,
                                       @PathVariable String                    userId,
                                       @PathVariable String                    projectGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                   cascadedDelete,
                                       @RequestBody ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeProject(serverName, userId, projectGUID, requestBody);
+        return restAPI.removeProject(serverName, userId, projectGUID,cascadedDelete, requestBody);
     }
 
 

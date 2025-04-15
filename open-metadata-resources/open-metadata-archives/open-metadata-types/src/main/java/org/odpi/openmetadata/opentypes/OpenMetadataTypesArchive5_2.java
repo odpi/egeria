@@ -289,7 +289,7 @@ public class OpenMetadataTypesArchive5_2
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "rolePerformers";
         final String                     end1AttributeDescription     = "The teams performing this role.";
@@ -300,11 +300,11 @@ public class OpenMetadataTypesArchive5_2
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
+        relationshipDef.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "performsRoles";
         final String                     end2AttributeDescription     = "Roles performed by this team.";
@@ -315,7 +315,7 @@ public class OpenMetadataTypesArchive5_2
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
         /*
          * Build the attributes
@@ -338,7 +338,7 @@ public class OpenMetadataTypesArchive5_2
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "rolePerformers";
         final String                     end1AttributeDescription     = "The automated software executables performing this role.";
@@ -349,11 +349,11 @@ public class OpenMetadataTypesArchive5_2
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
+        relationshipDef.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "performsRoles";
         final String                     end2AttributeDescription     = "Roles performed by this software executable.";
@@ -364,7 +364,7 @@ public class OpenMetadataTypesArchive5_2
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
         return relationshipDef;
     }
@@ -494,7 +494,7 @@ public class OpenMetadataTypesArchive5_2
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -517,7 +517,7 @@ public class OpenMetadataTypesArchive5_2
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -540,7 +540,7 @@ public class OpenMetadataTypesArchive5_2
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_FLOW.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -612,7 +612,7 @@ public class OpenMetadataTypesArchive5_2
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

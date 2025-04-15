@@ -317,6 +317,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     externalReferenceGUIDParameterName,
                                     OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
                                     OpenMetadataType.EXTERNAL_REFERENCE.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

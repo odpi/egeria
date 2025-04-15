@@ -142,6 +142,7 @@ public class OpenIntegrationHandler
                                entity.getGUID(),
                                entity.getType().getTypeDefName(),
                                integrationReportHandler.getDomainName(entity),
+                               null,
                                methodName);
 
             String reportGUID = integrationReportHandler.createBeanInRepository(userId,

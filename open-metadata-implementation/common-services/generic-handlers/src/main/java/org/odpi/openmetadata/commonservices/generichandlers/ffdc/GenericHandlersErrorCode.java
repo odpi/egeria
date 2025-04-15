@@ -190,6 +190,23 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                  "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
 
     /**
+     * OMAG-GENERIC-HANDLERS-403-004 - A delete of {0} data asset {1} is not permitted because it is being used by {2} data set {3}
+     */
+    DATA_STORE_IN_USE(403, "OMAG-GENERIC-HANDLERS-403-004",
+                      "A delete of {0} data asset {1} is not permitted because it is being used by {2} data set {3}",
+                      "The system is unable to delete a data asset because it is connected to a data set that is using it to supply its data content.",
+                      "This call requires a cascaded delete to allow an element that is in use, or with dependent elements to be removed.  Either delete the relationship to the data set, or use the cascaded delete option."),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-403-005 - A delete of {0} element {1} is not permitted because it still has a dependent {2} element {3}
+     */
+    DEPENDENT_ELEMENTS_FOUND(403, "OMAG-GENERIC-HANDLERS-403-005",
+                      "A delete of {0} element {1} is not permitted because it still has a dependent {2} element {3}",
+                      "The system is unable to delete an element because it is connected to other elements that are dependent on it.",
+                      "This call requires a cascaded delete to allow an element that with these dependent elements, or with dependent elements to be removed.  Either delete the dependent elements, or use the cascaded delete option."),
+
+
+    /**
      * OMAG-GENERIC-HANDLERS-404-002 - Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}
      */
     MULTIPLE_ENTITIES_FOUND(404, "OMAG-GENERIC-HANDLERS-404-002",

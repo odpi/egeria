@@ -85,6 +85,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the database schema where the database table is located
      * @param assetGUIDParameterName name of the parameter of assetGUID
      * @param assetTypeName the name of the asset's type
+     * @param assetScopeGUID add the scope of the asset to the anchors
      * @param schemaTypeTypeGUID unique identifier of the type
      * @param schemaTypeTypeName unique name of the type
      * @param effectiveFrom      starting time for this relationship (null for all time)
@@ -105,6 +106,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                   String  assetGUID,
                                   String  assetGUIDParameterName,
                                   String  assetTypeName,
+                                  String  assetScopeGUID,
                                   String  schemaTypeTypeGUID,
                                   String  schemaTypeTypeName,
                                   Date    effectiveFrom,
@@ -174,15 +176,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-            this.addAnchorGUIDToBuilder(userId,
-                                        assetGUID,
-                                        assetGUIDParameterName,
-                                        false,
-                                        false,
-                                        effectiveTime,
-                                        supportedZones,
-                                        builder,
-                                        methodName);
+            this.setUpAnchorsClassificationFromAnchor(userId,
+                                                      assetGUID,
+                                                      assetGUIDParameterName,
+                                                      assetScopeGUID,
+                                                      builder,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
+                                                      methodName);
 
             String schemaTypeGUID = this.createBeanInRepository(userId,
                                                                 externalSourceGUID,

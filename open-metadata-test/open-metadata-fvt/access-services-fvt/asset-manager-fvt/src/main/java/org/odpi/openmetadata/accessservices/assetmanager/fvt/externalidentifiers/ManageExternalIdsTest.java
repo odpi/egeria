@@ -235,7 +235,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad assetManagerName)");
             }
 
-            client.removeGlossary(userId, assetManagerGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
+            client.removeGlossary(userId, assetManagerGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, true, null, false, false);
 
             try
             {
@@ -488,7 +488,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of Correlation properties from Retrieve) " + metadataCorrelationHeaders);
             }
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, true, null, false, false);
 
             try
             {
@@ -745,7 +745,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             }
 
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, true, null, false, false);
 
             try
             {
@@ -860,7 +860,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of Correlation properties from Retrieve)");
             }
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, false, null, false, false);
 
             try
             {
@@ -1074,7 +1074,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             }
 
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID, externalGlossaryIdentifierOne, null, false, false);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID, externalGlossaryIdentifierOne, false, null, false, false);
 
             try
             {

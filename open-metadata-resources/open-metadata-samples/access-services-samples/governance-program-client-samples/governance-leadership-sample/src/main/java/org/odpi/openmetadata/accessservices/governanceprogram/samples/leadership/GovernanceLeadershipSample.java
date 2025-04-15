@@ -126,7 +126,7 @@ public class GovernanceLeadershipSample
         {
             System.out.println("  UserId: null <ERROR>");
         }
-        else if (userIdentities.size() == 0)
+        else if (userIdentities.isEmpty())
         {
             System.out.println("  UserIds: empty <ERROR>");
         }

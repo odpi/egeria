@@ -149,6 +149,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             OpenMetadataType.DATA_MANAGER.typeGUID,
                                                             OpenMetadataType.DATA_MANAGER.typeName,
                                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                            null,
                                                             builder,
                                                             true,
                                                             effectiveTime,
@@ -261,6 +262,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             typeGUID,
                                                             typeName,
                                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                            null,
                                                             builder,
                                                             true,
                                                             effectiveTime,
@@ -325,6 +327,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                            null,
                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                           null,
                            methodName);
 
         return this.createBeanFromTemplate(userId,

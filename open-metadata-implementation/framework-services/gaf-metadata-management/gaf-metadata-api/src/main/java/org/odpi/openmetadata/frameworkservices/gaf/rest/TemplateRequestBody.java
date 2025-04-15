@@ -30,6 +30,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     private Map<String, ElementProperties> initialClassifications       = null;
     private String                         anchorGUID                   = null;
     private boolean                        isOwnAnchor                  = false;
+    private String                         anchorScopeGUID              = null;
     private boolean                        allowRetrieve                = false;
     private Date                           effectiveFrom                = null;
     private Date                           effectiveTo                  = null;
@@ -68,6 +69,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
             initialClassifications       = template.getInitialClassifications();
             anchorGUID                   = template.getAnchorGUID();
             isOwnAnchor                  = template.getIsOwnAnchor();
+            anchorScopeGUID              = template.getAnchorScopeGUID();
             allowRetrieve                = template.getAllowRetrieve();
             effectiveFrom                = template.getEffectiveFrom();
             effectiveTo                  = template.getEffectiveTo();
@@ -181,6 +183,30 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     public void setIsOwnAnchor(boolean ownAnchor)
     {
         isOwnAnchor = ownAnchor;
+    }
+
+
+    /**
+     * Return the unique identifier of the anchor's scope.
+     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
+     *
+     * @return string guid
+     */
+    public String getAnchorScopeGUID()
+    {
+        return anchorScopeGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the anchor's scope.
+     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
+     *
+     * @param anchorScopeGUID string guid
+     */
+    public void setAnchorScopeGUID(String anchorScopeGUID)
+    {
+        this.anchorScopeGUID = anchorScopeGUID;
     }
 
 
@@ -449,26 +475,27 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     @Override
     public String toString()
     {
-        return "NewOpenMetadataElementRequestBody{" +
-                       "typeName='" + typeName + '\'' +
-                       ", initialStatus=" + initialStatus +
-                       ", initialClassifications=" + initialClassifications +
-                       ", anchorGUID='" + anchorGUID + '\'' +
-                       ", isOwnAnchor='" + isOwnAnchor + '\'' +
-                       ", effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", templateGUID='" + templateGUID + '\'' +
-                       ", replacementProperties=" + replacementProperties +
-                       ", placeholderProperties=" + placeholderPropertyValues +
-                       ", parentGUID='" + parentGUID + '\'' +
-                       ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
-                       ", parentRelationshipProperties=" + parentRelationshipProperties +
-                       ", parentAtEnd1=" + parentAtEnd1 +
-                       ", effectiveTime=" + effectiveTime +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       '}';
+        return "TemplateRequestBody{" +
+                "typeName='" + typeName + '\'' +
+                ", initialStatus=" + initialStatus +
+                ", initialClassifications=" + initialClassifications +
+                ", anchorGUID='" + anchorGUID + '\'' +
+                ", isOwnAnchor=" + isOwnAnchor +
+                ", anchorScopeGUID='" + anchorScopeGUID + '\'' +
+                ", allowRetrieve=" + allowRetrieve +
+                ", effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                ", templateGUID='" + templateGUID + '\'' +
+                ", replacementProperties=" + replacementProperties +
+                ", placeholderPropertyValues=" + placeholderPropertyValues +
+                ", parentGUID='" + parentGUID + '\'' +
+                ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
+                ", parentRelationshipProperties=" + parentRelationshipProperties +
+                ", parentAtEnd1=" + parentAtEnd1 +
+                ", effectiveTime=" + effectiveTime +
+                "} " + super.toString();
     }
+
 
     /**
      * Equals method that returns true if containing properties are the same.
@@ -497,6 +524,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
                        initialStatus == that.initialStatus &&
                        Objects.equals(initialClassifications, that.initialClassifications) &&
                        Objects.equals(anchorGUID, that.anchorGUID) &&
+                       Objects.equals(anchorScopeGUID, that.anchorScopeGUID) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(replacementProperties, that.replacementProperties) &&
@@ -517,7 +545,9 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor, effectiveFrom, effectiveTo, replacementProperties,
-                            templateGUID, placeholderPropertyValues, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
+        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor,
+                            anchorScopeGUID, effectiveFrom, effectiveTo, replacementProperties,
+                            templateGUID, placeholderPropertyValues, parentGUID, parentRelationshipTypeName,
+                            parentRelationshipProperties, parentAtEnd1, effectiveTime);
     }
 }

@@ -18,7 +18,7 @@ public enum SolutionComponentActor
                                        "Owns the hospital processes that supports the clinical trial."),
 
     DATA_ENGINEER_TO_SET_UP_DATA_LAKE(SolutionRoleDefinition.CLINICAL_TRIAL_DATA_ENGINEER,
-                                      SolutionComponent.SET_UP_DATA_LAKE_FOLDER,
+                                      SolutionComponent.SET_UP_DATA_LAKE,
                                       "Initiator",
                                       "Chooses where the data will go in the data lake and initiates the process to set up the data lake folder and Unity Catalog Volume."),
     DATA_ENGINEER_TO_ONBOARD_HOSPITAL(SolutionRoleDefinition.CLINICAL_TRIAL_DATA_ENGINEER,

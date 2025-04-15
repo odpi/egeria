@@ -24,17 +24,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationship extends ElementControlHeader
 {
-    private String            relationshipGUID       = null;
-    private ElementType       relationshipType       = null;
-    private Date              effectiveFromTime      = null;
-    private Date              effectiveToTime        = null;
-    private ElementProperties relationshipProperties = null;
-    private String            labelAtEnd1            = null;
-    private String            elementGUIDAtEnd1      = null;
-    private ElementStub       elementAtEnd1          = null;
-    private String            labelAtEnd2            = null;
-    private String            elementGUIDAtEnd2      = null;
-    private ElementStub       elementAtEnd2          = null;
+    private String                  relationshipGUID       = null;
+    private ElementType             relationshipType       = null;
+    private Date                    effectiveFromTime      = null;
+    private Date                    effectiveToTime        = null;
+    private ElementProperties       relationshipProperties = null;
+    private String                  labelAtEnd1            = null;
+    private String                  elementGUIDAtEnd1      = null;
+    private OpenMetadataElementStub elementAtEnd1          = null;
+    private String                  labelAtEnd2            = null;
+    private String                  elementGUIDAtEnd2      = null;
+    private OpenMetadataElementStub elementAtEnd2          = null;
 
 
     /**
@@ -264,7 +264,7 @@ public class OpenMetadataRelationship extends ElementControlHeader
      *
      * @return element stub
      */
-    public ElementStub getElementAtEnd1()
+    public OpenMetadataElementStub getElementAtEnd1()
     {
         return elementAtEnd1;
     }
@@ -275,7 +275,7 @@ public class OpenMetadataRelationship extends ElementControlHeader
      *
      * @param elementAtEnd1 element stub
      */
-    public void setElementAtEnd1(ElementStub elementAtEnd1)
+    public void setElementAtEnd1(OpenMetadataElementStub elementAtEnd1)
     {
         this.elementAtEnd1 = elementAtEnd1;
     }
@@ -286,7 +286,7 @@ public class OpenMetadataRelationship extends ElementControlHeader
      *
      * @return element stub
      */
-    public ElementStub getElementAtEnd2()
+    public OpenMetadataElementStub getElementAtEnd2()
     {
         return elementAtEnd2;
     }
@@ -297,7 +297,7 @@ public class OpenMetadataRelationship extends ElementControlHeader
      *
      * @param elementAtEnd2 element stub
      */
-    public void setElementAtEnd2(ElementStub elementAtEnd2)
+    public void setElementAtEnd2(OpenMetadataElementStub elementAtEnd2)
     {
         this.elementAtEnd2 = elementAtEnd2;
     }

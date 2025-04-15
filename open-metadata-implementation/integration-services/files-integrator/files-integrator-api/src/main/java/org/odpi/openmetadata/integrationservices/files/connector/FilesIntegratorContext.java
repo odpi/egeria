@@ -2001,7 +2001,6 @@ public class FilesIntegratorContext extends IntegrationContext
      * Create a relationship between an asset and its connection.
      *
      * @param assetGUID unique identifier of the asset
-     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connectionGUID unique identifier of the  connection
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2009,12 +2008,11 @@ public class FilesIntegratorContext extends IntegrationContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupAssetConnection(String  assetGUID,
-                                     String  assetSummary,
                                      String  connectionGUID) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, connectionGUID);
 
         if (integrationReportWriter != null)
         {

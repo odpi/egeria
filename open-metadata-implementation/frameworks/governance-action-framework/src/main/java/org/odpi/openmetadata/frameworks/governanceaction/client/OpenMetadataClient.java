@@ -799,6 +799,8 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -823,6 +825,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                         Map<String, ElementProperties> initialClassifications,
                                                         String                         anchorGUID,
                                                         boolean                        isOwnAnchor,
+                                                        String                         anchorScopeGUID,
                                                         Date                           effectiveFrom,
                                                         Date                           effectiveTo,
                                                         ElementProperties              properties,
@@ -850,13 +853,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      * @param templateProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
-     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -876,6 +881,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                              String              metadataElementTypeName,
                                                              String              anchorGUID,
                                                              boolean             isOwnAnchor,
+                                                             String              anchorScopeGUID,
                                                              Date                effectiveFrom,
                                                              Date                effectiveTo,
                                                              String              templateGUID,
@@ -981,6 +987,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -992,6 +999,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
     @Override
     public abstract void deleteMetadataElementInStore(String  userId,
                                                       String  metadataElementGUID,
+                                                      boolean cascadedDelete,
                                                       boolean forLineage,
                                                       boolean forDuplicateProcessing,
                                                       Date    effectiveTime) throws InvalidParameterException,

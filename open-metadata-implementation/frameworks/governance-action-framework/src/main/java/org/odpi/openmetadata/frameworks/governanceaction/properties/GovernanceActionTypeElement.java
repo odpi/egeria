@@ -24,10 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionTypeElement
 {
-    private ElementHeader                          elementHeader        = null;
-    private GovernanceActionTypeProperties         actionTypeProperties = null;
-    private Map<String, List<Map<String, String>>> specification        = null;
-    private String                                 mermaidSpecification = null;
+    private ElementHeader                          elementHeader           = null;
+    private GovernanceActionTypeProperties         actionTypeProperties    = null;
+    private List<PredefinedActionTarget>           predefinedActionTargets = null;
+    private Map<String, List<Map<String, String>>> specification           = null;
+    private String                                 mermaidSpecification    = null;
 
 
     /**
@@ -48,10 +49,11 @@ public class GovernanceActionTypeElement
     {
         if (template != null)
         {
-            elementHeader        = template.getElementHeader();
-            actionTypeProperties = template.getActionTypeProperties();
-            specification        = template.getSpecification();
-            mermaidSpecification = template.getMermaidSpecification();
+            elementHeader           = template.getElementHeader();
+            actionTypeProperties    = template.getActionTypeProperties();
+            predefinedActionTargets = template.getPredefinedActionTargets();
+            specification           = template.getSpecification();
+            mermaidSpecification    = template.getMermaidSpecification();
         }
     }
 
@@ -96,6 +98,29 @@ public class GovernanceActionTypeElement
     public void setActionTypeProperties(GovernanceActionTypeProperties actionTypeProperties)
     {
         this.actionTypeProperties = actionTypeProperties;
+    }
+
+
+
+    /**
+     * Return the list of predefined action targets for this governance action.
+     *
+     * @return list
+     */
+    public List<PredefinedActionTarget> getPredefinedActionTargets()
+    {
+        return predefinedActionTargets;
+    }
+
+
+    /**
+     * Set up the list of predefined action targets for this governance action.
+     *
+     * @param predefinedActionTargets list
+     */
+    public void setPredefinedActionTargets(List<PredefinedActionTarget> predefinedActionTargets)
+    {
+        this.predefinedActionTargets = predefinedActionTargets;
     }
 
 
@@ -154,6 +179,7 @@ public class GovernanceActionTypeElement
         return "GovernanceActionTypeElement{" +
                 "elementHeader=" + elementHeader +
                 ", actionTypeProperties=" + actionTypeProperties +
+                ", predefinedActionTargets=" + predefinedActionTargets +
                 ", specification=" + specification +
                 ", mermaidSpecification='" + mermaidSpecification + '\'' +
                 '}';
@@ -184,6 +210,7 @@ public class GovernanceActionTypeElement
         GovernanceActionTypeElement that = (GovernanceActionTypeElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(actionTypeProperties, that.actionTypeProperties) &&
+                Objects.equals(predefinedActionTargets, that.predefinedActionTargets) &&
                 Objects.equals(specification, that.specification) &&
                 Objects.equals(mermaidSpecification, that.mermaidSpecification);
     }
@@ -197,6 +224,7 @@ public class GovernanceActionTypeElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties, specification, mermaidSpecification);
+        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties, predefinedActionTargets,
+                            specification, mermaidSpecification);
     }
 }

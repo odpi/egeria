@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -70,9 +71,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *      <li>
  *          endpoint - Properties that describe the server endpoint where the connector will retrieve the assets.
  *      </li>
- *      <li>
- *          assetSummary - short description of the connected asset (if any).
- *      </li>
  *  </ul>
  *
  * The connection class is simply used to cache the properties for a connection.
@@ -103,7 +101,6 @@ public class Connection extends Referenceable
     private Map<String, Object> configurationProperties = null;
     private Map<String, String> securedProperties       = null;
 
-    private String              assetSummary            = null;
 
     /**
      * Return the standard type for a connection type.
@@ -112,18 +109,14 @@ public class Connection extends Referenceable
      */
     public static ElementType getConnectionType()
     {
-        final String        elementTypeId                   = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
-        final String        elementTypeName                 = "Connection";
         final long          elementTypeVersion              = 1;
-        final String        elementTypeDescription          = "A set of properties to identify and configure a connector instance.";
 
         ElementType elementType = new ElementType();
 
-        elementType.setTypeId(elementTypeId);
-        elementType.setTypeName(elementTypeName);
+        elementType.setTypeId(OpenMetadataType.CONNECTION.typeGUID);
+        elementType.setTypeName(OpenMetadataType.CONNECTION.typeName);
         elementType.setTypeVersion(elementTypeVersion);
-        elementType.setTypeDescription(elementTypeDescription);
-
+        elementType.setTypeDescription(OpenMetadataType.CONNECTION.description);
 
         return elementType;
     }
@@ -151,7 +144,6 @@ public class Connection extends Referenceable
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
-            assetSummary = template.getAssetSummary();
             userId = template.getUserId();
             clearPassword = template.getClearPassword();
             encryptedPassword = template.getEncryptedPassword();
@@ -225,14 +217,7 @@ public class Connection extends Referenceable
      */
     public ConnectorType getConnectorType()
     {
-        if (connectorType == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new ConnectorType(connectorType);
-        }
+        return connectorType;
     }
 
 
@@ -321,14 +306,7 @@ public class Connection extends Referenceable
      */
     public Endpoint getEndpoint()
     {
-        if (endpoint == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Endpoint(endpoint);
-        }
+        return endpoint;
     }
 
 
@@ -377,30 +355,6 @@ public class Connection extends Referenceable
 
 
     /**
-     * Return the description of the asset that this connection is linked to - or null if no asset connected, or the asset summary
-     * property in the relationship is not set.
-     *
-     * @return string description
-     */
-    public String getAssetSummary()
-    {
-        return assetSummary;
-    }
-
-
-    /**
-     * Set up the description of the asset that this connection is linked to - or null if no asset connected, or the asset summary
-     * property in the relationship is not set.
-     *
-     * @param assetSummary string description
-     */
-    public void setAssetSummary(String assetSummary)
-    {
-        this.assetSummary = assetSummary;
-    }
-
-
-    /**
      * Standard toString method. Note SecuredProperties and other credential type properties are not displayed.
      * This is deliberate because there is no knowing where the string will be printed.
      *
@@ -410,27 +364,16 @@ public class Connection extends Referenceable
     public String toString()
     {
         return "Connection{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", connectorType=" + connectorType +
-                       ", endpoint=" + endpoint +
-                       ", userId='" + userId + '\'' +
-                       ", encryptedPassword='" + encryptedPassword + '\'' +
-                       ", clearPassword='" + clearPassword + '\'' +
-                       ", configurationProperties=" + configurationProperties +
-                       ", securedProperties=" + securedProperties +
-                       ", assetSummary='" + assetSummary + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       '}';
+                "displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", connectorType=" + connectorType +
+                ", endpoint=" + endpoint +
+                ", userId='" + userId + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", clearPassword='" + clearPassword + '\'' +
+                ", configurationProperties=" + configurationProperties +
+                ", securedProperties=" + securedProperties +
+                "} " + super.toString();
     }
 
 

@@ -312,42 +312,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * Remove the metadata element representing a database.
      *
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @Deprecated
-    @SuppressWarnings(value="unused")
-    public void removeDatabase(String databaseGUID,
-                               String qualifiedName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void removeDatabase(String  databaseGUID,
+                               boolean cascadedDelete) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID);
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementDelete(databaseGUID);
-        }
-    }
-
-
-    /**
-     * Remove the metadata element representing a database.
-     *
-     * @param databaseGUID unique identifier of the metadata element to remove
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeDatabase(String databaseGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
-    {
-        databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID);
+        databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, cascadedDelete);
 
         if (integrationReportWriter != null)
         {
@@ -630,42 +606,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * Remove the metadata element representing a database schema.
      *
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @Deprecated
-    @SuppressWarnings(value="unused")
-    public void removeDatabaseSchema(String databaseSchemaGUID,
-                                     String qualifiedName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void removeDatabaseSchema(String  databaseSchemaGUID,
+                                     boolean cascadedDelete) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID);
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementDelete(databaseSchemaGUID);
-        }
-    }
-
-
-    /**
-     * Remove the metadata element representing a database schema.
-     *
-     * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeDatabaseSchema(String databaseSchemaGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID);
+        databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID, cascadedDelete);
 
         if (integrationReportWriter != null)
         {
@@ -985,43 +937,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * Remove the metadata element representing a database table.
      *
      * @param databaseTableGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    @Deprecated
-    public void removeDatabaseTable(String databaseTableGUID,
-                                    String qualifiedName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void removeDatabaseTable(String  databaseTableGUID,
+                                    boolean cascadedDelete) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID);
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementDelete(databaseTableGUID);
-        }
-    }
-
-
-
-    /**
-     * Remove the metadata element representing a database table.
-     *
-     * @param databaseTableGUID unique identifier of the metadata element to remove
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeDatabaseTable(String databaseTableGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
-    {
-        databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID);
+        databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID, cascadedDelete);
 
         if (integrationReportWriter != null)
         {
@@ -1304,47 +1231,22 @@ public class DatabaseIntegratorContext extends IntegrationContext
     }
 
 
-
     /**
      * Remove the metadata element representing a database table.
      *
      * @param databaseViewGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    @Deprecated
-    public void removeDatabaseView(String databaseViewGUID,
-                                   String qualifiedName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void removeDatabaseView(String  databaseViewGUID,
+                                   boolean cascadedDelete) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
-        databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID);
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.reportElementDelete(databaseViewGUID);
-        }
-    }
-
-
-    /**
-     * Remove the metadata element representing a database table.
-     *
-     * @param databaseViewGUID unique identifier of the metadata element to remove
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeDatabaseView(String databaseViewGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID);
+        databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID, cascadedDelete);
 
         if (integrationReportWriter != null)
         {
@@ -2092,7 +1994,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * Create a relationship between an asset and its connection.
      *
      * @param assetGUID unique identifier of the asset
-     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connectionGUID unique identifier of the  connection
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2100,12 +2001,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupAssetConnection(String  assetGUID,
-                                     String  assetSummary,
                                      String  connectionGUID) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, connectionGUID);
 
         if (integrationReportWriter != null)
         {

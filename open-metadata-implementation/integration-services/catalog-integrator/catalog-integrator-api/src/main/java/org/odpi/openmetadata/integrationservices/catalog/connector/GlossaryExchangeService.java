@@ -277,23 +277,25 @@ public class GlossaryExchangeService
      *
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGlossary(String glossaryGUID,
-                               String glossaryExternalIdentifier,
-                               Date   effectiveTime) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public void removeGlossary(String  glossaryGUID,
+                               String  glossaryExternalIdentifier,
+                               boolean cascadedDelete,
+                               Date    effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         final String methodName = "removeGlossary";
 
         if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.removeGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
+            glossaryManagerClient.removeGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, glossaryExternalIdentifier, cascadedDelete, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -1351,6 +1353,7 @@ public class GlossaryExchangeService
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param glossaryTermProperties new properties for the glossary term
+     * @param updateDescription description of the change to the term
      * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1361,6 +1364,7 @@ public class GlossaryExchangeService
                                    String                 glossaryTermExternalIdentifier,
                                    boolean                isMergeUpdate,
                                    GlossaryTermProperties glossaryTermProperties,
+                                   String                 updateDescription,
                                    Date                   effectiveTime) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -1376,6 +1380,7 @@ public class GlossaryExchangeService
                                                      glossaryTermExternalIdentifier,
                                                      isMergeUpdate,
                                                      glossaryTermProperties,
+                                                     updateDescription,
                                                      effectiveTime,
                                                      forLineage,
                                                      forDuplicateProcessing);

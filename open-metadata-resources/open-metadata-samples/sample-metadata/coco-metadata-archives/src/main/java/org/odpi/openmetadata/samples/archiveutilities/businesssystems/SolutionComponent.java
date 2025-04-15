@@ -3,7 +3,9 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
+import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;
+import org.odpi.openmetadata.samples.archiveutilities.governanceengines.CocoRequestTypeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 
 import java.util.Arrays;
@@ -23,7 +25,8 @@ public enum SolutionComponent
              new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
              null,
              new InformationSupplyChainSegment[]{
-                     InformationSupplyChainSegment.HOSPITAL_TO_LANDING_AREA}),
+                     InformationSupplyChainSegment.HOSPITAL_TO_LANDING_AREA},
+             null),
 
     HOSPITAL_LANDING_AREA_FOLDER(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(),
                                  SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
@@ -35,7 +38,8 @@ public enum SolutionComponent
                                  null,
                                  new InformationSupplyChainSegment[]{
                                          InformationSupplyChainSegment.HOSPITAL_TO_LANDING_AREA,
-                                         InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
+                                         InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                                 null),
 
     LANDING_FOLDER_CATALOGUER(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(),
                               SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -46,7 +50,8 @@ public enum SolutionComponent
                               new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                               null,
                               new InformationSupplyChainSegment[]{
-                                      InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
+                                      InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                              null),
 
     MOVE_FILE_TO_DATA_LAKE("18931474-d170-4394-97a9-0e627e2212ac",
                            SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -56,7 +61,8 @@ public enum SolutionComponent
                            "V1.0",
                            null,
                            null,
-                           null),
+                           null,
+                           RequestTypeDefinition.MOVE_FILE.getGovernanceActionTypeGUID()),
 
     CHECK_QUALITY_OF_DATA("2a5763d0-c540-4a59-8268-db7c88342269",
                           SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -66,7 +72,8 @@ public enum SolutionComponent
                           "V1.0",
                           null,
                           null,
-                          null),
+                          null,
+                          CocoRequestTypeDefinition.CHECK_DATA.getGovernanceActionTypeGUID()),
 
     REPORT_QUALITY_ISSUES("b1fd8336-45ca-4e2e-bd79-ce6601c0b68f",
                           SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -76,7 +83,8 @@ public enum SolutionComponent
                           "V1.0",
                           null,
                           null,
-                          null),
+                          null,
+                          RequestTypeDefinition.EVALUATE_ANNOTATIONS.getGovernanceActionTypeGUID()),
 
     DETERMINE_ORIGIN_OF_DATA("7bcf573b-0ad8-4ca8-82c0-8d8f50fac4cd",
                              SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -86,7 +94,8 @@ public enum SolutionComponent
                              "V1.0",
                              null,
                              null,
-                             null),
+                             null,
+                             RequestTypeDefinition.SEEK_ORIGIN.getGovernanceActionTypeGUID()),
 
     SET_RETENTION_PERIOD("bed0ec86-45ce-4350-8c68-9596299c843a",
                          SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -96,7 +105,8 @@ public enum SolutionComponent
                          "V1.0",
                          null,
                          null,
-                         null),
+                         null,
+                         RequestTypeDefinition.RETENTION_PERIOD.getGovernanceActionTypeGUID()),
 
     PUBLISH_ASSET("22e35eff-fcc8-4baa-804e-8363989cf6f1",
                   SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -106,7 +116,8 @@ public enum SolutionComponent
                   "V1.0",
                   null,
                   null,
-                  null),
+                  null,
+                  RequestTypeDefinition.ZONE_MEMBER.getGovernanceActionTypeGUID()),
 
     WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(),
                                             SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -123,7 +134,8 @@ public enum SolutionComponent
                                                     SET_RETENTION_PERIOD,
                                                     PUBLISH_ASSET},
                                             new InformationSupplyChainSegment[]{
-                                                    InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
+                                                    InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                                            null),
 
     WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(),
                                          SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
@@ -135,7 +147,8 @@ public enum SolutionComponent
                                          null,
                                          new InformationSupplyChainSegment[]{
                                                  InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX,
-                                                 InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
+                                                 InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE},
+                                         null),
 
     POPULATE_SANDBOX(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(),
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -146,7 +159,8 @@ public enum SolutionComponent
                      new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
                      new InformationSupplyChainSegment[]{
-                             InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX}),
+                             InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX},
+                     null),
 
     TREATMENT_VALIDATION_SANDBOX(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(),
                                  SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
@@ -158,7 +172,8 @@ public enum SolutionComponent
                                  null,
                                  new InformationSupplyChainSegment[]{
                                          InformationSupplyChainSegment.DATA_LAKE_TO_SANDBOX,
-                                         InformationSupplyChainSegment.ASSESS_TREATMENT}),
+                                         InformationSupplyChainSegment.ASSESS_TREATMENT},
+                                 null),
 
     ANALYSE_PATIENT_DATA("b5c8da4c-f925-4cf1-8294-e43cd2c1a584",
                          SolutionComponentType.INSIGHT_MODEL.getSolutionComponentType(),
@@ -169,7 +184,8 @@ public enum SolutionComponent
                          new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                          null,
                          new InformationSupplyChainSegment[]{
-                                 InformationSupplyChainSegment.ASSESS_TREATMENT}),
+                                 InformationSupplyChainSegment.ASSESS_TREATMENT},
+                         null),
 
     TREATMENT_EFFICACY_EVIDENCE("48bc201e-3d4e-4beb-bdb2-0fd9d134f6d5",
                                 SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
@@ -181,7 +197,8 @@ public enum SolutionComponent
                                 null,
                                 new InformationSupplyChainSegment[]{
                                         InformationSupplyChainSegment.DELIVER_REPORT,
-                                        InformationSupplyChainSegment.ASSESS_TREATMENT}),
+                                        InformationSupplyChainSegment.ASSESS_TREATMENT},
+                                null),
 
     ASSEMBLE_REPORT("72a86eec-9734-4bc0-babb-4fec0aa7c9ff",
                     SolutionComponentType.MANUAL_PROCESS.getSolutionComponentType(),
@@ -192,7 +209,8 @@ public enum SolutionComponent
                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                     null,
                     new InformationSupplyChainSegment[]{
-                            InformationSupplyChainSegment.DELIVER_REPORT}),
+                            InformationSupplyChainSegment.DELIVER_REPORT},
+                    null),
 
     REPORT_VALIDATION_AND_DELIVERY("0bf2547c-937c-41b6-814f-6284849271a1",
                                    SolutionComponentType.DOCUMENT_PUBLISHING.getSolutionComponentType(),
@@ -202,7 +220,8 @@ public enum SolutionComponent
                                    "V1.0",
                                    new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                    null,
-                                   new InformationSupplyChainSegment[]{InformationSupplyChainSegment.DELIVER_REPORT}),
+                                   new InformationSupplyChainSegment[]{InformationSupplyChainSegment.DELIVER_REPORT},
+                                   null),
 
     NOMINATE_HOSPITAL(ClinicalTrialSolutionComponent.NOMINATE_HOSPITAL.getGUID(),
                       SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -212,7 +231,8 @@ public enum SolutionComponent
                       "V1.0",
                       new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                       null,
-                      null),
+                      null,
+                      CocoRequestTypeDefinition.NOMINATE_HOSPITAL.getGovernanceActionTypeGUID()),
 
     CERTIFY_HOSPITAL(ClinicalTrialSolutionComponent.CERTIFY_HOSPITAL.getGUID(),
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -222,7 +242,8 @@ public enum SolutionComponent
                      "V1.0",
                      new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
-                     null),
+                     null,
+                     CocoRequestTypeDefinition.CERTIFY_HOSPITAL.getGovernanceActionTypeGUID()),
 
     ONBOARD_HOSPITAL(ClinicalTrialSolutionComponent.ONBOARD_HOSPITAL.getGUID(),
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -232,19 +253,21 @@ public enum SolutionComponent
                      "V1.0",
                      new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
-                     null),
+                     null,
+                     CocoRequestTypeDefinition.ONBOARD_HOSPITAL.getGovernanceActionTypeGUID()),
 
-    SET_UP_DATA_LAKE_FOLDER(ClinicalTrialSolutionComponent.SET_UP_DATA_LAKE_FOLDER.getGUID(),
-                            SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
-                            "Governance Action Process",
-                            "Set up Data Lake Folder",
-                            "Set up the directory and Unity Catalog Volume for incoming patient measurements.",
-                            "V1.0",
-                            new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
-                            new SolutionComponent[]{
+    SET_UP_DATA_LAKE(ClinicalTrialSolutionComponent.SET_UP_DATA_LAKE.getGUID(),
+                     SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
+                     "Governance Action Process",
+                     "Set up Data Lake",
+                     "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
+                     "V1.0",
+                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
+                     new SolutionComponent[]{
                                     WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER
                             },
-                            null),
+                     null,
+                     CocoRequestTypeDefinition.SET_UP_DATA_LAKE.getGovernanceActionTypeGUID()),
 
     SET_UP_CLINICAL_TRIAL("849b0b42-f465-452b-813c-477d6398e082",
                           SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -254,7 +277,8 @@ public enum SolutionComponent
                           "V2.0",
                           new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                           null,
-                          null),
+                          null,
+                          CocoRequestTypeDefinition.SET_UP_CLINICAL_TRIAL.getGovernanceActionTypeGUID()),
 
     SUSTAINABILITY_ODS("fc55ef2d-a88d-44ee-94cb-3fca9b9af8b4",
                        SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -266,7 +290,8 @@ public enum SolutionComponent
                        null,
                        new InformationSupplyChainSegment[]{
                                InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING,
-                               InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT}),
+                               InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT},
+                       null),
 
     SUSTAINABILITY_CALCULATORS("06edd666-06fd-43ef-b7bd-22e2651c334f",
                                SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -277,7 +302,8 @@ public enum SolutionComponent
                                new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                                null,
                                new InformationSupplyChainSegment[]{
-                                       InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT}),
+                                       InformationSupplyChainSegment.SUSTAINABILITY_ASSESSMENT},
+                               null),
 
     SUSTAINABILITY_DASHBOARDS("d50a6f1f-49d2-47c3-a55e-5844464bd26f",
                                SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -288,7 +314,8 @@ public enum SolutionComponent
                               new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                                null,
                                new InformationSupplyChainSegment[]{
-                                       InformationSupplyChainSegment.DELIVER_SUSTAINABILITY_REPORT}),
+                                       InformationSupplyChainSegment.DELIVER_SUSTAINABILITY_REPORT},
+                              null),
 
     EMPLOYEE_EXPENSE_TOOL("02cdce9a-7630-479a-90de-fd7698d098f1",
                           SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -301,7 +328,8 @@ public enum SolutionComponent
                                   SolutionBlueprint.EMPLOYEE_MANAGEMENT},
                           null,
                           new InformationSupplyChainSegment[]{
-                                  InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING}),
+                                  InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                          null),
     HAZMAT_INVENTORY("25fd5be7-692d-4752-9dc7-30068a7d665e",
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
                      "COTS Application",
@@ -313,7 +341,8 @@ public enum SolutionComponent
                              SolutionBlueprint.HAZARDOUS_MATERIAL_MANAGEMENT},
                      null,
                      new InformationSupplyChainSegment[]{
-                             InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING}),
+                             InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                     null),
 
     ACCOUNTING_LEDGER("2c0f5a4e-bb02-4081-a80e-3072ca99a1aa",
                       SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -326,7 +355,8 @@ public enum SolutionComponent
                               SolutionBlueprint.PERSONALIZED_MEDICINE_ORDER_FULFILLMENT},
                       null,
                       new InformationSupplyChainSegment[]{
-                              InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING}),
+                              InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                      null),
 
     GOODS_INVENTORY("50768e61-43b6-4241-96a3-4c413582ec1f",
                     SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
@@ -339,7 +369,8 @@ public enum SolutionComponent
                             SolutionBlueprint.INVENTORY_MANAGEMENT},
                     null,
                     new InformationSupplyChainSegment[]{
-                            InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING}),
+                            InformationSupplyChainSegment.SUSTAINABILITY_DATA_GATHERING},
+                    null),
 
 
     ;
@@ -354,6 +385,7 @@ public enum SolutionComponent
     private final SolutionBlueprint[]             consumingBlueprints;
     private final SolutionComponent[]             subComponents;
     private final InformationSupplyChainSegment[] linkedFromSegment;
+    private final String                          implementedBy;
 
 
     /**
@@ -377,7 +409,8 @@ public enum SolutionComponent
                       String                          versionIdentifier,
                       SolutionBlueprint[]             consumingBlueprints,
                       SolutionComponent[]             subComponents,
-                      InformationSupplyChainSegment[] linkedFromSegment)
+                      InformationSupplyChainSegment[] linkedFromSegment,
+                      String                          implementedBy)
     {
         this.guid                = guid;
         this.componentType       = componentType;
@@ -388,7 +421,7 @@ public enum SolutionComponent
         this.consumingBlueprints = consumingBlueprints;
         this.subComponents       = subComponents;
         this.linkedFromSegment   = linkedFromSegment;
-
+        this.implementedBy       = implementedBy;
     }
 
 
@@ -500,6 +533,16 @@ public enum SolutionComponent
         return Arrays.asList(linkedFromSegment);
     }
 
+
+    /**
+     * Return the GUID of the implementation element (or null)
+     *
+     * @return guid
+     */
+    public String getImplementedBy()
+    {
+        return implementedBy;
+    }
 
     /**
      * Return the unique name of the solution blueprint.

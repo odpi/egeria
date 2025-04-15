@@ -269,6 +269,7 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         ratingGUIDParameterName,
                                         OpenMetadataType.LIKE.typeGUID,
                                         OpenMetadataType.LIKE.typeName,
+                                        false,
                                         null,
                                         null,
                                         forLineage,

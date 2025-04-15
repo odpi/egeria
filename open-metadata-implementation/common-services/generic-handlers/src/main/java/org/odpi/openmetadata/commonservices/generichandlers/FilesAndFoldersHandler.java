@@ -1248,8 +1248,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    methodName);
 
         List<String> relationshipPath = new ArrayList<>();
-        relationshipPath.add(OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID);
-        relationshipPath.add(OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID);
+        relationshipPath.add(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID);
+        relationshipPath.add(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeGUID);
 
         List<String> endpointGUIDs = new ArrayList<>();
         while (endpointGUIDs != null)
@@ -1542,6 +1542,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                fileParentGUID,
                                                                parentEntity.getType().getTypeDefName(),
                                                                OpenMetadataType.ASSET.typeName,
+                                                               null,
                                                                forLineage,
                                                                forDuplicateProcessing,
                                                                effectiveTime,
@@ -2578,6 +2579,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                   fileAssetGUID,
                                                                                   fileAssetGUIDParameterName,
                                                                                   OpenMetadataType.CSV_FILE.typeName,
+                                                                                  null,
                                                                                   OpenMetadataType.TABULAR_SCHEMA_TYPE.typeGUID,
                                                                                   OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
                                                                                   effectiveFrom,
@@ -3164,6 +3166,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            dataFileGUIDParameterName,
                                            OpenMetadataType.DATA_FILE.typeGUID,
                                            OpenMetadataType.DATA_FILE.typeName,
+                                           false,
                                            null,
                                            null,
                                            forLineage,
@@ -3181,6 +3184,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param dataFolderGUID guid of the file asset
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3194,6 +3198,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                         String  externalSourceGUID,
                                         String  externalSourceName,
                                         String  dataFolderGUID,
+                                        boolean cascadedDelete,
                                         boolean forLineage,
                                         boolean forDuplicateProcessing,
                                         Date    effectiveTime,
@@ -3213,6 +3218,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            dataFolderGUIDParameterName,
                                            OpenMetadataType.DATA_FOLDER.typeGUID,
                                            OpenMetadataType.DATA_FOLDER.typeName,
+                                           cascadedDelete,
                                            null,
                                            null,
                                            forLineage,

@@ -660,6 +660,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     collectionGUIDParameterName,
                                     OpenMetadataType.COLLECTION.typeGUID,
                                     OpenMetadataType.COLLECTION.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

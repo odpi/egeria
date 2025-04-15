@@ -462,7 +462,7 @@ public class OpenMetadataTypesArchive2_10
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Update end 1.
+         * Update end 2.
          */
         final String                     end1AttributeName            = "performedByRoles";
         final String                     end1AttributeDescription     = "The roles assigned to this responsibility.";
@@ -473,7 +473,7 @@ public class OpenMetadataTypesArchive2_10
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
+        typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
     }

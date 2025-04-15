@@ -64,6 +64,7 @@ public class DeleteAssetGovernanceActionConnector extends GeneralGovernanceActio
                                                                                                             true,
                                                                                                             null,
                                                                                                             null,
+                                                                                                            null,
                                                                                                             templateGUID,
                                                                                                             null,
                                                                                                             governanceContext.getRequestParameters(),
@@ -82,7 +83,7 @@ public class DeleteAssetGovernanceActionConnector extends GeneralGovernanceActio
                                                                                                                                                 methodName),
                                                                                                                assetGUID);
 
-                governanceContext.deleteMetadataElement(assetElement, false, false, null);
+                governanceContext.deleteMetadataElement(assetElement, false, false, false, null);
 
                 completionStatus = ManageAssetGuard.DELETE_COMPLETE.getCompletionStatus();
                 outputGuards.add(ManageAssetGuard.DELETE_COMPLETE.getName());

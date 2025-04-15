@@ -780,6 +780,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           governanceActionProcessEntity.getGUID(),
                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                           OpenMetadataType.ASSET.typeName,
+                                          null,
                                           methodName);
 
                 String processInstanceGUID = this.createBeanInRepository(userId,
@@ -788,6 +789,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
                                                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
                                                                          OpenMetadataType.ASSET.typeName,
+                                                                         null,
                                                                          processBuilder,
                                                                          false,
                                                                          new Date(),
@@ -2671,7 +2673,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                          * The anchor GUID is set if this is part of a governance action process.  It points to the first engine action entity
                          * created when the governance action process was initiated.
                          */
-                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(engineActionEntity, methodName);
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(engineActionEntity, methodName);
 
                         String anchorGUID = null;
 
@@ -3075,7 +3077,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeGUID,
                                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName,
-                                                                                                   2,
+                                                                                                   1,
                                                                                                    null,
                                                                                                    null,
                                                                                                    SequencingOrder.CREATION_DATE_RECENT,

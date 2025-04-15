@@ -577,20 +577,6 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
          */
         connection.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-        if (relationships != null)
-        {
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName))
-                    {
-                        connection.setAssetSummary(this.getAssetSummary(instanceProperties));
-                    }
-                }
-            }
-        }
-
         /*
          * Get the list of entities that are directly connected to this connection.
          */

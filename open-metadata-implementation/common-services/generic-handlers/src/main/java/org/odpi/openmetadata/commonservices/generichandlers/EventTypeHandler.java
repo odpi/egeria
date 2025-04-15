@@ -487,6 +487,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     eventTypeGUIDParameterName,
                                     OpenMetadataType.EVENT_TYPE.typeGUID,
                                     OpenMetadataType.EVENT_TYPE.typeName,
+                                    false,
                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,

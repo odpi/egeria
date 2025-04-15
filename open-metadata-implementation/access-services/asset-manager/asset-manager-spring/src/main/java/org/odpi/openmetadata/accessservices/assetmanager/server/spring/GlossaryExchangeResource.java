@@ -145,6 +145,7 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
@@ -160,13 +161,15 @@ public class GlossaryExchangeResource
                                        @PathVariable String                         userId,
                                        @PathVariable String                         glossaryGUID,
                                        @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                        cascadedDelete,
+                                       @RequestParam (required = false, defaultValue = "false")
                                                      boolean                        forLineage,
                                        @RequestParam (required = false, defaultValue = "false")
                                                      boolean                        forDuplicateProcessing,
                                        @RequestBody(required = false)
                                                      ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGlossary(serverName, userId, glossaryGUID, cascadedDelete, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

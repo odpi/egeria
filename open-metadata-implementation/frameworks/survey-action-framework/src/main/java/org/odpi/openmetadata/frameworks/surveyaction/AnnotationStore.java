@@ -124,6 +124,7 @@ public class AnnotationStore
                                                                                false,
                                                                                null,
                                                                                null,
+                                                                               null,
                                                                                properties,
                                                                                assetGUID,
                                                                                OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
@@ -702,6 +703,7 @@ public class AnnotationStore
                                                                                    false,
                                                                                    null,
                                                                                    null,
+                                                                                   null,
                                                                                    builder.getElementProperties(),
                                                                                    surveyReportGUID,
                                                                                    OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
@@ -871,6 +873,7 @@ public class AnnotationStore
                                                        externalSourceGUID,
                                                        externalSourceName,
                                                        annotationGUID,
+                                                       false,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        this.getEffectiveTime());

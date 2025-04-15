@@ -3211,7 +3211,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
-                                                          OpenMetadataType.LINEAGE_MAPPING.typeName,
+                                                          OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName,
                                                           sourceElementGUID,
                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                           destinationElementGUID,

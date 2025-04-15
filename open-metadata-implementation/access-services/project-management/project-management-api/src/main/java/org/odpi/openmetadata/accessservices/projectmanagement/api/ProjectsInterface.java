@@ -50,6 +50,7 @@ public interface ProjectsInterface
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param optionalClassification classification of the projects - eg Campaign, Task or PersonalProject
      * @param properties             properties for the project.
      * @param parentGUID unique identifier of optional parent entity
@@ -66,6 +67,7 @@ public interface ProjectsInterface
     String createProject(String               userId,
                          String               anchorGUID,
                          boolean              isOwnAnchor,
+                         String               anchorScopeGUID,
                          String               optionalClassification,
                          ProjectProperties    properties,
                          String               parentGUID,
@@ -85,6 +87,7 @@ public interface ProjectsInterface
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -106,7 +109,8 @@ public interface ProjectsInterface
     String createProjectFromTemplate(String                         userId,
                                      String                         anchorGUID,
                                      boolean                        isOwnAnchor,
-                                     Date effectiveFrom,
+                                     String                         anchorScopeGUID,
+                                     Date                           effectiveFrom,
                                      Date                           effectiveTo,
                                      String                         templateGUID,
                                      ElementProperties              replacementProperties,
@@ -242,17 +246,19 @@ public interface ProjectsInterface
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param projectGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeProject(String userId,
-                       String externalSourceGUID,
-                       String externalSourceName,
-                       String projectGUID) throws InvalidParameterException,
-                                                  UserNotAuthorizedException,
-                                                  PropertyServerException;
+    void removeProject(String  userId,
+                       String  externalSourceGUID,
+                       String  externalSourceName,
+                       String  projectGUID,
+                       boolean cascadedDelete) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException;
 
 
     /**

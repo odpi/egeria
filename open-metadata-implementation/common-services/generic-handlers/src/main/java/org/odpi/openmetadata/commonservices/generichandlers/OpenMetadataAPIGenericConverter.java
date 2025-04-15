@@ -9,21 +9,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -2585,28 +2575,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the owner property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string text or null
-     */
-    protected String removeOwner(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeOwner";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.OWNER.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the distinguishedName property from the supplied instance properties.
      *
      * @param instanceProperties properties from classification
@@ -4917,29 +4885,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                          OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.name,
                                                          instanceProperties,
                                                          methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the producedGuards property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return map of guards
-     */
-    protected Map<String, String> removeProducedGuards(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeProducedGuards";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringMapFromProperty(serviceName,
-                                                                OpenMetadataProperty.PRODUCED_GUARDS.name,
-                                                                instanceProperties,
-                                                                methodName);
         }
 
         return null;

@@ -74,6 +74,13 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
 
         FVTResults results;
 
+        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
         results = ClientConstructorTest.performFVT(serverName, serverPlatformRootURL);
         if (! results.isSuccessful())
         {
@@ -109,12 +116,6 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
         }
         results.printResults(serverName);
 
-        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
-        if (! results.isSuccessful())
-        {
-            returnCode --;
-        }
-        results.printResults(serverName);
 
         results = CreateSchemasTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())

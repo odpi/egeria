@@ -251,6 +251,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier if its anchor (or null)
      * @param anchorTypeName type name of the anchor entity
      * @param anchorDomainName type name of the anchor entity's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param qualifiedName unique name for the element
      * @param displayName display name for the element
      * @param referenceTitle full title from the publication
@@ -283,6 +284,7 @@ public class SimpleCatalogArchiveHelper
                                        String               anchorGUID,
                                        String               anchorTypeName,
                                        String               anchorDomainName,
+                                       String               anchorScopeGUID,
                                        String               qualifiedName,
                                        String               displayName,
                                        String               referenceTitle,
@@ -351,7 +353,7 @@ public class SimpleCatalogArchiveHelper
         {
             classifications = new ArrayList<>();
 
-            classifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+            classifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
         }
 
         EntityDetail externalReferenceEntity = archiveHelper.getEntityDetail(elementTypeName,
@@ -1018,14 +1020,14 @@ public class SimpleCatalogArchiveHelper
     public void addAssetLocationRelationship(String locationQName,
                                              String assetQName)
     {
-        String validValueId = idToGUIDMap.getGUID(locationQName);
+        String locationId = idToGUIDMap.getGUID(locationQName);
         String assetId = idToGUIDMap.getGUID(assetQName);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(assetId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(assetId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(locationId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(validValueId + "_to_" + assetId + "_asset_location_relationship"),
+                                                                     idToGUIDMap.getGUID(locationId + "_to_" + assetId + "_asset_location_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1165,7 +1167,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(profileGUID, profileTypeName, OpenMetadataType.ACTOR.typeName, methodName));
+        classifications.add(this.getAnchorClassification(profileGUID, profileTypeName, OpenMetadataType.ACTOR.typeName, null, methodName));
 
         EntityDetail contactDetails = archiveHelper.getEntityDetail(OpenMetadataType.CONTACT_DETAILS.typeName,
                                                                     idToGUIDMap.getGUID(contactMethodValue),
@@ -1236,7 +1238,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.ACTOR.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.ACTOR.typeName, null, methodName));
 
         EntityDetail role = archiveHelper.getEntityDetail(typeName,
                                                           idToGUIDMap.getGUID(qualifiedName),
@@ -1326,8 +1328,8 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addPersonRoleAppointmentRelationship";
 
-        String guid1 = idToGUIDMap.getGUID(personQName);
-        String guid2 = idToGUIDMap.getGUID(personRoleQName);
+        String guid1 = idToGUIDMap.getGUID(personRoleQName);
+        String guid2 = idToGUIDMap.getGUID(personQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
@@ -1423,7 +1425,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, OpenMetadataType.PERSON.typeName, OpenMetadataType.ACTOR.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, OpenMetadataType.PERSON.typeName, OpenMetadataType.ACTOR.typeName, null, methodName));
 
         EntityDetail person = archiveHelper.getEntityDetail(OpenMetadataType.PERSON.typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
@@ -1474,7 +1476,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.ACTOR.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.ACTOR.typeName, null, methodName));
 
         EntityDetail profile = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
@@ -1501,8 +1503,8 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addTeamLeadershipRelationship";
 
-        String guid1 = idToGUIDMap.getGUID(personRoleQName);
-        String guid2 = idToGUIDMap.getGUID(teamQName);
+        String guid1 = idToGUIDMap.getGUID(teamQName);
+        String guid2 = idToGUIDMap.getGUID(personRoleQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
@@ -1531,8 +1533,8 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addTeamMembershipRelationship";
 
-        String guid1 = idToGUIDMap.getGUID(personRoleQName);
-        String guid2 = idToGUIDMap.getGUID(teamQName);
+        String guid1 = idToGUIDMap.getGUID(teamQName);
+        String guid2 = idToGUIDMap.getGUID(personRoleQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
@@ -1552,7 +1554,7 @@ public class SimpleCatalogArchiveHelper
      * Link a person role as a team's member.
      *
      * @param superTeamQName qualified name of the super team profile
-     * @param subTeamQName qualified name of the subteam profile
+     * @param subTeamQName qualified name of the sub-team profile
      * @param delegationEscalationAuthority delegationEscalationAuthority of the role
      */
     public void addTeamStructureRelationship(String  superTeamQName,
@@ -2014,6 +2016,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier of the anchor for the collection - if null then own anchor
      * @param anchorTypeName unique type name of the anchor for the collection
      * @param anchorDomainName unique type name of the anchor's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param classificationName name of classification to attach
      * @param qualifiedName unique name for the collection entity
      * @param displayName display name for the collection
@@ -2029,6 +2032,7 @@ public class SimpleCatalogArchiveHelper
                                 String               anchorGUID,
                                 String               anchorTypeName,
                                 String               anchorDomainName,
+                                String               anchorScopeGUID,
                                 String               classificationName,
                                 String               qualifiedName,
                                 String               displayName,
@@ -2063,7 +2067,7 @@ public class SimpleCatalogArchiveHelper
 
         if (anchorTypeName != null)
         {
-            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
         }
 
         if (classifications.isEmpty())
@@ -2180,6 +2184,7 @@ public class SimpleCatalogArchiveHelper
         classifications.add(getAnchorClassification(null,
                                                     typeName,
                                                     OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
+                                                    null,
                                                     methodName));
 
         EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
@@ -2203,8 +2208,8 @@ public class SimpleCatalogArchiveHelper
     public void addGovernanceDefinitionScopeRelationship(String  referenceableQName,
                                                          String  governanceDefinitionQName)
     {
-        String guid1 = idToGUIDMap.getGUID(referenceableQName);
-        String guid2 = idToGUIDMap.getGUID(governanceDefinitionQName);
+        String guid1 = idToGUIDMap.getGUID(governanceDefinitionQName);
+        String guid2 = idToGUIDMap.getGUID(referenceableQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
@@ -2219,7 +2224,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Link a referenceable to a governance definition to define the scope there it applies.
+     * Link a role to a governance responsibility to define the scope there it applies.
      *
      * @param governanceRoleQName qualified name of the role
      * @param governanceDefinitionQName qualified name of the governance definition
@@ -2696,6 +2701,7 @@ public class SimpleCatalogArchiveHelper
         classifications.add(this.getAnchorClassification(null,
                                                          OpenMetadataType.BUSINESS_CAPABILITY.typeName,
                                                          OpenMetadataType.BUSINESS_CAPABILITY.typeName,
+                                                         null,
                                                          methodName));
 
         EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.BUSINESS_CAPABILITY.typeName,
@@ -2778,7 +2784,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> entityClassifications = new ArrayList<>();
 
-        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.DESIGN_MODEL.typeName, methodName));
+        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.DESIGN_MODEL.typeName, null, methodName));
 
         if (classificationName != null)
         {
@@ -2860,6 +2866,7 @@ public class SimpleCatalogArchiveHelper
             entityClassifications.add(this.getAnchorClassification(designModelGUID,
                                                                    designModelTypeName,
                                                                    OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName,
+                                                                   null,
                                                                    methodName));
         }
 
@@ -3024,7 +3031,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @param referenceableGUID referenceable being described
      * @param referenceableTypeName type name of referenceable
-     * @param referenceableDomainName domain name of referenceable's type
+     * @param referenceableDomainName domain name of the referenceable type
+     * @param referenceableScopeGUID optional scope of the referencable
      * @param referenceableQualifiedName qualified name of the referenceable
      * @param source source of the extra information
      * @param schemaVersion version of the schema for the properties
@@ -3034,6 +3042,7 @@ public class SimpleCatalogArchiveHelper
     public void addPropertyFacet(String              referenceableGUID,
                                  String              referenceableTypeName,
                                  String              referenceableDomainName,
+                                 String              referenceableScopeGUID,
                                  String              referenceableQualifiedName,
                                  String              source,
                                  String              schemaVersion,
@@ -3048,7 +3057,7 @@ public class SimpleCatalogArchiveHelper
 
         String facetGUID = idToGUIDMap.getGUID(qualifiedName);
 
-        entityClassifications.add(this.getAnchorClassification(referenceableGUID, referenceableTypeName, referenceableDomainName, methodName));
+        entityClassifications.add(this.getAnchorClassification(referenceableGUID, referenceableTypeName, referenceableDomainName, referenceableScopeGUID, methodName));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCHEMA_VERSION.name, schemaVersion, methodName);
@@ -3113,6 +3122,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier of the anchor
      * @param anchorTypeName type name of the anchor
      * @param anchorDomainName domain name of the anchor
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param qualifiedName unique name for the asset
      * @param name display name for the asset
      * @param versionIdentifier version for the asset
@@ -3127,6 +3137,7 @@ public class SimpleCatalogArchiveHelper
                                    String               anchorGUID,
                                    String               anchorTypeName,
                                    String               anchorDomainName,
+                                   String               anchorScopeGUID,
                                    String               qualifiedName,
                                    String               name,
                                    String               versionIdentifier,
@@ -3153,7 +3164,7 @@ public class SimpleCatalogArchiveHelper
 
         String guid = idToGUIDMap.getGUID(qualifiedName);
 
-        entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+        entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
@@ -3215,7 +3226,7 @@ public class SimpleCatalogArchiveHelper
 
         String guid = idToGUIDMap.getGUID(qualifiedName);
 
-        entityClassifications.add(this.getAnchorClassification(guid, assetTypeName, OpenMetadataType.ASSET.typeName, methodName));
+        entityClassifications.add(this.getAnchorClassification(guid, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
@@ -3404,7 +3415,7 @@ public class SimpleCatalogArchiveHelper
 
         String guid = idToGUIDMap.getGUID(qualifiedName);
 
-        entityClassifications.add(this.getAnchorClassification(guid, processTypeName, OpenMetadataType.ASSET.typeName, methodName));
+        entityClassifications.add(this.getAnchorClassification(guid, processTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
@@ -3441,7 +3452,9 @@ public class SimpleCatalogArchiveHelper
      * @param additionalProperties any other properties
      * @param extendedProperties properties for subtype
      * @param anchorGUID optional unique identifier for the anchor
-     * @param anchorTypeName optional type name for the anchor.
+     * @param anchorTypeName  type name for the anchor
+     * @param anchorDomainName type name of the anchor's domain
+     * @param anchorScopeGUID optional unique identifier for an anchor's scope
      *
      * @return id for the capability
      */
@@ -3458,7 +3471,8 @@ public class SimpleCatalogArchiveHelper
                                         Classification      classification,
                                         String              anchorGUID,
                                         String              anchorTypeName,
-                                        String              anchorDomainName)
+                                        String              anchorDomainName,
+                                        String              anchorScopeGUID)
     {
         List<Classification> classifications = null;
 
@@ -3481,7 +3495,8 @@ public class SimpleCatalogArchiveHelper
                                           classifications,
                                           anchorGUID,
                                           anchorTypeName,
-                                          anchorDomainName);
+                                          anchorDomainName,
+                                          anchorScopeGUID);
     }
 
 
@@ -3503,6 +3518,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID optional unique identifier for the anchor
      * @param anchorTypeName optional type name for the anchor.
      * @param anchorDomainName domain name of the anchor
+     * @param anchorScopeGUID unique identifier of anchor's scope
      *
      * @return id for the capability
      */
@@ -3519,7 +3535,8 @@ public class SimpleCatalogArchiveHelper
                                         List<Classification> suppliedClassifications,
                                         String               anchorGUID,
                                         String               anchorTypeName,
-                                        String               anchorDomainName)
+                                        String               anchorDomainName,
+                                        String               anchorScopeGUID)
     {
         final String methodName = "addSoftwareCapability";
 
@@ -3553,6 +3570,7 @@ public class SimpleCatalogArchiveHelper
             classifications.add(getAnchorClassification(guid,
                                                         entityTypeName,
                                                         OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                        null,
                                                         methodName));
         }
         else
@@ -3560,6 +3578,7 @@ public class SimpleCatalogArchiveHelper
             classifications.add(getAnchorClassification(anchorGUID,
                                                         anchorTypeName,
                                                         anchorDomainName,
+                                                        anchorScopeGUID,
                                                         methodName));
         }
 
@@ -3579,26 +3598,20 @@ public class SimpleCatalogArchiveHelper
      * Create the relationship between an asset and its connection.
      *
      * @param assetGUID unique identifier of the asset
-     * @param assetSummary summary of the asset from the connection perspective
      * @param connectionGUID unique identifier of the connection to its content
      */
     public void addConnectionForAsset(String assetGUID,
-                                      String assetSummary,
                                       String connectionGUID)
     {
-        final String methodName = "addConnectionForAsset";
-
         EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
         EntityDetail connectionEntity = archiveBuilder.getEntity(connectionGUID);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(connectionEntity);
-        EntityProxy end2 = archiveHelper.getEntityProxy(assetEntity);
+        EntityProxy end1 = archiveHelper.getEntityProxy(assetEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(connectionEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSET_SUMMARY.name, assetSummary, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(assetGUID + "_to_" + connectionGUID + "_asset_connection_relationship"),
-                                                                     properties,
+                                                                     null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -3841,7 +3854,7 @@ public class SimpleCatalogArchiveHelper
         {
             classifications = new ArrayList<>();
 
-            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, methodName));
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
         }
         EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(schemaTypeTypeName,
                                                                       idToGUIDMap.getGUID(qualifiedName),
@@ -3910,7 +3923,7 @@ public class SimpleCatalogArchiveHelper
         {
             classifications = new ArrayList<>();
 
-            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, methodName));
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
         }
         EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(schemaTypeTypeName,
                                                                       idToGUIDMap.getGUID(qualifiedName),
@@ -4257,7 +4270,7 @@ public class SimpleCatalogArchiveHelper
 
         if (assetGUID != null)
         {
-            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, methodName));
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
         }
 
         EntityDetail schemaAttributeEntity = archiveHelper.getEntityDetail(schemaAttributeTypeName,
@@ -4289,6 +4302,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier for the anchor - can be null
      * @param anchorTypeName unique type name of the anchor - set if anchorGUID set.
      * @param anchorDomainName unique type name of the anchor's domain - set if anchorGUID set.
+     * @param anchorScopeGUID optional unique identifier of the anchor's scope - set if anchorGUID set
      *
      * @return id for the connection
      */
@@ -4305,7 +4319,8 @@ public class SimpleCatalogArchiveHelper
                                 String              endpointGUID,
                                 String              anchorGUID,
                                 String              anchorTypeName,
-                                String              anchorDomainName)
+                                String              anchorDomainName,
+                                String              anchorScopeGUID)
     {
         return this.addConnection(OpenMetadataType.CONNECTION.typeName,
                                   qualifiedName,
@@ -4321,7 +4336,8 @@ public class SimpleCatalogArchiveHelper
                                   endpointGUID,
                                   anchorGUID,
                                   anchorTypeName,
-                                  anchorDomainName);
+                                  anchorDomainName,
+                                  anchorScopeGUID);
     }
 
 
@@ -4340,8 +4356,9 @@ public class SimpleCatalogArchiveHelper
      * @param connectorTypeGUID unique identifier for the connector type
      * @param endpointGUID unique identifier for the endpoint of the asset
      * @param anchorGUID unique identifier for the anchor - can be null
-     * @param anchorTypeName unique type name of the anchor - set if anchorGUID set.
-     * @param anchorDomainName unique type name of the anchor's domain - set if anchorGUID set.
+     * @param anchorTypeName unique type name of the anchor - set if anchorGUID set
+     * @param anchorDomainName unique type name of the anchor's domain - set if anchorGUID set
+     * @param anchorScopeGUID optional unique identifier of the anchor's scope - set if anchorGUID set
      *
      * @return id for the connection
      */
@@ -4359,7 +4376,8 @@ public class SimpleCatalogArchiveHelper
                                 String              endpointGUID,
                                 String              anchorGUID,
                                 String              anchorTypeName,
-                                String              anchorDomainName)
+                                String              anchorDomainName,
+                                String              anchorScopeGUID)
     {
         final String methodName = "addConnection";
 
@@ -4379,7 +4397,7 @@ public class SimpleCatalogArchiveHelper
         {
             entityClassifications = new ArrayList<>();
 
-            entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+            entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
         }
 
         EntityDetail connectionEntity = archiveHelper.getEntityDetail(typeName,
@@ -4409,10 +4427,10 @@ public class SimpleCatalogArchiveHelper
         {
             EntityDetail endpointEntity = archiveBuilder.getEntity(endpointGUID);
 
-            EntityProxy end1 = archiveHelper.getEntityProxy(endpointEntity);
-            EntityProxy end2 = archiveHelper.getEntityProxy(connectionEntity);
+            EntityProxy end1 = archiveHelper.getEntityProxy(connectionEntity);
+            EntityProxy end2 = archiveHelper.getEntityProxy(endpointEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
                                                                          idToGUIDMap.getGUID(qualifiedName + "_endpoint_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
@@ -4739,6 +4757,7 @@ public class SimpleCatalogArchiveHelper
             classifications.add(this.getAnchorClassification(guid,
                                                              OpenMetadataType.CONNECTOR_TYPE.typeName,
                                                              OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                             null,
                                                              methodName));
 
             connectorTypeEntity = archiveHelper.getEntityDetail(OpenMetadataType.CONNECTOR_TYPE.typeName,
@@ -4823,6 +4842,7 @@ public class SimpleCatalogArchiveHelper
         classifications.add(this.getAnchorClassification(connectorTypeDirectoryGUID,
                                                          OpenMetadataType.COLLECTION.typeName,
                                                          OpenMetadataType.COLLECTION.typeName,
+                                                         null,
                                                          methodName));
 
         EntityDetail connectorCategoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.CONNECTOR_CATEGORY.typeName,
@@ -4884,6 +4904,7 @@ public class SimpleCatalogArchiveHelper
         classifications.add(getAnchorClassification(guid,
                                                     OpenMetadataType.COLLECTION.typeName,
                                                     OpenMetadataType.COLLECTION.typeName,
+                                                    null,
                                                     methodName));
 
         EntityDetail connectorTypeDirectoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.COLLECTION.typeName,
@@ -5065,6 +5086,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier of the anchor
      * @param anchorTypeName type of anchor
      * @param anchorDomainName domain of anchor
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param qualifiedName unique name for the endpoint
      * @param displayName display name for the endpoint
      * @param description description about the endpoint
@@ -5077,6 +5099,7 @@ public class SimpleCatalogArchiveHelper
     public String addEndpoint(String              anchorGUID,
                               String              anchorTypeName,
                               String              anchorDomainName,
+                              String              anchorScopeGUID,
                               String              qualifiedName,
                               String              displayName,
                               String              description,
@@ -5084,7 +5107,7 @@ public class SimpleCatalogArchiveHelper
                               String              protocol,
                               Map<String, String> additionalProperties)
     {
-        return addEndpoint(anchorGUID, anchorTypeName, anchorDomainName, qualifiedName, displayName, description, networkAddress, protocol, additionalProperties, null);
+        return addEndpoint(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, qualifiedName, displayName, description, networkAddress, protocol, additionalProperties, null);
     }
 
     /**
@@ -5093,6 +5116,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier of the anchor
      * @param anchorTypeName type of anchor
      * @param anchorDomainName domain of anchor
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param qualifiedName unique name for the endpoint
      * @param displayName display name for the endpoint
      * @param description description about the endpoint
@@ -5105,6 +5129,7 @@ public class SimpleCatalogArchiveHelper
     public String addEndpoint(String              anchorGUID,
                               String              anchorTypeName,
                               String              anchorDomainName,
+                              String              anchorScopeGUID,
                               String              qualifiedName,
                               String              displayName,
                               String              description,
@@ -5134,6 +5159,7 @@ public class SimpleCatalogArchiveHelper
             classifications.add(this.getAnchorClassification(anchorGUID,
                                                              anchorTypeName,
                                                              anchorDomainName,
+                                                             anchorScopeGUID,
                                                              methodName));
         }
 
@@ -5257,6 +5283,7 @@ public class SimpleCatalogArchiveHelper
         Classification anchorClassification = this.getAnchorClassification(guid,
                                                                            OpenMetadataType.GLOSSARY.typeName,
                                                                            OpenMetadataType.GLOSSARY.typeName,
+                                                                           null,
                                                                            methodName);
         classifications.add(anchorClassification);
 
@@ -5398,9 +5425,10 @@ public class SimpleCatalogArchiveHelper
             classifications.add(rootCategoryClassification);
         }
 
-        classifications.add(this.getAnchorClassification(glossaryGUID,
-                                                         OpenMetadataType.GLOSSARY.typeName,
-                                                         OpenMetadataType.GLOSSARY.typeName,
+        classifications.add(this.getAnchorClassification(null,
+                                                         OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                         OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                         glossaryGUID,
                                                          methodName));
 
         EntityDetail  categoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_CATEGORY.typeName,
@@ -5535,9 +5563,10 @@ public class SimpleCatalogArchiveHelper
             classifications.add(newClassification);
         }
 
-        classifications.add(this.getAnchorClassification(glossaryGUID,
-                                                         OpenMetadataType.GLOSSARY.typeName,
-                                                         OpenMetadataType.GLOSSARY.typeName,
+        classifications.add(this.getAnchorClassification(null,
+                                                         OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                         OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                         glossaryGUID,
                                                          methodName));
 
         EntityDetail  termEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_TERM.typeName,
@@ -5551,7 +5580,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(termEntity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_ANCHOR.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(qualifiedName + "_term_anchor_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -6204,7 +6233,7 @@ public class SimpleCatalogArchiveHelper
                                 boolean             isDeprecated,
                                 Map<String, String> additionalProperties)
     {
-        return this.addValidValue(null, null, null, null, null, typeName, qualifiedName, name, description, null, usage, null, scope, preferredValue, isDeprecated, false, additionalProperties);
+        return this.addValidValue(null, null, null, null,null, null, typeName, qualifiedName, name, description, null, usage, null, scope, preferredValue, isDeprecated, false, additionalProperties);
     }
 
 
@@ -6216,6 +6245,7 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier of the anchor (or null)
      * @param anchorTypeName unique name of type of anchor (or null)
      * @param anchorDomainName unique name of type of anchor's domain (or null)
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param typeName unique name of the valid value - ie a definition or a set
      * @param qualifiedName unique name of the valid value
      * @param name display name of the valid value
@@ -6236,6 +6266,7 @@ public class SimpleCatalogArchiveHelper
                                 String              anchorGUID,
                                 String              anchorTypeName,
                                 String              anchorDomainName,
+                                String              anchorScopeGUID,
                                 String              typeName,
                                 String              qualifiedName,
                                 String              name,
@@ -6280,11 +6311,11 @@ public class SimpleCatalogArchiveHelper
 
             if (anchorGUID != null)
             {
-                entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+                entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
             }
             else
             {
-                entityClassifications.add(getAnchorClassification(validValueGUID, typeName, OpenMetadataType.VALID_VALUE_DEFINITION.typeName, methodName));
+                entityClassifications.add(getAnchorClassification(validValueGUID, typeName, OpenMetadataType.VALID_VALUE_DEFINITION.typeName, null, methodName));
             }
 
             EntityDetail validValueEntity = archiveHelper.getEntityDetail(typeName,
@@ -6315,12 +6346,14 @@ public class SimpleCatalogArchiveHelper
      * @param anchorGUID unique identifier for the anchor - can be null
      * @param anchorTypeName unique name of the anchor - set if anchorGUID set
      * @param anchorDomainName the typename of the direct subtype of referenceable/open metadata root
+     * @param anchorScopeGUID the unique identifier of the anchor's scope (if applicable)
      * @param methodName calling method
      * @return classification
      */
     Classification getAnchorClassification(String anchorGUID,
                                            String anchorTypeName,
                                            String anchorDomainName,
+                                           String anchorScopeGUID,
                                            String methodName)
     {
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
@@ -6337,6 +6370,10 @@ public class SimpleCatalogArchiveHelper
                                                                              anchorDomainName,
                                                                              methodName);
 
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
+                                                                             OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
+                                                                             anchorScopeGUID,
+                                                                             methodName);
 
         return archiveHelper.getClassification(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                classificationProperties, InstanceStatus.ACTIVE);
@@ -6853,7 +6890,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
@@ -6916,7 +6953,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName, null, methodName));
 
         if (owner != null)
         {
@@ -7068,7 +7105,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_BLUEPRINT.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_BLUEPRINT.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
@@ -7133,7 +7170,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_COMPONENT.typeName, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_COMPONENT.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),

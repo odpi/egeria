@@ -546,11 +546,11 @@ public class OpenMetadataTypesArchive2_5
 
     private TypeDefPatch updateProcessCallRelationship()
     {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL.typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setDescription(OpenMetadataType.PROCESS_CALL.description);
+        typeDefPatch.setDescription(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.description);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -600,7 +600,7 @@ public class OpenMetadataTypesArchive2_5
 
     private RelationshipDef addDataFlowRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_FLOW,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_FLOW_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -652,7 +652,7 @@ public class OpenMetadataTypesArchive2_5
 
     private RelationshipDef addControlFlowRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTROL_FLOW,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -715,7 +715,7 @@ public class OpenMetadataTypesArchive2_5
 
     private TypeDefPatch updateLineageMappingRelationship()
     {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING.typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

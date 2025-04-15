@@ -502,6 +502,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                               false,
                                                               null,
                                                               null,
+                                                              null,
                                                               elementProperties,
                                                               schemaTypeGUID,
                                                               OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,

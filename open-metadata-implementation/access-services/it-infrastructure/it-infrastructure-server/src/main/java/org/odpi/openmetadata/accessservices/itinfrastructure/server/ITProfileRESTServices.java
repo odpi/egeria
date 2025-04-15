@@ -3,17 +3,18 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ContactMethodElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -443,6 +444,7 @@ public class ITProfileRESTServices
                                                guidParameterName,
                                                OpenMetadataType.CONTACT_DETAILS.typeGUID,
                                                OpenMetadataType.CONTACT_DETAILS.typeName,
+                                               false,
                                                null,
                                                null,
                                                false,
@@ -459,6 +461,7 @@ public class ITProfileRESTServices
                                                guidParameterName,
                                                OpenMetadataType.CONTACT_DETAILS.typeGUID,
                                                OpenMetadataType.CONTACT_DETAILS.typeName,
+                                               false,
                                                null,
                                                null,
                                                false,

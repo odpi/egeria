@@ -218,6 +218,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         FileType.CSV_FILE.getAssetSubTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
+                                                        null,
                                                         qualifiedName + "_endpoint",
                                                         null,
                                                         null,
@@ -241,13 +242,17 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                             endpointGUID,
                                                             assetGUID,
                                                             FileType.CSV_FILE.getAssetSubTypeName(),
-                                                            OpenMetadataType.ASSET.typeName);
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null);
 
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                FileType.CSV_FILE.getAssetSubTypeName(),
+                                               assetGUID,
+                                               FileType.CSV_FILE.getAssetSubTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                CocoClinicalTrialPlaceholderProperty.getPlaceholderPropertyTypes());
 
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
@@ -299,7 +304,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                       "PatientId",
                                                                       null,
                                                                       "string",
-                                                                      0,
+                                                                      10,
                                                                       0,
                                                                       null,
                                                                       null);
@@ -317,7 +322,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                "Date",
                                                                null,
                                                                "date",
-                                                               0,
+                                                               10,
                                                                1,
                                                                "YYYY-MM-DD",
                                                                null);
@@ -335,7 +340,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                "AngleLeft",
                                                                null,
                                                                "integer",
-                                                               0,
+                                                               10,
                                                                2,
                                                                null,
                                                                null);
@@ -353,7 +358,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                "AngleRight",
                                                                null,
                                                                "integer",
-                                                               0,
+                                                               10,
                                                                3,
                                                                null,
                                                                null);
@@ -426,6 +431,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         FileType.CSV_FILE.getAssetSubTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
+                                                        null,
                                                         qualifiedName + "_endpoint",
                                                         null,
                                                         null,
@@ -449,13 +455,17 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                             endpointGUID,
                                                             assetGUID,
                                                             FileType.CSV_FILE.getAssetSubTypeName(),
-                                                            OpenMetadataType.ASSET.typeName);
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null);
 
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                FileType.CSV_FILE.getAssetSubTypeName(),
+                                               assetGUID,
+                                               FileType.CSV_FILE.getAssetSubTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                CocoClinicalTrialPlaceholderProperty.getPlaceholderPropertyTypes());
 
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());

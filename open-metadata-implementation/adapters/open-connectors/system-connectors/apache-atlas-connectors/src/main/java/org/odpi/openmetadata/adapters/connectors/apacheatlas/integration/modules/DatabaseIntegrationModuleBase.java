@@ -748,9 +748,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                                                       egeriaDatabaseTable.getElementHeader().getGUID(),
                                                                                                                       atlasDatabaseTableGUID));
 
-                            dataAssetExchangeService.removeDataAsset(egeriaDatabaseTable.getElementHeader().getGUID(),
-                                                                     atlasDatabaseTableGUID,
-                                                                     null);
+                            dataAssetExchangeService.removeSchemaAttribute(egeriaDatabaseTable.getElementHeader().getGUID(), atlasDatabaseTableGUID, null);
                         }
                     }
 
@@ -1013,9 +1011,9 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                                                       egeriaDatabaseColumn.getElementHeader().getGUID(),
                                                                                                                       atlasDatabaseColumnGUID));
 
-                            dataAssetExchangeService.removeDataAsset(egeriaDatabaseColumn.getElementHeader().getGUID(),
-                                                                     atlasDatabaseColumnGUID,
-                                                                     null);
+                            dataAssetExchangeService.removeSchemaAttribute(egeriaDatabaseColumn.getElementHeader().getGUID(),
+                                                                           atlasDatabaseColumnGUID,
+                                                                           null);
                         }
                     }
 

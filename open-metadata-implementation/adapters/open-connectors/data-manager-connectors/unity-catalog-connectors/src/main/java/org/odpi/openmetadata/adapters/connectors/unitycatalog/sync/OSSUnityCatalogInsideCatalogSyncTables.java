@@ -276,7 +276,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    private void createElementInEgeria(String     schemaGUID,
+    private void createElementInEgeria(String    schemaGUID,
                                        TableInfo tableInfo) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -293,6 +293,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                             deployedImplementationType.getAssociatedTypeName(),
                                                                             schemaGUID,
                                                                             false,
+                                                                            schemaGUID,
                                                                             null,
                                                                             null,
                                                                             templateGUID,
@@ -314,6 +315,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                            null,
                                                                            schemaGUID,
                                                                            false,
+                                                                           schemaGUID,
                                                                            null,
                                                                            null,
                                                                            this.getElementProperties(qualifiedName, tableInfo),
@@ -677,6 +679,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                         null,
                                                         tableGUID,
                                                         false,
+                                                        null,
                                                         null,
                                                         null,
                                                         properties,

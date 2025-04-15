@@ -2,16 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -204,6 +205,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                            null,
                            OpenMetadataType.GLOSSARY.typeName,
                            OpenMetadataType.GLOSSARY.typeName,
+                           null,
                            methodName);
 
         return this.createBeanFromTemplate(userId,
@@ -726,6 +728,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName     unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryGUIDParameterName parameter supplying the glossaryGUID
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime           the time that the retrieved elements must be effective for
@@ -740,6 +743,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                String  externalSourceName,
                                String  glossaryGUID,
                                String  glossaryGUIDParameterName,
+                               boolean cascadedDelete,
                                boolean forLineage,
                                boolean forDuplicateProcessing,
                                Date    effectiveTime,
@@ -747,19 +751,34 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        this.deleteBeanInRepository(userId,
-                                    externalSourceGUID,
-                                    externalSourceName,
-                                    glossaryGUID,
-                                    glossaryGUIDParameterName,
-                                    OpenMetadataType.GLOSSARY.typeGUID,
-                                    OpenMetadataType.GLOSSARY.typeName,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    effectiveTime,
-                                    methodName);
+        EntityDetail glossaryEntity = this.getEntityFromRepository(userId,
+                                                                   glossaryGUID,
+                                                                   glossaryGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        if (glossaryEntity != null)
+        {
+            this.deleteBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataType.GLOSSARY.typeGUID,
+                                        OpenMetadataType.GLOSSARY.typeName,
+                                        cascadedDelete,
+                                        null,
+                                        null,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+        }
     }
 
 
@@ -990,8 +1009,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                        glossaryTermGUID,
                                        guidParameterName,
                                        OpenMetadataType.GLOSSARY_TERM.typeName,
-                                       OpenMetadataType.TERM_ANCHOR.typeGUID,
-                                       OpenMetadataType.TERM_ANCHOR.typeName,
+                                       OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
+                                       OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeName,
                                        OpenMetadataType.GLOSSARY.typeName,
                                        1,
                                        null,

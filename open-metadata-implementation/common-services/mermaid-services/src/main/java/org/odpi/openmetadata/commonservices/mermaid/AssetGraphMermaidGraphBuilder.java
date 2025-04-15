@@ -30,7 +30,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
-                             VisualStyle.ANCHOR_ASSET);
+                             VisualStyle.ANCHOR_ELEMENT);
 
         if (assetGraph.getAnchoredElements() != null)
         {
@@ -64,23 +64,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
-                    VisualStyle visualStyle = VisualStyle.LINKED_ELEMENT;
-
-                    if (propertyHelper.isTypeOf(line, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                    {
-                        visualStyle = VisualStyle.DEFAULT_SOLUTION_COMPONENT;
-                    }
-                    else if (propertyHelper.isTypeOf(line, OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName))
-                    {
-                        visualStyle = VisualStyle.HOST;
-                    }
-                    else if ((propertyHelper.isTypeOf(line, OpenMetadataType.DATA_FLOW.typeName)) ||
-                             (propertyHelper.isTypeOf(line, OpenMetadataType.PROCESS_CALL.typeName)) ||
-                             (propertyHelper.isTypeOf(line, OpenMetadataType.LINEAGE_MAPPING.typeName)) ||
-                             (propertyHelper.isTypeOf(line, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName)))
-                    {
-                        visualStyle = VisualStyle.LINEAGE_ELEMENT;
-                    }
+                    VisualStyle visualStyle = getVisualStyleForRelationship(line);
 
                     String endName = line.getEnd1().getGUID();
                     if (line.getEnd1().getUniqueName() != null)

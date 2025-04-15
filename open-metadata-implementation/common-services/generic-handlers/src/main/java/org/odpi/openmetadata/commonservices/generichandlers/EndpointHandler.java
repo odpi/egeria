@@ -685,6 +685,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     guidParameterName,
                                     OpenMetadataType.ENDPOINT.typeGUID,
                                     OpenMetadataType.ENDPOINT.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

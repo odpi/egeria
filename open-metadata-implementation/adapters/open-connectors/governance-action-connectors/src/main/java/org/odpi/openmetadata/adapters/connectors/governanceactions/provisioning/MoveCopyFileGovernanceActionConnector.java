@@ -912,6 +912,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                        isOwnAnchor,
                                                                        null,
                                                                        null,
+                                                                       null,
                                                                        assetTemplateGUID,
                                                                        null,
                                                                        placeholderProperties,
@@ -927,6 +928,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                      null,
                                                                      null,
                                                                      true,
+                                                                     null,
                                                                      null,
                                                                      null,
                                                                      destinationFileProperties,
@@ -948,7 +950,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                         sourceFileGUID,
                                                         informationSupplyChainQualifiedName,
                                                         null, null,
@@ -958,7 +960,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                         processGUID);
         }
 
-        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                     processGUID,
                                                     informationSupplyChainQualifiedName,
                                                     null,
@@ -1072,6 +1074,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         {
             try
             {
+                metadataStore.setForLineage(true);
+
                 RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(assetGUID,
                                                                                             1,
                                                                                             OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
@@ -1079,8 +1083,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
                 if (schemaType != null)
                 {
+                    int arrayCapacity = 200;
                     int startFrom = 0;
-                    List<OpenMetadataElement>  schemaAttributes = new ArrayList<>();
+
+                    /*
+                     * Reserve plenty of space for schema attributes.
+                     */
+                    List<OpenMetadataElement>  schemaAttributes = new ArrayList<>(arrayCapacity);
 
                     RelatedMetadataElementList relatedMetadataElementList = metadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
                                                                                                                      1,
@@ -1098,6 +1107,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                              OpenMetadataProperty.POSITION.name,
                                                                              relatedMetadataElement.getElement().getElementProperties(),
                                                                              methodName);
+                                if (position >= arrayCapacity)
+                                {
+                                    arrayCapacity = position + 10;
+                                    List<OpenMetadataElement>  newSchemaAttributes = new ArrayList<>(arrayCapacity);
+
+                                    newSchemaAttributes.addAll(schemaAttributes);
+                                    schemaAttributes = newSchemaAttributes;
+                                }
+
                                 schemaAttributes.add(position, relatedMetadataElement.getElement());
                             }
                         }

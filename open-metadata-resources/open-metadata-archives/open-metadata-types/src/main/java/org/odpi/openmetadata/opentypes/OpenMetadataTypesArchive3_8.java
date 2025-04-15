@@ -469,7 +469,7 @@ public class OpenMetadataTypesArchive3_8
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "authors";
         final String                     end1AttributeDescription     = "Person contributing to the note log.";
@@ -480,11 +480,11 @@ public class OpenMetadataTypesArchive3_8
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
+        typeDefPatch.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "authoredNoteLogs";
         final String                     end2AttributeDescription     = "Note log containing contributions.";
@@ -495,7 +495,7 @@ public class OpenMetadataTypesArchive3_8
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }

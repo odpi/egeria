@@ -1740,168 +1740,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
 
     /**
-     * Returns the list of elements that are classified with a specific set of DataFieldValues properties.
-     *
-     * @param userId          userId of user making request
-     * @param defaultValue initial value of a data field value
-     * @param sampleValues list of sample values
-     * @param dataPattern regular expression describing the values in the data filed
-     * @param namePattern regular expression describing the name of the data field
-     * @param serviceSupportedZones supported zones for calling service
-     * @param startFrom int      starting position for fist returned element.
-     * @param pageSize  int      maximum number of elements to return on the call.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName String calling method
-     *
-     * @return a list of elements or
-     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public List<B> getDataFieldValuesClassifiedElement(String              userId,
-                                                       String              defaultValue,
-                                                       List<String>        sampleValues,
-                                                       List<String>        dataPattern,
-                                                       List<String>        namePattern,
-                                                       List<String>        serviceSupportedZones,
-                                                       int                 startFrom,
-                                                       int                 pageSize,
-                                                       boolean             forLineage,
-                                                       boolean             forDuplicateProcessing,
-                                                       Date                effectiveTime,
-                                                       String              methodName) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                         OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName,
-                                                                                         null,
-                                                                                         null,
-                                                                                         null,
-                                                                                         null,
-                                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                                         null,
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing,
-                                                                                         startFrom,
-                                                                                         queryPageSize,
-                                                                                         effectiveTime,
-                                                                                         methodName);
-        List<EntityDetail> validatedEntities = super.validateEntitiesAndAnchorsForRead(userId,
-                                                                                       entities,
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
-                                                                                       serviceSupportedZones,
-                                                                                       effectiveTime,
-                                                                                       methodName);
-        if (validatedEntities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : validatedEntities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            String retrievedDefaultValue = repositoryHelper.getStringProperty(serviceName,
-                                                                                              OpenMetadataProperty.DEFAULT_VALUE.name,
-                                                                                              classification.getProperties(),
-                                                                                              methodName);
-
-                            if ((defaultValue == null) || (defaultValue.equals(retrievedDefaultValue)))
-                            {
-                                boolean match = true;
-
-                                if (sampleValues != null)
-                                {
-                                    List<String> retrievedSampleValues = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataProperty.SAMPLE_VALUES.name,
-                                                                                                                 classification.getProperties(),
-                                                                                                                 methodName);
-
-                                    if ((retrievedSampleValues == null) ||
-                                                (sampleValues.isEmpty() && (! retrievedSampleValues.isEmpty())) ||
-                                                ((! sampleValues.isEmpty()) && retrievedSampleValues.isEmpty()) ||
-                                                (! new HashSet<>(retrievedSampleValues).containsAll(sampleValues)) ||
-                                                (! new HashSet<>(sampleValues).containsAll(retrievedSampleValues)))
-                                    {
-                                        match = false;
-                                    }
-                                }
-
-                                if (dataPattern != null)
-                                {
-                                    List<String> retrievedDataPatterns = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataProperty.DATA_PATTERNS.name,
-                                                                                                                 classification.getProperties(),
-                                                                                                                 methodName);
-
-                                    if ((retrievedDataPatterns == null) ||
-                                                (dataPattern.isEmpty() && (! retrievedDataPatterns.isEmpty())) ||
-                                                ((! dataPattern.isEmpty()) && retrievedDataPatterns.isEmpty()) ||
-                                                (! new HashSet<>(retrievedDataPatterns).containsAll(dataPattern)) ||
-                                                (! new HashSet<>(dataPattern).containsAll(retrievedDataPatterns)))
-                                    {
-                                        match = false;
-                                    }
-                                }
-
-                                if (namePattern != null)
-                                {
-                                    List<String> retrievedNamePatterns = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataProperty.NAME_PATTERNS.name,
-                                                                                                                 classification.getProperties(),
-                                                                                                                 methodName);
-
-                                    if ((retrievedNamePatterns == null) ||
-                                                (namePattern.isEmpty() && (! retrievedNamePatterns.isEmpty())) ||
-                                                ((! namePattern.isEmpty()) && retrievedNamePatterns.isEmpty()) ||
-                                                (! new HashSet<>(retrievedNamePatterns).containsAll(namePattern)) ||
-                                                (! new HashSet<>(namePattern).containsAll(retrievedNamePatterns)))
-                                    {
-                                        match = false;
-                                    }
-                                }
-
-                                if (match)
-                                {
-                                    beans.add(converter.getNewBean(beanClass, entity, methodName));
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Page through the list of consumers for a valid value.
      *
      * @param userId                  calling user
@@ -3995,12 +3833,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
-                                  governanceDefinitionGUID,
-                                  governanceDefinitionGUIDParameterName,
-                                  OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                   referenceableGUID,
                                   referenceableGUIDParameterName,
                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                  governanceDefinitionGUID,
+                                  governanceDefinitionGUIDParameterName,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -4051,13 +3889,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                       false,
                                       externalSourceGUID,
                                       externalSourceName,
-                                      governanceDefinitionGUID,
-                                      governanceDefinitionGUIDParameterName,
-                                      OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                       referenceableGUID,
                                       referenceableGUIDParameterName,
-                                      OpenMetadataType.REFERENCEABLE.typeGUID,
                                       OpenMetadataType.REFERENCEABLE.typeName,
+                                      governanceDefinitionGUID,
+                                      governanceDefinitionGUIDParameterName,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION.typeGUID,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeGUID,
@@ -4117,7 +3955,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         resultingTypeName,
                                         (String)null,
                                         null,
-                                        2,
+                                        1,
                                         null,
                                         null,
                                         SequencingOrder.CREATION_DATE_RECENT,
@@ -4172,12 +4010,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
-                                  referenceableGUID,
-                                  referenceableGUIDParameterName,
-                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   governanceDefinitionGUID,
                                   governanceDefinitionGUIDParameterName,
                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
+                                  referenceableGUID,
+                                  referenceableGUIDParameterName,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -4228,13 +4066,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                       false,
                                       externalSourceGUID,
                                       externalSourceName,
+                                      governanceDefinitionGUID,
+                                      governanceDefinitionGUIDParameterName,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                       referenceableGUID,
                                       referenceableGUIDParameterName,
                                       OpenMetadataType.REFERENCEABLE.typeGUID,
-                                      governanceDefinitionGUID,
-                                      governanceDefinitionGUIDParameterName,
-                                      OpenMetadataType.GOVERNANCE_DEFINITION.typeGUID,
-                                      OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeGUID,
@@ -4294,7 +4132,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         resultingTypeName,
                                         (String)null,
                                         null,
-                                        1,
+                                        2,
                                         null,
                                         null,
                                         SequencingOrder.CREATION_DATE_RECENT,
@@ -5184,6 +5022,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                         propertyFacetGUIDParameter,
                                                         OpenMetadataType.PROPERTY_FACET.typeGUID,
                                                         OpenMetadataType.PROPERTY_FACET.typeName,
+                                                        false,
                                                         null,
                                                         null,
                                                         forLineage,

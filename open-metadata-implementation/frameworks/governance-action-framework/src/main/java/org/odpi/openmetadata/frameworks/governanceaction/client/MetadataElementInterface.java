@@ -590,6 +590,8 @@ public interface MetadataElementInterface
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -613,6 +615,7 @@ public interface MetadataElementInterface
                                         Map<String, ElementProperties> initialClassifications,
                                         String                         anchorGUID,
                                         boolean                        isOwnAnchor,
+                                        String                         anchorScopeGUID,
                                         Date                           effectiveFrom,
                                         Date                           effectiveTo,
                                         ElementProperties              properties,
@@ -641,8 +644,10 @@ public interface MetadataElementInterface
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
-     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     * @param isOwnAnchor boolean flag to say that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -668,6 +673,7 @@ public interface MetadataElementInterface
                                         Map<String, ElementProperties> initialClassifications,
                                         String                         anchorGUID,
                                         boolean                        isOwnAnchor,
+                                        String                         anchorScopeGUID,
                                         Date                           effectiveFrom,
                                         Date                           effectiveTo,
                                         ElementProperties              properties,
@@ -695,6 +701,8 @@ public interface MetadataElementInterface
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -720,6 +728,7 @@ public interface MetadataElementInterface
                                              String              metadataElementTypeName,
                                              String              anchorGUID,
                                              boolean             isOwnAnchor,
+                                             String              anchorScopeGUID,
                                              Date                effectiveFrom,
                                              Date                effectiveTo,
                                              String              templateGUID,
@@ -751,6 +760,8 @@ public interface MetadataElementInterface
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -778,6 +789,7 @@ public interface MetadataElementInterface
                                              String              metadataElementTypeName,
                                              String              anchorGUID,
                                              boolean             isOwnAnchor,
+                                             String              anchorScopeGUID,
                                              Date                effectiveFrom,
                                              Date                effectiveTo,
                                              String              templateGUID,
@@ -809,6 +821,8 @@ public interface MetadataElementInterface
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -836,6 +850,7 @@ public interface MetadataElementInterface
                                           String              metadataElementTypeName,
                                           String              anchorGUID,
                                           boolean             isOwnAnchor,
+                                          String              anchorScopeGUID,
                                           Date                effectiveFrom,
                                           Date                effectiveTo,
                                           String              templateGUID,
@@ -1031,6 +1046,7 @@ public interface MetadataElementInterface
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
@@ -1039,6 +1055,7 @@ public interface MetadataElementInterface
      */
     void deleteMetadataElementInStore(String  userId,
                                       String  metadataElementGUID,
+                                      boolean cascadedDelete,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime) throws InvalidParameterException,
@@ -1053,6 +1070,7 @@ public interface MetadataElementInterface
      * @param externalSourceGUID      unique identifier of the software capability that owns this collection
      * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1065,6 +1083,7 @@ public interface MetadataElementInterface
                                       String  externalSourceGUID,
                                       String  externalSourceName,
                                       String  metadataElementGUID,
+                                      boolean cascadedDelete,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime) throws InvalidParameterException,

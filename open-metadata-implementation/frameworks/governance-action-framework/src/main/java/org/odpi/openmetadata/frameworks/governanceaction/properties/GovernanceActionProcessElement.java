@@ -23,10 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessElement
 {
-    private ElementHeader                          elementHeader        = null;
-    private GovernanceActionProcessProperties      processProperties    = null;
-    private Map<String, List<Map<String, String>>> specification        = null;
-    private String                                 mermaidSpecification = null;
+    private ElementHeader                          elementHeader               = null;
+    private GovernanceActionProcessProperties      processProperties           = null;
+    private Map<String, List<Map<String, String>>> specification               = null;
+    private List<PredefinedActionTarget>           predefinedActionTargets     = null;
+    private Map<String, String>                    predefinedRequestParameters = null;
+    private String                                 mermaidSpecification        = null;
 
 
     /**
@@ -47,10 +49,12 @@ public class GovernanceActionProcessElement
     {
         if (template != null)
         {
-            elementHeader        = template.getElementHeader();
-            processProperties    = template.getProcessProperties();
-            specification        = template.getSpecification();
-            mermaidSpecification = template.getMermaidSpecification();
+            elementHeader               = template.getElementHeader();
+            processProperties           = template.getProcessProperties();
+            predefinedActionTargets     = template.getPredefinedActionTargets();
+            predefinedRequestParameters = template.getPredefinedRequestParameters();
+            specification               = template.getSpecification();
+            mermaidSpecification        = template.getMermaidSpecification();
         }
     }
 
@@ -96,6 +100,51 @@ public class GovernanceActionProcessElement
     {
         this.processProperties = processProperties;
     }
+
+
+    /**
+     * Return the list of predefined action targets for this governance action.
+     *
+     * @return list
+     */
+    public List<PredefinedActionTarget> getPredefinedActionTargets()
+    {
+        return predefinedActionTargets;
+    }
+
+
+    /**
+     * Set up the list of predefined action targets for this governance action.
+     *
+     * @param predefinedActionTargets list
+     */
+    public void setPredefinedActionTargets(List<PredefinedActionTarget> predefinedActionTargets)
+    {
+        this.predefinedActionTargets = predefinedActionTargets;
+    }
+
+
+    /**
+     * Return any pre-defined request parameters.
+     *
+     * @return map
+     */
+    public Map<String, String> getPredefinedRequestParameters()
+    {
+        return predefinedRequestParameters;
+    }
+
+
+    /**
+     * Set up any pre-defined request parameters.
+     *
+     * @param predefinedRequestParameters map
+     */
+    public void setPredefinedRequestParameters(Map<String, String> predefinedRequestParameters)
+    {
+        this.predefinedRequestParameters = predefinedRequestParameters;
+    }
+
 
     /**
      * Return the specification for the governance action.
@@ -153,6 +202,8 @@ public class GovernanceActionProcessElement
                 "elementHeader=" + elementHeader +
                 ", processProperties=" + processProperties +
                 ", specification=" + specification +
+                ", predefinedActionTargets=" + predefinedActionTargets +
+                ", predefinedRequestParameters=" + predefinedRequestParameters +
                 ", mermaidSpecification='" + mermaidSpecification + '\'' +
                 '}';
     }
@@ -182,6 +233,8 @@ public class GovernanceActionProcessElement
         GovernanceActionProcessElement that = (GovernanceActionProcessElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(processProperties, that.processProperties) &&
+                Objects.equals(predefinedActionTargets, that.predefinedActionTargets) &&
+                Objects.equals(predefinedRequestParameters, that.predefinedRequestParameters) &&
                 Objects.equals(specification, that.specification) &&
                 Objects.equals(mermaidSpecification, that.mermaidSpecification);
     }
@@ -195,6 +248,7 @@ public class GovernanceActionProcessElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, processProperties, specification, mermaidSpecification);
+        return Objects.hash(super.hashCode(), elementHeader, processProperties, predefinedActionTargets,
+                            predefinedRequestParameters, specification, mermaidSpecification);
     }
 }

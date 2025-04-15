@@ -691,6 +691,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
@@ -703,6 +704,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
     public void removeDataAsset(String                        userId,
                                 MetadataCorrelationProperties correlationProperties,
                                 String                        assetGUID,
+                                boolean                       cascadedDelete,
                                 boolean                       forLineage,
                                 boolean                       forDuplicateProcessing,
                                 Date                          effectiveTime,
@@ -732,6 +734,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                             assetGUIDParameterName,
                                             OpenMetadataType.ASSET.typeGUID,
                                             OpenMetadataType.ASSET.typeName,
+                                            cascadedDelete,
                                             null,
                                             null,
                                             forLineage,

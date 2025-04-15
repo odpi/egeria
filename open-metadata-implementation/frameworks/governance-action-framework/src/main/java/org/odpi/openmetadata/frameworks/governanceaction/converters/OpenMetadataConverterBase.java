@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -607,12 +606,13 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
-     *
-     * @param beanClass
-     * @param retrievedRelationships
-     * @param methodName
-     * @return
-     * @throws PropertyServerException
+     * Convert a list of relationships
+     * @param beanClass specific class
+     * @param retrievedRelationships values retrieved from the metadata repository
+     * @param methodName calling method
+     * @return list of relationships
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
      */
     public List<RelationshipElement> getRelationshipElements(Class<B>                       beanClass,
                                                              List<OpenMetadataRelationship> retrievedRelationships,
@@ -641,8 +641,8 @@ public class OpenMetadataConverterBase<B>
 
                     relationshipElement.setRelationshipProperties(relationshipProperties);
 
-                    relationshipElement.setEnd1(retrievedRelationship.getElementAtEnd1());
-                    relationshipElement.setEnd2(retrievedRelationship.getElementAtEnd2());
+                    relationshipElement.setEnd1(getElementStub(beanClass, retrievedRelationship.getElementAtEnd1(), methodName));
+                    relationshipElement.setEnd2(getElementStub(beanClass, retrievedRelationship.getElementAtEnd2(), methodName));
 
                     relationshipElements.add(relationshipElement);
                 }
@@ -744,6 +744,7 @@ public class OpenMetadataConverterBase<B>
         return null;
     }
 
+
     /**
      * Extract the properties from the element.
      *
@@ -767,6 +768,40 @@ public class OpenMetadataConverterBase<B>
                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                        element.getElementProperties(),
                                                                        methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(),
+                                               OpenMetadataElement.class.getName(),
+                                               methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param beanClass name of the class to create
+     * @param element element containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>                beanClass,
+                                      OpenMetadataElementStub element,
+                                      String                  methodName) throws PropertyServerException
+    {
+        if (element != null)
+        {
+            ElementControlHeader elementHeader = getMetadataElementHeader(beanClass, element, element.getGUID(), element.getClassifications(), methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(element.getUniqueName());
 
             return elementStub;
         }

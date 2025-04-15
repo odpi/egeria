@@ -16,11 +16,13 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.OpenMetadataElementStubConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -29,11 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -320,7 +318,7 @@ public class OpenGovernanceRESTServices
                                                                                                                    new Date(),
                                                                                                                    methodName);
 
-                response.setElements(addGovernanceActionTypeSpecification(userId, handler, supportedZones, governanceActionTypeElements));
+                response.setElements(completeGovernanceActionTypes(userId, handler, supportedZones, governanceActionTypeElements));
             }
             else
             {
@@ -349,7 +347,7 @@ public class OpenGovernanceRESTServices
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    private List<GovernanceActionTypeElement> addGovernanceActionTypeSpecification
+    private List<GovernanceActionTypeElement> completeGovernanceActionTypes
                                                                (String                                                     userId,
                                                                OpenMetadataAPIGenericHandler<GovernanceActionTypeElement> handler,
                                                                List<String>                                               supportedZones,
@@ -359,33 +357,12 @@ public class OpenGovernanceRESTServices
     {
         if (elements != null)
         {
-            final String elementGUIDParameterName = "governanceActionTypeGUID";
 
             List<GovernanceActionTypeElement> results = new ArrayList<>();
 
             for (GovernanceActionTypeElement element : elements)
             {
-                if (element != null)
-                {
-                    element.setSpecification(handler.getSpecification(userId,
-                                                                      element.getElementHeader().getGUID(),
-                                                                      elementGUIDParameterName,
-                                                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
-                                                                      supportedZones));
-
-                    if (element.getSpecification() != null)
-                    {
-                        SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
-                                                                                                                          element.getActionTypeProperties().getDisplayName(),
-                                                                                                                          element.getSpecification());
-                        element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
-                    }
-                    results.add(element);
-                }
-                else
-                {
-                    results.add(null);
-                }
+                results.add(completeGovernanceActionType(userId, handler, supportedZones, element));
             }
 
             return results;
@@ -394,6 +371,99 @@ public class OpenGovernanceRESTServices
         return null;
     }
 
+
+    /**
+     * Add the specification to the element returned.
+     *
+     * @param userId calling user
+     * @param handler generic handler
+     * @param supportedZones supported zones
+     * @param element retrieved element
+     * @return elements plus specifications
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private GovernanceActionTypeElement completeGovernanceActionType(String                                                     userId,
+                                                                     OpenMetadataAPIGenericHandler<GovernanceActionTypeElement> handler,
+                                                                     List<String>                                               supportedZones,
+                                                                     GovernanceActionTypeElement                                element) throws InvalidParameterException,
+                                                                                                                                                PropertyServerException,
+                                                                                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "completeGovernanceActionType";
+        final String elementGUIDParameterName = "governanceActionTypeGUID";
+
+        if (element != null)
+        {
+            element.setSpecification(handler.getSpecification(userId,
+                                                              element.getElementHeader().getGUID(),
+                                                              elementGUIDParameterName,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
+                                                              supportedZones));
+
+            if (element.getSpecification() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                  element.getActionTypeProperties().getDisplayName(),
+                                                                                                                  element.getSpecification());
+                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+            }
+
+            /*
+             * Retrieve pre-defined Action Targets.
+             * The relationships are retrieved explicitly by type because it is assumed that the process may have many other relationships.
+             */
+            List<Relationship> relationships = handler.getAttachmentLinks(userId,
+                                                                          element.getElementHeader().getGUID(),
+                                                                          elementGUIDParameterName,
+                                                                          OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
+                                                                          OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeGUID,
+                                                                          OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
+                                                                          null,
+                                                                          null,
+                                                                          2,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          supportedZones,
+                                                                          0,
+                                                                          0,
+                                                                          new Date(),
+                                                                          methodName);
+
+            if (relationships != null)
+            {
+                List<PredefinedActionTarget>     predefinedActionTargets = new ArrayList<>();
+                OpenMetadataElementStubConverter<OpenMetadataElementStub> converter = new OpenMetadataElementStubConverter<>(handler.getRepositoryHelper(),
+                                                                                                                             handler.getServiceName(),
+                                                                                                                             handler.getServerName());
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        PredefinedActionTarget predefinedActionTarget = new PredefinedActionTarget();
+
+                        predefinedActionTarget.setActionTargetName(handler.getRepositoryHelper().getStringProperty(handler.getServiceName(),
+                                                                                                                   OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                                   relationship.getProperties(),
+                                                                                                                   methodName));
+
+                        predefinedActionTarget.setActionTargetElementStub(converter.getOpenMetadataElementStub(relationship.getEntityTwoProxy()));
+
+                        predefinedActionTargets.add(predefinedActionTarget);
+                    }
+                }
+
+                element.setPredefinedActionTargets(predefinedActionTargets);
+            }
+        }
+
+        return element;
+    }
 
 
     /**
@@ -449,10 +519,10 @@ public class OpenGovernanceRESTServices
                                                                                                                         startFrom,
                                                                                                                         pageSize,
                                                                                                                         supportedZones,
-                                                                                                                        null,
+                                                                                                                        requestBody.getEffectiveTime(),
                                                                                                                         methodName);
 
-                response.setElements(addGovernanceActionTypeSpecification(userId, handler, supportedZones, governanceActionTypeElements));
+                response.setElements(completeGovernanceActionTypes(userId, handler, supportedZones, governanceActionTypeElements));
             }
             else
             {
@@ -488,7 +558,6 @@ public class OpenGovernanceRESTServices
                                                                       String governanceActionTypeGUID)
     {
         final String methodName = "getGovernanceActionTypeByGUID";
-        final String elementGUIDParameterName = "governanceActionTypeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -506,24 +575,10 @@ public class OpenGovernanceRESTServices
             GovernanceActionTypeElement element = handler.getGovernanceActionTypeByGUID(userId,
                                                                                         governanceActionTypeGUID,
                                                                                         supportedZones,
-                                                                                        null,
+                                                                                        new Date(),
                                                                                         methodName);
 
-            element.setSpecification(handler.getSpecification(userId,
-                                                              element.getElementHeader().getGUID(),
-                                                              elementGUIDParameterName,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
-                                                              supportedZones));
-
-            if (element.getSpecification() != null)
-            {
-                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
-                                                                                                                  element.getActionTypeProperties().getDisplayName(),
-                                                                                                                  element.getSpecification());
-                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
-            }
-
-            response.setElement(element);
+            response.setElement(completeGovernanceActionType(userId, handler, supportedZones, element));
         }
         catch (Throwable error)
         {
@@ -590,13 +645,13 @@ public class OpenGovernanceRESTServices
                                                                  processProperties.getDisplayName(),
                                                                  processProperties.getVersionIdentifier(),
                                                                  processProperties.getDescription(),
-                                                                 null,
+                                                                 DeployedImplementationType.GOVERNANCE_ACTION_PROCESS.getDeployedImplementationType(),
                                                                  processProperties.getAdditionalProperties(),
                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                  extendedProperties,
                                                                  this.getProcessStatus(requestBody.getProcessStatus()),
-                                                                 null,
-                                                                 null,
+                                                                 processProperties.getEffectiveFrom(),
+                                                                 processProperties.getEffectiveTo(),
                                                                  effectiveTime,
                                                                  methodName));
             }
@@ -694,14 +749,14 @@ public class OpenGovernanceRESTServices
                                     processProperties.getDisplayName(),
                                     processProperties.getDisplayName(),
                                     processProperties.getDescription(),
-                                    null,
+                                    DeployedImplementationType.GOVERNANCE_ACTION_PROCESS.getDeployedImplementationType(),
                                     processProperties.getAdditionalProperties(),
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                     extendedProperties,
-                                    null,
-                                    null,
+                                    processProperties.getEffectiveFrom(),
+                                    processProperties.getEffectiveTo(),
                                     requestBody.getMergeUpdate(),
                                     false,
                                     false,
@@ -895,6 +950,7 @@ public class OpenGovernanceRESTServices
                                            processGUIDParameterName,
                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeGUID,
                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                           false,
                                            null,
                                            null,
                                            false,
@@ -971,7 +1027,7 @@ public class OpenGovernanceRESTServices
                                                                                  new Date(),
                                                                                  methodName);
 
-                response.setElements(addGovernanceActionProcessSpecification(userId, handler, supportedZones, results));
+                response.setElements(completeGovernanceActionProcesses(userId, handler, supportedZones, results));
             }
             else
             {
@@ -989,7 +1045,7 @@ public class OpenGovernanceRESTServices
 
 
     /**
-     * Add the specification to each of the elements returned.
+     * Add the specification and predefined action targets and request parameters to each of the elements returned.
      *
      * @param userId calling user
      * @param handler generic handler
@@ -1000,7 +1056,7 @@ public class OpenGovernanceRESTServices
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    private List<GovernanceActionProcessElement> addGovernanceActionProcessSpecification
+    private List<GovernanceActionProcessElement> completeGovernanceActionProcesses
                                                                  (String                                                        userId,
                                                                   OpenMetadataAPIGenericHandler<GovernanceActionProcessElement> handler,
                                                                   List<String>                                                  supportedZones,
@@ -1010,40 +1066,141 @@ public class OpenGovernanceRESTServices
     {
         if (elements != null)
         {
-            final String elementGUIDParameterName = "governanceActionProcessGUID";
-
             List<GovernanceActionProcessElement> results = new ArrayList<>();
 
             for (GovernanceActionProcessElement element : elements)
             {
-                if (element != null)
-                {
-                    element.setSpecification(handler.getSpecification(userId,
-                                                                      element.getElementHeader().getGUID(),
-                                                                      elementGUIDParameterName,
-                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                      supportedZones));
-
-                    if (element.getSpecification() != null)
-                    {
-                        SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
-                                                                                                                          element.getProcessProperties().getDisplayName(),
-                                                                                                                          element.getSpecification());
-                        element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
-                    }
-
-                    results.add(element);
-                }
-                else
-                {
-                    results.add(null);
-                }
+                results.add(completeGovernanceActionProcessElement(userId, handler, supportedZones, element));
             }
 
             return results;
         }
 
         return null;
+    }
+
+
+    /**
+     * Add the specification and predefined action targets and request parameters to the element returned.
+     *
+     * @param userId calling user
+     * @param handler generic handler
+     * @param supportedZones supported zones
+     * @param element retrieved element.
+     * @return elements plus specifications
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private GovernanceActionProcessElement completeGovernanceActionProcessElement(String                                                        userId,
+                                                                                  OpenMetadataAPIGenericHandler<GovernanceActionProcessElement> handler,
+                                                                                  List<String>                                                  supportedZones,
+                                                                                  GovernanceActionProcessElement                                element) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        final String methodName = "completeGovernanceActionProcessElement";
+
+        if (element != null)
+        {
+            final String elementGUIDParameterName = "governanceActionProcessGUID";
+
+            element.setSpecification(handler.getSpecification(userId,
+                                                              element.getElementHeader().getGUID(),
+                                                              elementGUIDParameterName,
+                                                              OpenMetadataType.REFERENCEABLE.typeName,
+                                                              supportedZones));
+
+            if (element.getSpecification() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                  element.getProcessProperties().getDisplayName(),
+                                                                                                                  element.getSpecification());
+                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+            }
+
+            if (handler.getRepositoryHelper().isTypeOf(handler.getServiceName(),
+                                                       element.getElementHeader().getType().getTypeName(),
+                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
+            {
+                /*
+                 * Retrieve pre-defined Action Targets.
+                 * The relationships are retrieved explicitly by type because it is assumed that the process may have many other relationships.
+                 */
+                List<Relationship> relationships = handler.getAttachmentLinks(userId,
+                                                                              element.getElementHeader().getGUID(),
+                                                                              elementGUIDParameterName,
+                                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                              OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeGUID,
+                                                                              OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                                                                              null,
+                                                                              null,
+                                                                              2,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
+                                                                              true,
+                                                                              false,
+                                                                              supportedZones,
+                                                                              0,
+                                                                              0,
+                                                                              new Date(),
+                                                                              methodName);
+
+                if (relationships != null)
+                {
+                    List<PredefinedActionTarget> predefinedActionTargets = new ArrayList<>();
+                    OpenMetadataElementStubConverter<OpenMetadataElementStub> converter = new OpenMetadataElementStubConverter<>(handler.getRepositoryHelper(),
+                                                                                                                                 handler.getServiceName(),
+                                                                                                                                 handler.getServerName());
+                    for (Relationship relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            PredefinedActionTarget predefinedActionTarget = new PredefinedActionTarget();
+
+                            predefinedActionTarget.setActionTargetName(handler.getRepositoryHelper().getStringProperty(handler.getServiceName(),
+                                                                                                                       OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                                       relationship.getProperties(),
+                                                                                                                       methodName));
+
+                            predefinedActionTarget.setActionTargetElementStub(converter.getOpenMetadataElementStub(relationship.getEntityTwoProxy()));
+
+                            predefinedActionTargets.add(predefinedActionTarget);
+                        }
+                    }
+
+                    element.setPredefinedActionTargets(predefinedActionTargets);
+                }
+
+                Relationship relationship = handler.getUniqueAttachmentLink(userId,
+                                                                            element.getElementHeader().getGUID(),
+                                                                            elementGUIDParameterName,
+                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeGUID,
+                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                                            null,
+                                                                            null,
+                                                                            2,
+                                                                            null,
+                                                                            null,
+                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                            null,
+                                                                            false,
+                                                                            false,
+                                                                            supportedZones,
+                                                                            new Date(),
+                                                                            methodName);
+                if (relationship != null)
+                {
+                    element.setPredefinedRequestParameters(handler.getRepositoryHelper().getStringMapFromProperty(handler.getServiceName(),
+                                                                                                                  OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                                                  relationship.getProperties(),
+                                                                                                                  methodName));
+                }
+            }
+        }
+
+        return element;
     }
 
 
@@ -1101,7 +1258,7 @@ public class OpenGovernanceRESTServices
                                                                                         requestBody.getEffectiveTime(),
                                                                                         methodName);
 
-                response.setElements(addGovernanceActionProcessSpecification(userId, handler, supportedZones, results));
+                response.setElements(completeGovernanceActionProcesses(userId, handler, supportedZones, results));
             }
             else
             {
@@ -1160,21 +1317,7 @@ public class OpenGovernanceRESTServices
                                                                                    new Date(),
                                                                                    methodName);
 
-            element.setSpecification(handler.getSpecification(userId,
-                                                              element.getElementHeader().getGUID(),
-                                                              processGUIDParameterName,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                              supportedZones));
-
-            if (element.getSpecification() != null)
-            {
-                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
-                                                                                                                  element.getProcessProperties().getDisplayName(),
-                                                                                                                  element.getSpecification());
-                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
-            }
-
-            response.setElement(element);
+            response.setElement(this.completeGovernanceActionProcessElement(userId, handler, supportedZones, element));
         }
         catch (Throwable error)
         {
@@ -1228,42 +1371,31 @@ public class OpenGovernanceRESTServices
 
             if (requestBody != null)
             {
-                governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
-                                                                                                             processGUID,
-                                                                                                             processGUIDParameterName,
-                                                                                                             OpenMetadataType.PROCESS.typeName,
-                                                                                                             false,
-                                                                                                             false,
-                                                                                                             supportedZones,
-                                                                                                             requestBody.getEffectiveTime(),
-                                                                                                             methodName));
+                governanceActionProcessGraph.setGovernanceActionProcess(
+                        completeGovernanceActionProcessElement(userId, processHandler, supportedZones, processHandler.getBeanFromRepository(userId,
+                                                                                                                                            processGUID,
+                                                                                                                                            processGUIDParameterName,
+                                                                                                                                            OpenMetadataType.PROCESS.typeName,
+                                                                                                                                            requestBody.getForLineage(),
+                                                                                                                                            requestBody.getForDuplicateProcessing(),
+                                                                                                                                            supportedZones,
+                                                                                                                                            requestBody.getEffectiveTime(),
+                                                                                                                                            methodName)));
             }
             else
             {
-                governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
-                                                                                                             processGUID,
-                                                                                                             processGUIDParameterName,
-                                                                                                             OpenMetadataType.PROCESS.typeName,
-                                                                                                             false,
-                                                                                                             false,
-                                                                                                             supportedZones,
-                                                                                                             new Date(),
-                                                                                                             methodName));
+                governanceActionProcessGraph.setGovernanceActionProcess(
+                        completeGovernanceActionProcessElement(userId, processHandler, supportedZones, processHandler.getBeanFromRepository(userId,
+                                                                                                                                            processGUID,
+                                                                                                                                            processGUIDParameterName,
+                                                                                                                                            OpenMetadataType.PROCESS.typeName,
+                                                                                                                                            false,
+                                                                                                                                            false,
+                                                                                                                                            supportedZones,
+                                                                                                                                            new Date(),
+                                                                                                                                            methodName)));
             }
 
-            governanceActionProcessGraph.getGovernanceActionProcess().setSpecification(handler.getSpecification(userId,
-                                                                                                                governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getGUID(),
-                                                                                                                processGUIDParameterName,
-                                                                                                                OpenMetadataType.PROCESS.typeName,
-                                                                                                                supportedZones));
-
-            if (governanceActionProcessGraph.getGovernanceActionProcess().getSpecification() != null)
-            {
-                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getGUID(),
-                                                                                                                  governanceActionProcessGraph.getGovernanceActionProcess().getProcessProperties().getDisplayName(),
-                                                                                                                  governanceActionProcessGraph.getGovernanceActionProcess().getSpecification());
-                governanceActionProcessGraph.getGovernanceActionProcess().setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
-            }
 
             String processTypeName = governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName();
 
@@ -1923,8 +2055,8 @@ public class OpenGovernanceRESTServices
                                                                                                             searchStringParameterName,
                                                                                                             startFrom,
                                                                                                             pageSize,
-                                                                                                            false,
-                                                                                                            false,
+                                                                                                            requestBody.getForLineage(),
+                                                                                                            requestBody.getForDuplicateProcessing(),
                                                                                                             supportedZones,
                                                                                                             new Date(),
                                                                                                             methodName);
@@ -1988,7 +2120,6 @@ public class OpenGovernanceRESTServices
                                                                                                                           element.getSpecification());
                         element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
                     }
-
 
                     results.add(element);
                 }
@@ -2312,7 +2443,6 @@ public class OpenGovernanceRESTServices
 
         return null;
     }
-
 
 
     /**

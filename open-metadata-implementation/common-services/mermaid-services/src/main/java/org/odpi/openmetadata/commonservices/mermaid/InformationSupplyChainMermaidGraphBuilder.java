@@ -218,10 +218,22 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                         labelList.add(super.addSpacesToTypeName(relationship.getElementHeader().getType().getTypeName()));
                                     }
 
-                                    super.appendMermaidLine(relationship.getElementHeader().getGUID(),
-                                                            relationship.getEnd1Element().getGUID(),
-                                                            this.getListLabel(labelList),
-                                                            relationship.getEnd2Element().getGUID());
+                                    if (propertyHelper.isTypeOf(relationship.getElementHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                                    {
+                                        extractAnchorInfo(relationship.getEnd2Element());
+
+                                        super.appendMermaidThinLine(relationship.getElementHeader().getGUID(),
+                                                                    relationship.getEnd1Element().getGUID(),
+                                                                    this.getListLabel(labelList),
+                                                                    relationship.getEnd2Element().getGUID());
+                                    }
+                                    else
+                                    {
+                                        super.appendMermaidLine(relationship.getElementHeader().getGUID(),
+                                                                relationship.getEnd1Element().getGUID(),
+                                                                this.getListLabel(labelList),
+                                                                relationship.getEnd2Element().getGUID());
+                                    }
 
                                     solutionLinkingWireGUIDs.add(relationship.getElementHeader().getGUID());
                                 }
@@ -265,6 +277,9 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             {
                 if (lineageRelationship != null)
                 {
+                    extractAnchorInfo(lineageRelationship.getEnd1());
+                    extractAnchorInfo(lineageRelationship.getEnd2());
+
                     if (lineageRelationship.getEnd1().getUniqueName() != null)
                     {
                         appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
@@ -307,10 +322,20 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         }
                     }
 
-                    appendMermaidLine(lineageRelationship.getRelationshipHeader().getGUID(),
-                                      lineageRelationship.getEnd1().getGUID(),
-                                      label,
-                                      lineageRelationship.getEnd2().getGUID());
+                    if (propertyHelper.isTypeOf(lineageRelationship.getRelationshipHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                    {
+                        appendMermaidThinLine(lineageRelationship.getRelationshipHeader().getGUID(),
+                                              lineageRelationship.getEnd1().getGUID(),
+                                              label,
+                                              lineageRelationship.getEnd2().getGUID());
+                    }
+                    else
+                    {
+                        appendMermaidLine(lineageRelationship.getRelationshipHeader().getGUID(),
+                                          lineageRelationship.getEnd1().getGUID(),
+                                          label,
+                                          lineageRelationship.getEnd2().getGUID());
+                    }
                 }
             }
         }

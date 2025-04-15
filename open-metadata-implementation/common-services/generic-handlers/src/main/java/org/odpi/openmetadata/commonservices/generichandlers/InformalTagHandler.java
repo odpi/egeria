@@ -292,6 +292,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     tagGUIDParameterName,
                                     OpenMetadataType.INFORMAL_TAG.typeGUID,
                                     OpenMetadataType.INFORMAL_TAG.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

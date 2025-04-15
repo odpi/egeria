@@ -215,7 +215,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        openMetadataAccess.deleteMetadataElementInStore(catalogGUID, catalogQualifiedName, memberElement.getElement().getElementGUID());
+        openMetadataAccess.deleteMetadataElementInStore(catalogGUID, catalogQualifiedName, memberElement.getElement().getElementGUID(), false);
     }
 
 
@@ -314,6 +314,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                         null,
                                                         parentGUID,
                                                         false,
+                                                        null,
                                                         null,
                                                         null,
                                                         elementProperties,

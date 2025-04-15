@@ -286,6 +286,7 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         ratingGUIDParameterName,
                                         OpenMetadataType.RATING.typeGUID,
                                         OpenMetadataType.RATING.typeName,
+                                        false,
                                         null,
                                         null,
                                         forLineage,

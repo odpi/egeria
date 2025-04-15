@@ -22,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetConnectionProperties extends RelationshipProperties
 {
-    private String assetSummary = null;
-
-
     /**
      * Default constructor
      */
@@ -42,33 +39,6 @@ public class AssetConnectionProperties extends RelationshipProperties
     public AssetConnectionProperties(AssetConnectionProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            assetSummary = template.getAssetSummary();
-        }
-    }
-
-
-    /**
-     * Return the properties for the relationship.
-     *
-     * @return properties object
-     */
-    public String getAssetSummary()
-    {
-        return assetSummary;
-    }
-
-
-    /**
-     * Set up the properties for the relationship.
-     *
-     * @param assetSummary properties object
-     */
-    public void setAssetSummary(String assetSummary)
-    {
-        this.assetSummary = assetSummary;
     }
 
 
@@ -80,48 +50,6 @@ public class AssetConnectionProperties extends RelationshipProperties
     @Override
     public String toString()
     {
-        return "AssetConnectionProperties{" +
-                       "assetSummary='" + assetSummary + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       '}';
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        AssetConnectionProperties that = (AssetConnectionProperties) objectToCompare;
-        return Objects.equals(getAssetSummary(), that.getAssetSummary());
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), assetSummary);
+        return "AssetConnectionProperties{} " + super.toString();
     }
 }

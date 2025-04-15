@@ -133,10 +133,10 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
         int projectStartFrom = 0;
         RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
-                                                                                                                    1,
-                                                                                                                    OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
-                                                                                                                    projectStartFrom,
-                                                                                                                    governanceContext.getMaxPageSize());
+                                                                                                                  1,
+                                                                                                                  OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+                                                                                                                  projectStartFrom,
+                                                                                                                  governanceContext.getMaxPageSize());
         while ((projects != null) && (projects.getElementList() != null))
         {
             for (RelatedMetadataElement project : projects.getElementList())
@@ -154,7 +154,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
             projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
                                                                                            1,
-                                                                                           OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
                                                                                            projectStartFrom,
                                                                                            governanceContext.getMaxPageSize());
         }
@@ -203,6 +203,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      * @param processQualifiedName new qualified name for the process
      * @param processName new name for the process
      * @param processDescription new description for the process
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return unique identifier of new governance action process
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
@@ -210,9 +211,10 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      */
     protected String createGovernanceActionProcess(String processQualifiedName,
                                                    String processName,
-                                                   String processDescription) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+                                                   String processDescription,
+                                                   String topLevelProjectGUID) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         ElementProperties processProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -231,6 +233,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                      null,
                                                                                      null,
                                                                                      true,
+                                                                                     topLevelProjectGUID,
                                                                                      null,
                                                                                      null,
                                                                                      processProperties,
@@ -243,20 +246,24 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
     /**
      * Set up the ImplementedBy relationship between an implementation component and a solution component.
+     * The information supply chain qualified names ensures that the appropriate assets are returned
+     * on a specific ISC lineage query.
      *
      * @param solutionComponentGUID unique identifier of the solution component
      * @param implementationGUID unique identifier of the newly set up governance action process
      * @param informationSupplyChainQualifiedName option name of information supply chain - used to identify solution component
      *                         implementations that are specific to a particular information supply chain
+     * @param role optional role of the implementation
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
     protected void addSolutionComponentRelationship(String solutionComponentGUID,
                                                     String implementationGUID,
-                                                    String informationSupplyChainQualifiedName) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException
+                                                    String informationSupplyChainQualifiedName,
+                                                    String role) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.DESIGN_STEP.name,
@@ -265,6 +272,10 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
         properties = propertyHelper.addStringProperty(properties,
                                                       OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                       informationSupplyChainQualifiedName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.ROLE.name,
+                                                      role);
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                                                               solutionComponentGUID,
@@ -331,11 +342,13 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      * @throws UserNotAuthorizedException security error
      */
     protected void addGovernedByRelationship(String dataQualityCertificationTypeGUID,
-                                             String sandboxSchemaGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+                                             String sandboxSchemaGUID) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
-                                                                              dataQualityCertificationTypeGUID,
                                                                               sandboxSchemaGUID,
+                                                                              dataQualityCertificationTypeGUID,
                                                                               null,
                                                                               null,
                                                                               null);
@@ -346,12 +359,14 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      * Create a process to represent the Airflow DAG that populates the sandbox.
      *
      * @param airflowDAGName name
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return guid
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected String createPopulateSandboxDAG(String airflowDAGName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    protected String createPopulateSandboxDAG(String airflowDAGName,
+                                              String topLevelProjectGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -366,23 +381,35 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
         return governanceContext.getOpenMetadataStore().createMetadataElementInStore(DeployedImplementationType.AIRFLOW_DAG.getAssociatedTypeName(),
                                                                                      ElementStatus.ACTIVE,
-                                                                                     properties);
+                                                                                     null,
+                                                                                     null,
+                                                                                     true,
+                                                                                     topLevelProjectGUID,
+                                                                                     null,
+                                                                                     null,
+                                                                                     properties,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     false);
     }
 
 
     /**
      * Create the sandbox database schema - it is assumed that details of the schema are passed in the request parameters.
      *
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return guid
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected String createSandboxSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    protected String createSandboxSchema(String topLevelProjectGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
         return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                                                           null,
                                                                                           true,
+                                                                                          topLevelProjectGUID,
                                                                                           null,
                                                                                           null,
                                                                                           PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID(),

@@ -174,6 +174,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody empty request body
      *
      * @return void or
@@ -186,9 +187,10 @@ public class DatabaseManagerResource
     public VoidResponse removeDatabase(@PathVariable                  String                    serverName,
                                        @PathVariable                  String                    userId,
                                        @PathVariable                  String                    databaseGUID,
+                                       @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                        @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabase(serverName, userId, databaseGUID, requestBody);
+        return restAPI.removeDatabase(serverName, userId, databaseGUID, cascadedDelete, requestBody);
     }
 
 
@@ -431,6 +433,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source request body
      *
      * @return void or
@@ -443,9 +446,10 @@ public class DatabaseManagerResource
     public VoidResponse removeDatabaseSchema(@PathVariable                  String                    serverName,
                                              @PathVariable                  String                    userId,
                                              @PathVariable                  String                    databaseSchemaGUID,
+                                             @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                              @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseSchema(serverName, userId, databaseSchemaGUID, requestBody);
+        return restAPI.removeDatabaseSchema(serverName, userId, databaseSchemaGUID, cascadedDelete, requestBody);
     }
 
 
@@ -705,6 +709,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseTableGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody empty request body
      *
      * @return void or
@@ -717,9 +722,10 @@ public class DatabaseManagerResource
     public VoidResponse removeDatabaseTable(@PathVariable                  String                    serverName,
                                             @PathVariable                  String                    userId,
                                             @PathVariable                  String                    databaseTableGUID,
+                                            @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                             @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseTable(serverName, userId, databaseTableGUID, requestBody);
+        return restAPI.removeDatabaseTable(serverName, userId, databaseTableGUID, cascadedDelete, requestBody);
     }
 
 
@@ -926,6 +932,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseViewGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source request body
      *
      * @return void or
@@ -938,9 +945,10 @@ public class DatabaseManagerResource
     public VoidResponse removeDatabaseView(@PathVariable                  String                    serverName,
                                            @PathVariable                  String                    userId,
                                            @PathVariable                  String                    databaseViewGUID,
+                                           @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                            @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseView(serverName, userId, databaseViewGUID, requestBody);
+        return restAPI.removeDatabaseView(serverName, userId, databaseViewGUID, cascadedDelete, requestBody);
     }
 
 

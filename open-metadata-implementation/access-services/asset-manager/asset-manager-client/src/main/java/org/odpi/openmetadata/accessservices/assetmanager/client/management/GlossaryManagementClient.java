@@ -525,6 +525,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      *
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param effectiveTime           the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -536,6 +537,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
     @Override
     public void removeGlossary(String  userId,
                                String  glossaryGUID,
+                               boolean cascadedDelete,
                                Date    effectiveTime,
                                boolean forLineage,
                                boolean forDuplicateProcessing) throws InvalidParameterException,
@@ -547,6 +549,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                               null,
                               glossaryGUID,
                               null,
+                              cascadedDelete,
                               effectiveTime,
                               forLineage,
                               forDuplicateProcessing);
@@ -1223,6 +1226,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param glossaryTermProperties new properties for the glossary term
+     * @param updateDescription description of the change to the term
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1236,13 +1240,14 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                    String                 glossaryTermGUID,
                                    boolean                isMergeUpdate,
                                    GlossaryTermProperties glossaryTermProperties,
+                                   String                 updateDescription,
                                    Date                   effectiveTime,
                                    boolean                forLineage,
                                    boolean                forDuplicateProcessing) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        client.updateGlossaryTerm(userId, null, null, glossaryTermGUID, null, isMergeUpdate, glossaryTermProperties, effectiveTime, forLineage, forDuplicateProcessing);
+        client.updateGlossaryTerm(userId, null, null, glossaryTermGUID, null, isMergeUpdate, glossaryTermProperties, updateDescription, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -1281,6 +1286,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param templateGUID identifier for the template glossary term
+     * @param updateDescription description of the change to the term
      * @param isMergeClassifications should the classification be merged or replace the target entity?
      * @param isMergeProperties should the properties be merged with the existing ones or replace them
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1295,6 +1301,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
     public void updateGlossaryTermFromTemplate(String             userId,
                                                String             glossaryTermGUID,
                                                String             templateGUID,
+                                               String             updateDescription,
                                                boolean            isMergeClassifications,
                                                boolean            isMergeProperties,
                                                Date               effectiveTime,
@@ -1303,7 +1310,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        client.updateGlossaryTermFromTemplate(userId, null, null, glossaryTermGUID, null, templateGUID, isMergeClassifications, isMergeProperties, effectiveTime, forLineage, forDuplicateProcessing);
+        client.updateGlossaryTermFromTemplate(userId, null, null, glossaryTermGUID, null, templateGUID, updateDescription, isMergeClassifications, isMergeProperties, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 

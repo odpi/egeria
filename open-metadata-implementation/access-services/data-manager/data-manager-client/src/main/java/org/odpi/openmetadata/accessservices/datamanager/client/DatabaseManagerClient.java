@@ -287,24 +287,26 @@ public class DatabaseManagerClient extends DataManagerBaseClient implements Data
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete can the operation remove nested schemas. tables and columns (default false)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeDatabase(String userId,
-                               String databaseManagerGUID,
-                               String databaseManagerName,
-                               String databaseGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void removeDatabase(String  userId,
+                               String  databaseManagerGUID,
+                               String  databaseManagerName,
+                               String  databaseGUID,
+                               boolean cascadedDelete) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String methodName = "removeDatabase";
         final String elementGUIDParameterName    = "databaseGUID";
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete?cascadedDelete={3}";
 
-        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseGUID, elementGUIDParameterName, urlTemplate, methodName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseGUID, elementGUIDParameterName, urlTemplate, cascadedDelete, methodName);
     }
 
 
@@ -674,24 +676,26 @@ public class DatabaseManagerClient extends DataManagerBaseClient implements Data
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete can the operation remove nested schemas. tables and columns (default false)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeDatabaseSchema(String userId,
-                                     String databaseManagerGUID,
-                                     String databaseManagerName,
-                                     String databaseSchemaGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void removeDatabaseSchema(String  userId,
+                                     String  databaseManagerGUID,
+                                     String  databaseManagerName,
+                                     String  databaseSchemaGUID,
+                                     boolean cascadedDelete) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         final String methodName               = "removeDatabaseSchema";
         final String elementGUIDParameterName = "databaseSchemaGUID";
-        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}/delete";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/schemas/{2}/delete?cascadedDelete={3}";
 
-        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, elementGUIDParameterName, urlTemplate, methodName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, elementGUIDParameterName, urlTemplate, cascadedDelete, methodName);
     }
 
 
@@ -1096,24 +1100,26 @@ public class DatabaseManagerClient extends DataManagerBaseClient implements Data
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete can the operation remove nested schemas. tables and columns (default false)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeDatabaseTable(String userId,
-                                    String databaseManagerGUID,
-                                    String databaseManagerName,
-                                    String databaseTableGUID) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void removeDatabaseTable(String  userId,
+                                    String  databaseManagerGUID,
+                                    String  databaseManagerName,
+                                    String  databaseTableGUID,
+                                    boolean cascadedDelete) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String methodName               = "removeDatabaseTable";
         final String elementGUIDParameterName = "databaseTableGUID";
-        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/{2}/delete";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/{2}/delete?cascadedDelete={3}";
 
-        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, elementGUIDParameterName, urlTemplate, methodName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, elementGUIDParameterName, urlTemplate, cascadedDelete, methodName);
     }
 
 
@@ -1477,24 +1483,26 @@ public class DatabaseManagerClient extends DataManagerBaseClient implements Data
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeDatabaseView(String userId,
-                                   String databaseManagerGUID,
-                                   String databaseManagerName,
-                                   String databaseViewGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void removeDatabaseView(String  userId,
+                                   String  databaseManagerGUID,
+                                   String  databaseManagerName,
+                                   String  databaseViewGUID,
+                                   boolean cascadedDelete) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String methodName               = "removeDatabaseView";
         final String elementGUIDParameterName = "databaseViewGUID";
-        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/{2}/delete";
+        final String urlTemplate              = serverPlatformURLRoot + urlTemplatePrefix + "/tables/views/{2}/delete?cascadedDelete={3}";
 
-        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, elementGUIDParameterName, urlTemplate, methodName);
+        super.removeReferenceable(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, elementGUIDParameterName, urlTemplate, cascadedDelete, methodName);
     }
 
 

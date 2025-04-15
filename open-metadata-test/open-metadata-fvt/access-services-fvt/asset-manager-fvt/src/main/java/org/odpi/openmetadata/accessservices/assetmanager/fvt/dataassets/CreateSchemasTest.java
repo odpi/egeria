@@ -166,7 +166,7 @@ public class CreateSchemasTest
          */
         try
         {
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null, null, false, false);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null, true, null, false, false);
 
             thisTest.checkAssetGone(client, assetManagerGUID, assetGUID, activityName, userId);
             thisTest.checkSchemaOptionGone(client, assetManagerGUID, schemaOptionGUID, null, activityName, userId);
@@ -270,7 +270,7 @@ public class CreateSchemasTest
             thisTest.checkSchemaOptionGone(client, assetManagerGUID, schemaOptionGUID, assetGUID, activityName, userId);
             thisTest.checkAssetOK(client, assetManagerGUID, assetGUID, activityName, userId);
 
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null, null, false, false);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null, false,null, false, false);
 
             activityName = "deleteOneByOne - asset gone";
             thisTest.checkAssetGone(client, assetManagerGUID, assetGUID, activityName, userId);

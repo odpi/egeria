@@ -280,6 +280,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                   isMergeUpdate,
                                   glossaryProperties,
                                   propertiesParameterName,
+                                  null,
                                   urlTemplate,
                                   effectiveTime,
                                   forLineage,
@@ -695,6 +696,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
@@ -708,6 +710,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                String  assetManagerName,
                                String  glossaryGUID,
                                String  glossaryExternalIdentifier,
+                               boolean cascadedDelete,
                                Date    effectiveTime,
                                boolean forLineage,
                                boolean forDuplicateProcessing) throws InvalidParameterException,
@@ -725,6 +728,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                   glossaryGUID,
                                   glossaryGUIDParameterName,
                                   glossaryExternalIdentifier,
+                                  cascadedDelete,
                                   urlTemplate,
                                   effectiveTime,
                                   forLineage,
@@ -1235,6 +1239,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                   isMergeUpdate,
                                   glossaryCategoryProperties,
                                   propertiesParameterName,
+                                  null,
                                   urlTemplate,
                                   effectiveTime,
                                   forLineage,
@@ -1998,6 +2003,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param glossaryTermProperties new properties for the glossary term
+     * @param updateDescription description of the change to the term
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2014,6 +2020,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                    String                 glossaryTermExternalIdentifier,
                                    boolean                isMergeUpdate,
                                    GlossaryTermProperties glossaryTermProperties,
+                                   String                 updateDescription,
                                    Date                   effectiveTime,
                                    boolean                forLineage,
                                    boolean                forDuplicateProcessing) throws InvalidParameterException,
@@ -2035,6 +2042,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                   isMergeUpdate,
                                   glossaryTermProperties,
                                   propertiesParameterName,
+                                  updateDescription,
                                   urlTemplate,
                                   effectiveTime,
                                   forLineage,
@@ -2112,6 +2120,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param templateGUID identifier for the template glossary term
+     * @param updateDescription description of the change to the term
      * @param isMergeClassifications should the classification be merged or replace the target entity?
      * @param isMergeProperties should the properties be merged with the existing ones or replace them
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2129,6 +2138,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                String             glossaryTermGUID,
                                                String             glossaryTermExternalIdentifier,
                                                String             templateGUID,
+                                               String             updateDescription,
                                                boolean            isMergeClassifications,
                                                boolean            isMergeProperties,
                                                Date               effectiveTime,
@@ -2151,6 +2161,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                                    assetManagerName,
                                                                                    glossaryTermExternalIdentifier,
                                                                                    methodName));
+        requestBody.setUpdateDescription(updateDescription);
         requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/update/from-template?isMergeClassifications={3}&isMergeProperties={4}&forLineage={5}&forDuplicateProcessing={6}";

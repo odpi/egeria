@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
@@ -15,16 +16,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyV
 import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -137,7 +129,7 @@ abstract public class OpenMetadataStoreConverter<B> extends OMFConverter<B>
     /**
      * Retrieve the ActionStatus enum property from the instance properties of a Governance Action.
      *
-     * @param propertyName name ot property to extract the enum from
+     * @param propertyName name of property to extract the enum from
      * @param properties  entity properties
      * @return ActionStatus  enum value
      */
@@ -242,6 +234,25 @@ abstract public class OpenMetadataStoreConverter<B> extends OMFConverter<B>
 
             elementControlHeader.setVersions(this.getElementVersions(header));
         }
+    }
+
+
+    /**
+     * Create an OpenMetadataElementStub from an EntityProxy.
+     *
+     * @param entityProxy retrieved entity proxy
+     * @return stub
+     */
+    public OpenMetadataElementStub getOpenMetadataElementStub(EntityProxy entityProxy)
+    {
+        OpenMetadataElementStub elementStub = new OpenMetadataElementStub();
+
+        fillElementControlHeader(elementStub, entityProxy);
+        elementStub.setClassifications(this.getAttachedClassifications(entityProxy.getClassifications()));
+        elementStub.setGUID(entityProxy.getGUID());
+        elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
+
+        return elementStub;
     }
 
 
@@ -388,45 +399,22 @@ abstract public class OpenMetadataStoreConverter<B> extends OMFConverter<B>
      */
     private PrimitiveTypeCategory mapPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
     {
-        switch (primitiveDefCategory)
+        return switch (primitiveDefCategory)
         {
-            case OM_PRIMITIVE_TYPE_INT:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT;
+            case OM_PRIMITIVE_TYPE_INT -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT;
+            case OM_PRIMITIVE_TYPE_BYTE -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE;
+            case OM_PRIMITIVE_TYPE_CHAR -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR;
+            case OM_PRIMITIVE_TYPE_DATE -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE;
+            case OM_PRIMITIVE_TYPE_LONG -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG;
+            case OM_PRIMITIVE_TYPE_FLOAT -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT;
+            case OM_PRIMITIVE_TYPE_SHORT -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT;
+            case OM_PRIMITIVE_TYPE_DOUBLE -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE;
+            case OM_PRIMITIVE_TYPE_STRING -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING;
+            case OM_PRIMITIVE_TYPE_BOOLEAN -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
+            case OM_PRIMITIVE_TYPE_BIGDECIMAL -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
+            case OM_PRIMITIVE_TYPE_BIGINTEGER -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
+            default -> PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
+        };
 
-            case OM_PRIMITIVE_TYPE_BYTE:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE;
-
-            case OM_PRIMITIVE_TYPE_CHAR:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR;
-
-            case OM_PRIMITIVE_TYPE_DATE:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE;
-
-            case OM_PRIMITIVE_TYPE_LONG:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG;
-
-            case OM_PRIMITIVE_TYPE_FLOAT:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT;
-
-            case OM_PRIMITIVE_TYPE_SHORT:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT;
-
-            case OM_PRIMITIVE_TYPE_DOUBLE:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE;
-
-            case OM_PRIMITIVE_TYPE_STRING:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING;
-
-            case OM_PRIMITIVE_TYPE_BOOLEAN:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
-
-            case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
-
-            case OM_PRIMITIVE_TYPE_BIGINTEGER:
-                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
-        }
-
-        return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
     }
 }

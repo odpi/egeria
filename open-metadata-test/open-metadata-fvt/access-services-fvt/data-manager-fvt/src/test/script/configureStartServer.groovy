@@ -21,7 +21,7 @@ baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://loca
 serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
 retries=(properties["retries"] ?: System.properties["retries"]) ?: 50;
 delay=(properties["delay"] ?: System.properties["delay"]) ?: 2;
-File connectorTypeArchive = new File(properties["connectorTypeArchivePath"] ?: System.properties["connectorTypeArchivePath"] ?: "content-packs/OpenConnectorsArchive.omarchive")
+File connectorTypeArchive = new File(properties["connectorTypeArchivePath"] ?: System.properties["connectorTypeArchivePath"] ?: "../../../../content-packs/CoreContentPack.omarchive")
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [

@@ -80,6 +80,7 @@ public class TemplateManagerRESTServices extends TokenController
                                                                       requestBody.getInitialClassifications(),
                                                                       requestBody.getAnchorGUID(),
                                                                       requestBody.getIsOwnAnchor(),
+                                                                      requestBody.getAnchorScopeGUID(),
                                                                       requestBody.getEffectiveFrom(),
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
@@ -145,6 +146,7 @@ public class TemplateManagerRESTServices extends TokenController
                                                                            requestBody.getTypeName(),
                                                                            requestBody.getAnchorGUID(),
                                                                            requestBody.getIsOwnAnchor(),
+                                                                           requestBody.getAnchorScopeGUID(),
                                                                            requestBody.getEffectiveFrom(),
                                                                            requestBody.getEffectiveTo(),
                                                                            requestBody.getTemplateGUID(),
@@ -358,6 +360,7 @@ public class TemplateManagerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody null request body
      *
      * @return void or
@@ -367,6 +370,7 @@ public class TemplateManagerRESTServices extends TokenController
      */
     public  VoidResponse deleteMetadataElementInStore(String                    serverName,
                                                       String                    metadataElementGUID,
+                                                      boolean                   cascadedDelete,
                                                       MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
@@ -391,6 +395,7 @@ public class TemplateManagerRESTServices extends TokenController
                                                      requestBody.getExternalSourceGUID(),
                                                      requestBody.getExternalSourceName(),
                                                      metadataElementGUID,
+                                                     cascadedDelete,
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
                                                      requestBody.getEffectiveTime());

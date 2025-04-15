@@ -314,6 +314,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                     userIdentityGUIDParameterName,
                                     OpenMetadataType.USER_IDENTITY.typeGUID,
                                     OpenMetadataType.USER_IDENTITY.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

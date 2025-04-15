@@ -73,7 +73,7 @@ Content-Type: application/json
   "class" : "NewInformationSupplyChainRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
@@ -92,6 +92,7 @@ Content-Type: application/json
   },
   "parentAtEnd1": false,
   "properties": {
+    "class" : "InformationSupplyChainProperties",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -101,8 +102,25 @@ Content-Type: application/json
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
     },
-    "effectiveFrom": {{isotime}},
-    "effectiveTo": {{isotime}}
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name createInformationSupplyChain
+# Create an information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/create
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "class" : "InformationSupplyChainProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability."
   }
 }
                                                      
@@ -117,7 +135,7 @@ Content-Type: application/json
   "class" : "TemplateRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
@@ -164,10 +182,11 @@ Content-Type: application/json
   "class" : "UpdateInformationSupplyChainRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
+    "class" : "InformationSupplyChainProperties",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -177,8 +196,8 @@ Content-Type: application/json
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
     },
-    "effectiveFrom": {{isotime}},
-    "effectiveTo": {{isotime}}
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
   }
 }
 
@@ -194,10 +213,11 @@ Content-Type: application/json
   "class" : "InformationSupplyChainSegmentRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
+    "class" : "InformationSupplyChainSegmentProperties",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -211,8 +231,8 @@ Content-Type: application/json
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
     },
-    "effectiveFrom": {{isotime}},
-    "effectiveTo": {{isotime}}
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
   }
 }
 
@@ -228,10 +248,11 @@ Content-Type: application/json
   "class" : "InformationSupplyChainSegmentRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
+    "class" : "InformationSupplyChainSegmentProperties",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -245,8 +266,8 @@ Content-Type: application/json
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
     },
-    "effectiveFrom": {{isotime}},
-    "effectiveTo": {{isotime}}
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
   }
 }
 
@@ -262,14 +283,15 @@ Content-Type: application/json
   "class" : "InformationSupplyChainLinkRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
+    "class": "InformationSupplyChainLinkProperties",
     "label": "add label here",
     "description": "add description here",
-    "effectiveFrom": {{isotime}},
-    "effectiveTo": {{isotime}}
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
   }
 }
 
@@ -286,7 +308,7 @@ Content-Type: application/json
   "class" : "MetadataSourceRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
@@ -303,7 +325,7 @@ Content-Type: application/json
   "class" : "MetadataSourceRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
@@ -320,7 +342,7 @@ Content-Type: application/json
   "class" : "MetadataSourceRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
-  "effectiveTime" : {{isotime}},
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
@@ -343,8 +365,8 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "asOfTime" : {{isotime}},
-  "effectiveTime" : {{isotime}},
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
@@ -374,8 +396,8 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "asOfTime" : {{isotime}},
-  "effectiveTime" : {{isotime}},
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
@@ -388,7 +410,7 @@ Content-Type: application/json
 
 # @name getInformationSupplyChainsByName
 # Returns the list of information supply chains with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10addImplementation=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -401,14 +423,14 @@ Content-Type: application/json
 
 # @name getInformationSupplyChainsByName - with full request body
 # Returns the list of information supply chains with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10addImplementation=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "asOfTime" : {{isotime}},
-  "effectiveTime" : {{isotime}},
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
@@ -428,14 +450,14 @@ Content-Type: application/json
 ###
 # @name getInformationSupplyChainByGUID - with request body
 # Return the properties of a specific information supply chain.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/retrieve?addImplementation=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "AnyTimeRequestBody",
-  "asOfTime" : {{isotime}},
-  "effectiveTime" : {{isotime}},
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }

@@ -337,6 +337,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
                                                             false,
                                                             null,
                                                             null,
+                                                            null,
                                                             eventBrokerProperties,
                                                             server.getGUID(),
                                                             OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,

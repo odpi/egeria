@@ -487,6 +487,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     apiOperationGUIDParameterName,
                                     OpenMetadataType.API_OPERATION.typeGUID,
                                     OpenMetadataType.API_OPERATION.typeName,
+                                    false,
                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,

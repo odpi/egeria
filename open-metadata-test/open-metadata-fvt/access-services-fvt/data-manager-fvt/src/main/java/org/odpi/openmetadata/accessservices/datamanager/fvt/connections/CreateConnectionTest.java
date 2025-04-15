@@ -125,16 +125,17 @@ public class CreateConnectionTest
 
         try
         {
-            client.removeConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID);
-
-            activityName = "deleteOneByOne - connection gone";
-            thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);
-            thisTest.checkConnectorTypeOK(client, null, activityName, userId);
-            thisTest.checkEndpointOK(client, endpointGUID, null, activityName, userId);
+            activityName = "deleteOneByOne - endpoint gone";
 
             client.removeEndpoint(userId, databaseManagerGUID, databaseManagerName, endpointGUID);
 
-            activityName = "deleteOneByOne - endpoint gone";
+            thisTest.checkConnectionOK(client, connectionGUID, activityName, userId);
+            thisTest.checkConnectorTypeOK(client, connectionGUID, activityName, userId);
+            thisTest.checkEndpointGone(client, endpointGUID, null, activityName, userId);
+
+            activityName = "deleteOneByOne - connection gone";
+            client.removeConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID);
+
             thisTest.checkConnectorTypeOK(client, null, activityName, userId);
             thisTest.checkEndpointGone(client, endpointGUID, null, activityName, userId);
             thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);
@@ -767,12 +768,12 @@ public class CreateConnectionTest
                     {
                         if (! connectorTypeGUID.equals(connectorType.getGUID()))
                         {
-                            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong connector type returned for connection: " + connectorType.getGUID() + "rather than " + connectorTypeGUID + ")");
+                            throw new FVTUnexpectedCondition(testCaseName, activityName + " (Wrong connector type returned for connection: " + connectorType.getGUID() + "rather than " + connectorTypeGUID + ")");
                         }
 
                         if (! connectorTypeQName.equals(connectorType.getUniqueName()))
                         {
-                            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong connector type Qualified Name returned for connection: " + connectorType.getUniqueName() + "rather than " + endpointName + ")");
+                            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong connector type Qualified Name returned for connection's connectorType: " + connectorType.getUniqueName() + " rather than " + connectorTypeQName + ") Connection is " + connection);
                         }
                     }
                 }

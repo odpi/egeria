@@ -45,7 +45,7 @@ class OmasRemoveSchema implements Consumer<DatabaseSchemaElement>
             List<DatabaseTableElement> tables = new OmasGetTables(databaseIntegratorContext, auditLog).apply(schemaGuid);
             tables.forEach(new OmasRemoveTable(databaseIntegratorContext, auditLog));
 
-            databaseIntegratorContext.removeDatabaseSchema(schemaGuid);
+            databaseIntegratorContext.removeDatabaseSchema(schemaGuid, false);
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {

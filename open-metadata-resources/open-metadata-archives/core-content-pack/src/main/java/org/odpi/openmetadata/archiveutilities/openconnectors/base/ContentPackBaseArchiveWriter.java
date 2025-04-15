@@ -127,6 +127,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                             deployedImplementationType.getAssociatedTypeName(),
                                                             OpenMetadataType.ASSET.typeName,
+                                                            null,
                                                             qualifiedName + ":Endpoint",
                                                             PlaceholderProperty.FILE_PATH_NAME.getPlaceholder() + " endpoint",
                                                             null,
@@ -147,9 +148,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                 endpointGUID,
                                                                 assetGUID,
                                                                 deployedImplementationType.getAssociatedTypeName(),
-                                                                OpenMetadataType.ASSET.typeName);
+                                                                OpenMetadataType.ASSET.typeName,
+                                                                null);
 
-            archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+            archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
         }
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -158,7 +160,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                placeholderPropertyTypes);
     }
 
@@ -229,9 +234,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                 null,
                                                                 assetGUID,
                                                                 deployedImplementationType.getAssociatedTypeName(),
-                                                                OpenMetadataType.ASSET.typeName);
+                                                                OpenMetadataType.ASSET.typeName,
+                                                                null);
 
-            archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+            archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
         }
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -240,7 +246,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                PlaceholderProperty.getDataSetPlaceholderPropertyTypes());
     }
 
@@ -414,7 +423,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                 (Classification) null,
                                                 assetGUID,
                                                 deployedImplementationType.getAssociatedTypeName(),
-                                                OpenMetadataType.ASSET.typeName);
+                                                OpenMetadataType.ASSET.typeName,
+                                                null);
 
             archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
                                                                      qualifiedName,
@@ -428,6 +438,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
+                                                        null,
                                                         qualifiedName + ":Endpoint",
                                                         serverName + " endpoint",
                                                         null,
@@ -454,7 +465,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                          endpointGUID,
                                                          assetGUID,
                                                          deployedImplementationType.getAssociatedTypeName(),
-                                                         OpenMetadataType.ASSET.typeName);
+                                                         OpenMetadataType.ASSET.typeName,
+                                                         null);
         }
         else
         {
@@ -472,7 +484,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                          endpointGUID,
                                                          assetGUID,
                                                          deployedImplementationType.getAssociatedTypeName(),
-                                                         OpenMetadataType.ASSET.typeName);
+                                                         OpenMetadataType.ASSET.typeName,
+                                                         null);
 
             Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
 
@@ -481,6 +494,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                                        deployedImplementationType.getAssociatedTypeName(),
                                                                        OpenMetadataType.ASSET.typeName,
+                                                                       null,
                                                                        qualifiedName + ":SecretStoreEndpoint",
                                                                        serverName + " secret store endpoint",
                                                                        null,
@@ -502,7 +516,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                             secretStoreEndpointGUID,
                                                                             assetGUID,
                                                                             deployedImplementationType.getAssociatedTypeName(),
-                                                                            OpenMetadataType.ASSET.typeName);
+                                                                            OpenMetadataType.ASSET.typeName,
+                                                                            null);
 
             archiveHelper.addEmbeddedConnection(connectionGUID,
                                                 0,
@@ -511,7 +526,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                 secretsStoreConnectionGUID);
         }
 
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
 
@@ -519,12 +534,18 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addReplacementAttributes(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                replacementAttributeTypes);
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                placeholderPropertyTypes);
     }
 
@@ -590,6 +611,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String endpointGUID = archiveHelper.addEndpoint(null,
                                                         OpenMetadataType.ENDPOINT.typeName,
                                                         OpenMetadataType.ENDPOINT.typeName,
+                                                        null,
                                                         qualifiedName,
                                                         serverName + " endpoint",
                                                         description,
@@ -606,7 +628,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addPlaceholderProperties(endpointGUID,
                                                OpenMetadataType.ENDPOINT.typeName,
+                                               endpointGUID,
                                                OpenMetadataType.ENDPOINT.typeName,
+                                               OpenMetadataType.ENDPOINT.typeName,
+                                               null,
                                                placeholderPropertyTypes);
     }
 
@@ -670,7 +695,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                 softwareCapabilityClassification,
                                                 assetGUID,
                                                 deployedImplementationType.getAssociatedTypeName(),
-                                                OpenMetadataType.ASSET.typeName);
+                                                OpenMetadataType.ASSET.typeName,
+                                                null);
 
             archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
                                                                      qualifiedName,
@@ -687,7 +713,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                PlaceholderProperty.getHostPlaceholderPropertyTypes());
     }
 
@@ -706,7 +735,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
-    protected  void createSoftwareCapabilityCatalogTemplate(String                         guid,
+    protected void createSoftwareCapabilityCatalogTemplate(String                         guid,
                                                            DeployedImplementationType     deployedImplementationType,
                                                            String                         serverQualifiedName,
                                                            String                         softwareCapabilityName,
@@ -748,7 +777,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                     classifications,
                                                                     null,
                                                                     deployedImplementationType.getAssociatedTypeName(),
-                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                    null);
         assert(guid.equals(capabilityGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -757,12 +787,18 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addReplacementAttributes(capabilityGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               capabilityGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               null,
                                                replacementAttributeTypes);
 
         archiveHelper.addPlaceholderProperties(capabilityGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               capabilityGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               null,
                                                placeholderPropertyTypes);
     }
 
@@ -855,6 +891,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                             deployedImplementationType.getAssociatedTypeName(),
                                                             OpenMetadataType.ASSET.typeName,
+                                                            null,
                                                             qualifiedName + ":Endpoint",
                                                             assetName + " endpoint",
                                                             null,
@@ -878,7 +915,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                              endpointGUID,
                                                              assetGUID,
                                                              deployedImplementationType.getAssociatedTypeName(),
-                                                             OpenMetadataType.ASSET.typeName);
+                                                             OpenMetadataType.ASSET.typeName,
+                                                             null);
             }
             else
             {
@@ -896,7 +934,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                              endpointGUID,
                                                              assetGUID,
                                                              deployedImplementationType.getAssociatedTypeName(),
-                                                             OpenMetadataType.ASSET.typeName);
+                                                             OpenMetadataType.ASSET.typeName,
+                                                             null);
 
                 Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
 
@@ -905,6 +944,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                 String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                                            deployedImplementationType.getAssociatedTypeName(),
                                                                            OpenMetadataType.ASSET.typeName,
+                                                                           null,
                                                                            qualifiedName + ":SecretStoreEndpoint",
                                                                            assetName + " secret store endpoint",
                                                                            null,
@@ -926,7 +966,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                                 secretStoreEndpointGUID,
                                                                                 assetGUID,
                                                                                 deployedImplementationType.getAssociatedTypeName(),
-                                                                                OpenMetadataType.ASSET.typeName);
+                                                                                OpenMetadataType.ASSET.typeName,
+                                                                                null);
 
                 archiveHelper.addEmbeddedConnection(connectionGUID,
                                                     0,
@@ -935,7 +976,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                     secretsStoreConnectionGUID);
             }
 
-            archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+            archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
         }
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -944,12 +985,18 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addReplacementAttributes(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                replacementAttributeTypes);
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                placeholderPropertyTypes);
     }
 
@@ -989,6 +1036,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                  parentSetGUID,
                                                                  OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                 null,
                                                                  OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                  qualifiedName,
                                                                  deployedImplementationType,
@@ -1008,6 +1056,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                                    validValueGUID,
                                                                                    OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                                    OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                                   null,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about deployedImplementationType: " + deployedImplementationType,
                                                                                    null,
@@ -1316,6 +1365,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             governanceEngineGUID,
                                                             governanceEngineTypeName,
                                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                            null,
                                                             governanceEngineName + ":" + governanceRequestType,
                                                             governanceRequestType + " (" + governanceEngineName + ")",
                                                             governanceActionDescription.governanceServiceDescription,
@@ -1407,23 +1457,33 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addSupportedRequestParameters(processGUID,
                                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                    processGUID,
+                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                     OpenMetadataType.ASSET.typeName,
+                                                    null,
                                                     supportedRequestParameters);
 
         archiveHelper.addSupportedAnalysisSteps(processGUID,
                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                processGUID,
+                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                 OpenMetadataType.ASSET.typeName,
+                                                null,
                                                 surveyRequestType.getGovernanceService().getGovernanceActionDescription().supportedAnalysisSteps);
 
         archiveHelper.addProducedAnnotationTypes(processGUID,
                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                OpenMetadataType.ASSET.typeName,
+                                                 processGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                 OpenMetadataType.ASSET.typeName,
+                                                null,
                                                 surveyRequestType.getGovernanceService().getGovernanceActionDescription().supportedAnnotationTypes);
 
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         assetType + ":CreateAndSurvey:Step1",
                                                                         "Create the " + assetType + " entity",
                                                                         "Create the description of the " + technologyType,
@@ -1452,6 +1512,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         assetType + ":CreateAndSurvey:Step2",
                                                                         "Run the survey.",
                                                                         "Create a survey report detailing the contents of the "+ technologyType + ".",
@@ -1480,6 +1541,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         assetType + ":CreateAndSurvey:Step3",
                                                                         "Print the survey report.",
                                                                         "Print a survey report detailing the contents of the " + technologyType + ".",
@@ -1689,13 +1751,17 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addSupportedRequestParameters(processGUID,
                                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                    processGUID,
+                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                     OpenMetadataType.ASSET.typeName,
+                                                    null,
                                                     supportedRequestParameters);
 
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         assetType + ":CreateAsCatalogTarget:Step1",
                                                                         "Create the " + openMetadataType + " entity",
                                                                         "Create the description of the " + technologyType,
@@ -1724,6 +1790,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         assetType + ":CreateAsCatalogTarget:Step2",
                                                                         "Connect new asset to integration connector",
                                                                         "Connect the asset entity for the " + technologyType + " to the appropriate integration connector.",
@@ -1795,6 +1862,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         assetType + ":Delete Asset:Step1",
                                                                         "Delete the " + openMetadataType + " entity",
                                                                         "Delete asset for " + technologyType + " using the same template properties as was used to create it.",
