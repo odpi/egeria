@@ -264,11 +264,12 @@ extends <a href="SchemaExchangeInterface.html" title="interface in org.odpi.open
 <div class="block">Update the zones for the asset so that it becomes visible to consumers.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeDataAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)" class="member-name-link">removeDataAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeDataAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,boolean,boolean)" class="member-name-link">removeDataAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetExternalIdentifier,
+ boolean&nbsp;cascadedDelete,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</code></div>
@@ -534,13 +535,14 @@ extends <a href="SchemaExchangeInterface.html" title="interface in org.odpi.open
 </section>
 </li>
 <li>
-<section class="detail" id="removeDataAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
+<section class="detail" id="removeDataAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,boolean,boolean)">
 <h3>removeDataAsset</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeDataAsset</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetExternalIdentifier,
+ boolean&nbsp;cascadedDelete,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</span>
@@ -556,6 +558,7 @@ extends <a href="SchemaExchangeInterface.html" title="interface in org.odpi.open
 <dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>assetGUID</code> - unique identifier of the metadata element to remove</dd>
 <dd><code>assetExternalIdentifier</code> - unique identifier of the asset in the external asset manager</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>

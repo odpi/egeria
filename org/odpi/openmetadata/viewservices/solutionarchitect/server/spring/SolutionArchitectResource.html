@@ -285,7 +285,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/information-supply-chains")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createInformationSupplyChain</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/NewInformationSupplyChainRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewInformationSupplyChainRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create an information supply chain.</div>
 <dl class="notes">

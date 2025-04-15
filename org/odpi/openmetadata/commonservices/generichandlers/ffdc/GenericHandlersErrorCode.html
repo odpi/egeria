@@ -148,6 +148,14 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-last odd-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#DATA_STORE_IN_USE" class="member-name-link">DATA_STORE_IN_USE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-403-004 - A delete of {0} data asset {1} is not permitted because it is being used by {2} data set {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DEPENDENT_ELEMENTS_FOUND" class="member-name-link">DEPENDENT_ELEMENTS_FOUND</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-403-005 - A delete of {0} element {1} is not permitted because it still has a dependent {2} element {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATOR_NOT_RETURNED" class="member-name-link">INTEGRATOR_NOT_RETURNED</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-400-001 -  Service {0} is unable to process the properties supplied to method {1} because the requested owner
@@ -431,6 +439,20 @@ the order they are declared.</div>
 <h3>INVALID_ENGINE_ACTION_STATUS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">INVALID_ENGINE_ACTION_STATUS</span></div>
 <div class="block">OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_STORE_IN_USE">
+<h3>DATA_STORE_IN_USE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">DATA_STORE_IN_USE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-403-004 - A delete of {0} data asset {1} is not permitted because it is being used by {2} data set {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DEPENDENT_ELEMENTS_FOUND">
+<h3>DEPENDENT_ELEMENTS_FOUND</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">DEPENDENT_ELEMENTS_FOUND</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-403-005 - A delete of {0} element {1} is not permitted because it still has a dependent {2} element {3}</div>
 </section>
 </li>
 <li>

@@ -411,9 +411,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a database.</div>
@@ -427,25 +428,28 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the metadata element representing a database column.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabaseSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabaseSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseSchemaGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a database schema.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabaseTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabaseTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseTableGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a database table.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabaseView</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">removeDatabaseView</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseViewGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a database table.</div>
@@ -683,11 +687,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
+<section class="detail" id="removeDatabase(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
 <h3>removeDatabase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeDatabase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the metadata element representing a database.</div>
 <dl class="notes">
@@ -695,6 +700,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>requestBody</code> - external source request body</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -915,11 +921,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
+<section class="detail" id="removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
 <h3>removeDatabaseSchema</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeDatabaseSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseSchemaGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the metadata element representing a database schema.</div>
 <dl class="notes">
@@ -927,6 +934,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>requestBody</code> - external source request body</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -1162,11 +1170,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
+<section class="detail" id="removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
 <h3>removeDatabaseTable</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeDatabaseTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseTableGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the metadata element representing a database table.</div>
 <dl class="notes">
@@ -1174,6 +1183,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseTableGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>requestBody</code> - external source request body</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -1364,11 +1374,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
+<section class="detail" id="removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
 <h3>removeDatabaseView</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeDatabaseView</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseViewGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the metadata element representing a database table.</div>
 <dl class="notes">
@@ -1376,6 +1387,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseViewGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>requestBody</code> - external source request body</dd>
 <dt>Returns:</dt>
 <dd>void or

@@ -531,8 +531,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Move a glossary term from one glossary to another.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeGlossary(java.lang.String,java.lang.String,java.util.Date,boolean,boolean)" class="member-name-link">removeGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeGlossary(java.lang.String,java.lang.String,boolean,java.util.Date,boolean,boolean)" class="member-name-link">removeGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</code></div>
@@ -730,10 +731,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the metadata element representing a glossary category.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGlossaryTerm(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties,java.util.Date,boolean,boolean)" class="member-name-link">updateGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGlossaryTerm(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties,java.lang.String,java.util.Date,boolean,boolean)" class="member-name-link">updateGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../../frameworks/openmetadata/properties/glossaries/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</code></div>
@@ -741,9 +743,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of the metadata element representing a glossary term.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,boolean,boolean)" class="member-name-link">updateGlossaryTermFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,boolean,boolean)" class="member-name-link">updateGlossaryTermFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;isMergeClassifications,
  boolean&nbsp;isMergeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1100,10 +1103,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeGlossary(java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
+<section class="detail" id="removeGlossary(java.lang.String,java.lang.String,boolean,java.util.Date,boolean,boolean)">
 <h3>removeGlossary</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeGlossary</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</span>
@@ -1116,6 +1120,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -1765,12 +1770,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateGlossaryTerm(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties,java.util.Date,boolean,boolean)">
+<section class="detail" id="updateGlossaryTerm(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties,java.lang.String,java.util.Date,boolean,boolean)">
 <h3>updateGlossaryTerm</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateGlossaryTerm</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../../frameworks/openmetadata/properties/glossaries/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</span>
@@ -1784,6 +1790,7 @@ loadScripts(document, 'script');</script>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary term to update</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>glossaryTermProperties</code> - new properties for the glossary term</dd>
+<dd><code>updateDescription</code> - description of the change to the term</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -1824,11 +1831,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,boolean,boolean)">
+<section class="detail" id="updateGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,boolean,boolean)">
 <h3>updateGlossaryTermFromTemplate</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateGlossaryTermFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;isMergeClassifications,
  boolean&nbsp;isMergeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1843,6 +1851,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary term to update</dd>
 <dd><code>templateGUID</code> - identifier for the template glossary term</dd>
+<dd><code>updateDescription</code> - description of the change to the term</dd>
 <dd><code>isMergeClassifications</code> - should the classification be merged or replace the target entity?</dd>
 <dd><code>isMergeProperties</code> - should the properties be merged with the existing ones or replace them</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>

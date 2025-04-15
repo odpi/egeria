@@ -239,9 +239,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the zones for the asset so that it becomes visible to consumers.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDataAsset(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody)" class="member-name-link">removeDataAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeDataAsset(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody)" class="member-name-link">removeDataAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></div>
@@ -479,11 +480,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeDataAsset(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody)">
+<section class="detail" id="removeDataAsset(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody)">
 <h3>removeDataAsset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeDataAsset</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
@@ -494,6 +496,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - correlation properties</dd>

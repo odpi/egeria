@@ -330,8 +330,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Move the glossary term from one glossary to another.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeGlossary(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarymanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">removeGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeGlossary(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.glossarymanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">removeGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarymanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
@@ -678,13 +679,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeGlossary(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.glossarymanager.rest.ReferenceableUpdateRequestBody)">
+<section class="detail" id="removeGlossary(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.glossarymanager.rest.ReferenceableUpdateRequestBody)">
 <h3>removeGlossary</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/{glossaryGUID}/remove")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeGlossary</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;cascadedDelete,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
@@ -697,6 +700,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>

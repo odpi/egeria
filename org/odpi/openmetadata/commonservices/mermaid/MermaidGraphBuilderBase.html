@@ -236,8 +236,13 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodeDisplayName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">getNodeDisplayName</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;metadataElementSummary)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForSolutionComponent(java.lang.String)" class="member-name-link">getVisualStyleForSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentType)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForRelationship(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader)" class="member-name-link">getVisualStyleForRelationship</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a>&nbsp;relationshipHeader)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Use the type of the relationship to determine the shape of a linked entity.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForSolutionComponent(java.lang.String)" class="member-name-link">getVisualStyleForSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Map the solution component type to an appropriate visual style.</div>
 </div>
 </div>
@@ -331,6 +336,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>allAnchors</code> - should all anchors be added - or just those to known nodes?</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getVisualStyleForRelationship(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader)">
+<h3>getVisualStyleForRelationship</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></span>&nbsp;<span class="element-name">getVisualStyleForRelationship</span><wbr><span class="parameters">(<a href="../../frameworks/openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a>&nbsp;relationshipHeader)</span></div>
+<div class="block">Use the type of the relationship to determine the shape of a linked entity.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipHeader</code> - header of the relationship</dd>
+<dt>Returns:</dt>
+<dd>visual style enum</dd>
 </dl>
 </section>
 </li>

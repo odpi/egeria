@@ -191,9 +191,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the file asset description from the catalog.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteDataFolderFromCatalog(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.PathNameRequestBody)" class="member-name-link">deleteDataFolderFromCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteDataFolderFromCatalog(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.PathNameRequestBody)" class="member-name-link">deleteDataFolderFromCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFolderGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">PathNameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the data folder asset description from the catalog.</div>
@@ -672,11 +673,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteDataFolderFromCatalog(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.PathNameRequestBody)">
+<section class="detail" id="deleteDataFolderFromCatalog(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.PathNameRequestBody)">
 <h3>deleteDataFolderFromCatalog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteDataFolderFromCatalog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFolderGUID,
+ boolean&nbsp;cascadedDelete,
  <a href="../../../commonservices/ffdc/rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">PathNameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the data folder asset description from the catalog.</div>
 <dl class="notes">
@@ -684,6 +686,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user (assumed to be the owner)</dd>
 <dd><code>dataFolderGUID</code> - unique identifier of the data file asset</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>requestBody</code> - full pathname for the asset</dd>
 <dt>Returns:</dt>
 <dd>void or

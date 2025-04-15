@@ -176,7 +176,8 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 <div class="block">Remove the named classification from a specific metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteMetadataElement(java.lang.String,boolean,boolean,java.util.Date)" class="member-name-link">deleteMetadataElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteMetadataElement(java.lang.String,boolean,boolean,boolean,java.util.Date)" class="member-name-link">deleteMetadataElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
@@ -184,7 +185,8 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 <div class="block">Delete a specific metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteMetadataElement(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,boolean,boolean,java.util.Date)" class="member-name-link">deleteMetadataElement</a><wbr>(<a href="properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;metadataElement,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteMetadataElement(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,boolean,boolean,boolean,java.util.Date)" class="member-name-link">deleteMetadataElement</a><wbr>(<a href="properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;metadataElement,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
@@ -457,9 +459,10 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 </section>
 </li>
 <li>
-<section class="detail" id="deleteMetadataElement(java.lang.String,boolean,boolean,java.util.Date)">
+<section class="detail" id="deleteMetadataElement(java.lang.String,boolean,boolean,boolean,java.util.Date)">
 <h3>deleteMetadataElement</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteMetadataElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -470,6 +473,7 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to delete</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
@@ -481,9 +485,10 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 </section>
 </li>
 <li>
-<section class="detail" id="deleteMetadataElement(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,boolean,boolean,java.util.Date)">
+<section class="detail" id="deleteMetadataElement(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,boolean,boolean,boolean,java.util.Date)">
 <h3>deleteMetadataElement</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteMetadataElement</span><wbr><span class="parameters">(<a href="properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;metadataElement,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -494,6 +499,7 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>metadataElement</code> - the metadata element to delete</dd>
+<dd><code>cascadedDelete</code> - boolean indicating whether the delete request can cascade to dependent elements</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
