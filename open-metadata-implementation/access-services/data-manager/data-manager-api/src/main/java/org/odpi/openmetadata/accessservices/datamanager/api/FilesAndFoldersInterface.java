@@ -334,6 +334,7 @@ public interface FilesAndFoldersInterface
      * @param fileManagerCapabilityName unique name of the software server capability representing an owning external file manager or null
      * @param dataFolderGUID unique identifier of the data folder asset
      * @param fullPathname unique path and file name for file
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -343,9 +344,10 @@ public interface FilesAndFoldersInterface
                                      String fileManagerCapabilityGUID,
                                      String fileManagerCapabilityName,
                                      String dataFolderGUID,
-                                     String fullPathname) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
+                                     String fullPathname,
+                                     boolean cascadedDelete) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 
 
     /**

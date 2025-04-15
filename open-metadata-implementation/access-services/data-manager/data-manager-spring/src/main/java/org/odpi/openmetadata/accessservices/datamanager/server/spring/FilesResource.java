@@ -356,6 +356,7 @@ public class FilesResource
      * @param serverName name of calling server
      * @param userId calling user (assumed to be the owner)
      * @param dataFolderGUID unique identifier of the data file asset
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody full pathname for the asset
      *
      * @return void or
@@ -368,9 +369,10 @@ public class FilesResource
     public VoidResponse deleteDataFolderFromCatalog(@PathVariable String              serverName,
                                                     @PathVariable String              userId,
                                                     @PathVariable String              dataFolderGUID,
+                                                    @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                                     @RequestBody  PathNameRequestBody requestBody)
     {
-        return restAPI.deleteDataFolderFromCatalog(serverName, userId, dataFolderGUID, requestBody);
+        return restAPI.deleteDataFolderFromCatalog(serverName, userId, dataFolderGUID, cascadedDelete, requestBody);
     }
 
 

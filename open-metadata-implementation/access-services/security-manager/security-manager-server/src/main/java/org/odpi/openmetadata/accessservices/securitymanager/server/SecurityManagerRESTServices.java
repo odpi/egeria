@@ -1405,7 +1405,7 @@ public class SecurityManagerRESTServices
                                                                                              OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                              null,
                                                                                              OpenMetadataType.ACTOR_PROFILE.typeName,
-                                                                                             1,
+                                                                                             2,
                                                                                              null,
                                                                                              null,
                                                                                              SequencingOrder.CREATION_DATE_RECENT,
@@ -1541,7 +1541,7 @@ public class SecurityManagerRESTServices
 
 
             ActorProfileElement profile = profileHandler.getActorProfileByGUID(userId,
-                                                                               relationship.getEntityOneProxy().getGUID(),
+                                                                               relationship.getEntityTwoProxy().getGUID(),
                                                                                profileGUIDParameterName,
                                                                                OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                false,

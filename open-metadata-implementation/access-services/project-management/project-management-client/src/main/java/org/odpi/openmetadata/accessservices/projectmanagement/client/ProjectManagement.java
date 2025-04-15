@@ -232,6 +232,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param optionalClassification classification of the projects - eg Campaign, Task or PersonalProject
      * @param properties             properties for the project.
      * @param parentGUID unique identifier of optional parent entity
@@ -249,6 +250,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     public String createProject(String               userId,
                                 String               anchorGUID,
                                 boolean              isOwnAnchor,
+                                String               anchorScopeGUID,
                                 String               optionalClassification,
                                 ProjectProperties    properties,
                                 String               parentGUID,
@@ -290,6 +292,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                     initialClassifications,
                                                                     anchorGUID,
                                                                     isOwnAnchor,
+                                                                    anchorScopeGUID,
                                                                     properties.getEffectiveFrom(),
                                                                     properties.getEffectiveTo(),
                                                                     this.getElementProperties(properties),
@@ -372,6 +375,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -394,6 +398,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     public String createProjectFromTemplate(String                         userId,
                                             String                         anchorGUID,
                                             boolean                        isOwnAnchor,
+                                            String                         anchorScopeGUID,
                                             Date                           effectiveFrom,
                                             Date                           effectiveTo,
                                             String                         templateGUID,
@@ -410,6 +415,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                          OpenMetadataType.PROJECT.typeName,
                                                                          anchorGUID,
                                                                          isOwnAnchor,
+                                                                         anchorScopeGUID,
                                                                          effectiveFrom,
                                                                          effectiveTo,
                                                                          templateGUID,
@@ -610,6 +616,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param projectGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -619,15 +626,16 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     public void removeProject(String userId,
                               String externalSourceGUID,
                               String externalSourceName,
-                              String projectGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+                              String projectGUID,
+                              boolean cascadedDelete) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         final String methodName               = "removeProject";
         final String elementGUIDParameterName = "projectGUID";
-        final String urlTemplate              = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/delete";
+        final String urlTemplate              = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/delete?cascadedDelete={3}";
 
-        super.removeReferenceable(userId, externalSourceGUID, externalSourceName, projectGUID, elementGUIDParameterName, urlTemplate, methodName);
+        super.removeReferenceable(userId, externalSourceGUID, externalSourceName, projectGUID, elementGUIDParameterName, cascadedDelete, urlTemplate, methodName);
     }
 
 

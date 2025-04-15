@@ -594,6 +594,7 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @param externalSourceName       unique name of software capability representing the caller
      * @param elementGUID              unique identifier of the metadata element to remove
      * @param elementGUIDParameterName name of parameter passing the elementGUID
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param urlTemplate              URL to call (no expected placeholders)
      * @param methodName               calling method
      *
@@ -601,13 +602,14 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeReferenceable(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String elementGUID,
-                                    String elementGUIDParameterName,
-                                    String urlTemplate,
-                                    String methodName) throws InvalidParameterException,
+    public void removeReferenceable(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  elementGUID,
+                                    String  elementGUIDParameterName,
+                                    boolean cascadedDelete,
+                                    String  urlTemplate,
+                                    String  methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
@@ -624,7 +626,8 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
                                         requestBody,
                                         serverName,
                                         userId,
-                                        elementGUID);
+                                        elementGUID,
+                                        cascadedDelete);
     }
 
 

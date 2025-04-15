@@ -263,7 +263,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
 
         try
         {
-            client.removeGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, externalGlossaryIdentifier, null, false, false);
+            client.removeGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, externalGlossaryIdentifier, true, null, false, false);
         }
         catch (Exception unexpectedError)
         {

@@ -623,6 +623,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                anchorEntity.getGUID(),
                                anchorEntity.getType().getTypeDefName(),
                                this.getDomainName(anchorEntity),
+                               this.getAnchorScopeGUIDFromAnchorsClassification(anchorEntity, methodName),
                                methodName);
         }
 
@@ -686,6 +687,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                     annotationGUIDParameterName,
                                     OpenMetadataType.ANNOTATION.typeGUID,
                                     OpenMetadataType.ANNOTATION.typeName,
+                                    false,
                                     null,
                                     null,
                                     false,

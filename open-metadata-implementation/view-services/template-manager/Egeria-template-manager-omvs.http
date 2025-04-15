@@ -87,7 +87,7 @@ Content-Type: application/json
       }
     }
   },
-  "placeholderProperties" : {
+  "placeholderPropertyValues" : {
      "placeholderName1" : "placeholderValue1",
      "placeholderName2" : "placeholderValue2"
   },

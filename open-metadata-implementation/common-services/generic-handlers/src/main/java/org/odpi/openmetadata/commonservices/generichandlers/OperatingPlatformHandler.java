@@ -405,6 +405,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     operatingPlatformGUIDParameterName,
                                     OpenMetadataType.OPERATING_PLATFORM.typeGUID,
                                     OpenMetadataType.OPERATING_PLATFORM.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

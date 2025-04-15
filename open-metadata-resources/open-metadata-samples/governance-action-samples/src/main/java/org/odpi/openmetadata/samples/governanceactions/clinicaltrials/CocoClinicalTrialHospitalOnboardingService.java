@@ -264,10 +264,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
                 String landingAreaFolderGUID = catalogLandingAreaFolder(hospitalName,
                                                                         landingAreaPathName,
-                                                                        landingAreaDirectoryTemplateGUID);
+                                                                        landingAreaDirectoryTemplateGUID,
+                                                                        clinicalTrialProjectGUID);
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID, informationSupplyChainQualifiedName);
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                             hospitalGUID,
                                                             informationSupplyChainQualifiedName,
                                                             "publish weekly measurements",
@@ -288,13 +289,15 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                              hospitalName,
                                                                              clinicalTrialId,
                                                                              clinicalTrialName,
-                                                                             hospitalContactDetails);
+                                                                             hospitalContactDetails,
+                                                                             clinicalTrialProjectGUID);
 
                 String hospitalDataLakeTemplateName = this.createTemplate(dataLakeFileTemplateGUID,
                                                                           hospitalName,
                                                                           clinicalTrialId,
                                                                           clinicalTrialName,
-                                                                          hospitalContactDetails);
+                                                                          hospitalContactDetails,
+                                                                          clinicalTrialProjectGUID);
 
                 /*
                  * Create the physical folder
@@ -329,8 +332,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                 clinicalTrialName,
                                                 newFileProcessName);
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID, informationSupplyChainQualifiedName);
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                             landingAreaFolderGUID,
                                                             informationSupplyChainQualifiedName,
                                                             "new file notification",
@@ -398,6 +401,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         if (dataLakeFolderGUID != null)
         {
+            RelatedMetadataElement validDataSetCollection = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(dataLakeFolderGUID, 2, OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName, null);
+
             Map<String, RelationshipProperties> effectedDataSources = new HashMap<>();
             ContextEventProperties              contextEventProperties = new ContextEventProperties();
             String                              contextEventName = "Hospital " + hospitalName + " ready to onboard data into clinical trial " + clinicalTrialId + ": " + clinicalTrialName;
@@ -409,6 +414,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             contextEventProperties.setActualStartDate(new Date());
 
             effectedDataSources.put(dataLakeFolderGUID, new RelationshipProperties());
+            if (validDataSetCollection != null)
+            {
+                effectedDataSources.put(validDataSetCollection.getElement().getElementGUID(), new RelationshipProperties());
+            }
 
             governanceContext.registerContextEvent(clinicalTrialGUID,
                                                    null,
@@ -504,7 +513,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                             int projectStartFrom = 0;
                             RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                                         1,
-                                                                                                                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                                                                                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
                                                                                                                                         projectStartFrom,
                                                                                                                                         governanceContext.getMaxPageSize());
                             while ((projects != null) && (projects.getElementList() != null))
@@ -533,7 +542,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
                                 projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                2,
-                                                                                                               OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                                                                               OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
                                                                                                                projectStartFrom,
                                                                                                                governanceContext.getMaxPageSize());
                             }
@@ -622,6 +631,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * @param hospitalName name of hospital
      * @param landingAreaPathName path name for the landing area
      * @param landingAreaDirectoryTemplateGUID template to use
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return unique identifier of the landing area
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
@@ -629,7 +639,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      */
     private String catalogLandingAreaFolder(String hospitalName,
                                             String landingAreaPathName,
-                                            String landingAreaDirectoryTemplateGUID) throws InvalidParameterException,
+                                            String landingAreaDirectoryTemplateGUID,
+                                            String topLevelProjectGUID) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
@@ -644,6 +655,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.DATA_FOLDER.typeName,
                                                                                        null,
                                                                                        true,
+                                                                                       topLevelProjectGUID,
                                                                                        null,
                                                                                        null,
                                                                                        landingAreaDirectoryTemplateGUID,
@@ -667,6 +679,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * @param clinicalTrialId business identifier of the clinical trial project
      * @param clinicalTrialName display name of the project
      * @param hospitalContactDetails name and email of the person from the hospital that is the hospital's coordinator for the trial
+     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
      * @return  template
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
@@ -676,9 +689,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                   String               hospitalName,
                                   String               clinicalTrialId,
                                   String               clinicalTrialName,
-                                  PersonContactDetails hospitalContactDetails) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+                                  PersonContactDetails hospitalContactDetails,
+                                  String               topLevelProjectGUID) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName = "createTemplate";
 
@@ -693,6 +707,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         String templateGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.CSV_FILE.typeName,
                                                                                                       null,
                                                                                                       true,
+                                                                                                      topLevelProjectGUID,
                                                                                                       null,
                                                                                                       null,
                                                                                                       rawTemplateGUID,
@@ -753,10 +768,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         {
             String processGUID = super.createGovernanceActionProcess(processQualifiedName,
                                                                      "Onboard Landing Area Files for " + clinicalTrialName,
-                                                                     null);
+                                                                     null,
+                                                                     clinicalTrialGUID);
 
-            addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName);
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+            addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                         integrationConnectorGUID,
                                                         informationSupplyChainQualifiedName,
                                                         "new file trigger",
@@ -769,7 +785,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                         null,
                                                         processGUID);
 
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName,
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                         processGUID,
                                                         informationSupplyChainQualifiedName,
                                                         "delivered validated file",

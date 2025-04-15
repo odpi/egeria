@@ -138,6 +138,11 @@ public enum OpenMetadataProperty
     ANCHOR_DOMAIN_NAME("anchorDomainName", DataType.STRING.getName(), "Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.", "Asset", "00ba532f-792f-4b78-8940-b5a9fd72f854"),
 
     /**
+     * Unique identifier of the scope of the anchor.  This is an Open Metadata GUID of an element that represents a scope/ownership of an anchor element.  It is used to restrict searches.
+     */
+    ANCHOR_SCOPE_GUID("anchorScopeGUID", DataType.STRING.getName(), "Unique identifier of the scope of the anchor.  This is an Open Metadata GUID of an element that represents a scope/ownership of an anchor element.  It is used to restrict searches.", "0ba61188-a5db-4e98-af1a-31505660363e", "65afae9b-54d5-440f-b955-6ebe9c0eba21"),
+
+    /**
      * Unique name for the element.
      */
     QUALIFIED_NAME("qualifiedName", DataType.STRING.getName(), "Unique name for the element.", "SoftwareServer:MyAsset:MyAssetName", "e31e5b9b-0f96-42a9-8e67-0e3fc66ad305"),

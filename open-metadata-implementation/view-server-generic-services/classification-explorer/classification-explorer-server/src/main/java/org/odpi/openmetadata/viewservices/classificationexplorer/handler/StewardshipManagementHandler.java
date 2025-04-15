@@ -1250,7 +1250,7 @@ public class StewardshipManagementHandler
         return this.getRelatedElements(userId,
                                        elementGUID,
                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
-                                       2,
+                                       1,
                                        null,
                                        null,
                                        openMetadataTypeName,

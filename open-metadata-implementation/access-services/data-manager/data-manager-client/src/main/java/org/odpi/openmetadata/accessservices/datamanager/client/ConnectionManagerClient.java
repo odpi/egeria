@@ -631,7 +631,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the asset
-     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connectionGUID unique identifier of the  connection
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -643,7 +642,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                      String  dataManagerGUID,
                                      String  dataManagerName,
                                      String  assetGUID,
-                                     String  assetSummary,
                                      String  connectionGUID) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -660,7 +658,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         AssetConnectionRequestBody requestBody = new AssetConnectionRequestBody();
 
-        requestBody.setAssetSummary(assetSummary);
         requestBody.setExternalSourceGUID(dataManagerGUID);
         requestBody.setExternalSourceName(dataManagerName);
 

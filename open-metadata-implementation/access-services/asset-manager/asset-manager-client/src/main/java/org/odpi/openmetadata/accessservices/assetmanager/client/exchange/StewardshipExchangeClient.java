@@ -1805,7 +1805,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
 
         return super.getRelatedElements(userId,
                                         governanceDefinitionGUID,
-                                        1,
+                                        2,
                                         OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                         startFrom,
                                         pageSize,

@@ -823,4 +823,49 @@ public class DataManagerBaseClient
                                         userId,
                                         elementGUID);
     }
+
+
+    /**
+     * Remove the metadata element.
+     *
+     * @param userId                   calling user
+     * @param externalSourceGUID       unique identifier of software capability representing the caller
+     * @param externalSourceName       unique name of software capability representing the caller
+     * @param elementGUID              unique identifier of the metadata element to remove
+     * @param elementGUIDParameterName name of parameter passing the elementGUID
+     * @param urlTemplate              URL to call (no expected placeholders)
+     * @param cascadedDeleteOption     boolean indicating whether the delete request can cascade to dependent elements
+     * @param methodName               calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeReferenceable(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  elementGUID,
+                                    String  elementGUIDParameterName,
+                                    String  urlTemplate,
+                                    boolean cascadedDeleteOption,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        elementGUID,
+                                        cascadedDeleteOption);
+    }
 }

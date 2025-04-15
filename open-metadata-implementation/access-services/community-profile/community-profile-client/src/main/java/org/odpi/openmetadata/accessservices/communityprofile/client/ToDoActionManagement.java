@@ -181,6 +181,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                null,
                                                                                null,
                                                                                true,
+                                                                               null,
                                                                                properties.getEffectiveFrom(),
                                                                                properties.getEffectiveTo(),
                                                                                this.getToDoProperties(properties),
@@ -427,6 +428,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
         openMetadataStoreClient.deleteMetadataElementInStore(userId,
                                                              toDoGUID,
+                                                             false,
                                                              false,
                                                              false,
                                                              new Date());

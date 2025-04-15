@@ -19,7 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.OpenMetadataRelationshipConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
@@ -1594,9 +1594,9 @@ public class OpenMetadataStoreRESTServices
 
                 if (! receivedRelationships.isEmpty())
                 {
-                    RelatedElementsConverter<OpenMetadataRelationship> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
-                                                                                                                  handler.getServiceName(),
-                                                                                                                  serverName);
+                    OpenMetadataRelationshipConverter<OpenMetadataRelationship> converter = new OpenMetadataRelationshipConverter<>(handler.getRepositoryHelper(),
+                                                                                                                                    handler.getServiceName(),
+                                                                                                                                    serverName);
 
                     List<OpenMetadataRelationship> metadataRelationships = new ArrayList<>();
 
@@ -1797,9 +1797,9 @@ public class OpenMetadataStoreRESTServices
 
             if (relationship != null)
             {
-                RelatedElementsConverter<OpenMetadataRelationship> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
-                                                                                                              handler.getServiceName(),
-                                                                                                              serverName);
+                OpenMetadataRelationshipConverter<OpenMetadataRelationship> converter = new OpenMetadataRelationshipConverter<>(handler.getRepositoryHelper(),
+                                                                                                                                handler.getServiceName(),
+                                                                                                                                serverName);
                 response.setElement(converter.getNewRelationshipBean(OpenMetadataRelationship.class,
                                                                      relationship,
                                                                      methodName));
@@ -1932,7 +1932,7 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public GUIDResponse createMetadataElementInStore(String                           serverName,
+    public GUIDResponse createMetadataElementInStore(String                            serverName,
                                                      String                            serviceURLMarker,
                                                      String                            userId,
                                                      NewOpenMetadataElementRequestBody requestBody)
@@ -1960,6 +1960,7 @@ public class OpenMetadataStoreRESTServices
                                                                       requestBody.getInitialClassifications(),
                                                                       requestBody.getAnchorGUID(),
                                                                       requestBody.getIsOwnAnchor(),
+                                                                      requestBody.getAnchorScopeGUID(),
                                                                       requestBody.getEffectiveFrom(),
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
@@ -2030,6 +2031,7 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getTypeName(),
                                                                            requestBody.getAnchorGUID(),
                                                                            requestBody.getIsOwnAnchor(),
+                                                                           requestBody.getAnchorScopeGUID(),
                                                                            allowRetrieve,
                                                                            requestBody.getEffectiveFrom(),
                                                                            requestBody.getEffectiveTo(),
@@ -2256,6 +2258,7 @@ public class OpenMetadataStoreRESTServices
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody null request body
      *
      * @return void or
@@ -2268,6 +2271,7 @@ public class OpenMetadataStoreRESTServices
                                                       String                    serviceURLMarker,
                                                       String                    userId,
                                                       String                    metadataElementGUID,
+                                                      boolean                   cascadedDelete,
                                                       MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
@@ -2288,6 +2292,7 @@ public class OpenMetadataStoreRESTServices
                                                      requestBody.getExternalSourceGUID(),
                                                      requestBody.getExternalSourceName(),
                                                      metadataElementGUID,
+                                                     cascadedDelete,
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -2300,6 +2305,7 @@ public class OpenMetadataStoreRESTServices
                                                      null,
                                                      null,
                                                      metadataElementGUID,
+                                                     cascadedDelete,
                                                      false,
                                                      false,
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),

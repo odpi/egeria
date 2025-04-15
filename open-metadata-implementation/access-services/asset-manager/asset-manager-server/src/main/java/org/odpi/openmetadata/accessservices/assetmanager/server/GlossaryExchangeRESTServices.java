@@ -254,6 +254,7 @@ public class GlossaryExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
@@ -266,6 +267,7 @@ public class GlossaryExchangeRESTServices
     public VoidResponse removeGlossary(String                         serverName,
                                        String                         userId,
                                        String                         glossaryGUID,
+                                       boolean                        cascadedDelete,
                                        boolean                        forLineage,
                                        boolean                        forDuplicateProcessing,
                                        ReferenceableUpdateRequestBody requestBody)
@@ -288,6 +290,7 @@ public class GlossaryExchangeRESTServices
                 handler.removeGlossary(userId,
                                        requestBody.getMetadataCorrelationProperties(),
                                        glossaryGUID,
+                                       cascadedDelete,
                                        forLineage,
                                        forDuplicateProcessing,
                                        requestBody.getEffectiveTime(),
@@ -298,6 +301,7 @@ public class GlossaryExchangeRESTServices
                 handler.removeGlossary(userId,
                                        null,
                                        glossaryGUID,
+                                       cascadedDelete,
                                        forLineage,
                                        forDuplicateProcessing,
                                        null,
@@ -2662,6 +2666,7 @@ public class GlossaryExchangeRESTServices
                                                        requestBody.getMetadataCorrelationProperties(),
                                                        glossaryTermGUID,
                                                        requestBody.getParentGUID(),
+                                                       requestBody.getUpdateDescription(),
                                                        isMergeClassifications,
                                                        isMergeProperties,
                                                        forLineage,

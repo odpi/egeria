@@ -197,6 +197,7 @@ public class DataAssetExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
@@ -212,13 +213,15 @@ public class DataAssetExchangeResource
                                         @PathVariable String                        userId,
                                         @PathVariable String                        assetGUID,
                                         @RequestParam (required = false, defaultValue = "false")
-                                                boolean                      forLineage,
+                                                boolean                      cascadedDelete,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                            boolean                      forLineage,
                                         @RequestParam (required = false, defaultValue = "false")
                                                 boolean                      forDuplicateProcessing,
                                         @RequestBody(required = false)
                                                       UpdateRequestBody requestBody)
     {
-        return restAPI.removeDataAsset(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeDataAsset(serverName, userId, assetGUID, cascadedDelete, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

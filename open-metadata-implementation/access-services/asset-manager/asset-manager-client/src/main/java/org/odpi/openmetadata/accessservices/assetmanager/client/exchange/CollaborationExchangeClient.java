@@ -1743,6 +1743,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                   isMergeUpdate,
                                   noteProperties,
                                   propertiesParameterName,
+                                  null,
                                   urlTemplate,
                                   effectiveTime,
                                   forLineage,

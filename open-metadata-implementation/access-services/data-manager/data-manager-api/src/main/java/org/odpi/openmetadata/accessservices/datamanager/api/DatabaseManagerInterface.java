@@ -139,17 +139,19 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete can the operation remove nested schemas. tables and columns (default false)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeDatabase(String userId,
-                        String databaseManagerGUID,
-                        String databaseManagerName,
-                        String databaseGUID) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
+    void removeDatabase(String  userId,
+                        String  databaseManagerGUID,
+                        String  databaseManagerName,
+                        String  databaseGUID,
+                        boolean cascadedDelete) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException;
 
 
     /**
@@ -361,17 +363,19 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete can the operation remove nested schemas. tables and columns (default false)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeDatabaseSchema(String userId,
-                              String databaseManagerGUID,
-                              String databaseManagerName,
-                              String databaseSchemaGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+    void removeDatabaseSchema(String  userId,
+                              String  databaseManagerGUID,
+                              String  databaseManagerName,
+                              String  databaseSchemaGUID,
+                              boolean cascadedDelete) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**
@@ -612,17 +616,19 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseTableGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete can the operation remove nested schemas. tables and columns (default false)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeDatabaseTable(String userId,
-                             String databaseManagerGUID,
-                             String databaseManagerName,
-                             String databaseTableGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
+    void removeDatabaseTable(String  userId,
+                             String  databaseManagerGUID,
+                             String  databaseManagerName,
+                             String  databaseTableGUID,
+                             boolean cascadedDelete) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException;
 
 
     /**
@@ -841,15 +847,17 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseViewGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void removeDatabaseView(String userId,
-                            String databaseManagerGUID,
-                            String databaseManagerName,
-                            String databaseViewGUID) throws InvalidParameterException,
+    void removeDatabaseView(String  userId,
+                            String  databaseManagerGUID,
+                            String  databaseManagerName,
+                            String  databaseViewGUID,
+                            boolean cascadedDelete) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException;
 

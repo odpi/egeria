@@ -197,6 +197,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @param assetManagerName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the metadata element to remove
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -210,6 +211,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
                          String  assetManagerName,
                          String  assetGUID,
                          String  assetExternalIdentifier,
+                         boolean cascadedDelete,
                          Date    effectiveTime,
                          boolean forLineage,
                          boolean forDuplicateProcessing) throws InvalidParameterException,

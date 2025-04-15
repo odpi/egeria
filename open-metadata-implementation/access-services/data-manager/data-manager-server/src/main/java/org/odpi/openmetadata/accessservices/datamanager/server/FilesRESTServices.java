@@ -905,6 +905,7 @@ public class FilesRESTServices
      * @param serverName name of calling server
      * @param userId calling user (assumed to be the owner)
      * @param dataFolderGUID unique identifier of the data file asset
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody full pathname for the asset
      *
      * @return void or
@@ -915,6 +916,7 @@ public class FilesRESTServices
     public VoidResponse deleteDataFolderFromCatalog(String              serverName,
                                                     String              userId,
                                                     String              dataFolderGUID,
+                                                    boolean             cascadedDelete,
                                                     PathNameRequestBody requestBody)
     {
         final String methodName = "deleteDataFolderInCatalog";
@@ -937,6 +939,7 @@ public class FilesRESTServices
                                                 requestBody.getExternalSourceGUID(),
                                                 requestBody.getExternalSourceName(),
                                                 dataFolderGUID,
+                                                cascadedDelete,
                                                 false,
                                                 false,
                                                 new Date(),

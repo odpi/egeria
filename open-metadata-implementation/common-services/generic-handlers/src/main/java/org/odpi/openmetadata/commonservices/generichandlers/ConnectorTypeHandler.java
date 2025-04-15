@@ -477,6 +477,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                            null,
                            OpenMetadataType.CONNECTOR_TYPE.typeName,
                            OpenMetadataType.CONNECTOR_TYPE.typeName,
+                           null,
                            methodName);
 
         return this.createBeanFromTemplate(userId,
@@ -909,6 +910,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     guidParameterName,
                                     OpenMetadataType.CONNECTOR_TYPE.typeGUID,
                                     OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

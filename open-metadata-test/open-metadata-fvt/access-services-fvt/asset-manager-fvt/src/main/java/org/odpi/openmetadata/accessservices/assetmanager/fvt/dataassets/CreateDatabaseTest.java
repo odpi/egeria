@@ -41,33 +41,33 @@ public class CreateDatabaseTest
     /*
      * The asset manager name is constant - the guid is created as part of the test.
      */
-    private final static String assetManagerName            = "TestDatabaseManager";
+    private final static String assetManagerName            = "Test Asset Manager DatabaseManager";
     private final static String assetManagerDisplayName     = "DatabaseManager displayName";
     private final static String assetManagerDescription     = "DatabaseManager description";
     private final static String assetManagerTypeDescription = "DatabaseManager type";
     private final static String assetManagerVersion         = "DatabaseManager version";
 
-    private final static String databaseName        = "TestDatabase";
+    private final static String databaseName        = "Test Asset Manager Database";
     private final static String databaseDisplayName = "Database displayName";
     private final static String databaseDescription = "Database description";
     private final static String databaseType        = "Database type";
     private final static String databaseVersion     = "Database version";
 
-    private final static String databaseSchemaName        = "TestDatabaseSchema";
+    private final static String databaseSchemaName        = "Test Asset Manager DatabaseSchema";
     private final static String databaseSchemaDisplayName = "DatabaseSchema displayName";
     private final static String databaseSchemaDescription = "DatabaseSchema description";
 
-    private final static String databaseTableName        = "TestDatabaseTable";
+    private final static String databaseTableName        = "Test Asset Manager DatabaseTable";
     private final static String databaseTableDisplayName = "DatabaseTable displayName";
     private final static String databaseTableDescription = "DatabaseTable description";
 
 
-    private final static String databaseColumnName        = "TestDatabaseColumn";
+    private final static String databaseColumnName        = "Test Asset Manager DatabaseColumn";
     private final static String databaseColumnDisplayName = "DatabaseColumn displayName";
     private final static String databaseColumnDescription = "DatabaseColumn description";
     private final static String databaseColumnType = "string";
 
-    private final static String databaseColumnTwoName        = "TestDatabaseColumn2";
+    private final static String databaseColumnTwoName        = "Test Asset Manager DatabaseColumn2";
     private final static String databaseColumnTwoDisplayName = "DatabaseColumn2 displayName";
     private final static String databaseColumnTwoDescription = "DatabaseColumn2 description";
     private final static String databaseColumnTwoType = "date";
@@ -146,17 +146,9 @@ public class CreateDatabaseTest
          */
         try
         {
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, null, false, false);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, true, null, false, false);
 
             thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
-            thisTest.checkDatabaseColumnOK(client, assetManagerGUID, databaseColumnGUID, databaseTableGUID, activityName, userId);
-            thisTest.checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, activityName, userId);
-            thisTest.checkDatabaseSchemaOK(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
-
-            activityName = "cascadedDelete - remove DatabaseSchema";
-
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, null, false, false);
-
             thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
             thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID,  activityName, userId);
             thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
@@ -222,13 +214,13 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseSchemaOK(client, assetManagerGUID, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
 
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, null, false, false);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, false,  null, false, false);
 
             activityName = "deleteOneByOne - schema gone";
             thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
 
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, null, false, false);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, false, null, false, false);
 
             activityName = "deleteOneByOne - database gone";
             thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
@@ -349,12 +341,9 @@ public class CreateDatabaseTest
             activityName = "cascadedDelete";
             try
             {
-                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, null, false, false);
+                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, true, null, false, false);
 
                 thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
-
-                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, null, false, false);
-
                 thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
                 thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, activityName, userId);
                 thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);

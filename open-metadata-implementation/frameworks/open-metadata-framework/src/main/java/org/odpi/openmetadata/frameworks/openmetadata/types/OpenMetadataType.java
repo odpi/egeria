@@ -1904,6 +1904,15 @@ public enum OpenMetadataType
                                      "A link between a connection and the endpoint that the connector should use."),
 
     /**
+     * A link between a connection and the endpoint of the associated digital resource.
+     */
+    CONNECT_TO_ENDPOINT_RELATIONSHIP("e2b62ebb-7f7d-4d48-be70-b0859416bc95",
+                                     "ConnectToEndpoint",
+                                     OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                     "8ee90e09-b0c6-4c5f-be82-03b03d8f4809",
+                                     "A link between a connection and the endpoint of the associated digital resource."),
+
+    /**
      * A link between a connection and the connector type that should be used.
      */
     CONNECTION_CONNECTOR_TYPE_RELATIONSHIP("e542cfc1-0b4b-42b9-9921-f0a5a88aaf96",
@@ -1938,6 +1947,15 @@ public enum OpenMetadataType
                                      OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
                                      "4fedfcf8-05c4-4c8c-8284-3554c4f4c295",
                                      "Link between a connection and the description of the asset it can be used to access."),
+
+    /**
+     * Link between an asset and the connection to its digital resource.
+     */
+    ASSET_CONNECTION_RELATIONSHIP("c96593a5-9f42-41c8-82a0-16acafc77c44",
+                                     "AssetConnection",
+                                     OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
+                                     "e09cf717-af6f-4daf-8469-bf21af4ecf29",
+                                     "Link between an asset and the connection to its digital resource."),
 
     /**
      * Collection of related data, not necessarily stored together.
@@ -2728,11 +2746,11 @@ public enum OpenMetadataType
     /**
      * Links a term to its owning glossary.
      */
-    TERM_ANCHOR("1d43d661-bdc7-4a91-a996-3239b8f82e56",
-                "TermAnchor",
-                OpenMetadataWikiPages.MODEL_0330_TERMS,
-                "712d129b-1d52-41d9-8a39-861c1fc09f85",
-                "Links a term to its owning glossary."),
+    TERM_ANCHOR_RELATIONSHIP("1d43d661-bdc7-4a91-a996-3239b8f82e56",
+                             "TermAnchor",
+                             OpenMetadataWikiPages.MODEL_0330_TERMS,
+                             "712d129b-1d52-41d9-8a39-861c1fc09f85",
+                             "Links a term to its owning glossary."),
 
     /**
      * Links a glossary term into a glossary category.
@@ -5866,29 +5884,29 @@ public enum OpenMetadataType
     /**
      * Shows that data flows in one direction from one element to another.
      */
-    DATA_FLOW("d2490c0c-06cc-458a-add2-33cf2f5dd724",
-              "DataFlow",
-              OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
-              "e965ab1e-5c04-44a9-b301-3b359e6f169f",
-              "Shows that data flows in one direction from one element to another."),
+    DATA_FLOW_RELATIONSHIP("d2490c0c-06cc-458a-add2-33cf2f5dd724",
+                           "DataFlow",
+                           OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
+                           "e965ab1e-5c04-44a9-b301-3b359e6f169f",
+                           "Shows that data flows in one direction from one element to another."),
 
     /**
      * Shows that when one element completes processing, control passes to the next element.
      */
-    CONTROL_FLOW("35450726-1c32-4d41-b928-22db6d1ae2f4",
-                 "ControlFlow",
-                 OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
-                 "ce664de9-b65e-443e-bf58-15e8e44503d3",
-                 "Shows that when one element completes processing, control passes to the next element."),
+    CONTROL_FLOW_RELATIONSHIP("35450726-1c32-4d41-b928-22db6d1ae2f4",
+                              "ControlFlow",
+                              OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
+                              "ce664de9-b65e-443e-bf58-15e8e44503d3",
+                              "Shows that when one element completes processing, control passes to the next element."),
 
     /**
      * Shows a request-response call between two elements.
      */
-    PROCESS_CALL("af904501-6347-4f52-8378-da50e8d74828",
-                 "ProcessCall",
-                 OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
-                 "e5892596-1be2-4a22-9fb0-2aae6627f127",
-                 "Shows a request-response call between two elements."),
+    PROCESS_CALL_RELATIONSHIP("af904501-6347-4f52-8378-da50e8d74828",
+                              "ProcessCall",
+                              OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
+                              "e5892596-1be2-4a22-9fb0-2aae6627f127",
+                              "Shows a request-response call between two elements."),
 
     /**
      * Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.
@@ -5920,11 +5938,11 @@ public enum OpenMetadataType
     /**
      * A lineage stitching link between two equivalent elements.
      */
-    LINEAGE_MAPPING("a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff",
-                    "LineageMapping",
-                    OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
-                    "a1c53199-2c7c-4709-8e64-6ba1b303d5e3",
-                    "A lineage stitching link between two equivalent elements."),
+    LINEAGE_MAPPING_RELATIONSHIP("a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff",
+                                 "LineageMapping",
+                                 OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
+                                 "a1c53199-2c7c-4709-8e64-6ba1b303d5e3",
+                                 "A lineage stitching link between two equivalent elements."),
 
 
     /**

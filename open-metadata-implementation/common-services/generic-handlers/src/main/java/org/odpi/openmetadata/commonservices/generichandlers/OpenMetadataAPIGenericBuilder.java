@@ -310,9 +310,35 @@ public class OpenMetadataAPIGenericBuilder
      * connected to a specific anchor.
      *
      * @param userId calling user
+     * @param anchorIdentifiers values for anchors classification
+     * @param methodName calling method
+     * @throws PropertyServerException a null anchors GUID has been supplied
+     */
+    public void setAnchors(String                                         userId,
+                           OpenMetadataAPIAnchorHandler.AnchorIdentifiers anchorIdentifiers,
+                           String                                         methodName) throws PropertyServerException
+    {
+        if (anchorIdentifiers != null)
+        {
+            setAnchors(userId,
+                       anchorIdentifiers.anchorGUID,
+                       anchorIdentifiers.anchorTypeName,
+                       anchorIdentifiers.anchorDomainName,
+                       anchorIdentifiers.anchorScopeGUID,
+                       methodName);
+        }
+    }
+
+
+    /**
+     * Set up the "Anchors" classification for this entity.  This is used when a new entity is being created, and it is known to be
+     * connected to a specific anchor.
+     *
+     * @param userId calling user
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
-     * @param anchorTypeName unique identifier of the anchor entity's type
-     * @param anchorDomainName unique identifier of the anchor entity's domain
+     * @param anchorTypeName unique name of the anchor entity's type
+     * @param anchorDomainName unique name of the anchor entity's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
      * @param methodName calling method
      * @throws PropertyServerException a null anchors GUID has been supplied
      */
@@ -320,6 +346,7 @@ public class OpenMetadataAPIGenericBuilder
                            String anchorGUID,
                            String anchorTypeName,
                            String anchorDomainName,
+                           String anchorScopeGUID,
                            String methodName) throws PropertyServerException
     {
         final String localMethodName = "setAnchors";
@@ -347,12 +374,12 @@ public class OpenMetadataAPIGenericBuilder
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
-                                                                                  getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+                                                                                  getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
             newClassifications.put(classification.getName(), classification);
         }
         catch (Exception error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, typeName);
         }
     }
 
@@ -361,14 +388,16 @@ public class OpenMetadataAPIGenericBuilder
      * Return the Anchors properties in an InstanceProperties object.
      *
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
-     * @param anchorTypeName unique identifier of the anchor entity's type
-     * @param anchorDomainName unique identifier of the anchor entity's domain
+     * @param anchorTypeName unique name of the anchor entity's type
+     * @param anchorDomainName unique name of the anchor entity's domain
+     * @param anchorScopeGUID unique identifier of the anchor entity's scope
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
     InstanceProperties getAnchorsProperties(String anchorGUID,
                                             String anchorTypeName,
                                             String anchorDomainName,
+                                            String anchorScopeGUID,
                                             String methodName)
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -387,6 +416,12 @@ public class OpenMetadataAPIGenericBuilder
                                                                   properties,
                                                                   OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
                                                                   anchorDomainName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
+                                                                  anchorScopeGUID,
                                                                   methodName);
 
         return properties;
@@ -481,13 +516,13 @@ public class OpenMetadataAPIGenericBuilder
                             String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
                                                                                         placeholderProperties);
 
-                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            if (newProperty != null)
                             {
                                 repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                                          newTemplateProperties,
-                                                                          propertyName,
-                                                                          Integer.getInteger(newProperty),
-                                                                          methodName);
+                                                                              newTemplateProperties,
+                                                                              propertyName,
+                                                                              Integer.parseInt(newProperty),
+                                                                              methodName);
                             }
                             else
                             {
@@ -502,12 +537,12 @@ public class OpenMetadataAPIGenericBuilder
                             String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
                                                                                         placeholderProperties);
 
-                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            if (newProperty != null)
                             {
                                 repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                            newTemplateProperties,
                                                                            propertyName,
-                                                                           Long.getLong(newProperty),
+                                                                           Long.parseLong(newProperty),
                                                                            methodName);
                             }
                             else
@@ -523,12 +558,12 @@ public class OpenMetadataAPIGenericBuilder
                             String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
                                                                                         placeholderProperties);
 
-                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            if (newProperty != null)
                             {
                                 repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                            newTemplateProperties,
                                                                            propertyName,
-                                                                           new Date(Long.getLong(newProperty)),
+                                                                           new Date(Long.parseLong(newProperty)),
                                                                            methodName);
                             }
                             else
@@ -544,7 +579,7 @@ public class OpenMetadataAPIGenericBuilder
                             String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
                                                                                         placeholderProperties);
 
-                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            if (newProperty != null)
                             {
                                 repositoryHelper.addObjectPropertyToInstance(serviceName,
                                                                              newTemplateProperties,

@@ -586,6 +586,7 @@ public class EventBrokerRESTServices
                                                topicGUIDParameterName,
                                                OpenMetadataType.TOPIC.typeGUID,
                                                OpenMetadataType.TOPIC.typeName,
+                                               false,
                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,

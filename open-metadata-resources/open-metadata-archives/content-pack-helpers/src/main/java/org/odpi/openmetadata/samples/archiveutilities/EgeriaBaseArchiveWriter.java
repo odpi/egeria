@@ -208,6 +208,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          grandParentSetGUID,
                                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                         null,
                                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                                          parentQualifiedName,
                                                          parentDisplayName,

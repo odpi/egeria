@@ -215,6 +215,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                     null,
                                                                     anchorGUID,
                                                                     isOwnAnchor,
+                                                                    null,
                                                                     properties.getEffectiveFrom(),
                                                                     properties.getEffectiveTo(),
                                                                     this.getElementProperties(properties),
@@ -287,6 +288,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                          OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
                                                                          anchorGUID,
                                                                          isOwnAnchor,
+                                                                         null,
                                                                          effectiveFrom,
                                                                          effectiveTo,
                                                                          templateGUID,
@@ -395,7 +397,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateObject(properties, propertiesName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String elementTypeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName;
+        String elementTypeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName;
 
         if (properties.getTypeName() != null)
         {
@@ -412,6 +414,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                         null,
                                                                         informationSupplyChainGUID,
                                                                         false,
+                                                                        null,
                                                                         properties.getEffectiveFrom(),
                                                                         properties.getEffectiveTo(),
                                                                         this.getElementProperties(properties),
@@ -433,6 +436,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                         null,
                                                                         null,
                                                                         true,
+                                                                        null,
                                                                         properties.getEffectiveFrom(),
                                                                         properties.getEffectiveTo(),
                                                                         this.getElementProperties(properties),
@@ -664,6 +668,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                              externalSourceGUID,
                                                              externalSourceName,
                                                              segmentGUID,
+                                                             false,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);
@@ -706,6 +711,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                              externalSourceGUID,
                                                              externalSourceName,
                                                              informationSupplyChainGUID,
+                                                             false,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);

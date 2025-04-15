@@ -308,6 +308,7 @@ public interface GlossaryManagementInterface
      *
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -318,6 +319,7 @@ public interface GlossaryManagementInterface
      */
     void removeGlossary(String  userId,
                         String  glossaryGUID,
+                        boolean cascadedDelete,
                         Date    effectiveTime,
                         boolean forLineage,
                         boolean forDuplicateProcessing) throws InvalidParameterException,
@@ -893,6 +895,7 @@ public interface GlossaryManagementInterface
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param glossaryTermProperties new properties for the glossary term
+     * @param updateDescription description of the change to the term
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -905,6 +908,7 @@ public interface GlossaryManagementInterface
                             String                 glossaryTermGUID,
                             boolean                isMergeUpdate,
                             GlossaryTermProperties glossaryTermProperties,
+                            String                 updateDescription,
                             Date                   effectiveTime,
                             boolean                forLineage,
                             boolean                forDuplicateProcessing) throws InvalidParameterException,
@@ -943,6 +947,7 @@ public interface GlossaryManagementInterface
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param templateGUID identifier for the template glossary term
+     * @param updateDescription description of the change to the term
      * @param isMergeClassifications should the classification be merged or replace the target entity?
      * @param isMergeProperties should the properties be merged with the existing ones or replace them
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -956,6 +961,7 @@ public interface GlossaryManagementInterface
     void updateGlossaryTermFromTemplate(String             userId,
                                         String             glossaryTermGUID,
                                         String             templateGUID,
+                                        String             updateDescription,
                                         boolean            isMergeClassifications,
                                         boolean            isMergeProperties,
                                         Date               effectiveTime,

@@ -115,18 +115,11 @@ public class CreateConnectionTest
             activityName = "deleteOneByOne - connection gone";
             thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);
             thisTest.checkConnectorTypeOK(client, connectorTypeGUID, null, activityName, userId);
-            thisTest.checkEndpointOK(client, endpointGUID, null, activityName, userId);
+            thisTest.checkEndpointGone(client, endpointGUID, null, activityName, userId);
 
             client.removeConnectorType(userId, connectorTypeGUID);
 
             activityName = "deleteOneByOne - connectorType gone";
-            thisTest.checkConnectorTypeGone(client, connectorTypeGUID, null, activityName, userId);
-            thisTest.checkEndpointOK(client, endpointGUID, null, activityName, userId);
-            thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);
-
-            client.removeEndpoint(userId, endpointGUID);
-
-            activityName = "deleteOneByOne - endpoint gone";
             thisTest.checkConnectorTypeGone(client, connectorTypeGUID, null, activityName, userId);
             thisTest.checkEndpointGone(client, endpointGUID, null, activityName, userId);
             thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);

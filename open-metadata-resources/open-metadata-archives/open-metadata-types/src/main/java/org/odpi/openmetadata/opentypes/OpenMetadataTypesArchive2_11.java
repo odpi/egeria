@@ -243,7 +243,7 @@ public class OpenMetadataTypesArchive2_11
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "definitionAppliesTo";
         final String                     end1AttributeDescription     = "Elements defining the scope that the governance definition applies to.";
@@ -254,11 +254,11 @@ public class OpenMetadataTypesArchive2_11
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
+        relationshipDef.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "associatedGovernanceDefinitions";
         final String                     end2AttributeDescription     = "Governance definitions for this scope.";
@@ -269,7 +269,7 @@ public class OpenMetadataTypesArchive2_11
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
         return relationshipDef;
     }

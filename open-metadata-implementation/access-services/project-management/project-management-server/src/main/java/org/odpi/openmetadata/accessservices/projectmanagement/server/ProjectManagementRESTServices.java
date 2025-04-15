@@ -595,6 +595,7 @@ public class ProjectManagementRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param projectGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source identifiers
      *
      * @return void or
@@ -605,6 +606,7 @@ public class ProjectManagementRESTServices
     public VoidResponse removeProject(String                    serverName,
                                       String                    userId,
                                       String                    projectGUID,
+                                      boolean                   cascadedDelete,
                                       ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeProject";
@@ -628,6 +630,7 @@ public class ProjectManagementRESTServices
                                       requestBody.getExternalSourceName(),
                                       projectGUID,
                                       projectGUIDParameterName,
+                                      cascadedDelete,
                                       false,
                                       false,
                                       new Date(),
@@ -640,6 +643,7 @@ public class ProjectManagementRESTServices
                                       null,
                                       projectGUID,
                                       projectGUIDParameterName,
+                                      cascadedDelete,
                                       false,
                                       false,
                                       new Date(),

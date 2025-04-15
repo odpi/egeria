@@ -2094,6 +2094,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                atlasEntity.getGuid(),
                                                                false,
                                                                glossaryTermProperties,
+                                                               "Change made by Apache Atlas user " + atlasEntity.getUpdatedBy(),
                                                                new Date());
 
                     this.setUpTermCategoriesInEgeria(egeriaGlossaryTermGUID, atlasGlossaryTerm);

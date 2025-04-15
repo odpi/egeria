@@ -140,6 +140,8 @@ public class OpenMetadataAccess extends OpenMetadataStore
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -160,6 +162,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
                                                boolean                        isOwnAnchor,
+                                               String                         anchorScopeGUID,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
@@ -175,6 +178,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                                         initialClassifications,
                                                                         anchorGUID,
                                                                         isOwnAnchor,
+                                                                        anchorScopeGUID,
                                                                         effectiveFrom,
                                                                         effectiveTo,
                                                                         properties,
@@ -207,6 +211,8 @@ public class OpenMetadataAccess extends OpenMetadataStore
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -229,6 +235,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
                                                boolean                        isOwnAnchor,
+                                               String                         anchorScopeGUID,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
@@ -246,6 +253,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                                         initialClassifications,
                                                                         anchorGUID,
                                                                         isOwnAnchor,
+                                                                        anchorScopeGUID,
                                                                         effectiveFrom,
                                                                         effectiveTo,
                                                                         properties,
@@ -275,6 +283,8 @@ public class OpenMetadataAccess extends OpenMetadataStore
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -297,6 +307,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
     public String createMetadataElementFromTemplate(String                         metadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
+                                                    String                         anchorScopeGUID,
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
                                                     String                         templateGUID,
@@ -312,6 +323,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
         String metadataElementGUID = super.createMetadataElementFromTemplate(metadataElementTypeName,
                                                                              anchorGUID,
                                                                              isOwnAnchor,
+                                                                             anchorScopeGUID,
                                                                              effectiveFrom,
                                                                              effectiveTo,
                                                                              templateGUID,
@@ -345,6 +357,8 @@ public class OpenMetadataAccess extends OpenMetadataStore
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -369,6 +383,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                     String                         metadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
+                                                    String                         anchorScopeGUID,
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
                                                     String                         templateGUID,
@@ -386,6 +401,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                                              metadataElementTypeName,
                                                                              anchorGUID,
                                                                              isOwnAnchor,
+                                                                             anchorScopeGUID,
                                                                              effectiveFrom,
                                                                              effectiveTo,
                                                                              templateGUID,
@@ -417,6 +433,8 @@ public class OpenMetadataAccess extends OpenMetadataStore
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -439,6 +457,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
     public String getMetadataElementFromTemplate(String                         metadataElementTypeName,
                                                  String                         anchorGUID,
                                                  boolean                        isOwnAnchor,
+                                                 String                         anchorScopeGUID,
                                                  Date                           effectiveFrom,
                                                  Date                           effectiveTo,
                                                  String                         templateGUID,
@@ -454,6 +473,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
         String metadataElementGUID = super.getMetadataElementFromTemplate(metadataElementTypeName,
                                                                           anchorGUID,
                                                                           isOwnAnchor,
+                                                                          anchorScopeGUID,
                                                                           effectiveFrom,
                                                                           effectiveTo,
                                                                           templateGUID,
@@ -487,6 +507,8 @@ public class OpenMetadataAccess extends OpenMetadataStore
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -511,6 +533,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                  String                         metadataElementTypeName,
                                                  String                         anchorGUID,
                                                  boolean                        isOwnAnchor,
+                                                 String                         anchorScopeGUID,
                                                  Date                           effectiveFrom,
                                                  Date                           effectiveTo,
                                                  String                         templateGUID,
@@ -528,6 +551,7 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                                           metadataElementTypeName,
                                                                           anchorGUID,
                                                                           isOwnAnchor,
+                                                                          anchorScopeGUID,
                                                                           effectiveFrom,
                                                                           effectiveTo,
                                                                           templateGUID,
@@ -742,17 +766,19 @@ public class OpenMetadataAccess extends OpenMetadataStore
      * Delete a specific metadata element.
      *
      * @param metadataElementGUID unique identifier of the metadata element to delete
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void deleteMetadataElementInStore(String  metadataElementGUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void deleteMetadataElementInStore(String  metadataElementGUID,
+                                             boolean cascadedDelete) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        super.deleteMetadataElementInStore(metadataElementGUID);
+        super.deleteMetadataElementInStore(metadataElementGUID, cascadedDelete);
 
         if (reportWriter != null)
         {
@@ -767,21 +793,24 @@ public class OpenMetadataAccess extends OpenMetadataStore
      * @param externalSourceGUID      unique identifier of the software capability that owns this collection
      * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void deleteMetadataElementInStore(String externalSourceGUID,
-                                             String externalSourceName,
-                                             String metadataElementGUID) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void deleteMetadataElementInStore(String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  metadataElementGUID,
+                                             boolean cascadedDelete) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         super.deleteMetadataElementInStore(externalSourceGUID,
                                            externalSourceName,
-                                           metadataElementGUID);
+                                           metadataElementGUID,
+                                           cascadedDelete);
 
         if (reportWriter != null)
         {

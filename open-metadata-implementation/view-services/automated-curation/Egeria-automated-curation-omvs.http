@@ -1100,9 +1100,9 @@ Content-Type: application/json
       "propertyName2" : "propertyValue2"
     }
   },
-  "effectiveFrom" : "{{isoTimestamp}}",
-  "effectiveTo" : "{{isoTimestamp}}",
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1138,9 +1138,9 @@ Content-Type: application/json
       "propertyName2" : "propertyValue2"
     }
   },
-  "effectiveFrom" : "{{isoTimestamp}}",
-  "effectiveTo" : "{{isoTimestamp}}",
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1159,7 +1159,7 @@ Content-Type: application/json
     "externalScopeName" : "{{externalScopeName}}",
     "externalIdentifier" : "Add external identifier here"
   },
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1178,7 +1178,7 @@ Content-Type: application/json
     "externalScopeName" : "{{externalScopeName}}",
     "externalIdentifier" : "Add external identifier here"
   },
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1192,7 +1192,7 @@ Content-Type: application/json
 
 {
   "class" : "EffectiveTimeRequestBody",
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1227,7 +1227,7 @@ Content-Type: application/json
     "externalScopeName" : "{{externalScopeName}}",
     "externalIdentifier" : "Add external identifier here"
   },
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1242,6 +1242,6 @@ Content-Type: application/json
   "class" : "EffectiveTimeQueryRequestBody",
   "externalScopeGUID" : "{{externalScopeGUID}}",
   "externalScopeName" : "{{externalScopeName}}",
-  "effectiveTime" : "{{isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 

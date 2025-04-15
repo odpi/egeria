@@ -122,6 +122,7 @@ public class CollaborationManagerHandler
                                                 false,
                                                 null,
                                                 null,
+                                                null,
                                                 elementProperties,
                                                 elementGUID,
                                                 relationshipTypeName,
@@ -299,6 +300,7 @@ public class CollaborationManagerHandler
         {
             client.deleteMetadataElementInStore(userId,
                                                 existingRating.getElement().getElementGUID(),
+                                                false,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime);
@@ -433,6 +435,7 @@ public class CollaborationManagerHandler
         {
             client.deleteMetadataElementInStore(userId,
                                                 existingLike.getElement().getElementGUID(),
+                                                false,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime);
@@ -547,6 +550,7 @@ public class CollaborationManagerHandler
                                                    null,
                                                    elementGUID,
                                                    false,
+                                                   null,
                                                    properties.getEffectiveFrom(),
                                                    properties.getEffectiveTo(),
                                                    elementProperties,
@@ -641,6 +645,7 @@ public class CollaborationManagerHandler
                                                    null,
                                                    elementGUID,
                                                    false,
+                                                   null,
                                                    properties.getEffectiveFrom(),
                                                    properties.getEffectiveTo(),
                                                    elementProperties,
@@ -856,7 +861,7 @@ public class CollaborationManagerHandler
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
     {
-        client.deleteMetadataElementInStore(userId, commentGUID, false, false, effectiveTime);
+        client.deleteMetadataElementInStore(userId, commentGUID, false, false, false, effectiveTime);
     }
 
 
@@ -1085,6 +1090,7 @@ public class CollaborationManagerHandler
                                                    true,
                                                    null,
                                                    null,
+                                                   null,
                                                    elementProperties,
                                                    null,
                                                    null,
@@ -1149,6 +1155,7 @@ public class CollaborationManagerHandler
     {
         client.deleteMetadataElementInStore(userId,
                                             tagGUID,
+                                            false,
                                             forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime);
@@ -1624,6 +1631,7 @@ public class CollaborationManagerHandler
                                                    null,
                                                    elementGUID,
                                                    false,
+                                                   null,
                                                    noteLogProperties.getEffectiveFrom(),
                                                    noteLogProperties.getEffectiveTo(),
                                                    elementProperties,
@@ -1728,6 +1736,7 @@ public class CollaborationManagerHandler
     {
         client.deleteMetadataElementInStore(userId,
                                             noteLogGUID,
+                                            false,
                                             forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime);
@@ -2011,6 +2020,7 @@ public class CollaborationManagerHandler
                                                    null,
                                                    noteLogGUID,
                                                    false,
+                                                   null,
                                                    noteProperties.getEffectiveFrom(),
                                                    noteProperties.getEffectiveTo(),
                                                    elementProperties,
@@ -2116,6 +2126,7 @@ public class CollaborationManagerHandler
     {
         client.deleteMetadataElementInStore(userId,
                                             noteGUID,
+                                            false,
                                             forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime);

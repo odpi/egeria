@@ -294,6 +294,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                     noteGUIDParameterName,
                                     OpenMetadataType.NOTE_ENTRY.typeGUID,
                                     OpenMetadataType.NOTE_ENTRY.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

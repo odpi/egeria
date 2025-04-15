@@ -318,7 +318,7 @@ public class OpenMetadataTypesArchive3_4
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "teamMembers";
         final String                     end1AttributeDescription     = "The members of the team.";
@@ -329,11 +329,11 @@ public class OpenMetadataTypesArchive3_4
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
+        typeDefPatch.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "memberOfTeam";
         final String                     end2AttributeDescription     = "The team that this role is a member of.";
@@ -344,7 +344,7 @@ public class OpenMetadataTypesArchive3_4
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }
@@ -363,7 +363,7 @@ public class OpenMetadataTypesArchive3_4
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "teamLeaders";
         final String                     end1AttributeDescription     = "The leaders of the team.";
@@ -374,11 +374,11 @@ public class OpenMetadataTypesArchive3_4
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
+        typeDefPatch.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "leadsTeam";
         final String                     end2AttributeDescription     = "The team lead by this person role.";
@@ -389,7 +389,7 @@ public class OpenMetadataTypesArchive3_4
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }

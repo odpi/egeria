@@ -3,12 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessGraph;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepExecutionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepLink;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.*;
@@ -145,12 +141,52 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
     }
 
     /**
-     * Add a text boxes with the description of the process (if any)
+     * Add a text boxes with the description of the process (if any), followed by the request parameters (if any),
+     * followed by the process itself, followed by the acton targets (if any).
      *
      * @param governanceActionProcessElement element with the potential description
      */
     private void addDescription(GovernanceActionProcessElement governanceActionProcessElement)
     {
+        if (governanceActionProcessElement.getPredefinedActionTargets() != null)
+        {
+            for (PredefinedActionTarget predefinedActionTarget : governanceActionProcessElement.getPredefinedActionTargets())
+            {
+                if (predefinedActionTarget != null)
+                {
+                    String actionTargetNodeName = UUID.randomUUID().toString();
+
+                    appendNewMermaidNode(actionTargetNodeName,
+                                         predefinedActionTarget.getActionTargetElementStub().getUniqueName(),
+                                         predefinedActionTarget.getActionTargetElementStub().getType().getTypeName(),
+                                         VisualStyle.ACTION_TARGET);
+
+                    String lineGUID = UUID.randomUUID().toString();
+
+                    super.appendMermaidThinLine(lineGUID,
+                                                governanceActionProcessElement.getElementHeader().getGUID(),
+                                                predefinedActionTarget.getActionTargetName(),
+                                                actionTargetNodeName);
+                }
+            }
+        }
+
+        String currentNodeName = governanceActionProcessElement.getElementHeader().getGUID();
+
+        if (governanceActionProcessElement.getPredefinedRequestParameters() != null)
+        {
+            String parametersNodeName = UUID.randomUUID().toString();
+
+            appendNewMermaidNode(parametersNodeName,
+                                 governanceActionProcessElement.getPredefinedRequestParameters().toString(),
+                                 OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                 VisualStyle.REQUEST_PARAMETERS);
+
+            super.appendInvisibleMermaidLine(parametersNodeName, currentNodeName);
+
+            currentNodeName = parametersNodeName;
+        }
+
         if (governanceActionProcessElement.getProcessProperties() != null)
         {
             if (governanceActionProcessElement.getProcessProperties().getDescription() != null)
@@ -162,8 +198,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                                      "Description",
                                      VisualStyle.DESCRIPTION);
 
-                super.appendInvisibleMermaidLine(governanceActionProcessElement.getElementHeader().getGUID(),
-                                                 descriptionNodeName);
+                super.appendInvisibleMermaidLine(descriptionNodeName, currentNodeName);
             }
         }
     }

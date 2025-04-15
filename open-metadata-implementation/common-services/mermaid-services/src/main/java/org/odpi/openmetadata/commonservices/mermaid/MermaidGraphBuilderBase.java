@@ -140,6 +140,35 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Use the type of the relationship to determine the shape of a linked entity.
+     *
+     * @param relationshipHeader header of the relationship
+     * @return visual style enum
+     */
+    protected VisualStyle getVisualStyleForRelationship(ElementControlHeader relationshipHeader)
+    {
+        VisualStyle visualStyle = VisualStyle.LINKED_ELEMENT;
+
+        if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+        {
+            visualStyle = VisualStyle.DEFAULT_SOLUTION_COMPONENT;
+        }
+        else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName))
+        {
+            visualStyle = VisualStyle.HOST;
+        }
+        else if ((propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName)) ||
+                (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName)) ||
+                (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName)) ||
+                (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName)))
+        {
+            visualStyle = VisualStyle.LINEAGE_ELEMENT;
+        }
+
+        return visualStyle;
+    }
+
+    /**
      * Map the solution component type to an appropriate visual style.
      *
      * @param solutionComponentType type of component
@@ -791,13 +820,13 @@ public class MermaidGraphBuilderBase
 
                             if (label == null)
                             {
-                                label = this.addSpacesToTypeName(line.getRelatedElement().getElementHeader().getType().getTypeName());
+                                label = this.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName());
                             }
 
                             this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
-                                                   line.getRelatedElement().getElementHeader().getGUID(),
+                                                   solutionComponentElement.getElementHeader().getGUID(),
                                                    this.getListLabel(Collections.singletonList(label)),
-                                                   solutionComponentElement.getElementHeader().getGUID());
+                                                   line.getRelatedElement().getElementHeader().getGUID());
                         }
                     }
                 }

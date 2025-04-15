@@ -152,6 +152,7 @@ public class TemplateManagerResource
      *
      * @param serverName     name of server instance to route request to
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody null request body
      *
      * @return void or
@@ -163,9 +164,10 @@ public class TemplateManagerResource
 
     public  VoidResponse deleteMetadataElementInStore(@PathVariable String            serverName,
                                                       @PathVariable String            metadataElementGUID,
+                                                      @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                                       @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
-        return restAPI.deleteMetadataElementInStore(serverName,metadataElementGUID, requestBody);
+        return restAPI.deleteMetadataElementInStore(serverName,metadataElementGUID, cascadedDelete, requestBody);
     }
 
 

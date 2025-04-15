@@ -371,6 +371,8 @@ public class ProjectManagerResource
      *
      * @param serverName         name of called server.
      * @param projectGUID unique identifier of the project.
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
+     * @param requestBody  null request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -385,10 +387,12 @@ public class ProjectManagerResource
 
     public VoidResponse deleteProject(@PathVariable String          serverName,
                                       @PathVariable String          projectGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean cascadedDelete,
                                       @RequestBody(required = false)
                                                     NullRequestBody requestBody)
     {
-        return restAPI.deleteProject(serverName, projectGUID, requestBody);
+        return restAPI.deleteProject(serverName, projectGUID, cascadedDelete, requestBody);
     }
 
 

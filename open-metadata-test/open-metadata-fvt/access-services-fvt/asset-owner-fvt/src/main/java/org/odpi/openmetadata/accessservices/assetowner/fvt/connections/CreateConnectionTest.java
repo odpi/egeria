@@ -114,13 +114,7 @@ public class CreateConnectionTest
             client.removeConnection(userId, connectionGUID);
 
             activityName = "deleteOneByOne - connection gone";
-            thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);
-            thisTest.checkConnectorTypeOK(client, null, activityName, userId);
-            thisTest.checkEndpointOK(client, endpointGUID, null, activityName, userId);
 
-            client.removeEndpoint(userId, endpointGUID);
-
-            activityName = "deleteOneByOne - endpoint gone";
             thisTest.checkConnectorTypeOK(client, null, activityName, userId);
             thisTest.checkEndpointGone(client, endpointGUID, null, activityName, userId);
             thisTest.checkConnectionGone(client, connectionGUID, activityName, userId);
@@ -416,10 +410,10 @@ public class CreateConnectionTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void checkEndpointOK(AssetOwner client,
-                                 String                   endpointGUID,
-                                 String                   connectionGUID,
-                                 String                   activityName,
-                                 String                   userId) throws FVTUnexpectedCondition
+                                 String     endpointGUID,
+                                 String     connectionGUID,
+                                 String     activityName,
+                                 String     userId) throws FVTUnexpectedCondition
     {
         try
         {

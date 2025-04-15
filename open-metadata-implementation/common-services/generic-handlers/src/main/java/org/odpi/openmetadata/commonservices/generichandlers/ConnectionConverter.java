@@ -128,7 +128,11 @@ public class ConnectionConverter<B> extends OMFConverter<B>
                             {
                                 bean.setConnectorType(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))
+                            {
+                                bean.setEndpoint(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
+                            }
+                            else if ((bean.getEndpoint() == null) && (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName)))
                             {
                                 bean.setEndpoint(getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
                             }

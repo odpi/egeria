@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,7 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchivePropertie
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.OpenMetadataRelationshipConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -43,8 +40,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 {
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private final RelatedElementsConverter<OpenMetadataRelationship> openMetadataRelationshipsConverter;
-    private final RelatedElementConverter<RelatedMetadataElement>    relatedElementConverter;
+    private final OpenMetadataRelationshipConverter<OpenMetadataRelationship> openMetadataRelationshipsConverter;
+    private final RelatedElementConverter<RelatedMetadataElement>             relatedElementConverter;
 
     private final FilesAndFoldersHandler<Object, Object, Object>     filesAndFoldersHandler;
     private static final Logger log = LoggerFactory.getLogger(MetadataElementHandler.class);
@@ -94,7 +91,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
               publishZones,
               auditLog);
 
-        openMetadataRelationshipsConverter = new RelatedElementsConverter<>(repositoryHelper, serviceName, serverName);
+        openMetadataRelationshipsConverter = new OpenMetadataRelationshipConverter<>(repositoryHelper, serviceName, serverName);
         relatedElementConverter            = new RelatedElementConverter<>(repositoryHelper, serviceName, serverName);
 
         filesAndFoldersHandler = new FilesAndFoldersHandler<>(null,
@@ -1616,6 +1613,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -1643,6 +1642,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
                                                boolean                        isOwnAnchor,
+                                               String                         anchorScopeGUID,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
@@ -1704,27 +1704,35 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     serviceName,
                                                                     serverName);
 
+        /*
+         * If an anchor entity is supplied, make sure it is saved in the builder
+         */
         if (anchorGUID != null)
         {
-            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
-                                                                     anchorGUID,
-                                                                     anchorGUIDParameterName,
-                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                     null,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     serviceSupportedZones,
-                                                                     effectiveTime,
-                                                                     methodName);
-
+            EntityDetail anchorEntity = setUpAnchorsClassificationFromAnchor(userId,
+                                                                             anchorGUID,
+                                                                             anchorGUIDParameterName,
+                                                                             anchorScopeGUID,
+                                                                             builder,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime,
+                                                                             methodName);
             if (anchorEntity != null)
             {
-                builder.setAnchors(userId,
-                                   anchorEntity.getGUID(),
-                                   anchorEntity.getType().getTypeDefName(),
-                                   this.getDomainName(anchorEntity),
-                                   methodName);
+                if (OpenMetadataType.ASSET.typeName.equals(anchorEntity.getType().getTypeDefName()))
+                {
+                    /*
+                     * This method will throw an exception if the asset is not in the supported zones - it will look like
+                     * the asset is not known.
+                     */
+                    invalidParameterHandler.validateAssetInSupportedZone(anchorEntity.getGUID(),
+                                                                         anchorGUIDParameterName,
+                                                                         serviceSupportedZones,
+                                                                         securityVerifier.getSupportedZones(userId, serviceSupportedZones),
+                                                                         serviceName,
+                                                                         methodName);
+                }
             }
         }
 
@@ -1758,8 +1766,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                 {
                     errorHandler.handleUnsupportedType(error, methodName, classificationName);
                 }
-
-
             }
         }
 
@@ -1769,6 +1775,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                  metadataElementTypeGUID,
                                                                  metadataElementTypeName,
                                                                  this.getDomainName(metadataElementTypeName),
+                                                                 anchorScopeGUID,
                                                                  builder,
                                                                  isOwnAnchor,
                                                                  effectiveTime,
@@ -1912,6 +1919,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param allowRetrieve can an existing element be returned if it exists
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -1941,6 +1950,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                     String                         suppliedMetadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
+                                                    String                         anchorScopeGUID,
                                                     boolean                        allowRetrieve,
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
@@ -2023,29 +2033,15 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
          */
         if (anchorGUID != null)
         {
-            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
-                                                                     anchorGUID,
-                                                                     anchorGUIDParameterName,
-                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                     null,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     serviceSupportedZones,
-                                                                     effectiveTime,
-                                                                     methodName);
-
-            if (anchorEntity != null)
-            {
-                /*
-                 * The anchorGUID is valid.
-                 */
-                builder.setAnchors(userId,
-                                   anchorEntity.getGUID(),
-                                   anchorEntity.getType().getTypeDefName(),
-                                   this.getDomainName(anchorEntity),
-                                   methodName);
-            }
+            setUpAnchorsClassificationFromAnchor(userId,
+                                                 anchorGUID,
+                                                 anchorGUIDParameterName,
+                                                 anchorScopeGUID,
+                                                 builder,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
         }
         else if (isOwnAnchor)
         {
@@ -2056,6 +2052,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                null,
                                metadataElementTypeName,
                                this.getDomainName(metadataElementTypeName),
+                               anchorScopeGUID,
                                methodName);
         }
 
@@ -2335,6 +2332,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
@@ -2349,6 +2347,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                               String       externalSourceGUID,
                                               String       externalSourceName,
                                               String       metadataElementGUID,
+                                              boolean      cascadedDelete,
                                               boolean      forLineage,
                                               boolean      forDuplicateProcessing,
                                               List<String> serviceSupportedZones,
@@ -2369,6 +2368,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                      guidParameterName,
                                      OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                     cascadedDelete,
                                      null,
                                      null,
                                      forLineage,

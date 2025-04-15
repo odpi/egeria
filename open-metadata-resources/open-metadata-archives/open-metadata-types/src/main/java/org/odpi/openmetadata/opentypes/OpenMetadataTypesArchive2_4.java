@@ -597,7 +597,7 @@ public class OpenMetadataTypesArchive2_4
         RelationshipEndDef relationshipEndDef;
 
         /*
-         * Set up end 1.
+         * Set up end 2.
          */
         final String                     end1AttributeName            = "governedBy";
         final String                     end1AttributeDescription     = "The governance definition that defines how this element is governed.";
@@ -608,11 +608,11 @@ public class OpenMetadataTypesArchive2_4
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
+        relationshipDef.setEndDef2(relationshipEndDef);
 
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
         final String                     end2AttributeName            = "governedElements";
         final String                     end2AttributeDescription     = "An element that is governed according to the governance definition.";
@@ -623,7 +623,7 @@ public class OpenMetadataTypesArchive2_4
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
         return relationshipDef;
     }

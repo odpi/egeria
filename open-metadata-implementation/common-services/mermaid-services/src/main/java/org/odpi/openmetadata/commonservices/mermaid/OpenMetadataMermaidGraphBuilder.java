@@ -36,16 +36,13 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(elementGraph.getElementGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
-
         String currentNodeName    = elementGraph.getElementGUID();
         String currentDisplayName = this.getDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName());
 
-        appendMermaidNode(currentNodeName,
-                          currentDisplayName,
-                          elementGraph.getType().getTypeName());
-
-        usedNodeNames.add(currentNodeName);
+        appendNewMermaidNode(currentNodeName,
+                             currentDisplayName,
+                             elementGraph.getType().getTypeName(),
+                             VisualStyle.ANCHOR_ELEMENT);
 
         if (elementGraph.getAnchoredElements() != null)
         {
@@ -56,27 +53,48 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     currentNodeName    = node.getElementGUID();
                     currentDisplayName = this.getDisplayName(node.getElementProperties(), node.getType().getTypeName());
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
+                    appendNewMermaidNode(currentNodeName,
+                                         currentDisplayName,
+                                         node.getType().getTypeName(),
+                                         VisualStyle.ANCHORED_ELEMENT);
                 }
             }
+        }
 
+        if (elementGraph.getRelationships() != null)
+        {
             for (OpenMetadataRelationship line : elementGraph.getRelationships())
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(this.removeSpaces(line.getElementGUIDAtEnd1()));
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(line.getType().getTypeName());
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(this.removeSpaces(line.getElementGUIDAtEnd2()));
-                    mermaidGraph.append("\n");
+                    VisualStyle visualStyle = getVisualStyleForRelationship(line);
+
+                    String endName = line.getElementGUIDAtEnd1();
+                    if (line.getElementAtEnd1().getUniqueName() != null)
+                    {
+                        endName = line.getElementAtEnd1().getUniqueName();
+                    }
+
+                    appendNewMermaidNode(line.getElementAtEnd1().getGUID(),
+                                         endName,
+                                         line.getElementAtEnd1().getType().getTypeName(),
+                                         visualStyle);
+
+                    endName = line.getElementAtEnd2().getGUID();
+                    if (line.getElementAtEnd2().getUniqueName() != null)
+                    {
+                        endName = line.getElementAtEnd2().getUniqueName();
+                    }
+
+                    appendNewMermaidNode(line.getElementAtEnd2().getGUID(),
+                                         endName,
+                                         line.getElementAtEnd2().getType().getTypeName(),
+                                         visualStyle);
+
+                    super.appendMermaidLine(line.getRelationshipGUID(),
+                                            this.removeSpaces(line.getElementAtEnd2().getGUID()),
+                                            super.addSpacesToTypeName(line.getType().getTypeName()),
+                                            this.removeSpaces(line.getElementAtEnd2().getGUID()));
                 }
             }
         }

@@ -1427,6 +1427,7 @@ public class OpenMetadataStoreResource
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody null request body
      *
      * @return void or
@@ -1440,9 +1441,12 @@ public class OpenMetadataStoreResource
                                                       @PathVariable String            serviceURLMarker,
                                                       @PathVariable String            userId,
                                                       @PathVariable String            metadataElementGUID,
-                                                      @RequestBody(required = false) MetadataSourceRequestBody requestBody)
+                                                      @RequestParam(required = false, defaultValue = "false")
+                                                                    boolean           cascadedDelete,
+                                                      @RequestBody(required = false)
+                                                                    MetadataSourceRequestBody requestBody)
     {
-        return restAPI.deleteMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, requestBody);
+        return restAPI.deleteMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, cascadedDelete, requestBody);
     }
 
 

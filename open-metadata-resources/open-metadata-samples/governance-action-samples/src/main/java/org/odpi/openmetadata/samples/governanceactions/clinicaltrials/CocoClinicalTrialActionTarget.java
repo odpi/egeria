@@ -39,10 +39,17 @@ public enum CocoClinicalTrialActionTarget
             true),
 
     DATA_SPEC_PROJECT("clinicalTrialDataSpecProject",
-                      "Effort to develop the data specifications needed by the clinical trial.",
+                      "Effort to develop the data specification needed by the clinical trial.",
                       OpenMetadataType.PROJECT.typeName,
                       null,
                       true),
+
+    DATA_SHARING_AGREEMENT_PROJECT("clinicalTrialDataSharingAgreementProject",
+                      "Effort to develop the baseline data sharing agreement with hospitals and patients needed by the clinical trial.",
+                      OpenMetadataType.PROJECT.typeName,
+                      null,
+                      true),
+
     DEV_PROJECT("clinicalTrialComponentsProject",
                 "Effort to develop the specific templates and software components that support the data specification.",
                 OpenMetadataType.PROJECT.typeName,

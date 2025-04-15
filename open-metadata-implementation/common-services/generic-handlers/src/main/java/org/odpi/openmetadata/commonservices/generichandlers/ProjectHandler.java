@@ -553,6 +553,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName unique name of the software capability that owns this project
      * @param projectGUID unique identifier of the metadata element to remove
      * @param projectGUIDParameterName parameter supplying the projectGUID
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -567,6 +568,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                               String  externalSourceName,
                               String  projectGUID,
                               String  projectGUIDParameterName,
+                              boolean cascadedDelete,
                               boolean forLineage,
                               boolean forDuplicateProcessing,
                               Date    effectiveTime,
@@ -581,6 +583,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                     projectGUIDParameterName,
                                     OpenMetadataType.PROJECT.typeGUID,
                                     OpenMetadataType.PROJECT.typeName,
+                                    cascadedDelete,
                                     null,
                                     null,
                                     forLineage,

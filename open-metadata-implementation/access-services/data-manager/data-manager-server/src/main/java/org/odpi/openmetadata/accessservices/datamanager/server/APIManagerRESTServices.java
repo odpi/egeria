@@ -544,6 +544,7 @@ public class APIManagerRESTServices
                                                apiGUIDParameterName,
                                                OpenMetadataType.DEPLOYED_API.typeGUID,
                                                OpenMetadataType.DEPLOYED_API.typeName,
+                                               false,
                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,

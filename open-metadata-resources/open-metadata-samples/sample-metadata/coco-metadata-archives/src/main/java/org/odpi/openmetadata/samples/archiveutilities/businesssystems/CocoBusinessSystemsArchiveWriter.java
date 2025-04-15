@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceengines.CocoGovernanceEnginesArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 
@@ -44,7 +45,8 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
                                          new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
-                                         new CocoSustainabilityArchiveWriter().getOpenMetadataArchive() });
+                                         new CocoSustainabilityArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoGovernanceEnginesArchiveWriter().getOpenMetadataArchive()});
     }
 
 
@@ -151,7 +153,8 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                             engineClassification,
                                                             serverGUID,
                                                             OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                            OpenMetadataType.ASSET.typeName);
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null);
                     }
                     else
                     {
@@ -168,7 +171,8 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                             (Classification)null,
                                                             serverGUID,
                                                             OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                            OpenMetadataType.ASSET.typeName);
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null);
                     }
 
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
@@ -441,6 +445,16 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                null);
                 }
+            }
+
+            if (solutionComponent.getImplementedBy() != null)
+            {
+                archiveHelper.addImplementedByRelationship(solutionComponent.getGUID(),
+                                                           solutionComponent.getImplementedBy(),
+                                                           "Standard implementation",
+                                                           "Runnable component",
+                                                           null,
+                                                           null);
             }
         }
     }

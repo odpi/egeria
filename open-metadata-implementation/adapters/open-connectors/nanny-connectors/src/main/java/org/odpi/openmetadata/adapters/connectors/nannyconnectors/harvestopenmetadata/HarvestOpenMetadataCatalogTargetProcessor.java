@@ -373,8 +373,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     if (personRoleAppointment != null)
                     {
                         syncRoleToProfile(databaseConnection,
-                                          this.getUserIdentityForRole(personRoleAppointment.getElementGUIDAtEnd2(),
-                                                                      personRoleAppointment.getElementGUIDAtEnd1()),
+                                          this.getUserIdentityForRole(personRoleAppointment.getElementGUIDAtEnd1(),
+                                                                      personRoleAppointment.getElementGUIDAtEnd2()),
                                           personRoleAppointment);
                     }
                 }
@@ -681,7 +681,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
-                                                                                                         2,
+                                                                                                         1,
                                                                                                          OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
                                                                                                          0,
                                                                                                          openMetadataAccess.getMaxPagingSize());
@@ -1205,10 +1205,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(teamGUID,
-                                                                                                                 2,
-                                                                                                                 OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
-                                                                                                                 0,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+                                                                                                               1,
+                                                                                                               OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
+                                                                                                               0,
+                                                                                                               openMetadataAccess.getMaxPagingSize());
 
             if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
@@ -1657,46 +1657,50 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             RelatedMetadataElementList roleElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
-                                                                                                      1,
-                                                                                                      OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                                                                      0,
-                                                                                                      openMetadataAccess.getMaxPagingSize());
+                                                                                                    1,
+                                                                                                    OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                                                    0,
+                                                                                                    openMetadataAccess.getMaxPagingSize());
 
             if ((roleElements != null) && (roleElements.getElementList() != null))
             {
+                List<RelatedMetadataElement> teams = new ArrayList<>();
+
                 for (RelatedMetadataElement roleElement : roleElements.getElementList())
                 {
                     if (roleElement != null)
                     {
-                        RelatedMetadataElementList teamElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
-                                                                                                                  1,
+                        RelatedMetadataElementList teamElements = openMetadataAccess.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
+                                                                                                                  2,
                                                                                                                   OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                                   0,
                                                                                                                   openMetadataAccess.getMaxPagingSize());
 
-                        if (teamElements == null)
-                        {
-                            teamElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
-                                                                                         1,
-                                                                                         OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
-                                                                                         0,
-                                                                                         openMetadataAccess.getMaxPagingSize());
-                        }
-
                         if ((teamElements != null) && (teamElements.getElementList() != null))
                         {
-                            for (RelatedMetadataElement team : teamElements.getElementList())
+                            teams.addAll(teamElements.getElementList());
+                        }
+
+                        teamElements = openMetadataAccess.getRelatedMetadataElements(roleElement.getElement().getElementGUID(),
+                                                                                     2,
+                                                                                     OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
+                                                                                     0,
+                                                                                     openMetadataAccess.getMaxPagingSize());
+                        if ((teamElements != null) && (teamElements.getElementList() != null))
+                        {
+                            teams.addAll(teamElements.getElementList());
+                        }
+
+                        for (RelatedMetadataElement team : teams)
+                        {
+                            if (team != null)
                             {
-                                if (team != null)
-                                {
-                                    return team.getElement().getElementGUID();
-                                }
+                                return team.getElement().getElementGUID();
                             }
                         }
                     }
                 }
             }
-
         }
         catch (Exception error)
         {

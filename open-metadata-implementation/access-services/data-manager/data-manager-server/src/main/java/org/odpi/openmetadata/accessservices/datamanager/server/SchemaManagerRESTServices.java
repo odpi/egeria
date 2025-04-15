@@ -1946,6 +1946,7 @@ public class SchemaManagerRESTServices
                                                elementGUIDParameterName,
                                                OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
                                                OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                               false,
                                                null,
                                                null,
                                                false,

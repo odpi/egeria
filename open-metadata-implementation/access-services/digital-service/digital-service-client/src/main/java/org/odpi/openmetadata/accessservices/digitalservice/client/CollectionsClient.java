@@ -473,6 +473,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param optionalClassification classification of the collections - typically RootCollection, Set or Folder
      * @param properties             properties for the collection.
      * @param parentGUID unique identifier of optional parent entity
@@ -491,6 +492,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public String createCollection(String               userId,
                                    String               anchorGUID,
                                    boolean              isOwnAnchor,
+                                   String               anchorScopeGUID,
                                    String               optionalClassification,
                                    CollectionProperties properties,
                                    String               parentGUID,
@@ -555,6 +557,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                     initialClassifications,
                                                                     anchorGUID,
                                                                     isOwnAnchor,
+                                                                    anchorScopeGUID,
                                                                     properties.getEffectiveFrom(),
                                                                     properties.getEffectiveTo(),
                                                                     this.getElementProperties(properties),
@@ -577,6 +580,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -600,6 +604,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public String createCollectionFromTemplate(String              userId,
                                                String              anchorGUID,
                                                boolean             isOwnAnchor,
+                                               String              anchorScopeGUID,
                                                Date                effectiveFrom,
                                                Date                effectiveTo,
                                                String              templateGUID,
@@ -617,6 +622,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                          OpenMetadataType.COLLECTION.typeName,
                                                                          anchorGUID,
                                                                          isOwnAnchor,
+                                                                         anchorScopeGUID,
                                                                          effectiveFrom,
                                                                          effectiveTo,
                                                                          templateGUID,
@@ -640,6 +646,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID optional scope of the anchor
      * @param collectionProperties     properties for the collection.
      * @param digitalProductProperties properties for the attached DigitalProduct classification
      * @param parentGUID unique identifier of optional parent entity
@@ -658,6 +665,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public String createDigitalProduct(String                   userId,
                                        String                   anchorGUID,
                                        boolean                  isOwnAnchor,
+                                       String                   anchorScopeGUID,
                                        CollectionProperties     collectionProperties,
                                        DigitalProductProperties digitalProductProperties,
                                        String                   parentGUID,
@@ -675,6 +683,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         String collectionGUID = this.createCollection(userId,
                                                       anchorGUID,
                                                       isOwnAnchor,
+                                                      anchorScopeGUID,
                                                       null,
                                                       collectionProperties,
                                                       parentGUID,
@@ -946,6 +955,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         openMetadataStoreClient.deleteMetadataElementInStore(userId,
                                                              collectionGUID,
+                                                             false,
                                                              false,
                                                              false,
                                                              new Date());

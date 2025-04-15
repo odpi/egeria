@@ -750,7 +750,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                                          null,
                                                                          startFrom,
                                                                          pageSize,
-                                                                         false,
+                                                                         true,
                                                                          false,
                                                                          new Date()));
             }
@@ -816,7 +816,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                                             informationSupplyChainGUID,
                                                                             addImplementation,
                                                                             null,
-                                                                            false,
+                                                                            true,
                                                                             false,
                                                                             new Date()));
             }

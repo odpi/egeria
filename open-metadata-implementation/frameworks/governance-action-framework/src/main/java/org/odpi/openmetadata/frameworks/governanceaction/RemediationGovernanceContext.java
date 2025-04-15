@@ -151,6 +151,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * Delete a specific metadata element.
      *
      * @param metadataElementGUID unique identifier of the metadata element to delete
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -160,6 +161,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void deleteMetadataElement(String  metadataElementGUID,
+                               boolean cascadedDelete,
                                boolean forLineage,
                                boolean forDuplicateProcessing,
                                Date    effectiveTime) throws InvalidParameterException,
@@ -170,6 +172,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * Delete a specific metadata element.
      *
      * @param metadataElement the metadata element to delete
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -179,6 +182,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void deleteMetadataElement(OpenMetadataElement metadataElement,
+                               boolean             cascadedDelete,
                                boolean             forLineage,
                                boolean             forDuplicateProcessing,
                                Date                effectiveTime) throws InvalidParameterException,

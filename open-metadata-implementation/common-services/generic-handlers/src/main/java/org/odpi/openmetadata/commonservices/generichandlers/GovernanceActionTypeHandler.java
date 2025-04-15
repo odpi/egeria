@@ -533,6 +533,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     guidParameterName,
                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeGUID,
                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

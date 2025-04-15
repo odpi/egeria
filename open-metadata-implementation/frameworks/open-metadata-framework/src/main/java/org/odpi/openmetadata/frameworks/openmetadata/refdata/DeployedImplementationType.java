@@ -703,6 +703,17 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                  "A governance engine that runs repository governance services.",
                                  "https://egeria-project.org/concepts/repository-governance-engine/"),
 
+
+    /**
+     * Governance Action Service - A connector that coordinates governance of digital resources and metadata.
+     */
+    GOVERNANCE_ACTION_PROCESS("Governance Action Process",
+                              DeployedImplementationType.PROCESS,
+                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                              null,
+                              "A modelled workflow process to perform a governance action.",
+                                        "https://egeria-project.org/concepts/governance-action-process/"),
+
     /**
      * Connector that manages metadata exchange with a third party technology.
      */

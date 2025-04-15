@@ -36,7 +36,7 @@ class OmasRemoveView implements Consumer<DatabaseViewElement> {
         String viewGuid = viewElement.getElementHeader().getGUID();
         String viewQualifiedName = viewElement.getDatabaseViewProperties().getQualifiedName();
         try {
-            databaseIntegratorContext.removeDatabaseView(viewGuid);
+            databaseIntegratorContext.removeDatabaseView(viewGuid , false);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
             auditLog.logMessage("Removing view with guid " + viewGuid
                     + " and qualified name " + viewQualifiedName,

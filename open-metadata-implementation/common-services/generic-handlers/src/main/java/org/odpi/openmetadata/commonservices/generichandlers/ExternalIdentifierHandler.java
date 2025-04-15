@@ -477,7 +477,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                  effectiveTime,
                                                                  methodName);
 
-
         if (externalIdEntity == null)
         {
             throw new InvalidParameterException(GenericHandlersErrorCode.UNKNOWN_EXTERNAL_IDENTITY.getMessageDefinition(serviceName,
@@ -498,11 +497,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                     identifierParameterName,
                                     OpenMetadataType.EXTERNAL_ID.typeGUID,
                                     OpenMetadataType.EXTERNAL_ID.typeName,
+                                    false,
                                     null,
                                     null,
-                                    serviceSupportedZones,
                                     forLineage,
                                     forDuplicateProcessing,
+                                    serviceSupportedZones,
                                     effectiveTime,
                                     methodName);
     }
@@ -546,11 +546,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                     scopeGUIDParameterName,
                                     OpenMetadataType.REFERENCEABLE.typeGUID,
                                     OpenMetadataType.REFERENCEABLE.typeName,
+                                    false,
                                     null,
                                     null,
-                                    serviceSupportedZones,
                                     forLineage,
                                     forDuplicateProcessing,
+                                    serviceSupportedZones,
                                     effectiveTime,
                                     methodName);
     }
@@ -876,7 +877,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     {
         if ((externalIdEntity != null) && (scopeGUID != null))
         {
-            AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(externalIdEntity, methodName);
+            AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(externalIdEntity, methodName);
 
             return ((scopeGUID.equals(anchorIdentifiers.anchorGUID)) ||
                     ((anchorIdentifiers.anchorGUID == null) && (scopeGUID.equals(externalIdEntity.getGUID()))));
@@ -974,6 +975,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                            scopeGUID,
                            scopeTypeName,
                            scopeDomainName,
+                           scopeGUID,
                            methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);

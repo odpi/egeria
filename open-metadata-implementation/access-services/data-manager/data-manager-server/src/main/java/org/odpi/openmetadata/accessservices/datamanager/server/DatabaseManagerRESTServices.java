@@ -420,6 +420,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source request body
      *
      * @return void or
@@ -430,6 +431,7 @@ public class DatabaseManagerRESTServices
     public VoidResponse removeDatabase(String                    serverName,
                                        String                    userId,
                                        String                    databaseGUID,
+                                       boolean                   cascadedDelete,
                                        ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeDatabase";
@@ -457,6 +459,7 @@ public class DatabaseManagerRESTServices
                                        requestBody.getExternalSourceName(),
                                        databaseGUID,
                                        null,
+                                       cascadedDelete,
                                        false,
                                        false,
                                        new Date(),
@@ -469,6 +472,7 @@ public class DatabaseManagerRESTServices
                                        null,
                                        databaseGUID,
                                        null,
+                                       cascadedDelete,
                                        false,
                                        false,
                                        new Date(),
@@ -1100,6 +1104,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source request body
      *
      * @return void or
@@ -1110,6 +1115,7 @@ public class DatabaseManagerRESTServices
     public VoidResponse removeDatabaseSchema(String                    serverName,
                                              String                    userId,
                                              String                    databaseSchemaGUID,
+                                             boolean                   cascadedDelete,
                                              ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeDatabaseSchema";
@@ -1137,6 +1143,7 @@ public class DatabaseManagerRESTServices
                                              requestBody.getExternalSourceName(),
                                              databaseSchemaGUID,
                                              null,
+                                             cascadedDelete,
                                              false,
                                              false,
                                              new Date(),
@@ -1149,6 +1156,7 @@ public class DatabaseManagerRESTServices
                                              null,
                                              databaseSchemaGUID,
                                              null,
+                                             cascadedDelete,
                                              false,
                                              false,
                                              new Date(),
@@ -1891,6 +1899,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseTableGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source request body
      *
      * @return void or
@@ -1901,6 +1910,7 @@ public class DatabaseManagerRESTServices
     public VoidResponse removeDatabaseTable(String                    serverName,
                                             String                    userId,
                                             String                    databaseTableGUID,
+                                            boolean                   cascadedDelete,
                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "removeDatabaseTable";
@@ -1930,6 +1940,7 @@ public class DatabaseManagerRESTServices
                                             databaseTableGUID,
                                             elementGUIDParameterName,
                                             null,
+                                            cascadedDelete,
                                             false,
                                             false,
                                             new Date(),
@@ -1943,6 +1954,7 @@ public class DatabaseManagerRESTServices
                                             databaseTableGUID,
                                             elementGUIDParameterName,
                                             null,
+                                            cascadedDelete,
                                             false,
                                             false,
                                             new Date(),
@@ -2536,6 +2548,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseViewGUID unique identifier of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param requestBody external source request body
      *
      * @return void or
@@ -2546,6 +2559,7 @@ public class DatabaseManagerRESTServices
     public VoidResponse removeDatabaseView(String                    serverName,
                                            String                    userId,
                                            String                    databaseViewGUID,
+                                           boolean                   cascadedDelete,
                                            ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "removeDatabaseView";
@@ -2575,6 +2589,7 @@ public class DatabaseManagerRESTServices
                                             databaseViewGUID,
                                             elementGUIDParameterName,
                                             null,
+                                            cascadedDelete,
                                             false,
                                             false,
                                             new Date(),
@@ -2588,6 +2603,7 @@ public class DatabaseManagerRESTServices
                                             databaseViewGUID,
                                             elementGUIDParameterName,
                                             null,
+                                            cascadedDelete,
                                             false,
                                             false,
                                             new Date(),

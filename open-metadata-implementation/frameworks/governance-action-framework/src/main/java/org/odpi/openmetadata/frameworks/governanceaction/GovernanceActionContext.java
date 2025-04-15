@@ -1200,6 +1200,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                true,
                                                                null,
                                                                null,
+                                                               null,
                                                                properties,
                                                                null,
                                                                null,
@@ -1247,6 +1248,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                null,
                                                                true,
+                                                               null,
                                                                null,
                                                                null,
                                                                properties,
@@ -1297,6 +1299,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     OpenMetadataType.ASSET.typeName,
                                                                     null,
                                                                     true,
+                                                                    null,
                                                                     null,
                                                                     null,
                                                                     templateGUID,
@@ -1358,6 +1361,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     true,
                                                                     null,
                                                                     null,
+                                                                    null,
                                                                     templateGUID,
                                                                     properties,
                                                                     null,
@@ -1405,6 +1409,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                null,
                                                                true,
+                                                               null,
                                                                null,
                                                                null,
                                                                properties,
@@ -1462,6 +1467,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                true,
                                                                null,
                                                                null,
+                                                               null,
                                                                properties,
                                                                null,
                                                                null,
@@ -1506,6 +1512,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     OpenMetadataType.PROCESS.typeName,
                                                                     null,
                                                                     true,
+                                                                    null,
                                                                     null,
                                                                     null,
                                                                     templateGUID,
@@ -1564,6 +1571,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     true,
                                                                     null,
                                                                     null,
+                                                                    null,
                                                                     templateGUID,
                                                                     properties,
                                                                     null,
@@ -1618,6 +1626,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                parentGUID,
                                                                false,
+                                                               null,
                                                                null,
                                                                null,
                                                                properties,
@@ -1683,6 +1692,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                false,
                                                                null,
                                                                null,
+                                                               null,
                                                                properties,
                                                                parentGUID,
                                                                OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
@@ -1735,6 +1745,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                processGUID,
                                                                false,
+                                                               null,
                                                                null,
                                                                null,
                                                                properties,
@@ -1795,7 +1806,7 @@ public class GovernanceActionContext implements GovernanceContext,
      *
      * @param relationshipName  either LineageMapping, ProcessCall, DataFlow, ControlFlow.
      * @param sourceElementGUID unique identifier of the element that describes the source of the data.
-     * @param qualifiedName     qualifiedName of the information supply chain
+     * @param iscQualifiedName     qualifiedName of the information supply chain
      * @param label label for when the lineage relationship is visualized
      * @param formula expression summary
      * @param formulaType language used to express the formula
@@ -1814,7 +1825,7 @@ public class GovernanceActionContext implements GovernanceContext,
     @Override
     public String createLineageRelationship(String relationshipName,
                                             String sourceElementGUID,
-                                            String qualifiedName,
+                                            String iscQualifiedName,
                                             String label,
                                             String description,
                                             String formula,
@@ -1835,7 +1846,7 @@ public class GovernanceActionContext implements GovernanceContext,
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, qualifiedName);
+        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, iscQualifiedName);
 
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.LABEL.name, label);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.DESCRIPTION.name, description);
@@ -1846,7 +1857,7 @@ public class GovernanceActionContext implements GovernanceContext,
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.GUARD.name, formulaType);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.LINE_NUMBER.name, formulaType);
 
-        String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING.typeName;
+        String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName;
         if (relationshipName != null)
         {
             lineageRelationshipTypeName = relationshipName;
@@ -1912,6 +1923,8 @@ public class GovernanceActionContext implements GovernanceContext,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of the element that represents a broader scope that the anchor belongs to.
+     *                        If anchorScopeGUID is null, the value is taken from the anchor element.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -1931,6 +1944,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
                                                boolean                        isOwnAnchor,
+                                               String                         anchorScopeGUID,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
@@ -1949,6 +1963,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                initialClassifications,
                                                                anchorGUID,
                                                                isOwnAnchor,
+                                                               anchorScopeGUID,
                                                                effectiveFrom,
                                                                effectiveTo,
                                                                properties,
@@ -2108,6 +2123,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * Delete a specific metadata element.
      *
      * @param metadataElement the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2118,6 +2134,7 @@ public class GovernanceActionContext implements GovernanceContext,
      */
     @Override
     public void deleteMetadataElement(OpenMetadataElement metadataElement,
+                                      boolean             cascadedDelete,
                                       boolean             forLineage,
                                       boolean             forDuplicateProcessing,
                                       Date                effectiveTime) throws InvalidParameterException,
@@ -2135,6 +2152,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                 null,
                                                                 null,
                                                                 metadataElement.getElementGUID(),
+                                                                cascadedDelete,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
                                                                 effectiveTime);
@@ -2145,6 +2163,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                 metadataElement.getOrigin().getHomeMetadataCollectionId(),
                                                                 metadataElement.getOrigin().getHomeMetadataCollectionName(),
                                                                 metadataElement.getElementGUID(),
+                                                                cascadedDelete,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
                                                                 effectiveTime);
@@ -2164,6 +2183,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * Delete a specific metadata element.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2174,6 +2194,7 @@ public class GovernanceActionContext implements GovernanceContext,
      */
     @Override
     public void deleteMetadataElement(String  metadataElementGUID,
+                                      boolean cascadedDelete,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime) throws InvalidParameterException,
@@ -2182,6 +2203,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         openMetadataClient.deleteMetadataElementInStore(userId,
                                                         metadataElementGUID,
+                                                        cascadedDelete,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime);

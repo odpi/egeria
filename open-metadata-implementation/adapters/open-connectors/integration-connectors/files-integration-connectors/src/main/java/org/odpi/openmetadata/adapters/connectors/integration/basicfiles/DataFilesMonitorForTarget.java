@@ -6,7 +6,6 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
@@ -511,6 +510,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
         return openMetadataAccess.getMetadataElementFromTemplate(assetTypeName,
                                                                  null,
                                                                  true,
+                                                                 null,
                                                                  null,
                                                                  null,
                                                                  fileTemplateGUID,

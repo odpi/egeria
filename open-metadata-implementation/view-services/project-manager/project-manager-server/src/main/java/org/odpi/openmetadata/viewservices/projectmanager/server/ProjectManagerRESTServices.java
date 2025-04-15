@@ -9,16 +9,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ProjectMembersResponse;
 import org.slf4j.LoggerFactory;
 
 
@@ -465,6 +460,7 @@ public class ProjectManagerRESTServices extends TokenController
                 response.setGUID(handler.createProject(userId,
                                                        requestBody.getAnchorGUID(),
                                                        requestBody.getIsOwnAnchor(),
+                                                       requestBody.getAnchorScopeGUID(),
                                                        optionalClassificationName,
                                                        requestBody.getProjectProperties(),
                                                        requestBody.getParentGUID(),
@@ -526,6 +522,7 @@ public class ProjectManagerRESTServices extends TokenController
                 response.setGUID(handler.createProject(userId,
                                                        projectGUID,
                                                        false,
+                                                       null,
                                                        OpenMetadataType.TASK_CLASSIFICATION.typeName,
                                                        requestBody,
                                                        projectGUID,
@@ -583,17 +580,18 @@ public class ProjectManagerRESTServices extends TokenController
                 ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
                 response.setGUID(handler.createProjectFromTemplate(userId,
-                                                                      requestBody.getAnchorGUID(),
-                                                                      requestBody.getIsOwnAnchor(),
-                                                                      null,
-                                                                      null,
-                                                                      requestBody.getTemplateGUID(),
-                                                                      requestBody.getReplacementProperties(),
-                                                                      requestBody.getPlaceholderPropertyValues(),
-                                                                      requestBody.getParentGUID(),
-                                                                      requestBody.getParentRelationshipTypeName(),
-                                                                      requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1()));
+                                                                   requestBody.getAnchorGUID(),
+                                                                   requestBody.getIsOwnAnchor(),
+                                                                   requestBody.getAnchorScopeGUID(),
+                                                                   null,
+                                                                   null,
+                                                                   requestBody.getTemplateGUID(),
+                                                                   requestBody.getReplacementProperties(),
+                                                                   requestBody.getPlaceholderPropertyValues(),
+                                                                   requestBody.getParentGUID(),
+                                                                   requestBody.getParentRelationshipTypeName(),
+                                                                   requestBody.getParentRelationshipProperties(),
+                                                                   requestBody.getParentAtEnd1()));
             }
             else
             {
@@ -686,6 +684,7 @@ public class ProjectManagerRESTServices extends TokenController
     @SuppressWarnings(value = "unused")
     public VoidResponse deleteProject(String          serverName,
                                       String          projectGUID,
+                                      boolean         cascadedDelete,
                                       NullRequestBody requestBody)
     {
         final String methodName = "deleteProject";
@@ -705,7 +704,7 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-            handler.removeProject(userId, null, null, projectGUID);
+            handler.removeProject(userId, null, null, projectGUID, cascadedDelete);
         }
         catch (Throwable error)
         {

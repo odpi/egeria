@@ -489,6 +489,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                     apiParameterListGUIDParameterName,
                                     OpenMetadataType.API_PARAMETER_LIST.typeGUID,
                                     OpenMetadataType.API_PARAMETER_LIST.typeName,
+                                    false,
                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,

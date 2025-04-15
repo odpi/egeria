@@ -211,15 +211,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        this.addAnchorGUIDToBuilder(userId,
-                                    glossaryGUID,
-                                    glossaryGUIDParameterName,
-                                    false,
-                                    false,
-                                    effectiveTime,
-                                    supportedZones,
-                                    builder,
-                                    methodName);
+        builder.setAnchors(userId,
+                           null,
+                           typeName,
+                           OpenMetadataType.GLOSSARY_TERM.typeName,
+                           glossaryGUID,
+                           methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
@@ -246,7 +243,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                glossaryGUIDParameterName,
                                                glossaryTermGUID,
                                                glossaryTermGUIDParameterName,
-                                               OpenMetadataType.TERM_ANCHOR.typeGUID,
+                                               OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
                                                null,
                                                methodName);
         }
@@ -311,15 +308,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        this.addAnchorGUIDToBuilder(userId,
-                                    glossaryGUID,
-                                    glossaryGUIDParameterName,
-                                    false,
-                                    false,
-                                    null,
-                                    supportedZones,
-                                    builder,
-                                    methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.GLOSSARY_TERM.typeName,
+                           OpenMetadataType.GLOSSARY_TERM.typeName,
+                           glossaryGUID,
+                           methodName);
 
         String glossaryTermGUID = this.createBeanFromTemplate(userId,
                                                               externalSourceGUID,
@@ -368,7 +362,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                glossaryGUIDParameterName,
                                                glossaryTermGUID,
                                                glossaryTermGUIDParameterName,
-                                               OpenMetadataType.TERM_ANCHOR.typeGUID,
+                                               OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
                                                null,
                                                methodName);
         }
@@ -552,26 +546,27 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
+     * @return term entity
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateGlossaryTermFromTemplate(String         userId,
-                                               String         externalSourceGUID,
-                                               String         externalSourceName,
-                                               String         glossaryTermGUID,
-                                               String         glossaryTermGUIDParameterName,
-                                               String         templateGUID,
-                                               String         templateGUIDParameterName,
-                                               boolean        isMergeClassifications,
-                                               boolean        isMergeProperties,
-                                               Date           effectiveTime,
-                                               boolean        forLineage,
-                                               boolean        forDuplicateProcessing,
-                                               String         methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public EntityDetail updateGlossaryTermFromTemplate(String         userId,
+                                                       String         externalSourceGUID,
+                                                       String         externalSourceName,
+                                                       String         glossaryTermGUID,
+                                                       String         glossaryTermGUIDParameterName,
+                                                       String         templateGUID,
+                                                       String         templateGUIDParameterName,
+                                                       boolean        isMergeClassifications,
+                                                       boolean        isMergeProperties,
+                                                       Date           effectiveTime,
+                                                       boolean        forLineage,
+                                                       boolean        forDuplicateProcessing,
+                                                       String         methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         EntityDetail templateEntity = repositoryHandler.getEntityByGUID(userId,
                                                                         templateGUID,
@@ -688,6 +683,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                 }
             }
         }
+
+        return termEntity;
     }
 
 
@@ -737,8 +734,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                  termEntity.getGUID(),
                                                                  glossaryTermGUIDParameterName,
                                                                  OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                 OpenMetadataType.TERM_ANCHOR.typeGUID,
-                                                                 OpenMetadataType.TERM_ANCHOR.typeName,
+                                                                 OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
+                                                                 OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeName,
                                                                  null,
                                                                  OpenMetadataType.GLOSSARY.typeName,
                                                                  1,
@@ -798,8 +795,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.TERM_ANCHOR.typeGUID,
-                                  OpenMetadataType.TERM_ANCHOR.typeName,
+                                  OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.TERM_ANCHOR_RELATIONSHIP.typeName,
                                   null,
                                   null,
                                   null,
@@ -2026,6 +2023,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     glossaryTermGUIDParameterName,
                                     OpenMetadataType.GLOSSARY_TERM.typeGUID,
                                     OpenMetadataType.GLOSSARY_TERM.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,
@@ -2151,9 +2149,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                         }
                         else
                         {
-                            AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                            AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(entity, methodName);
 
-                            if (glossaryGUID.equals(anchorIdentifiers.anchorGUID))
+                            if (glossaryGUID.equals(anchorIdentifiers.anchorScopeGUID))
                             {
                                 results.add(converter.getNewBean(beanClass, entity, methodName));
                             }
@@ -2324,9 +2322,13 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,
-                                                                                          OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                          OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
                                                                                           glossaryGUID,
                                                                                           methodName);
+
+        /*
+         * Notice that we use a search rather than a navigation via the TermAnchor relationship for speed.
+         */
         List<EntityDetail> termEntities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                              OpenMetadataType.GLOSSARY_TERM.typeGUID,
                                                                                              OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,

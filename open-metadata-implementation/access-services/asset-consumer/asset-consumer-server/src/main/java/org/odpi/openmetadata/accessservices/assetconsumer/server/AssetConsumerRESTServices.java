@@ -472,10 +472,10 @@ public class AssetConsumerRESTServices
         {
             lineageRelationshipTypeNames = new ArrayList<>();
 
-            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_FLOW.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.CONTROL_FLOW.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
@@ -695,7 +695,7 @@ public class AssetConsumerRESTServices
         AssetElement asset = assetHandler.getBeanFromRepository(userId,
                                                                 assetGUID,
                                                                 assetGUIDParameterName,
-                                                                OpenMetadataType.ASSET.typeName,
+                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                 methodName);
 
         if (asset != null)
@@ -1321,7 +1321,7 @@ public class AssetConsumerRESTServices
                     {
                         if (entityDetail != null)
                         {
-                            OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers = metadataElementHandler.getAnchorGUIDFromAnchorsClassification(entityDetail, methodName);
+                            OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers = metadataElementHandler.getAnchorsFromAnchorsClassification(entityDetail, methodName);
 
                             String anchorGUID;
                             if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null))

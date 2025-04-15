@@ -538,6 +538,7 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                     guidParameterName,
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeGUID,
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

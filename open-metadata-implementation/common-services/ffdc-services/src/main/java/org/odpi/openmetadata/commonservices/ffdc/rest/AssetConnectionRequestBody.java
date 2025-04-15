@@ -19,9 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetConnectionRequestBody extends ExternalSourceRequestBody
 {
-    private String assetSummary = null;
-
-
     /**
      * Default constructor
      */
@@ -38,33 +35,6 @@ public class AssetConnectionRequestBody extends ExternalSourceRequestBody
     public AssetConnectionRequestBody(AssetConnectionRequestBody template)
     {
         super(template);
-
-        if (template != null)
-        {
-            assetSummary = template.getAssetSummary();
-        }
-    }
-
-
-    /**
-     * Return the full path of the file - this should be unique.
-     *
-     * @return string name
-     */
-    public String getAssetSummary()
-    {
-        return assetSummary;
-    }
-
-
-    /**
-     * Set up the full path of the file - this should be unique.
-     *
-     * @param assetSummary string name
-     */
-    public void setAssetSummary(String assetSummary)
-    {
-        this.assetSummary = assetSummary;
     }
 
 
@@ -76,42 +46,6 @@ public class AssetConnectionRequestBody extends ExternalSourceRequestBody
     @Override
     public String toString()
     {
-        return "PathNameRequestBody{" +
-                ", assetSummary='" + assetSummary +
-                '}';
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        AssetConnectionRequestBody that = (AssetConnectionRequestBody) objectToCompare;
-        return Objects.equals(getAssetSummary(), that.getAssetSummary());
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(getAssetSummary());
+        return "AssetConnectionRequestBody{} " + super.toString();
     }
 }

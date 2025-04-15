@@ -73,6 +73,13 @@ public class DataManagerOMASFVTSuite extends FVTSuiteBase
 
         FVTResults results;
 
+        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
         results = CreateValidValuesSetTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
@@ -94,12 +101,6 @@ public class DataManagerOMASFVTSuite extends FVTSuiteBase
         }
         results.printResults(serverName);
 
-        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
-        if (! results.isSuccessful())
-        {
-            returnCode --;
-        }
-        results.printResults(serverName);
 
         results = CreateEventsTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())

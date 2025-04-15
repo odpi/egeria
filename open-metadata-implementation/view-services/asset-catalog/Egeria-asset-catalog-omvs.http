@@ -57,8 +57,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "effectiveTime" : "{{isoTimestamp}}",
-  "asOfTime": "{{isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "asOfTime": "{{$isoTimestamp}}",
   "relationshipTypes" : ["DataSetContent"],
   "limitToISCQualifiedName": "",
   "highlightISCQualifiedName": "",

@@ -132,24 +132,18 @@ public class CreateDatabaseTest
         System.out.println("databaseColumnGUID = " + databaseColumnGUID);
 
         /*
-         * Check that all elements are deleted when the database is deleted.
+         * Check that the database can not be deleted because it has a schema.
          */
+        activityName = "unsupported cascadedDelete - remove Database";
         try
         {
             client.deleteAsset(userId, databaseGUID);
-
-            thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
-            thisTest.checkDatabaseColumnOK(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
-            thisTest.checkDatabaseTableOK(client, databaseTableGUID, activityName, userId);
-            thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, null, activityName, userId);
-
-            activityName = "cascadedDelete - remove DatabaseSchema";
-
-            client.deleteAsset(userId, databaseSchemaGUID);
-
-            thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
-            thisTest.checkDatabaseTableGone(client, databaseTableGUID,  activityName, userId);
-            thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+            activityName = "unsupported cascadedDelete - remove Database returned ok";
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException allGood)
+        {
+            // all ok
         }
         catch (Exception unexpectedError)
         {
@@ -158,15 +152,30 @@ public class CreateDatabaseTest
 
 
         /*
+         * Check that the database schema can not be deleted because it has a table.
+         */
+        activityName = "unsupported cascadedDelete - remove DatabaseSchema";
+        try
+        {
+            client.deleteAsset(userId, databaseSchemaGUID);
+            activityName = "unsupported cascadedDelete - remove DatabaseSchema return ok";
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException allGood)
+        {
+            // all ok
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+
+
+        /*
          * Recreate database
          */
         activityName= "deleteOneByOne";
-
-        System.out.println("activityName = " + activityName);
-        databaseGUID = thisTest.getDatabase(client, userId);
-        databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseGUID, userId);
-        databaseTableGUID = thisTest.createDatabaseTable(client, databaseSchemaGUID, userId);
-        databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseSchemaGUID, databaseTableGUID, userId);
 
         System.out.println("databaseGUID = " + databaseGUID);
         System.out.println("databaseSchemaGUID = " + databaseSchemaGUID);
@@ -226,7 +235,7 @@ public class CreateDatabaseTest
             /*
              * Recreate database
              */
-            activityName= "deleteOneByOne";
+            activityName= "updateTesting";
 
             databaseGUID = thisTest.getDatabase(client, userId);
             databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseGUID, userId);
@@ -341,15 +350,16 @@ public class CreateDatabaseTest
             /*
              * Check that all elements are deleted when the database is deleted.
              */
-            activityName = "cascadedDelete";
+            activityName = "deleteAll";
             try
             {
+                client.removeSchemaAttribute(userId, databaseColumnGUID);
+                client.removeSchemaAttribute(userId, databaseColumnTwoGUID);
+                client.removeSchemaAttribute(userId, databaseTableGUID);
+                client.deleteAsset(userId, databaseSchemaGUID);
                 client.deleteAsset(userId, databaseGUID);
 
                 thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
-
-                client.deleteAsset(userId, databaseSchemaGUID);
-
                 thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
                 thisTest.checkDatabaseTableGone(client, databaseTableGUID, activityName, userId);
                 thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);

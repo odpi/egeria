@@ -220,6 +220,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
+                                                                        null,
                                                                         "Provision:" + technologyName + ":Step1",
                                                                         "Create the new element",
                                                                         "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.",
@@ -290,7 +291,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     classifications,
                                                                     null,
                                                                     deployedImplementationType.getAssociatedTypeName(),
-                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                    null);
         assert(guid.equals(capabilityGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
@@ -299,7 +301,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(capabilityGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               capabilityGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getCatalogPlaceholderPropertyTypes());
     }
 
@@ -345,7 +350,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getSchemaPlaceholderPropertyTypes());
     }
 
@@ -395,6 +403,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addPropertyFacet(assetGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
                                        OpenMetadataType.ASSET.typeName,
+                                       null,
                                        qualifiedName,
                                        PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE,
                                        PropertyFacetValidValues.UNITY_CATALOG_SCHEMA_VERSION_VALUE,
@@ -404,6 +413,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
+                                                        null,
                                                         qualifiedName + ":Endpoint",
                                                         fullName + " endpoint",
                                                         null,
@@ -424,9 +434,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             endpointGUID,
                                                             assetGUID,
                                                             deployedImplementationType.getAssociatedTypeName(),
-                                                            OpenMetadataType.ASSET.typeName);
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null);
 
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
 
@@ -434,7 +445,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getVolumePlaceholderPropertyTypes());
     }
 
@@ -493,6 +507,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            assetGUID,
                                                            deployedImplementationType.getAssociatedTypeName(),
                                                            OpenMetadataType.ASSET.typeName,
+                                                           null,
                                                            qualifiedName + "_storageLocation",
                                                            fullName + "_storageLocation",
                                                            PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
@@ -506,6 +521,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addPropertyFacet(assetGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
                                        OpenMetadataType.ASSET.typeName,
+                                       null,
                                        qualifiedName,
                                        PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE,
                                        PropertyFacetValidValues.UNITY_CATALOG_SCHEMA_VERSION_VALUE,
@@ -518,7 +534,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getTablePlaceholderPropertyTypes());
     }
 
@@ -565,7 +584,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getFunctionPlaceholderPropertyTypes());
     }
 
@@ -612,7 +634,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getRegisteredModelPlaceholderPropertyTypes());
     }
 
@@ -659,7 +684,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
+                                               null,
                                                UnityCatalogPlaceholderProperty.getModelVersionPlaceholderPropertyTypes());
     }
 

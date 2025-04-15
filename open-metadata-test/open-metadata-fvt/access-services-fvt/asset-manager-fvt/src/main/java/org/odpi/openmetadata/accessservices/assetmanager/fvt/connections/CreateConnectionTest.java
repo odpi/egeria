@@ -143,23 +143,23 @@ public class CreateConnectionTest
 
         try
         {
+            client.removeEndpoint(userId, assetManagerGUID, assetManagerName, endpointGUID, externalId, effectiveTime, forLineage, forDuplicateProcessing);
+
+            activityName = "deleteOneByOne - endpoint gone";
+            thisTest.checkConnectorTypeOK(client, assetManagerGUID, connectorTypeGUID, connectionGUID, activityName, userId);
+            thisTest.checkEndpointGone(client, assetManagerGUID, endpointGUID, connectionGUID, activityName, userId);
+            thisTest.checkConnectionOK(client, assetManagerGUID, connectionGUID, activityName, userId);
+
             client.removeConnection(userId, assetManagerGUID, assetManagerName, connectionGUID, externalId, effectiveTime, forLineage, forDuplicateProcessing);
 
             activityName = "deleteOneByOne - connection gone";
             thisTest.checkConnectionGone(client, assetManagerGUID, connectionGUID, activityName, userId);
             thisTest.checkConnectorTypeOK(client, assetManagerGUID, connectorTypeGUID, null, activityName, userId);
-            thisTest.checkEndpointOK(client, assetManagerGUID, endpointGUID, null, activityName, userId);
+            thisTest.checkEndpointGone(client, assetManagerGUID, endpointGUID, null, activityName, userId);
 
             client.removeConnectorType(userId, assetManagerGUID, assetManagerName, connectorTypeGUID, externalId, effectiveTime, forLineage, forDuplicateProcessing);
 
             activityName = "deleteOneByOne - connectorType gone";
-            thisTest.checkConnectorTypeGone(client, assetManagerGUID, connectorTypeGUID, null, activityName, userId);
-            thisTest.checkEndpointOK(client, assetManagerGUID, endpointGUID, null, activityName, userId);
-            thisTest.checkConnectionGone(client, assetManagerGUID, connectionGUID, activityName, userId);
-
-            client.removeEndpoint(userId, assetManagerGUID, assetManagerName, endpointGUID, externalId, effectiveTime, forLineage, forDuplicateProcessing);
-
-            activityName = "deleteOneByOne - endpoint gone";
             thisTest.checkConnectorTypeGone(client, assetManagerGUID, connectorTypeGUID, null, activityName, userId);
             thisTest.checkEndpointGone(client, assetManagerGUID, endpointGUID, null, activityName, userId);
             thisTest.checkConnectionGone(client, assetManagerGUID, connectionGUID, activityName, userId);

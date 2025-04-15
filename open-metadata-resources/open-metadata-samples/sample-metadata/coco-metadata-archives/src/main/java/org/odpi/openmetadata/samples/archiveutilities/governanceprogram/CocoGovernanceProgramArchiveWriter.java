@@ -87,6 +87,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                              governanceDomainSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             null,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              domainDefinition.getQualifiedName(),
                                              domainDefinition.getDisplayName(),

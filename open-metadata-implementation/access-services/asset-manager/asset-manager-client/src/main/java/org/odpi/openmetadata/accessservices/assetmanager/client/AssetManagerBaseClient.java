@@ -1479,6 +1479,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * @param isMergeUpdate            should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param properties               new properties for the metadata element
      * @param propertiesParameterName  name of parameter passing the properties
+     * @param updateDescription        optional description for a revision log
      * @param urlTemplate              URL to call (no expected placeholders)
      * @param effectiveTime            the time that the retrieved elements must be effective for
      * @param forLineage               return elements marked with the Memento classification?
@@ -1498,6 +1499,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                        boolean                      isMergeUpdate,
                                        ReferenceableProperties      properties,
                                        String                       propertiesParameterName,
+                                       String                       updateDescription,
                                        String                       urlTemplate,
                                        Date                         effectiveTime,
                                        boolean                      forLineage,
@@ -1525,6 +1527,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                    externalIdentifierName,
                                                                                    methodName));
         requestBody.setElementProperties(properties);
+        requestBody.setUpdateDescription(updateDescription);
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -2328,5 +2331,65 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                         elementGUID,
                                         forLineage,
                                         forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the metadata element.
+     *
+     * @param userId                   calling user
+     * @param assetManagerGUID         unique identifier of software capability representing the caller
+     * @param assetManagerName         unique name of software capability representing the caller
+     * @param elementGUID              unique identifier of the metadata element to remove
+     * @param elementGUIDParameterName name of parameter passing the elementGUID
+     * @param urlTemplate              URL to call (no expected placeholders)
+     * @param externalIdentifierName   unique identifier of the element in the external asset manager
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
+     * @param effectiveTime            the time that the retrieved elements must be effective for
+     * @param forLineage               return elements marked with the Memento classification?
+     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
+     * @param methodName               calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    protected void removeReferenceable(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  elementGUID,
+                                       String  elementGUIDParameterName,
+                                       String  externalIdentifierName,
+                                       boolean cascadedDelete,
+                                       String  urlTemplate,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String requestParamsURLTemplate   = "?forLineage={3}&forDuplicateProcessing={4}&cascadedDelete={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+
+        ReferenceableUpdateRequestBody requestBody = new ReferenceableUpdateRequestBody();
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   externalIdentifierName,
+                                                                                   methodName));
+        requestBody.setEffectiveTime(effectiveTime);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate + requestParamsURLTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        elementGUID,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        cascadedDelete);
     }
 }

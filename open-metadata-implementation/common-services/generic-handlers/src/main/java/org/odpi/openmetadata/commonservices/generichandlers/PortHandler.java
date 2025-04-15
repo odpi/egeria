@@ -656,6 +656,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     portGUIDParameterName,
                                     OpenMetadataType.PORT.typeGUID,
                                     OpenMetadataType.PORT.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

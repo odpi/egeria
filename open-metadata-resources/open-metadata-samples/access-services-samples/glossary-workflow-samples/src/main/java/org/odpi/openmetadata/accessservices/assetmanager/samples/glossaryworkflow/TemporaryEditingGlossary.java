@@ -106,7 +106,7 @@ public class TemporaryEditingGlossary
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nRemove editing glossary");
-            client.removeGlossary(clientUserId, editingGlossaryGUID, null, false, false);
+            client.removeGlossary(clientUserId, editingGlossaryGUID, true, null, false, false);
 
             System.out.println("\nSetting up the editing glossary for V2 of the first glossary term");
 
@@ -127,7 +127,8 @@ public class TemporaryEditingGlossary
             String editingGlossaryTermGUID = client.createGlossaryTermFromTemplate(clientUserId, editingGlossaryGUID, glossaryTerm1GUID, templateProperties, false, false, GlossaryTermStatus.DRAFT);
             printGlossaryTerm(client, editingGlossaryTermGUID);
 
-            System.out.println("\nAdd description to the private copy of the glossary term in the editing glossary.");
+            String updateDescription = "\nAdd description to the private copy of the glossary term in the editing glossary.";
+            System.out.println(updateDescription);
             glossaryTermProperties = new GlossaryTermProperties();
 
             glossaryTermProperties.setDescription("Every person who is a customer needs a unique identifier which is associated with their accounts and other purchased services.");
@@ -135,7 +136,7 @@ public class TemporaryEditingGlossary
             glossaryTermProperties.setAbbreviation("CustId");
             glossaryTermProperties.setPublishVersionIdentifier("V2.0");
 
-            client.updateGlossaryTerm(clientUserId, editingGlossaryTermGUID, true, glossaryTermProperties, null, false, false);
+            client.updateGlossaryTerm(clientUserId, editingGlossaryTermGUID, true, glossaryTermProperties, updateDescription, null, false, false);
             printGlossaryTerm(client, editingGlossaryTermGUID);
 
             System.out.println("\nApprove the second version of the glossary term in the editing glossary");
@@ -147,17 +148,18 @@ public class TemporaryEditingGlossary
                                             false);
             printGlossaryTerm(client, editingGlossaryTermGUID);
 
-            System.out.println("\nPublishing V2 of the term to the 'live' glossary using a move glossary term");
-            client.updateGlossaryTermFromTemplate(clientUserId, glossaryTerm1GUID, editingGlossaryTermGUID, true, true, null, false, false);
+            updateDescription = "\nPublishing V2 of the term to the 'live' glossary using a move glossary term";
+            System.out.println(updateDescription);
+            client.updateGlossaryTermFromTemplate(clientUserId, glossaryTerm1GUID, editingGlossaryTermGUID, updateDescription, true, true, null, false, false);
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nRemove second editing glossary");
-            client.removeGlossary(clientUserId, editingGlossaryGUID, null, false, false);
+            client.removeGlossary(clientUserId, editingGlossaryGUID, true, null, false, false);
 
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nRemove live glossary");
-            client.removeGlossary(clientUserId, liveGlossaryGUID, null, false, false);
+            client.removeGlossary(clientUserId, liveGlossaryGUID, true, null, false, false);
         }
         catch (Exception error)
         {

@@ -107,24 +107,8 @@ public class VirtualConnection extends Connection
     public String toString()
     {
         return "VirtualConnection{" +
-                       "displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", connectorType=" + getConnectorType() +
-                       ", userId='" + getUserId() + '\'' +
-                       ", encryptedPassword='" + getEncryptedPassword() + '\'' +
-                       ", clearPassword='" + getClearPassword() + '\'' +
-                       ", endpoint=" + getEndpoint() +
-                       ", configurationProperties=" + getConfigurationProperties() +
-                       ", securedProperties=" + getSecuredProperties() +
-                       ", assetSummary='" + getAssetSummary() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "embeddedConnections=" + embeddedConnections +
+                "} " + super.toString();
     }
 
 

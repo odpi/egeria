@@ -1102,6 +1102,7 @@ public class ITAssetRESTService
                                                elementGUIDParameterName,
                                                OpenMetadataType.ASSET.typeGUID,
                                                OpenMetadataType.ASSET.typeName,
+                                               false,
                                                null,
                                                null,
                                                false,

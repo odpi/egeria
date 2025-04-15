@@ -407,6 +407,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                     profileGUIDParameterName,
                                     OpenMetadataType.ACTOR_PROFILE.typeGUID,
                                     OpenMetadataType.ACTOR_PROFILE.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

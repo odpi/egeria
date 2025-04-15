@@ -355,7 +355,8 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      ElementStatus.ACTIVE,
                                                                                      null,
                                                                                      null,
-                                                                                     false,
+                                                                                     true,
+                                                                                     null,
                                                                                      validValueProperties.getEffectiveFrom(),
                                                                                      validValueProperties.getEffectiveTo(),
                                                                                      this.getElementProperties(validValueProperties),
@@ -494,6 +495,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                              assetManagerGUID,
                                                              assetManagerName,
                                                              validValueGUID,
+                                                             false,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);

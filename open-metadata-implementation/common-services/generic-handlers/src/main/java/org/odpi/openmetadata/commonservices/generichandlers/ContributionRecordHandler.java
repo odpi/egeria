@@ -348,6 +348,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         contributionRecordGUIDParameterName,
                                         OpenMetadataType.CONTRIBUTION_RECORD.typeGUID,
                                         OpenMetadataType.CONTRIBUTION_RECORD.typeName,
+                                        false,
                                         null,
                                         null,
                                         forLineage,

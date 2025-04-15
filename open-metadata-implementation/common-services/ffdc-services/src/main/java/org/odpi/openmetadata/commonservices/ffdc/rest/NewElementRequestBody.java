@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,6 +23,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
 {
     private String            anchorGUID                   = null;
     private boolean           isOwnAnchor                  = false;
+    private String            anchorScopeGUID              = null;
     private String            parentGUID                   = null;
     private String            parentRelationshipTypeName   = null;
     private ElementProperties parentRelationshipProperties = null;
@@ -52,6 +52,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
         {
             anchorGUID = template.getAnchorGUID();
             isOwnAnchor = template.getIsOwnAnchor();
+            anchorScopeGUID = template.getAnchorScopeGUID();
             parentGUID = template.getParentGUID();
             parentRelationshipTypeName = template.getParentRelationshipTypeName();
             parentRelationshipProperties = template.getParentRelationshipProperties();
@@ -103,6 +104,30 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
     public void setIsOwnAnchor(boolean ownAnchor)
     {
         isOwnAnchor = ownAnchor;
+    }
+
+
+    /**
+     * Return the unique identifier of the anchor's scope.
+     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
+     *
+     * @return string guid
+     */
+    public String getAnchorScopeGUID()
+    {
+        return anchorScopeGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the anchor's scope.
+     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
+     *
+     * @param anchorScopeGUID string guid
+     */
+    public void setAnchorScopeGUID(String anchorScopeGUID)
+    {
+        this.anchorScopeGUID = anchorScopeGUID;
     }
 
 
@@ -207,6 +232,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
         return "NewElementRequestBody{" +
                 "anchorGUID='" + anchorGUID + '\'' +
                 ", isOwnAnchor=" + isOwnAnchor +
+                ", anchorScopeGUID='" + anchorScopeGUID + '\'' +
                 ", parentGUID='" + parentGUID + '\'' +
                 ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
                 ", parentRelationshipProperties=" + parentRelationshipProperties +
@@ -239,6 +265,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
         return parentAtEnd1 == that.parentAtEnd1 &&
                        isOwnAnchor == that.isOwnAnchor &&
                        Objects.equals(anchorGUID, that.anchorGUID) &&
+                       Objects.equals(anchorScopeGUID, that.anchorScopeGUID) &&
                        Objects.equals(parentGUID, that.parentGUID) &&
                        Objects.equals(parentRelationshipTypeName, that.parentRelationshipTypeName) &&
                        Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties);
@@ -253,7 +280,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, isOwnAnchor, parentGUID,
+        return Objects.hash(super.hashCode(), anchorGUID, isOwnAnchor, anchorScopeGUID, parentGUID,
                             parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1);
     }
 }

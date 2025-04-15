@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt;
 import org.odpi.openmetadata.accessservices.assetowner.fvt.assets.CreateAssetTest;
 import org.odpi.openmetadata.accessservices.assetowner.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.assetowner.fvt.connections.CreateConnectionTest;
+import org.odpi.openmetadata.accessservices.assetowner.fvt.dataassets.CreateDatabaseTest;
 import org.odpi.openmetadata.accessservices.assetowner.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.accessservices.assetowner.fvt.validmetadatavalues.ValidMetadataValuesTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
@@ -70,6 +71,12 @@ public class AssetOwnerOMASFVTSuite extends FVTSuiteBase
 
         FVTResults results;
 
+        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
         results = ClientConstructorTest.performFVT(serverName, serverPlatformRootURL);
         if (! results.isSuccessful())
         {

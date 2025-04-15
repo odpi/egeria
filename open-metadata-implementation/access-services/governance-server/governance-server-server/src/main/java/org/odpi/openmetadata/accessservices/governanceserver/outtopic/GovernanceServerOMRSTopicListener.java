@@ -12,15 +12,12 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassifi
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -55,6 +52,8 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
     private final String                                           userId;
     private final String                                           serverName;
     private final GovernanceServerOMASConverter<MetadataElement>   converter;
+
+
     /**
      * Initialize the topic listener.
      *
@@ -475,7 +474,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 openMetadataRelationship.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
 
-                ElementStub elementStub = new ElementStub();
+                OpenMetadataElementStub elementStub = new OpenMetadataElementStub();
                 fillElementControlHeader(elementStub, relationship.getEntityOneProxy());
                 elementStub.setUniqueName(getQualifiedName(relationship.getEntityOneProxy().getUniqueProperties()));
                 openMetadataRelationship.setElementAtEnd1(elementStub);

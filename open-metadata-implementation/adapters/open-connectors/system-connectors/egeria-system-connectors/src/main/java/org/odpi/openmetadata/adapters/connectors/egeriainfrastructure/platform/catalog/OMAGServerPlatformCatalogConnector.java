@@ -605,6 +605,7 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
                                                                  true,
                                                                  null,
                                                                  null,
+                                                                 null,
                                                                  templateGUID,
                                                                  null,
                                                                  placeholderProperties,

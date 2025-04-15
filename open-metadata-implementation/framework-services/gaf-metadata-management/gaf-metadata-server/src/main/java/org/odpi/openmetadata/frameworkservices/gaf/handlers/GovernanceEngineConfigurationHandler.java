@@ -412,6 +412,7 @@ public class GovernanceEngineConfigurationHandler
                                                        guidParameter,
                                                        OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
                                                        OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                       false,
                                                        qualifiedNameParameter,
                                                        qualifiedName,
                                                        false,
@@ -626,7 +627,7 @@ public class GovernanceEngineConfigurationHandler
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        final String methodName = "getAllGovernanceServices";
+        final String methodName = "getGovernanceServiceRegistrations";
         final String guidParameter = "governanceServiceGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -650,8 +651,8 @@ public class GovernanceEngineConfigurationHandler
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      governanceServiceGUID,
                                                                                      OpenMetadataType.GOVERNANCE_SERVICE.typeName,
-                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                                     OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                     OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                      1,
                                                                                      null,
                                                                                      null,
@@ -662,6 +663,7 @@ public class GovernanceEngineConfigurationHandler
                                                                                      0, 0,
                                                                                      effectiveTime,
                                                                                      methodName);
+
 
         List<String> results = new ArrayList<>();
 
@@ -788,6 +790,7 @@ public class GovernanceEngineConfigurationHandler
                                                  guidParameter,
                                                  OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
                                                  OpenMetadataType.GOVERNANCE_SERVICE.typeName,
+                                                 false,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
                                                  false,

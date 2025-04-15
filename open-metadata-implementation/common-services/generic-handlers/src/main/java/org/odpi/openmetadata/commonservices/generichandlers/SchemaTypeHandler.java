@@ -1097,6 +1097,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     guidParameterName,
                                     OpenMetadataType.SCHEMA_TYPE.typeGUID,
                                     OpenMetadataType.SCHEMA_TYPE.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

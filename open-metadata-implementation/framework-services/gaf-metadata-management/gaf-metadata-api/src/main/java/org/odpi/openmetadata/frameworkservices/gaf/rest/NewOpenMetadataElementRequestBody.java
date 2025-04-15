@@ -29,6 +29,7 @@ public class NewOpenMetadataElementRequestBody extends MetadataSourceRequestBody
     private Map<String, ElementProperties> initialClassifications       = null;
     private String                         anchorGUID                   = null;
     private boolean                        isOwnAnchor                  = false;
+    private String                         anchorScopeGUID              = null;
     private Date                           effectiveFrom                = null;
     private Date                           effectiveTo                  = null;
     private ElementProperties              properties                   = null;
@@ -64,6 +65,7 @@ public class NewOpenMetadataElementRequestBody extends MetadataSourceRequestBody
             initialClassifications = template.getInitialClassifications();
             anchorGUID = template.getAnchorGUID();
             isOwnAnchor = template.getIsOwnAnchor();
+            anchorScopeGUID = template.getAnchorScopeGUID();
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
             properties = template.getProperties();
@@ -174,6 +176,30 @@ public class NewOpenMetadataElementRequestBody extends MetadataSourceRequestBody
     public void setIsOwnAnchor(boolean ownAnchor)
     {
         isOwnAnchor = ownAnchor;
+    }
+
+
+    /**
+     * Return the unique identifier of the anchor's scope.
+     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
+     *
+     * @return string guid
+     */
+    public String getAnchorScopeGUID()
+    {
+        return anchorScopeGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the anchor's scope.
+     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
+     *
+     * @param anchorScopeGUID string guid
+     */
+    public void setAnchorScopeGUID(String anchorScopeGUID)
+    {
+        this.anchorScopeGUID = anchorScopeGUID;
     }
 
 
@@ -375,22 +401,21 @@ public class NewOpenMetadataElementRequestBody extends MetadataSourceRequestBody
     public String toString()
     {
         return "NewOpenMetadataElementRequestBody{" +
-                       "typeName='" + typeName + '\'' +
-                       ", initialStatus=" + initialStatus +
-                       ", initialClassifications=" + initialClassifications +
-                       ", anchorGUID='" + anchorGUID + '\'' +
-                       ", isOwnAnchor='" + isOwnAnchor + '\'' +
-                       ", effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", properties=" + properties +
-                       ", parentGUID='" + parentGUID + '\'' +
-                       ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
-                       ", parentRelationshipProperties=" + parentRelationshipProperties +
-                       ", parentAtEnd1=" + parentAtEnd1 +
-                       ", effectiveTime=" + effectiveTime +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       '}';
+                "typeName='" + typeName + '\'' +
+                ", initialStatus=" + initialStatus +
+                ", initialClassifications=" + initialClassifications +
+                ", anchorGUID='" + anchorGUID + '\'' +
+                ", isOwnAnchor=" + isOwnAnchor +
+                ", anchorScopeGUID='" + anchorScopeGUID + '\'' +
+                ", effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                ", properties=" + properties +
+                ", parentGUID='" + parentGUID + '\'' +
+                ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
+                ", parentRelationshipProperties=" + parentRelationshipProperties +
+                ", parentAtEnd1=" + parentAtEnd1 +
+                ", effectiveTime=" + effectiveTime +
+                "} " + super.toString();
     }
 
 
@@ -421,6 +446,7 @@ public class NewOpenMetadataElementRequestBody extends MetadataSourceRequestBody
                        initialStatus == that.initialStatus &&
                        Objects.equals(initialClassifications, that.initialClassifications) &&
                        Objects.equals(anchorGUID, that.anchorGUID) &&
+                       Objects.equals(anchorScopeGUID, that.anchorScopeGUID) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(properties, that.properties) &&
@@ -439,7 +465,8 @@ public class NewOpenMetadataElementRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor, effectiveFrom, effectiveTo, properties,
-                            parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
+        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor,
+                            anchorScopeGUID, effectiveFrom, effectiveTo, properties, parentGUID,
+                            parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
     }
 }

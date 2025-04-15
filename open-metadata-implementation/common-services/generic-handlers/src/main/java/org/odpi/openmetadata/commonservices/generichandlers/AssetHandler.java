@@ -663,6 +663,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                            null,
                            templateEntity.getType().getTypeDefName(),
                            OpenMetadataType.ASSET.typeName,
+                           null,
                            methodName);
 
         String assetGUID = this.createBeanFromTemplate(userId,
@@ -686,9 +687,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                       assetGUID,
                                                                                                       OpenMetadataType.ASSET.typeName,
-                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                                                      1,
+                                                                                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
+                                                                                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                                                                      2,
                                                                                                       null,
                                                                                                       null,
                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
@@ -705,9 +706,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 Relationship  connectionEndpointRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                              connectionGUID,
                                                                                                              OpenMetadataType.CONNECTION.typeName,
-                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
-                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
-                                                                                                             1,
+                                                                                                             OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                                                                             OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                                                             2,
                                                                                                              null,
                                                                                                              null,
                                                                                                              SequencingOrder.CREATION_DATE_RECENT,
@@ -734,7 +735,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                effectiveTime,
                                                                                methodName);
 
-                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(endpointEntity, methodName);
 
                     if (assetGUID.equals(anchorIdentifiers.anchorGUID))
                     {
@@ -902,6 +903,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetTypeId,
                                            assetTypeName,
                                            OpenMetadataType.ASSET.typeName,
+                                           null,
                                            builder,
                                            true,
                                            effectiveTime,
@@ -1366,6 +1368,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          effectiveTime,
                          methodName);
 
+        /*
+         * Retrieve the deprecated relationship and remove it.
+         */
         Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetGUID,
                                                                                                   OpenMetadataType.ASSET.typeName,
@@ -1380,7 +1385,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   forDuplicateProcessing,
                                                                                                   effectiveTime,
                                                                                                   methodName);
-        if (connection == null)
+        if (assetConnectionRelationship != null)
         {
             this.unlinkConnectedElement(userId,
                                         false,
@@ -1394,6 +1399,42 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         serviceSupportedZones,
                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                        OpenMetadataType.CONNECTION.typeName,
+                                        effectiveTime,
+                                        methodName);
+        }
+
+        /*
+         * Retrieve the preferred relationship
+         */
+        assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                                    assetGUID,
+                                                                                    OpenMetadataType.ASSET.typeName,
+                                                                                    OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (connection == null)
+        {
+            this.unlinkConnectedElement(userId,
+                                        false,
+                                        null,
+                                        null,
+                                        assetGUID,
+                                        assetGUIDParameterName,
+                                        typeName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        serviceSupportedZones,
+                                        OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
                                         OpenMetadataType.CONNECTION.typeName,
                                         effectiveTime,
                                         methodName);
@@ -1416,49 +1457,16 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                       effectiveTime,
                                                                       methodName);
 
-            InstanceProperties relationshipProperties = null;
-
-            if (assetSummary != null)
-            {
-                relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                      null,
-                                                                                      OpenMetadataProperty.ASSET_SUMMARY.name,
-                                                                                      assetSummary,
-                                                                                      methodName);
-            }
-
             if (assetConnectionRelationship == null)
             {
-
                 repositoryHandler.createRelationship(userId,
-                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
                                                      null,
                                                      null,
-                                                     connectionGUID,
                                                      assetGUID,
-                                                     relationshipProperties,
+                                                     connectionGUID,
+                                                     null,
                                                      methodName);
-            }
-            else
-            {
-                repositoryHandler.updateUniqueRelationshipByType(userId,
-                                                                 null,
-                                                                 null,
-                                                                 connectionGUID,
-                                                                 OpenMetadataType.CONNECTION.typeName,
-                                                                 assetGUID,
-                                                                 OpenMetadataType.ASSET.typeName,
-                                                                 OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                 OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                 relationshipProperties,
-                                                                 null,
-                                                                 null,
-                                                                 SequencingOrder.CREATION_DATE_RECENT,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
             }
         }
     }
@@ -1963,6 +1971,32 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
+        String assetGUID = this.getAttachedElementGUID(userId,
+                                                       connectionGUID,
+                                                       connectionGUIDParameterName,
+                                                       OpenMetadataType.CONNECTION.typeName,
+                                                       OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
+                                                       OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                       OpenMetadataType.ASSET.typeName,
+                                                       0,
+                                                       null,
+                                                       null,
+                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       serviceSupportedZones,
+                                                       effectiveTime,
+                                                       methodName);
+
+        if (assetGUID != null)
+        {
+            return assetGUID;
+        }
+
+        /*
+         * Return the deprecated relationship
+         */
         return this.getAttachedElementGUID(userId,
                                            connectionGUID,
                                            connectionGUIDParameterName,
@@ -1980,81 +2014,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            serviceSupportedZones,
                                            effectiveTime,
                                            methodName);
-    }
-
-
-    /**
-     * Remove any data sets connected to the asset by the DataSetContent relationship.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param assetGUID unique identifier for asset
-     * @param assetTypeName type of asset
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void removeLinkedDataSets(String  userId,
-                                     String  externalSourceGUID,
-                                     String  externalSourceName,
-                                     String  assetGUID,
-                                     String  assetTypeName,
-                                     boolean forLineage,
-                                     boolean forDuplicateProcessing,
-                                     Date    effectiveTime,
-                                     String  methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
-    {
-        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
-                                                                                       invalidParameterHandler,
-                                                                                       userId,
-                                                                                       assetGUID,
-                                                                                       assetTypeName,
-                                                                                       OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeGUID,
-                                                                                       OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                                                       1,
-                                                                                       null,
-                                                                                       null,
-                                                                                       SequencingOrder.CREATION_DATE_RECENT,
-                                                                                       null,
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
-                                                                                       0,
-                                                                                       0,
-                                                                                       effectiveTime,
-                                                                                       methodName);
-
-        while (iterator.moreToReceive())
-        {
-            Relationship relationship = iterator.getNext();
-
-            if (relationship != null)
-            {
-                final String elementGUIDParameterName = "relationship.getEntityOneProxy().getGUID()";
-
-                this.deleteBeanInRepository(userId,
-                                            externalSourceGUID,
-                                            externalSourceName,
-                                            relationship.getEntityOneProxy().getGUID(),
-                                            elementGUIDParameterName,
-                                            OpenMetadataType.DATA_SET.typeGUID,
-                                            OpenMetadataType.DATA_SET.typeName,
-                                            null,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            supportedZones,
-                                            effectiveTime,
-                                            methodName);
-            }
-        }
     }
 
 
@@ -2378,12 +2337,14 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         if (assetEntity != null)
         {
             EntityDetail connectionEntity = null;
+            EntityProxy connectionProxy = null;
+
             Relationship relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetEntity.getGUID(),
                                                                                                   assetEntity.getType().getTypeDefName(),
-                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
-                                                                                                  1,
+                                                                                                  OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
+                                                                                                  OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                                                                  2,
                                                                                                   null,
                                                                                                   null,
                                                                                                   SequencingOrder.CREATION_DATE_RECENT,
@@ -2395,24 +2356,49 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
             if (relationshipToConnection != null)
             {
-                EntityProxy end1 = relationshipToConnection.getEntityOneProxy();
+                connectionProxy = relationshipToConnection.getEntityTwoProxy();
+            }
+            else
+            {
+                /*
+                 * Try the deprecated relationship
+                 */
+                relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                                         assetEntity.getGUID(),
+                                                                                         assetEntity.getType().getTypeDefName(),
+                                                                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                                         1,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         effectiveTime,
+                                                                                         methodName);
 
-                if (end1 != null)
+                if (relationshipToConnection != null)
                 {
-                    final String connectionGUIDParameterName = "relationshipToConnection.getEntityOneProxy().getGUID()";
-
-                    connectionEntity = this.getEntityFromRepository(userId,
-                                                                    end1.getGUID(),
-                                                                    connectionGUIDParameterName,
-                                                                    OpenMetadataType.CONNECTION.typeName,
-                                                                    null,
-                                                                    null,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    serviceSupportedZones,
-                                                                    effectiveTime,
-                                                                    methodName);
+                    connectionProxy = relationshipToConnection.getEntityOneProxy();
                 }
+            }
+
+            if (connectionProxy != null)
+            {
+                final String connectionGUIDParameterName = "relationshipToConnection.getEntityProxy().getGUID()";
+
+                connectionEntity = this.getEntityFromRepository(userId,
+                                                                connectionProxy.getGUID(),
+                                                                connectionGUIDParameterName,
+                                                                OpenMetadataType.CONNECTION.typeName,
+                                                                null,
+                                                                null,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                serviceSupportedZones,
+                                                                effectiveTime,
+                                                                methodName);
             }
 
             List<Relationship> supplementaryRelationships = new ArrayList<>();
@@ -2449,6 +2435,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             if ((repositoryHelper.isTypeOf(serviceName,
                                                            relationship.getType().getTypeDefName(),
                                                            OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
+                                    || (repositoryHelper.isTypeOf(serviceName,
+                                                                  relationship.getType().getTypeDefName(),
+                                                                  OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))
                                     || (repositoryHelper.isTypeOf(serviceName,
                                                                   relationship.getType().getTypeDefName(),
                                                                   OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName)))
@@ -2557,10 +2546,16 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 {
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
-                                                   OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
+                                                   OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))
+                            || (repositoryHelper.isTypeOf(serviceName,
+                                                          relationship.getType().getTypeDefName(),
+                                                          OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
+                            || (repositoryHelper.isTypeOf(serviceName,
+                                                          relationship.getType().getTypeDefName(),
+                                                          OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
                                                           OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName)))

@@ -748,6 +748,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
      * @param qualifiedName optional unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -762,6 +763,7 @@ public class RelationalDataHandler<DATABASE,
                                String  databaseManagerName,
                                String  databaseGUID,
                                String  qualifiedName,
+                               boolean cascadedDelete,
                                boolean forLineage,
                                boolean forDuplicateProcessing,
                                Date    effectiveTime,
@@ -774,16 +776,6 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        databaseHandler.removeLinkedDataSets(userId,
-                                             databaseManagerGUID,
-                                             databaseManagerName,
-                                             databaseGUID,
-                                             OpenMetadataType.DATABASE.typeName,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
-
         if (qualifiedName != null)
         {
             databaseHandler.deleteBeanInRepository(userId,
@@ -793,6 +785,7 @@ public class RelationalDataHandler<DATABASE,
                                                    elementGUIDParameterName,
                                                    OpenMetadataType.DATABASE.typeGUID,
                                                    OpenMetadataType.DATABASE.typeName,
+                                                   cascadedDelete,
                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    qualifiedName,
                                                    forLineage,
@@ -809,6 +802,7 @@ public class RelationalDataHandler<DATABASE,
                                                    elementGUIDParameterName,
                                                    OpenMetadataType.DATABASE.typeGUID,
                                                    OpenMetadataType.DATABASE.typeName,
+                                                   cascadedDelete,
                                                    null,
                                                    null,
                                                    forLineage,
@@ -1450,6 +1444,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
      * @param qualifiedName optional unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1464,6 +1459,7 @@ public class RelationalDataHandler<DATABASE,
                                      String  databaseManagerName,
                                      String  databaseSchemaGUID,
                                      String  qualifiedName,
+                                     boolean cascadedDelete,
                                      boolean forLineage,
                                      boolean forDuplicateProcessing,
                                      Date    effectiveTime,
@@ -1485,6 +1481,7 @@ public class RelationalDataHandler<DATABASE,
                                                          elementGUIDParameterName,
                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                         cascadedDelete,
                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                          qualifiedName,
                                                          forLineage,
@@ -1501,6 +1498,7 @@ public class RelationalDataHandler<DATABASE,
                                                          elementGUIDParameterName,
                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                         cascadedDelete,
                                                          null,
                                                          null,
                                                          forLineage,
@@ -1943,6 +1941,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                     databaseAssetGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataType.ASSET.typeName,
+                                                                                    databaseAssetGUID,
                                                                                     OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeGUID,
                                                                                     OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                                                     effectiveFrom,
@@ -2076,15 +2075,6 @@ public class RelationalDataHandler<DATABASE,
                                                                                    serviceName,
                                                                                    serverName);
 
-        databaseTableHandler.addAnchorGUIDToBuilder(userId,
-                                                    databaseSchemaTypeGUID,
-                                                    schemaTypeGUIDParameterName,
-                                                    false,
-                                                    false,
-                                                    effectiveTime,
-                                                    databaseTableHandler.getSupportedZones(),
-                                                    schemaAttributeBuilder,
-                                                    methodName);
 
         SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":tableType",
                                                                     OpenMetadataType.RELATIONAL_TABLE_TYPE.typeGUID,
@@ -2094,6 +2084,15 @@ public class RelationalDataHandler<DATABASE,
                                                                     serverName);
 
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+        databaseTableHandler.setUpAnchorsClassificationFromParent(userId,
+                                                                  databaseSchemaTypeGUID,
+                                                                  schemaTypeGUIDParameterName,
+                                                                  schemaAttributeBuilder,
+                                                                  false,
+                                                                  false,
+                                                                  effectiveTime,
+                                                                  methodName);
 
         schemaAttributeBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
@@ -2175,6 +2174,7 @@ public class RelationalDataHandler<DATABASE,
         final String parentElementGUIDParameterName = "databaseAssetGUID";
         final String templateParameterName = "templateGUID";
         final String qualifiedNameParameterName = "qualifiedName";
+        final String schemaTypeGUIDParameterName    = "databaseSchemaTypeGUID";
 
         invalidParameterHandler.validateGUID(databaseAssetGUID, guidParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateParameterName, methodName);
@@ -2190,6 +2190,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                     databaseAssetGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataType.ASSET.typeName,
+                                                                                    databaseAssetGUID,
                                                                                     OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeGUID,
                                                                                     OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                                                     effectiveFrom,
@@ -2208,15 +2209,14 @@ public class RelationalDataHandler<DATABASE,
                                                                         serviceName,
                                                                         serverName);
 
-            databaseTableHandler.addAnchorGUIDToBuilder(userId,
-                                                        databaseAssetGUID,
-                                                        parentElementGUIDParameterName,
-                                                        false,
-                                                        false,
-                                                        effectiveTime,
-                                                        databaseTableHandler.getSupportedZones(),
-                                                        builder,
-                                                        methodName);
+            databaseTableHandler.setUpAnchorsClassificationFromParent(userId,
+                                                                      databaseSchemaTypeGUID,
+                                                                      schemaTypeGUIDParameterName,
+                                                                      builder,
+                                                                      false,
+                                                                      false,
+                                                                      effectiveTime,
+                                                                      methodName);
 
             String databaseTableGUID = databaseTableHandler.createBeanFromTemplate(userId,
                                                                                    databaseManagerGUID,
@@ -2236,14 +2236,13 @@ public class RelationalDataHandler<DATABASE,
 
             if (databaseTableGUID != null)
             {
-                final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
                 final String databaseTableGUIDParameterName = "databaseTableGUID";
 
                 databaseTableHandler.linkElementToElement(userId,
                                                           databaseManagerGUID,
                                                           databaseManagerName,
                                                           databaseSchemaTypeGUID,
-                                                          databaseSchemaTypeGUIDParameterName,
+                                                          schemaTypeGUIDParameterName,
                                                           OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                           databaseTableGUID,
                                                           databaseTableGUIDParameterName,
@@ -2430,6 +2429,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseTableGUID unique identifier of the metadata element to remove
      * @param databaseTableGUIDParameterName name of parameter supplying databaseTableGUID
      * @param qualifiedName unique name of the metadata element to remove
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2445,6 +2445,7 @@ public class RelationalDataHandler<DATABASE,
                                     String  databaseTableGUID,
                                     String  databaseTableGUIDParameterName,
                                     String  qualifiedName,
+                                    boolean cascadedDelete,
                                     boolean forLineage,
                                     boolean forDuplicateProcessing,
                                     Date    effectiveTime,
@@ -2461,6 +2462,7 @@ public class RelationalDataHandler<DATABASE,
                                                         databaseTableGUIDParameterName,
                                                         OpenMetadataType.RELATIONAL_TABLE.typeGUID,
                                                         OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                        cascadedDelete,
                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                         qualifiedName,
                                                         forLineage,
@@ -2477,6 +2479,7 @@ public class RelationalDataHandler<DATABASE,
                                                         databaseTableGUIDParameterName,
                                                         OpenMetadataType.RELATIONAL_TABLE.typeGUID,
                                                         OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                        cascadedDelete,
                                                         null,
                                                         null,
                                                         forLineage,
@@ -2583,6 +2586,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                     databaseAssetGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataType.ASSET.typeName,
+                                                                                    databaseAssetGUID,
                                                                                     OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeGUID,
                                                                                     OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                                                     effectiveFrom,
@@ -2759,6 +2763,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                    databaseAssetGUID,
                                                                                    parentElementGUIDParameterName,
                                                                                    OpenMetadataType.ASSET.typeName,
+                                                                                   databaseAssetGUID,
                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeGUID,
                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                                                    effectiveFrom,
@@ -2906,16 +2911,6 @@ public class RelationalDataHandler<DATABASE,
                                                                                    serviceName,
                                                                                    serverName);
 
-        databaseTableHandler.addAnchorGUIDToBuilder(userId,
-                                                    databaseSchemaTypeGUID,
-                                                    schemaTypeGUIDParameterName,
-                                                    false,
-                                                    false,
-                                                    effectiveTime,
-                                                    databaseTableHandler.getSupportedZones(),
-                                                    schemaAttributeBuilder,
-                                                    methodName);
-
         SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":viewType",
                                                                     OpenMetadataType.RELATIONAL_TABLE_TYPE.typeGUID,
                                                                     OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName,
@@ -2924,6 +2919,16 @@ public class RelationalDataHandler<DATABASE,
                                                                     serverName);
 
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+        databaseTableHandler.setUpAnchorsClassificationFromParent(userId,
+                                                                  databaseSchemaTypeGUID,
+                                                                  schemaTypeGUIDParameterName,
+                                                                  schemaAttributeBuilder,
+                                                                  false,
+                                                                  false,
+                                                                  effectiveTime,
+                                                                  methodName);
+
         schemaAttributeBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
         schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, expression, methodName);
 
@@ -3236,6 +3241,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                    databaseAssetGUID,
                                                                                    parentElementGUIDParameterName,
                                                                                    OpenMetadataType.ASSET.typeName,
+                                                                                   databaseAssetGUID,
                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeGUID,
                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName,
                                                                                    effectiveFrom,
@@ -3648,13 +3654,14 @@ public class RelationalDataHandler<DATABASE,
              * If the database table is set up with an anchor then this is propagated to the column
              */
             OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers =
-                    databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+                    databaseColumnHandler.getAnchorsFromAnchorsClassification(databaseTableEntity, methodName);
             if (anchorIdentifiers != null)
             {
                 schemaAttributeBuilder.setAnchors(userId,
                                                   anchorIdentifiers.anchorGUID,
                                                   anchorIdentifiers.anchorTypeName,
                                                   anchorIdentifiers.anchorDomainName,
+                                                  anchorIdentifiers.anchorScopeGUID,
                                                   methodName);
             }
 
@@ -3958,7 +3965,7 @@ public class RelationalDataHandler<DATABASE,
             /*
              * If the database table is set up with an anchor then this is propagated to the column
              */
-            anchorIdentifiers = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+            anchorIdentifiers = databaseColumnHandler.getAnchorsFromAnchorsClassification(databaseTableEntity, methodName);
 
             /*
              * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
@@ -4035,6 +4042,7 @@ public class RelationalDataHandler<DATABASE,
                                anchorIdentifiers.anchorGUID,
                                anchorIdentifiers.anchorTypeName,
                                anchorIdentifiers.anchorDomainName,
+                               anchorIdentifiers.anchorScopeGUID,
                                methodName);
         }
 
@@ -4291,6 +4299,7 @@ public class RelationalDataHandler<DATABASE,
                                                      elementGUIDParameterName,
                                                      OpenMetadataType.RELATIONAL_COLUMN.typeGUID,
                                                      OpenMetadataType.RELATIONAL_COLUMN.typeName,
+                                                     false,
                                                      null,
                                                      null,
                                                      forLineage,

@@ -209,6 +209,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                            null,
                            OpenMetadataType.COMMUNITY.typeName,
                            OpenMetadataType.COMMUNITY.typeName,
+                           null,
                            methodName);
 
 
@@ -499,6 +500,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                     communityGUIDParameterName,
                                     OpenMetadataType.COMMUNITY.typeGUID,
                                     OpenMetadataType.COMMUNITY.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,

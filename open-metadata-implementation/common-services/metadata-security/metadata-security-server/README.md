@@ -3,7 +3,7 @@
 
 # Open Metadata Security Server Side support
 
-Inside an OMAG Server Platform, and each OMAG Server that is running on it
+Inside an OMAG Server Platform, and each OMAG Server that is running on it,
 are security verifiers. They have the same interface as the
 two [Open Metadata Security Connectors](../metadata-security-connectors).
 However, they are always present and are the components that the other services call.

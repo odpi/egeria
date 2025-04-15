@@ -254,6 +254,7 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     contactMethodGUIDParameterName,
                                     OpenMetadataType.CONTACT_DETAILS.typeGUID,
                                     OpenMetadataType.CONTACT_DETAILS.typeName,
+                                    false,
                                     null,
                                     null,
                                     forLineage,
