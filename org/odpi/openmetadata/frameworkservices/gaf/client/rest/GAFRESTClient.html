@@ -145,6 +145,22 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AnchorSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AnchorSearchMatchesListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callAnchorSearchMatchesListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)" class="member-name-link">callAnchorSearchMatchesListPostRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a POST REST call that returns a AnchorSearchMatchesListResponse object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AnchorSearchMatchesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AnchorSearchMatchesResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callAnchorSearchMatchesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)" class="member-name-link">callAnchorSearchMatchesPostRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a POST REST call that returns a AnchorSearchMatchesResponse object.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AttributeTypeDefResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AttributeTypeDefResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callAttributeTypeDefGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callAttributeTypeDefGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operationSpecificURL,
@@ -863,6 +879,58 @@ loadScripts(document, 'script');</script>
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Issue a POST REST call that returns a OpenMetadataElementResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callAnchorSearchMatchesListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
+<h3>callAnchorSearchMatchesListPostRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AnchorSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AnchorSearchMatchesListResponse</a></span>&nbsp;<span class="element-name">callAnchorSearchMatchesListPostRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a POST REST call that returns a AnchorSearchMatchesListResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callAnchorSearchMatchesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
+<h3>callAnchorSearchMatchesPostRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AnchorSearchMatchesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AnchorSearchMatchesResponse</a></span>&nbsp;<span class="element-name">callAnchorSearchMatchesPostRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a POST REST call that returns a AnchorSearchMatchesResponse object.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
