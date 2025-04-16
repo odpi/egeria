@@ -173,6 +173,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection object for the Data Manager OMAS's out topic.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/RegisteredOMAGServiceResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServiceResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceDescription(java.lang.String,java.lang.String)" class="member-name-link">getServiceDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the description of this service.</div>
+</div>
 </div>
 </div>
 </div>
@@ -205,6 +211,27 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getServiceDescription(java.lang.String,java.lang.String)">
+<h3>getServiceDescription</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/description")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/RegisteredOMAGServiceResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServiceResponse</a></span>&nbsp;<span class="element-name">getServiceDescription</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+<div class="block">Return the description of this service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>userId</code> - identifier of calling user</dd>
+<dt>Returns:</dt>
+<dd>service description or
+ InvalidParameterException one of the parameters is null or invalid or
+ UserNotAuthorizedException user not authorized to issue this request or
+ PropertyServerException problem retrieving the discovery engine definition.</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getOutTopicConnection</h3>
