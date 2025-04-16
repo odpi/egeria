@@ -38,6 +38,29 @@ public class StewardshipActionResource
     }
 
 
+
+    /**
+     * Return the description of this service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     *
+     * @return service description or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/description")
+
+    public RegisteredOMAGServiceResponse getServiceDescription(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getServiceDescription(serverName, userId);
+    }
+
+
+
+
     /**
      * Return the connection object for the Stewardship Action OMAS's out topic.
      *

@@ -2,6 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceAuditCode;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -197,6 +201,31 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         }
     }
 
+
+    public RegisteredOMAGService getRegisteredOMAGService(int accessServiceCode)
+    {
+        List<AccessServiceRegistrationEntry> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+
+        for (AccessServiceRegistrationEntry registration : accessServiceRegistrationList)
+        {
+            if (registration.getAccessServiceCode() == accessServiceCode)
+            {
+                RegisteredOMAGService omagService = new RegisteredOMAGService();
+
+                omagService.setServiceId(registration.getAccessServiceCode());
+                omagService.setServiceName(registration.getAccessServiceFullName());
+                omagService.setServiceDescription(registration.getAccessServiceDescription());
+                omagService.setServiceURLMarker(registration.getAccessServiceURLMarker());
+                omagService.setServiceWiki(registration.getAccessServiceWiki());
+                omagService.setServiceDevelopmentStatus(registration.getAccessServiceDevelopmentStatus());
+                omagService.setServerType(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
+
+                return omagService;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Validate that the repository services are ok for this instance.
