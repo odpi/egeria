@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -472,6 +474,38 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
         if (instance != null)
         {
             return instance.getOutTopicClientConnection(callerId);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the requesting service's description.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param accessServiceCode identifier for the service
+     * @return service description
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public RegisteredOMAGService getRegisteredOMAGService(String userId,
+                                                          String serverName,
+                                                          int    accessServiceCode,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        OMASServiceInstance instance = (OMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                           serverName,
+                                                                                           serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRegisteredOMAGService(accessServiceCode);
         }
 
         return null;

@@ -4,11 +4,13 @@ package org.odpi.openmetadata.accessservices.digitalservice.server;
 
 
 import org.odpi.openmetadata.accessservices.digitalservice.handlers.DigitalServiceEntityHandler;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServiceResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
 import org.slf4j.LoggerFactory;
@@ -36,44 +38,30 @@ public class DigitalServiceRESTServices
     {
     }
 
-
     /**
-     * Create a new digital service.
+     * Return service description method.  This method is used to ensure Spring loads this module.
      *
-     * @param serverName                        the server name
-     * @param userId                            the user id
-     * @param requestBody the digital service request body
-     * @return the guid response
+     * @param serverName called server
+     * @param userId calling user
+     * @return service description
      */
-    public GUIDResponse createDigitalService( String                   userId,
-                                              String                   serverName,
-                                              ReferenceableRequestBody requestBody)
+    public RegisteredOMAGServiceResponse getServiceDescription(String serverName,
+                                                               String userId)
     {
-        final String methodName = "createDigitalService";
+        final String methodName = "getServiceDescription";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
+        RegisteredOMAGServiceResponse response = new RegisteredOMAGServiceResponse();
+        AuditLog                      auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            DigitalServiceEntityHandler handler = instanceHandler.getDigitalServiceEntityHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof DigitalServiceProperties)
-                {
-                    DigitalServiceProperties digitalServiceProperties = (DigitalServiceProperties) requestBody.getProperties();
-                    response.setGUID(handler.createDigitalServiceEntity(userId, serverName, digitalServiceProperties));
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            response.setService(instanceHandler.getRegisteredOMAGService(userId,
+                                                                         serverName,
+                                                                         AccessServiceDescription.DIGITAL_SERVICE_OMAS.getAccessServiceCode(),
+                                                                         methodName));
         }
         catch (Throwable error)
         {

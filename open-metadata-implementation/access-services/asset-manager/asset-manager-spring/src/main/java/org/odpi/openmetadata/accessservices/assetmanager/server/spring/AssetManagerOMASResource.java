@@ -5,13 +5,10 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +35,28 @@ public class AssetManagerOMASResource
     public AssetManagerOMASResource()
     {
     }
+
+
+
+    /**
+     * Return the description of this service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     *
+     * @return service description or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/description")
+
+    public RegisteredOMAGServiceResponse getServiceDescription(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getServiceDescription(serverName, userId);
+    }
+
 
 
     /**

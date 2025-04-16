@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataSourceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
@@ -34,6 +35,41 @@ public class CommunityProfileRESTServices
      */
     public CommunityProfileRESTServices()
     {
+    }
+
+    /**
+     * Return service description method.  This method is used to ensure Spring loads this module.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @return service description
+     */
+    public RegisteredOMAGServiceResponse getServiceDescription(String serverName,
+                                                               String userId)
+    {
+        final String methodName = "getServiceDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RegisteredOMAGServiceResponse response = new RegisteredOMAGServiceResponse();
+        AuditLog                      auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setService(instanceHandler.getRegisteredOMAGService(userId,
+                                                                         serverName,
+                                                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceCode(),
+                                                                         methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 

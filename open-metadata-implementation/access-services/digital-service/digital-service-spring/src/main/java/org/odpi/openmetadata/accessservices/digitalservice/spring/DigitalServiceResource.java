@@ -9,11 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ReferenceableRequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServiceResponse;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -38,13 +35,24 @@ public class DigitalServiceResource
     {
     }
 
-    @PostMapping(path = "/digital-service")
-    public GUIDResponse createDigitalService(@PathVariable String                   serverName,
-                                             @PathVariable String                   userId,
-                                             @RequestBody  ReferenceableRequestBody requestBody)
-    {
-        return restAPI.createDigitalService(userId, serverName, requestBody);
-    }
 
+    /**
+     * Return the description of this service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     *
+     * @return service description or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/description")
+
+    public RegisteredOMAGServiceResponse getServiceDescription(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getServiceDescription(serverName, userId);
+    }
 
 }

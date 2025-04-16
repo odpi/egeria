@@ -3,8 +3,12 @@
 package org.odpi.openmetadata.accessservices.datascience.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.slf4j.Logger;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServiceResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 
@@ -16,17 +20,54 @@ import org.slf4j.LoggerFactory;
  */
 public class DataScienceRESTServices
 {
-    private static DataScienceInstanceHandler instanceHandler = new DataScienceInstanceHandler();
+    private final static DataScienceInstanceHandler instanceHandler = new DataScienceInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(DataScienceRESTServices.class);
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(DataScienceRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
      */
     public DataScienceRESTServices()
     {
+    }
+
+
+    /**
+     * Return service description method.  This method is used to ensure Spring loads this module.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @return service description
+     */
+    public RegisteredOMAGServiceResponse getServiceDescription(String serverName,
+                                                               String userId)
+    {
+        final String methodName = "getServiceDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RegisteredOMAGServiceResponse response = new RegisteredOMAGServiceResponse();
+        AuditLog                      auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setService(instanceHandler.getRegisteredOMAGService(userId,
+                                                                         serverName,
+                                                                         AccessServiceDescription.DATA_SCIENCE_OMAS.getAccessServiceCode(),
+                                                                         methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 }

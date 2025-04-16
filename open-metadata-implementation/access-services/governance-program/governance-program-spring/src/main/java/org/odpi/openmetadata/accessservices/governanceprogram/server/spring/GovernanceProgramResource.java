@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramRESTServices;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.RelatedElementRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +32,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class GovernanceProgramResource
 {
-    private final RelatedElementRESTServices restAPI = new RelatedElementRESTServices();
+    private final RelatedElementRESTServices relatedElementsRESTAPI = new RelatedElementRESTServices();
+    private final GovernanceProgramRESTServices restAPI = new GovernanceProgramRESTServices();
 
     /**
      * Default constructor
      */
     public GovernanceProgramResource()
     {
+    }
+
+
+
+    /**
+     * Return the description of this service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     *
+     * @return service description or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/description")
+
+    public RegisteredOMAGServiceResponse getServiceDescription(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getServiceDescription(serverName, userId);
     }
 
 
@@ -63,7 +86,7 @@ public class GovernanceProgramResource
                                              @PathVariable String                  detailGUID,
                                              @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupMoreInformation(serverName, userId, elementGUID, detailGUID, requestBody);
+        return relatedElementsRESTAPI.setupMoreInformation(serverName, userId, elementGUID, detailGUID, requestBody);
     }
 
 
@@ -89,7 +112,7 @@ public class GovernanceProgramResource
                                              @PathVariable String                    detailGUID,
                                              @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearMoreInformation(serverName, userId, elementGUID, detailGUID, requestBody);
+        return relatedElementsRESTAPI.clearMoreInformation(serverName, userId, elementGUID, detailGUID, requestBody);
     }
 
 
@@ -115,7 +138,7 @@ public class GovernanceProgramResource
                                                       @RequestParam int    startFrom,
                                                       @RequestParam int    pageSize)
     {
-        return restAPI.getMoreInformation(serverName, userId, elementGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getMoreInformation(serverName, userId, elementGUID, startFrom, pageSize);
     }
 
 
@@ -141,7 +164,7 @@ public class GovernanceProgramResource
                                                           @RequestParam int    startFrom,
                                                           @RequestParam int    pageSize)
     {
-        return restAPI.getDescriptiveElements(serverName, userId, detailGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getDescriptiveElements(serverName, userId, detailGUID, startFrom, pageSize);
     }
 
 
@@ -167,7 +190,7 @@ public class GovernanceProgramResource
                                         @PathVariable String                  governanceDefinitionGUID,
                                         @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupGovernedBy(serverName, userId, elementGUID, governanceDefinitionGUID, requestBody);
+        return relatedElementsRESTAPI.setupGovernedBy(serverName, userId, elementGUID, governanceDefinitionGUID, requestBody);
     }
 
 
@@ -193,7 +216,7 @@ public class GovernanceProgramResource
                                         @PathVariable String                    governanceDefinitionGUID,
                                         @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearGovernedBy(serverName, userId, elementGUID, governanceDefinitionGUID, requestBody);
+        return relatedElementsRESTAPI.clearGovernedBy(serverName, userId, elementGUID, governanceDefinitionGUID, requestBody);
     }
 
 
@@ -219,7 +242,7 @@ public class GovernanceProgramResource
                                                                             @RequestParam int    startFrom,
                                                                             @RequestParam int    pageSize)
     {
-        return restAPI.getGovernanceDefinitionsForElement(serverName, userId, elementGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getGovernanceDefinitionsForElement(serverName, userId, elementGUID, startFrom, pageSize);
     }
 
 
@@ -245,7 +268,7 @@ public class GovernanceProgramResource
                                                        @RequestParam int    startFrom,
                                                        @RequestParam int    pageSize)
     {
-        return restAPI.getGovernedElements(serverName, userId, governanceDefinitionGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getGovernedElements(serverName, userId, governanceDefinitionGUID, startFrom, pageSize);
     }
 
 
@@ -272,7 +295,7 @@ public class GovernanceProgramResource
                                                        @PathVariable String                  scopeGUID,
                                                        @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupGovernanceDefinitionScope(serverName, userId, governanceDefinitionGUID, scopeGUID, requestBody);
+        return relatedElementsRESTAPI.setupGovernanceDefinitionScope(serverName, userId, governanceDefinitionGUID, scopeGUID, requestBody);
     }
 
 
@@ -298,7 +321,7 @@ public class GovernanceProgramResource
                                                        @PathVariable String                  scopeGUID,
                                                        @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearGovernanceDefinitionScope(serverName, userId, governanceDefinitionGUID, scopeGUID, requestBody);
+        return relatedElementsRESTAPI.clearGovernanceDefinitionScope(serverName, userId, governanceDefinitionGUID, scopeGUID, requestBody);
     }
 
 
@@ -324,7 +347,7 @@ public class GovernanceProgramResource
                                                                  @RequestParam int    startFrom,
                                                                  @RequestParam int    pageSize)
     {
-        return restAPI.getGovernanceDefinitionScopes(serverName, userId, governanceDefinitionGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getGovernanceDefinitionScopes(serverName, userId, governanceDefinitionGUID, startFrom, pageSize);
     }
 
 
@@ -350,7 +373,7 @@ public class GovernanceProgramResource
                                                                         @RequestParam int    startFrom,
                                                                         @RequestParam int    pageSize)
     {
-        return restAPI.getScopedGovernanceDefinitions(serverName, userId, scopeGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getScopedGovernanceDefinitions(serverName, userId, scopeGUID, startFrom, pageSize);
     }
 
 
@@ -376,7 +399,7 @@ public class GovernanceProgramResource
                                                                 @PathVariable String                  personRoleGUID,
                                                                 @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupGovernanceResponsibilityAssignment(serverName, userId, governanceResponsibilityGUID, personRoleGUID, requestBody);
+        return relatedElementsRESTAPI.setupGovernanceResponsibilityAssignment(serverName, userId, governanceResponsibilityGUID, personRoleGUID, requestBody);
     }
 
 
@@ -402,7 +425,7 @@ public class GovernanceProgramResource
                                                                 @PathVariable String                    personRoleGUID,
                                                                 @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearGovernanceResponsibilityAssignment(serverName, userId, governanceResponsibilityGUID, personRoleGUID, requestBody);
+        return relatedElementsRESTAPI.clearGovernanceResponsibilityAssignment(serverName, userId, governanceResponsibilityGUID, personRoleGUID, requestBody);
     }
 
 
@@ -428,7 +451,7 @@ public class GovernanceProgramResource
                                                        @RequestParam int    startFrom,
                                                        @RequestParam int    pageSize)
     {
-        return restAPI.getResponsibleRoles(serverName, userId, governanceResponsibilityGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getResponsibleRoles(serverName, userId, governanceResponsibilityGUID, startFrom, pageSize);
     }
 
 
@@ -454,7 +477,7 @@ public class GovernanceProgramResource
                                                                  @RequestParam int    startFrom,
                                                                  @RequestParam int    pageSize)
     {
-        return restAPI.getRoleResponsibilities(serverName, userId, personRoleGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getRoleResponsibilities(serverName, userId, personRoleGUID, startFrom, pageSize);
     }
 
 
@@ -480,7 +503,7 @@ public class GovernanceProgramResource
                                          @PathVariable String                  stakeholderGUID,
                                          @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupStakeholder(serverName, userId, elementGUID, stakeholderGUID, requestBody);
+        return relatedElementsRESTAPI.setupStakeholder(serverName, userId, elementGUID, stakeholderGUID, requestBody);
     }
 
 
@@ -506,7 +529,7 @@ public class GovernanceProgramResource
                                          @PathVariable String                    stakeholderGUID,
                                          @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearStakeholder(serverName, userId, elementGUID, stakeholderGUID, requestBody);
+        return relatedElementsRESTAPI.clearStakeholder(serverName, userId, elementGUID, stakeholderGUID, requestBody);
     }
 
 
@@ -532,7 +555,7 @@ public class GovernanceProgramResource
                                                    @RequestParam int   startFrom,
                                                    @RequestParam int   pageSize)
     {
-        return restAPI.getStakeholders(serverName, userId, elementGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getStakeholders(serverName, userId, elementGUID, startFrom, pageSize);
     }
 
 
@@ -558,7 +581,7 @@ public class GovernanceProgramResource
                                                                       @RequestParam int   startFrom,
                                                                       @RequestParam int   pageSize)
     {
-        return restAPI.getStakeholderCommissionedElements(serverName, userId, stakeholderGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getStakeholderCommissionedElements(serverName, userId, stakeholderGUID, startFrom, pageSize);
     }
 
 
@@ -584,7 +607,7 @@ public class GovernanceProgramResource
                                              @PathVariable String                  scopeGUID,
                                              @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupAssignmentScope(serverName, userId, elementGUID, scopeGUID, requestBody);
+        return relatedElementsRESTAPI.setupAssignmentScope(serverName, userId, elementGUID, scopeGUID, requestBody);
     }
 
 
@@ -610,7 +633,7 @@ public class GovernanceProgramResource
                                              @PathVariable String                    scopeGUID,
                                              @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearAssignmentScope(serverName, userId, elementGUID, scopeGUID, requestBody);
+        return relatedElementsRESTAPI.clearAssignmentScope(serverName, userId, elementGUID, scopeGUID, requestBody);
     }
 
 
@@ -636,7 +659,7 @@ public class GovernanceProgramResource
                                                      @RequestParam int   startFrom,
                                                      @RequestParam int   pageSize)
     {
-        return restAPI.getAssignedScopes(serverName, userId, elementGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getAssignedScopes(serverName, userId, elementGUID, startFrom, pageSize);
     }
 
 
@@ -662,7 +685,7 @@ public class GovernanceProgramResource
                                                      @RequestParam int   startFrom,
                                                      @RequestParam int   pageSize)
     {
-        return restAPI.getAssignedActors(serverName, userId, scopeGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getAssignedActors(serverName, userId, scopeGUID, startFrom, pageSize);
     }
 
 
@@ -688,7 +711,7 @@ public class GovernanceProgramResource
                                       @PathVariable String                  resourceGUID,
                                       @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupResource(serverName, userId, elementGUID, resourceGUID, requestBody);
+        return relatedElementsRESTAPI.setupResource(serverName, userId, elementGUID, resourceGUID, requestBody);
     }
 
 
@@ -714,7 +737,7 @@ public class GovernanceProgramResource
                                       @PathVariable String                    resourceGUID,
                                       @RequestBody  ExternalSourceRequestBody requestBody)
     {
-        return restAPI.clearResource(serverName, userId, elementGUID, resourceGUID, requestBody);
+        return relatedElementsRESTAPI.clearResource(serverName, userId, elementGUID, resourceGUID, requestBody);
     }
 
 
@@ -740,7 +763,7 @@ public class GovernanceProgramResource
                                                    @RequestParam int    startFrom,
                                                    @RequestParam int    pageSize)
     {
-        return restAPI.getResourceList(serverName, userId, elementGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getResourceList(serverName, userId, elementGUID, startFrom, pageSize);
     }
 
 
@@ -766,6 +789,6 @@ public class GovernanceProgramResource
                                                           @RequestParam int   startFrom,
                                                           @RequestParam int   pageSize)
     {
-        return restAPI.getSupportedByResource(serverName, userId, resourceGUID, startFrom, pageSize);
+        return relatedElementsRESTAPI.getSupportedByResource(serverName, userId, resourceGUID, startFrom, pageSize);
     }
 }

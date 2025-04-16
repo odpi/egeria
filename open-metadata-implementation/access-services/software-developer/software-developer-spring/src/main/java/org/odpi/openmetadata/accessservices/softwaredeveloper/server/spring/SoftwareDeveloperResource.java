@@ -5,6 +5,9 @@ package org.odpi.openmetadata.accessservices.softwaredeveloper.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.softwaredeveloper.server.SoftwareDeveloperRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServiceResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +33,28 @@ public class SoftwareDeveloperResource
     public SoftwareDeveloperResource()
     {
     }
+
+
+
+
+    /**
+     * Return the description of this service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     *
+     * @return service description or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/description")
+
+    public RegisteredOMAGServiceResponse getServiceDescription(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getServiceDescription(serverName, userId);
+    }
+
 
 }

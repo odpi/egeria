@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
@@ -66,6 +67,40 @@ public class AssetOwnerRESTServices
     {
     }
 
+    /**
+     * Return service description method.  This method is used to ensure Spring loads this module.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @return service description
+     */
+    public RegisteredOMAGServiceResponse getServiceDescription(String serverName,
+                                                               String userId)
+    {
+        final String methodName = "getServiceDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RegisteredOMAGServiceResponse response = new RegisteredOMAGServiceResponse();
+        AuditLog                      auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setService(instanceHandler.getRegisteredOMAGService(userId,
+                                                                         serverName,
+                                                                         AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceCode(),
+                                                                         methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
     /*
      * ==============================================
