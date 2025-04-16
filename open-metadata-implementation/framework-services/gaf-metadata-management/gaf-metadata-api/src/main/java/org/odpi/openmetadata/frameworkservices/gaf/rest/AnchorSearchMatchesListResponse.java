@@ -6,8 +6,10 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AnchorSearchMatches;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -15,20 +17,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The response structure used on the Governance Action Framework REST API calls that returns a
- * RegisteredGovernanceServiceElement object as a response.
+ * The response structure used on REST API calls that returns a
+ * list of AnchorSearchMatches objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RegisteredGovernanceServiceResponse extends OMAGGAFAPIResponse
+public class AnchorSearchMatchesListResponse extends OMAGGAFAPIResponse
 {
-    private RegisteredGovernanceServiceElement registeredGovernanceService = null;
+    private List<AnchorSearchMatches> elements = null;
 
     /**
      * Default constructor
      */
-    public RegisteredGovernanceServiceResponse()
+    public AnchorSearchMatchesListResponse()
     {
         super();
     }
@@ -39,36 +41,36 @@ public class RegisteredGovernanceServiceResponse extends OMAGGAFAPIResponse
      *
      * @param template object to copy
      */
-    public RegisteredGovernanceServiceResponse(RegisteredGovernanceServiceResponse template)
+    public AnchorSearchMatchesListResponse(AnchorSearchMatchesListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.registeredGovernanceService = template.getRegisteredGovernanceService();
+            this.elements = template.getElements();
         }
     }
 
 
     /**
-     * Return the properties object.
+     * Return the properties objects.
      *
-     * @return properties object
+     * @return list of properties objects
      */
-    public RegisteredGovernanceServiceElement getRegisteredGovernanceService()
+    public List<AnchorSearchMatches> getElements()
     {
-        return registeredGovernanceService;
+        return elements;
     }
 
 
     /**
-     * Set up the properties object.
+     * Set up the properties objects.
      *
-     * @param registeredGovernanceService  properties object
+     * @param elements  list of properties objects
      */
-    public void setRegisteredGovernanceService(RegisteredGovernanceServiceElement registeredGovernanceService)
+    public void setElements(List<AnchorSearchMatches> elements)
     {
-        this.registeredGovernanceService = registeredGovernanceService;
+        this.elements = elements;
     }
 
 
@@ -80,8 +82,8 @@ public class RegisteredGovernanceServiceResponse extends OMAGGAFAPIResponse
     @Override
     public String toString()
     {
-        return "RegisteredGovernanceServiceResponse{" +
-                "registeredGovernanceService=" + registeredGovernanceService +
+        return "AnchorSearchMatchesListResponse{" +
+                "elements=" + elements +
                 "} " + super.toString();
     }
 
@@ -107,8 +109,8 @@ public class RegisteredGovernanceServiceResponse extends OMAGGAFAPIResponse
         {
             return false;
         }
-        RegisteredGovernanceServiceResponse that = (RegisteredGovernanceServiceResponse) objectToCompare;
-        return Objects.equals(getRegisteredGovernanceService(), that.getRegisteredGovernanceService());
+        AnchorSearchMatchesListResponse that = (AnchorSearchMatchesListResponse) objectToCompare;
+        return Objects.equals(getElements(), that.getElements());
     }
 
     
@@ -120,6 +122,6 @@ public class RegisteredGovernanceServiceResponse extends OMAGGAFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getRegisteredGovernanceService());
+        return Objects.hash(super.hashCode(), getElements());
     }
 }

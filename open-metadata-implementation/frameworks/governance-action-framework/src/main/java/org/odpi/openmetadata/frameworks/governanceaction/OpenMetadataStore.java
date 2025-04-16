@@ -545,6 +545,129 @@ public class OpenMetadataStore
 
 
     /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied anchorGUID.
+     *
+     * @param searchString           name to retrieve
+     * @param anchorGUID unique identifier of anchor
+     * @param typeName optional name of the type to limit the results to
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public AnchorSearchMatches findElementsForAnchor(String              searchString,
+                                                     String              anchorGUID,
+                                                     String              typeName,
+                                                     List<ElementStatus> limitResultsByStatus,
+                                                     Date                asOfTime,
+                                                     String              sequencingProperty,
+                                                     SequencingOrder     sequencingOrder,
+                                                     Date                effectiveTime,
+                                                     int                 startFrom,
+                                                     int                 pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return openMetadataClient.findElementsForAnchor(userId, searchString, anchorGUID, typeName, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     *
+     * @param searchString           name to retrieve
+     * @param anchorDomainName name of open metadata type for the domain
+     * @param typeName               name of the type to limit the results to (maybe null to mean all types)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<AnchorSearchMatches> findElementsInAnchorDomain(String              searchString,
+                                                                String              anchorDomainName,
+                                                                String              typeName,
+                                                                List<ElementStatus> limitResultsByStatus,
+                                                                Date                asOfTime,
+                                                                String              sequencingProperty,
+                                                                SequencingOrder     sequencingOrder,
+                                                                Date                effectiveTime,
+                                                                int                 startFrom,
+                                                                int                 pageSize) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return openMetadataClient.findElementsInAnchorDomain(userId, searchString, anchorDomainName, typeName, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     *
+     * @param searchString           name to retrieve
+     * @param anchorScopeGUID unique identifier of the scope to use
+     * @param typeName               name of the type to limit the results to (maybe null to mean all types)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<AnchorSearchMatches> findElementsInAnchorScope(String              searchString,
+                                                               String              anchorScopeGUID,
+                                                               String              typeName,
+                                                               List<ElementStatus> limitResultsByStatus,
+                                                               Date                asOfTime,
+                                                               String              sequencingProperty,
+                                                               SequencingOrder     sequencingOrder,
+                                                               Date                effectiveTime,
+                                                               int                 startFrom,
+                                                               int                 pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        return openMetadataClient.findElementsInAnchorScope(userId, searchString, anchorScopeGUID, typeName, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param elementGUID unique identifier for the starting metadata element
@@ -559,12 +682,12 @@ public class OpenMetadataStore
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     public RelatedMetadataElementList getRelatedMetadataElements(String  elementGUID,
-                                                                   int     startingAtEnd,
-                                                                   String  relationshipTypeName,
-                                                                   int     startFrom,
-                                                                   int     pageSize) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+                                                                 int     startingAtEnd,
+                                                                 String  relationshipTypeName,
+                                                                 int     startFrom,
+                                                                 int     pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         return openMetadataClient.getRelatedMetadataElements(userId,
                                                              elementGUID,

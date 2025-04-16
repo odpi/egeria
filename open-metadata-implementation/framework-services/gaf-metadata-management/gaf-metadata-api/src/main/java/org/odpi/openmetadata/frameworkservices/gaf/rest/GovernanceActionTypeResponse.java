@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeElement;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceActionTypeElementResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
+ * GovernanceActionTypeElementResponse is the response structure used on the Governance Action Framework REST API calls that returns a
  * GovernanceActionType element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -58,14 +57,7 @@ public class GovernanceActionTypeResponse extends OMAGGAFAPIResponse
      */
     public GovernanceActionTypeElement getElement()
     {
-        if (element == null)
-        {
-            return null;
-        }
-        else
-        {
-            return element;
-        }
+        return element;
     }
 
 
@@ -88,19 +80,9 @@ public class GovernanceActionTypeResponse extends OMAGGAFAPIResponse
     @Override
     public String toString()
     {
-        return "GovernanceActionTypeElementResponse{" +
+        return "GovernanceActionTypeResponse{" +
                 "element=" + element +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

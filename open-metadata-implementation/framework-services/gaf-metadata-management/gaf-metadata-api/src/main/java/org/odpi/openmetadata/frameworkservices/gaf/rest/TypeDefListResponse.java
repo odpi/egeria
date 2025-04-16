@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * TypeDefListResponse provides a simple bean for returning a list of TypeDefs (or information to create
- * a valid OMRS exception).
+ * a valid exception).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -58,25 +56,7 @@ public class TypeDefListResponse extends OMAGGAFAPIResponse
      */
     public List<OpenMetadataTypeDef> getTypeDefs()
     {
-        if (typeDefs == null)
-        {
-            return null;
-        }
-        else if (typeDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<OpenMetadataTypeDef>  clonedTypeDefs = new ArrayList<>();
-
-            for (OpenMetadataTypeDef  typeDef : typeDefs)
-            {
-                clonedTypeDefs.add(typeDef.cloneFromSubclass());
-            }
-
-            return clonedTypeDefs;
-        }
+        return typeDefs;
     }
 
 
@@ -100,18 +80,8 @@ public class TypeDefListResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "TypeDefListResponse{" +
-                       "typeDefs=" + typeDefs +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "typeDefs=" + typeDefs +
+                "} " + super.toString();
     }
 
 

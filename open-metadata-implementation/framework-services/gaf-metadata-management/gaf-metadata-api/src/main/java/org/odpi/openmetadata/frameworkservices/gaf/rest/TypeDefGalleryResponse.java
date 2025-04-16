@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,25 +59,7 @@ public class TypeDefGalleryResponse extends OMAGGAFAPIResponse
      */
     public List<OpenMetadataAttributeTypeDef> getAttributeTypeDefs()
     {
-        if (attributeTypeDefs == null)
-        {
-            return null;
-        }
-        else if (attributeTypeDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<OpenMetadataAttributeTypeDef>  clonedTypeDefs = new ArrayList<>();
-
-            for (OpenMetadataAttributeTypeDef  attributeTypeDef : attributeTypeDefs)
-            {
-                clonedTypeDefs.add(attributeTypeDef.cloneFromSubclass());
-            }
-
-            return clonedTypeDefs;
-        }
+        return attributeTypeDefs;
     }
 
 
@@ -101,25 +81,7 @@ public class TypeDefGalleryResponse extends OMAGGAFAPIResponse
      */
     public List<OpenMetadataTypeDef> getTypeDefs()
     {
-        if (typeDefs == null)
-        {
-            return null;
-        }
-        else if (typeDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<OpenMetadataTypeDef>  clonedTypeDefs = new ArrayList<>();
-
-            for (OpenMetadataTypeDef  typeDef : typeDefs)
-            {
-                clonedTypeDefs.add(typeDef.cloneFromSubclass());
-            }
-
-            return clonedTypeDefs;
-        }
+        return typeDefs;
     }
 
 
@@ -143,19 +105,9 @@ public class TypeDefGalleryResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "TypeDefGalleryResponse{" +
-                       "attributeTypeDefs=" + attributeTypeDefs +
-                       ", typeDefs=" + typeDefs +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "attributeTypeDefs=" + attributeTypeDefs +
+                ", typeDefs=" + typeDefs +
+                "} " + super.toString();
     }
 
 

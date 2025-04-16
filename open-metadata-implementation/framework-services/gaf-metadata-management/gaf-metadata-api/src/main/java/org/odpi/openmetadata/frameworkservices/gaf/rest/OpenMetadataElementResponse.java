@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,7 +15,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * OpenMetadataElementResponse is the response structure used on the OMAS REST API calls that return the GAF definition of the OpenMetadataElement.
+ * The response structure used on the Governance Action Framework REST API calls that
+ * return the GAF definition of the OpenMetadataElement.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -83,17 +83,7 @@ public class OpenMetadataElementResponse extends OMAGGAFAPIResponse
     {
         return "OpenMetadataElementResponse{" +
                 "element=" + element +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -110,7 +100,7 @@ public class OpenMetadataElementResponse extends OMAGGAFAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof OpenMetadataElementResponse))
+        if (!(objectToCompare instanceof OpenMetadataElementResponse that))
         {
             return false;
         }
@@ -118,7 +108,6 @@ public class OpenMetadataElementResponse extends OMAGGAFAPIResponse
         {
             return false;
         }
-        OpenMetadataElementResponse that = (OpenMetadataElementResponse) objectToCompare;
         return Objects.equals(element, that.element);
     }
 

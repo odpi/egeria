@@ -334,9 +334,9 @@ public enum ViewServiceDescription
                         "Data Designer",
                         "Data Designer OMVS",
                         "data-designer",
-                        "Create schema definitions to describe the structure of data.",
+                        "Create data specifications to describe data requirements.",
                         "https://egeria-project.org/services/omvs/data-designer/overview/",
-                        AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName()),
+                        AccessServiceDescription.DESIGN_MODEL_OMAS.getAccessServiceFullName()),
 
 
     /**

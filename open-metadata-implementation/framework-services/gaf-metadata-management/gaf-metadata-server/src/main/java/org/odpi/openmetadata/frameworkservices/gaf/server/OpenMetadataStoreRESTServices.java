@@ -7,8 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.mermaid.OpenMetadataMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -31,10 +30,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -915,8 +911,6 @@ public class OpenMetadataStoreRESTServices
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -929,8 +923,6 @@ public class OpenMetadataStoreRESTServices
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  serviceURLMarker,
                                                                        String                  userId,
-                                                                       boolean                 forLineage,
-                                                                       boolean                 forDuplicateProcessing,
                                                                        int                     startFrom,
                                                                        int                     pageSize,
                                                                        SearchStringRequestBody requestBody)
@@ -957,8 +949,8 @@ public class OpenMetadataStoreRESTServices
                                                                                requestBody.getAsOfTime(),
                                                                                requestBody.getSequencingProperty(),
                                                                                requestBody.getSequencingOrder(),
-                                                                               forLineage,
-                                                                               forDuplicateProcessing,
+                                                                               requestBody.getForLineage(),
+                                                                               requestBody.getForDuplicateProcessing(),
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                                requestBody.getEffectiveTime(),
                                                                                startFrom,
@@ -980,6 +972,518 @@ public class OpenMetadataStoreRESTServices
     }
 
 
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied anchorGUID.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param anchorGUID unique identifier of anchor
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AnchorSearchMatchesResponse findElementsForAnchor(String                  serverName,
+                                                             String                  serviceURLMarker,
+                                                             String                  userId,
+                                                             String                  anchorGUID,
+                                                             SearchStringRequestBody requestBody,
+                                                             int                     startFrom,
+                                                             int                     pageSize)
+    {
+        final String methodName = "findElementsForAnchor";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AnchorSearchMatchesResponse response = new AnchorSearchMatchesResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SearchProperties searchProperties = new SearchProperties();
+
+                searchProperties.setMatchCriteria(MatchCriteria.ANY);
+                searchProperties.setConditions(getPropertyConditions(requestBody.getSearchString(),
+                                                                     getAnchorSearchesPropertyList()));
+
+                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorGUID,
+                                                                                             OpenMetadataProperty.ANCHOR_GUID.name);
+
+                List<EntityDetail> anchoredEntities = handler.findEntities(userId,
+                                                                           requestBody.getTypeName(),
+                                                                           null,
+                                                                           searchProperties,
+                                                                           null,
+                                                                           searchClassifications,
+                                                                           requestBody.getAsOfTime(),
+                                                                           null,
+                                                                           null,
+                                                                           false,
+                                                                           false,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName);
+
+                response.setElement(this.assembleAnchorSearchMatches(userId, anchorGUID, anchoredEntities, handler));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param anchorDomainName name of open metadata type for the domain
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AnchorSearchMatchesListResponse findElementsInAnchorDomain(String                  serverName,
+                                                                      String                  serviceURLMarker,
+                                                                      String                  userId,
+                                                                      String                  anchorDomainName,
+                                                                      SearchStringRequestBody requestBody,
+                                                                      int                     startFrom,
+                                                                      int                     pageSize)
+    {
+        final String methodName = "findElementsInAnchorDomain";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AnchorSearchMatchesListResponse response = new AnchorSearchMatchesListResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SearchProperties searchProperties = new SearchProperties();
+
+                searchProperties.setMatchCriteria(MatchCriteria.ANY);
+                searchProperties.setConditions(getPropertyConditions(requestBody.getSearchString(),
+                                                                     getAnchorSearchesPropertyList()));
+
+                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorDomainName,
+                                                                                             OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name);
+
+                List<EntityDetail> anchoredEntities = handler.findEntities(userId,
+                                                                           requestBody.getTypeName(),
+                                                                           null,
+                                                                           searchProperties,
+                                                                           null,
+                                                                           searchClassifications,
+                                                                           requestBody.getAsOfTime(),
+                                                                           null,
+                                                                           null,
+                                                                           false,
+                                                                           false,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName);
+
+                response.setElements(this.organizeAnchorSearchResults(userId, anchoredEntities, handler));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param anchorScopeGUID unique identifier of the scope to use
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AnchorSearchMatchesListResponse findElementsInAnchorScope(String                  serverName,
+                                                                     String                  serviceURLMarker,
+                                                                     String                  userId,
+                                                                     String                  anchorScopeGUID,
+                                                                     SearchStringRequestBody requestBody,
+                                                                     int                     startFrom,
+                                                                     int                     pageSize)
+    {
+        final String methodName = "findElementsInAnchorScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AnchorSearchMatchesListResponse response = new AnchorSearchMatchesListResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SearchProperties searchProperties = new SearchProperties();
+
+                searchProperties.setMatchCriteria(MatchCriteria.ANY);
+                searchProperties.setConditions(getPropertyConditions(requestBody.getSearchString(),
+                                                                     getAnchorSearchesPropertyList()));
+
+                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorScopeGUID,
+                                                                                             OpenMetadataProperty.ANCHOR_SCOPE_GUID.name);
+
+                List<EntityDetail> anchoredEntities = handler.findEntities(userId,
+                                                                           requestBody.getTypeName(),
+                                                                           null,
+                                                                           searchProperties,
+                                                                           null,
+                                                                           searchClassifications,
+                                                                           requestBody.getAsOfTime(),
+                                                                           null,
+                                                                           null,
+                                                                           false,
+                                                                           false,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName);
+
+                response.setElements(this.organizeAnchorSearchResults(userId, anchoredEntities, handler));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Organize the results of an anchor search by anchor entity.
+     *
+     * @param userId calling user
+     * @param anchoredEntities search results
+     * @param handler handler for more info
+     * @return list of organized search results
+     * @throws PropertyServerException problem with a converter
+     */
+    private List<AnchorSearchMatches> organizeAnchorSearchResults(String                                      userId,
+                                                                  List<EntityDetail>                          anchoredEntities,
+                                                                  MetadataElementHandler<OpenMetadataElement> handler) throws PropertyServerException
+    {
+        final String methodName = "formatAnchorSearchResults";
+
+        List<AnchorSearchMatches> anchorSearchMatchesList = null;
+
+        if (anchoredEntities != null)
+        {
+            anchorSearchMatchesList = new ArrayList<>();
+
+            Map<String, Map<String, EntityDetail>> organizedEntities = new HashMap<>();
+
+            for (EntityDetail entityDetail : anchoredEntities)
+            {
+                if (entityDetail != null)
+                {
+                    OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers = handler.getAnchorsFromAnchorsClassification(entityDetail, methodName);
+
+                    String anchorGUID;
+                    if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null))
+                    {
+                        anchorGUID = entityDetail.getGUID();
+                    }
+                    else
+                    {
+                        anchorGUID = anchorIdentifiers.anchorGUID;
+                    }
+
+                    Map<String, EntityDetail> assetEntityMap = organizedEntities.get(anchorGUID);
+
+                    if (assetEntityMap == null)
+                    {
+                        assetEntityMap = new HashMap<>();
+                    }
+
+                    assetEntityMap.put(entityDetail.getGUID(), entityDetail);
+                    organizedEntities.put(anchorGUID, assetEntityMap);
+                }
+            }
+
+            for (String anchorGUID : organizedEntities.keySet())
+            {
+                AnchorSearchMatches  anchorSearchMatches = this.assembleAnchorSearchMatches(userId,
+                                                                                            anchorGUID,
+                                                                                            new ArrayList<>(organizedEntities.get(anchorGUID).values()),
+                                                                                            handler);
+                if (anchorSearchMatches != null)
+                {
+                    anchorSearchMatchesList.add(anchorSearchMatches);
+                }
+            }
+        }
+
+        return anchorSearchMatchesList;
+    }
+
+
+    /**
+     * Format the search results for a single anchor entity.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchoredEntities search results
+     * @param handler handler for more info
+     * @return list of organized search results
+     * @throws PropertyServerException problem with a converter
+     */
+    private AnchorSearchMatches assembleAnchorSearchMatches(String                                      userId,
+                                                            String                                      anchorGUID,
+                                                            List<EntityDetail>                          anchoredEntities,
+                                                            MetadataElementHandler<OpenMetadataElement> handler) throws PropertyServerException
+    {
+        final String  methodName = "assembleAnchorSearchMatches";
+        final String  parameterName = "anchorGUID";
+
+        OpenMetadataAPIGenericConverter<OpenMetadataElement> converter = handler.getConverter();
+
+        OpenMetadataElement anchorElement;
+
+        try
+        {
+            anchorElement = handler.getBeanFromRepository(userId,
+                                                          anchorGUID,
+                                                          parameterName,
+                                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                          methodName);
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException notVisible)
+        {
+            anchorElement = null;
+        }
+
+        if (anchorElement != null)
+        {
+            AnchorSearchMatches       anchorSearchMatches = new AnchorSearchMatches(anchorElement);
+            List<OpenMetadataElement> anchoredElements    = new ArrayList<>();
+
+            if (anchoredEntities != null)
+            {
+                for (EntityDetail anchoredEntity : anchoredEntities)
+                {
+                    OpenMetadataElement matchedElementElement = converter.getNewBean(OpenMetadataElement.class,
+                                                                                     anchoredEntity,
+                                                                                     methodName);
+
+                    anchoredElements.add(matchedElementElement);
+                }
+            }
+
+            anchorSearchMatches.setMatchingElements(anchoredElements);
+
+            return anchorSearchMatches;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Set up values for the anchors classification that controls the context of the search.
+     *
+     * @param contextValue value of the context
+     * @param anchorPropertyName the property to match it against in the Anchors classification
+     * @return search classification structure
+     */
+    private SearchClassifications getAnchorSearchClassifications(String contextValue,
+                                                                 String anchorPropertyName)
+    {
+        SearchClassifications         searchClassifications            = new SearchClassifications();
+        List<ClassificationCondition> classificationConditions         = new ArrayList<>();
+        ClassificationCondition       classificationCondition          = new ClassificationCondition();
+        SearchProperties              classificationSearchProperties   = new SearchProperties();
+        List<PropertyCondition>       classificationPropertyConditions = new ArrayList<>();
+        PropertyCondition             classificationPropertyCondition  = new PropertyCondition();
+        PrimitivePropertyValue        classificationPropertyValue      = new PrimitivePropertyValue();
+
+        classificationPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        classificationPropertyValue.setPrimitiveValue(contextValue);
+        classificationPropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        classificationPropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        classificationPropertyCondition.setProperty(anchorPropertyName);
+        classificationPropertyCondition.setOperator(PropertyComparisonOperator.EQ);
+        classificationPropertyCondition.setValue(classificationPropertyValue);
+        classificationPropertyConditions.add(classificationPropertyCondition);
+        classificationSearchProperties.setMatchCriteria(MatchCriteria.ALL);
+        classificationSearchProperties.setConditions(classificationPropertyConditions);
+
+        classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+        classificationCondition.setMatchProperties(classificationSearchProperties);
+        classificationConditions.add(classificationCondition);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+        searchClassifications.setConditions(classificationConditions);
+
+        return searchClassifications;
+    }
+
+
+    /**
+     * Set up the search string in a property value structure.
+     *
+     * @param searchString requested search string
+     * @return instance property value
+     */
+    private InstancePropertyValue getSearchPropertyValue(String searchString)
+    {
+        PrimitivePropertyValue  primitivePropertyValue        = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(searchString);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        return primitivePropertyValue;
+    }
+
+
+    /**
+     * Return a property condition used to control the search.
+     *
+     * @param searchString value to search for
+     * @param propertyName property to look in
+     * @return property condition
+     */
+    private PropertyCondition getSearchPropertyCondition(String searchString,
+                                                         String propertyName)
+    {
+        PropertyCondition propertyCondition = new PropertyCondition();
+
+        propertyCondition.setProperty(propertyName);
+        propertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+        propertyCondition.setValue(getSearchPropertyValue(searchString));
+
+        return propertyCondition;
+    }
+
+
+    /**
+     * Build a set of property conditions for a search on a list of properties.
+     *
+     * @param searchString value to search for
+     * @param propertyNames places to look
+     * @return list of property conditions
+     */
+    private List<PropertyCondition> getPropertyConditions(String       searchString,
+                                                          List<String> propertyNames)
+    {
+        List<PropertyCondition> propertyConditions = null;
+
+        if (propertyNames != null)
+        {
+            propertyConditions = new ArrayList<>();
+
+            for (String propertyName : propertyNames)
+            {
+                if (propertyName != null)
+                {
+                    propertyConditions.add(getSearchPropertyCondition(searchString, propertyName));
+                }
+            }
+        }
+
+        return propertyConditions;
+    }
+
+
+    /**
+     * Defines the list of properties that an anchor search uses.
+     *
+     * @return list of property names
+     */
+    private List<String> getAnchorSearchesPropertyList()
+    {
+        List<String> propertyList = new ArrayList<>();
+
+        propertyList.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        propertyList.add(OpenMetadataProperty.NAME.name);
+        propertyList.add(OpenMetadataProperty.DISPLAY_NAME.name);
+        propertyList.add(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+        propertyList.add(OpenMetadataProperty.RESOURCE_NAME.name);
+        propertyList.add(OpenMetadataProperty.PATH_NAME.name);
+        propertyList.add(OpenMetadataProperty.IDENTIFIER.name);
+        propertyList.add(OpenMetadataProperty.TITLE.name);
+        propertyList.add(OpenMetadataProperty.SUMMARY.name);
+        propertyList.add(OpenMetadataProperty.TEXT.name);
+        propertyList.add(OpenMetadataProperty.DESCRIPTION.name);
+
+        return propertyList;
+    }
 
     /**
      * Retrieve the metadata elements connected to the supplied element.

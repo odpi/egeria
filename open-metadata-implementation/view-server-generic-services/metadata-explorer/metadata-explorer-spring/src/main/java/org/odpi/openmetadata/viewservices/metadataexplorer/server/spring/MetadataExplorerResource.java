@@ -191,6 +191,118 @@ public class MetadataExplorerResource
 
 
     /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied anchorGUID.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param anchorGUID unique identifier of anchor
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @PostMapping(path = "/metadata-elements/by-search-string/for-anchor/{anchorGUID}")
+
+    @Operation(summary="findElementsForAnchor",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied anchorGUID.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/features/anchor-management/overview/"))
+
+    public AnchorSearchMatchesResponse findElementsForAnchor(@PathVariable String                  serverName,
+                                                             @PathVariable String                  urlMarker,
+                                                             @PathVariable String                  anchorGUID,
+                                                             @RequestParam (required = false, defaultValue = "0")
+                                                             int                     startFrom,
+                                                             @RequestParam (required = false, defaultValue = "0")
+                                                             int                     pageSize,
+                                                             @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findElementsForAnchor(serverName, urlMarker, anchorGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param anchorDomainName name of open metadata type for the domain
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-domain/{anchorDomainName}")
+
+    @Operation(summary="findElementsInAnchorDomain",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied domain name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/features/anchor-management/overview/"))
+
+    public AnchorSearchMatchesListResponse findElementsInAnchorDomain(@PathVariable String                  serverName,
+                                                                      @PathVariable String                  urlMarker,
+                                                                      @PathVariable String                  anchorDomainName,
+                                                                      @RequestParam (required = false, defaultValue = "0")
+                                                                      int                     startFrom,
+                                                                      @RequestParam (required = false, defaultValue = "0")
+                                                                      int                     pageSize,
+                                                                      @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findElementsInAnchorDomain(serverName, urlMarker, anchorDomainName, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param anchorScopeGUID unique identifier of the scope to use
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+
+    @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-scope/{anchorScopeGUID}")
+
+    @Operation(summary="findElementsInAnchorScope",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied scope guid.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/features/anchor-management/overview/"))
+
+    public AnchorSearchMatchesListResponse findElementsInAnchorScope(@PathVariable String                  serverName,
+                                                                     @PathVariable String                  urlMarker,
+                                                                     @PathVariable String                  anchorScopeGUID,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int                     startFrom,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int                     pageSize,
+                                                                     @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findElementsInAnchorScope(serverName, urlMarker, anchorScopeGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param serverName     name of server instance to route request to

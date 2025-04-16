@@ -853,7 +853,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName                = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         if (typeName == null)
@@ -870,6 +870,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setAsOfTime(asOfTime);
         requestBody.setSequencingOrder(sequencingOrder);
         requestBody.setSequencingProperty(sequencingProperty);
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setTypeName(typeName);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
@@ -878,12 +880,251 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   serverName,
                                                                                                   serviceURLMarker,
                                                                                                   userId,
-                                                                                                  forLineage,
-                                                                                                  forDuplicateProcessing,
                                                                                                   startFrom,
                                                                                                   pageSize);
 
         return restResult.getElementList();
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied anchorGUID.
+     *
+     * @param userId                 caller's userId
+     * @param searchString           name to retrieve
+     * @param anchorGUID unique identifier of anchor
+     * @param typeName optional name of the type to limit the results to
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public AnchorSearchMatches findElementsForAnchor(String              userId,
+                                                     String              searchString,
+                                                     String              anchorGUID,
+                                                     String              typeName,
+                                                     List<ElementStatus> limitResultsByStatus,
+                                                     Date                asOfTime,
+                                                     String              sequencingProperty,
+                                                     SequencingOrder     sequencingOrder,
+                                                     boolean             forLineage,
+                                                     boolean             forDuplicateProcessing,
+                                                     Date                effectiveTime,
+                                                     int                 startFrom,
+                                                     int                 pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String methodName                = "findElementsForAnchor";
+        final String contextParameterName      = "anchorGUID";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string/for-anchor/{3}?&startFrom={4}&pageSize={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        invalidParameterHandler.validateGUID(anchorGUID, contextParameterName, methodName);
+
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
+        requestBody.setAsOfTime(asOfTime);
+        requestBody.setSequencingOrder(sequencingOrder);
+        requestBody.setSequencingProperty(sequencingProperty);
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
+        requestBody.setTypeName(typeName);
+
+        AnchorSearchMatchesResponse restResult = restClient.callAnchorSearchMatchesPostRESTCall(methodName,
+                                                                                                  urlTemplate,
+                                                                                                  requestBody,
+                                                                                                  serverName,
+                                                                                                  serviceURLMarker,
+                                                                                                  userId,
+                                                                                                  anchorGUID,
+                                                                                                  startFrom,
+                                                                                                  pageSize);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     *
+     * @param userId                 caller's userId
+     * @param searchString           name to retrieve
+     * @param anchorDomainName name of open metadata type for the domain
+     * @param typeName               name of the type to limit the results to (maybe null to mean all types)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public List<AnchorSearchMatches> findElementsInAnchorDomain(String              userId,
+                                                                String              searchString,
+                                                                String              anchorDomainName,
+                                                                String              typeName,
+                                                                List<ElementStatus> limitResultsByStatus,
+                                                                Date                asOfTime,
+                                                                String              sequencingProperty,
+                                                                SequencingOrder     sequencingOrder,
+                                                                boolean             forLineage,
+                                                                boolean             forDuplicateProcessing,
+                                                                Date                effectiveTime,
+                                                                int                 startFrom,
+                                                                int                 pageSize) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName                = "findElementsInAnchorDomain";
+        final String contextParameterName      = "anchorDomainName";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string/in-anchor-domain/{3}?&startFrom={4}&pageSize={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        invalidParameterHandler.validateName(anchorDomainName, contextParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
+        requestBody.setAsOfTime(asOfTime);
+        requestBody.setSequencingOrder(sequencingOrder);
+        requestBody.setSequencingProperty(sequencingProperty);
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
+        requestBody.setTypeName(typeName);
+
+        AnchorSearchMatchesListResponse restResult = restClient.callAnchorSearchMatchesListPostRESTCall(methodName,
+                                                                                                        urlTemplate,
+                                                                                                        requestBody,
+                                                                                                        serverName,
+                                                                                                        serviceURLMarker,
+                                                                                                        userId,
+                                                                                                        anchorDomainName,
+                                                                                                        startFrom,
+                                                                                                        pageSize);
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     *
+     * @param userId                 caller's userId
+     * @param searchString           name to retrieve
+     * @param anchorScopeGUID unique identifier of the scope to use
+     * @param typeName               name of the type to limit the results to (maybe null to mean all types)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public List<AnchorSearchMatches> findElementsInAnchorScope(String              userId,
+                                                               String              searchString,
+                                                               String              anchorScopeGUID,
+                                                               String              typeName,
+                                                               List<ElementStatus> limitResultsByStatus,
+                                                               Date                asOfTime,
+                                                               String              sequencingProperty,
+                                                               SequencingOrder     sequencingOrder,
+                                                               boolean             forLineage,
+                                                               boolean             forDuplicateProcessing,
+                                                               Date                effectiveTime,
+                                                               int                 startFrom,
+                                                               int                 pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        final String methodName                = "findElementsInAnchorScope";
+        final String contextParameterName      = "anchorScopeGUID";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string/in-anchor-scope/{3}?&startFrom={4}&pageSize={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        invalidParameterHandler.validateGUID(anchorScopeGUID, contextParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
+        requestBody.setAsOfTime(asOfTime);
+        requestBody.setSequencingOrder(sequencingOrder);
+        requestBody.setSequencingProperty(sequencingProperty);
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
+        requestBody.setTypeName(typeName);
+
+        AnchorSearchMatchesListResponse restResult = restClient.callAnchorSearchMatchesListPostRESTCall(methodName,
+                                                                                                        urlTemplate,
+                                                                                                        requestBody,
+                                                                                                        serverName,
+                                                                                                        serviceURLMarker,
+                                                                                                        userId,
+                                                                                                        anchorScopeGUID,
+                                                                                                        startFrom,
+                                                                                                        pageSize);
+
+        return restResult.getElements();
     }
 
 
@@ -5018,7 +5259,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                      startFrom,
                                                                                      pageSize);
 
-        return response.getElementList();
+        return response.getElements();
     }
 
 

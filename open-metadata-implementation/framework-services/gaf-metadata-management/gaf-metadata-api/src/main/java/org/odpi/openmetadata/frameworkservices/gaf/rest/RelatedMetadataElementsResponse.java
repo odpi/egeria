@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelatedMetadataElementsResponse is a response object for passing back a list of GAF RelatedMetadataElementSummary
+ * The response object for passing back a list of GAF RelatedMetadataElementSummary
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -83,17 +82,7 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
     {
         return "RelatedMetadataElementsResponse{" +
                 "elementList=" + elementList +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

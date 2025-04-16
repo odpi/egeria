@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,25 +56,7 @@ public class AttributeTypeDefListResponse extends OMAGGAFAPIResponse
      */
     public List<OpenMetadataAttributeTypeDef> getAttributeTypeDefs()
     {
-        if (attributeTypeDefs == null)
-        {
-            return null;
-        }
-        else if (attributeTypeDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<OpenMetadataAttributeTypeDef>  clonedTypeDefs = new ArrayList<>();
-
-            for (OpenMetadataAttributeTypeDef  attributeTypeDef : attributeTypeDefs)
-            {
-                clonedTypeDefs.add(attributeTypeDef.cloneFromSubclass());
-            }
-
-            return clonedTypeDefs;
-        }
+        return attributeTypeDefs;
     }
 
 
@@ -100,18 +80,8 @@ public class AttributeTypeDefListResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "AttributeTypeDefListResponse{" +
-                       "attributeTypeDefs=" + attributeTypeDefs +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "attributeTypeDefs=" + attributeTypeDefs +
+                "} " + super.toString();
     }
 
 

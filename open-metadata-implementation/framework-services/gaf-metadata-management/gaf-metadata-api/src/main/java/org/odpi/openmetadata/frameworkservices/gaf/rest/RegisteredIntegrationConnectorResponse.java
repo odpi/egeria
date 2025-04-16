@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * RegisteredIntegrationConnectorResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
+ * RegisteredIntegrationConnectorResponse is the response structure used on the Governance Action Framework REST API calls that returns a
  * RegisteredIntegrationConnectorElement object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -58,14 +57,7 @@ public class RegisteredIntegrationConnectorResponse extends OMAGGAFAPIResponse
      */
     public RegisteredIntegrationConnectorElement getRegisteredIntegrationConnector()
     {
-        if (registeredIntegrationConnector == null)
-        {
-            return null;
-        }
-        else
-        {
-            return registeredIntegrationConnector;
-        }
+        return registeredIntegrationConnector;
     }
 
 
@@ -90,17 +82,7 @@ public class RegisteredIntegrationConnectorResponse extends OMAGGAFAPIResponse
     {
         return "RegisteredIntegrationConnectorResponse{" +
                 "registeredIntegrationConnector=" + registeredIntegrationConnector +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

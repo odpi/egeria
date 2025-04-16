@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TranslationListResponse is a response object for passing back a list of TranslationDetail properties
+ * The response object for passing back a list of TranslationDetail properties
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -25,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TranslationListResponse extends OMAGGAFAPIResponse
 {
-    private List<TranslationDetail> elementList = null;
+    private List<TranslationDetail> elements = null;
 
 
     /**
@@ -47,7 +45,7 @@ public class TranslationListResponse extends OMAGGAFAPIResponse
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            elements = template.getElements();
         }
     }
 
@@ -57,31 +55,20 @@ public class TranslationListResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<TranslationDetail> getElementList()
+    public List<TranslationDetail> getElements()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(elementList);
-        }
+        return elements;
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param elements result object
      */
-    public void setElementList(List<TranslationDetail> elementList)
+    public void setElements(List<TranslationDetail> elements)
     {
-        this.elementList = elementList;
+        this.elements = elements;
     }
 
 
@@ -94,18 +81,8 @@ public class TranslationListResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "TranslationListResponse{" +
-                       "elementList=" + elementList +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "elements=" + elements +
+                "} " + super.toString();
     }
 
 
@@ -131,7 +108,7 @@ public class TranslationListResponse extends OMAGGAFAPIResponse
             return false;
         }
         TranslationListResponse that = (TranslationListResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -143,6 +120,6 @@ public class TranslationListResponse extends OMAGGAFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), elements);
     }
 }

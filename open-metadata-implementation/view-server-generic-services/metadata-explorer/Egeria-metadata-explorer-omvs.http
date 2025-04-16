@@ -305,6 +305,157 @@ Content-Type: application/json
   "sequencingProperty": ""
 }
 
+###
+
+@anchorGUID=put guid here
+
+###
+# @name findElementsForAnchor
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied anchorGUID.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/for-anchor/{{anchorGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Cancer",
+  "typeName" : "Location",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+###
+# @name findElementsForAnchor (cim glossary)
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied anchorGUID.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/for-anchor/{{cimGlossaryGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Party",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+###
+# @name findElementsForAnchor (sustainability glossary)
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied anchorGUID.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/for-anchor/{{cimGlossaryGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Party",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+
+###
+
+@anchorDomainName=GlossaryTerm
+
+###
+# @name findElementsInAnchorDomain
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/in-anchor-domain/{{anchorDomainName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Party",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+###
+
+@anchorScopeGUID=add guid here
+
+###
+# @name findElementsInAnchorScope
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/in-anchor-scope/{{anchorScopeGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Cancer",
+  "typeName" : "Location",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+###
+# @name findElementsInAnchorScope (cim Glossary)
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/in-anchor-scope/{{cimGlossaryGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Party",
+  "typeName" : "GlossaryCategory",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# @name findElementsInAnchorScope (cim Glossary - just categories)
+# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/in-anchor-scope/{{cimGlossaryGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Party",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
 
 ###
 # @name getAllRelatedMetadataElements
