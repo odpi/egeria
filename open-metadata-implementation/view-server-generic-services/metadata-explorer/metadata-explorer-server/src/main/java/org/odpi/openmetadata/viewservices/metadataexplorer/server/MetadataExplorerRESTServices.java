@@ -367,6 +367,224 @@ public class MetadataExplorerRESTServices extends TokenController
     }
 
 
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied anchorGUID.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param viewServiceURLMarker  view service URL marker
+     * @param anchorGUID unique identifier of anchor
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody searchString  to retrieve
+     *
+     * @return list of matching metadata elements (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public AnchorSearchMatchesResponse findElementsForAnchor(String                  serverName,
+                                                             String                  viewServiceURLMarker,
+                                                             String                  anchorGUID,
+                                                             int                     startFrom,
+                                                             int                     pageSize,
+                                                             SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findElementsForAnchor";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AuditLog auditLog = null;
+        AnchorSearchMatchesResponse response = new AnchorSearchMatchesResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+
+                response.setElement(handler.findElementsForAnchor(userId,
+                                                                  requestBody.getSearchString(),
+                                                                  anchorGUID,
+                                                                  requestBody.getTypeName(),
+                                                                  requestBody.getLimitResultsByStatus(),
+                                                                  requestBody.getAsOfTime(),
+                                                                  requestBody.getSequencingProperty(),
+                                                                  requestBody.getSequencingOrder(),
+                                                                  requestBody.getForLineage(),
+                                                                  requestBody.getForDuplicateProcessing(),
+                                                                  requestBody.getEffectiveTime(),
+                                                                  startFrom,
+                                                                  pageSize));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param viewServiceURLMarker  view service URL marker
+     * @param anchorDomainName name of open metadata type for the domain
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody searchString  to retrieve
+     *
+     * @return list of matching metadata elements (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public AnchorSearchMatchesListResponse findElementsInAnchorDomain(String                  serverName,
+                                                                      String                  viewServiceURLMarker,
+                                                                      String                  anchorDomainName,
+                                                                      int                     startFrom,
+                                                                      int                     pageSize,
+                                                                      SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findElementsInAnchorDomain";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AuditLog auditLog = null;
+        AnchorSearchMatchesListResponse response = new AnchorSearchMatchesListResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+
+                response.setElements(handler.findElementsInAnchorDomain(userId,
+                                                                        requestBody.getSearchString(),
+                                                                        anchorDomainName,
+                                                                        requestBody.getTypeName(),
+                                                                        requestBody.getLimitResultsByStatus(),
+                                                                        requestBody.getAsOfTime(),
+                                                                        requestBody.getSequencingProperty(),
+                                                                        requestBody.getSequencingOrder(),
+                                                                        requestBody.getForLineage(),
+                                                                        requestBody.getForDuplicateProcessing(),
+                                                                        requestBody.getEffectiveTime(),
+                                                                        startFrom,
+                                                                        pageSize));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param viewServiceURLMarker  view service URL marker
+     * @param anchorScopeGUID unique identifier of the scope to use
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody searchString  to retrieve
+     *
+     * @return list of matching metadata elements (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public AnchorSearchMatchesListResponse findElementsInAnchorScope(String                  serverName,
+                                                                     String                  viewServiceURLMarker,
+                                                                     String                  anchorScopeGUID,
+                                                                     int                     startFrom,
+                                                                     int                     pageSize,
+                                                                     SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findElementsInAnchorScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AuditLog auditLog = null;
+        AnchorSearchMatchesListResponse response = new AnchorSearchMatchesListResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+
+                response.setElements(handler.findElementsInAnchorScope(userId,
+                                                                       requestBody.getSearchString(),
+                                                                       anchorScopeGUID,
+                                                                       requestBody.getTypeName(),
+                                                                       requestBody.getLimitResultsByStatus(),
+                                                                       requestBody.getAsOfTime(),
+                                                                       requestBody.getSequencingProperty(),
+                                                                       requestBody.getSequencingOrder(),
+                                                                       requestBody.getForLineage(),
+                                                                       requestBody.getForDuplicateProcessing(),
+                                                                       requestBody.getEffectiveTime(),
+                                                                       startFrom,
+                                                                       pageSize));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Retrieve the metadata elements connected to the supplied element.
      *

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceActionProcessElementResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
+ * The response structure used on the Governance Action Framework REST API calls that returns a
  * GovernanceActionProcess element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -24,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessElementResponse extends OMAGGAFAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private GovernanceActionProcessElement element = null;
 
     /**
@@ -60,14 +57,7 @@ public class GovernanceActionProcessElementResponse extends OMAGGAFAPIResponse
      */
     public GovernanceActionProcessElement getElement()
     {
-        if (element == null)
-        {
-            return null;
-        }
-        else
-        {
-            return element;
-        }
+        return element;
     }
 
 
@@ -92,17 +82,7 @@ public class GovernanceActionProcessElementResponse extends OMAGGAFAPIResponse
     {
         return "GovernanceActionProcessElementResponse{" +
                 "element=" + element +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

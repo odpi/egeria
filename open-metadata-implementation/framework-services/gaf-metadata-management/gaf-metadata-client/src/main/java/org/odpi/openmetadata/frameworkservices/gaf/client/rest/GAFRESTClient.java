@@ -356,6 +356,69 @@ public class GAFRESTClient extends OCFRESTClient
 
 
     /**
+     * Issue a POST REST call that returns a AnchorSearchMatchesListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public AnchorSearchMatchesListResponse callAnchorSearchMatchesListPostRESTCall(String    methodName,
+                                                                                   String    urlTemplate,
+                                                                                   Object    requestBody,
+                                                                                   Object... params) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        AnchorSearchMatchesListResponse restResult = this.callPostRESTCall(methodName,
+                                                                           AnchorSearchMatchesListResponse.class,
+                                                                           urlTemplate,
+                                                                           requestBody,
+                                                                           params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a AnchorSearchMatchesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public AnchorSearchMatchesResponse callAnchorSearchMatchesPostRESTCall(String    methodName,
+                                                                           String    urlTemplate,
+                                                                           Object    requestBody,
+                                                                           Object... params) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        AnchorSearchMatchesResponse restResult = this.callPostRESTCall(methodName,
+                                                                       AnchorSearchMatchesResponse.class,
+                                                                       urlTemplate,
+                                                                       requestBody,
+                                                                       params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a POST REST call that returns a OpenMetadataGraphResponse object.
      *
      * @param methodName  name of the method being called.

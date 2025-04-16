@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AttributeTypeDefResponse provides a response structure for an OMRS REST API call that returns
+ * The response structure for an Governance Action Framework REST API call that returns
  * an AttributeTypeDef object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -59,14 +58,7 @@ public class AttributeTypeDefResponse extends OMAGGAFAPIResponse
      */
     public OpenMetadataAttributeTypeDef getAttributeTypeDef()
     {
-        if (attributeTypeDef == null)
-        {
-            return null;
-        }
-        else
-        {
-            return attributeTypeDef.cloneFromSubclass();
-        }
+        return attributeTypeDef;
     }
 
 
@@ -90,18 +82,8 @@ public class AttributeTypeDefResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "AttributeTypeDefResponse{" +
-                       "attributeTypeDef=" + attributeTypeDef +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "attributeTypeDef=" + attributeTypeDef +
+                "} " + super.toString();
     }
 
 
@@ -138,7 +120,6 @@ public class AttributeTypeDefResponse extends OMAGGAFAPIResponse
     @Override
     public int hashCode()
     {
-
         return Objects.hash(super.hashCode(), getAttributeTypeDef());
     }
 }

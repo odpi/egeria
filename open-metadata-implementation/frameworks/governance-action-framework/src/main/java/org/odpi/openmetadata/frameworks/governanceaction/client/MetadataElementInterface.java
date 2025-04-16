@@ -199,6 +199,136 @@ public interface MetadataElementInterface
 
 
     /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied anchorGUID.
+     *
+     * @param userId caller's userId
+     * @param searchString name to retrieve
+     * @param anchorGUID unique identifier of anchor
+     * @param typeName optional name of the type to limit the results to
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    AnchorSearchMatches findElementsForAnchor(String              userId,
+                                              String              searchString,
+                                              String              anchorGUID,
+                                              String              typeName,
+                                              List<ElementStatus> limitResultsByStatus,
+                                              Date                asOfTime,
+                                              String              sequencingProperty,
+                                              SequencingOrder     sequencingOrder,
+                                              boolean             forLineage,
+                                              boolean             forDuplicateProcessing,
+                                              Date                effectiveTime,
+                                              int                 startFrom,
+                                              int                 pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     *
+     * @param userId caller's userId
+     * @param searchString name to retrieve
+     * @param anchorDomainName name of open metadata type for the domain
+     * @param typeName optional name of the type to limit the results to
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    List<AnchorSearchMatches> findElementsInAnchorDomain(String              userId,
+                                                         String              searchString,
+                                                         String              anchorDomainName,
+                                                         String              typeName,
+                                                         List<ElementStatus> limitResultsByStatus,
+                                                         Date                asOfTime,
+                                                         String              sequencingProperty,
+                                                         SequencingOrder     sequencingOrder,
+                                                         boolean             forLineage,
+                                                         boolean             forDuplicateProcessing,
+                                                         Date                effectiveTime,
+                                                         int                 startFrom,
+                                                         int                 pageSize) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
+
+
+    /**
+     * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
+     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     *
+     * @param userId caller's userId
+     * @param searchString name to retrieve
+     * @param anchorScopeGUID unique identifier of the scope to use
+     * @param typeName optional name of the type to limit the results to
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    List<AnchorSearchMatches> findElementsInAnchorScope(String              userId,
+                                                        String              searchString,
+                                                        String              anchorScopeGUID,
+                                                        String              typeName,
+                                                        List<ElementStatus> limitResultsByStatus,
+                                                        Date                asOfTime,
+                                                        String              sequencingProperty,
+                                                        SequencingOrder     sequencingOrder,
+                                                        boolean             forLineage,
+                                                        boolean             forDuplicateProcessing,
+                                                        Date                effectiveTime,
+                                                        int                 startFrom,
+                                                        int                 pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
+
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param userId caller's userId
@@ -240,7 +370,7 @@ public interface MetadataElementInterface
 
 
     /**
-     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     * Return all the elements that are anchored to a requested element plus relationships between these elements and to other elements.
      *
      * @param userId name of the server instances for this request
      * @param elementGUID  unique identifier for the element

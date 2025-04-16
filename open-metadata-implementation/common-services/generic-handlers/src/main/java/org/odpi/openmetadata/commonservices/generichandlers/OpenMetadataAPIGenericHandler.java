@@ -4682,6 +4682,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             {
                 this.removeLinkedGlossaryEntries(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
             }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.FILE_FOLDER.typeName))
+            {
+                this.removeLinkedFilesAndFolders(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
 
             return;
         }
@@ -4902,6 +4906,124 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
     }
 
+
+    /**
+     * Remove any files or folders connected to the folder by the NestedFile or FolderHierarchy relationships.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param folderGUID unique identifier for folder
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeLinkedFilesAndFolders(String  userId,
+                                            String  externalSourceGUID,
+                                            String  externalSourceName,
+                                            String  folderGUID,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "removeLinkedFilesAndFolders";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       folderGUID,
+                                                                                       OpenMetadataType.FILE_FOLDER.typeName,
+                                                                                       OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "nestedFile.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.DATA_FILE.typeGUID,
+                                            OpenMetadataType.DATA_FILE.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+
+        iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                       invalidParameterHandler,
+                                                       userId,
+                                                       folderGUID,
+                                                       OpenMetadataType.FILE_FOLDER.typeName,
+                                                       OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                       OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName,
+                                                       2,
+                                                       null,
+                                                       null,
+                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       0,
+                                                       0,
+                                                       effectiveTime,
+                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "nestedFolder.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.FILE_FOLDER.typeGUID,
+                                            OpenMetadataType.FILE_FOLDER.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+    }
 
 
     /**

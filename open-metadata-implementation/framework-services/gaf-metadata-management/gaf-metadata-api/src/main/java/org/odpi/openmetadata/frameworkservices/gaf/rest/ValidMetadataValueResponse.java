@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ValidMetadataValueResponse is the response structure used on the OMAS REST API calls that return the GAF definition of the ValidMetadataValue.
+ * The response structure used on the OMAS REST API calls that return the GAF definition of the ValidMetadataValue.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -83,17 +82,7 @@ public class ValidMetadataValueResponse extends OMAGGAFAPIResponse
     {
         return "ValidMetadataValueResponse{" +
                 "element=" + element +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -110,7 +99,7 @@ public class ValidMetadataValueResponse extends OMAGGAFAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof ValidMetadataValueResponse))
+        if (!(objectToCompare instanceof ValidMetadataValueResponse that))
         {
             return false;
         }
@@ -118,7 +107,6 @@ public class ValidMetadataValueResponse extends OMAGGAFAPIResponse
         {
             return false;
         }
-        ValidMetadataValueResponse that = (ValidMetadataValueResponse) objectToCompare;
         return Objects.equals(element, that.element);
     }
 

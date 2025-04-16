@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -56,14 +55,7 @@ public class TypeDefResponse extends OMAGGAFAPIResponse
      */
     public OpenMetadataTypeDef getTypeDef()
     {
-        if (typeDef == null)
-        {
-            return null;
-        }
-        else
-        {
-            return typeDef.cloneFromSubclass();
-        }
+        return typeDef;
     }
 
 
@@ -87,18 +79,8 @@ public class TypeDefResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "TypeDefResponse{" +
-                       "typeDef=" + typeDef +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "typeDef=" + typeDef +
+                "} " + super.toString();
     }
 
 

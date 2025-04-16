@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * RegisteredGovernanceServicesResponse is the response structure used on REST API calls that returns a
+ * The response structure used on REST API calls that returns a
  * list of RegisteredGovernanceServices objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -59,15 +58,6 @@ public class RegisteredGovernanceServicesResponse extends OMAGGAFAPIResponse
      */
     public List<RegisteredGovernanceServiceElement> getElements()
     {
-        if (elements == null)
-        {
-            return null;
-        }
-        else if (elements.isEmpty())
-        {
-            return null;
-        }
-
         return elements;
     }
 
@@ -93,17 +83,7 @@ public class RegisteredGovernanceServicesResponse extends OMAGGAFAPIResponse
     {
         return "RegisteredGovernanceServicesResponse{" +
                 "elements=" + elements +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

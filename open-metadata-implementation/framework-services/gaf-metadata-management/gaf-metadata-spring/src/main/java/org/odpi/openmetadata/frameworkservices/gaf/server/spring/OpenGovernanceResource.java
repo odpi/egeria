@@ -943,38 +943,6 @@ public class OpenGovernanceResource
 
 
     /**
-     * Create a governance action in the metadata store which will trigger the governance service
-     * associated with the supplied request type.  The governance action remains to act as a record
-     * of the actions taken for auditing.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId
-     * @param governanceEngineName name of the governance engine that should execute the request
-     * @param requestBody properties for the governance action and to pass to the governance service
-     *
-     * @return unique identifier of the engine action or
-     *  InvalidParameterException null qualified name
-     *  UserNotAuthorizedException the caller is not authorized to create a governance action
-     *  PropertyServerException there is a problem with the metadata store
-     */
-    @PostMapping(path = "/governance-engines/{governanceEngineName}/governance-actions/initiate")
-    @Operation(summary="initiateGovernanceAction",
-               description="Create an engine action in the metadata store that will trigger the governance service associated with the supplied request type.  The engine action remains to act as a record of the actions taken for auditing.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/concepts/engine-action"))
-    @Deprecated
-    public GUIDResponse initiateGovernanceAction(@PathVariable String                      serverName,
-                                                 @PathVariable String                      serviceURLMarker,
-                                                 @PathVariable String                      userId,
-                                                 @PathVariable String                      governanceEngineName,
-                                                 @RequestBody  GovernanceActionRequestBody requestBody)
-    {
-        return restAPI.initiateEngineAction(serverName, serviceURLMarker, userId, governanceEngineName, requestBody);
-    }
-
-
-    /**
      * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param serverName     name of server instance to route request to
