@@ -39,9 +39,9 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private int               maxCardinality        = 0;
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
-    private String            defaultValueOverride = null;
-    private DataItemSortOrder sortOrder            = null;
-    private int               minimumLength        = 0;
+    private String            defaultValueOverride  = null;
+    private DataItemSortOrder sortOrder             = null;
+    private int               minimumLength         = 0;
     private int               length                = 0;
     private int               precision             = 0;
     private int               significantDigits     = 0;

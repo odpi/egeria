@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.F
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataContainerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties;
 
 import java.util.List;
 
@@ -1122,9 +1122,9 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDataField(String              parentElementGUID,
-                                  DataFieldProperties properties) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+                                  QueryDataFieldProperties properties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         String dataFieldGUID = client.createDataField(userId,
                                                       externalSourceGUID,
@@ -1223,9 +1223,9 @@ public class DisplayIntegratorContext extends IntegrationContext
      */
     public void updateDataField(String              dataFieldGUID,
                                 boolean             isMergeUpdate,
-                                DataFieldProperties properties) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                QueryDataFieldProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         client.updateDataField(userId, externalSourceGUID, externalSourceName, dataFieldGUID, isMergeUpdate, properties);
 
@@ -1272,9 +1272,9 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFieldElement> findDataFields(String searchString,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
+    public List<QueryDataFieldElement> findDataFields(String searchString,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
@@ -1295,9 +1295,9 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFieldElement> getChildDataFields(String parentElementGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
+    public List<QueryDataFieldElement> getChildDataFields(String parentElementGUID,
+                                                          int    startFrom,
+                                                          int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
@@ -1319,9 +1319,9 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFieldElement>   getDataFieldsByName(String name,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    public List<QueryDataFieldElement>   getDataFieldsByName(String name,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
@@ -1340,9 +1340,9 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFieldElement getDataFieldByGUID(String guid) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public QueryDataFieldElement getDataFieldByGUID(String guid) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         return client.getDataFieldByGUID(userId, guid);
     }

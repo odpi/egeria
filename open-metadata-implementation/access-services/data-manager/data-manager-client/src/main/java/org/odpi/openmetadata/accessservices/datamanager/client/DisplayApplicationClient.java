@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataContainerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties;
 
 
 import java.util.ArrayList;
@@ -1988,9 +1988,9 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
                                   String              applicationName,
                                   boolean             applicationIsHome,
                                   String              parentElementGUID,
-                                  DataFieldProperties properties) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+                                  QueryDataFieldProperties properties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                     = "createDataField";
         final String parentElementGUIDParameterName = "parentElementGUID";
@@ -2119,9 +2119,9 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
                                 String              applicationName,
                                 String              dataFieldGUID,
                                 boolean             isMergeUpdate,
-                                DataFieldProperties properties) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                QueryDataFieldProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName               = "updateDataField";
         final String elementGUIDParameterName = "dataFieldGUID";
@@ -2177,25 +2177,25 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @param schemaAttributeElements returned list
      * @return return reformatted list
      */
-    private List<DataFieldElement> getDataFieldFromSchemaAttributes(List<SchemaAttributeElement> schemaAttributeElements)
+    private List<QueryDataFieldElement> getDataFieldFromSchemaAttributes(List<SchemaAttributeElement> schemaAttributeElements)
     {
         if (schemaAttributeElements != null)
         {
-            List<DataFieldElement> dataFieldElements = new ArrayList<>();
+            List<QueryDataFieldElement> queryDataFieldElements = new ArrayList<>();
 
             for (SchemaAttributeElement schemaAttributeElement : schemaAttributeElements)
             {
                 if (schemaAttributeElement != null)
                 {
-                    DataFieldElement dataFieldElement = new DataFieldElement(schemaAttributeElement);
+                    QueryDataFieldElement queryDataFieldElement = new QueryDataFieldElement(schemaAttributeElement);
 
-                    dataFieldElements.add(dataFieldElement);
+                    queryDataFieldElements.add(queryDataFieldElement);
                 }
             }
 
-            if (! dataFieldElements.isEmpty())
+            if (! queryDataFieldElements.isEmpty())
             {
-                return dataFieldElements;
+                return queryDataFieldElements;
             }
         }
 
@@ -2219,10 +2219,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<DataFieldElement> findDataFields(String userId,
-                                                 String searchString,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
+    public List<QueryDataFieldElement> findDataFields(String userId,
+                                                      String searchString,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
@@ -2254,10 +2254,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<DataFieldElement> getChildDataFields(String userId,
-                                                     String parentElementGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
+    public List<QueryDataFieldElement> getChildDataFields(String userId,
+                                                          String parentElementGUID,
+                                                          int    startFrom,
+                                                          int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
@@ -2290,10 +2290,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<DataFieldElement>   getDataFieldsByName(String userId,
-                                                        String name,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    public List<QueryDataFieldElement>   getDataFieldsByName(String userId,
+                                                             String name,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
@@ -2323,8 +2323,8 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public DataFieldElement getDataFieldByGUID(String userId,
-                                               String guid) throws InvalidParameterException,
+    public QueryDataFieldElement getDataFieldByGUID(String userId,
+                                                    String guid) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
@@ -2338,7 +2338,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
 
         if (schemaAttributeElement != null)
         {
-            return new DataFieldElement(schemaAttributeElement);
+            return new QueryDataFieldElement(schemaAttributeElement);
         }
         else
         {

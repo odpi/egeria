@@ -19,7 +19,6 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
-    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

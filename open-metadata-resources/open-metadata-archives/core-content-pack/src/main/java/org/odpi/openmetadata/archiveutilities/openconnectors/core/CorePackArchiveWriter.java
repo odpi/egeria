@@ -487,7 +487,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       new ArrayList<>(Arrays.asList(DataItemSortOrder.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.DATA_FIELD.typeName,
-                                      OpenMetadataProperty.DATA_FIELD_SORT_ORDER.name,
+                                      OpenMetadataProperty.SORT_ORDER.name,
                                       DataItemSortOrder.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DataItemSortOrder.values())));
 

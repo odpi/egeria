@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.digitalservice.server;
 
 import org.odpi.openmetadata.accessservices.digitalservice.ffdc.DigitalServiceErrorCode;
-import org.odpi.openmetadata.accessservices.digitalservice.handlers.DigitalServiceEntityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -20,9 +19,8 @@ import java.util.List;
  */
 public class DigitalServiceServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.DIGITAL_SERVICE_OMAS;
+    private static final AccessServiceDescription myDescription = AccessServiceDescription.DIGITAL_SERVICE_OMAS;
 
-     private DigitalServiceEntityHandler digitalServiceEntityHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -61,13 +59,7 @@ public class DigitalServiceServicesInstance extends OMASServiceInstance
 
         final String methodName = "new DigitalServiceInstance";
 
-        if (repositoryHandler != null)
-        {
-            digitalServiceEntityHandler = new DigitalServiceEntityHandler(  repositoryHelper,
-                                                                            repositoryHandler,
-                                                                            invalidParameterHandler);
-        }
-        else
+        if (repositoryHandler == null)
         {
             throw new NewInstanceException(DigitalServiceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
@@ -75,9 +67,4 @@ public class DigitalServiceServicesInstance extends OMASServiceInstance
 
         }
     }
-
-    public DigitalServiceEntityHandler getDigitalServiceEntityHandler() {
-        return digitalServiceEntityHandler;
-    }
-
 }

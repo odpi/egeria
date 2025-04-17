@@ -19,6 +19,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.Note
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
@@ -72,6 +75,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = ContributionRecord.class, name = "ContributionRecord"),
+                @JsonSubTypes.Type(value = DataClassProperties.class, name = "DataClassProperties"),
+                @JsonSubTypes.Type(value = DataFieldProperties.class, name = "DataFieldProperties"),
+                @JsonSubTypes.Type(value = DataStructureProperties.class, name = "DataStructureProperties"),
                 @JsonSubTypes.Type(value = DatabaseSchemaTypeProperties.class, name = "DatabaseSchemaTypeProperties"),
                 @JsonSubTypes.Type(value = DigitalServiceProperties.class, name = "DigitalServiceProperties"),
                 @JsonSubTypes.Type(value = ExecutionPointProperties.class, name = "ExecutionPointProperties"),

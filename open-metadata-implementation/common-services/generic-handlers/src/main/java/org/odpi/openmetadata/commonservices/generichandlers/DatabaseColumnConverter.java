@@ -141,7 +141,7 @@ public class DatabaseColumnConverter<B> extends OMFConverter<B>
                                     databaseForeignKeyProperties.setEffectiveTo(relationshipProperties.getEffectiveToTime());
 
                                     databaseForeignKeyProperties.setName(this.removeName(relationshipProperties));
-                                    databaseForeignKeyProperties.setDescription(this.removeDataFieldDescription(relationshipProperties));
+                                    databaseForeignKeyProperties.setDescription(this.removeDescription(relationshipProperties));
                                     databaseForeignKeyProperties.setConfidence(this.removeConfidence(relationshipProperties));
                                     databaseForeignKeyProperties.setSteward(this.removeSteward(relationshipProperties));
                                     databaseForeignKeyProperties.setSource(this.removeSource(relationshipProperties));

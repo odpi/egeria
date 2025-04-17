@@ -103,7 +103,6 @@ include(':open-metadata-implementation:framework-services:oif-metadata-managemen
 include(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-spring')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
-include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-server')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-spring')
 include(':open-metadata-implementation:engine-services:repository-governance:repository-governance-api')

@@ -59,7 +59,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
 
 
     /**
-     * Return the display name of the file
+     * Return the display name of the schema element
      *
      * @return string name
      */
@@ -70,7 +70,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the display name of the file.
+     * Set up the display name of the schema element.
      *
      * @param displayName string name
      */
@@ -81,7 +81,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
 
 
     /**
-     * Return the description of the file.
+     * Return the description of the schema element.
      *
      * @return string description
      */
@@ -92,7 +92,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the description of the file.
+     * Set up the description of the schema element.
      *
      * @param description string description
      */
@@ -136,11 +136,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", isDeprecated=" + isDeprecated +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

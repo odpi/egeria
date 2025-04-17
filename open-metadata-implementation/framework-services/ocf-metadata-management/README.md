@@ -17,8 +17,6 @@ There are five modules in its implementation:
 
 * **[ocf-metadata-api](ocf-metadata-api)** - for common classes used both by the client and the server.
 * **[ocf-metadata-client](ocf-metadata-client)** - for embedding in client-side OMASs
-* **[ocf-metadata-handlers](ocf-metadata-handlers)** - server-side handlers for maintaining and retrieving metadata
-stored in an open metadata repository using OCF beans.
 * **[ocf-metadata-server](ocf-metadata-server)** - server-side REST Service for OCF metadata.
 * **[ocf-metadata-spring](ocf-metadata-spring)** - Spring-based server-side REST endpoint for OCF metadata.
 

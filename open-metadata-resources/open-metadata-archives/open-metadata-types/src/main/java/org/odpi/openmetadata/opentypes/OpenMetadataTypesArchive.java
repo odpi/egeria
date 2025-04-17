@@ -432,22 +432,28 @@ public class OpenMetadataTypesArchive
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_ALIASES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALIASES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEPRECATED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
+
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MIN_CARDINALITY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_CARDINALITY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_LENGTH));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LENGTH));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRECISION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SIGNIFICANT_DIGITS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_DEPRECATED));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
 
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_SORT_ORDER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORDERED_VALUES));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.SORT_ORDER));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -496,7 +502,7 @@ public class OpenMetadataTypesArchive
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_POSITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSITION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -585,7 +591,7 @@ public class OpenMetadataTypesArchive
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_FIELD_POSITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSITION));
 
         relationshipDef.setPropertiesDefinition(properties);
 

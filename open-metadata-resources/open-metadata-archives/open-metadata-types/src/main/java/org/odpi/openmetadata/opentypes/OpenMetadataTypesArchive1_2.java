@@ -10013,7 +10013,7 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CLASS_CODE));
@@ -10021,7 +10021,8 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SPECIFICATION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SPECIFICATION_DETAILS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_THRESHOLD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MATCH_THRESHOLD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SAMPLE_VALUES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_PATTERNS));
