@@ -168,12 +168,12 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <div class="block">Create a new metadata element to represent a data container using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataField(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties)" class="member-name-link">createDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataField(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties)" class="member-name-link">createDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationName,
  boolean&nbsp;applicationIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementGUID,
- <a href="../../../frameworks/openmetadata/properties/schema/display/DataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataFieldProperties</a>&nbsp;properties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/schema/display/QueryDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">QueryDataFieldProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a data field.</div>
 </div>
@@ -254,7 +254,7 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of data container metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataFields(java.lang.String,java.lang.String,int,int)" class="member-name-link">findDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
@@ -286,7 +286,7 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of report metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getChildDataFields(java.lang.String,java.lang.String,int,int)" class="member-name-link">getChildDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementGUID,
  int&nbsp;startFrom,
@@ -323,13 +323,13 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the data container associated with a specific open metadata element (data asset, process or port).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFieldByGUID(java.lang.String,java.lang.String)" class="member-name-link">getDataFieldByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data field metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFieldsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getDataFieldsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
@@ -489,12 +489,12 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <div class="block">Update the metadata element representing a data container.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties)" class="member-name-link">updateDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties)" class="member-name-link">updateDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/openmetadata/properties/schema/display/DataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataFieldProperties</a>&nbsp;properties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/schema/display/QueryDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">QueryDataFieldProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a data field.</div>
 </div>
@@ -1782,21 +1782,21 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 </section>
 </li>
 <li>
-<section class="detail" id="createDataField(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties)">
+<section class="detail" id="createDataField(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties)">
 <h3>createDataField</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationName,
  boolean&nbsp;applicationIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementGUID,
- <a href="../../../frameworks/openmetadata/properties/schema/display/DataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataFieldProperties</a>&nbsp;properties)</span>
+ <a href="../../../frameworks/openmetadata/properties/schema/display/QueryDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">QueryDataFieldProperties</a>&nbsp;properties)</span>
                        throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a data field.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/DisplayApplicationInterface.html#createDataField(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties)">createDataField</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DisplayApplicationInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DisplayApplicationInterface</a></code></dd>
+<dd><code><a href="../api/DisplayApplicationInterface.html#createDataField(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties)">createDataField</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DisplayApplicationInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DisplayApplicationInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>applicationGUID</code> - unique identifier of software server capability representing the event broker</dd>
@@ -1880,21 +1880,21 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 </section>
 </li>
 <li>
-<section class="detail" id="updateDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties)">
+<section class="detail" id="updateDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties)">
 <h3>updateDataField</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicationName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/openmetadata/properties/schema/display/DataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataFieldProperties</a>&nbsp;properties)</span>
+ <a href="../../../frameworks/openmetadata/properties/schema/display/QueryDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">QueryDataFieldProperties</a>&nbsp;properties)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update the metadata element representing a data field.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/DisplayApplicationInterface.html#updateDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties)">updateDataField</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DisplayApplicationInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DisplayApplicationInterface</a></code></dd>
+<dd><code><a href="../api/DisplayApplicationInterface.html#updateDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties)">updateDataField</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DisplayApplicationInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DisplayApplicationInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>applicationGUID</code> - unique identifier of software server capability representing the event broker</dd>
@@ -1938,11 +1938,11 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <li>
 <section class="detail" id="findDataFields(java.lang.String,java.lang.String,int,int)">
 <h3>findDataFields</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a>&gt;</span>&nbsp;<span class="element-name">findDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a>&gt;</span>&nbsp;<span class="element-name">findDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of data field metadata elements that contain the search string.
@@ -1967,11 +1967,11 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <li>
 <section class="detail" id="getChildDataFields(java.lang.String,java.lang.String,int,int)">
 <h3>getChildDataFields</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a>&gt;</span>&nbsp;<span class="element-name">getChildDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a>&gt;</span>&nbsp;<span class="element-name">getChildDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the list of data-fields associated with a element.</div>
@@ -1995,11 +1995,11 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <li>
 <section class="detail" id="getDataFieldsByName(java.lang.String,java.lang.String,int,int)">
 <h3>getDataFieldsByName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFieldsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFieldsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the list of data field metadata elements with a matching qualified or display name.
@@ -2024,9 +2024,9 @@ implements <a href="../api/DisplayApplicationInterface.html" title="interface in
 <li>
 <section class="detail" id="getDataFieldByGUID(java.lang.String,java.lang.String)">
 <h3>getDataFieldByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a></span>&nbsp;<span class="element-name">getDataFieldByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/QueryDataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">QueryDataFieldElement</a></span>&nbsp;<span class="element-name">getDataFieldByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
-                                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the data field metadata element with the supplied unique identifier.</div>

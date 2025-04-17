@@ -202,8 +202,9 @@ implements <a href="../api/CollectionsInterface.html" title="interface in org.od
 <div class="block">Create a new collection that represents a digital product.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCollection(java.lang.String,java.lang.String)" class="member-name-link">deleteCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCollection(java.lang.String,java.lang.String,boolean)" class="member-name-link">deleteCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
+ boolean&nbsp;cascadedDelete)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a collection.</div>
 </div>
@@ -804,21 +805,25 @@ implements <a href="../api/CollectionsInterface.html" title="interface in org.od
 </section>
 </li>
 <li>
-<section class="detail" id="deleteCollection(java.lang.String,java.lang.String)">
+<section class="detail" id="deleteCollection(java.lang.String,java.lang.String,boolean)">
 <h3>deleteCollection</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
+ boolean&nbsp;cascadedDelete)</span>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
+<div class="block">Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection
  then they are also deleted.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/CollectionsInterface.html#deleteCollection(java.lang.String,java.lang.String)">deleteCollection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CollectionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.api">CollectionsInterface</a></code></dd>
+<dd><code><a href="../api/CollectionsInterface.html#deleteCollection(java.lang.String,java.lang.String,boolean)">deleteCollection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CollectionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.api">CollectionsInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request.</dd>
-<dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
+<dd><code>collectionGUID</code> - unique identifier of the collection</dd>
+<dd><code>cascadedDelete</code> - should nested collections be deleted? If false, the delete fails if there are nested
+                       collections.  If true, nested collections are delete - but not member elements
+                       unless they are anchored to the collection</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>

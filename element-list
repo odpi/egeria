@@ -117,6 +117,7 @@ org.odpi.openmetadata.accessservices.datascience.rest
 org.odpi.openmetadata.accessservices.datascience.server
 org.odpi.openmetadata.accessservices.datascience.server.spring
 org.odpi.openmetadata.accessservices.designmodel.admin
+org.odpi.openmetadata.accessservices.designmodel.api
 org.odpi.openmetadata.accessservices.designmodel.client
 org.odpi.openmetadata.accessservices.designmodel.ffdc
 org.odpi.openmetadata.accessservices.designmodel.listener
@@ -143,14 +144,10 @@ org.odpi.openmetadata.accessservices.digitalarchitecture.server
 org.odpi.openmetadata.accessservices.digitalarchitecture.server.spring
 org.odpi.openmetadata.accessservices.digitalservice.admin
 org.odpi.openmetadata.accessservices.digitalservice.api
-org.odpi.openmetadata.accessservices.digitalservice.builders
 org.odpi.openmetadata.accessservices.digitalservice.client
 org.odpi.openmetadata.accessservices.digitalservice.client.rest
 org.odpi.openmetadata.accessservices.digitalservice.events
 org.odpi.openmetadata.accessservices.digitalservice.ffdc
-org.odpi.openmetadata.accessservices.digitalservice.handlers
-org.odpi.openmetadata.accessservices.digitalservice.listener
-org.odpi.openmetadata.accessservices.digitalservice.mappers
 org.odpi.openmetadata.accessservices.digitalservice.properties
 org.odpi.openmetadata.accessservices.digitalservice.server
 org.odpi.openmetadata.accessservices.digitalservice.spring
@@ -430,8 +427,6 @@ org.odpi.openmetadata.commonservices.mermaid
 org.odpi.openmetadata.commonservices.multitenant
 org.odpi.openmetadata.commonservices.multitenant.ffdc
 org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions
-org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders
-org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers
 org.odpi.openmetadata.commonservices.repositoryhandler
 org.odpi.openmetadata.conformance.beans
 org.odpi.openmetadata.conformance.client
