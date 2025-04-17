@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.F
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataContainerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.QueryDataFieldProperties;
 
 import java.util.List;
 
@@ -936,9 +936,9 @@ public interface DisplayApplicationInterface
                            String              applicationName,
                            boolean             applicationIsHome,
                            String              parentElementGUID,
-                           DataFieldProperties properties) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+                           QueryDataFieldProperties properties) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -1013,9 +1013,9 @@ public interface DisplayApplicationInterface
                          String              applicationName,
                          String              dataFieldGUID,
                          boolean             isMergeUpdate,
-                         DataFieldProperties properties) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+                         QueryDataFieldProperties properties) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 
 
     /**
@@ -1053,10 +1053,10 @@ public interface DisplayApplicationInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<DataFieldElement> findDataFields(String userId,
-                                          String searchString,
-                                          int    startFrom,
-                                          int    pageSize) throws InvalidParameterException,
+    List<QueryDataFieldElement> findDataFields(String userId,
+                                               String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException;
 
@@ -1075,10 +1075,10 @@ public interface DisplayApplicationInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<DataFieldElement> getChildDataFields(String userId,
-                                              String parentElementGUID,
-                                              int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
+    List<QueryDataFieldElement> getChildDataFields(String userId,
+                                                   String parentElementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException;
 
@@ -1098,10 +1098,10 @@ public interface DisplayApplicationInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<DataFieldElement> getDataFieldsByName(String userId,
-                                               String name,
-                                               int    startFrom,
-                                               int    pageSize) throws InvalidParameterException,
+    List<QueryDataFieldElement> getDataFieldsByName(String userId,
+                                                    String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException;
 
@@ -1118,8 +1118,8 @@ public interface DisplayApplicationInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    DataFieldElement getDataFieldByGUID(String userId,
-                                        String guid) throws InvalidParameterException,
+    QueryDataFieldElement getDataFieldByGUID(String userId,
+                                             String guid) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException;
 }

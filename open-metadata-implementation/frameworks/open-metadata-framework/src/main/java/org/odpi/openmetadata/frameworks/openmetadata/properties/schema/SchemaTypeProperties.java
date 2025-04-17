@@ -261,14 +261,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 ", formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
                 ", queries=" + queries +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

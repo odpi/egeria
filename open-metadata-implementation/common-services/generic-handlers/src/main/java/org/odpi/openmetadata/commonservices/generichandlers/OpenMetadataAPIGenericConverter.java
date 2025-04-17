@@ -7031,26 +7031,4 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
-
-
-    /**
-     * Extract and delete the dataFieldDescription standing property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string text or null
-     */
-    protected String removeDataFieldDescription(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeDataFieldDescription";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.DATA_FIELD_DESCRIPTION.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
 }

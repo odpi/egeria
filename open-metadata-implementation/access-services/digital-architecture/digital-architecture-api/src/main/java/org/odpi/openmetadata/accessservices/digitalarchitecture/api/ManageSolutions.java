@@ -43,6 +43,7 @@ public interface ManageSolutions
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of any anchor scope to use for searching
      * @param properties             properties for the new element.
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
@@ -63,6 +64,7 @@ public interface ManageSolutions
                                         String                           externalSourceName,
                                         String                           anchorGUID,
                                         boolean                          isOwnAnchor,
+                                        String                           anchorScopeGUID,
                                         InformationSupplyChainProperties properties,
                                         String                           parentGUID,
                                         String                           parentRelationshipTypeName,
@@ -85,6 +87,7 @@ public interface ManageSolutions
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
      *                    is created in the repository.
+     * @param anchorScopeGUID unique identifier of any anchor scope to use for searching
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -108,6 +111,7 @@ public interface ManageSolutions
                                                     String              externalSourceName,
                                                     String              anchorGUID,
                                                     boolean             isOwnAnchor,
+                                                    String              anchorScopeGUID,
                                                     Date                effectiveFrom,
                                                     Date                effectiveTo,
                                                     String              templateGUID,

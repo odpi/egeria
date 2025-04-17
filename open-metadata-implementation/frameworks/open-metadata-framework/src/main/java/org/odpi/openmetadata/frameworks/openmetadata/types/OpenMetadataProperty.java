@@ -568,7 +568,7 @@ public enum OpenMetadataProperty
     /**
      * Match threshold that a data field is expected to achieve to be assigned this data class.
      */
-    DEFAULT_THRESHOLD("defaultThreshold", DataType.FLOAT.getName(), "Match threshold that a data field is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
+    MATCH_THRESHOLD("matchThreshold", DataType.FLOAT.getName(), "Match threshold that a data field is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
 
     /**
      * Technical name (no spaces) that can be used in artifact generation.
@@ -1389,36 +1389,6 @@ public enum OpenMetadataProperty
      * Defines the suggested order that data values in this data item should be sorted by.
      */
     SORT_ORDER("sortOrder", DataItemSortOrder.getOpenTypeName(),DataItemSortOrder.getOpenTypeDescription(), DataItemSortOrder.ASCENDING.getName(), "645fd9ac-530d-4351-ab6b-73a999332a78"),
-
-    /**
-     * Display name the data field.
-     */
-    DATA_FIELD_NAME("dataFieldName", DataType.STRING.getName(), "Display name the data field.", null, "5277a97f-30d2-4641-8e4b-b8f2df055cf2"),
-
-    /**
-     * Type name for the data field.
-     */
-    DATA_FIELD_TYPE("dataFieldType", DataType.STRING.getName(), "Type name for the data field.", null, "1ef7dd62-9699-4be3-b7bd-c502b8b4ad6e"),
-
-    /**
-     * Optional descriptive information about a data field.
-     */
-    DATA_FIELD_DESCRIPTION("dataFieldDescription", DataType.STRING.getName(), "Optional descriptive information about a data field.", null, "6b0dc761-336d-4e99-83c8-f5d318d61923"),
-
-    /**
-     * Optional list of aliases for the data field.
-     */
-    DATA_FIELD_ALIASES("dataFieldAliases", DataType.ARRAY_STRING.getName(), "Optional list of aliases for the data field.", null, "9ffadf7f-a549-4fa2-a079-815f2283bfdc"),
-
-    /**
-     * Defines the suggested order that data values in this data item should be sorted by.
-     */
-    DATA_FIELD_SORT_ORDER("dataFieldSortOrder", DataItemSortOrder.getOpenTypeName(),DataItemSortOrder.getOpenTypeDescription(), DataItemSortOrder.ASCENDING.getName(), "a5458a7b-4736-4df1-9e93-42867c65f8fe"),
-
-    /**
-     * Positional order of the data field with its parent data field.
-     */
-    DATA_FIELD_POSITION("dataFieldPosition", DataType.INT.getName(), "Positional order of the data field with its parent data field.", null, "9d1d6f8c-0a97-47fe-aadd-1a001b0f663a"),
 
     /**
      * Defines the current status of an incident report.

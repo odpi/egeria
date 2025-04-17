@@ -6,13 +6,12 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 /**
  * DataFieldElement contains the properties and header for a data field entity retrieved from the metadata repository.
@@ -48,20 +47,6 @@ public class DataFieldElement implements MetadataElement
         }
     }
 
-
-    /**
-     * Copy/clone constructor
-     *
-     * @param template object to copy
-     */
-    public DataFieldElement(SchemaAttributeElement template)
-    {
-        if (template != null)
-        {
-            elementHeader = template.getElementHeader();
-            properties = new DataFieldProperties(template.getSchemaAttributeProperties());
-        }
-    }
 
 
     /**

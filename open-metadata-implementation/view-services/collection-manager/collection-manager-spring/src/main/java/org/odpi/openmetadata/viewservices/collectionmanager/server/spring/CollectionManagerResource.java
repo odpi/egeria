@@ -284,7 +284,8 @@ public class CollectionManagerResource
 
 
     /**
-     * Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.
+     * Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
+     * data fields used to define data requirements for a project or initiative.
      *
      * @param serverName              name of called server.
      * @param requestBody             properties for the collection.
@@ -296,14 +297,41 @@ public class CollectionManagerResource
      */
     @PostMapping(path = "/collections/data-spec-collection")
     @Operation(summary="createDataSpecCollection",
-            description="Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.",
+            description="Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and " +
+                    "data fields used to define data requirements for a project or initiative.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
+                    url="https://egeria-project.org/concepts/data-specification"))
 
     public GUIDResponse createDataSpecCollection(@PathVariable String                   serverName,
                                                  @RequestBody  NewCollectionRequestBody requestBody)
     {
         return restAPI.createDataSpecCollection(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new collection with the Data Dictionary classification.  Used to identify a collection of
+     * data fields that represent a data store of collection of common data types.
+     *
+     * @param serverName              name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/data-dictionary-collection")
+    @Operation(summary="createDataDictionaryCollection",
+            description="Create a new collection with the Data Dictionary classification.  Used to identify a collection of " +
+                    "data fields that represent a data store of collection of common data types.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-dictionary"))
+
+    public GUIDResponse createDataDictionaryCollection(@PathVariable String                   serverName,
+                                                       @RequestBody  NewCollectionRequestBody requestBody)
+    {
+        return restAPI.createDataDictionaryCollection(serverName, requestBody);
     }
 
 
@@ -504,6 +532,9 @@ public class CollectionManagerResource
      *
      * @param serverName         name of called server.
      * @param collectionGUID unique identifier of the collection.
+     * @param cascadedDelete should nested collections be deleted? If false, the delete fails if there are nested
+     *                       collections.  If true, nested collections are delete - but not member elements
+     *                       unless they are anchored to the collection
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
@@ -512,16 +543,21 @@ public class CollectionManagerResource
      */
     @PostMapping(path = "/collections/{collectionGUID}/delete")
     @Operation(summary="deleteCollection",
-            description="Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection then they are also deleted.",
+            description="Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection " +
+                    "then they are also deleted; otherwise they are just detached. The option cascadedDelete (default value=false) " +
+                    "controls how nested collections are handled.  If it is false then the delete fails if there are nested collections. " +
+                    "If true then nested collections are deleted, irrespective of their anchor.  However, any elements anchored to these " +
+                    "nested collections are deleted as well. (Use this option wisely :)",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse deleteCollection(@PathVariable String          serverName,
                                          @PathVariable String          collectionGUID,
+                                         @RequestParam(required = false, defaultValue = "false") boolean cascadedDelete,
                                          @RequestBody(required = false)
                                                        NullRequestBody requestBody)
     {
-        return restAPI.deleteCollection(serverName, collectionGUID, requestBody);
+        return restAPI.deleteCollection(serverName, collectionGUID, cascadedDelete, requestBody);
     }
 
 
@@ -545,10 +581,10 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
-                                                             @PathVariable String collectionGUID,
-                                                             @RequestParam(required = false, defaultValue = "0")
+                                                          @PathVariable String collectionGUID,
+                                                          @RequestParam(required = false, defaultValue = "0")
                                                                            int    startFrom,
-                                                             @RequestParam(required = false, defaultValue = "0")
+                                                          @RequestParam(required = false, defaultValue = "0")
                                                                            int    pageSize)
     {
         return restAPI.getCollectionMembers(serverName, collectionGUID, startFrom, pageSize);
@@ -613,7 +649,6 @@ public class CollectionManagerResource
     {
         return restAPI.updateCollectionMembership(serverName, collectionGUID, elementGUID, replaceAllProperties, requestBody);
     }
-
 
 
     /**

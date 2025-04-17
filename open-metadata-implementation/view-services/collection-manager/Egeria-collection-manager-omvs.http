@@ -91,6 +91,7 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}
 Authorization: Bearer {{token}}
 
+
 ###
 # =====================================================================================================================
 # Create Collections: https://egeria-project.org/concepts/collection
@@ -140,6 +141,7 @@ Content-Type: application/json
 {
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
@@ -162,6 +164,7 @@ Content-Type: application/json
 {
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
@@ -177,7 +180,8 @@ Content-Type: application/json
 
 ###
 # @name createDataSpecCollection
-# Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.
+# Create a new collection with the DataSpec classification.  Used to identify a collection of data structures and
+# data fields used to define data requirements for a project or initiative.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-spec-collection
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -185,6 +189,31 @@ Content-Type: application/json
 {
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type"
+  }
+}
+
+###
+# @name createDataDictionaryCollection
+# Create a new collection with the Data Dictionary classification.  Used to identify a collection of
+# data fields that represent a data store of collection of common data types.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-dictionary-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
@@ -208,6 +237,7 @@ Content-Type: application/json
   "class" : "NewCollectionRequestBody",
   "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
@@ -234,6 +264,7 @@ Content-Type: application/json
   "class": "TemplateRequestBody",
   "anchorGUID": "anchor GUID, if set then isOwnAnchor=false",
   "isOwnAnchor": false,
+  "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID": "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName": "open metadata type name",
   "parentAtEnd1": true,
@@ -274,6 +305,7 @@ Content-Type: application/json
 {
   "class" : "NewDigitalProductRequestBody",
   "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
   "parentGUID" : "xxx",
   "parentRelationshipTypeName" : "CollectionMembership",
   "parentAtEnd1": true,
@@ -374,8 +406,11 @@ Content-Type: application/json
 
 ###
 # @name deleteCollection
-# Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
-# then they are also deleted.
+# Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection
+# then they are also deleted; otherwise they are just detached. The option cascadedDelete (default value=false)
+# controls how nested collections are handled.  If it is false then the delete fails if there are nested collections.
+# If true then nested collections are deleted, irrespective of their anchor.  However, any elements anchored to these
+# nested collections are deleted as well. (Use this option wisely :)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json

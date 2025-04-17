@@ -62,7 +62,7 @@ It is designed for data science and analytics management tools.
 
   The Design Model OMAS provides the ability to manage information from all types of design models.
 These models may come from tools or be part of a packaged standard.
-This content is useful for governance, system integration and software development.
+This content is useful for governance, data projects, system integration and software development.
 
 * **[digital-architecture](digital-architecture)** - support the design and architecture of the digital services
 that support the business.
@@ -74,11 +74,6 @@ definition and management of a digital service through concept to deployment.
 * **[digital-service](digital-service)** - manage metadata for digital services and products.
   
   The Digital Service OMAS provides services for a managing the lifecycle of a Digital Service and any associated products.
-
-* **[governance-engine](governance-engine)** - manage metadata for an operational governance engine.
-
-  The Governance Engine OMAS provides APIs and events that retrieve and
-manage metadata for governance engines.  This OMAS has been replaced by the Governance Server OMAS.
 
 * **[governance-program](governance-program)** - set up and manage a governance program.
 

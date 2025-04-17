@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.digitalservice.admin;
 
 import org.odpi.openmetadata.accessservices.digitalservice.ffdc.DigitalServiceAuditCode;
-import org.odpi.openmetadata.accessservices.digitalservice.listener.DigitalServiceOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.digitalservice.server.DigitalServiceServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;

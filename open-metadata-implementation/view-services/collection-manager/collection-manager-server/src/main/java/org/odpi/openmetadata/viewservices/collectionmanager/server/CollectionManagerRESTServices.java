@@ -10,6 +10,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
@@ -501,7 +504,7 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
-     * Create a new collection with the DataSpecCollection classification.  Used to identify the top of a
+     * Create a new collection with the DataSpec classification.  Used to identify the top of a
      * collection hierarchy.
      *
      * @param serverName                 name of called server.
@@ -539,6 +542,68 @@ public class CollectionManagerRESTServices extends TokenController
                                                           requestBody.getIsOwnAnchor(),
                                                           requestBody.getAnchorScopeGUID(),
                                                           OpenMetadataType.DATA_SPEC_COLLECTION.typeName,
+                                                          requestBody.getCollectionProperties(),
+                                                          requestBody.getParentGUID(),
+                                                          requestBody.getParentRelationshipTypeName(),
+                                                          requestBody.getParentRelationshipProperties(),
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Create a new collection with the DataDictionary classification.  Used to identify the top of a
+     * collection hierarchy.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createDataDictionaryCollection(String                   serverName,
+                                                       NewCollectionRequestBody requestBody)
+    {
+        final String methodName = "createDataDictionaryCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+                response.setGUID(handler.createCollection(userId,
+                                                          requestBody.getAnchorGUID(),
+                                                          requestBody.getIsOwnAnchor(),
+                                                          requestBody.getAnchorScopeGUID(),
+                                                          OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,
                                                           requestBody.getCollectionProperties(),
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
@@ -974,11 +1039,14 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
-     * Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
+     * Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection
      * then they are also deleted.
      *
      * @param serverName         name of called server.
-     * @param collectionGUID unique identifier of the collection.
+     * @param collectionGUID unique identifier of the collection
+     * @param cascadedDelete should nested collections be deleted? If false, the delete fails if there are nested
+     *                       collections.  If true, nested collections are delete - but not member elements
+     *                       unless they are anchored to the collection
      * @param requestBody null request body
      *
      * @return void or
@@ -989,6 +1057,7 @@ public class CollectionManagerRESTServices extends TokenController
     @SuppressWarnings(value = "unused")
     public VoidResponse deleteCollection(String          serverName,
                                          String          collectionGUID,
+                                         boolean         cascadedDelete,
                                          NullRequestBody requestBody)
     {
         final String methodName = "deleteCollection";
@@ -1008,7 +1077,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            handler.deleteCollection(userId, collectionGUID);
+            handler.deleteCollection(userId, collectionGUID, cascadedDelete);
         }
         catch (Throwable error)
         {

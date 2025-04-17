@@ -373,19 +373,24 @@ public interface CollectionsInterface
 
 
     /**
-     * Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
+     * Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection
      * then they are also deleted.
      *
-     * @param userId   userId of user making request.
-     * @param collectionGUID  unique identifier of the collection.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @param userId         userId of user making request.
+     * @param collectionGUID unique identifier of the collection
+     * @param cascadedDelete should nested collections be deleted? If false, the delete fails if there are nested
+     *                       collections.  If true, nested collections are delete - but not member elements
+     *                       unless they are anchored to the collection
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void deleteCollection(String userId,
-                          String collectionGUID) throws InvalidParameterException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException;
+                          String  collectionGUID,
+                          boolean cascadedDelete) throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException;
 
 
     /**
