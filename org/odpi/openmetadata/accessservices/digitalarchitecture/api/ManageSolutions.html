@@ -156,10 +156,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new information supply chain segment.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)" class="member-name-link">deleteInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date)" class="member-name-link">deleteInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
@@ -440,6 +441,9 @@ loadScripts(document, 'script');</script>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
 <dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dd><code>forLineage</code> - the retrieved elements are for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -647,12 +651,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">
+<section class="detail" id="deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date)">
 <h3>deleteInformationSupplyChain</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteInformationSupplyChain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -665,7 +670,8 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this element</dd>
 <dd><code>externalSourceName</code> - unique name of the software capability that owns this element</dd>
-<dd><code>informationSupplyChainGUID</code> - unique identifier of the element.</dd>
+<dd><code>informationSupplyChainGUID</code> - unique identifier of the element</dd>
+<dd><code>cascadedDelete</code> - can information supply chains be deleted if segments are attached?</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>

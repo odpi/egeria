@@ -125,6 +125,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the position of this data field in the data structure.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxCardinality()" class="member-name-link">getMaxCardinality</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the maximum number of instances allowed for this attribute.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinCardinality()" class="member-name-link">getMinCardinality</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return this minimum number of instances allowed for this attribute.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a number that represents the contents of this object.</div>
@@ -133,6 +143,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataFieldPosition(int)" class="member-name-link">setDataFieldPosition</a><wbr>(int&nbsp;dataFieldPosition)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the position of this data field in the data structure.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxCardinality(int)" class="member-name-link">setMaxCardinality</a><wbr>(int&nbsp;maxCardinality)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the maximum number of instances allowed for this attribute.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinCardinality(int)" class="member-name-link">setMinCardinality</a><wbr>(int&nbsp;minCardinality)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the minimum number of instances allowed for this attribute.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -204,6 +224,50 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataFieldPosition</code> - int position in schema - 0 means first</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMinCardinality()">
+<h3>getMinCardinality</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMinCardinality</span>()</div>
+<div class="block">Return this minimum number of instances allowed for this attribute.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMinCardinality(int)">
+<h3>setMinCardinality</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMinCardinality</span><wbr><span class="parameters">(int&nbsp;minCardinality)</span></div>
+<div class="block">Set up the minimum number of instances allowed for this attribute.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>minCardinality</code> - int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMaxCardinality()">
+<h3>getMaxCardinality</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMaxCardinality</span>()</div>
+<div class="block">Return the maximum number of instances allowed for this attribute.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int (-1 means infinite)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMaxCardinality(int)">
+<h3>setMaxCardinality</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxCardinality</span><wbr><span class="parameters">(int&nbsp;maxCardinality)</span></div>
+<div class="block">Set up the maximum number of instances allowed for this attribute.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>maxCardinality</code> - int (-1 means infinite)</dd>
 </dl>
 </section>
 </li>

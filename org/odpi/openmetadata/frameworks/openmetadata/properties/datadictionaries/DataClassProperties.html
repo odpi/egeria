@@ -128,9 +128,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return whether the same value can be used by more than one instance of this attribute.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassCode()" class="member-name-link">getClassCode</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAverageValue()" class="member-name-link">getAverageValue</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of processing class that can identify the data class.</div>
+<div class="block">Return the average (mean) value of the values stored in the data field.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataPatterns()" class="member-name-link">getDataPatterns</a>()</code></div>
@@ -156,6 +156,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the display name of the data class.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsNullable()" class="member-name-link">getIsNullable</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether the field is nullable or not.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchPropertyNames()" class="member-name-link">getMatchPropertyNames</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of property values filled out in this annotation.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchThreshold()" class="member-name-link">getMatchThreshold</a>()</code></div>
@@ -187,10 +197,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return any additional properties used in the specification.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserDefined()" class="member-name-link">getUserDefined</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValueList()" class="member-name-link">getValueList</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether this data class is defined by the local organization or a vendor/industry standard.</div>
+<div class="block">Return the list of values found in the data field.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValueRangeFrom()" class="member-name-link">getValueRangeFrom</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the lowest value of the data stored in this data field.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValueRangeTo()" class="member-name-link">getValueRangeTo</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the upper value of the data stored in this data field.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -203,9 +223,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up whether the same value can be used by more than one instance of this attribute.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setClassCode(java.lang.String)" class="member-name-link">setClassCode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classCode)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAverageValue(java.lang.String)" class="member-name-link">setAverageValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;averageValue)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of processing class that can identify the data class.</div>
+<div class="block">Set up the average (mean) value of the values stored in the data field.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataPatterns(java.util.List)" class="member-name-link">setDataPatterns</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataPatterns)</code></div>
@@ -231,6 +251,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayName(java.lang.String)" class="member-name-link">setDisplayName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the display name of the data class.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsNullable(boolean)" class="member-name-link">setIsNullable</a><wbr>(boolean&nbsp;nullable)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether the field is nullable or not.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMatchPropertyNames(java.util.List)" class="member-name-link">setMatchPropertyNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;matchPropertyNames)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of property values filled out in this annotation.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMatchThreshold(java.lang.Float)" class="member-name-link">setMatchThreshold</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;matchThreshold)</code></div>
@@ -263,9 +293,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up any additional properties used in the specification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUserDefined(boolean)" class="member-name-link">setUserDefined</a><wbr>(boolean&nbsp;userDefined)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValueList(java.util.List)" class="member-name-link">setValueList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;valueList)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up  whether this data class is defined by the local organization or a vendor/industry standard.</div>
+<div class="block">Set up the list of values found in the data field.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValueRangeFrom(java.lang.String)" class="member-name-link">setValueRangeFrom</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;valueRangeFrom)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the lowest value of the data stored in this data field.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValueRangeTo(java.lang.String)" class="member-name-link">setValueRangeTo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;valueRangeTo)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the upper value of the data stored in this data field.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -366,46 +406,46 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getClassCode()">
-<h3>getClassCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getClassCode</span>()</div>
-<div class="block">Return the name of processing class that can identify the data class.</div>
+<section class="detail" id="getMatchPropertyNames()">
+<h3>getMatchPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getMatchPropertyNames</span>()</div>
+<div class="block">Return the list of property values filled out in this annotation.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string name</dd>
+<dd>list of property names</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setClassCode(java.lang.String)">
-<h3>setClassCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setClassCode</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classCode)</span></div>
-<div class="block">Set up the name of processing class that can identify the data class.</div>
+<section class="detail" id="setMatchPropertyNames(java.util.List)">
+<h3>setMatchPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchPropertyNames</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;matchPropertyNames)</span></div>
+<div class="block">Set up the list of property values filled out in this annotation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>classCode</code> - string name</dd>
+<dd><code>matchPropertyNames</code> - list of property names</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getUserDefined()">
-<h3>getUserDefined</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getUserDefined</span>()</div>
-<div class="block">Return whether this data class is defined by the local organization or a vendor/industry standard.</div>
+<section class="detail" id="getMatchThreshold()">
+<h3>getMatchThreshold</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a></span>&nbsp;<span class="element-name">getMatchThreshold</span>()</div>
+<div class="block">Return the match threshold that a data field is expected to achieve to be assigned this data class.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>boolean</dd>
+<dd>float</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setUserDefined(boolean)">
-<h3>setUserDefined</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUserDefined</span><wbr><span class="parameters">(boolean&nbsp;userDefined)</span></div>
-<div class="block">Set up  whether this data class is defined by the local organization or a vendor/industry standard.</div>
+<section class="detail" id="setMatchThreshold(java.lang.Float)">
+<h3>setMatchThreshold</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchThreshold</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;matchThreshold)</span></div>
+<div class="block">Set up the match threshold that a data field is expected to achieve to be assigned this data class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userDefined</code> - boolean</dd>
+<dd><code>matchThreshold</code> - float</dd>
 </dl>
 </section>
 </li>
@@ -476,28 +516,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMatchThreshold()">
-<h3>getMatchThreshold</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a></span>&nbsp;<span class="element-name">getMatchThreshold</span>()</div>
-<div class="block">Return the match threshold that a data field is expected to achieve to be assigned this data class.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>float</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMatchThreshold(java.lang.Float)">
-<h3>setMatchThreshold</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchThreshold</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;matchThreshold)</span></div>
-<div class="block">Set up the match threshold that a data field is expected to achieve to be assigned this data class.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>matchThreshold</code> - float</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getAllowsDuplicateValues()">
 <h3>getAllowsDuplicateValues</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getAllowsDuplicateValues</span>()</div>
@@ -516,6 +534,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>allowsDuplicateValues</code> - boolean flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIsNullable()">
+<h3>getIsNullable</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getIsNullable</span>()</div>
+<div class="block">Return whether the field is nullable or not.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setIsNullable(boolean)">
+<h3>setIsNullable</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIsNullable</span><wbr><span class="parameters">(boolean&nbsp;nullable)</span></div>
+<div class="block">Set up whether the field is nullable or not.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>nullable</code> - boolean</dd>
 </dl>
 </section>
 </li>
@@ -560,6 +600,94 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>defaultValue</code> - string description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getValueList()">
+<h3>getValueList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getValueList</span>()</div>
+<div class="block">Return the list of values found in the data field.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of values</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setValueList(java.util.List)">
+<h3>setValueList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValueList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;valueList)</span></div>
+<div class="block">Set up the list of values found in the data field.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>valueList</code> - list of values</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getValueRangeFrom()">
+<h3>getValueRangeFrom</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getValueRangeFrom</span>()</div>
+<div class="block">Return the lowest value of the data stored in this data field.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string version of the value.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setValueRangeFrom(java.lang.String)">
+<h3>setValueRangeFrom</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValueRangeFrom</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;valueRangeFrom)</span></div>
+<div class="block">Set up the lowest value of the data stored in this data field.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>valueRangeFrom</code> - string version of the value.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getValueRangeTo()">
+<h3>getValueRangeTo</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getValueRangeTo</span>()</div>
+<div class="block">Return the upper value of the data stored in this data field.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string version of the value.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setValueRangeTo(java.lang.String)">
+<h3>setValueRangeTo</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValueRangeTo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;valueRangeTo)</span></div>
+<div class="block">Set up the upper value of the data stored in this data field.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>valueRangeTo</code> - string version of the value.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAverageValue()">
+<h3>getAverageValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAverageValue</span>()</div>
+<div class="block">Return the average (mean) value of the values stored in the data field.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string version of the value.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAverageValue(java.lang.String)">
+<h3>setAverageValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAverageValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;averageValue)</span></div>
+<div class="block">Set up the average (mean) value of the values stored in the data field.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>averageValue</code> - string version of the value.</dd>
 </dl>
 </section>
 </li>

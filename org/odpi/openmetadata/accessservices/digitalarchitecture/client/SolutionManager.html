@@ -225,10 +225,11 @@ implements <a href="../api/ManageSolutions.html" title="interface in org.odpi.op
 <div class="block">Create a new information supply chain segment that is anchored from an information supply chain.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)" class="member-name-link">deleteInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date)" class="member-name-link">deleteInformationSupplyChain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
@@ -876,12 +877,13 @@ implements <a href="../api/ManageSolutions.html" title="interface in org.odpi.op
 </section>
 </li>
 <li>
-<section class="detail" id="deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">
+<section class="detail" id="deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date)">
 <h3>deleteInformationSupplyChain</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteInformationSupplyChain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
+ boolean&nbsp;cascadedDelete,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -891,12 +893,13 @@ implements <a href="../api/ManageSolutions.html" title="interface in org.odpi.op
 <div class="block">Delete an information supply chain and all of its segments.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ManageSolutions.html#deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">deleteInformationSupplyChain</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ManageSolutions.html" title="interface in org.odpi.openmetadata.accessservices.digitalarchitecture.api">ManageSolutions</a></code></dd>
+<dd><code><a href="../api/ManageSolutions.html#deleteInformationSupplyChain(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date)">deleteInformationSupplyChain</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ManageSolutions.html" title="interface in org.odpi.openmetadata.accessservices.digitalarchitecture.api">ManageSolutions</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this element</dd>
 <dd><code>externalSourceName</code> - unique name of the software capability that owns this element</dd>
 <dd><code>informationSupplyChainGUID</code> - unique identifier of the required element.</dd>
+<dd><code>cascadedDelete</code> - can information supply chains be deleted if segments are attached?</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
