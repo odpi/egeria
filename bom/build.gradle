@@ -76,7 +76,7 @@ ext {
     lang3Version = '3.14.0'
 //    TODO: logbackVersion = '1.5.8' build break
     logbackVersion = '1.5.6'
-    lettuceVersion = '6.5.0.RELEASE'
+    lettuceVersion = '6.5.5.RELEASE'
     //      TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
     luceneVersion = '8.11.3'
     openlineageVersion = '1.25.0'
