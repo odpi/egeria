@@ -145,7 +145,7 @@ public enum AccessServiceDescription implements Serializable
      * Exchange design model content with tools and standard packages.
      */
     DESIGN_MODEL_OMAS                (213,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Design Model",
                                       "Design Model OMAS",
                                       "design-model",

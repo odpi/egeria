@@ -551,7 +551,7 @@ public enum SolutionComponent
      */
     public String getQualifiedName()
     {
-        return "SolutionComponent:" + displayName + ":" + versionIdentifier;
+        return "SolutionComponent::" + displayName + "::" + versionIdentifier;
     }
 
 

@@ -530,7 +530,7 @@ public enum FacilityDefinition
 
     public String getQualifiedName()
     {
-        return facilityType.getPreferredValue() + ":" + identifier;
+        return facilityType.getPreferredValue() + "::" + identifier;
     }
 
 

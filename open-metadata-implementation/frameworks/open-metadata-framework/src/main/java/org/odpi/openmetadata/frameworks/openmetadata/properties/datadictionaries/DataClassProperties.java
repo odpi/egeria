@@ -26,15 +26,19 @@ public class DataClassProperties extends ReferenceableProperties
 {
     private String              displayName           = null;
     private String              description           = null;
-    private String              classCode             = null;
-    private boolean             userDefined           = true;
+    private List<String>        matchPropertyNames    = null;
     private String              namespace             = null;
+    private Float               matchThreshold        = 0F;
     private String              specification         = null;
     private Map<String, String> specificationDetails  = null;
     private String              dataType              = null;
-    private Float               matchThreshold        = 0F;
     private boolean             allowsDuplicateValues = true;
+    private boolean             isNullable            = true;
     private String              defaultValue          = null;
+    private String              averageValue          = null;
+    private List<String>        valueList             = null;
+    private String              valueRangeFrom        = null;
+    private String              valueRangeTo          = null;
     private List<String>        sampleValues          = null;
     private List<String>        dataPatterns          = null;
     private List<String>        namePatterns          = null;
@@ -62,15 +66,19 @@ public class DataClassProperties extends ReferenceableProperties
         {
             displayName           = template.getDisplayName();
             description           = template.getDescription();
-            classCode             = template.getClassCode();
-            userDefined           = template.getUserDefined();
+            matchPropertyNames    = template.getMatchPropertyNames();
             namespace             = template.getNamespace();
             specification         = template.getSpecification();
             specificationDetails  = template.getSpecificationDetails();
             dataType              = template.getDataType();
             matchThreshold        = template.getMatchThreshold();
             allowsDuplicateValues = template.getAllowsDuplicateValues();
+            isNullable            = template.getIsNullable();
             defaultValue          = template.getDefaultValue();
+            valueList             = template.getValueList();
+            averageValue          = template.getAverageValue();
+            valueRangeFrom        = template.getValueRangeFrom();
+            valueRangeTo          = template.getValueRangeTo();
             sampleValues          = template.getSampleValues();
             dataPatterns          = template.getDataPatterns();
             namePatterns          = template.getNamePatterns();
@@ -124,46 +132,46 @@ public class DataClassProperties extends ReferenceableProperties
 
 
     /**
-     * Return the name of processing class that can identify the data class.
+     * Return the list of property values filled out in this annotation.
      *
-     * @return string name
+     * @return list of property names
      */
-    public String getClassCode()
+    public List<String> getMatchPropertyNames()
     {
-        return classCode;
+        return matchPropertyNames;
     }
 
 
     /**
-     * Set up the name of processing class that can identify the data class.
+     * Set up the list of property values filled out in this annotation.
      *
-     * @param classCode string name
+     * @param matchPropertyNames list of property names
      */
-    public void setClassCode(String classCode)
+    public void setMatchPropertyNames(List<String> matchPropertyNames)
     {
-        this.classCode = classCode;
+        this.matchPropertyNames = matchPropertyNames;
     }
 
 
     /**
-     * Return whether this data class is defined by the local organization or a vendor/industry standard.
+     * Return the match threshold that a data field is expected to achieve to be assigned this data class.
      *
-     * @return boolean
+     * @return float
      */
-    public boolean getUserDefined()
+    public Float getMatchThreshold()
     {
-        return userDefined;
+        return matchThreshold;
     }
 
 
     /**
-     * Set up  whether this data class is defined by the local organization or a vendor/industry standard.
+     * Set up the match threshold that a data field is expected to achieve to be assigned this data class.
      *
-     * @param userDefined boolean
+     * @param matchThreshold float
      */
-    public void setUserDefined(boolean userDefined)
+    public void setMatchThreshold(Float matchThreshold)
     {
-        this.userDefined = userDefined;
+        this.matchThreshold = matchThreshold;
     }
 
 
@@ -231,27 +239,6 @@ public class DataClassProperties extends ReferenceableProperties
 
 
     /**
-     * Return the match threshold that a data field is expected to achieve to be assigned this data class.
-     *
-     * @return float
-     */
-    public Float getMatchThreshold()
-    {
-        return matchThreshold;
-    }
-
-
-    /**
-     * Set up the match threshold that a data field is expected to achieve to be assigned this data class.
-     *
-     * @param matchThreshold float
-     */
-    public void setMatchThreshold(Float matchThreshold)
-    {
-        this.matchThreshold = matchThreshold;
-    }
-
-    /**
      * Return whether the same value can be used by more than one instance of this attribute.
      *
      * @return boolean flag
@@ -270,6 +257,28 @@ public class DataClassProperties extends ReferenceableProperties
     public void setAllowsDuplicateValues(boolean allowsDuplicateValues)
     {
         this.allowsDuplicateValues = allowsDuplicateValues;
+    }
+
+
+    /**
+     * Return whether the field is nullable or not.
+     *
+     * @return boolean
+     */
+    public boolean getIsNullable()
+    {
+        return isNullable;
+    }
+
+
+    /**
+     * Set up whether the field is nullable or not.
+     *
+     * @param nullable boolean
+     */
+    public void setIsNullable(boolean nullable)
+    {
+        isNullable = nullable;
     }
 
 
@@ -314,6 +323,94 @@ public class DataClassProperties extends ReferenceableProperties
     public void setDefaultValue(String defaultValue)
     {
         this.defaultValue = defaultValue;
+    }
+
+
+    /**
+     * Return the list of values found in the data field.
+     *
+     * @return list of values
+     */
+    public List<String> getValueList()
+    {
+        return valueList;
+    }
+
+
+    /**
+     * Set up the list of values found in the data field.
+     *
+     * @param valueList list of values
+     */
+    public void setValueList(List<String> valueList)
+    {
+        this.valueList = valueList;
+    }
+
+
+    /**
+     * Return the lowest value of the data stored in this data field.
+     *
+     * @return string version of the value.
+     */
+    public String getValueRangeFrom()
+    {
+        return valueRangeFrom;
+    }
+
+
+    /**
+     * Set up the lowest value of the data stored in this data field.
+     *
+     * @param valueRangeFrom string version of the value.
+     */
+    public void setValueRangeFrom(String valueRangeFrom)
+    {
+        this.valueRangeFrom = valueRangeFrom;
+    }
+
+
+    /**
+     * Return the upper value of the data stored in this data field.
+     *
+     * @return string version of the value.
+     */
+    public String getValueRangeTo()
+    {
+        return valueRangeTo;
+    }
+
+
+    /**
+     * Set up the upper value of the data stored in this data field.
+     *
+     * @param valueRangeTo string version of the value.
+     */
+    public void setValueRangeTo(String valueRangeTo)
+    {
+        this.valueRangeTo = valueRangeTo;
+    }
+
+
+    /**
+     * Return the average (mean) value of the values stored in the data field.
+     *
+     * @return string version of the value.
+     */
+    public String getAverageValue()
+    {
+        return averageValue;
+    }
+
+
+    /**
+     * Set up the average (mean) value of the values stored in the data field.
+     *
+     * @param averageValue string version of the value.
+     */
+    public void setAverageValue(String averageValue)
+    {
+        this.averageValue = averageValue;
     }
 
 
@@ -394,20 +491,25 @@ public class DataClassProperties extends ReferenceableProperties
         return "DataClassProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", classCode='" + classCode + '\'' +
-                ", userDefined=" + userDefined +
+                ", matchPropertyNames=" + matchPropertyNames +
                 ", namespace='" + namespace + '\'' +
+                ", matchThreshold=" + matchThreshold +
                 ", specification='" + specification + '\'' +
                 ", specificationDetails=" + specificationDetails +
                 ", dataType='" + dataType + '\'' +
-                ", matchThreshold=" + matchThreshold +
                 ", allowsDuplicateValues=" + allowsDuplicateValues +
+                ", isNullable=" + isNullable +
                 ", defaultValue='" + defaultValue + '\'' +
+                ", averageValue='" + averageValue + '\'' +
+                ", valueList=" + valueList +
+                ", valueRangeFrom='" + valueRangeFrom + '\'' +
+                ", valueRangeTo='" + valueRangeTo + '\'' +
                 ", sampleValues=" + sampleValues +
                 ", dataPatterns=" + dataPatterns +
                 ", namePatterns=" + namePatterns +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -422,17 +524,21 @@ public class DataClassProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataClassProperties that = (DataClassProperties) objectToCompare;
-        return userDefined == that.userDefined &&
-                allowsDuplicateValues == that.allowsDuplicateValues &&
+        return allowsDuplicateValues == that.allowsDuplicateValues &&
+                isNullable == that.isNullable &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(classCode, that.classCode) &&
+                Objects.equals(matchPropertyNames, that.matchPropertyNames) &&
                 Objects.equals(namespace, that.namespace) &&
+                Objects.equals(matchThreshold, that.matchThreshold) &&
                 Objects.equals(specification, that.specification) &&
                 Objects.equals(specificationDetails, that.specificationDetails) &&
                 Objects.equals(dataType, that.dataType) &&
-                Objects.equals(matchThreshold, that.matchThreshold) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
+                Objects.equals(averageValue, that.averageValue) &&
+                Objects.equals(valueList, that.valueList) &&
+                Objects.equals(valueRangeFrom, that.valueRangeFrom) &&
+                Objects.equals(valueRangeTo, that.valueRangeTo) &&
                 Objects.equals(sampleValues, that.sampleValues) &&
                 Objects.equals(dataPatterns, that.dataPatterns) &&
                 Objects.equals(namePatterns, that.namePatterns);
@@ -446,8 +552,9 @@ public class DataClassProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, classCode, userDefined, namespace,
-                            specification, specificationDetails, dataType, matchThreshold, allowsDuplicateValues,
-                            defaultValue, sampleValues, dataPatterns, namePatterns);
+        return Objects.hash(super.hashCode(), displayName, description, matchPropertyNames, namespace,
+                            matchThreshold, specification, specificationDetails, dataType, allowsDuplicateValues,
+                            isNullable, defaultValue, averageValue, valueList, valueRangeFrom, valueRangeTo, sampleValues,
+                            dataPatterns, namePatterns);
     }
 }

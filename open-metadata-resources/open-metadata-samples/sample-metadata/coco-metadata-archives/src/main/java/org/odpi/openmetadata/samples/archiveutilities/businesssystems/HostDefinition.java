@@ -408,7 +408,7 @@ public enum HostDefinition
      */
     public String getQualifiedName()
     {
-        return "Host:" + getHostType().getOpenMetadataTypeName() + ":" + hostId;
+        return "Host::" + getHostType().getOpenMetadataTypeName() + "::" + hostId;
     }
 
 

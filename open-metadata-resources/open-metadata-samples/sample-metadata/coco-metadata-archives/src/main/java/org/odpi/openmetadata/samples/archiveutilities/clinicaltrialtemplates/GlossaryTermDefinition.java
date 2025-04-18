@@ -89,11 +89,11 @@ public enum GlossaryTermDefinition
 
     public String getQualifiedName()
     {
-        return "GlossaryTerm:TeddyBearDropFootTerminology:" + name;
+        return "GlossaryTerm::TeddyBearDropFootTerminology:" + name;
     }
     public String getTemplateSubstituteQualifiedName()
     {
-        return "GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:" + abbreviation;
+        return "GlossaryTerm::TeddyBearDropFootTerminology::TemplateSubstitute:" + abbreviation;
     }
 
 

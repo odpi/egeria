@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -739,6 +741,42 @@ public class OpenMetadataConverterBase<B>
         else
         {
             this.handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Summarize the external references linked via the ExternalReferenceLink relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getAttribution(Class<B>                     beanClass,
+                                                                 List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getMoreInformation";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
         }
 
         return null;
@@ -1861,6 +1899,52 @@ public class OpenMetadataConverterBase<B>
 
         return 0L;
     }
+
+
+
+    /**
+     * Extract and delete the threshold property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected float removeThreshold(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeThreshold";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(serviceName,
+                                                     OpenMetadataProperty.THRESHOLD.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the matchThreshold property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected float removeMatchThreshold(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeMatchThreshold";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(serviceName,
+                                                     OpenMetadataProperty.MATCH_THRESHOLD.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
 
     /**
      * Extract and delete the URL property from the supplied element properties.
@@ -3970,6 +4054,27 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the specification property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeSpecification(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeSpecification";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.SPECIFICATION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
      * Extract and delete the position property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -4179,20 +4284,10 @@ public class OpenMetadataConverterBase<B>
 
         if (elementProperties != null)
         {
-            int retrievedValue = propertyHelper.removeIntProperty(serviceName,
-                                                                  OpenMetadataProperty.PRECISION.name,
-                                                                  elementProperties,
-                                                                  methodName);
-
-            if (retrievedValue == 0)
-            {
-                retrievedValue = propertyHelper.removeIntProperty(serviceName,
-                                                                  OpenMetadataProperty.SIGNIFICANT_DIGITS.name,
-                                                                  elementProperties,
-                                                                  methodName);
-            }
-
-            return retrievedValue;
+            return propertyHelper.removeIntProperty(serviceName,
+                                                    OpenMetadataProperty.PRECISION.name,
+                                                    elementProperties,
+                                                    methodName);
         }
 
         return 0;
@@ -7129,6 +7224,97 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract the matchPropertyNames property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeMatchPropertyNames(ElementProperties elementProperties)
+    {
+        final String methodName = "removeMatchPropertyNames";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.MATCH_PROPERTY_NAMES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the sampleValues property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeSampleValues(ElementProperties elementProperties)
+    {
+        final String methodName = "removeSampleValues";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.SAMPLE_VALUES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the dataPatterns property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeDataPatterns(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDataPatterns";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.DATA_PATTERNS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the namePatterns property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeNamePatterns(ElementProperties elementProperties)
+    {
+        final String methodName = "removeNamePatterns";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.NAME_PATTERNS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the profileStartDate property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
@@ -7171,6 +7357,29 @@ public class OpenMetadataConverterBase<B>
         return null;
     }
 
+
+
+
+    /**
+     * Extract the specificationDetails property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return map of name value pairs
+     */
+    protected Map<String, String> removeSpecificationDetails(ElementProperties elementProperties)
+    {
+        final String methodName = "removeSpecificationDetails";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataProperty.SPECIFICATION_DETAILS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
 
 
     /**
@@ -8014,6 +8223,38 @@ public class OpenMetadataConverterBase<B>
             }
 
             return SolutionPortDirection.UNKNOWN;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract (and remove) the sort order enum from element properties.
+     *
+     * @param elementProperties properties
+     * @return enum
+     */
+    protected DataItemSortOrder removeDataItemSortOrder(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDataItemSortOrder";
+
+        if (elementProperties != null)
+        {
+            String enumValue = propertyHelper.removeEnumProperty(serviceName,
+                                                                 OpenMetadataProperty.SORT_ORDER.name,
+                                                                 elementProperties,
+                                                                 methodName);
+
+            for (DataItemSortOrder portDirection : DataItemSortOrder.values())
+            {
+                if (portDirection.getName().equals(enumValue))
+                {
+                    return portDirection;
+                }
+            }
+
+            return DataItemSortOrder.UNSORTED;
         }
 
         return null;

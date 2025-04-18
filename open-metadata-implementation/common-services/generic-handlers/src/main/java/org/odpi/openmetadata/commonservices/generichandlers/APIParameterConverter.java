@@ -86,7 +86,6 @@ public class APIParameterConverter<B> extends OMFConverter<B>
                     properties.setMinimumLength(this.removeMinimumLength(instanceProperties));
                     properties.setLength(this.removeLength(instanceProperties));
                     properties.setPrecision(this.removePrecision(instanceProperties));
-                    properties.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
                     properties.setIsNullable(this.removeIsNullable(instanceProperties));
                     properties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                     properties.setAliases(this.removeAliases(instanceProperties));

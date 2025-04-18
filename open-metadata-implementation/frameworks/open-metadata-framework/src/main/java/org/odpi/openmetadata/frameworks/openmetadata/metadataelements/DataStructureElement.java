@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataStructureElement implements MetadataElement
+public class DataStructureElement extends AttributedMetadataElement
 {
-    private ElementHeader            elementHeader = null;
-    private DataStructureProperties properties    = null;
+    private DataStructureProperties             properties           = null;
+    private List<MemberDataField>               memberDataFields     = null;
+    private RelatedMetadataElementSummary       equivalentSchemaType = null;
+    private String                              mermaidGraph         = null;
 
     /**
      * Default constructor
@@ -40,35 +43,15 @@ public class DataStructureElement implements MetadataElement
      */
     public DataStructureElement(DataStructureElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
             properties = template.getProperties();
+            memberDataFields = template.getMemberDataFields();
+            equivalentSchemaType = template.getEquivalentSchemaType();
+            mermaidGraph = template.getMermaidGraph();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -93,6 +76,73 @@ public class DataStructureElement implements MetadataElement
         this.properties = properties;
     }
 
+
+    /**
+     * Return any nested data fields.
+     *
+     * @return list
+     */
+    public List<MemberDataField> getMemberDataFields()
+    {
+        return memberDataFields;
+    }
+
+
+    /**
+     * Set up any nested data fields.
+     *
+     * @param memberDataFields list
+     */
+    public void setMemberDataFields(List<MemberDataField> memberDataFields)
+    {
+        this.memberDataFields = memberDataFields;
+    }
+
+
+    /**
+     * Return the equivalent schema type for this data field.
+     *
+     * @return related element
+     */
+    public RelatedMetadataElementSummary getEquivalentSchemaType()
+    {
+        return equivalentSchemaType;
+    }
+
+
+    /**
+     * Set up the equivalent schema type for this data field.
+     *
+     * @param equivalentSchemaType related element
+     */
+    public void setEquivalentSchemaType(RelatedMetadataElementSummary equivalentSchemaType)
+    {
+        this.equivalentSchemaType = equivalentSchemaType;
+    }
+
+
+    /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -102,9 +152,11 @@ public class DataStructureElement implements MetadataElement
     public String toString()
     {
         return "DataStructureElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+                "properties=" + properties +
+                ", memberDataFields=" + memberDataFields +
+                ", equivalentSchemaType=" + equivalentSchemaType +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -117,19 +169,15 @@ public class DataStructureElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DataStructureElement that = (DataStructureElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(memberDataFields, that.memberDataFields) &&
+                Objects.equals(equivalentSchemaType, that.equivalentSchemaType) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
-
 
     /**
      * Return hash code for this object
@@ -139,6 +187,6 @@ public class DataStructureElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType,mermaidGraph);
     }
 }

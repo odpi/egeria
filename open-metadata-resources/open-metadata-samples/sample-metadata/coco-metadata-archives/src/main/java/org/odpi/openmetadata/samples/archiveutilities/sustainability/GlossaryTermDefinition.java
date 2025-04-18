@@ -137,7 +137,7 @@ public enum GlossaryTermDefinition
 
     public String getQualifiedName()
     {
-        return "GlossaryTerm:" + name;
+        return "GlossaryTerm::" + name;
     }
 
 

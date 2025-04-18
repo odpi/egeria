@@ -213,7 +213,7 @@ public enum GovernanceDefinition
 
     public String getQualifiedName()
     {
-        return type + ":" + title;
+        return type + "::" + title;
     }
 
 

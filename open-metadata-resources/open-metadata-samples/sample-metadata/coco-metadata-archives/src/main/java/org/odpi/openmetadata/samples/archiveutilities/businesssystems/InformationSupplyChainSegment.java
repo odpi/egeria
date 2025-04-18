@@ -221,7 +221,7 @@ public enum InformationSupplyChainSegment
      */
     public String getQualifiedName()
     {
-        return "InformationSupplyChainSegment:" + displayName + ":" + scope;
+        return "InformationSupplyChainSegment::" + displayName + "::" + scope;
     }
 
 

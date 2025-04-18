@@ -177,7 +177,7 @@ public enum SolutionBlueprint
      */
     public String getQualifiedName()
     {
-        return "SolutionBlueprint:" + displayName + ":" + versionIdentifier;
+        return "SolutionBlueprint::" + displayName + "::" + versionIdentifier;
     }
 
 

@@ -72,7 +72,7 @@ public enum DataProcessingPurposeDefinition
 
     public String getQualifiedName()
     {
-        return "DataProcessingPurpose: " + title;
+        return "DataProcessingPurpose:: " + title;
     }
 
 

@@ -557,6 +557,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param informationSupplyChainGUID  unique identifier of the element to delete
+     * @param cascadedDelete can information supply chains be deleted if segments are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -566,6 +567,7 @@ public class SolutionArchitectRESTServices extends TokenController
      */
     public VoidResponse deleteInformationSupplyChain(String                    serverName,
                                                      String                    informationSupplyChainGUID,
+                                                     boolean                   cascadedDelete,
                                                      MetadataSourceRequestBody requestBody)
     {
         final String methodName = "deleteInformationSupplyChain";
@@ -591,6 +593,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                      requestBody.getExternalSourceGUID(),
                                                      requestBody.getExternalSourceName(),
                                                      informationSupplyChainGUID,
+                                                     cascadedDelete,
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
                                                      requestBody.getEffectiveTime());
@@ -601,6 +604,7 @@ public class SolutionArchitectRESTServices extends TokenController
                                                      null,
                                                      null,
                                                      informationSupplyChainGUID,
+                                                     cascadedDelete,
                                                      false,
                                                      false,
                                                      new Date());

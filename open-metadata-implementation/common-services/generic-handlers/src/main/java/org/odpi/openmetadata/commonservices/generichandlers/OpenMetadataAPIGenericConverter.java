@@ -1125,7 +1125,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         properties.setMinimumLength(this.removeMinimumLength(instanceProperties));
         properties.setLength(this.removeLength(instanceProperties));
         properties.setPrecision(this.removePrecision(instanceProperties));
-        properties.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
         properties.setIsNullable(this.removeIsNullable(instanceProperties));
         properties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
         properties.setAliases(this.removeAliases(instanceProperties));
@@ -3677,29 +3676,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                       OpenMetadataProperty.LENGTH.name,
                                                       instanceProperties,
                                                       methodName);
-        }
-
-        return 0;
-    }
-
-
-    /**
-     * Extract and delete the significantDigits property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return integer - default 0
-     */
-    protected int removeSignificantDigits(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeSignificantDigits";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataProperty.SIGNIFICANT_DIGITS.name,
-                                                      instanceProperties,
-                                                      methodName);
-
         }
 
         return 0;

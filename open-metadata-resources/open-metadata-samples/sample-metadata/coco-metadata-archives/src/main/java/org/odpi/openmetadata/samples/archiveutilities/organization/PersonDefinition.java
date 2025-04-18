@@ -681,15 +681,15 @@ public enum PersonDefinition
     {
         if (employeeNumber != null)
         {
-            return "Person:" + countryCode.getPreferredValue() + ":" + employeeNumber;
+            return "Person::" + countryCode.getPreferredValue() + "::" + employeeNumber;
         }
         else if (countryCode != null)
         {
-            return "Person:" + countryCode.getPreferredValue() + ":" + fullName;
+            return "Person::" + countryCode.getPreferredValue() + "::" + fullName;
         }
         else
         {
-            return "Person:EXTERNAL:" + fullName;
+            return "Person::EXTERNAL::" + fullName;
         }
     }
 

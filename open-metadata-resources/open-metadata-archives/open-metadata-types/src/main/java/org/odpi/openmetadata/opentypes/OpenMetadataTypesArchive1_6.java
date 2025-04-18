@@ -222,7 +222,6 @@ public class OpenMetadataTypesArchive1_6
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_LENGTH));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LENGTH));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SIGNIFICANT_DIGITS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
 
         typeDefPatch.setPropertyDefinitions(properties);

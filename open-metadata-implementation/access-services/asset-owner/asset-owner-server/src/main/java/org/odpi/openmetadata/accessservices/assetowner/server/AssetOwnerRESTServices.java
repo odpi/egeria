@@ -28,7 +28,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTyp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataContentForDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -489,17 +489,17 @@ public class AssetOwnerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
+                if (requestBody.getProperties() instanceof DataSetContentProperties dataSetContentProperties)
                 {
                     InstanceProperties instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(),
                                                                                                                       null,
                                                                                                                       OpenMetadataProperty.QUERY_ID.name,
-                                                                                                                      dataContentForDataSetProperties.getQueryId(),
+                                                                                                                      dataSetContentProperties.getQueryId(),
                                                                                                                       methodName);
                     instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(),
                                                                                                    instanceProperties,
                                                                                                    OpenMetadataProperty.QUERY.name,
-                                                                                                   dataContentForDataSetProperties.getQuery(),
+                                                                                                   dataSetContentProperties.getQuery(),
                                                                                                    methodName);
 
                     response.setGUID(handler.linkElementToElement(userId,
@@ -734,10 +734,10 @@ public class AssetOwnerRESTServices
 
                 if (requestBody.getProperties() != null)
                 {
-                    if (requestBody.getProperties() instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
+                    if (requestBody.getProperties() instanceof DataSetContentProperties dataSetContentProperties)
                     {
-                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), null, OpenMetadataProperty.QUERY_ID.name, dataContentForDataSetProperties.getQueryId(), methodName);
-                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), instanceProperties, OpenMetadataProperty.QUERY.name, dataContentForDataSetProperties.getQuery(), methodName);
+                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), null, OpenMetadataProperty.QUERY_ID.name, dataSetContentProperties.getQueryId(), methodName);
+                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), instanceProperties, OpenMetadataProperty.QUERY.name, dataSetContentProperties.getQuery(), methodName);
                     }
                 }
 
@@ -1130,7 +1130,7 @@ public class AssetOwnerRESTServices
             {
                 if (OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
-                    DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
+                    DataSetContentProperties properties = new DataSetContentProperties();
 
                     properties.setQueryId(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
                     properties.setQuery(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));

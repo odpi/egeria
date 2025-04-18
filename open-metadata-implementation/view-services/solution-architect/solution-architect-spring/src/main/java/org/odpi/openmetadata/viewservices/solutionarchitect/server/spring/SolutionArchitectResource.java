@@ -282,6 +282,7 @@ public class SolutionArchitectResource
      *
      * @param serverName         name of called server
      * @param informationSupplyChainGUID  unique identifier of the element to delete
+     * @param cascadedDelete can information supply chains be deleted if segments are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -299,10 +300,12 @@ public class SolutionArchitectResource
                                                      String                    serverName,
                                                      @PathVariable
                                                      String                    informationSupplyChainGUID,
+                                                     @RequestParam(required = false, defaultValue = "false")
+                                                     boolean                   cascadedDelete,
                                                      @RequestBody (required = false)
                                                      MetadataSourceRequestBody requestBody)
     {
-        return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
+        return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, cascadedDelete, requestBody);
     }
 
 

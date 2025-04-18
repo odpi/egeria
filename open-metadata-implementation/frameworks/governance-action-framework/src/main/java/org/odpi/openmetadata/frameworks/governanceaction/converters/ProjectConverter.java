@@ -168,7 +168,7 @@ public class ProjectConverter<B> extends OpenMetadataConverterBase<B>
      * @throws PropertyServerException problem in converter
      */
     protected List<RelatedMetadataElementSummary> getProjectManagers(Class<B>                     beanClass,
-                                                                   List<RelatedMetadataElement> projectManagerElements) throws PropertyServerException
+                                                                     List<RelatedMetadataElement> projectManagerElements) throws PropertyServerException
     {
         final String methodName = "getProjectManagers";
 

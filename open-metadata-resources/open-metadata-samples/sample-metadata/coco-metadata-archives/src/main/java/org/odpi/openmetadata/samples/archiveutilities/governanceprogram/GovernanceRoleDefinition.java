@@ -89,7 +89,7 @@ public enum GovernanceRoleDefinition
      */
     public String getQualifiedName()
     {
-        return typeName + identifier;
+        return typeName + "::" + identifier;
     }
 
     

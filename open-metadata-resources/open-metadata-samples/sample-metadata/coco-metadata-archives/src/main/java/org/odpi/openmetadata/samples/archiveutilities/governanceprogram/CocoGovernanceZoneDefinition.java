@@ -169,7 +169,7 @@ public enum CocoGovernanceZoneDefinition
      */
     public String getQualifiedName()
     {
-        return "GovernanceZone:" + zoneName;
+        return "GovernanceZone::" + zoneName;
     }
 
 

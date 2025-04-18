@@ -36,7 +36,7 @@ public enum GlossaryCategoryDefinition
 
     public String getQualifiedName()
     {
-        return "GlossaryCategory:TeddyBearDropFootTerminology:" + name;
+        return "GlossaryCategory::TeddyBearDropFootTerminology::" + name;
     }
 
 
