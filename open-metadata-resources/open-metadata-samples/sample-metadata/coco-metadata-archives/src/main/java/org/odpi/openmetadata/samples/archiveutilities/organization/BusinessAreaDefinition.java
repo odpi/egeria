@@ -98,7 +98,7 @@ public enum BusinessAreaDefinition
 
     public String getQualifiedName()
     {
-        return "BusinessArea:" + identifier;
+        return "BusinessArea::" + identifier;
     }
 
 

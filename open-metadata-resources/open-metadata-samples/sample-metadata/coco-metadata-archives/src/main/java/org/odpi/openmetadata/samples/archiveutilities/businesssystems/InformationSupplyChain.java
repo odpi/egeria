@@ -297,7 +297,7 @@ public enum InformationSupplyChain
      */
     public String getQualifiedName()
     {
-        return "InformationSupplyChain:" + displayName;
+        return "InformationSupplyChain::" + displayName;
     }
 
 

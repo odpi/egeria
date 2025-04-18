@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.datadesigner.server;
 
+import org.odpi.openmetadata.accessservices.designmodel.client.DataDesignManager;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -15,6 +16,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 public class DataDesignerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.DATA_DESIGNER;
+
+    private final DataDesignManager dataDesignManager;
 
 
 
@@ -44,8 +47,19 @@ public class DataDesignerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        dataDesignManager = new DataDesignManager(remoteServerName, remoteServerURL, maxPageSize, auditLog);
 
     }
 
 
+    /**
+     * Return the solution manager client.  This client is from the Design Model OMAS and is for maintaining
+     * data design artifacts.
+     *
+     * @return client
+     */
+    public DataDesignManager getDataDesignManagerClient()
+    {
+        return dataDesignManager;
+    }
 }

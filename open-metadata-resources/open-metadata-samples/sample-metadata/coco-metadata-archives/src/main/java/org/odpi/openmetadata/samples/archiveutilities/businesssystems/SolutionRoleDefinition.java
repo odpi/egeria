@@ -103,7 +103,7 @@ public enum SolutionRoleDefinition
      */
     public String getQualifiedName()
     {
-        return "SolutionActorRole:" + guid + identifier;
+        return "SolutionActorRole::" + guid + "::" + identifier;
     }
 
 

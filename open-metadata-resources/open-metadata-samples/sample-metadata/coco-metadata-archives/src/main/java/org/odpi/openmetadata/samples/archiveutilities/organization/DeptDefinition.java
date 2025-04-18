@@ -553,7 +553,7 @@ public enum DeptDefinition
      */
     public String getQualifiedName()
     {
-        return "Department:" + teamId;
+        return "Department::" + teamId;
     }
 
 

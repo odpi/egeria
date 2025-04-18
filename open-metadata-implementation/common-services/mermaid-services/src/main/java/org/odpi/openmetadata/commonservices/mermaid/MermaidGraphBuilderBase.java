@@ -590,6 +590,12 @@ public class MermaidGraphBuilderBase
     }
 
 
+    /**
+     * Extract the name of a node.
+     *
+     * @param metadataElementSummary description of an element
+     * @return string name
+     */
     protected String getNodeDisplayName(MetadataElementSummary metadataElementSummary)
     {
         String nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
@@ -605,6 +611,10 @@ public class MermaidGraphBuilderBase
         if (nodeDisplayName == null)
         {
             nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.ROLE.name);
+        }
+        if (nodeDisplayName == null)
+        {
+            nodeDisplayName = metadataElementSummary.getProperties().get(OpenMetadataProperty.TITLE.name);
         }
         if (nodeDisplayName == null)
         {

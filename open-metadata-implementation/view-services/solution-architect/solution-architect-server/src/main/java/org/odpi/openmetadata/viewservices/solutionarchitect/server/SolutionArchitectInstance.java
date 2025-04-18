@@ -50,9 +50,10 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
         solutionManager = new SolutionManager(remoteServerName, remoteServerURL, maxPageSize, auditLog);
     }
 
+
     /**
-     * Return the template manager client.  This client is from the Digital Architecture OMAS and is for maintaining
-     * template classifications and associated specifications.
+     * Return the solution manager client.  This client is from the Digital Architecture OMAS and is for maintaining
+     * information supply chains and solutions.
      *
      * @return client
      */

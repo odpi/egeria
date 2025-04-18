@@ -12,8 +12,10 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
-    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
+    implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:design-model:design-model-api')
+    implementation project(':open-metadata-implementation:access-services:design-model:design-model-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
 }

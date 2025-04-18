@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public abstract class DataFieldProperties extends ReferenceableProperties
+public class DataFieldProperties extends ReferenceableProperties
 {
     private String            displayName       = null;
     private String            namespace         = null;
@@ -32,12 +31,9 @@ public abstract class DataFieldProperties extends ReferenceableProperties
     private String            defaultValue      = null;
     private boolean           isNullable        = true;
     private String            dataType          = null;
-    private int               minCardinality    = 0;
-    private int               maxCardinality    = 0;
     private int               minimumLength     = 0;
     private int               length            = 0;
     private int               precision         = 0;
-    private int               significantDigits = 0;
     private boolean           orderedValues     = false;
     private DataItemSortOrder sortOrder         = null;
 
@@ -71,12 +67,9 @@ public abstract class DataFieldProperties extends ReferenceableProperties
             defaultValue      = template.getDefaultValue();
             isNullable        = template.getIsNullable();
             dataType          = template.getDataType();
-            minCardinality    = template.getMinCardinality();
-            maxCardinality    = template.getMaxCardinality();
             minimumLength     = template.getMinimumLength();
             length            = template.getLength();
             precision         = template.getPrecision();
-            significantDigits = template.getSignificantDigits();
             orderedValues     = template.getOrderedValues();
             sortOrder         = template.getSortOrder();
         }
@@ -277,51 +270,6 @@ public abstract class DataFieldProperties extends ReferenceableProperties
     }
 
 
-
-    /**
-     * Return this minimum number of instances allowed for this attribute.
-     *
-     * @return int
-     */
-    public int getMinCardinality()
-    {
-        return minCardinality;
-    }
-
-
-    /**
-     * Set up the minimum number of instances allowed for this attribute.
-     *
-     * @param minCardinality int
-     */
-    public void setMinCardinality(int minCardinality)
-    {
-        this.minCardinality = minCardinality;
-    }
-
-
-    /**
-     * Return the maximum number of instances allowed for this attribute.
-     *
-     * @return int (-1 means infinite)
-     */
-    public int getMaxCardinality()
-    {
-        return maxCardinality;
-    }
-
-
-    /**
-     * Set up the maximum number of instances allowed for this attribute.
-     *
-     * @param maxCardinality int (-1 means infinite)
-     */
-    public void setMaxCardinality(int maxCardinality)
-    {
-        this.maxCardinality = maxCardinality;
-    }
-
-
     /**
      * Return the minimum length of the data.
      *
@@ -389,29 +337,6 @@ public abstract class DataFieldProperties extends ReferenceableProperties
 
 
     /**
-     * Return the number of significant digits before the decimal point (zero means it is an integer).
-     *
-     * @return int
-     */
-    public int getSignificantDigits()
-    {
-        return significantDigits;
-    }
-
-
-    /**
-     * Set up the number of significant digits before the decimal point (zero means it is an integer).
-     *
-     * @param significantDigits int
-     */
-    public void setSignificantDigits(int significantDigits)
-    {
-        this.significantDigits = significantDigits;
-    }
-
-
-
-    /**
      * Return whether the attribute instances are arranged in an order.
      *
      * @return boolean flag
@@ -475,12 +400,9 @@ public abstract class DataFieldProperties extends ReferenceableProperties
                 ", defaultValue='" + defaultValue + '\'' +
                 ", isNullable=" + isNullable +
                 ", dataType='" + dataType + '\'' +
-                ", minCardinality=" + minCardinality +
-                ", maxCardinality=" + maxCardinality +
                 ", minimumLength=" + minimumLength +
                 ", length=" + length +
                 ", precision=" + precision +
-                ", significantDigits=" + significantDigits +
                 ", orderedValues=" + orderedValues +
                 ", sortOrder=" + sortOrder +
                 "} " + super.toString();
@@ -500,7 +422,16 @@ public abstract class DataFieldProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataFieldProperties that = (DataFieldProperties) objectToCompare;
-        return isDeprecated == that.isDeprecated && isNullable == that.isNullable && minCardinality == that.minCardinality && maxCardinality == that.maxCardinality && minimumLength == that.minimumLength && length == that.length && precision == that.precision && significantDigits == that.significantDigits && orderedValues == that.orderedValues && Objects.equals(displayName, that.displayName) && Objects.equals(namespace, that.namespace) && Objects.equals(aliases, that.aliases) && Objects.equals(description, that.description) && Objects.equals(versionIdentifier, that.versionIdentifier) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(dataType, that.dataType) && sortOrder == that.sortOrder;
+        return isDeprecated == that.isDeprecated &&
+                isNullable == that.isNullable &&
+                minimumLength == that.minimumLength && length == that.length && precision == that.precision &&
+                orderedValues == that.orderedValues && Objects.equals(displayName, that.displayName) &&
+                Objects.equals(namespace, that.namespace) && Objects.equals(aliases, that.aliases) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(defaultValue, that.defaultValue) &&
+                Objects.equals(dataType, that.dataType)
+                && sortOrder == that.sortOrder;
     }
 
     /**
@@ -511,6 +442,8 @@ public abstract class DataFieldProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, namespace, aliases, description, isDeprecated, versionIdentifier, defaultValue, isNullable, dataType, minCardinality, maxCardinality, minimumLength, length, precision, significantDigits, orderedValues, sortOrder);
+        return Objects.hash(super.hashCode(), displayName, namespace, aliases, description, isDeprecated,
+                            versionIdentifier, defaultValue, isNullable, dataType,
+                            minimumLength, length, precision, orderedValues, sortOrder);
     }
 }

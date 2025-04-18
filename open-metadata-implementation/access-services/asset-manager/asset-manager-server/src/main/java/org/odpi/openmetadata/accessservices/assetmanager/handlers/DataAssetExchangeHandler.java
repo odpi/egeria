@@ -856,10 +856,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         if (relationshipProperties != null)
         {
-            if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
+            if (relationshipProperties instanceof DataSetContentProperties dataSetContentProperties)
             {
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.QUERY_ID.name, dataContentForDataSetProperties.getQueryId(), methodName);
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataProperty.QUERY.name, dataContentForDataSetProperties.getQuery(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.QUERY_ID.name, dataSetContentProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataProperty.QUERY.name, dataSetContentProperties.getQuery(), methodName);
             }
         }
 
@@ -1003,7 +1003,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             {
                 if (OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
-                    DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
+                    DataSetContentProperties properties = new DataSetContentProperties();
 
                     properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY_ID.name, relationship.getProperties(), methodName));
                     properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataProperty.QUERY.name, relationship.getProperties(), methodName));
@@ -1075,10 +1075,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         if (relationshipProperties != null)
         {
-            if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
+            if (relationshipProperties instanceof DataSetContentProperties dataSetContentProperties)
             {
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.QUERY_ID.name, dataContentForDataSetProperties.getQueryId(), methodName);
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataProperty.QUERY.name, dataContentForDataSetProperties.getQuery(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.QUERY_ID.name, dataSetContentProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataProperty.QUERY.name, dataSetContentProperties.getQuery(), methodName);
             }
         }
 

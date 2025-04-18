@@ -606,7 +606,7 @@ public enum SustainabilityRoleDefinition
      */
     public String getQualifiedName()
     {
-        return typeName + identifier;
+        return typeName + "::" + identifier;
     }
 
 

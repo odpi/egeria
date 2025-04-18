@@ -21,7 +21,6 @@ public enum Colour
     DUSKY_ROSE  ("#B5739D"),
     MAUVE       ("#EFEFFF"),
     RED         ("#e15258"),
-    ORANGE      ("#f9845b"),
     LAVENDER    ("#838cc7"),
     PURPLE      ("#7d669e"),
     TEAL        ("#53bbb4"),
@@ -30,12 +29,17 @@ public enum Colour
 
     MUSTARD     ("#e0ab18"),
     YELLOW      ("#FFFF88"),
-    LIGHT_ORANGE("FFE599"),
     PINK        ("#f092b0"),
     LIGHT_GRAY  ("#b7c0c7"),
     DARK_GRAY   ("#637a91"),
     SLATE       ("#004563"),
-    SAND        ("#F9F7ED")
+    SAND        ("#F9F7ED"),
+
+
+    LIGHT_ORANGE("FFE599"),
+    ORANGE      ("#f9845b"),
+    WHITE_ORANGE ("#ffe3cc"),
+    PALE_ORANGE  ("#ffab66"),
     ;
 
     private final String colourNumber;

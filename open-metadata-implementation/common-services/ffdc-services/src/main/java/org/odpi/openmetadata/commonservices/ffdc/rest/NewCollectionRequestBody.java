@@ -62,11 +62,11 @@ public class NewCollectionRequestBody extends NewElementRequestBody
     /**
      * Set up the properties for the collection.
      *
-     * @param digitalProductProperties properties
+     * @param properties properties
      */
-    public void setCollectionProperties(CollectionProperties digitalProductProperties)
+    public void setCollectionProperties(CollectionProperties properties)
     {
-        this.collectionProperties = digitalProductProperties;
+        this.collectionProperties = properties;
     }
 
 

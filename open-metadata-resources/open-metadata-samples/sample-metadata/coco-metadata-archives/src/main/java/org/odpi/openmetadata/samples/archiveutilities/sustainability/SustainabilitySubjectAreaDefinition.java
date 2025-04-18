@@ -57,7 +57,7 @@ public enum SustainabilitySubjectAreaDefinition
      */
     public String getQualifiedName()
     {
-        return "SubjectArea:" + subjectAreaName;
+        return "SubjectArea::" + subjectAreaName;
     }
 
 

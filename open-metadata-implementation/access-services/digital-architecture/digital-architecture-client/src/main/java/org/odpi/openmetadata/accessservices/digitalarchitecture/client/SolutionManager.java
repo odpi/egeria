@@ -342,8 +342,10 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
         final String methodName = "updateInformationSupplyChain";
         final String propertiesName = "properties";
         final String qualifiedNameParameterName = "properties.qualifiedName";
+        final String guidParameterName = "informationSupplyChainGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(informationSupplyChainGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesName, methodName);
 
         if (replaceAllProperties)
@@ -489,8 +491,10 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
         final String methodName = "updateInformationSupplyChainSegment";
         final String propertiesName = "properties";
         final String qualifiedNameParameterName = "properties.qualifiedName";
+        final String guidParameterName = "segmentGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(segmentGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesName, methodName);
 
         if (replaceAllProperties)
@@ -563,6 +567,21 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                  this.getElementProperties(linkProperties),
                                                                  effectiveTime);
         }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                 segment1GUID,
+                                                                 segment2GUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
     }
 
 
@@ -623,13 +642,16 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (relationship != null)
                 {
-                    openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                         externalSourceGUID,
-                                                                         externalSourceName,
-                                                                         relationship.getRelationshipGUID(),
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         effectiveTime);
+                    if ((segment1GUID.equals(relationship.getElementGUIDAtEnd1())) && (segment2GUID.equals(relationship.getElementGUIDAtEnd2())))
+                    {
+                        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
+                                                                             externalSourceGUID,
+                                                                             externalSourceName,
+                                                                             relationship.getRelationshipGUID(),
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime);
+                    }
                 }
             }
         }
@@ -686,6 +708,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
      * @param informationSupplyChainGUID  unique identifier of the required element.
+     * @param cascadedDelete can information supply chains be deleted if segments are attached?
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -699,6 +722,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                              String  externalSourceGUID,
                                              String  externalSourceName,
                                              String  informationSupplyChainGUID,
+                                             boolean cascadedDelete,
                                              boolean forLineage,
                                              boolean forDuplicateProcessing,
                                              Date    effectiveTime) throws InvalidParameterException,
@@ -715,7 +739,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                              externalSourceGUID,
                                                              externalSourceName,
                                                              informationSupplyChainGUID,
-                                                             false,
+                                                             cascadedDelete,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);
@@ -768,7 +792,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                   OpenMetadataProperty.NAME.name);
+                                                   OpenMetadataProperty.DISPLAY_NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
@@ -823,7 +847,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException
     {
-        final String methodName = "getInformationSupplyChain";
+        final String methodName = "getInformationSupplyChainByGUID";
         final String guidParameterName = "informationSupplyChainGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);

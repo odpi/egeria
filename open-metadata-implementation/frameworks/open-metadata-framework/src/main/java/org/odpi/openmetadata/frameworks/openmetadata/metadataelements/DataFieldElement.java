@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFieldElement implements MetadataElement
+public class DataFieldElement extends AttributedMetadataElement
 {
-    private ElementHeader       elementHeader = null;
-    private DataFieldProperties properties    = null;
+    private DataFieldProperties                 properties          = null;
+    private List<MemberDataField>               nestedDataFields    = null;
+    private List<RelatedMetadataElementSummary> assignedDataClasses = null;
+    private List<RelatedMetadataElementSummary> assignedMeanings    = null;
+
 
     /**
      * Default constructor
@@ -40,36 +44,15 @@ public class DataFieldElement implements MetadataElement
      */
     public DataFieldElement(DataFieldElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
             properties = template.getProperties();
+            nestedDataFields    = template.getNestedDataFields();
+            assignedDataClasses = template.getAssignedDataClasses();
+            assignedMeanings    = template.getAssignedMeanings();
         }
-    }
-
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -94,6 +77,73 @@ public class DataFieldElement implements MetadataElement
         this.properties = properties;
     }
 
+
+    /**
+     * Return the list of nested data fields.
+     *
+     * @return list
+     */
+    public List<MemberDataField> getNestedDataFields()
+    {
+        return nestedDataFields;
+    }
+
+
+    /**
+     * Set up the list of nested data fields.
+     *
+     * @param nestedDataFields list
+     */
+    public void setNestedDataFields(List<MemberDataField> nestedDataFields)
+    {
+        this.nestedDataFields = nestedDataFields;
+    }
+
+
+    /**
+     * Return the assigned data classes that describes the content in this data field.
+     *
+     * @return related elements
+     */
+    public List<RelatedMetadataElementSummary> getAssignedDataClasses()
+    {
+        return assignedDataClasses;
+    }
+
+
+    /**
+     * Set up the assigned data classes that describes the content in this data field.
+     *
+     * @param assignedDataClasses related elements
+     */
+    public void setAssignedDataClasses(List<RelatedMetadataElementSummary> assignedDataClasses)
+    {
+        this.assignedDataClasses = assignedDataClasses;
+    }
+
+
+    /**
+     * Return the assigned glossary terms that describes the meaning of this data field.
+     *
+     * @return related elements
+     */
+    public List<RelatedMetadataElementSummary> getAssignedMeanings()
+    {
+        return assignedMeanings;
+    }
+
+
+    /**
+     * Set up the assigned glossary terms that describes the meaning of this data field.
+     *
+     * @param assignedMeanings related elements
+     */
+    public void setAssignedMeanings(List<RelatedMetadataElementSummary> assignedMeanings)
+    {
+        this.assignedMeanings = assignedMeanings;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -103,9 +153,11 @@ public class DataFieldElement implements MetadataElement
     public String toString()
     {
         return "DataFieldElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+                "properties=" + properties +
+                ", nestedDataFields=" + nestedDataFields +
+                ", assignedDataClasses=" + assignedDataClasses +
+                ", assignedMeanings=" + assignedMeanings +
+                "} " + super.toString();
     }
 
 
@@ -118,17 +170,14 @@ public class DataFieldElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DataFieldElement that = (DataFieldElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(nestedDataFields, that.nestedDataFields) &&
+                Objects.equals(assignedDataClasses, that.assignedDataClasses) &&
+                Objects.equals(assignedMeanings, that.assignedMeanings);
     }
 
 
@@ -140,6 +189,6 @@ public class DataFieldElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses, assignedMeanings);
     }
 }

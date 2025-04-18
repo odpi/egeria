@@ -32,9 +32,9 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private boolean           orderedValues         = false;
     private int               sortOrder             = 0;
     private int               minimumLength         = 0;
-    private int               length                = 0;
-    private int               significantDigits     = 0;
-    private boolean           isNullable            = true;
+    private int     length     = 0;
+    private int     precision  = 0;
+    private boolean isNullable = true;
     private String            defaultValueOverride  = null;
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
@@ -106,7 +106,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param sortOrder sort order if ordered
      * @param minimumLength minimum length of data in field
      * @param length size of data field
-     * @param significantDigits number of digits on right of decimal point
+     * @param precision Number of digits after the decimal point.
      * @param isNullable can the value be null?
      * @param nativeJavaClass name of implementation class for Java
      * @param aliases aliases for the field
@@ -131,7 +131,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   int                  sortOrder,
                                   int                  minimumLength,
                                   int                  length,
-                                  int                  significantDigits,
+                                  int                  precision,
                                   boolean              isNullable,
                                   String               nativeJavaClass,
                                   List<String>         aliases,
@@ -163,9 +163,9 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         this.orderedValues         = orderedValues;
         this.sortOrder             = sortOrder;
         this.minimumLength         = minimumLength;
-        this.length                = length;
-        this.significantDigits     = significantDigits;
-        this.isNullable            = isNullable;
+        this.length     = length;
+        this.precision  = precision;
+        this.isNullable = isNullable;
         this.nativeJavaClass       = nativeJavaClass;
         this.aliases               = aliases;
     }
@@ -433,8 +433,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataProperty.SIGNIFICANT_DIGITS.name,
-                                                               significantDigits,
+                                                               OpenMetadataProperty.PRECISION.name,
+                                                               precision,
                                                                methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataClassElement implements MetadataElement
+public class DataClassElement extends AttributedMetadataElement
 {
-    private ElementHeader       elementHeader = null;
-    private DataClassProperties properties    = null;
+    private DataClassProperties                 properties             = null;
+    private List<RelatedMetadataElementSummary> nestedDataClasses      = null;
+    private List<RelatedMetadataElementSummary> specializedDataClasses = null;
 
     /**
      * Default constructor
@@ -40,42 +42,21 @@ public class DataClassElement implements MetadataElement
      */
     public DataClassElement(DataClassElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
             properties = template.getProperties();
+            nestedDataClasses = template.getNestedDataClasses();
+            specializedDataClasses = template.getSpecializedDataClasses();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return details of the data class
      *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
-    }
-
-
-    /**
-     * Return details of the data field
-     *
-     * @return data field properties
+     * @return data class properties
      */
     public DataClassProperties getProperties()
     {
@@ -84,13 +65,57 @@ public class DataClassElement implements MetadataElement
 
 
     /**
-     * Set up data field properties
+     * Set up data class properties
      *
-     * @param properties data field properties
+     * @param properties data class properties
      */
     public void setProperties(DataClassProperties properties)
     {
         this.properties = properties;
+    }
+
+
+    /**
+     * Return the list of data classes that support nested data fields.
+     *
+     * @return list of related data classes
+     */
+    public List<RelatedMetadataElementSummary> getNestedDataClasses()
+    {
+        return nestedDataClasses;
+    }
+
+
+    /**
+     * Set up the list of data classes that support nested data fields.
+     *
+     * @param nestedDataClasses list of related data classes
+     */
+    public void setNestedDataClasses(List<RelatedMetadataElementSummary> nestedDataClasses)
+    {
+        this.nestedDataClasses = nestedDataClasses;
+    }
+
+
+    /**
+     * Return the list of data classes that contain more specialized specifications.
+     *
+     * @return list of related data classes
+     */
+    public List<RelatedMetadataElementSummary> getSpecializedDataClasses()
+    {
+        return specializedDataClasses;
+    }
+
+
+    /**
+     * Set up the list of data classes that contain more specialized specifications.
+     *
+     * @param specializedDataClasses list of related data classes
+     */
+    public void setSpecializedDataClasses(List<RelatedMetadataElementSummary> specializedDataClasses)
+    {
+        this.specializedDataClasses = specializedDataClasses;
     }
 
     /**
@@ -102,9 +127,10 @@ public class DataClassElement implements MetadataElement
     public String toString()
     {
         return "DataClassElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+                "properties=" + properties +
+                ", nestedDataClasses=" + nestedDataClasses +
+                ", specializedDataClasses=" + specializedDataClasses +
+                "} " + super.toString();
     }
 
 
@@ -117,17 +143,13 @@ public class DataClassElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DataClassElement that = (DataClassElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(nestedDataClasses, that.nestedDataClasses) &&
+                Objects.equals(specializedDataClasses, that.specializedDataClasses);
     }
 
 
@@ -139,6 +161,6 @@ public class DataClassElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), properties, nestedDataClasses, specializedDataClasses);
     }
 }

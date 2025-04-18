@@ -191,7 +191,7 @@ public enum OrganizationDefinition
      */
     public String getQualifiedName()
     {
-        return "Organization:" + displayName;
+        return "Organization::" + displayName;
     }
 
 

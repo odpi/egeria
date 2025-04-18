@@ -13,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataContentForDataSetProperties defines a query on an asset that returns all or part of the values for a dataset.
+ * DataSetContentProperties defines a query on an asset that returns all or part of the values for a dataset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataContentForDataSetProperties extends RelationshipProperties
+public class DataSetContentProperties extends RelationshipProperties
 {
     private String queryId          = null;
     private String query            = null;
@@ -29,7 +29,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
     /**
      * Default constructor
      */
-    public DataContentForDataSetProperties()
+    public DataSetContentProperties()
     {
         super();
     }
@@ -40,7 +40,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
      *
      * @param template template to copy.
      */
-    public DataContentForDataSetProperties(DataContentForDataSetProperties template)
+    public DataSetContentProperties(DataSetContentProperties template)
     {
         super(template);
 
@@ -143,7 +143,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
     @Override
     public String toString()
     {
-        return "DataContentForDataSetProperties{" +
+        return "DataSetContentProperties{" +
                 "queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
@@ -164,7 +164,7 @@ public class DataContentForDataSetProperties extends RelationshipProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
-        DataContentForDataSetProperties that = (DataContentForDataSetProperties) objectToCompare;
+        DataSetContentProperties that = (DataSetContentProperties) objectToCompare;
         return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType) && Objects.equals(iscQualifiedName, that.iscQualifiedName);
     }
 

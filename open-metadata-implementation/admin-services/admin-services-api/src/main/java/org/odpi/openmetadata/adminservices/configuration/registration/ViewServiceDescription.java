@@ -330,7 +330,7 @@ public enum ViewServiceDescription
      * Create schema definitions to describe the structure of data.
      */
     DATA_DESIGNER (826,
-                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                        ComponentDevelopmentStatus.STABLE,
                         "Data Designer",
                         "Data Designer OMVS",
                         "data-designer",

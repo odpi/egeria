@@ -63,7 +63,7 @@ public enum DataStoreDefinition
      */
     public String getQualifiedName()
     {
-        return "DataStore:" + typeName + ":" + dataStoreId;
+        return "DataStore::" + typeName + "::" + dataStoreId;
     }
 
 

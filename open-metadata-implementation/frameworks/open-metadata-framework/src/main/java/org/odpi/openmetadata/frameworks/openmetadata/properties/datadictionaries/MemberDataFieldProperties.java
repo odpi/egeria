@@ -22,6 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class MemberDataFieldProperties extends RelationshipProperties
 {
     private int dataFieldPosition = 0;
+    private int minCardinality    = 0;
+    private int maxCardinality    = 0;
+
 
     /**
      * Default constructor
@@ -44,6 +47,8 @@ public class MemberDataFieldProperties extends RelationshipProperties
         if (template != null)
         {
             dataFieldPosition = template.getDataFieldPosition();
+            minCardinality    = template.getMinCardinality();
+            maxCardinality    = template.getMaxCardinality();
         }
     }
 
@@ -68,6 +73,50 @@ public class MemberDataFieldProperties extends RelationshipProperties
 
 
     /**
+     * Return this minimum number of instances allowed for this attribute.
+     *
+     * @return int
+     */
+    public int getMinCardinality()
+    {
+        return minCardinality;
+    }
+
+
+    /**
+     * Set up the minimum number of instances allowed for this attribute.
+     *
+     * @param minCardinality int
+     */
+    public void setMinCardinality(int minCardinality)
+    {
+        this.minCardinality = minCardinality;
+    }
+
+
+    /**
+     * Return the maximum number of instances allowed for this attribute.
+     *
+     * @return int (-1 means infinite)
+     */
+    public int getMaxCardinality()
+    {
+        return maxCardinality;
+    }
+
+
+    /**
+     * Set up the maximum number of instances allowed for this attribute.
+     *
+     * @param maxCardinality int (-1 means infinite)
+     */
+    public void setMaxCardinality(int maxCardinality)
+    {
+        this.maxCardinality = maxCardinality;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -77,6 +126,8 @@ public class MemberDataFieldProperties extends RelationshipProperties
     {
         return "MemberDataFieldProperties{" +
                 "dataFieldPosition=" + dataFieldPosition +
+                ", minCardinality=" + minCardinality +
+                ", maxCardinality=" + maxCardinality +
                 "} " + super.toString();
     }
 
@@ -103,7 +154,9 @@ public class MemberDataFieldProperties extends RelationshipProperties
             return false;
         }
         MemberDataFieldProperties that = (MemberDataFieldProperties) objectToCompare;
-        return dataFieldPosition == that.dataFieldPosition;
+        return  minCardinality == that.minCardinality &&
+                maxCardinality == that.maxCardinality &&
+                dataFieldPosition == that.dataFieldPosition;
     }
 
 
@@ -115,6 +168,6 @@ public class MemberDataFieldProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), dataFieldPosition);
+        return Objects.hash(super.hashCode(), dataFieldPosition, minCardinality, maxCardinality);
     }
 }

@@ -300,7 +300,7 @@ public enum CocoSubjectAreaDefinition
      */
     public String getQualifiedName()
     {
-        return "SubjectArea:" + subjectAreaName;
+        return "SubjectArea::" + subjectAreaName;
     }
 
 

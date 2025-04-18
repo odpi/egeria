@@ -99,6 +99,9 @@ public interface ManageSolutions
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
      * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param forLineage                   the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing       the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime                only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return unique identifier of the new metadata element
      *
@@ -305,7 +308,8 @@ public interface ManageSolutions
      * @param userId   userId of user making request.
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param informationSupplyChainGUID  unique identifier of the element.
+     * @param informationSupplyChainGUID  unique identifier of the element
+     * @param cascadedDelete can information supply chains be deleted if segments are attached?
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -318,6 +322,7 @@ public interface ManageSolutions
                                       String  externalSourceGUID,
                                       String  externalSourceName,
                                       String  informationSupplyChainGUID,
+                                      boolean cascadedDelete,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime) throws InvalidParameterException,
@@ -427,6 +432,7 @@ public interface ManageSolutions
                                                                     Date                effectiveTime) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               PropertyServerException;
+
 
     /**
      * Retrieve the list of solution blueprint metadata elements that contain the search string.

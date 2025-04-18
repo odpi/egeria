@@ -581,7 +581,7 @@ public enum SystemDefinition
      */
     public String getQualifiedName()
     {
-        return "System:" + systemId;
+        return "System::" + systemId;
     }
 
 

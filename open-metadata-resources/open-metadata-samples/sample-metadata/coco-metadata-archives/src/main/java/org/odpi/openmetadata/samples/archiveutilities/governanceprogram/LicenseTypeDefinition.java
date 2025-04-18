@@ -51,7 +51,7 @@ public enum LicenseTypeDefinition
 
     public String getQualifiedName()
     {
-        return "License: " + title;
+        return "License::" + title;
     }
 
 

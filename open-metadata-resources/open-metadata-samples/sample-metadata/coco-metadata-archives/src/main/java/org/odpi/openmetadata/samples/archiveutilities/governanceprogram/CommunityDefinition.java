@@ -58,7 +58,7 @@ public enum CommunityDefinition
 
     public String getQualifiedName()
     {
-        return "Community: " + qualifiedName;
+        return "Community:: " + qualifiedName;
     }
 
 

@@ -496,11 +496,6 @@ public enum OpenMetadataProperty
     MINIMUM_LENGTH("minimumLength", DataType.INT.getName(), "Minimum length of the data value (zero means unlimited).", null, "c7b61891-759f-425c-b0f8-268374e7d72a"),
 
     /**
-     * Number of significant digits before the decimal point (zero means it is an integer).
-     */
-    SIGNIFICANT_DIGITS("significantDigits", DataType.INT.getName(), "Number of significant digits before the decimal point (zero means it is an integer).", null, "c7b61891-759f-425c-b0f8-268374e7d72a"),
-
-    /**
      * Accepts null values or not.
      */
     IS_NULLABLE("isNullable", DataType.BOOLEAN.getName(), "Accepts null values or not.", null, "6e66ed4e-bc2e-446b-a884-d358044730e7"),
@@ -546,17 +541,12 @@ public enum OpenMetadataProperty
     DECORATION("decoration", ConceptModelDecoration.getOpenTypeName(), "Usage and lifecycle for this connection between the concept bead and the link.", ConceptModelDecoration.AGGREGATION.getName(), "3f986ca0-c8f6-41b7-9693-53d4d228de3e"),
 
     /**
-     * Name of processing class that can identify the data class.
+     * List of properties in the data class that should be used in the match processing.
      */
-    CLASS_CODE("classCode", DataType.STRING.getName(), "Name of processing class that can identify the data class.", null, "d7703ea1-4ffb-4467-bead-a21ce78fdf31"),
+    MATCH_PROPERTY_NAMES("matchPropertyNames", DataType.ARRAY_STRING.getName(), "List of properties in the data class that should be used in the match processing.", null, "d30793ea-ea4a-408c-bfbc-0327574a69c0"),
 
     /**
-     * Defined by owning organization rather than vendor.
-     */
-    USER_DEFINED("userDefined", DataType.STRING.getName(), "Defined by owning organization rather than vendor.", null, "744eeb61-4ceb-484c-84ae-c86b38624bd9"),
-
-    /**
-     * Parsing string used to identify values of this data class.
+     * TParsing string used to identify values of this data class.
      */
     SPECIFICATION("specification", DataType.STRING.getName(), "Parsing string used to identify values of this data class.", null, "52ee0c75-41b8-4f7b-8369-6768058c30f5"),
 
