@@ -114,6 +114,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryGUIDParameterName parameter supplying glossaryGUID
      * @param qualifiedName unique name for the category - used in other configuration
      * @param displayName  display name for the term
+     * @param aliases alternative names for the glossary term
      * @param summary short description
      * @param description description of the term
      * @param examples examples of this term
@@ -142,6 +143,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                      String              glossaryGUIDParameterName,
                                      String              qualifiedName,
                                      String              displayName,
+                                     List<String>        aliases,
                                      String              summary,
                                      String              description,
                                      String              examples,
@@ -198,6 +200,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(qualifiedName,
                                                               displayName,
+                                                              aliases,
                                                               summary,
                                                               description,
                                                               examples,
@@ -263,6 +266,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the term - used in other configuration
      * @param displayName short display name for the term
+     * @param aliases alternative names for the glossary term
      * @param description description of the  term
      * @param publishVersionIdentifier author controlled version identifier
      * @param initialStatus glossary term status to use when the object is created
@@ -284,6 +288,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                  String         templateGUID,
                                                  String         qualifiedName,
                                                  String         displayName,
+                                                 List<String>   aliases,
                                                  String         description,
                                                  String         publishVersionIdentifier,
                                                  InstanceStatus initialStatus,
@@ -302,6 +307,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(qualifiedName,
                                                               displayName,
+                                                              aliases,
                                                               description,
                                                               publishVersionIdentifier,
                                                               repositoryHelper,
@@ -381,6 +387,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param glossaryTermGUIDParameterName parameter supplying glossaryGUID
      * @param qualifiedName unique name for the category - used in other configuration
      * @param displayName short display name for the term
+     * @param aliases alternative names for the glossary term
      * @param summary string text
      * @param description description of the  term
      * @param examples string text
@@ -409,6 +416,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                    String              glossaryTermGUIDParameterName,
                                    String              qualifiedName,
                                    String              displayName,
+                                   List<String>        aliases,
                                    String              summary,
                                    String              description,
                                    String              examples,
@@ -445,6 +453,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(qualifiedName,
                                                               displayName,
+                                                              aliases,
                                                               summary,
                                                               description,
                                                               examples,
@@ -2078,6 +2087,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                        matchProperties,
                                                                        OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                       name,
+                                                                       methodName);
+
+        matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                       matchProperties,
+                                                                       OpenMetadataProperty.ALIASES.name,
                                                                        name,
                                                                        methodName);
 

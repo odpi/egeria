@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,13 +23,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTermProperties extends ReferenceableProperties
 {
-    private String displayName              = null;
-    private String summary                  = null;
-    private String description              = null;
-    private String examples                 = null;
-    private String abbreviation             = null;
-    private String usage                    = null;
-    private String publishVersionIdentifier = null;
+    private String       displayName              = null;
+    private List<String> aliases                  = null;
+    private String       summary                  = null;
+    private String       description              = null;
+    private String       examples                 = null;
+    private String       abbreviation             = null;
+    private String       usage                    = null;
+    private String       publishVersionIdentifier = null;
 
 
     /**
@@ -52,12 +54,13 @@ public class GlossaryTermProperties extends ReferenceableProperties
         if (template != null)
         {
             displayName = template.getDisplayName();
+            aliases = template.getAliases();
             summary = template.getSummary();
             description = template.getDescription();
             examples = template.getExamples();
             abbreviation = template.getAbbreviation();
             usage = template.getUsage();
-            usage = template.getPublishVersionIdentifier();
+            publishVersionIdentifier = template.getPublishVersionIdentifier();
         }
     }
 
@@ -82,6 +85,28 @@ public class GlossaryTermProperties extends ReferenceableProperties
     public void setDisplayName(String displayName)
     {
         this.displayName = displayName;
+    }
+
+
+    /**
+     * Return the list of alternative names for the term.
+     *
+     * @return list
+     */
+    public List<String> getAliases()
+    {
+        return aliases;
+    }
+
+
+    /**
+     * Set up the list of alternative names for the term.
+     *
+     * @param aliases list
+     */
+    public void setAliases(List<String> aliases)
+    {
+        this.aliases = aliases;
     }
 
 
@@ -227,18 +252,15 @@ public class GlossaryTermProperties extends ReferenceableProperties
     public String toString()
     {
         return "GlossaryTermProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", summary='" + summary + '\'' +
-                       ", description='" + description + '\'' +
-                       ", examples='" + examples + '\'' +
-                       ", abbreviation='" + abbreviation + '\'' +
-                       ", usage='" + usage + '\'' +
-                       ", publishVersionNumber='" + publishVersionIdentifier + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "displayName='" + displayName + '\'' +
+                ", aliases=" + aliases +
+                ", summary='" + summary + '\'' +
+                ", description='" + description + '\'' +
+                ", examples='" + examples + '\'' +
+                ", abbreviation='" + abbreviation + '\'' +
+                ", usage='" + usage + '\'' +
+                ", publishVersionIdentifier='" + publishVersionIdentifier + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -265,12 +287,13 @@ public class GlossaryTermProperties extends ReferenceableProperties
         }
         GlossaryTermProperties that = (GlossaryTermProperties) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                       Objects.equals(getSummary(), that.getSummary()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getExamples(), that.getExamples()) &&
-                       Objects.equals(getAbbreviation(), that.getAbbreviation()) &&
-                       Objects.equals(getUsage(), that.getUsage()) &&
-                       Objects.equals(getPublishVersionIdentifier(), that.getPublishVersionIdentifier());
+                Objects.equals(getSummary(), that.getSummary()) &&
+                Objects.equals(getAliases(), that.getAliases()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getExamples(), that.getExamples()) &&
+                Objects.equals(getAbbreviation(), that.getAbbreviation()) &&
+                Objects.equals(getUsage(), that.getUsage()) &&
+                Objects.equals(getPublishVersionIdentifier(), that.getPublishVersionIdentifier());
     }
 
 
@@ -282,6 +305,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getSummary(), getDescription(), getExamples(), getAbbreviation(), getUsage(), getPublishVersionIdentifier());
+        return Objects.hash(super.hashCode(), displayName, aliases, summary, description, examples, abbreviation, usage, publishVersionIdentifier);
     }
 }

@@ -122,6 +122,25 @@ Content-Type: application/json
 
 
 ###
+# group: Glossaries
+# @name getRelatedTerms
+# Retrieve the glossary terms that are linked to the requested glossary term.  The optional request body allows you to specify
+# that the glossary term should only be returned if it was effective at a particular time and limit the results by relationship type name,
+# owning type name and the status of the relatiosnships
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/related-terms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GlossaryTermRelationshipRequestBody",
+  "effectiveTime" : "null",
+  "glossaryGUID" : "add guid",
+  "relationshipTypeName" :  "add type name",
+  "limitResultsByStatus" :  []
+}
+
+
+###
 # group: GlossaryCategories
 # @name findGlossaryCategories
 # Retrieve the list of glossary category metadata elements that contain the search string.

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,13 +20,14 @@ import java.util.Map;
  */
 public class GlossaryTermBuilder extends ReferenceableBuilder
 {
-    private String displayName              = null;
-    private String description              = null;
-    private String summary                  = null;
-    private String examples                 = null;
-    private String abbreviation             = null;
-    private String usage                    = null;
-    private String publishVersionIdentifier = null;
+    private String       displayName              = null;
+    private List<String> aliases                  = null;
+    private String       description              = null;
+    private String       summary                  = null;
+    private String       examples                 = null;
+    private String       abbreviation             = null;
+    private String       usage                    = null;
+    private String       publishVersionIdentifier = null;
 
 
     /**
@@ -53,6 +55,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param qualifiedName unique name
      * @param repositoryHelper helper methods
      * @param displayName display name of glossary term
+     * @param aliases alternative names for the glossary term
      * @param description new description for the glossary term.
      * @param publishVersionIdentifier author controlled identifier
      * @param serviceName name of this OMAS
@@ -60,6 +63,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      */
     GlossaryTermBuilder(String               qualifiedName,
                         String               displayName,
+                        List<String>         aliases,
                         String               description,
                         String               publishVersionIdentifier,
                         OMRSRepositoryHelper repositoryHelper,
@@ -69,6 +73,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 
         this.displayName = displayName;
+        this.aliases = aliases;
         this.description = description;
         this.publishVersionIdentifier = publishVersionIdentifier;
     }
@@ -80,6 +85,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param qualifiedName unique name
      * @param repositoryHelper helper methods
      * @param displayName display name of glossary term
+     * @param aliases alternative names for the glossary term
      * @param description new description for the glossary term.
      * @param summary short description
      * @param examples  example
@@ -90,6 +96,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      */
     public GlossaryTermBuilder(String               qualifiedName,
                                String               displayName,
+                               List<String>         aliases,
                                String               description,
                                String               summary,
                                String               examples,
@@ -102,6 +109,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 
         this.displayName = displayName;
+        this.aliases = aliases;
         this.description = description;
         this.summary = summary;
         this.examples = examples;
@@ -115,6 +123,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
+     * @param aliases alternative names for the glossary term
      * @param summary short description
      * @param description new description for the glossary term.
      * @param examples  example
@@ -130,6 +139,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      */
     public GlossaryTermBuilder(String                   qualifiedName,
                                String                   displayName,
+                               List<String>             aliases,
                                String                   summary,
                                String                   description,
                                String                   examples,
@@ -154,6 +164,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
               serverName);
 
         this.displayName = displayName;
+        this.aliases = aliases;
         this.summary = summary;
         this.description = description;
         this.examples = examples;
@@ -180,6 +191,12 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
+
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataProperty.ALIASES.name,
+                                                                       aliases,
+                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

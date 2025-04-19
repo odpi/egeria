@@ -95,6 +95,7 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
                     glossaryTermProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     glossaryTermProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     glossaryTermProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    glossaryTermProperties.setAliases(this.removeAliases(instanceProperties));
                     glossaryTermProperties.setDescription(this.removeDescription(instanceProperties));
                     glossaryTermProperties.setAbbreviation(this.removeAbbreviation(instanceProperties));
                     glossaryTermProperties.setUsage(this.removeUsage(instanceProperties));
@@ -117,7 +118,15 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
                         RelatedElement relatedElement = new RelatedElement();
 
                         relatedElement.setRelationshipHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));
-                        relatedElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
+
+                        if (entity.getGUID().equals(relationship.getEntityOneProxy().getGUID()))
+                        {
+                            relatedElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
+                        }
+                        else
+                        {
+                            relatedElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
+                        }
 
                         if (relationship.getProperties() != null)
                         {
