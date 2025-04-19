@@ -4678,13 +4678,41 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             {
                 this.removeLinkedDatabaseSchemas(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
             }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.FILE_FOLDER.typeName))
+            {
+                this.removeFolderContents(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.IT_INFRASTRUCTURE.typeName))
+            {
+                this.removeDeployedAssets(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DATA_STRUCTURE.typeName))
+            {
+                this.removeDataStructureMembers(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD.typeName))
+            {
+                this.removeNestedDataFields(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DATA_CLASS.typeName))
+            {
+                this.removeLinkedDataClasses(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
             else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY.typeName))
             {
                 this.removeLinkedGlossaryEntries(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.FILE_FOLDER.typeName))
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_CATEGORY.typeName))
             {
-                this.removeLinkedFilesAndFolders(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+                this.removeNestedGlossaryCategories(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.COMMENT.typeName))
+            {
+                this.removeNestedComments(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.COLLECTION.typeName))
+            {
+                this.removeCollectionMembers(userId, externalSourceGUID, externalSourceName, startingEntity.getGUID(), forLineage, forDuplicateProcessing, effectiveTime);
             }
 
             return;
@@ -4692,7 +4720,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
         {
-            validateNotDataSetContent(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+            /*
+             * Note this is a special case because there is no equivalent remove method for DataSetContent relationship.
+             */
+            validateNoDataSetContent(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
 
             if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName))
             {
@@ -4702,10 +4733,38 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             {
                 validateEmptyFolder(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
             }
+            else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.IT_INFRASTRUCTURE.typeName))
+            {
+                validateNoDeployedAssets(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+            }
         }
         else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY.typeName))
         {
             validateEmptyGlossary(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_CATEGORY.typeName))
+        {
+            validateEmptyGlossaryCategory(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.COMMENT.typeName))
+        {
+            validateNoNestedComments(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.COLLECTION.typeName))
+        {
+            validateNoCollectionMembers(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DATA_STRUCTURE.typeName))
+        {
+            validateNoMemberDataFields(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD.typeName))
+        {
+            validateNoNestedDataFields(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.DATA_CLASS.typeName))
+        {
+            validateNoDependentDataClasses(userId, startingEntity, forLineage, forDuplicateProcessing, effectiveTime);
         }
     }
 
@@ -4908,12 +4967,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
-     * Remove any files or folders connected to the folder by the NestedFile or FolderHierarchy relationships.
+     * Remove any data classes connected to the data class by the DataClassComposition or DataClassHierarchy relationships.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param folderGUID unique identifier for folder
+     * @param dataClassGUID unique identifier for glossary
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -4922,22 +4981,141 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeLinkedFilesAndFolders(String  userId,
-                                            String  externalSourceGUID,
-                                            String  externalSourceName,
-                                            String  folderGUID,
-                                            boolean forLineage,
-                                            boolean forDuplicateProcessing,
-                                            Date    effectiveTime) throws InvalidParameterException,
+    public void removeLinkedDataClasses(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  dataClassGUID,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        final String methodName = "removeLinkedFilesAndFolders";
+        final String methodName = "removeLinkedDataClasses";
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        invalidParameterHandler,
                                                                                        userId,
-                                                                                       folderGUID,
+                                                                                       dataClassGUID,
+                                                                                       OpenMetadataType.DATA_CLASS.typeName,
+                                                                                       OpenMetadataType.DATA_CLASS_COMPOSITION.typeGUID,
+                                                                                       OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "dataClass.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.DATA_CLASS.typeGUID,
+                                            OpenMetadataType.DATA_CLASS.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+
+        iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                       invalidParameterHandler,
+                                                       userId,
+                                                       dataClassGUID,
+                                                       OpenMetadataType.DATA_CLASS.typeName,
+                                                       OpenMetadataType.DATA_CLASS_HIERARCHY.typeGUID,
+                                                       OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
+                                                       2,
+                                                       null,
+                                                       null,
+                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       0,
+                                                       0,
+                                                       effectiveTime,
+                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "dataClass.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.DATA_CLASS.typeGUID,
+                                            OpenMetadataType.DATA_CLASS.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Remove any files and folders connected to the folder by the NestedFile or FolderHierarchy relationships.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier for glossary
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeFolderContents(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  glossaryGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "removeFolderContents";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       glossaryGUID,
                                                                                        OpenMetadataType.FILE_FOLDER.typeName,
                                                                                        OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeGUID,
                                                                                        OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
@@ -4959,7 +5137,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             if (relationship != null)
             {
-                final String elementGUIDParameterName = "nestedFile.getGUID()";
+                final String elementGUIDParameterName = "file.getGUID()";
 
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
@@ -4982,7 +5160,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                        invalidParameterHandler,
                                                        userId,
-                                                       folderGUID,
+                                                       glossaryGUID,
                                                        OpenMetadataType.FILE_FOLDER.typeName,
                                                        OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeGUID,
                                                        OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName,
@@ -5004,7 +5182,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             if (relationship != null)
             {
-                final String elementGUIDParameterName = "nestedFolder.getGUID()";
+                final String elementGUIDParameterName = "folder.getGUID()";
 
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
@@ -5013,6 +5191,452 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                             elementGUIDParameterName,
                                             OpenMetadataType.FILE_FOLDER.typeGUID,
                                             OpenMetadataType.FILE_FOLDER.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Remove any members connected to the collection by the CollectionMembership  relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param collectionGUID unique identifier for glossary
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeCollectionMembers(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  collectionGUID,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "removeCollectionMembers";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       collectionGUID,
+                                                                                       OpenMetadataType.COLLECTION.typeName,
+                                                                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "member.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.REFERENCEABLE.typeGUID,
+                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+
+    }
+
+
+    /**
+     * Remove any members connected to the collection by the CollectionMembership  relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param dataStructureGUID unique identifier for data structure
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeDataStructureMembers(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  dataStructureGUID,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "removeDataStructureMembers";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       dataStructureGUID,
+                                                                                       OpenMetadataType.DATA_STRUCTURE.typeName,
+                                                                                       OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "member.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.DATA_FIELD.typeGUID,
+                                            OpenMetadataType.DATA_FIELD.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+
+    }
+
+
+    /**
+     * Remove any data fields connected to the data field by the NestedDataFile  relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param dataFieldGUID unique identifier for data field
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeNestedDataFields(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  dataFieldGUID,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "removeNestedDataFields";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       dataFieldGUID,
+                                                                                       OpenMetadataType.DATA_FIELD.typeName,
+                                                                                       OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "nestedDataField.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.DATA_FIELD.typeGUID,
+                                            OpenMetadataType.DATA_FIELD.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Remove any glossary categories connected to the glossary category by the CategoryHierarchyLink relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param glossaryCategoryGUID unique identifier for glossary category
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeNestedGlossaryCategories(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  glossaryCategoryGUID,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "removeNestedGlossaryCategories";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       glossaryCategoryGUID,
+                                                                                       OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "glossaryCategory.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.GLOSSARY_CATEGORY.typeGUID,
+                                            OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Remove any comments connected to the comment by the AttachedComment relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param commentGUID unique identifier for comment
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeNestedComments(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  commentGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "removeNestedComments";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       commentGUID,
+                                                                                       OpenMetadataType.COMMENT.typeName,
+                                                                                       OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                                                                       2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "comment.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.COMMENT.typeGUID,
+                                            OpenMetadataType.COMMENT.typeName,
+                                            true,
+                                            null,
+                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Remove any assets connected to the infrastructure by the DeployedOn relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param itInfrastructureGUID unique identifier for infrastructure
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeDeployedAssets(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  itInfrastructureGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "removeDeployedAssets";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       itInfrastructureGUID,
+                                                                                       OpenMetadataType.IT_INFRASTRUCTURE.typeName,
+                                                                                       OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
+                                                                                       1,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "asset.getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataType.ASSET.typeGUID,
+                                            OpenMetadataType.ASSET.typeName,
                                             true,
                                             null,
                                             null,
@@ -5112,15 +5736,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws PropertyServerException problem with repository
      * @throws UserNotAuthorizedException problem with access
      */
-    private void validateNotDataSetContent(String       userId,
-                                           EntityDetail startingEntity,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           Date         effectiveTime) throws InvalidParameterException,
+    private void validateNoDataSetContent(String       userId,
+                                          EntityDetail startingEntity,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        final String methodName = "validateNotDataSetContent";
+        final String methodName = "validateNoDataSetContent";
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     startingEntity.getGUID(),
@@ -5195,16 +5819,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                     methodName);
         if (relationships != null)
         {
-            for (Relationship dataContentRelationship : relationships)
+            for (Relationship relationship : relationships)
             {
-                if (dataContentRelationship != null)
+                if (relationship != null)
                 {
                     throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
                                                                                                                                startingEntity.getGUID(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getGUID()),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
                                                         this.getClass().getName(),
-                                                        "relationship: " + dataContentRelationship.getGUID(),
+                                                        "relationship: " + relationship.getGUID(),
                                                         methodName);
                 }
             }
@@ -5227,16 +5851,441 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                  methodName);
         if (relationships != null)
         {
-            for (Relationship dataContentRelationship : relationships)
+            for (Relationship relationship : relationships)
             {
-                if (dataContentRelationship != null)
+                if (relationship != null)
                 {
                     throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
                                                                                                                                startingEntity.getGUID(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getGUID()),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
                                                         this.getClass().getName(),
-                                                        "relationship: " + dataContentRelationship.getGUID(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that a glossary category is has no nested categories.
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateEmptyGlossaryCategory(String       userId,
+                                               EntityDetail startingEntity,
+                                               boolean      forLineage,
+                                               boolean      forDuplicateProcessing,
+                                               Date         effectiveTime) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "validateEmptyGlossaryCategory";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that a comment is has no nested comments.
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateNoNestedComments(String       userId,
+                                          EntityDetail startingEntity,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "validateNoNestedComments";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that an infrastructure asset has no other assets deployed on it.
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateNoDeployedAssets(String       userId,
+                                          EntityDetail startingEntity,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "validateNoDeployedAssets";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
+                                                                                    1,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that a collection is has no members.
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateNoCollectionMembers(String       userId,
+                                             EntityDetail startingEntity,
+                                             boolean      forLineage,
+                                             boolean      forDuplicateProcessing,
+                                             Date         effectiveTime) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "validateNoCollectionMembers";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that a data structure is has no nested data fields.
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateNoMemberDataFields(String       userId,
+                                            EntityDetail startingEntity,
+                                            boolean      forLineage,
+                                            boolean      forDuplicateProcessing,
+                                            Date         effectiveTime) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "validateNoMemberDataFields";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * Check that a data class has no nested or specialized data classes linked off of it
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateNoDependentDataClasses(String       userId,
+                                                EntityDetail startingEntity,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                Date         effectiveTime) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "validateNoDependentDataClasses";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.DATA_CLASS_HIERARCHY.typeGUID,
+                                                                                    OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+
+        relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                 startingEntity.getGUID(),
+                                                                 startingEntity.getType().getTypeDefName(),
+                                                                 OpenMetadataType.DATA_CLASS_COMPOSITION.typeGUID,
+                                                                 OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
+                                                                 2,
+                                                                 null,
+                                                                 null,
+                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                 null,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 0, 0,
+                                                                 effectiveTime,
+                                                                 methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
+                                                        methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that a data field is has no nested data fields.
+     *
+     * @param userId calling user
+     * @param startingEntity     starting entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException delete not allowed
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException problem with access
+     */
+    private void validateNoNestedDataFields(String       userId,
+                                            EntityDetail startingEntity,
+                                            boolean      forLineage,
+                                            boolean      forDuplicateProcessing,
+                                            Date         effectiveTime) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "validateNoNestedDataFields";
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity.getGUID(),
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                                    2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
+                                                                                                                               startingEntity.getGUID(),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
+                                                        this.getClass().getName(),
+                                                        "relationship: " + relationship.getGUID(),
                                                         methodName);
                 }
             }
@@ -5283,16 +6332,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                     methodName);
         if (relationships != null)
         {
-            for (Relationship dataContentRelationship : relationships)
+            for (Relationship relationship : relationships)
             {
-                if (dataContentRelationship != null)
+                if (relationship != null)
                 {
                     throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
                                                                                                                                startingEntity.getGUID(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getGUID()),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
                                                         this.getClass().getName(),
-                                                        "relationship: " + dataContentRelationship.getGUID(),
+                                                        "relationship: " + relationship.getGUID(),
                                                         methodName);
                 }
             }
@@ -5315,16 +6364,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                  methodName);
         if (relationships != null)
         {
-            for (Relationship dataContentRelationship : relationships)
+            for (Relationship relationship : relationships)
             {
-                if (dataContentRelationship != null)
+                if (relationship != null)
                 {
                     throw new InvalidParameterException(GenericHandlersErrorCode.DEPENDENT_ELEMENTS_FOUND.getMessageDefinition(startingEntity.getType().getTypeDefName(),
                                                                                                                                startingEntity.getGUID(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                                                                               dataContentRelationship.getEntityTwoProxy().getGUID()),
+                                                                                                                               relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                                               relationship.getEntityTwoProxy().getGUID()),
                                                         this.getClass().getName(),
-                                                        "relationship: " + dataContentRelationship.getGUID(),
+                                                        "relationship: " + relationship.getGUID(),
                                                         methodName);
                 }
             }
@@ -5378,8 +6427,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                           effectiveTime,
                                           methodName);
     }
-
-
 
 
     /**
