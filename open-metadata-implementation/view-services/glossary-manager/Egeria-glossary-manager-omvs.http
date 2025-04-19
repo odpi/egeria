@@ -285,7 +285,80 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Delete a glossary term
-# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+# Delete a glossary term
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+###
+
+@glossaryTermOneGUID=add guid here
+@relationshipTypeName=add relationship name here
+@glossaryTermTwoGUID=add guid here
+
+###
+# group: Glossaries
+# @name Set up term relationship
+# Link two terms together using a specialist relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "effectiveTime" : {{@isoTimestamp}},
+  "properties" : {
+     "class" : "GlossaryTermRelationship",
+     "expression" : "",
+     "confidence"  : 0,
+     "description" : "",
+     "status"   : "",
+     "steward"  : "",
+     "source" : "",
+     "effectiveFrom" : "{{@isoTimestamp}}",
+     "effectiveTo" : "{{@isoTimestamp}}",
+     "extendedProperties" : {
+     }
+  }
+}
+
+
+###
+# group: Glossaries
+# @name Update term relationship
+# Update the properties for the two terms linked using a specialist relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/update?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "effectiveTime" : {{@isoTimestamp}},
+  "properties" : {
+     "class" : "GlossaryTermRelationship",
+     "expression" : "",
+     "confidence"  : 0,
+     "description" : "",
+     "status"   : "",
+     "steward"  : "",
+     "source" : "",
+     "effectiveFrom" : "{{@isoTimestamp}}",
+     "effectiveTo" : "{{@isoTimestamp}}",
+     "extendedProperties" : {
+     }
+  }
+}
+
+
+###
+# group: Glossaries
+# @name Update term relationship
+# Remove the relationship between two terms.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/remove?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "EffectiveTimeQueryRequestBody",
+  "effectiveTime" : {{@isoTimestamp}}
+}

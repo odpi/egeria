@@ -576,9 +576,9 @@ public enum OpenMetadataProperty
     NATIVE_CLASS("nativeClass", DataType.STRING.getName(), "Native class used by the client to represent this element.", null, "df77c563-4797-40a2-8b8b-4f68a7b589df"),
 
     /**
-     * List of aliases for attribute.
+     * List of alternative names.
      */
-    ALIASES("aliases", DataType.ARRAY_STRING.getName(), "List of aliases for attribute.", null, "aa5304e0-2157-40eb-b01d-fc4d4799a8dd"),
+    ALIASES("aliases", DataType.ARRAY_STRING.getName(), "List of alternative names.", null, "aa5304e0-2157-40eb-b01d-fc4d4799a8dd"),
 
 
     /**

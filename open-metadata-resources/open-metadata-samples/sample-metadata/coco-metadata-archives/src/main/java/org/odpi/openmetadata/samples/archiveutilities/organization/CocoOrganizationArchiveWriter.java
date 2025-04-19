@@ -470,7 +470,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             String superTeamQName;
             if (deptDefinition.getSuperTeam() == null)
             {
-                superTeamQName = "Organization:" + OrganizationDefinition.COCO.getDisplayName();
+                superTeamQName = "Organization::" + OrganizationDefinition.COCO.getDisplayName();
             }
             else
             {
@@ -479,7 +479,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
 
             archiveHelper.addTeamStructureRelationship(superTeamQName, deptDefinition.getQualifiedName(), true);
 
-            String leadershipRoleQName = "TeamLeader:" + deptDefinition.getQualifiedName();
+            String leadershipRoleQName = "TeamLeader::" + deptDefinition.getQualifiedName();
             archiveHelper.addActorRole(OpenMetadataType.TEAM_LEADER.typeName,
                                        leadershipRoleQName,
                                        leadershipRoleQName,
@@ -503,7 +503,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                 }
             }
 
-            String membershipRoleQName = "TeamMembers:" + deptDefinition.getQualifiedName();
+            String membershipRoleQName = "TeamMembers::" + deptDefinition.getQualifiedName();
             archiveHelper.addActorRole(OpenMetadataType.TEAM_MEMBER.typeName,
                                        membershipRoleQName,
                                        membershipRoleQName,

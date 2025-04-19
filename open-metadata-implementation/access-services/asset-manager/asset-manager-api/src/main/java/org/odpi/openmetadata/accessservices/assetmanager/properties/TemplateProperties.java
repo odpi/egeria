@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,8 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TemplateProperties
 {
     private String qualifiedName     = null;
-    private String displayName       = null;
-    private String versionIdentifier = null;
+    private  String       displayName       = null;
+    private List<String> aliases           = null;
+    private   String       versionIdentifier = null;
     private String description       = null;
     private String pathName          = null;
     private String networkAddress    = null;
@@ -49,6 +51,7 @@ public class TemplateProperties
         {
             qualifiedName     = template.getQualifiedName();
             displayName       = template.getDisplayName();
+            aliases           = template.getAliases();
             versionIdentifier = template.getVersionIdentifier();
             description       = template.getDescription();
             pathName          = template.getPathName();
@@ -101,6 +104,30 @@ public class TemplateProperties
     {
         this.displayName = displayName;
     }
+
+
+
+    /**
+     * Return the list of alternative names for the term.
+     *
+     * @return list
+     */
+    public List<String> getAliases()
+    {
+        return aliases;
+    }
+
+
+    /**
+     * Set up the list of alternative names for the term.
+     *
+     * @param aliases list
+     */
+    public void setAliases(List<String> aliases)
+    {
+        this.aliases = aliases;
+    }
+
 
 
     /**
@@ -201,13 +228,14 @@ public class TemplateProperties
     public String toString()
     {
         return "TemplateProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", description='" + description + '\'' +
-                       ", pathName='" + pathName + '\'' +
-                       ", networkAddress='" + networkAddress + '\'' +
-                       '}';
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", aliases=" + aliases +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", pathName='" + pathName + '\'' +
+                ", networkAddress='" + networkAddress + '\'' +
+                '}';
     }
 
 
@@ -220,40 +248,11 @@ public class TemplateProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof TemplateProperties))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         TemplateProperties that = (TemplateProperties) objectToCompare;
-
-        if (qualifiedName != null ? ! qualifiedName.equals(that.qualifiedName) : that.qualifiedName != null)
-        {
-            return false;
-        }
-        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
-        {
-            return false;
-        }
-        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
-        {
-            return false;
-        }
-        if (description != null ? ! description.equals(that.description) : that.description != null)
-        {
-            return false;
-        }
-        if (pathName != null ? ! pathName.equals(that.pathName) : that.pathName != null)
-        {
-            return false;
-        }
-        return networkAddress != null ? networkAddress.equals(that.networkAddress) : that.networkAddress == null;
+        return Objects.equals(qualifiedName, that.qualifiedName) && Objects.equals(displayName, that.displayName) && Objects.equals(aliases, that.aliases) && Objects.equals(versionIdentifier, that.versionIdentifier) && Objects.equals(description, that.description) && Objects.equals(pathName, that.pathName) && Objects.equals(networkAddress, that.networkAddress);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -263,6 +262,6 @@ public class TemplateProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, versionIdentifier, description, pathName, networkAddress);
+        return Objects.hash(qualifiedName, displayName, aliases, versionIdentifier, description, pathName, networkAddress);
     }
 }
