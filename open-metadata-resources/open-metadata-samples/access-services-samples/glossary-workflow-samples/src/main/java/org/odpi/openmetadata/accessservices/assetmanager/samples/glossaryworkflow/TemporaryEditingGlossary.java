@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.samples.glossaryworkflow;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
@@ -49,7 +49,7 @@ public class TemporaryEditingGlossary
     {
         try
         {
-            GlossaryManagementClient client = new GlossaryManagementClient(serverName, platformURLRoot, 100);
+            GlossaryExchangeClient client = new GlossaryExchangeClient(serverName, platformURLRoot, 100);
 
             System.out.println("\nSetting up the 'live' glossary");
             GlossaryProperties glossaryProperties = new GlossaryProperties();
@@ -58,7 +58,7 @@ public class TemporaryEditingGlossary
             glossaryProperties.setDisplayName("Live Glossary");
             glossaryProperties.setDescription("This is the main glossary that is visible to all.");
 
-            String liveGlossaryGUID = client.createGlossary(clientUserId, glossaryProperties);
+            String liveGlossaryGUID = client.createGlossary(clientUserId, null, null, false, null, glossaryProperties);
 
             printGlossary(client, liveGlossaryGUID);
 
@@ -70,8 +70,8 @@ public class TemporaryEditingGlossary
             glossaryProperties.setDisplayName("Editing Glossary 1");
             glossaryProperties.setDescription("This is the first editing glossary that contains the first version of the term.");
 
-            String editingGlossaryGUID = client.createGlossary(clientUserId, glossaryProperties);
-            client.setGlossaryAsEditingGlossary(clientUserId, editingGlossaryGUID, null, null, false, false);
+            String editingGlossaryGUID = client.createGlossary(clientUserId, null, null, false, null, glossaryProperties);
+            client.setGlossaryAsEditingGlossary(clientUserId, null, null, editingGlossaryGUID, null, null, null, false, false);
 
             printGlossary(client, editingGlossaryGUID);
 
@@ -84,7 +84,11 @@ public class TemporaryEditingGlossary
             glossaryTermProperties.setPublishVersionIdentifier("V1.0");
 
             String glossaryTerm1GUID = client.createControlledGlossaryTerm(clientUserId,
+                                                                           null,
+                                                                           null,
+                                                                           false,
                                                                            editingGlossaryGUID,
+                                                                           null,
                                                                            glossaryTermProperties,
                                                                            GlossaryTermStatus.DRAFT,
                                                                            null,
@@ -94,7 +98,10 @@ public class TemporaryEditingGlossary
 
             System.out.println("\nApprove the first version of the glossary term in the editing glossary");
             client.updateGlossaryTermStatus(clientUserId,
+                                            null,
+                                            null,
                                             glossaryTerm1GUID,
+                                            null,
                                             GlossaryTermStatus.APPROVED,
                                             null,
                                             false,
@@ -102,11 +109,11 @@ public class TemporaryEditingGlossary
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nPublishing V1 of the term to the 'live' glossary using a move glossary term");
-            client.moveGlossaryTerm(clientUserId, glossaryTerm1GUID, liveGlossaryGUID, null, false, false);
+            client.moveGlossaryTerm(clientUserId, null, null, glossaryTerm1GUID, null, liveGlossaryGUID, null, false, false);
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nRemove editing glossary");
-            client.removeGlossary(clientUserId, editingGlossaryGUID, true, null, false, false);
+            client.removeGlossary(clientUserId, null, null, editingGlossaryGUID, null, true, null, false, false);
 
             System.out.println("\nSetting up the editing glossary for V2 of the first glossary term");
 
@@ -116,15 +123,15 @@ public class TemporaryEditingGlossary
             glossaryProperties.setDisplayName("Editing Glossary 2");
             glossaryProperties.setDescription("This is the second editing glossary that contains the first version of the term.");
 
-            editingGlossaryGUID = client.createGlossary(clientUserId, glossaryProperties);
-            client.setGlossaryAsEditingGlossary(clientUserId, editingGlossaryGUID, null, null, false, false);
+            editingGlossaryGUID = client.createGlossary(clientUserId, null, null, false, null, glossaryProperties);
+            client.setGlossaryAsEditingGlossary(clientUserId, null, null, editingGlossaryGUID, null, null, null, false, false);
             printGlossary(client, editingGlossaryGUID);
 
             System.out.println("\nSetting up the private copy of the glossary term in the editing glossary.");
             TemplateProperties templateProperties = new TemplateProperties();
             templateProperties.setQualifiedName("EditingGlossaryTerm:Customer Identifier");
 
-            String editingGlossaryTermGUID = client.createGlossaryTermFromTemplate(clientUserId, editingGlossaryGUID, glossaryTerm1GUID, templateProperties, false, false, GlossaryTermStatus.DRAFT);
+            String editingGlossaryTermGUID = client.createGlossaryTermFromTemplate(clientUserId, null, null, false, editingGlossaryGUID, glossaryTerm1GUID, null,  false,false,  GlossaryTermStatus.DRAFT, templateProperties);
             printGlossaryTerm(client, editingGlossaryTermGUID);
 
             String updateDescription = "\nAdd description to the private copy of the glossary term in the editing glossary.";
@@ -136,12 +143,15 @@ public class TemporaryEditingGlossary
             glossaryTermProperties.setAbbreviation("CustId");
             glossaryTermProperties.setPublishVersionIdentifier("V2.0");
 
-            client.updateGlossaryTerm(clientUserId, editingGlossaryTermGUID, true, glossaryTermProperties, updateDescription, null, false, false);
+            client.updateGlossaryTerm(clientUserId, null, null, editingGlossaryTermGUID, null,true, glossaryTermProperties, updateDescription, null, false, false);
             printGlossaryTerm(client, editingGlossaryTermGUID);
 
             System.out.println("\nApprove the second version of the glossary term in the editing glossary");
             client.updateGlossaryTermStatus(clientUserId,
+                                            null,
+                                            null,
                                             editingGlossaryTermGUID,
+                                            null,
                                             GlossaryTermStatus.APPROVED,
                                             null,
                                             false,
@@ -150,16 +160,16 @@ public class TemporaryEditingGlossary
 
             updateDescription = "\nPublishing V2 of the term to the 'live' glossary using a move glossary term";
             System.out.println(updateDescription);
-            client.updateGlossaryTermFromTemplate(clientUserId, glossaryTerm1GUID, editingGlossaryTermGUID, updateDescription, true, true, null, false, false);
+            client.updateGlossaryTermFromTemplate(clientUserId, null, null, glossaryTerm1GUID, null, editingGlossaryTermGUID, updateDescription, true, true, null,false, false);
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nRemove second editing glossary");
-            client.removeGlossary(clientUserId, editingGlossaryGUID, true, null, false, false);
+            client.removeGlossary(clientUserId, null, null, editingGlossaryGUID, null, true, null, false, false);
 
             printGlossaryTerm(client, glossaryTerm1GUID);
 
             System.out.println("\nRemove live glossary");
-            client.removeGlossary(clientUserId, liveGlossaryGUID, true, null, false, false);
+            client.removeGlossary(clientUserId, null, null, liveGlossaryGUID, null, true, null, false, false);
         }
         catch (Exception error)
         {
@@ -168,9 +178,9 @@ public class TemporaryEditingGlossary
         }
     }
 
-    private void printGlossary(GlossaryManagementClient client, String glossaryGUID) throws Exception
+    private void printGlossary(GlossaryExchangeClient client, String glossaryGUID) throws Exception
     {
-        GlossaryElement glossaryElement = client.getGlossaryByGUID(clientUserId, glossaryGUID, null, false, false);
+        GlossaryElement glossaryElement = client.getGlossaryByGUID(clientUserId, null, null, glossaryGUID, null, false, false);
 
         System.out.println("===> Glossary GUID:           " + glossaryElement.getElementHeader().getGUID());
         System.out.println("===> Glossary Qualified Name: " + glossaryElement.getGlossaryProperties().getQualifiedName());
@@ -178,9 +188,9 @@ public class TemporaryEditingGlossary
         System.out.println("===> Glossary Description:    " + glossaryElement.getGlossaryProperties().getDescription());
     }
 
-    private void printGlossaryTerm(GlossaryManagementClient client, String glossaryTermGUID) throws Exception
+    private void printGlossaryTerm(GlossaryExchangeClient client, String glossaryTermGUID) throws Exception
     {
-        GlossaryTermElement glossaryTermElement = client.getGlossaryTermByGUID(clientUserId, glossaryTermGUID, null, false, false);
+        GlossaryTermElement glossaryTermElement = client.getGlossaryTermByGUID(clientUserId, null, null, glossaryTermGUID, null, false, false);
 
         System.out.println("===> Term GUID:           " + glossaryTermElement.getElementHeader().getGUID());
 

@@ -1901,26 +1901,25 @@ public class OpenMetadataConverterBase<B>
     }
 
 
-
     /**
      * Extract and delete the threshold property from the supplied element properties.
      *
      * @param elementProperties properties from element
-     * @return string text or null
+     * @return int
      */
-    protected float removeThreshold(ElementProperties  elementProperties)
+    protected int removeThreshold(ElementProperties  elementProperties)
     {
         final String methodName = "removeThreshold";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(serviceName,
+            return propertyHelper.removeIntProperty(serviceName,
                                                      OpenMetadataProperty.THRESHOLD.name,
                                                      elementProperties,
                                                      methodName);
         }
 
-        return 0L;
+        return 0;
     }
 
 
@@ -1928,21 +1927,21 @@ public class OpenMetadataConverterBase<B>
      * Extract and delete the matchThreshold property from the supplied element properties.
      *
      * @param elementProperties properties from element
-     * @return string text or null
+     * @return int
      */
-    protected float removeMatchThreshold(ElementProperties  elementProperties)
+    protected int removeMatchThreshold(ElementProperties  elementProperties)
     {
         final String methodName = "removeMatchThreshold";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(serviceName,
-                                                     OpenMetadataProperty.MATCH_THRESHOLD.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeIntProperty(serviceName,
+                                                    OpenMetadataProperty.MATCH_THRESHOLD.name,
+                                                    elementProperties,
+                                                    methodName);
         }
 
-        return 0L;
+        return 100;
     }
 
 

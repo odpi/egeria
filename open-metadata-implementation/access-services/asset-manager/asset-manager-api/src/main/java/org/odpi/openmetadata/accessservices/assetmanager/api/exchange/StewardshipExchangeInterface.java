@@ -942,6 +942,92 @@ public interface StewardshipExchangeInterface
                                                                                       PropertyServerException;
 
 
+
+    /**
+     * Link an element to another element using the MoreInformation relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID identifier of the governance definition to link
+     * @param moreInformationGUID unique identifier of the metadata element to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void addMoreInformationToElement(String  userId,
+                                     String  assetManagerGUID,
+                                     String  assetManagerName,
+                                     String  elementGUID,
+                                     String  moreInformationGUID,
+                                     Date    effectiveTime,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+
+    /**
+     * Remove the MoreInformation relationship between two elements.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID identifier of the starting element
+     * @param moreInformationGUID unique identifier of the other element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeMoreInformationFromElement(String  userId,
+                                          String  assetManagerGUID,
+                                          String  assetManagerName,
+                                          String  elementGUID,
+                                          String  moreInformationGUID,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
+
+    /**
+     * Retrieve the elements linked via a "MoreInformation" relationship to the requested element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedMetadataElementSummary> getMoreInformationForElements(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  elementGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            Date    effectiveTime,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
+
     /**
      * Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
      *

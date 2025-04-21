@@ -2,18 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -422,124 +420,6 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     methodName);
     }
 
-
-    /**
-     * Link a comment that contains the best answer to a question posed in another comment.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param questionCommentGUID unique identifier of the comment containing the question
-     * @param questionCommentGUIDParameterName parameter supplying questionCommentGUID
-     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param answerCommentGUIDParameterName parameter supplying the answerCommentGUID
-     * @param isPublic who can retrieve the relationship
-     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
-     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setupAcceptedAnswer(String  userId,
-                                    String  externalSourceGUID,
-                                    String  externalSourceName,
-                                    String  questionCommentGUID,
-                                    String  questionCommentGUIDParameterName,
-                                    String  answerCommentGUID,
-                                    String  answerCommentGUIDParameterName,
-                                    boolean isPublic,
-                                    Date    effectiveFrom,
-                                    Date    effectiveTo,
-                                    Date    effectiveTime,
-                                    boolean forLineage,
-                                    boolean forDuplicateProcessing,
-                                    String  methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
-    {
-        InstanceProperties instanceProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                                              null,
-                                                                                              OpenMetadataProperty.IS_PUBLIC.name,
-                                                                                              isPublic,
-                                                                                              methodName);
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  questionCommentGUID,
-                                  questionCommentGUIDParameterName,
-                                  OpenMetadataType.COMMENT.typeName,
-                                  answerCommentGUID,
-                                  answerCommentGUIDParameterName,
-                                  OpenMetadataType.COMMENT.typeName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeGUID,
-                                  OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
-                                  instanceProperties,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-    }
-
-
-    /**
-     * Unlink a comment that contains an answer to a question posed in another comment.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param questionCommentGUID unique identifier of the comment containing the question
-     * @param questionCommentGUIDParameterName parameter supplying questionCommentGUID
-     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param answerCommentGUIDParameterName parameter supplying answerCommentGUID
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearAcceptedAnswer(String  userId,
-                                    String  externalSourceGUID,
-                                    String  externalSourceName,
-                                    String  questionCommentGUID,
-                                    String  questionCommentGUIDParameterName,
-                                    String  answerCommentGUID,
-                                    String  answerCommentGUIDParameterName,
-                                    Date    effectiveTime,
-                                    boolean forLineage,
-                                    boolean forDuplicateProcessing,
-                                    String  methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      questionCommentGUID,
-                                      questionCommentGUIDParameterName,
-                                      OpenMetadataType.COMMENT.typeName,
-                                      answerCommentGUID,
-                                      answerCommentGUIDParameterName,
-                                      OpenMetadataType.COMMENT.typeGUID,
-                                      OpenMetadataType.COMMENT.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
-    }
 
     /**
      * Return the comments attached to an entity.

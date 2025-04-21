@@ -653,13 +653,13 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(setGUID, parentGUIDParameterName, methodName);
 
-        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
-                                                             setGUID,
-                                                             validValueGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             effectiveTime);
+        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                          OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                          setGUID,
+                                                          validValueGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime);
     }
 
 
@@ -793,13 +793,13 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
 
-        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                             referenceableGUID,
-                                                             validValueGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             effectiveTime);
+        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                          referenceableGUID,
+                                                          validValueGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime);
     }
 
 

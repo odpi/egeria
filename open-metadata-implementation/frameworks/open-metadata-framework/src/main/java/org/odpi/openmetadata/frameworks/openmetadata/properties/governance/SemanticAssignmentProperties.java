@@ -22,13 +22,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SemanticAssignmentProperties extends RelationshipProperties
 {
-    private String                       expression  = null;
-    private String                       description = null;
-    private GlossaryTermAssignmentStatus status      = GlossaryTermAssignmentStatus.VALIDATED;
-    private int                          confidence  = 0;
-    private String                       createdBy   = null;
-    private String                       steward     = null;
-    private String                       source      = null;
+    private String                       expression          = null;
+    private String                       description         = null;
+    private GlossaryTermAssignmentStatus status              = GlossaryTermAssignmentStatus.VALIDATED;
+    private int                          confidence          = 0;
+    private String                       createdBy           = null;
+    private String                       steward             = null;
+    private String                       stewardTypeName     = null;
+    private String                       stewardPropertyName = null;
+    private String                       source              = null;
+    private String                       notes               = null;
 
 
     /**
@@ -57,6 +60,9 @@ public class SemanticAssignmentProperties extends RelationshipProperties
             confidence = template.getConfidence();
             createdBy = template.getCreatedBy();
             steward = template.getSteward();
+            stewardTypeName = template.getStewardTypeName();
+            stewardPropertyName = template.getStewardPropertyName();
+            notes = template.getNotes();
             source = template.getSource();
         }
     }
@@ -199,6 +205,50 @@ public class SemanticAssignmentProperties extends RelationshipProperties
 
 
     /**
+     * Return the type of element identifying the steward.
+     *
+     * @return name
+     */
+    public String getStewardTypeName()
+    {
+        return stewardTypeName;
+    }
+
+
+    /**
+     * Set up the type of element identifying the steward.
+     *
+     * @param stewardTypeName name
+     */
+    public void setStewardTypeName(String stewardTypeName)
+    {
+        this.stewardTypeName = stewardTypeName;
+    }
+
+
+    /**
+     * Return the name of the property identifying the steward.
+     *
+     * @return string
+     */
+    public String getStewardPropertyName()
+    {
+        return stewardPropertyName;
+    }
+
+
+    /**
+     * Set up the name of the property identifying the steward.
+     *
+     * @param stewardPropertyName string
+     */
+    public void setStewardPropertyName(String stewardPropertyName)
+    {
+        this.stewardPropertyName = stewardPropertyName;
+    }
+
+
+    /**
      * Set up the id of the source of the knowledge of the relationship.
      *
      * @param source String id
@@ -221,6 +271,28 @@ public class SemanticAssignmentProperties extends RelationshipProperties
 
 
     /**
+     * Return the steward's notes.
+     *
+     * @return string
+     */
+    public String getNotes()
+    {
+        return notes;
+    }
+
+
+    /**
+     * Set up the steward's notes.
+     *
+     * @param notes string
+     */
+    public void setNotes(String notes)
+    {
+        this.notes = notes;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -235,7 +307,10 @@ public class SemanticAssignmentProperties extends RelationshipProperties
                 ", confidence=" + confidence +
                 ", createdBy='" + createdBy + '\'' +
                 ", steward='" + steward + '\'' +
+                ", stewardTypeName='" + stewardTypeName + '\'' +
+                ", stewardPropertyName='" + stewardPropertyName + '\'' +
                 ", source='" + source + '\'' +
+                ", notes='" + notes + '\'' +
                 "} " + super.toString();
     }
 
@@ -262,12 +337,15 @@ public class SemanticAssignmentProperties extends RelationshipProperties
             return false;
         }
         return confidence == that.confidence &&
-                       Objects.equals(expression, that.expression) &&
-                       Objects.equals(description, that.description) &&
-                       status == that.status &&
-                       Objects.equals(createdBy, that.createdBy) &&
-                       Objects.equals(steward, that.steward) &&
-                       Objects.equals(source, that.source);
+                Objects.equals(expression, that.expression) &&
+                Objects.equals(description, that.description) &&
+                status == that.status &&
+                Objects.equals(createdBy, that.createdBy) &&
+                Objects.equals(steward, that.steward) &&
+                Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
+                Objects.equals(notes, that.notes) &&
+                Objects.equals(source, that.source);
     }
 
 
@@ -279,6 +357,6 @@ public class SemanticAssignmentProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), expression, description, status, confidence, createdBy, steward, source);
+        return Objects.hash(super.hashCode(), expression, description, status, confidence, createdBy, steward, stewardTypeName, stewardPropertyName, notes, source);
     }
 }

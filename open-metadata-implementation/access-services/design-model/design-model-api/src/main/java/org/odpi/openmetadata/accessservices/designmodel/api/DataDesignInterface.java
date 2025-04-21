@@ -184,8 +184,8 @@ public interface DataDesignInterface
                              boolean                   forLineage,
                              boolean                   forDuplicateProcessing,
                              Date                      effectiveTime) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException;
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
 
 
     /**
@@ -212,8 +212,8 @@ public interface DataDesignInterface
                                boolean forLineage,
                                boolean forDuplicateProcessing,
                                Date    effectiveTime) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException;
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException;
 
 
 
@@ -1024,4 +1024,183 @@ public interface DataDesignInterface
                                                                                      PropertyServerException;
 
 
+    /*
+     * Linking up the specification
+     */
+
+
+    /**
+     * Connect an element that is part of a data design to a data class to show that the data class should be used
+     * as the specification for the data values when interpreting the data definition.
+     *
+     * @param userId          userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param dataDefinitionGUID  unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID      unique identifier of the data class
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void linkDataClassDefinition(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  dataDefinitionGUID,
+                                 String  dataClassGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException;
+
+
+    /**
+     * Detach a data definition from a data class.
+     *
+     * @param userId          userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param dataDefinitionGUID  unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID      unique identifier of the data class
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void detachDataClassDefinition(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  dataDefinitionGUID,
+                                   String  dataClassGUID,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException;
+
+
+
+    /**
+     * Connect an element that is part of a data design to a glossary term to show that the term should be used
+     * as the semantic definition for the data values when interpreting the data definition.
+     *
+     * @param userId          userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param dataDefinitionGUID  unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID      unique identifier of the glossary term
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void linkSemanticDefinition(String  userId,
+                                String  externalSourceGUID,
+                                String  externalSourceName,
+                                String  dataDefinitionGUID,
+                                String  glossaryTermGUID,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
+
+
+    /**
+     * Detach a data definition from a glossary term.
+     *
+     * @param userId          userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param dataDefinitionGUID  unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID      unique identifier of the glossary term
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void detachSemanticDefinition(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  dataDefinitionGUID,
+                                  String  glossaryTermGUID,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException;
+
+
+
+    /**
+     * Connect a certification type to a data structure to guide the survey action service (that checks the data
+     * quality of a data resource as part of certifying it with the supplied certification type) to the definition
+     * of the data structure to use as a specification of how the data should be both structured and (if
+     * data classes are attached to the associated data fields using the DataClassDefinition relationship)
+     * contain the valid values.
+     *
+     * @param userId          userId of user making request
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void linkCertificationTypeToDataStructure(String  userId,
+                                              String  externalSourceGUID,
+                                              String  externalSourceName,
+                                              String  certificationTypeGUID,
+                                              String  dataStructureGUID,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException;
+
+
+    /**
+     * Detach a data structure from a certification type.
+     *
+     * @param userId          userId of user making request.
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void detachCertificationTypeToDataStructure(String  userId,
+                                                String  externalSourceGUID,
+                                                String  externalSourceName,
+                                                String  certificationTypeGUID,
+                                                String  dataStructureGUID,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException;
 }

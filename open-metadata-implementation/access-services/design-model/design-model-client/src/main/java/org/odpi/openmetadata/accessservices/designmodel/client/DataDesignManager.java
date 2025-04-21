@@ -439,39 +439,15 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         invalidParameterHandler.validateGUID(parentDataStructureGUID, end1GUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(nestedDataFieldGUID, end2GUIDParameterName, methodName);
 
-        OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                parentDataStructureGUID,
-                                                                                                                nestedDataFieldGUID,
-                                                                                                                OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                forLineage,
-                                                                                                                forDuplicateProcessing,
-                                                                                                                effectiveTime,
-                                                                                                                0,
-                                                                                                                0);
-
-        if ((relationshipList != null) && (relationshipList.getElementList() != null))
-        {
-            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
-            {
-                if (relationship != null)
-                {
-                    if ((parentDataStructureGUID.equals(relationship.getElementGUIDAtEnd1())) && (nestedDataFieldGUID.equals(relationship.getElementGUIDAtEnd2())))
-                    {
-                        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                             externalSourceGUID,
-                                                                             externalSourceName,
-                                                                             relationship.getRelationshipGUID(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             effectiveTime);
-                    }
-                }
-            }
-        }
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                             parentDataStructureGUID,
+                                                             nestedDataFieldGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -1009,39 +985,15 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         invalidParameterHandler.validateGUID(parentDataFieldGUID, end1GUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(nestedDataFieldGUID, end2GUIDParameterName, methodName);
 
-        OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                parentDataFieldGUID,
-                                                                                                                nestedDataFieldGUID,
-                                                                                                                OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                forLineage,
-                                                                                                                forDuplicateProcessing,
-                                                                                                                effectiveTime,
-                                                                                                                0,
-                                                                                                                0);
-
-        if ((relationshipList != null) && (relationshipList.getElementList() != null))
-        {
-            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
-            {
-                if (relationship != null)
-                {
-                    if ((parentDataFieldGUID.equals(relationship.getElementGUIDAtEnd1())) && (nestedDataFieldGUID.equals(relationship.getElementGUIDAtEnd2())))
-                    {
-                        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                             externalSourceGUID,
-                                                                             externalSourceName,
-                                                                             relationship.getRelationshipGUID(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             effectiveTime);
-                    }
-                }
-            }
-        }
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                             parentDataFieldGUID,
+                                                             nestedDataFieldGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -1573,39 +1525,15 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         invalidParameterHandler.validateGUID(parentDataClassGUID, end1GUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(childDataClassGUID, end2GUIDParameterName, methodName);
 
-        OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                parentDataClassGUID,
-                                                                                                                childDataClassGUID,
-                                                                                                                OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                forLineage,
-                                                                                                                forDuplicateProcessing,
-                                                                                                                effectiveTime,
-                                                                                                                0,
-                                                                                                                0);
-
-        if ((relationshipList != null) && (relationshipList.getElementList() != null))
-        {
-            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
-            {
-                if (relationship != null)
-                {
-                    if ((parentDataClassGUID.equals(relationship.getElementGUIDAtEnd1())) && (childDataClassGUID.equals(relationship.getElementGUIDAtEnd2())))
-                    {
-                        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                             externalSourceGUID,
-                                                                             externalSourceName,
-                                                                             relationship.getRelationshipGUID(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             effectiveTime);
-                    }
-                }
-            }
-        }
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
+                                                             parentDataClassGUID,
+                                                             childDataClassGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -1695,39 +1623,15 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         invalidParameterHandler.validateGUID(parentDataClassGUID, end1GUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(childDataClassGUID, end2GUIDParameterName, methodName);
 
-        OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                parentDataClassGUID,
-                                                                                                                childDataClassGUID,
-                                                                                                                OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                null,
-                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                forLineage,
-                                                                                                                forDuplicateProcessing,
-                                                                                                                effectiveTime,
-                                                                                                                0,
-                                                                                                                0);
-
-        if ((relationshipList != null) && (relationshipList.getElementList() != null))
-        {
-            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
-            {
-                if (relationship != null)
-                {
-                    if ((parentDataClassGUID.equals(relationship.getElementGUIDAtEnd1())) && (childDataClassGUID.equals(relationship.getElementGUIDAtEnd2())))
-                    {
-                        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                             externalSourceGUID,
-                                                                             externalSourceName,
-                                                                             relationship.getRelationshipGUID(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             effectiveTime);
-                    }
-                }
-            }
-        }
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
+                                                             parentDataClassGUID,
+                                                             childDataClassGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -1809,7 +1713,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
-        final String methodName = "getInformationSupplyChainsByName";
+        final String methodName = "getDataClassesByName";
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1958,6 +1862,306 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                   forDuplicateProcessing,
                                   effectiveTime,
                                   methodName);
+    }
+
+
+    /**
+     * Connect an element that is part of a data design to a data class to show that the data class should be used
+     * as the specification for the data values when interpreting the data definition.
+     *
+     * @param userId                 userId of user making request
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID          unique identifier of the data class
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void linkDataClassDefinition(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  dataDefinitionGUID,
+                                        String  dataClassGUID,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "linkDataClassDefinition";
+        final String end1GUIDParameterName = "dataDefinitionGUID";
+        final String end2GUIDParameterName = "dataClassGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataDefinitionGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataClassGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.DATA_CLASS_DEFINITION.typeName,
+                                                             dataDefinitionGUID,
+                                                             dataClassGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Detach a data definition from a data class.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID          unique identifier of the data class
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void detachDataClassDefinition(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  dataDefinitionGUID,
+                                          String  dataClassGUID,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "detachDataClassDefinition";
+
+        final String end1GUIDParameterName = "dataDefinitionGUID";
+        final String end2GUIDParameterName = "dataClassGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataDefinitionGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataClassGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.DATA_CLASS_DEFINITION.typeName,
+                                                             dataDefinitionGUID,
+                                                             dataClassGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Connect an element that is part of a data design to a glossary term to show that the term should be used
+     * as the semantic definition for the data values when interpreting the data definition.
+     *
+     * @param userId                 userId of user making request
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID       unique identifier of the glossary term
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void linkSemanticDefinition(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  dataDefinitionGUID,
+                                       String  glossaryTermGUID,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "linkSemanticDefinition";
+        final String end1GUIDParameterName = "parentDataClassGUID";
+        final String end2GUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataDefinitionGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
+                                                             dataDefinitionGUID,
+                                                             glossaryTermGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Detach a data definition from a glossary term.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID       unique identifier of the glossary term
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void detachSemanticDefinition(String  userId,
+                                         String  externalSourceGUID,
+                                         String  externalSourceName,
+                                         String  dataDefinitionGUID,
+                                         String  glossaryTermGUID,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "detachSemanticDefinition";
+
+        final String end1GUIDParameterName = "dataDefinitionGUID";
+        final String end2GUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataDefinitionGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
+                                                             dataDefinitionGUID,
+                                                             glossaryTermGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Connect a certification type to a data structure to guide the survey action service (that checks the data
+     * quality of a data resource as part of certifying it with the supplied certification type) to the definition
+     * of the data structure to use as a specification of how the data should be both structured and (if
+     * data classes are attached to the associated data fields using the DataClassDefinition relationship)
+     * contain the valid values.
+     *
+     * @param userId                 userId of user making request
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void linkCertificationTypeToDataStructure(String  userId,
+                                                     String  externalSourceGUID,
+                                                     String  externalSourceName,
+                                                     String  certificationTypeGUID,
+                                                     String  dataStructureGUID,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "linkCertificationTypeToDataStructure";
+        final String end1GUIDParameterName = "certificationTypeGUID";
+        final String end2GUIDParameterName = "dataStructureGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(certificationTypeGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataStructureGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName,
+                                                             certificationTypeGUID,
+                                                             dataStructureGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             effectiveTime);
+    }
+
+
+    /**
+     * Detach a data structure from a certification type.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalSourceGUID     unique identifier of the software capability that owns this element
+     * @param externalSourceName     unique name of the software capability that owns this element
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void detachCertificationTypeToDataStructure(String  userId,
+                                                       String  externalSourceGUID,
+                                                       String  externalSourceName,
+                                                       String  certificationTypeGUID,
+                                                       String  dataStructureGUID,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "detachCertificationTypeToDataStructure";
+
+        final String end1GUIDParameterName = "certificationTypeGUID";
+        final String end2GUIDParameterName = "dataStructureGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(certificationTypeGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataStructureGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName,
+                                                             certificationTypeGUID,
+                                                             dataStructureGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -2160,7 +2364,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                       OpenMetadataProperty.MATCH_PROPERTY_NAMES.name,
                                                                       properties.getMatchPropertyNames());
 
-            elementProperties = propertyHelper.addFloatProperty(elementProperties,
+            elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                 OpenMetadataProperty.MATCH_THRESHOLD.name,
                                                                 properties.getMatchThreshold());
 

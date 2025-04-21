@@ -1300,6 +1300,7 @@ public class GlossaryExchangeService
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param initialStatus what status should the copy be set to
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -1314,6 +1315,7 @@ public class GlossaryExchangeService
                                                  ExternalIdentifierProperties externalIdentifierProperties,
                                                  TemplateProperties           templateProperties,
                                                  boolean                      deepCopy,
+                                                 boolean                      templateSubstitute,
                                                  GlossaryTermStatus           initialStatus) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
@@ -1330,6 +1332,7 @@ public class GlossaryExchangeService
                                                                         templateGUID,
                                                                         externalIdentifierProperties,
                                                                         deepCopy,
+                                                                        templateSubstitute,
                                                                         initialStatus,
                                                                         templateProperties);
         }

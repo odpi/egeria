@@ -3,7 +3,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -201,9 +201,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.findGlossaries(userId,
+                                                               null,
+                                                               null,
                                                                instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                                startFrom,
                                                                pageSize,
@@ -267,9 +269,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossariesByName(userId,
+                                                                    null,
+                                                                    null,
                                                                     requestBody.getName(),
                                                                     startFrom,
                                                                     pageSize,
@@ -328,11 +332,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.getGlossaryByGUID(userId,
+                                                              null,
+                                                              null,
                                                               glossaryGUID,
                                                               requestBody.getEffectiveTime(),
                                                               forLineage,
@@ -341,6 +347,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGlossaryByGUID(userId,
+                                                              null,
+                                                              null,
                                                               glossaryGUID,
                                                               null,
                                                               forLineage,
@@ -393,11 +401,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.getGlossaryForCategory(userId,
+                                                                   null,
+                                                                   null,
                                                                    glossaryCategoryGUID,
                                                                    requestBody.getEffectiveTime(),
                                                                    forLineage,
@@ -406,6 +416,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGlossaryForCategory(userId,
+                                                                   null,
+                                                                   null,
                                                                    glossaryCategoryGUID,
                                                                    null,
                                                                    forLineage,
@@ -460,11 +472,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.getGlossaryForTerm(userId,
+                                                               null,
+                                                               null,
                                                                glossaryTermGUID,
                                                                requestBody.getEffectiveTime(),
                                                                forLineage,
@@ -473,6 +487,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGlossaryForTerm(userId,
+                                                               null,
+                                                               null,
                                                                glossaryTermGUID,
                                                                null,
                                                                forLineage,
@@ -536,9 +552,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.findGlossaryCategories(userId,
+                                                                       null,
+                                                                       null,
                                                                        requestBody.getGlossaryGUID(),
                                                                        instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                                        startFrom,
@@ -602,11 +620,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElementList(handler.getCategoriesForGlossary(userId,
+                                                                         null,
+                                                                         null,
                                                                          glossaryGUID,
                                                                          startFrom,
                                                                          pageSize,
@@ -617,6 +637,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElementList(handler.getCategoriesForGlossary(userId,
+                                                                         null,
+                                                                         null,
                                                                          glossaryGUID,
                                                                          startFrom,
                                                                          pageSize,
@@ -675,11 +697,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElementList(handler.getCategoriesForTerm(userId,
+                                                                     null,
+                                                                     null,
                                                                      glossaryTermGUID,
                                                                      startFrom,
                                                                      pageSize,
@@ -690,6 +714,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElementList(handler.getCategoriesForTerm(userId,
+                                                                     null,
+                                                                     null,
                                                                      glossaryTermGUID,
                                                                      startFrom,
                                                                      pageSize,
@@ -749,9 +775,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossaryCategoriesByName(userId,
+                                                                            null,
+                                                                            null,
                                                                             requestBody.getGlossaryGUID(),
                                                                             requestBody.getName(),
                                                                             startFrom,
@@ -811,11 +839,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.getGlossaryCategoryByGUID(userId,
+                                                                      null,
+                                                                      null,
                                                                       glossaryCategoryGUID,
                                                                       requestBody.getEffectiveTime(),
                                                                       forLineage,
@@ -824,6 +854,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGlossaryCategoryByGUID(userId,
+                                                                      null,
+                                                                      null,
                                                                       glossaryCategoryGUID,
                                                                       null,
                                                                       forLineage,
@@ -877,11 +909,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.getGlossaryCategoryParent(userId,
+                                                                      null,
+                                                                      null,
                                                                       glossaryCategoryGUID,
                                                                       requestBody.getEffectiveTime(),
                                                                       forLineage,
@@ -890,6 +924,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGlossaryCategoryParent(userId,
+                                                                      null,
+                                                                      null,
                                                                       glossaryCategoryGUID,
                                                                       null,
                                                                       forLineage,
@@ -946,11 +982,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElementList(handler.getGlossarySubCategories(userId,
+                                                                         null,
+                                                                         null,
                                                                          glossaryCategoryGUID,
                                                                          startFrom,
                                                                          pageSize,
@@ -961,6 +999,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElementList(handler.getGlossarySubCategories(userId,
+                                                                         null,
+                                                                         null,
                                                                          glossaryCategoryGUID,
                                                                          startFrom,
                                                                          pageSize,
@@ -1027,9 +1067,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.findGlossaryTerms(userId,
+                                                                  null,
+                                                                  null,
                                                                   requestBody.getGlossaryGUID(),
                                                                   instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                                   requestBody.getLimitResultsByStatus(),
@@ -1094,11 +1136,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElementList(handler.getTermsForGlossary(userId,
+                                                                    null,
+                                                                    null,
                                                                     glossaryGUID,
                                                                     startFrom,
                                                                     pageSize,
@@ -1109,6 +1153,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElementList(handler.getTermsForGlossary(userId,
+                                                                    null,
+                                                                    null,
                                                                     glossaryGUID,
                                                                     startFrom,
                                                                     pageSize,
@@ -1167,11 +1213,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElementList(handler.getTermsForGlossaryCategory(userId,
+                                                                            null,
+                                                                            null,
                                                                             glossaryCategoryGUID,
                                                                             requestBody.getLimitResultsByStatus(),
                                                                             startFrom,
@@ -1183,6 +1231,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElementList(handler.getTermsForGlossaryCategory(userId,
+                                                                            null,
+                                                                            null,
                                                                             glossaryCategoryGUID,
                                                                             null,
                                                                             startFrom,
@@ -1242,11 +1292,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElementList(handler.getRelatedTerms(userId,
+                                                                null,
+                                                                null,
                                                                 glossaryTermGUID,
                                                                 requestBody.getRelationshipTypeName(),
                                                                 requestBody.getLimitResultsByStatus(),
@@ -1259,6 +1311,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElementList(handler.getRelatedTerms(userId,
+                                                                null,
+                                                                null,
                                                                 glossaryTermGUID,
                                                                 null,
                                                                 null,
@@ -1320,9 +1374,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossaryTermsByName(userId,
+                                                                       null,
+                                                                       null,
                                                                        requestBody.getGlossaryGUID(),
                                                                        requestBody.getName(),
                                                                        requestBody.getLimitResultsByStatus(),
@@ -1383,11 +1439,13 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.getGlossaryTermByGUID(userId,
+                                                                  null,
+                                                                  null,
                                                                   guid,
                                                                   requestBody.getEffectiveTime(),
                                                                   forLineage,
@@ -1396,6 +1454,8 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGlossaryTermByGUID(userId,
+                                                                  null,
+                                                                  null,
                                                                   guid,
                                                                   null,
                                                                   forLineage,
@@ -1457,9 +1517,11 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setElementList(handler.getGlossaryTermHistory(userId,
+                                                                       null,
+                                                                       null,
                                                                        guid,
                                                                        requestBody.getFromTime(),
                                                                        requestBody.getToTime(),

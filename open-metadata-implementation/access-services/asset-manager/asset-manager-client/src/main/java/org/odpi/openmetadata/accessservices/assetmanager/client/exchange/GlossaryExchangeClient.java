@@ -16,9 +16,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
 
 import java.util.Date;
@@ -1279,18 +1282,20 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String methodName                      = "setupCategoryParent";
         final String glossaryParentGUIDParameterName = "glossaryParentCategoryGUID";
         final String glossaryChildGUIDParameterName  = "glossaryChildCategoryGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/{3}";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.setupRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 glossaryParentCategoryGUID,
                                 glossaryParentGUIDParameterName,
-                                null,
+                                OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 glossaryChildCategoryGUID,
                                 glossaryChildGUIDParameterName,
-                                urlTemplate,
+                                null,
+                                null,
+                                null,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -1329,17 +1334,17 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String methodName                      = "clearCategoryParent";
         final String glossaryParentGUIDParameterName = "glossaryParentCategoryGUID";
         final String glossaryChildGUIDParameterName  = "glossaryChildCategoryGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/{3}/remove";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.clearRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 glossaryParentCategoryGUID,
                                 glossaryParentGUIDParameterName,
+                                OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 glossaryChildCategoryGUID,
                                 glossaryChildGUIDParameterName,
-                                urlTemplate,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -1931,6 +1936,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param initialStatus what status should the copy be set to
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -1948,6 +1954,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                  String                       templateGUID,
                                                  ExternalIdentifierProperties externalIdentifierProperties,
                                                  boolean                      deepCopy,
+                                                 boolean                      templateSubstitute,
                                                  GlossaryTermStatus           initialStatus,
                                                  TemplateProperties           templateProperties) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
@@ -1961,7 +1968,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String templateGUIDParameterName  = "templateGUID";
         final String propertiesParameterName    = "templateProperties";
         final String qualifiedNameParameterName = "qualifiedName";
-        final String requestParamsURLTemplate   = "?assetManagerIsHome={4}&deepCopy={5}";
+        final String requestParamsURLTemplate   = "?assetManagerIsHome={4}&deepCopy={5}&templateSubstitute={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
@@ -1987,7 +1994,8 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                   glossaryGUID,
                                                                   templateGUID,
                                                                   assetManagerIsHome,
-                                                                  deepCopy);
+                                                                  deepCopy,
+                                                                  templateSubstitute);
 
         return restResult.getGUID();
     }
@@ -2271,24 +2279,76 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String methodName                      = "setupTermCategory";
         final String glossaryParentGUIDParameterName = "glossaryCategoryGUID";
         final String glossaryChildGUIDParameterName  = "glossaryTermGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}";
-
-        super.setupRelationship(userId,
-                                assetManagerGUID,
-                                assetManagerName,
-                                glossaryCategoryGUID,
-                                glossaryParentGUIDParameterName,
-                                categorizationProperties,
-                                glossaryTermGUID,
-                                glossaryChildGUIDParameterName,
-                                urlTemplate,
-                                effectiveTime,
-                                forLineage,
-                                forDuplicateProcessing,
-                                methodName);
+        if (categorizationProperties != null)
+        {
+            super.setupRelationship(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    glossaryCategoryGUID,
+                                    glossaryParentGUIDParameterName,
+                                    OpenMetadataType.TERM_CATEGORIZATION.typeName,
+                                    relationshipTypeNameParameterName,
+                                    glossaryTermGUID,
+                                    glossaryChildGUIDParameterName,
+                                    categorizationProperties.getEffectiveFrom(),
+                                    categorizationProperties.getEffectiveTo(),
+                                    this.getElementProperties(categorizationProperties),
+                                    effectiveTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    methodName);
+        }
+        else
+        {
+            super.setupRelationship(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    glossaryCategoryGUID,
+                                    glossaryParentGUIDParameterName,
+                                    OpenMetadataType.TERM_CATEGORIZATION.typeName,
+                                    relationshipTypeNameParameterName,
+                                    glossaryTermGUID,
+                                    glossaryChildGUIDParameterName,
+                                    null,
+                                    null,
+                                    null,
+                                    effectiveTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    methodName);
+        }
     }
 
+
+    /**
+     * Convert a bean into its element properties.
+     *
+     * @param relationshipProperties bean properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(GlossaryTermCategorization relationshipProperties)
+    {
+        if (relationshipProperties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 relationshipProperties.getDescription());
+
+            if (relationshipProperties.getStatus() != null)
+            {
+                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                   OpenMetadataProperty.STATUS.name,
+                                                                   GlossaryTermRelationshipStatus.getOpenTypeName(),
+                                                                   relationshipProperties.getStatus().getName());
+            }
+
+            return elementProperties;
+        }
+
+        return null;
+    }
 
     /**
      * Unlink a term from a category.
@@ -2321,17 +2381,17 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String methodName                      = "clearTermCategory";
         final String glossaryParentGUIDParameterName = "glossaryCategoryGUID";
         final String glossaryChildGUIDParameterName  = "glossaryTermGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/{3}/remove";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.clearRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 glossaryCategoryGUID,
                                 glossaryParentGUIDParameterName,
+                                OpenMetadataType.TERM_CATEGORIZATION.typeName,
+                                relationshipTypeNameParameterName,
                                 glossaryTermGUID,
                                 glossaryChildGUIDParameterName,
-                                urlTemplate,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -2376,7 +2436,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param relationshipsProperties properties for the relationship
+     * @param relationshipProperties properties for the relationship
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2392,7 +2452,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                       String                   relationshipTypeName,
                                       String                   glossaryTermOneGUID,
                                       String                   glossaryTermTwoGUID,
-                                      GlossaryTermRelationship relationshipsProperties,
+                                      GlossaryTermRelationship relationshipProperties,
                                       Date                     effectiveTime,
                                       boolean                  forLineage,
                                       boolean                  forDuplicateProcessing) throws InvalidParameterException,
@@ -2404,23 +2464,89 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String glossaryChildGUIDParameterName  = "glossaryTermTwoGUID";
         final String glossaryTypeParameterName       = "relationshipTypeName";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}";
+        if (relationshipProperties != null)
+        {
+            super.setupRelationship(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    glossaryTermOneGUID,
+                                    glossaryParentGUIDParameterName,
+                                    relationshipTypeName,
+                                    glossaryTypeParameterName,
+                                    glossaryTermTwoGUID,
+                                    glossaryChildGUIDParameterName,
+                                    relationshipProperties.getEffectiveFrom(),
+                                    relationshipProperties.getEffectiveTo(),
+                                    this.getElementProperties(relationshipProperties),
+                                    effectiveTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    methodName);
+        }
+        else
+        {
+            super.setupRelationship(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    glossaryTermOneGUID,
+                                    glossaryParentGUIDParameterName,
+                                    relationshipTypeName,
+                                    glossaryTypeParameterName,
+                                    glossaryTermTwoGUID,
+                                    glossaryChildGUIDParameterName,
+                                    null,
+                                    null,
+                                    null,
+                                    effectiveTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    methodName);
+        }
+    }
 
-        super.setupRelationship(userId,
-                                assetManagerGUID,
-                                assetManagerName,
-                                glossaryTermOneGUID,
-                                glossaryParentGUIDParameterName,
-                                relationshipTypeName,
-                                glossaryTypeParameterName,
-                                relationshipsProperties,
-                                glossaryTermTwoGUID,
-                                glossaryChildGUIDParameterName,
-                                urlTemplate,
-                                effectiveTime,
-                                forLineage,
-                                forDuplicateProcessing,
-                                methodName);
+
+    /**
+     * Convert a bean into its element properties.
+     *
+     * @param relationshipProperties bean properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(GlossaryTermRelationship relationshipProperties)
+    {
+        if (relationshipProperties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.EXPRESSION.name,
+                                                                                   relationshipProperties.getExpression());
+
+            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                              OpenMetadataProperty.CONFIDENCE.name,
+                                                              relationshipProperties.getConfidence());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 relationshipProperties.getDescription());
+
+            if (relationshipProperties.getStatus() != null)
+            {
+                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                   OpenMetadataProperty.STATUS.name,
+                                                                   GlossaryTermRelationshipStatus.getOpenTypeName(),
+                                                                   relationshipProperties.getStatus().getName());
+            }
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.STEWARD.name,
+                                                                 relationshipProperties.getSteward());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.SOURCE.name,
+                                                                 relationshipProperties.getSource());
+
+            return elementProperties;
+        }
+
+        return null;
     }
 
 
@@ -2456,24 +2582,27 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        final String methodName                      = "updateTermRelationship";
-        final String glossaryParentGUIDParameterName = "glossaryTermOneGUID";
-        final String glossaryChildGUIDParameterName  = "glossaryTermTwoGUID";
-        final String glossaryTypeParameterName       = "relationshipTypeName";
+        final String methodName                          = "updateTermRelationship";
+        final String glossaryParentGUIDParameterName     = "glossaryTermOneGUID";
+        final String glossaryChildGUIDParameterName      = "glossaryTermTwoGUID";
+        final String glossaryTypeParameterName           = "relationshipTypeName";
+        final String relationshipPropertiesParameterName = "relationshipsProperties";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/update";
+        invalidParameterHandler.validateObject(relationshipsProperties, relationshipPropertiesParameterName, methodName);
 
-        super.setupRelationship(userId,
+        super.updateRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 glossaryTermOneGUID,
                                 glossaryParentGUIDParameterName,
                                 relationshipTypeName,
                                 glossaryTypeParameterName,
-                                relationshipsProperties,
                                 glossaryTermTwoGUID,
                                 glossaryChildGUIDParameterName,
-                                urlTemplate,
+                                true,
+                                relationshipsProperties.getEffectiveFrom(),
+                                relationshipsProperties.getEffectiveTo(),
+                                this.getElementProperties(relationshipsProperties),
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -2516,8 +2645,6 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String glossaryChildGUIDParameterName  = "glossaryTermTwoGUID";
         final String glossaryTypeParameterName       = "relationshipTypeName";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/remove";
-
         super.clearRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
@@ -2527,7 +2654,6 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                 glossaryTypeParameterName,
                                 glossaryTermTwoGUID,
                                 glossaryChildGUIDParameterName,
-                                urlTemplate,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,

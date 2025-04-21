@@ -10,26 +10,19 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Commen
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.InformalTagUpdateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.List;
@@ -496,22 +489,43 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         final String methodName                       = "setupAcceptedAnswer";
         final String questionCommentGUIDParameterName = "questionCommentGUID";
         final String answerCommentGUIDParameterName   = "answerCommentGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/comments/questions/{2}/answers/{3}";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.setupRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 questionCommentGUID,
                                 questionCommentGUIDParameterName,
-                                properties,
+                                OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 answerCommentGUID,
                                 answerCommentGUIDParameterName,
-                                urlTemplate,
+                                properties.getEffectiveFrom(),
+                                properties.getEffectiveTo(),
+                                this.getElementProperties(properties),
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
                                 methodName);
+    }
+
+
+    /**
+     * Convert a bean into its element properties.
+     *
+     * @param relationshipProperties bean properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(FeedbackProperties relationshipProperties)
+    {
+        if (relationshipProperties != null)
+        {
+            return propertyHelper.addBooleanProperty(null,
+                                                     OpenMetadataProperty.IS_PUBLIC.name,
+                                                     relationshipProperties.getIsPublic());
+        }
+
+        return null;
     }
 
 
@@ -543,20 +557,20 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        final String methodName                       = "clearAcceptedAnswer";
-        final String questionCommentGUIDParameterName = "questionCommentGUID";
-        final String answerCommentGUIDParameterName   = "answerCommentGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/comments/questions/{2}/answers/{3}/remove";
+        final String methodName                        = "clearAcceptedAnswer";
+        final String questionCommentGUIDParameterName  = "questionCommentGUID";
+        final String answerCommentGUIDParameterName    = "answerCommentGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.clearRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 questionCommentGUID,
                                 questionCommentGUIDParameterName,
+                                OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 answerCommentGUID,
                                 answerCommentGUIDParameterName,
-                                urlTemplate,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,

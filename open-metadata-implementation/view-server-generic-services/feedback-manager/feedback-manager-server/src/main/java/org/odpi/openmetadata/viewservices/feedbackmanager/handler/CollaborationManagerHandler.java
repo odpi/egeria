@@ -142,13 +142,13 @@ public class CollaborationManagerHandler
                                                 elementProperties,
                                                 effectiveTime);
 
-            client.updateRelatedElementsInStore(userId,
-                                                existingFeedback.getRelationshipGUID(),
-                                                false,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                relationshipProperties,
-                                                effectiveTime);
+            client.updateRelationshipInStore(userId,
+                                             existingFeedback.getRelationshipGUID(),
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             relationshipProperties,
+                                             effectiveTime);
         }
     }
 
@@ -739,13 +739,13 @@ public class CollaborationManagerHandler
             {
                 if (relationship != null)
                 {
-                    client.updateRelatedElementsInStore(userId,
-                                                        relationship.getRelationshipGUID(),
-                                                        false,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        relationshipProperties,
-                                                        effectiveTime);
+                    client.updateRelationshipInStore(userId,
+                                                     relationship.getRelationshipGUID(),
+                                                     false,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     relationshipProperties,
+                                                     effectiveTime);
 
                     break;
                 }
@@ -831,11 +831,11 @@ public class CollaborationManagerHandler
             {
                 if (relationship != null)
                 {
-                    client.deleteRelatedElementsInStore(userId,
-                                                        relationship.getRelationshipGUID(),
-                                                        false,
-                                                        false,
-                                                        effectiveTime);
+                    client.deleteRelationshipInStore(userId,
+                                                     relationship.getRelationshipGUID(),
+                                                     false,
+                                                     false,
+                                                     effectiveTime);
 
                     break;
                 }
@@ -1445,11 +1445,11 @@ public class CollaborationManagerHandler
             {
                 if (relationship != null)
                 {
-                    client.deleteRelatedElementsInStore(userId,
-                                                        relationship.getRelationshipGUID(),
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        effectiveTime);
+                    client.deleteRelationshipInStore(userId,
+                                                     relationship.getRelationshipGUID(),
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime);
                 }
             }
         }

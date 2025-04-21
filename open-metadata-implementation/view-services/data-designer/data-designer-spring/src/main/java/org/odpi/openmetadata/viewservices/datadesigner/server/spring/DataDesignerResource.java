@@ -124,8 +124,8 @@ public class DataDesignerResource
      * Attach a data field to a data structure.
      *
      * @param serverName         name of called server
-     * @param parentDataStructureGUID  unique identifier of the first segment
-     * @param memberDataFieldGUID      unique identifier of the second segment
+     * @param parentDataStructureGUID  unique identifier of the first data structure
+     * @param memberDataFieldGUID      unique identifier of the second data structure
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -156,8 +156,8 @@ public class DataDesignerResource
      * Detach a data field from a data structure.
      *
      * @param serverName         name of called server
-     * @param parentDataStructureGUID  unique identifier of the first segment
-     * @param memberDataFieldGUID      unique identifier of the second segment
+     * @param parentDataStructureGUID  unique identifier of the first data structure
+     * @param memberDataFieldGUID      unique identifier of the second data structure
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -189,7 +189,7 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server
      * @param dataStructureGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca data structures be deleted if segments are attached?
+     * @param cascadedDelete can data structures be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -445,8 +445,8 @@ public class DataDesignerResource
      * Detach two data fields from one another.
      *
      * @param serverName         name of called server
-     * @param parentDataFieldGUID  unique identifier of the first segment
-     * @param nestedDataFieldGUID      unique identifier of the second segment
+     * @param parentDataFieldGUID  unique identifier of the parent data field
+     * @param nestedDataFieldGUID      unique identifier of the child data field
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -478,7 +478,7 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server
      * @param dataFieldGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca data fields be deleted if segments are attached?
+     * @param cascadedDelete can data fields be deleted if other data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -703,8 +703,8 @@ public class DataDesignerResource
      * Connect two data classes to show that one is used by the other when it is validating (typically a complex data item).
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the parent data class
+     * @param childDataClassGUID      unique identifier of the child data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -735,8 +735,8 @@ public class DataDesignerResource
      * Detach two nested data classes from one another.
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the parent data class
+     * @param childDataClassGUID      unique identifier of the child data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -767,8 +767,8 @@ public class DataDesignerResource
      * Connect two data classes to show that one provides a more specialist evaluation.
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the first data class
+     * @param childDataClassGUID      unique identifier of the second data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -799,8 +799,8 @@ public class DataDesignerResource
      * Detach two data classes from one another.
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the first data class
+     * @param childDataClassGUID      unique identifier of the second data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -832,7 +832,7 @@ public class DataDesignerResource
      *
      * @param serverName         name of called server
      * @param dataClassGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca data classes be deleted if segments are attached?
+     * @param cascadedDelete can data classes be deleted if other data classes are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -958,5 +958,188 @@ public class DataDesignerResource
                                                 AnyTimeRequestBody requestBody)
     {
         return restAPI.getDataClassByGUID(serverName, dataClassGUID, requestBody);
+    }
+
+
+    /*
+     * Assembling a data specification
+     */
+
+
+    /**
+     * Connect an element that is part of a data design to a data class to show that the data class should be used
+     * as the specification for the data values when interpreting the data definition.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID          unique identifier of the data class
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/data-class-definition/{dataClassGUID}/attach")
+    @Operation(summary="linkDataClassDefinition",
+            description="Connect an element that is part of a data design to a data class to show that the data class should be used as the specification for the data values when interpreting the data definition.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-specification"))
+
+    public VoidResponse linkDataClassDefinition(@PathVariable String                    serverName,
+                                                @PathVariable String                    dataDefinitionGUID,
+                                                @PathVariable String                    dataClassGUID,
+                                                @RequestBody (required = false)
+                                                    MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.linkDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data definition from a data class.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID          unique identifier of the data class
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/data-class-definition/{dataClassGUID}/detach")
+    @Operation(summary="detachDataClassDefinition",
+            description="Detach a data definition from a data class.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-specification"))
+
+    public VoidResponse detachDataClassDefinition(@PathVariable String                    serverName,
+                                                  @PathVariable String                    dataDefinitionGUID,
+                                                  @PathVariable String                    dataClassGUID,
+                                                  @RequestBody (required = false)
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
+    }
+
+
+    /**
+     * Connect an element that is part of a data design to a glossary term to show that the term should be used
+     * as the semantic definition for the data values when interpreting the data definition.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID       unique identifier of the glossary term
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/semantic-definition/{glossaryTermGUID}/attach")
+    @Operation(summary="linkSemanticDefinition",
+            description="Connect an element that is part of a data design to a glossary term to show that the term should be used as the semantic definition for the data values when interpreting the data definition.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-specification"))
+
+    public VoidResponse linkSemanticDefinition(@PathVariable String                    serverName,
+                                               @PathVariable String                    dataDefinitionGUID,
+                                               @PathVariable String                    glossaryTermGUID,
+                                               @RequestBody (required = false)
+                                               MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.linkSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data definition from a glossary term.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID       unique identifier of the glossary term
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/semantic-definition/{glossaryTermGUID}/detach")
+    @Operation(summary="detachSemanticDefinition",
+            description="Detach a data definition from a glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-specification"))
+
+    public VoidResponse detachSemanticDefinition(@PathVariable String                    serverName,
+                                                 @PathVariable String                    dataDefinitionGUID,
+                                                 @PathVariable String                    glossaryTermGUID,
+                                                 @RequestBody (required = false)
+                                                 MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
+    }
+
+    /**
+     * Connect a certification type to a data structure to guide the survey action service (that checks the data
+     * quality of a data resource as part of certifying it with the supplied certification type) to the definition
+     * of the data structure to use as a specification of how the data should be both structured and (if
+     * data classes are attached to the associated data fields using the DataClassDefinition relationship)
+     * contain the valid values.
+     *
+     * @param serverName         name of called server
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/certification-types/{certificationTypeGUID}/data-structure-definition/{dataStructureGUID}/attach")
+    @Operation(summary="linkCertificationTypeToDataStructure",
+            description="Connect a certification type to a data structure to guide the survey action service (that checks the data quality of a data resource as part of certifying it with the supplied certification type) to the definition of the data structure to use as a specification of how the data should be both structured and (if data classes are attached to the associated data fields using the DataClassDefinition relationship) contain the valid values.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-specification"))
+
+    public VoidResponse linkCertificationTypeToDataStructure(@PathVariable String                    serverName,
+                                                             @PathVariable String                    certificationTypeGUID,
+                                                             @PathVariable String                    dataStructureGUID,
+                                                             @RequestBody (required = false)
+                                                             MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.linkCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data structure from a certification type.
+     *
+     * @param serverName         name of called server
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/certification-types/{certificationTypeGUID}/data-structure-definition/{dataStructureGUID}/detach")
+    @Operation(summary="detachCertificationTypeToDataStructure",
+            description="Detach a data structure from a certification type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-specification"))
+    public VoidResponse detachCertificationTypeToDataStructure(@PathVariable String                    serverName,
+                                                               @PathVariable String                    certificationTypeGUID,
+                                                               @PathVariable String                    dataStructureGUID,
+                                                               @RequestBody (required = false)
+                                                               MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }
 }

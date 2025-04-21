@@ -3,7 +3,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.classificationmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -84,10 +84,13 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.setConfidenceClassification(userId,
+                                                        null,
+                                                        null,
                                                         elementGUID,
+                                                        null,
                                                         properties,
                                                         requestBody.getEffectiveTime(),
                                                         forLineage,
@@ -148,12 +151,15 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearConfidenceClassification(userId,
+                                                      null,
+                                                      null,
                                                       elementGUID,
+                                                      null,
                                                       requestBody.getEffectiveTime(),
                                                       forLineage,
                                                       forDuplicateProcessing);
@@ -161,7 +167,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.clearConfidenceClassification(userId,
+                                                      null,
+                                                      null,
                                                       elementGUID,
+                                                      null,
                                                       null,
                                                       forLineage,
                                                       forDuplicateProcessing);
@@ -217,11 +226,14 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.setCriticalityClassification(userId,
                                                          elementGUID,
+                                                         null,
+                                                         null,
                                                          properties,
+                                                         null,
                                                          requestBody.getEffectiveTime(),
                                                          forLineage,
                                                          forDuplicateProcessing);
@@ -284,10 +296,13 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                 handler.clearCriticalityClassification(userId,
+                                                       null,
+                                                       null,
                                                        elementGUID,
+                                                       null,
                                                        requestBody.getEffectiveTime(),
                                                        forLineage,
                                                        forDuplicateProcessing);
@@ -349,10 +364,13 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.setConfidentialityClassification(userId,
+                                                             null,
+                                                             null,
                                                              elementGUID,
+                                                             null,
                                                              properties,
                                                              requestBody.getEffectiveTime(),
                                                              forLineage,
@@ -414,12 +432,15 @@ public class ClassificationManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearConfidentialityClassification(userId,
+                                                           null,
+                                                           null,
                                                            elementGUID,
+                                                           null,
                                                            requestBody.getEffectiveTime(),
                                                            forLineage,
                                                            forDuplicateProcessing);
@@ -427,7 +448,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.clearConfidentialityClassification(userId,
+                                                           null,
+                                                           null,
                                                            elementGUID,
+                                                           null,
                                                            null,
                                                            forLineage,
                                                            forDuplicateProcessing);            }
@@ -484,10 +508,13 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof RetentionClassificationProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.setRetentionClassification(userId,
+                                                       null,
+                                                       null,
                                                        elementGUID,
+                                                       null,
                                                        properties,
                                                        requestBody.getEffectiveTime(),
                                                        forLineage,
@@ -549,12 +576,15 @@ public class ClassificationManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearRetentionClassification(userId,
+                                                     null,
+                                                     null,
                                                      elementGUID,
+                                                     null,
                                                      requestBody.getEffectiveTime(),
                                                      forLineage,
                                                      forDuplicateProcessing);
@@ -562,7 +592,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.clearRetentionClassification(userId,
+                                                     null,
+                                                     null,
                                                      elementGUID,
+                                                     null,
                                                      null,
                                                      forLineage,
                                                      forDuplicateProcessing);
@@ -617,10 +650,13 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SecurityTagsProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.addSecurityTags(userId,
+                                            null,
+                                            null,
                                             elementGUID,
+                                            null,
                                             properties,
                                             requestBody.getEffectiveTime(),
                                             forLineage,
@@ -680,12 +716,15 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearSecurityTags(userId,
+                                          null,
+                                          null,
                                           elementGUID,
+                                          null,
                                           requestBody.getEffectiveTime(),
                                           forLineage,
                                           forDuplicateProcessing);
@@ -693,7 +732,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.clearSecurityTags(userId,
+                                          null,
+                                          null,
                                           elementGUID,
+                                          null,
                                           null,
                                           forLineage,
                                           forDuplicateProcessing);
@@ -748,10 +790,13 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof OwnerProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.addOwnership(userId,
+                                         null,
+                                         null,
                                          elementGUID,
+                                         null,
                                          properties,
                                          requestBody.getEffectiveTime(),
                                          forLineage,
@@ -811,12 +856,15 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearOwnership(userId,
+                                       null,
+                                       null,
                                        elementGUID,
+                                       null,
                                        requestBody.getEffectiveTime(),
                                        forLineage,
                                        forDuplicateProcessing);
@@ -824,7 +872,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.clearOwnership(userId,
+                                       null,
+                                       null,
                                        elementGUID,
+                                       null,
                                        null,
                                        forLineage,
                                        forDuplicateProcessing);
@@ -879,10 +930,13 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SubjectAreaClassificationProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.addElementToSubjectArea(userId,
+                                                    null,
+                                                    null,
                                                     elementGUID,
+                                                    null,
                                                     properties,
                                                     requestBody.getEffectiveTime(),
                                                     forLineage,
@@ -942,12 +996,15 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody == null)
             {
                 handler.removeElementFromSubjectArea(userId,
+                                                     null,
+                                                     null,
                                                      elementGUID,
+                                                     null,
                                                      null,
                                                      forLineage,
                                                      forDuplicateProcessing);
@@ -955,7 +1012,10 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.removeElementFromSubjectArea(userId,
+                                                     null,
+                                                     null,
                                                      elementGUID,
+                                                     null,
                                                      requestBody.getEffectiveTime(),
                                                      forLineage,
                                                      forDuplicateProcessing);
@@ -1013,9 +1073,11 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SemanticAssignmentProperties properties)
                 {
-                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                    StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                     handler.setupSemanticAssignment(userId,
+                                                    null,
+                                                    null,
                                                     elementGUID,
                                                     glossaryTermGUID,
                                                     properties,
@@ -1080,11 +1142,13 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody == null)
             {
                 handler.clearSemanticAssignment(userId,
+                                                null,
+                                                null,
                                                 elementGUID,
                                                 glossaryTermGUID,
                                                 null,
@@ -1094,6 +1158,8 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.clearSemanticAssignment(userId,
+                                                null,
+                                                null,
                                                 elementGUID,
                                                 glossaryTermGUID,
                                                 requestBody.getEffectiveTime(),
@@ -1150,11 +1216,13 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+                StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
                 handler.addGovernanceDefinitionToElement(userId,
                                                          definitionGUID,
                                                          elementGUID,
+                                                         null,
+                                                         null,
                                                          requestBody.getEffectiveTime(),
                                                          forLineage,
                                                          forDuplicateProcessing);
@@ -1211,11 +1279,13 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+            StewardshipExchangeClient handler = instanceHandler.getStewardshipExchangeClient(userId, serverName, methodName);
 
             if (requestBody == null)
             {
                 handler.removeGovernanceDefinitionFromElement(userId,
+                                                              null,
+                                                              null,
                                                               elementGUID,
                                                               definitionGUID,
                                                               null,
@@ -1225,6 +1295,8 @@ public class ClassificationManagerRESTServices extends TokenController
             else
             {
                 handler.removeGovernanceDefinitionFromElement(userId,
+                                                              null,
+                                                              null,
                                                               elementGUID,
                                                               definitionGUID,
                                                               requestBody.getEffectiveTime(),

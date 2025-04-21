@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
@@ -45,7 +42,7 @@ public class GlossaryBrowserInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public GlossaryManagementClient getGlossaryManagementClient(String userId,
+    public GlossaryExchangeClient getGlossaryExchangeClient(String userId,
                                                                 String serverName,
                                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                                     PropertyServerException,
@@ -55,7 +52,7 @@ public class GlossaryBrowserInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getGlossaryManagementClient();
+            return instance.getGlossaryExchangeClient();
         }
 
         return null;

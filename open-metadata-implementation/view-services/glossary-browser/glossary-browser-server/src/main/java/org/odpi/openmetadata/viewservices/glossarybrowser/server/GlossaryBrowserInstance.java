@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -17,7 +17,7 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_BROWSER;
 
-    private final GlossaryManagementClient      glossaryManagementClient;
+    private final GlossaryExchangeClient      glossaryExchangeClient;
 
 
     /**
@@ -45,7 +45,7 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
     }
 
 
@@ -54,8 +54,8 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public GlossaryManagementClient getGlossaryManagementClient()
+    public GlossaryExchangeClient getGlossaryExchangeClient()
     {
-        return glossaryManagementClient;
+        return glossaryExchangeClient;
     }
 }

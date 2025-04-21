@@ -1071,6 +1071,7 @@ public interface GlossaryExchangeInterface
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param initialStatus what status should the copy be set to
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -1087,7 +1088,8 @@ public interface GlossaryExchangeInterface
                                           String                       templateGUID,
                                           ExternalIdentifierProperties externalIdentifierProperties,
                                           boolean                      deepCopy,
-                                          GlossaryTermStatus initialStatus,
+                                          boolean                      templateSubstitute,
+                                          GlossaryTermStatus           initialStatus,
                                           TemplateProperties           templateProperties) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
