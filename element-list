@@ -20,7 +20,6 @@ org.odpi.openmetadata.accessservices.assetmanager.api.management
 org.odpi.openmetadata.accessservices.assetmanager.client
 org.odpi.openmetadata.accessservices.assetmanager.client.converters
 org.odpi.openmetadata.accessservices.assetmanager.client.exchange
-org.odpi.openmetadata.accessservices.assetmanager.client.management
 org.odpi.openmetadata.accessservices.assetmanager.client.rest
 org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic
 org.odpi.openmetadata.accessservices.assetmanager.converters

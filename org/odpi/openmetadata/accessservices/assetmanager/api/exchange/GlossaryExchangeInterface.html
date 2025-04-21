@@ -360,7 +360,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a glossary term.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)" class="member-name-link">createGlossaryTermFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)" class="member-name-link">createGlossaryTermFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  boolean&nbsp;assetManagerIsHome,
@@ -368,6 +368,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
  <a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
  boolean&nbsp;deepCopy,
+ boolean&nbsp;templateSubstitute,
  <a href="../../../../frameworks/openmetadata/enums/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermStatus</a>&nbsp;initialStatus,
  <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -2133,7 +2134,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
+<section class="detail" id="createGlossaryTermFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
 <h3>createGlossaryTermFromTemplate</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGlossaryTermFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
@@ -2143,6 +2144,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
  <a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
  boolean&nbsp;deepCopy,
+ boolean&nbsp;templateSubstitute,
  <a href="../../../../frameworks/openmetadata/enums/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermStatus</a>&nbsp;initialStatus,
  <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</span>
                                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
@@ -2160,6 +2162,7 @@ loadScripts(document, 'script');</script>
 <dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>initialStatus</code> - what status should the copy be set to</dd>
 <dd><code>deepCopy</code> - should the template creation extend to the anchored elements or just the direct entity?</dd>
+<dd><code>templateSubstitute</code> - is this element a template substitute (used as the "other end" of a new/updated relationship)</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element for the glossary term</dd>
