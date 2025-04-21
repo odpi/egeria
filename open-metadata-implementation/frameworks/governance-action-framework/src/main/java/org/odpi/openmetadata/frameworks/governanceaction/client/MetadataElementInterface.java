@@ -1617,13 +1617,13 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateRelatedElementsInStore(String            userId,
-                                      String            relationshipGUID,
-                                      boolean           replaceProperties,
-                                      boolean           forLineage,
-                                      boolean           forDuplicateProcessing,
-                                      ElementProperties properties,
-                                      Date              effectiveTime) throws InvalidParameterException,
+    void updateRelationshipInStore(String            userId,
+                                   String            relationshipGUID,
+                                   boolean           replaceProperties,
+                                   boolean           forLineage,
+                                   boolean           forDuplicateProcessing,
+                                   ElementProperties properties,
+                                   Date              effectiveTime) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
 
@@ -1647,11 +1647,87 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    void updateRelationshipInStore(String            userId,
+                                   String            externalSourceGUID,
+                                   String            externalSourceName,
+                                   String            relationshipGUID,
+                                   boolean           replaceProperties,
+                                   boolean           forLineage,
+                                   boolean           forDuplicateProcessing,
+                                   ElementProperties properties,
+                                   Date              effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void updateRelatedElementsInStore(String            userId,
+                                      String            relationshipTypeName,
+                                      String            metadataElement1GUID,
+                                      String            metadataElement2GUID,
+                                      boolean           replaceProperties,
+                                      Date              effectiveFrom,
+                                      Date              effectiveTo,
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
+                                      ElementProperties properties,
+                                      Date              effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
     void updateRelatedElementsInStore(String            userId,
                                       String            externalSourceGUID,
                                       String            externalSourceName,
-                                      String            relationshipGUID,
+                                      String            relationshipTypeName,
+                                      String            metadataElement1GUID,
+                                      String            metadataElement2GUID,
                                       boolean           replaceProperties,
+                                      Date              effectiveFrom,
+                                      Date              effectiveTo,
                                       boolean           forLineage,
                                       boolean           forDuplicateProcessing,
                                       ElementProperties properties,
@@ -1678,17 +1754,17 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateRelatedElementsEffectivityInStore(String  userId,
-                                                 String  externalSourceGUID,
-                                                 String  externalSourceName,
-                                                 String  relationshipGUID,
-                                                 boolean forLineage,
-                                                 boolean forDuplicateProcessing,
-                                                 Date    effectiveFrom,
-                                                 Date    effectiveTo,
-                                                 Date    effectiveTime) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+    void updateRelationshipEffectivityInStore(String  userId,
+                                              String  externalSourceGUID,
+                                              String  externalSourceName,
+                                              String  relationshipGUID,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveFrom,
+                                              Date    effectiveTo,
+                                              Date    effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
@@ -1707,13 +1783,13 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateRelatedElementsEffectivityInStore(String  userId,
-                                                 String  relationshipGUID,
-                                                 boolean forLineage,
-                                                 boolean forDuplicateProcessing,
-                                                 Date    effectiveFrom,
-                                                 Date    effectiveTo,
-                                                 Date    effectiveTime) throws InvalidParameterException,
+    void updateRelationshipEffectivityInStore(String  userId,
+                                              String  relationshipGUID,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveFrom,
+                                              Date    effectiveTo,
+                                              Date    effectiveTime) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
 
@@ -1731,11 +1807,11 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void deleteRelatedElementsInStore(String  userId,
-                                      String  relationshipGUID,
-                                      boolean forLineage,
-                                      boolean forDuplicateProcessing,
-                                      Date    effectiveTime) throws InvalidParameterException,
+    void deleteRelationshipInStore(String  userId,
+                                   String  relationshipGUID,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
 
@@ -1755,10 +1831,68 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void deleteRelatedElementsInStore(String  userId,
+    void deleteRelationshipInStore(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  relationshipGUID,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void detachRelatedElementsInStore(String  userId,
+                                      String  relationshipTypeName,
+                                      String  metadataElement1GUID,
+                                      String  metadataElement2GUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void detachRelatedElementsInStore(String  userId,
                                       String  externalSourceGUID,
                                       String  externalSourceName,
-                                      String  relationshipGUID,
+                                      String  relationshipTypeName,
+                                      String  metadataElement1GUID,
+                                      String  metadataElement2GUID,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime) throws InvalidParameterException,

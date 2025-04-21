@@ -2879,13 +2879,22 @@ public enum OpenMetadataType
                                       "Identifies a glossary term that describes a context where processing or decisions occur."),
 
     /**
-     * Links a glossary term to another element such as an asset or schema element to define its meaning.
+     * Links a glossary term to another element such as an asset or schema element to indicate that the data stored in the corresponding part of the digital resource has this meaning.
      */
     SEMANTIC_ASSIGNMENT_RELATIONSHIP("e6670973-645f-441a-bec7-6f5570345b92",
                                      "SemanticAssignment",
                                      OpenMetadataWikiPages.MODEL_0370_SEMANTIC_ASSIGNMENT,
                                      "6b98085b-b70b-49cd-98e2-e87474d27e69",
-                                     "Links a glossary term to another element such as an asset or schema element to define its meaning."),
+                                     "Links a glossary term to another element such as an asset or schema element to indicate that the data stored in the corresponding part of the digital resource has this meaning."),
+
+    /**
+     * Provides the semantic meaning of a definition by linking it to an appropriate glossary term.
+     */
+    SEMANTIC_DEFINITION_RELATIONSHIP("2f63598f-f2da-48ad-bb45-f160f388a2df",
+                                     "SemanticDefinition",
+                                     OpenMetadataWikiPages.MODEL_0370_SEMANTIC_ASSIGNMENT,
+                                     "320c8f3b-2f2c-41b1-801e-7d5dd7e399c8",
+                                     "Provides the semantic meaning of a definition by linking it to an appropriate glossary term."),
 
     /**
      * Defines an inheritance relationship between two spine objects.
@@ -4993,6 +5002,15 @@ public enum OpenMetadataType
                           "Links a data class to an asset or schema element to define its logical data type."),
 
     /**
+     * Links a referencable with its data value specification in the form of a data class.
+     */
+    DATA_CLASS_DEFINITION("6fa9eec1-e5b0-44da-ace9-09e4de91c8ca",
+                         "DataClassDefinition",
+                         OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+                         "e83f0ff2-b8f9-4dd6-8d2d-7cce39345953",
+                         "Links a referencable with its data value specification in the form of a data class."),
+
+    /**
      * Links a data class to another in a parent child hierarchy.
      */
     DATA_CLASS_HIERARCHY("6b947ccc-1a70-4785-9ca3-d6326bc51291",
@@ -5276,13 +5294,13 @@ public enum OpenMetadataType
 
 
     /**
-     * This is a collection of data fields that describe some desired data.
+     * This is a collection that describes the data requirements for a project or initiative..
      */
     DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
                          "DataSpec",
                          OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                          "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
-                         "This is a collection of data fields that describe some desired data."),
+                         "This is a collection that describes the data requirements for a project or initiative."),
 
 
     /**
@@ -5295,13 +5313,13 @@ public enum OpenMetadataType
                                "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
 
     /**
-     * A list of data fields that describe a data structure.
+     * A list of data fields that describe the structure of a data source.
      */
     DATA_STRUCTURE("99fbb751-853e-442f-ba7c-530bea17db9c",
                "DataStructure",
                OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                "4bd1faa7-90b5-409b-8f5e-5458d1075fea",
-               "A list of data fields that describe a data structure."),
+               "A list of data fields that describe the structure of a data source."),
 
     /**
      * A description of a data field.
@@ -5331,6 +5349,15 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                                    "604abf7a-4456-447f-8232-a3e5782dba36",
                                    "Represents an association between a data structure and one of its data fields."),
+
+    /**
+     * Represents an association between a data structure that describes a data source and a certification type that indicates that certified elements conform to the data structure and associated definitions (such as glossary term and data class).
+     */
+    DATA_STRUCTURE_DEFINITION_RELATIONSHIP("f36d5dda-10dd-4b2d-ba4c-a0b10cced0a6",
+                                           "DataStructureDefinition",
+                                           OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                                           "d495bec1-5aef-47ed-99df-7a22ee98d107",
+                                           "Represents an association between a data structure that describes a data source and a certification type that indicates that certified elements conform to the data structure and associated definitions (such as glossary term and data class)."),
 
     /**
      * Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).
@@ -5546,6 +5573,15 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0625_DATA_CLASS_DISCOVERY,
                           "d0c467cf-6be0-4bf0-9260-6a5aeeee1e52",
                           "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource."),
+
+    /**
+     * The link between a data class annotation and the matching data class.
+     */
+    DATA_CLASS_MATCH_RELATIONSHIP("30173b58-d0ab-4e9c-beba-72adc820d696",
+                                  "DataClassMatch",
+                                  OpenMetadataWikiPages.MODEL_0625_DATA_CLASS_DISCOVERY,
+                                  "f9727e59-ad9e-4d56-8510-38d8910825c9",
+                                  "The link between a data class annotation and the matching data class."),
 
     /**
      * A recommendation of likely mappings to Glossary Terms for all or part of an Asset.

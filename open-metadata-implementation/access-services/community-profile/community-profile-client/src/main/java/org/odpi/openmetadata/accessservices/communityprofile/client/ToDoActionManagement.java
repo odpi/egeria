@@ -325,15 +325,15 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(actionTargetProperties, propertiesName, methodName);
 
-        openMetadataStoreClient.updateRelatedElementsInStore(userId,
-                                                             null,
-                                                             null,
-                                                             actionTargetGUID,
-                                                             ! isMergeUpdate,
-                                                             false,
-                                                             false,
-                                                             this.getActionTargetProperties(actionTargetProperties),
-                                                             new Date());
+        openMetadataStoreClient.updateRelationshipInStore(userId,
+                                                          null,
+                                                          null,
+                                                          actionTargetGUID,
+                                                          ! isMergeUpdate,
+                                                          false,
+                                                          false,
+                                                          this.getActionTargetProperties(actionTargetProperties),
+                                                          new Date());
     }
 
 
@@ -380,13 +380,13 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         {
             for (RelatedMetadataElement assignedActor : assignedActors.getElementList())
             {
-                openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                     null,
-                                                                     null,
-                                                                     assignedActor.getRelationshipGUID(),
-                                                                     false,
-                                                                     false,
-                                                                     new Date());
+                openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                                  null,
+                                                                  null,
+                                                                  assignedActor.getRelationshipGUID(),
+                                                                  false,
+                                                                  false,
+                                                                  new Date());
             }
         }
 

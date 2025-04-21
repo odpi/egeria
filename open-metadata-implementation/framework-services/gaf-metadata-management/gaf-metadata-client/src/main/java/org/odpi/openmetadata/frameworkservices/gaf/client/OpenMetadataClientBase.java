@@ -3250,6 +3250,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void updateMetadataElementInStore(String            userId,
                                              String            externalSourceGUID,
                                              String            externalSourceName,
@@ -3344,6 +3345,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void updateMetadataElementStatusInStore(String        userId,
                                                    String        externalSourceGUID,
                                                    String        externalSourceName,
@@ -3440,6 +3442,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void updateMetadataElementEffectivityInStore(String        userId,
                                                         String        externalSourceGUID,
                                                         String        externalSourceName,
@@ -3530,6 +3533,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void deleteMetadataElementInStore(String  userId,
                                              String  externalSourceGUID,
                                              String  externalSourceName,
@@ -3581,6 +3585,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void archiveMetadataElementInStore(String            userId,
                                               String            metadataElementGUID,
                                               ArchiveProperties archiveProperties,
@@ -3617,6 +3622,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public void archiveMetadataElementInStore(String            userId,
                                               String            externalSourceGUID,
                                               String            externalSourceName,
@@ -3723,6 +3729,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void classifyMetadataElementInStore(String            userId,
                                                String            externalSourceGUID,
                                                String            externalSourceName,
@@ -3831,6 +3838,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void reclassifyMetadataElementInStore(String            userId,
                                                  String            externalSourceGUID,
                                                  String            externalSourceName,
@@ -3935,6 +3943,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void updateClassificationEffectivityInStore(String  userId,
                                                        String  externalSourceGUID,
                                                        String  externalSourceName,
@@ -4029,6 +4038,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public void declassifyMetadataElementInStore(String  userId,
                                                  String  externalSourceGUID,
                                                  String  externalSourceName,
@@ -4145,6 +4155,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
+    @Override
     public String createRelatedElementsInStore(String            userId,
                                                String            externalSourceGUID,
                                                String            externalSourceName,
@@ -4214,25 +4225,25 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void updateRelatedElementsInStore(String            userId,
-                                             String            relationshipGUID,
-                                             boolean           replaceProperties,
-                                             boolean           forLineage,
-                                             boolean           forDuplicateProcessing,
-                                             ElementProperties properties,
-                                             Date              effectiveTime) throws InvalidParameterException,
+    public void updateRelationshipInStore(String            userId,
+                                          String            relationshipGUID,
+                                          boolean           replaceProperties,
+                                          boolean           forLineage,
+                                          boolean           forDuplicateProcessing,
+                                          ElementProperties properties,
+                                          Date              effectiveTime) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        this.updateRelatedElementsInStore(userId,
-                                          null,
-                                          null,
-                                          relationshipGUID,
-                                          replaceProperties,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          properties,
-                                          effectiveTime);
+        this.updateRelationshipInStore(userId,
+                                       null,
+                                       null,
+                                       relationshipGUID,
+                                       replaceProperties,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       properties,
+                                       effectiveTime);
     }
 
 
@@ -4255,19 +4266,20 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateRelatedElementsInStore(String            userId,
-                                             String            externalSourceGUID,
-                                             String            externalSourceName,
-                                             String            relationshipGUID,
-                                             boolean           replaceProperties,
-                                             boolean           forLineage,
-                                             boolean           forDuplicateProcessing,
-                                             ElementProperties properties,
-                                             Date              effectiveTime) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    @Override
+    public void updateRelationshipInStore(String            userId,
+                                          String            externalSourceGUID,
+                                          String            externalSourceName,
+                                          String            relationshipGUID,
+                                          boolean           replaceProperties,
+                                          boolean           forLineage,
+                                          boolean           forDuplicateProcessing,
+                                          ElementProperties properties,
+                                          Date              effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        final String methodName = "updateRelatedElementsInStore";
+        final String methodName = "updateRelationshipInStore";
         final String guidParameterName = "relationshipGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-properties";
 
@@ -4295,6 +4307,155 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Update all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void updateRelatedElementsInStore(String            userId,
+                                             String            relationshipTypeName,
+                                             String            metadataElement1GUID,
+                                             String            metadataElement2GUID,
+                                             boolean           replaceProperties,
+                                             Date              effectiveFrom,
+                                             Date              effectiveTo,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             ElementProperties properties,
+                                             Date              effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        this.updateRelatedElementsInStore(userId,
+                                          null,
+                                          null,
+                                          relationshipTypeName,
+                                          metadataElement1GUID,
+                                          metadataElement2GUID,
+                                          replaceProperties,
+                                          effectiveFrom,
+                                          effectiveTo,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          properties,
+                                          effectiveTime);
+    }
+
+
+    /**
+     * Update all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void updateRelatedElementsInStore(String            userId,
+                                             String            externalSourceGUID,
+                                             String            externalSourceName,
+                                             String            relationshipTypeName,
+                                             String            metadataElement1GUID,
+                                             String            metadataElement2GUID,
+                                             boolean           replaceProperties,
+                                             Date              effectiveFrom,
+                                             Date              effectiveTo,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             ElementProperties properties,
+                                             Date              effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "updateRelatedElementsInStore";
+        final String end1GUIDParameterName = "metadataElement1GUID";
+        final String end2GUIDParameterName = "metadataElement2GUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(metadataElement1GUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(metadataElement2GUID, end2GUIDParameterName, methodName);
+
+        OpenMetadataRelationshipList relationshipList = this.getMetadataElementRelationships(userId,
+                                                                                             metadataElement1GUID,
+                                                                                             metadataElement2GUID,
+                                                                                             relationshipTypeName,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             effectiveTime,
+                                                                                             0,
+                                                                                             0);
+
+        if ((relationshipList != null) && (relationshipList.getElementList() != null))
+        {
+            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
+            {
+                if (relationship != null)
+                {
+                    if ((metadataElement1GUID.equals(relationship.getElementGUIDAtEnd1())) && (metadataElement2GUID.equals(relationship.getElementGUIDAtEnd2())))
+                    {
+                        this.updateRelationshipInStore(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       relationship.getRelationshipGUID(),
+                                                       replaceProperties,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       properties,
+                                                       effectiveTime);
+                        this.updateRelationshipEffectivityInStore(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  relationship.getRelationshipGUID(),
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveFrom,
+                                                                  effectiveTo,
+                                                                  effectiveTime);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
      * Update the effectivity dates of a specific relationship between metadata elements.
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
@@ -4311,25 +4472,25 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public  void updateRelatedElementsEffectivityInStore(String  userId,
-                                                         String  relationshipGUID,
-                                                         boolean forLineage,
-                                                         boolean forDuplicateProcessing,
-                                                         Date    effectiveFrom,
-                                                         Date    effectiveTo,
-                                                         Date    effectiveTime) throws InvalidParameterException,
+    public  void updateRelationshipEffectivityInStore(String  userId,
+                                                      String  relationshipGUID,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveFrom,
+                                                      Date    effectiveTo,
+                                                      Date    effectiveTime) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        this.updateRelatedElementsEffectivityInStore(userId,
-                                                     null,
-                                                     null,
-                                                     relationshipGUID,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     effectiveFrom,
-                                                     effectiveTo,
-                                                     effectiveTime);
+        this.updateRelationshipEffectivityInStore(userId,
+                                                  null,
+                                                  null,
+                                                  relationshipGUID,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  effectiveFrom,
+                                                  effectiveTo,
+                                                  effectiveTime);
     }
 
 
@@ -4351,15 +4512,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public  void updateRelatedElementsEffectivityInStore(String  userId,
-                                                         String  externalSourceGUID,
-                                                         String  externalSourceName,
-                                                         String  relationshipGUID,
-                                                         boolean forLineage,
-                                                         boolean forDuplicateProcessing,
-                                                         Date    effectiveFrom,
-                                                         Date    effectiveTo,
-                                                         Date    effectiveTime) throws InvalidParameterException,
+    @Override
+    public  void updateRelationshipEffectivityInStore(String  userId,
+                                                      String  externalSourceGUID,
+                                                      String  externalSourceName,
+                                                      String  relationshipGUID,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveFrom,
+                                                      Date    effectiveTo,
+                                                      Date    effectiveTime) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
@@ -4404,21 +4566,21 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void deleteRelatedElementsInStore(String  userId,
-                                             String  relationshipGUID,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime) throws InvalidParameterException,
+    public void deleteRelationshipInStore(String  userId,
+                                          String  relationshipGUID,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        this.deleteRelatedElementsInStore(userId,
-                                          null,
-                                          null,
-                                          relationshipGUID,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          effectiveTime);
+        this.deleteRelationshipInStore(userId,
+                                       null,
+                                       null,
+                                       relationshipGUID,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime);
     }
 
 
@@ -4437,13 +4599,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void deleteRelatedElementsInStore(String  userId,
-                                             String  externalSourceGUID,
-                                             String  externalSourceName,
-                                             String  relationshipGUID,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime) throws InvalidParameterException,
+    @Override
+    public void deleteRelationshipInStore(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  relationshipGUID,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
@@ -4469,6 +4632,114 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                         serviceURLMarker,
                                         userId,
                                         relationshipGUID);
+    }
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void detachRelatedElementsInStore(String  userId,
+                                             String  relationshipTypeName,
+                                             String  metadataElement1GUID,
+                                             String  metadataElement2GUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        this.detachRelatedElementsInStore(userId, null, null, relationshipTypeName, metadataElement1GUID, metadataElement2GUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Delete all relationships of a particular type between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                             related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void detachRelatedElementsInStore(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  relationshipTypeName,
+                                             String  metadataElement1GUID,
+                                             String  metadataElement2GUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "detachRelatedElementsInStore";
+        final String end1GUIDParameterName = "metadataElement1GUID";
+        final String end2GUIDParameterName = "metadataElement2GUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(metadataElement1GUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(metadataElement2GUID, end2GUIDParameterName, methodName);
+
+        OpenMetadataRelationshipList relationshipList = this.getMetadataElementRelationships(userId,
+                                                                                             metadataElement1GUID,
+                                                                                             metadataElement2GUID,
+                                                                                             relationshipTypeName,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             effectiveTime,
+                                                                                             0,
+                                                                                             0);
+
+        if ((relationshipList != null) && (relationshipList.getElementList() != null))
+        {
+            for (OpenMetadataRelationship relationship : relationshipList.getElementList())
+            {
+                if (relationship != null)
+                {
+                    if ((metadataElement1GUID.equals(relationship.getElementGUIDAtEnd1())) && (metadataElement2GUID.equals(relationship.getElementGUIDAtEnd2())))
+                    {
+                        this.deleteRelationshipInStore(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       relationship.getRelationshipGUID(),
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -5949,6 +6220,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization issue
      */
+    @Override
     public Map<String, List<Map<String, String>>> getSpecification(String userId,
                                                                    String elementGUID) throws InvalidParameterException,
                                                                                               PropertyServerException,

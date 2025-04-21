@@ -546,19 +546,19 @@ public enum OpenMetadataProperty
     MATCH_PROPERTY_NAMES("matchPropertyNames", DataType.ARRAY_STRING.getName(), "List of properties in the data class that should be used in the match processing.", null, "d30793ea-ea4a-408c-bfbc-0327574a69c0"),
 
     /**
-     * TParsing string used to identify values of this data class.
+     * Name or explicit definition of rule used to identify values of this data class.
      */
-    SPECIFICATION("specification", DataType.STRING.getName(), "Parsing string used to identify values of this data class.", null, "52ee0c75-41b8-4f7b-8369-6768058c30f5"),
+    SPECIFICATION("specification", DataType.STRING.getName(), "Name or explicit definition of rule used to identify values of this data class.", null, "52ee0c75-41b8-4f7b-8369-6768058c30f5"),
 
     /**
-     * Additional properties used in the specification.
+     * used to configure the rule outlined in the specification
      */
-    SPECIFICATION_DETAILS("specificationDetails", DataType.MAP_STRING_STRING.getName(), "Additional properties used in the specification.", null, "fa18daee-00e0-43b7-9eca-509b9ff6e769"),
+    SPECIFICATION_DETAILS("specificationDetails", DataType.MAP_STRING_STRING.getName(), "Additional properties used to configure the rule outlined in the specification.", null, "fa18daee-00e0-43b7-9eca-509b9ff6e769"),
 
     /**
-     * Match threshold that a data field is expected to achieve to be assigned this data class.
+     * Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.
      */
-    MATCH_THRESHOLD("matchThreshold", DataType.FLOAT.getName(), "Match threshold that a data field is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
+    MATCH_THRESHOLD("matchThreshold", DataType.INT.getName(), "Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
 
     /**
      * Technical name (no spaces) that can be used in artifact generation.
@@ -624,7 +624,7 @@ public enum OpenMetadataProperty
     /**
      * Additional properties used in the request.
      */
-    JSON_PROPERTIES("jsonProperties", DataType.STRING.getName(), "Additional properties used in the specification.", null, "fe0c84c7-6f19-4c36-897f-9067447d0d9a"),
+    JSON_PROPERTIES("jsonProperties", DataType.STRING.getName(), "Additional properties discovered in the analysis.", null, "fe0c84c7-6f19-4c36-897f-9067447d0d9a"),
 
     /**
      * Date of the review.
@@ -2746,20 +2746,9 @@ public enum OpenMetadataProperty
     ENCODING_STANDARD("encodingStandard", DataType.STRING.getName(), "Format of the schema.", null, "ed168cda-302d-40fe-8170-32440db3c7ca"),
 
     /**
-     * Concrete implementation of the schema type.
+     * Concrete implementation of the definition of a schema type or data field.  It is used to guide developers or data definition/code generators.
      */
-    SNIPPET("snippet", DataType.STRING.getName(), "Concrete implementation of the schema type.", null, "4a375217-b571-41a8-8227-0f215d13c43b"),
-
-    /**
-     * Version number of the snippet.
-     */
-    SNIPPET_VERSION("snippetVersion", DataType.STRING.getName(), "Version number of the snippet.", null, "269411bf-01be-490b-b8f1-04940f33b239"),
-
-    /**
-     * Identifier of the person or process that is maintaining the snippet.
-     */
-    CURATOR("curator", DataType.STRING.getName(), "Identifier of the person or process that is maintaining the snippet.", null, "07631a57-6656-4917-b424-f826765267d2"),
-
+    SNIPPET("snippet", DataType.STRING.getName(), "Concrete implementation of the definition of a schema type or data field.  It is used to guide developers or data definition/code generators.", null, "4a375217-b571-41a8-8227-0f215d13c43b"),
 
     /**
      * Only values from the ValidValues set/definition are allowed.
@@ -2797,19 +2786,9 @@ public enum OpenMetadataProperty
     METHOD("method", DataType.STRING.getName(), "Method used to identify data class.", null, "116e6410-ced9-4825-8ec1-e06741304a98"),
 
     /**
-     * Are there data values outside the data class specification?
+     * What was the percentage of matching values used to determine that the data class matched.
      */
-    PARTIAL_MATCH("partialMatch", DataType.BOOLEAN.getName(), "Are there data values outside the data class specification?", null, "2968daf0-7b53-4c9d-ae2b-01f6b1f6c287"),
-
-    /**
-     * What was the threshold result used to determine that the data class matched.
-     */
-    THRESHOLD("threshold", DataType.FLOAT.getName(), "What was the threshold result used to determine that the data class matched.", null, "af41954a-2c59-41f6-b70f-2dd55297a8f8"),
-
-    /**
-     * How often does the data class specification match the data values.
-     */
-    VALUE_FREQUENCY("valueFrequency", DataType.LONG.getName(), "How often does the data class specification match the data values.", null, "e4f0e4bc-9ca7-490e-8b88-e21cafb7b207"),
+    THRESHOLD("threshold", DataType.INT.getName(), "What was the percentage of matching values used to determine that the data class matched.", null, "af41954a-2c59-41f6-b70f-2dd55297a8f8"),
 
     /**
      * Description of the situation where this pattern may be useful.

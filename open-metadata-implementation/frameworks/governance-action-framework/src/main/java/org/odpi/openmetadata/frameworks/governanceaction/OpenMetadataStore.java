@@ -2202,15 +2202,15 @@ public class OpenMetadataStore
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        openMetadataClient.updateRelatedElementsInStore(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        relationshipGUID,
-                                                        replaceProperties,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        properties,
-                                                        getEffectiveTime());
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     relationshipGUID,
+                                                     replaceProperties,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     properties,
+                                                     getEffectiveTime());
     }
 
 
@@ -2237,15 +2237,15 @@ public class OpenMetadataStore
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        openMetadataClient.updateRelatedElementsInStore(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        relationshipGUID,
-                                                        replaceProperties,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        properties,
-                                                        getEffectiveTime());
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     relationshipGUID,
+                                                     replaceProperties,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     properties,
+                                                     getEffectiveTime());
     }
 
 
@@ -2267,15 +2267,15 @@ public class OpenMetadataStore
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        openMetadataClient.updateRelatedElementsEffectivityInStore(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   relationshipGUID,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   effectiveFrom,
-                                                                   effectiveTo,
-                                                                   getEffectiveTime());
+        openMetadataClient.updateRelationshipEffectivityInStore(userId,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                relationshipGUID,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveFrom,
+                                                                effectiveTo,
+                                                                getEffectiveTime());
     }
 
 
@@ -2301,15 +2301,15 @@ public class OpenMetadataStore
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        openMetadataClient.updateRelatedElementsEffectivityInStore(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   relationshipGUID,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   effectiveFrom,
-                                                                   effectiveTo,
-                                                                   getEffectiveTime());
+        openMetadataClient.updateRelationshipEffectivityInStore(userId,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                relationshipGUID,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveFrom,
+                                                                effectiveTo,
+                                                                getEffectiveTime());
     }
 
 
@@ -2326,13 +2326,13 @@ public class OpenMetadataStore
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        openMetadataClient.deleteRelatedElementsInStore(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        relationshipGUID,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        getEffectiveTime());
+        openMetadataClient.deleteRelationshipInStore(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     relationshipGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     getEffectiveTime());
     }
 
 
@@ -2353,13 +2353,13 @@ public class OpenMetadataStore
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        openMetadataClient.deleteRelatedElementsInStore(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        relationshipGUID,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        getEffectiveTime());
+        openMetadataClient.deleteRelationshipInStore(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     relationshipGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     getEffectiveTime());
     }
 
 

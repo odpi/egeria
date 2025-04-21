@@ -3,8 +3,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossarymanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -100,9 +99,9 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getElementProperties() instanceof GlossaryProperties glossaryProperties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
-                    response.setGUID(handler.createGlossary(userId, glossaryProperties));
+                    response.setGUID(handler.createGlossary(userId, null, null, false, null, glossaryProperties));
                 }
                 else
                 {
@@ -163,9 +162,9 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
-                response.setGUID(handler.createGlossaryFromTemplate(userId, templateGUID, requestBody.getElementProperties(), deepCopy));
+                response.setGUID(handler.createGlossaryFromTemplate(userId, null, null, false, templateGUID, null, deepCopy, requestBody.getElementProperties()));
             }
             else
             {
@@ -224,10 +223,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getElementProperties() instanceof GlossaryProperties glossaryProperties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.updateGlossary(userId,
+                                           null,
+                                           null,
                                            glossaryGUID,
+                                           null,
                                            isMergeUpdate,
                                            glossaryProperties,
                                            requestBody.getEffectiveTime(),
@@ -293,12 +295,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.removeGlossary(userId,
+                                       null,
+                                       null,
                                        glossaryGUID,
+                                       null,
                                        cascadedDelete,
                                        requestBody.getEffectiveTime(),
                                        forLineage,
@@ -307,7 +312,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.removeGlossary(userId,
+                                       null,
+                                       null,
                                        glossaryGUID,
+                                       null,
                                        cascadedDelete,
                                        null,
                                        forLineage,
@@ -365,10 +373,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof EditingGlossaryProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setGlossaryAsEditingGlossary(userId,
+                                                         null,
+                                                         null,
                                                          glossaryGUID,
+                                                         null,
                                                          properties,
                                                          requestBody.getEffectiveTime(),
                                                          forLineage,
@@ -430,12 +441,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearGlossaryAsEditingGlossary(userId,
+                                                       null,
+                                                       null,
                                                        glossaryGUID,
+                                                       null,
                                                        requestBody.getEffectiveTime(),
                                                        forLineage,
                                                        forDuplicateProcessing);
@@ -443,7 +457,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearGlossaryAsEditingGlossary(userId,
+                                                       null,
+                                                       null,
                                                        glossaryGUID,
+                                                       null,
                                                        null,
                                                        forLineage,
                                                        forDuplicateProcessing);
@@ -500,10 +517,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof StagingGlossaryProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setGlossaryAsStagingGlossary(userId,
+                                                         null,
+                                                         null,
                                                          glossaryGUID,
+                                                         null,
                                                          properties,
                                                          requestBody.getEffectiveTime(),
                                                          forLineage,
@@ -565,12 +585,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearGlossaryAsStagingGlossary(userId,
+                                                       null,
+                                                       null,
                                                        glossaryGUID,
+                                                       null,
                                                        requestBody.getEffectiveTime(),
                                                        forLineage,
                                                        forDuplicateProcessing);
@@ -578,7 +601,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearGlossaryAsStagingGlossary(userId,
+                                                       null,
+                                                       null,
                                                        glossaryGUID,
+                                                       null,
                                                        null,
                                                        forLineage,
                                                        forDuplicateProcessing);
@@ -639,10 +665,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof TaxonomyProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setGlossaryAsTaxonomy(userId,
+                                                  null,
+                                                  null,
                                                   glossaryGUID,
+                                                  null,
                                                   properties,
                                                   requestBody.getEffectiveTime(),
                                                   forLineage,
@@ -704,12 +733,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearGlossaryAsTaxonomy(userId,
+                                                null,
+                                                null,
                                                 glossaryGUID,
+                                                null,
                                                 requestBody.getEffectiveTime(),
                                                 forLineage,
                                                 forDuplicateProcessing);
@@ -717,7 +749,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearGlossaryAsTaxonomy(userId,
+                                                null,
+                                                null,
                                                 glossaryGUID,
+                                                null,
                                                 null,
                                                 forLineage,
                                                 forDuplicateProcessing);
@@ -776,10 +811,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof CanonicalVocabularyProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setGlossaryAsCanonical(userId,
+                                                   null,
+                                                   null,
                                                    glossaryGUID,
+                                                   null,
                                                    properties,
                                                    requestBody.getEffectiveTime(),
                                                    forLineage,
@@ -841,12 +879,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearGlossaryAsCanonical(userId,
+                                                 null,
+                                                 null,
                                                  glossaryGUID,
+                                                 null,
                                                  requestBody.getEffectiveTime(),
                                                  forLineage,
                                                  forDuplicateProcessing);
@@ -854,7 +895,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearGlossaryAsCanonical(userId,
+                                                 null,
+                                                 null,
                                                  glossaryGUID,
+                                                 null,
                                                  null,
                                                  forLineage,
                                                  forDuplicateProcessing);
@@ -917,10 +961,14 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getElementProperties() instanceof GlossaryCategoryProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     response.setGUID(handler.createGlossaryCategory(userId,
+                                                                    null,
+                                                                    null,
+                                                                    false,
                                                                     glossaryGUID,
+                                                                    null,
                                                                     properties,
                                                                     isRootCategory,
                                                                     requestBody.getEffectiveTime(),
@@ -983,13 +1031,17 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryCategoryFromTemplate(userId,
+                                                                            null,
+                                                                            null,
+                                                                            false,
                                                                             glossaryGUID,
                                                                             templateGUID,
-                                                                            requestBody.getElementProperties(),
-                                                                            true));
+                                                                            null,
+                                                                            true,
+                                                                            requestBody.getElementProperties()));
             }
             else
             {
@@ -1048,10 +1100,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getElementProperties() instanceof GlossaryCategoryProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.updateGlossaryCategory(userId,
+                                                   null,
+                                                   null,
                                                    glossaryCategoryGUID,
+                                                   null,
                                                    isMergeUpdate,
                                                    properties,
                                                    requestBody.getEffectiveTime(),
@@ -1116,13 +1171,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() != null)
                 {
                     handler.setupCategoryParent(userId,
+                                                null,
+                                                null,
                                                 glossaryParentCategoryGUID,
                                                 glossaryChildCategoryGUID,
                                                 requestBody.getEffectiveTime(),
@@ -1132,6 +1189,8 @@ public class GlossaryManagerRESTServices extends TokenController
                 else
                 {
                     handler.setupCategoryParent(userId,
+                                                null,
+                                                null,
                                                 glossaryParentCategoryGUID,
                                                 glossaryChildCategoryGUID,
                                                 requestBody.getEffectiveTime(),
@@ -1142,6 +1201,8 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.setupCategoryParent(userId,
+                                            null,
+                                            null,
                                             glossaryParentCategoryGUID,
                                             glossaryChildCategoryGUID,
                                             null,
@@ -1197,11 +1258,13 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearCategoryParent(userId,
+                                            null,
+                                            null,
                                             glossaryParentCategoryGUID,
                                             glossaryChildCategoryGUID,
                                             requestBody.getEffectiveTime(),
@@ -1211,6 +1274,8 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearCategoryParent(userId,
+                                            null,
+                                            null,
                                             glossaryParentCategoryGUID,
                                             glossaryChildCategoryGUID,
                                             null,
@@ -1263,12 +1328,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.removeGlossaryCategory(userId,
+                                               null,
+                                               null,
                                                glossaryCategoryGUID,
+                                               null,
                                                requestBody.getEffectiveTime(),
                                                forLineage,
                                                forDuplicateProcessing);
@@ -1276,7 +1344,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.removeGlossaryCategory(userId,
+                                               null,
+                                               null,
                                                glossaryCategoryGUID,
+                                               null,
                                                null,
                                                forLineage,
                                                forDuplicateProcessing);
@@ -1442,10 +1513,14 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createControlledGlossaryTerm(userId,
+                                                                      null,
+                                                                      null,
+                                                                      false,
                                                                       glossaryGUID,
+                                                                      null,
                                                                       requestBody.getElementProperties(),
                                                                       requestBody.getInitialStatus(),
                                                                       requestBody.getEffectiveTime(),
@@ -1507,15 +1582,19 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createGlossaryTermFromTemplate(userId,
+                                                                        null,
+                                                                        null,
+                                                                        false,
                                                                         glossaryGUID,
                                                                         templateGUID,
-                                                                        requestBody.getElementProperties(),
+                                                                        null,
                                                                         deepCopy,
                                                                         templateSubstitute,
-                                                                        requestBody.getGlossaryTermStatus()));
+                                                                        requestBody.getGlossaryTermStatus(),
+                                                                        requestBody.getElementProperties()));
             }
             else
             {
@@ -1574,11 +1653,14 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getElementProperties() instanceof GlossaryTermProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
 
                     handler.updateGlossaryTerm(userId,
+                                               null,
+                                               null,
                                                glossaryTermGUID,
+                                               null,
                                                isMergeUpdate,
                                                properties,
                                                requestBody.getUpdateDescription(),
@@ -1645,10 +1727,13 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 handler.updateGlossaryTermStatus(userId,
+                                                 null,
+                                                 null,
                                                  glossaryTermGUID,
+                                                 null,
                                                  requestBody.getGlossaryTermStatus(),
                                                  requestBody.getEffectiveTime(),
                                                  forLineage,
@@ -1712,11 +1797,14 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 handler.updateGlossaryTermFromTemplate(userId,
+                                                       null,
+                                                       null,
                                                        glossaryTermGUID,
                                                        requestBody.getParentGUID(),
+                                                       null,
                                                        requestBody.getUpdateDescription(),
                                                        isMergeClassifications,
                                                        isMergeProperties,
@@ -1778,10 +1866,13 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                 handler.moveGlossaryTerm(userId,
+                                         null,
+                                         null,
                                          glossaryTermGUID,
+                                         null,
                                          requestBody.getParentGUID(),
                                          requestBody.getEffectiveTime(),
                                          forLineage,
@@ -1844,9 +1935,11 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GlossaryTermCategorization properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setupTermCategory(userId,
+                                              null,
+                                              null,
                                               glossaryCategoryGUID,
                                               glossaryTermGUID,
                                               properties,
@@ -1912,11 +2005,13 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermCategory(userId,
+                                          null,
+                                          null,
                                           glossaryCategoryGUID,
                                           glossaryTermGUID,
                                           requestBody.getEffectiveTime(),
@@ -1926,6 +2021,8 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermCategory(userId,
+                                          null,
+                                          null,
                                           glossaryCategoryGUID,
                                           glossaryTermGUID,
                                           null,
@@ -1969,7 +2066,7 @@ public class GlossaryManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             response.setNames(handler.getTermRelationshipTypeNames(userId));
         }
@@ -2026,9 +2123,11 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setupTermRelationship(userId,
+                                                  null,
+                                                  null,
                                                   relationshipTypeName,
                                                   glossaryTermOneGUID,
                                                   glossaryTermTwoGUID,
@@ -2101,9 +2200,11 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.updateTermRelationship(userId,
+                                                   null,
+                                                   null,
                                                    relationshipTypeName,
                                                    glossaryTermOneGUID,
                                                    glossaryTermTwoGUID,
@@ -2172,11 +2273,13 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermRelationship(userId,
+                                              null,
+                                              null,
                                               relationshipTypeName,
                                               glossaryTermOneGUID,
                                               glossaryTermTwoGUID,
@@ -2187,6 +2290,8 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermRelationship(userId,
+                                              null,
+                                              null,
                                               relationshipTypeName,
                                               glossaryTermOneGUID,
                                               glossaryTermTwoGUID,
@@ -2242,12 +2347,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.setTermAsAbstractConcept(userId,
+                                                 null,
+                                                 null,
                                                  glossaryTermGUID,
+                                                 null,
                                                  requestBody.getEffectiveTime(),
                                                  forLineage,
                                                  forDuplicateProcessing);
@@ -2255,7 +2363,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.setTermAsAbstractConcept(userId,
+                                                 null,
+                                                 null,
                                                  glossaryTermGUID,
+                                                 null,
                                                  null,
                                                  forLineage,
                                                  forDuplicateProcessing);
@@ -2307,12 +2418,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsAbstractConcept(userId,
+                                                   null,
+                                                   null,
                                                    glossaryTermGUID,
+                                                   null,
                                                    requestBody.getEffectiveTime(),
                                                    forLineage,
                                                    forDuplicateProcessing);
@@ -2320,7 +2434,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsAbstractConcept(userId,
+                                                   null,
+                                                   null,
                                                    glossaryTermGUID,
+                                                   null,
                                                    null,
                                                    forLineage,
                                                    forDuplicateProcessing);
@@ -2372,12 +2489,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.setTermAsDataValue(userId,
+                                           null,
+                                           null,
                                            glossaryTermGUID,
+                                           null,
                                            requestBody.getEffectiveTime(),
                                            forLineage,
                                            forDuplicateProcessing);
@@ -2385,7 +2505,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.setTermAsDataValue(userId,
+                                           null,
+                                           null,
                                            glossaryTermGUID,
+                                           null,
                                            null,
                                            forLineage,
                                            forDuplicateProcessing);
@@ -2437,12 +2560,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsDataValue(userId,
+                                             null,
+                                             null,
                                              glossaryTermGUID,
+                                             null,
                                              requestBody.getEffectiveTime(),
                                              forLineage,
                                              forDuplicateProcessing);
@@ -2450,7 +2576,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsDataValue(userId,
+                                             null,
+                                             null,
                                              glossaryTermGUID,
+                                             null,
                                              null,
                                              forLineage,
                                              forDuplicateProcessing);
@@ -2506,10 +2635,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ActivityDescriptionProperties properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setTermAsActivity(userId,
+                                              null,
+                                              null,
                                               glossaryTermGUID,
+                                              null,
                                               properties,
                                               requestBody.getEffectiveTime(),
                                               forLineage,
@@ -2571,12 +2703,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsActivity(userId,
+                                            null,
+                                            null,
                                             glossaryTermGUID,
+                                            null,
                                             requestBody.getEffectiveTime(),
                                             forLineage,
                                             forDuplicateProcessing);
@@ -2584,7 +2719,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsActivity(userId,
+                                            null,
+                                            null,
                                             glossaryTermGUID,
+                                            null,
                                             null,
                                             forLineage,
                                             forDuplicateProcessing);
@@ -2640,10 +2778,13 @@ public class GlossaryManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GlossaryTermContextDefinition properties)
                 {
-                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+                    GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
                     handler.setTermAsContext(userId,
+                                             null,
+                                             null,
                                              glossaryTermGUID,
+                                             null,
                                              properties,
                                              requestBody.getEffectiveTime(),
                                              forLineage,
@@ -2705,12 +2846,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsContext(userId,
+                                           null,
+                                           null,
                                            glossaryTermGUID,
+                                           null,
                                            requestBody.getEffectiveTime(),
                                            forLineage,
                                            forDuplicateProcessing);
@@ -2718,7 +2862,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsContext(userId,
+                                           null,
+                                           null,
                                            glossaryTermGUID,
+                                           null,
                                            null,
                                            forLineage,
                                            forDuplicateProcessing);
@@ -2770,12 +2917,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.setTermAsSpineObject(userId,
+                                             null,
+                                             null,
                                              glossaryTermGUID,
+                                             null,
                                              requestBody.getEffectiveTime(),
                                              forLineage,
                                              forDuplicateProcessing);
@@ -2783,7 +2933,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.setTermAsSpineObject(userId,
+                                             null,
+                                             null,
                                              glossaryTermGUID,
+                                             null,
                                              null,
                                              forLineage,
                                              forDuplicateProcessing);
@@ -2835,12 +2988,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsSpineObject(userId,
+                                               null,
+                                               null,
                                                glossaryTermGUID,
+                                               null,
                                                requestBody.getEffectiveTime(),
                                                forLineage,
                                                forDuplicateProcessing);
@@ -2848,7 +3004,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsSpineObject(userId,
+                                               null,
+                                               null,
                                                glossaryTermGUID,
+                                               null,
                                                null,
                                                forLineage,
                                                forDuplicateProcessing);
@@ -2900,12 +3059,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.setTermAsSpineAttribute(userId,
+                                                null,
+                                                null,
                                                 glossaryTermGUID,
+                                                null,
                                                 requestBody.getEffectiveTime(),
                                                 forLineage,
                                                 forDuplicateProcessing);
@@ -2913,7 +3075,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.setTermAsSpineAttribute(userId,
+                                                null,
+                                                null,
                                                 glossaryTermGUID,
+                                                null,
                                                 null,
                                                 forLineage,
                                                 forDuplicateProcessing);
@@ -2965,12 +3130,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsSpineAttribute(userId,
+                                                  null,
+                                                  null,
                                                   glossaryTermGUID,
+                                                  null,
                                                   requestBody.getEffectiveTime(),
                                                   forLineage,
                                                   forDuplicateProcessing);
@@ -2978,7 +3146,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsSpineAttribute(userId,
+                                                  null,
+                                                  null,
                                                   glossaryTermGUID,
+                                                  null,
                                                   null,
                                                   forLineage,
                                                   forDuplicateProcessing);
@@ -3030,12 +3201,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.setTermAsObjectIdentifier(userId,
+                                                  null,
+                                                  null,
                                                   glossaryTermGUID,
+                                                  null,
                                                   requestBody.getEffectiveTime(),
                                                   forLineage,
                                                   forDuplicateProcessing);
@@ -3043,7 +3217,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.setTermAsObjectIdentifier(userId,
+                                                  null,
+                                                  null,
                                                   glossaryTermGUID,
+                                                  null,
                                                   null,
                                                   forLineage,
                                                   forDuplicateProcessing);
@@ -3095,12 +3272,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.clearTermAsObjectIdentifier(userId,
+                                                    null,
+                                                    null,
                                                     glossaryTermGUID,
+                                                    null,
                                                     requestBody.getEffectiveTime(),
                                                     forLineage,
                                                     forDuplicateProcessing);
@@ -3108,7 +3288,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.clearTermAsObjectIdentifier(userId,
+                                                    null,
+                                                    null,
                                                     glossaryTermGUID,
+                                                    null,
                                                     null,
                                                     forLineage,
                                                     forDuplicateProcessing);
@@ -3160,12 +3343,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElement(handler.undoGlossaryTermUpdate(userId,
+                                                                   null,
+                                                                   null,
                                                                    glossaryTermGUID,
+                                                                   null,
                                                                    requestBody.getEffectiveTime(),
                                                                    forLineage,
                                                                    forDuplicateProcessing));
@@ -3173,7 +3359,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 response.setElement(handler.undoGlossaryTermUpdate(userId,
+                                                                   null,
+                                                                   null,
                                                                    glossaryTermGUID,
+                                                                   null,
                                                                    new Date(),
                                                                    forLineage,
                                                                    forDuplicateProcessing));
@@ -3223,12 +3412,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.archiveGlossaryTerm(userId,
+                                            null,
+                                            null,
                                             glossaryTermGUID,
+                                            null,
                                             requestBody.getElementProperties(),
                                             requestBody.getEffectiveTime(),
                                             forDuplicateProcessing);
@@ -3236,7 +3428,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.archiveGlossaryTerm(userId,
+                                            null,
+                                            null,
                                             glossaryTermGUID,
+                                            null,
                                             null,
                                             null,
                                             forDuplicateProcessing);
@@ -3288,12 +3483,15 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+            GlossaryExchangeClient handler = instanceHandler.getGlossaryExchangeClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 handler.removeGlossaryTerm(userId,
+                                           null,
+                                           null,
                                            glossaryTermGUID,
+                                           null,
                                            requestBody.getEffectiveTime(),
                                            forLineage,
                                            forDuplicateProcessing);
@@ -3301,7 +3499,10 @@ public class GlossaryManagerRESTServices extends TokenController
             else
             {
                 handler.removeGlossaryTerm(userId,
+                                           null,
+                                           null,
                                            glossaryTermGUID,
+                                           null,
                                            null,
                                            forLineage,
                                            forDuplicateProcessing);

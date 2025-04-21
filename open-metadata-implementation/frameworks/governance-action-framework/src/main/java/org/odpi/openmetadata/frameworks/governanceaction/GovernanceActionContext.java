@@ -2519,13 +2519,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        openMetadataClient.updateRelatedElementsInStore(userId,
-                                                          relationshipGUID,
-                                                          replaceProperties,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          properties,
-                                                          effectiveTime);
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     relationshipGUID,
+                                                     replaceProperties,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     properties,
+                                                     effectiveTime);
     }
 
 
@@ -2554,13 +2554,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        openMetadataClient.updateRelatedElementsEffectivityInStore(userId,
-                                                                     relationshipGUID,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveFrom,
-                                                                     effectiveTo,
-                                                                     effectiveTime);
+        openMetadataClient.updateRelationshipEffectivityInStore(userId,
+                                                                relationshipGUID,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveFrom,
+                                                                effectiveTo,
+                                                                effectiveTime);
     }
 
 
@@ -2584,11 +2584,11 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        openMetadataClient.deleteRelatedElementsInStore(userId,
-                                                          relationshipGUID,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          effectiveTime);
+        openMetadataClient.deleteRelationshipInStore(userId,
+                                                     relationshipGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime);
     }
 
 

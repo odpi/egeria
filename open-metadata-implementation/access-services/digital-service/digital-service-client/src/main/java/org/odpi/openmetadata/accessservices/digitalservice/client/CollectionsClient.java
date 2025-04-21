@@ -920,13 +920,13 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
 
-        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                             parentGUID,
-                                                             collectionGUID,
-                                                             false,
-                                                             false,
-                                                             new Date());
+        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                          parentGUID,
+                                                          collectionGUID,
+                                                          false,
+                                                          false,
+                                                          new Date());
     }
 
 
@@ -1194,13 +1194,13 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
-        openMetadataStoreClient.updateRelatedElementsInStore(userId,
-                                                             relationshipGUID,
-                                                             replaceAllProperties,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             this.getElementProperties(membershipProperties),
-                                                             effectiveTime);
+        openMetadataStoreClient.updateRelationshipInStore(userId,
+                                                          relationshipGUID,
+                                                          replaceAllProperties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          this.getElementProperties(membershipProperties),
+                                                          effectiveTime);
     }
 
 
@@ -1237,11 +1237,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         if (relationshipGUID != null)
         {
-            openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                 relationshipGUID,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime);
+            openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                              relationshipGUID,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              effectiveTime);
         }
     }
 

@@ -20,8 +20,12 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
@@ -1436,24 +1440,83 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         final String methodName                     = "setupSemanticAssignment";
         final String elementGUIDParameterName       = "elementGUID";
         final String glossaryTermGUIDParameterName  = "glossaryTermGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/semantic-assignment/terms/{3}";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.setupRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 elementGUID,
                                 elementGUIDParameterName,
-                                properties,
+                                OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 glossaryTermGUID,
                                 glossaryTermGUIDParameterName,
-                                urlTemplate,
+                                properties.getEffectiveFrom(),
+                                properties.getEffectiveTo(),
+                                this.getElementProperties(properties),
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
                                 methodName);
     }
 
+
+
+    /**
+     * Convert a bean into its element properties.
+     *
+     * @param relationshipProperties bean properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(SemanticAssignmentProperties relationshipProperties)
+    {
+        if (relationshipProperties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.EXPRESSION.name,
+                                                                                   relationshipProperties.getExpression());
+
+            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                              OpenMetadataProperty.CONFIDENCE.name,
+                                                              relationshipProperties.getConfidence());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 relationshipProperties.getDescription());
+
+            if (relationshipProperties.getStatus() != null)
+            {
+                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                   OpenMetadataProperty.STATUS.name,
+                                                                   GlossaryTermAssignmentStatus.getOpenTypeName(),
+                                                                   relationshipProperties.getStatus().getName());
+            }
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.STEWARD.name,
+                                                                 relationshipProperties.getSteward());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.STEWARD_TYPE_NAME.name,
+                                                                 relationshipProperties.getStewardTypeName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
+                                                                 relationshipProperties.getStewardPropertyName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.SOURCE.name,
+                                                                 relationshipProperties.getSource());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.NOTES.name,
+                                                                 relationshipProperties.getNotes());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
 
     /**
      * Remove a semantic assignment relationship between an element and its glossary term.
@@ -1486,17 +1549,17 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         final String methodName                     = "clearSemanticAssignment";
         final String elementGUIDParameterName       = "elementGUID";
         final String glossaryTermGUIDParameterName  = "glossaryTermGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/semantic-assignment/terms/{3}/remove";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.clearRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 elementGUID,
                                 elementGUIDParameterName,
+                                OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 glossaryTermGUID,
                                 glossaryTermGUIDParameterName,
-                                urlTemplate,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -1640,18 +1703,20 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         final String methodName                   = "addGovernanceDefinitionToElement";
         final String elementGUIDParameterName     = "elementGUID";
         final String definitionGUIDParameterName  = "definitionGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/governed-by/definition/{3}";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.setupRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 elementGUID,
                                 elementGUIDParameterName,
-                                null,
+                                OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 definitionGUID,
                                 definitionGUIDParameterName,
-                                urlTemplate,
+                                null,
+                                null,
+                                null,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -1690,21 +1755,147 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         final String methodName                   = "removeGovernanceDefinitionFromElement";
         final String elementGUIDParameterName     = "elementGUID";
         final String definitionGUIDParameterName  = "definitionGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/governed-by/definition/{3}/remove";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
 
         super.clearRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 elementGUID,
                                 elementGUIDParameterName,
+                                OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
                                 definitionGUID,
                                 definitionGUIDParameterName,
-                                urlTemplate,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
                                 methodName);
+    }
+
+
+
+
+    /**
+     * Link an element to another element using the MoreInformation relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID identifier of the governance definition to link
+     * @param moreInformationGUID unique identifier of the metadata element to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addMoreInformationToElement(String  userId,
+                                            String  assetManagerGUID,
+                                            String  assetManagerName,
+                                            String  elementGUID,
+                                            String  moreInformationGUID,
+                                            Date    effectiveTime,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                   = "addMoreInformationToElement";
+        final String elementGUIDParameterName     = "elementGUID";
+        final String moreInformationGUIDParameterName  = "moreInformationGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        super.setupRelationship(userId,
+                                assetManagerGUID,
+                                assetManagerName,
+                                elementGUID,
+                                elementGUIDParameterName,
+                                OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
+                                moreInformationGUID,
+                                moreInformationGUIDParameterName,
+                                null,
+                                null,
+                                null,
+                                effectiveTime,
+                                forLineage,
+                                forDuplicateProcessing,
+                                methodName);
+    }
+
+
+    /**
+     * Remove the MoreInformation relationship between two elements.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID identifier of the governance definition to link
+     * @param moreInformationGUID unique identifier of the metadata element to update
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeMoreInformationFromElement(String  userId,
+                                                 String  assetManagerGUID,
+                                                 String  assetManagerName,
+                                                 String  elementGUID,
+                                                 String  moreInformationGUID,
+                                                 Date    effectiveTime,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName                   = "removeMoreInformationFromElement";
+        final String elementGUIDParameterName     = "elementGUID";
+        final String moreInformationGUIDParameterName  = "moreInformationGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        super.clearRelationship(userId,
+                                assetManagerGUID,
+                                assetManagerName,
+                                elementGUID,
+                                elementGUIDParameterName,
+                                OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
+                                moreInformationGUID,
+                                moreInformationGUIDParameterName,
+                                effectiveTime,
+                                forLineage,
+                                forDuplicateProcessing,
+                                methodName);
+    }
+
+    /**
+     * Retrieve the elements linked via a "MoreInformation" relationship to the requested element.
+     *
+     * @param userId                 calling user
+     * @param assetManagerGUID       unique identifier of software capability representing the caller
+     * @param assetManagerName       unique name of software capability representing the caller
+     * @param elementGUID            unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> getMoreInformationForElements(String userId, String assetManagerGUID, String assetManagerName, String elementGUID, int startFrom, int pageSize, Date effectiveTime, boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
     }
 
 

@@ -370,7 +370,7 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param dataStructureGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca data structures be deleted if segments are attached?
+     * @param cascadedDelete can data structures be deleted if data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -901,8 +901,8 @@ public class DataDesignerRESTServices extends TokenController
      * Detach two data fields from one another.
      *
      * @param serverName         name of called server
-     * @param parentDataFieldGUID  unique identifier of the first segment
-     * @param nestedDataFieldGUID      unique identifier of the second segment
+     * @param parentDataFieldGUID  unique identifier of the first data field
+     * @param nestedDataFieldGUID      unique identifier of the second data field
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -970,7 +970,7 @@ public class DataDesignerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param dataFieldGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca data fields be deleted if segments are attached?
+     * @param cascadedDelete can data fields be deleted if other data fields are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1439,8 +1439,8 @@ public class DataDesignerRESTServices extends TokenController
      * Connect two data classes to show that one is used by the other when it is validating (typically a complex data item).
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the first data class
+     * @param childDataClassGUID      unique identifier of the second data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1500,8 +1500,8 @@ public class DataDesignerRESTServices extends TokenController
      * Detach two nested data classes from one another.
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the first data class
+     * @param childDataClassGUID      unique identifier of the second data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1564,13 +1564,12 @@ public class DataDesignerRESTServices extends TokenController
     }
 
 
-
     /**
      * Connect two data classes to show that one provides a more specialist evaluation.
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the first data class
+     * @param childDataClassGUID      unique identifier of the second data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1578,9 +1577,9 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSpecialistDataClass(String                                serverName,
-                                                String                                parentDataClassGUID,
-                                                String                                childDataClassGUID,
+    public VoidResponse linkSpecialistDataClass(String                    serverName,
+                                                String                    parentDataClassGUID,
+                                                String                    childDataClassGUID,
                                                 MetadataSourceRequestBody requestBody)
     {
         final String methodName = "linkSpecialistDataClass";
@@ -1627,11 +1626,11 @@ public class DataDesignerRESTServices extends TokenController
 
 
     /**
-     * Detach two data class segments from one another.
+     * Detach two data classes from one another.
      *
      * @param serverName         name of called server
-     * @param parentDataClassGUID  unique identifier of the first segment
-     * @param childDataClassGUID      unique identifier of the second segment
+     * @param parentDataClassGUID  unique identifier of the first data class
+     * @param childDataClassGUID      unique identifier of the second data class
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1674,14 +1673,14 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                handler.detachNestedDataClass(userId,
-                                              null,
-                                              null,
-                                              parentDataClassGUID,
-                                              childDataClassGUID,
-                                              false,
-                                              false,
-                                              new Date());
+                handler.detachSpecialistDataClass(userId,
+                                                  null,
+                                                  null,
+                                                  parentDataClassGUID,
+                                                  childDataClassGUID,
+                                                  false,
+                                                  false,
+                                                  new Date());
             }
         }
         catch (Throwable error)
@@ -1694,13 +1693,12 @@ public class DataDesignerRESTServices extends TokenController
     }
 
 
-
     /**
      * Delete a data class.
      *
      * @param serverName         name of called server
      * @param dataClassGUID  unique identifier of the element to delete
-     * @param cascadedDelete ca data classes be deleted if segments are attached?
+     * @param cascadedDelete can data classes be deleted if linked data classes are attached?
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -1957,6 +1955,401 @@ public class DataDesignerRESTServices extends TokenController
                                                                true,
                                                                false,
                                                                new Date()));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Connect an element that is part of a data design to a data class to show that the data class should be used
+     * as the specification for the data values when interpreting the data definition.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID          unique identifier of the data class
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkDataClassDefinition(String                    serverName,
+                                                String                    dataDefinitionGUID,
+                                                String                    dataClassGUID,
+                                                MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "linkDataClassDefinition";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+                handler.linkDataClassDefinition(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                dataDefinitionGUID,
+                                                dataClassGUID,
+                                                requestBody.getForLineage(),
+                                                requestBody.getForDuplicateProcessing(),
+                                                requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a data definition from a data class.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param dataClassGUID          unique identifier of the data class
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachDataClassDefinition(String                    serverName,
+                                                  String                    dataDefinitionGUID,
+                                                  String                    dataClassGUID,
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachDataClassDefinition";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachDataClassDefinition(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  dataDefinitionGUID,
+                                                  dataClassGUID,
+                                                  requestBody.getForLineage(),
+                                                  requestBody.getForDuplicateProcessing(),
+                                                  requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachDataClassDefinition(userId,
+                                                  null,
+                                                  null,
+                                                  dataDefinitionGUID,
+                                                  dataClassGUID,
+                                                  false,
+                                                  false,
+                                                  new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Connect an element that is part of a data design to a glossary term to show that the term should be used
+     * as the semantic definition for the data values when interpreting the data definition.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID       unique identifier of the glossary term
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkSemanticDefinition(String                    serverName,
+                                               String                    dataDefinitionGUID,
+                                               String                    glossaryTermGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "linkSemanticDefinition";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+                handler.linkSemanticDefinition(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               dataDefinitionGUID,
+                                               glossaryTermGUID,
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a data definition from a glossary term.
+     *
+     * @param serverName         name of called server
+     * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
+     * @param glossaryTermGUID       unique identifier of the glossary term
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachSemanticDefinition(String                    serverName,
+                                                 String                    dataDefinitionGUID,
+                                                 String                    glossaryTermGUID,
+                                                 MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachSemanticDefinition";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachSemanticDefinition(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 dataDefinitionGUID,
+                                                 glossaryTermGUID,
+                                                 requestBody.getForLineage(),
+                                                 requestBody.getForDuplicateProcessing(),
+                                                 requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachSemanticDefinition(userId,
+                                                 null,
+                                                 null,
+                                                 dataDefinitionGUID,
+                                                 glossaryTermGUID,
+                                                 false,
+                                                 false,
+                                                 new Date());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Connect a certification type to a data structure to guide the survey action service (that checks the data
+     * quality of a data resource as part of certifying it with the supplied certification type) to the definition
+     * of the data structure to use as a specification of how the data should be both structured and (if
+     * data classes are attached to the associated data fields using the DataClassDefinition relationship)
+     * contain the valid values.
+     *
+     * @param serverName         name of called server
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkCertificationTypeToDataStructure(String                    serverName,
+                                                             String                    certificationTypeGUID,
+                                                             String                    dataStructureGUID,
+                                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "linkCertificationTypeToDataStructure";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+                handler.linkCertificationTypeToDataStructure(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             certificationTypeGUID,
+                                                             dataStructureGUID,
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a data structure from a certification type.
+     *
+     * @param serverName         name of called server
+     * @param certificationTypeGUID  unique identifier of the certification type
+     * @param dataStructureGUID      unique identifier of the data structure
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachCertificationTypeToDataStructure(String                    serverName,
+                                                               String                    certificationTypeGUID,
+                                                               String                    dataStructureGUID,
+                                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "detachCertificationTypeToDataStructure";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.detachCertificationTypeToDataStructure(userId,
+                                                               requestBody.getExternalSourceGUID(),
+                                                               requestBody.getExternalSourceName(),
+                                                               certificationTypeGUID,
+                                                               dataStructureGUID,
+                                                               requestBody.getForLineage(),
+                                                               requestBody.getForDuplicateProcessing(),
+                                                               requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.detachCertificationTypeToDataStructure(userId,
+                                                               null,
+                                                               null,
+                                                               certificationTypeGUID,
+                                                               dataStructureGUID,
+                                                               false,
+                                                               false,
+                                                               new Date());
             }
         }
         catch (Throwable error)

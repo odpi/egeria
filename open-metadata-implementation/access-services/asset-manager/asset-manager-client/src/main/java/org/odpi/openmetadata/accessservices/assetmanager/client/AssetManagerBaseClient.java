@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.converters.MetadataElem
 import org.odpi.openmetadata.frameworks.governanceaction.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.RelatedMetadataElementSummaryConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
@@ -1741,61 +1742,62 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * Create a relationship between a primary element and a secondary element.
      *
      * @param userId                            calling user
-     * @param assetManagerGUID                  unique identifier of software capability representing the caller
-     * @param assetManagerName                  unique name of software capability representing the caller
+     * @param assetManagerGUID                unique identifier of software capability representing the caller
+     * @param assetManagerName                unique name of software capability representing the caller
      * @param primaryElementGUID                unique identifier of the primary element
      * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
-     * @param properties                        describes the properties for the relationship
+     * @param relationshipTypeName              type of relationship to create
+     * @param relationshipTypeNameParameterName name of the parameter passing relationshipTypeName
      * @param secondaryElementGUID              unique identifier of the element to connect it to
      * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
-     * @param urlTemplate                       URL to call (no expected placeholders)
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param properties                        describes the properties for the relationship
      * @param effectiveTime                     the time that the retrieved elements must be effective for
-     * @param forLineage                        return elements marked with the Memento classification?
-     * @param forDuplicateProcessing            do not merge elements marked as duplicates?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName                        calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    protected void setupRelationship(String                 userId,
-                                     String                 assetManagerGUID,
-                                     String                 assetManagerName,
-                                     String                 primaryElementGUID,
-                                     String                 primaryElementGUIDParameterName,
-                                     RelationshipProperties properties,
-                                     String                 secondaryElementGUID,
-                                     String                 secondaryElementGUIDParameterName,
-                                     String                 urlTemplate,
-                                     Date                   effectiveTime,
-                                     boolean                forLineage,
-                                     boolean                forDuplicateProcessing,
-                                     String                 methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    protected void setupRelationship(String            userId,
+                                     String            assetManagerGUID,
+                                     String            assetManagerName,
+                                     String            primaryElementGUID,
+                                     String            primaryElementGUIDParameterName,
+                                     String            relationshipTypeName,
+                                     String            relationshipTypeNameParameterName,
+                                     String            secondaryElementGUID,
+                                     String            secondaryElementGUIDParameterName,
+                                     Date              effectiveFrom,
+                                     Date              effectiveTo,
+                                     ElementProperties properties,
+                                     Date              effectiveTime,
+                                     boolean           forLineage,
+                                     boolean           forDuplicateProcessing,
+                                     String            methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        final String requestParamsURLTemplate = "?forLineage={4}&forDuplicateProcessing={5}";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-        RelationshipRequestBody requestBody = new RelationshipRequestBody();
-
-        requestBody.setExternalSourceGUID(assetManagerGUID);
-        requestBody.setExternalSourceName(assetManagerName);
-        requestBody.setProperties(properties);
-        requestBody.setEffectiveTime(effectiveTime);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate + requestParamsURLTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        primaryElementGUID,
-                                        secondaryElementGUID,
-                                        forLineage,
-                                        forDuplicateProcessing);
+        openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             relationshipTypeName,
+                                                             primaryElementGUID,
+                                                             secondaryElementGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             properties,
+                                                             effectiveTime);
     }
 
 
@@ -1809,10 +1811,13 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
      * @param relationshipTypeName              type of relationship to create
      * @param relationshipTypeNameParameterName name of the parameter passing relationshipTypeName
-     * @param properties                        describes the properties for the relationship
      * @param secondaryElementGUID              unique identifier of the element to connect it to
      * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
-     * @param urlTemplate                       URL to call (no expected placeholders)
+     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param properties                        describes the properties for the relationship
      * @param effectiveTime                     the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1822,101 +1827,44 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    protected void setupRelationship(String                 userId,
-                                     String                 assetManagerGUID,
-                                     String                 assetManagerName,
-                                     String                 primaryElementGUID,
-                                     String                 primaryElementGUIDParameterName,
-                                     String                 relationshipTypeName,
-                                     String                 relationshipTypeNameParameterName,
-                                     RelationshipProperties properties,
-                                     String                 secondaryElementGUID,
-                                     String                 secondaryElementGUIDParameterName,
-                                     String                 urlTemplate,
-                                     Date                   effectiveTime,
-                                     boolean                forLineage,
-                                     boolean                forDuplicateProcessing,
-                                     String                 methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    protected void updateRelationship(String            userId,
+                                      String            assetManagerGUID,
+                                      String            assetManagerName,
+                                      String            primaryElementGUID,
+                                      String            primaryElementGUIDParameterName,
+                                      String            relationshipTypeName,
+                                      String            relationshipTypeNameParameterName,
+                                      String            secondaryElementGUID,
+                                      String            secondaryElementGUIDParameterName,
+                                      boolean           replaceProperties,
+                                      Date              effectiveFrom,
+                                      Date              effectiveTo,
+                                      ElementProperties properties,
+                                      Date              effectiveTime,
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
+                                      String            methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        final String requestParamsURLTemplate   = "?forLineage={5}&forDuplicateProcessing={6}";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-        RelationshipRequestBody requestBody = new RelationshipRequestBody();
-
-        requestBody.setExternalSourceGUID(assetManagerGUID);
-        requestBody.setExternalSourceName(assetManagerName);
-        requestBody.setProperties(properties);
-        requestBody.setEffectiveTime(effectiveTime);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate + requestParamsURLTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        primaryElementGUID,
-                                        relationshipTypeName,
-                                        secondaryElementGUID,
-                                        forLineage,
-                                        forDuplicateProcessing);
-    }
-
-
-    /**
-     * Remove a relationship.
-     *
-     * @param userId                            calling user
-     * @param assetManagerGUID                unique identifier of software capability representing the caller
-     * @param assetManagerName                unique name of software capability representing the caller
-     * @param primaryElementGUID                unique identifier of the primary element
-     * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
-     * @param secondaryElementGUID              unique identifier of the element to connect it to
-     * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
-     * @param urlTemplate                       URL to call (no expected placeholders)
-     * @param effectiveTime                     the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param methodName                        calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    protected void clearRelationship(String  userId,
-                                     String  assetManagerGUID,
-                                     String  assetManagerName,
-                                     String  primaryElementGUID,
-                                     String  primaryElementGUIDParameterName,
-                                     String  secondaryElementGUID,
-                                     String  secondaryElementGUIDParameterName,
-                                     String  urlTemplate,
-                                     Date    effectiveTime,
-                                     boolean forLineage,
-                                     boolean forDuplicateProcessing,
-                                     String  methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
-    {
-        final String requestParamsURLTemplate   = "?forLineage={4}&forDuplicateProcessing={5}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate + requestParamsURLTemplate,
-                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                        serverName,
-                                        userId,
-                                        primaryElementGUID,
-                                        secondaryElementGUID,
-                                        forLineage,
-                                        forDuplicateProcessing);
+        openMetadataStoreClient.updateRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             relationshipTypeName,
+                                                             primaryElementGUID,
+                                                             secondaryElementGUID,
+                                                             replaceProperties,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             properties,
+                                                             effectiveTime);
     }
 
 
@@ -1932,7 +1880,6 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * @param relationshipTypeNameParameterName name of the parameter passing relationshipTypeName
      * @param secondaryElementGUID              unique identifier of the element to connect it to
      * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
-     * @param urlTemplate                       URL to call (no expected placeholders)
      * @param effectiveTime                     the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1951,7 +1898,6 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                      String  relationshipTypeNameParameterName,
                                      String  secondaryElementGUID,
                                      String  secondaryElementGUIDParameterName,
-                                     String  urlTemplate,
                                      Date    effectiveTime,
                                      boolean forLineage,
                                      boolean forDuplicateProcessing,
@@ -1959,24 +1905,22 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        final String requestParamsURLTemplate = "?forLineage={5}&forDuplicateProcessing={6}";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate + requestParamsURLTemplate,
-                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                        serverName,
-                                        userId,
-                                        primaryElementGUID,
-                                        relationshipTypeName,
-                                        secondaryElementGUID,
-                                        forLineage,
-                                        forDuplicateProcessing);
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             relationshipTypeName,
+                                                             primaryElementGUID,
+                                                             secondaryElementGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
+
 
 
     /**

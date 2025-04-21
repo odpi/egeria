@@ -822,15 +822,15 @@ public class TemplateManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.updateRelatedElementsInStore(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     relationshipGUID,
-                                                     requestBody.getReplaceProperties(),
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getProperties(),
-                                                     requestBody.getEffectiveTime());
+                handler.updateRelationshipInStore(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  relationshipGUID,
+                                                  requestBody.getReplaceProperties(),
+                                                  requestBody.getForLineage(),
+                                                  requestBody.getForDuplicateProcessing(),
+                                                  requestBody.getProperties(),
+                                                  requestBody.getEffectiveTime());
             }
             else
             {
@@ -882,15 +882,15 @@ public class TemplateManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.updateRelatedElementsEffectivityInStore(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                relationshipGUID,
-                                                                requestBody.getForLineage(),
-                                                                requestBody.getForDuplicateProcessing(),
-                                                                requestBody.getEffectiveFrom(),
-                                                                requestBody.getEffectiveTo(),
-                                                                requestBody.getEffectiveTime());
+                handler.updateRelationshipEffectivityInStore(userId,
+                                                             requestBody.getExternalSourceGUID(),
+                                                             requestBody.getExternalSourceName(),
+                                                             relationshipGUID,
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveFrom(),
+                                                             requestBody.getEffectiveTo(),
+                                                             requestBody.getEffectiveTime());
             }
             else
             {
@@ -941,13 +941,13 @@ public class TemplateManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.deleteRelatedElementsInStore(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     relationshipGUID,
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getEffectiveTime());
+                handler.deleteRelationshipInStore(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  relationshipGUID,
+                                                  requestBody.getForLineage(),
+                                                  requestBody.getForDuplicateProcessing(),
+                                                  requestBody.getEffectiveTime());
             }
             else
             {

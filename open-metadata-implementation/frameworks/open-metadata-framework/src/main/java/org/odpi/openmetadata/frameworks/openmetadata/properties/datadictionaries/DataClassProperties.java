@@ -28,7 +28,7 @@ public class DataClassProperties extends ReferenceableProperties
     private String              description           = null;
     private List<String>        matchPropertyNames    = null;
     private String              namespace             = null;
-    private Float               matchThreshold        = 0F;
+    private int                 matchThreshold        = 100;
     private String              specification         = null;
     private Map<String, String> specificationDetails  = null;
     private String              dataType              = null;
@@ -158,7 +158,7 @@ public class DataClassProperties extends ReferenceableProperties
      *
      * @return float
      */
-    public Float getMatchThreshold()
+    public int getMatchThreshold()
     {
         return matchThreshold;
     }
@@ -169,7 +169,7 @@ public class DataClassProperties extends ReferenceableProperties
      *
      * @param matchThreshold float
      */
-    public void setMatchThreshold(Float matchThreshold)
+    public void setMatchThreshold(int matchThreshold)
     {
         this.matchThreshold = matchThreshold;
     }

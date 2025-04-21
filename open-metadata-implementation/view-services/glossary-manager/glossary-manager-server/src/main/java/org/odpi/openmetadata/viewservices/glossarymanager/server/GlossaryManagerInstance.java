@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarymanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -19,9 +19,9 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_MANAGER;
 
-    private final CollaborationManagementClient collaborationManagementClient;
-    private final GlossaryManagementClient      glossaryManagementClient;
-    private final StewardshipManagementClient   stewardshipManagementClient;
+    private final CollaborationExchangeClient collaborationExchangeClient;
+    private final GlossaryExchangeClient      glossaryExchangeClient;
+    private final StewardshipExchangeClient   stewardshipExchangeClient;
 
     /**
      * Set up the Glossary Manager OMVS instance*
@@ -48,42 +48,42 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-        glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        collaborationExchangeClient = new CollaborationExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        glossaryExchangeClient = new GlossaryExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        stewardshipExchangeClient = new StewardshipExchangeClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
     }
 
 
     /**
-     * Return the collaboration management client.  This client is from Asset Manager OMAS and is for maintaining note logs.
+     * Return the collaboration client.  This client is from Asset Manager OMAS and is for maintaining note logs.
      *
      * @return client
      */
-    public CollaborationManagementClient getCollaborationManagementClient()
+    public CollaborationExchangeClient getCollaborationExchangeClient()
     {
-        return collaborationManagementClient;
+        return collaborationExchangeClient;
     }
 
 
     /**
-     * Return the glossary management client.  This client is from Asset Manager OMAS and is for maintaining glossaries and their content.
+     * Return the glossary client.  This client is from Asset Manager OMAS and is for maintaining glossaries and their content.
      *
      * @return client
      */
-    public GlossaryManagementClient getGlossaryManagementClient()
+    public GlossaryExchangeClient getGlossaryExchangeClient()
     {
-        return glossaryManagementClient;
+        return glossaryExchangeClient;
     }
 
 
     /**
-     * Return the stewardship management client.  This client is from Asset Manager OMAS and is for setting up classifications and relationships for
+     * Return the stewardship client.  This client is from Asset Manager OMAS and is for setting up classifications and relationships for
      * a glossary term.
      *
      * @return client
      */
-    public StewardshipManagementClient getStewardshipManagementClient()
+    public StewardshipExchangeClient getStewardshipExchangeClient()
     {
-        return stewardshipManagementClient;
+        return stewardshipExchangeClient;
     }
 }

@@ -6580,7 +6580,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "assignedElements";
+        final String                     end1AttributeName            = "assignedDataAssetElements";
         final String                     end1AttributeDescription     = "Elements identified as managing data that has the same meaning as this glossary term.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -9034,7 +9034,6 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SNIPPET));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USAGE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CURATOR));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -10163,11 +10162,11 @@ public class OpenMetadataTypesArchive1_2
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METHOD));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PARTIAL_MATCH));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.THRESHOLD));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUE_FREQUENCY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
 
         relationshipDef.setPropertiesDefinition(properties);

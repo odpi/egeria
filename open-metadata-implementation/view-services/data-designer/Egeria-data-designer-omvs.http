@@ -173,7 +173,7 @@ Content-Type: application/json
 
 ###
 # @name linkMemberDataField
-# Connect two data structure segments. Request body is optional.
+# Connect a data structure to a data field. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{parentDataStructureGUID}}/member-data-fields/{{memberDataFieldGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1112,6 +1112,125 @@ Content-Type: application/json
 {
   "class" : "AnyTimeRequestBody",
   "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+#################################
+# Assembling a data specification
+# https://egeria-project.org/concepts/data-specification
+###
+
+@dataDefinitionGUID=add guid here
+@glossaryTermGUID=add guid here
+@certificationTypeGUID=add guid here
+
+###
+# @name linkDataClassDefinition
+# Connect an element that is part of a data design to a data class to show that the data class should be used as the specification for the data values when interpreting the data definition.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/data-class-definition/{{dataClassGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachDataClassDefinition
+# Detach a data definition from a data class.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/data-class-definition/{{dataClassGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+###
+# @name linkSemanticDefinition
+# Connect an element that is part of a data design to a glossary term to show that the term should be used as the semantic definition for the data values when interpreting the data definition.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/semantic-definition/{{glossaryTermGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSemanticDefinition
+# Detach a data definition from a glossary term.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/semantic-definition/{{glossaryTermGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+###
+# @name linkCertificationTypeToDataStructure
+# Connect a certification type to a data structure to guide the survey action service (that checks the data quality of a data resource as part of certifying it with the supplied certification type) to the definition of the data structure to use as a specification of how the data should be both structured and (if data classes are attached to the associated data fields using the DataClassDefinition relationship) contain the valid values.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/certification-types/{{certificationTypeGUID}}/data-structure-definition/{{dataStructureGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachCertificationTypeToDataStructure
+# Detach a data structure from a certification type.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/certification-types/{{certificationTypeGUID}}/data-structure-definition/{{dataStructureGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false

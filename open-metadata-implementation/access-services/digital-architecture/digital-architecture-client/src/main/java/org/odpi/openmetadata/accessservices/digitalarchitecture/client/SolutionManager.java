@@ -644,13 +644,13 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                 {
                     if ((segment1GUID.equals(relationship.getElementGUIDAtEnd1())) && (segment2GUID.equals(relationship.getElementGUIDAtEnd2())))
                     {
-                        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                                             externalSourceGUID,
-                                                                             externalSourceName,
-                                                                             relationship.getRelationshipGUID(),
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             effectiveTime);
+                        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                                          externalSourceGUID,
+                                                                          externalSourceName,
+                                                                          relationship.getRelationshipGUID(),
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime);
                     }
                 }
             }

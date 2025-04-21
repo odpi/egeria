@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.viewservices.glossarymanager.server;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -42,7 +42,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public CollaborationManagementClient getCollaborationManagementClient(String userId,
+    public CollaborationExchangeClient getCollaborationExchangeClient(String userId,
                                                                           String serverName,
                                                                           String serviceOperationName) throws InvalidParameterException,
                                                                                                               PropertyServerException,
@@ -52,7 +52,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getCollaborationManagementClient();
+            return instance.getCollaborationExchangeClient();
         }
 
         return null;
@@ -70,7 +70,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public GlossaryManagementClient getGlossaryManagementClient(String userId,
+    public GlossaryExchangeClient getGlossaryExchangeClient(String userId,
                                                                 String serverName,
                                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                                     PropertyServerException,
@@ -80,7 +80,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getGlossaryManagementClient();
+            return instance.getGlossaryExchangeClient();
         }
 
         return null;
@@ -98,7 +98,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public StewardshipManagementClient getStewardshipManagementClient(String userId,
+    public StewardshipExchangeClient getStewardshipExchangeClient(String userId,
                                                                       String serverName,
                                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
@@ -108,7 +108,7 @@ public class GlossaryManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getStewardshipManagementClient();
+            return instance.getStewardshipExchangeClient();
         }
 
         return null;

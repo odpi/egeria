@@ -1447,7 +1447,7 @@ public class OpenMetadataTypesArchive2_4
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SNIPPET_VERSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
