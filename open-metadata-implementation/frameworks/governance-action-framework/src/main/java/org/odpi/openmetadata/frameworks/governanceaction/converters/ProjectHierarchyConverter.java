@@ -177,7 +177,7 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
                 }
 
                 bean.setProperties(projectProperties);
-                bean.setStartingElement(super.getRelatedElement(beanClass, primaryElement, methodName));
+                bean.setRelatedBy(super.getRelatedBy(beanClass, primaryElement, methodName));
             }
 
             return returnBean;

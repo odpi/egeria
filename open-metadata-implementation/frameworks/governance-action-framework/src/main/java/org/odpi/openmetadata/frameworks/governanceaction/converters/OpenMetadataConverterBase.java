@@ -952,14 +952,14 @@ public class OpenMetadataConverterBase<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public RelatedElement getRelatedElement(Class<B>                beanClass,
-                                            OpenMetadataElement     element,
-                                            OpenMetadataRelationship relationship,
-                                            String                  methodName) throws PropertyServerException
+    public RelatedElementStub getRelatedElementStub(Class<B>                 beanClass,
+                                                    OpenMetadataElement      element,
+                                                    OpenMetadataRelationship relationship,
+                                                    String                   methodName) throws PropertyServerException
     {
-        RelatedElement  relatedElement = new RelatedElement();
+        RelatedElementStub relatedElementStub = new RelatedElementStub();
 
-        relatedElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, relationship.getRelationshipGUID(), null, methodName));
+        relatedElementStub.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, relationship.getRelationshipGUID(), null, methodName));
 
         if (relationship != null)
         {
@@ -971,7 +971,7 @@ public class OpenMetadataConverterBase<B>
             relationshipProperties.setEffectiveTo(relationship.getEffectiveToTime());
             relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-            relatedElement.setRelationshipProperties(relationshipProperties);
+            relatedElementStub.setRelationshipProperties(relationshipProperties);
         }
         else
         {
@@ -982,14 +982,94 @@ public class OpenMetadataConverterBase<B>
         {
             ElementStub elementStub = this.getElementStub(beanClass, element, methodName);
 
-            relatedElement.setRelatedElement(elementStub);
+            relatedElementStub.setRelatedElement(elementStub);
         }
         else
         {
             handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
         }
 
-        return relatedElement;
+        return relatedElementStub;
+    }
+
+
+
+    /**
+     * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relatedMetadataElement results containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public RelatedBy getRelatedElementStub(Class<B>               beanClass,
+                                           RelatedMetadataElement relatedMetadataElement,
+                                           String                 methodName) throws PropertyServerException
+    {
+        RelatedBy relatedBy = new RelatedBy();
+
+        relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName));
+
+        if (relatedMetadataElement != null)
+        {
+            ElementProperties instanceProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
+
+            RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+            relationshipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
+            relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
+            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+            relatedBy.setRelationshipProperties(relationshipProperties);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
+        }
+
+        return relatedBy;
+    }
+
+
+
+    /**
+     * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public RelatedBy getRelatedBy(Class<B>                 beanClass,
+                                  OpenMetadataRelationship relationship,
+                                  String                   methodName) throws PropertyServerException
+    {
+        RelatedBy relatedBy = new RelatedBy();
+
+        relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, relationship.getRelationshipGUID(), null, methodName));
+
+        if (relationship != null)
+        {
+            ElementProperties instanceProperties = new ElementProperties(relationship.getRelationshipProperties());
+
+            RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+            relationshipProperties.setEffectiveFrom(relationship.getEffectiveFromTime());
+            relationshipProperties.setEffectiveTo(relationship.getEffectiveToTime());
+            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+            relatedBy.setRelationshipProperties(relationshipProperties);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
+        }
+
+        return relatedBy;
     }
 
 
@@ -1003,13 +1083,13 @@ public class OpenMetadataConverterBase<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public RelatedElement getRelatedElement(Class<B>               beanClass,
-                                            RelatedMetadataElement relatedMetadataElement,
-                                            String                 methodName) throws PropertyServerException
+    public RelatedBy getRelatedBy(Class<B>               beanClass,
+                                  RelatedMetadataElement relatedMetadataElement,
+                                  String                 methodName) throws PropertyServerException
     {
-        RelatedElement  relatedElement = new RelatedElement();
+        RelatedBy relatedBy = new RelatedBy();
 
-        relatedElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName));
+        relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName));
 
         if (relatedMetadataElement != null)
         {
@@ -1021,14 +1101,14 @@ public class OpenMetadataConverterBase<B>
             relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
             relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-            relatedElement.setRelationshipProperties(relationshipProperties);
+            relatedBy.setRelationshipProperties(relationshipProperties);
         }
         else
         {
             handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
-        return relatedElement;
+        return relatedBy;
     }
 
 

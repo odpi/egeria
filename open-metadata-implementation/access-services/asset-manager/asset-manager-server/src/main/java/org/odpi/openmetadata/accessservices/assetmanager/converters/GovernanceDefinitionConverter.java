@@ -133,11 +133,9 @@ public class GovernanceDefinitionConverter<B> extends AssetManagerOMASConverter<
         final String thisMethodName = "getNewBean(entity, relationship)";
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof GovernanceDefinitionElement)
+        if (returnBean instanceof GovernanceDefinitionElement bean)
         {
-            GovernanceDefinitionElement bean = (GovernanceDefinitionElement) returnBean;
-
-            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;

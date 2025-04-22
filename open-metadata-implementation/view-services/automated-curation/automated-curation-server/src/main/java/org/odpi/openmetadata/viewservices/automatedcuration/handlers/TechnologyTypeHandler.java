@@ -252,16 +252,16 @@ public class TechnologyTypeHandler
                 {
                     report = new TechnologyTypeReport(this.convertTechTypeSummary(openMetadataElement));
 
-                    List<RelatedElement> resourceList = externalRefHandler.getResourceList(userId,
-                                                                                           openMetadataElement.getElementGUID(),
-                                                                                           0,
-                                                                                           0);
+                    List<RelatedElementStub> resourceList = externalRefHandler.getResourceList(userId,
+                                                                                               openMetadataElement.getElementGUID(),
+                                                                                               0,
+                                                                                               0);
 
                     if (resourceList != null)
                     {
                         List<ResourceDescription> resources = new ArrayList<>();
 
-                        for (RelatedElement resource : resourceList)
+                        for (RelatedElementStub resource : resourceList)
                         {
                             if (resource != null)
                             {
@@ -294,16 +294,16 @@ public class TechnologyTypeHandler
                         }
                     }
 
-                    List<RelatedElement> catalogTemplateList = externalRefHandler.getCatalogTemplateList(userId,
-                                                                                                         openMetadataElement.getElementGUID(),
-                                                                                                         0,
-                                                                                                         0);
+                    List<RelatedElementStub> catalogTemplateList = externalRefHandler.getCatalogTemplateList(userId,
+                                                                                                             openMetadataElement.getElementGUID(),
+                                                                                                             0,
+                                                                                                             0);
 
                     if (catalogTemplateList != null)
                     {
                         List<CatalogTemplate> catalogTemplates = new ArrayList<>();
 
-                        for (RelatedElement templateElement : catalogTemplateList)
+                        for (RelatedElementStub templateElement : catalogTemplateList)
                         {
                             if (templateElement != null)
                             {

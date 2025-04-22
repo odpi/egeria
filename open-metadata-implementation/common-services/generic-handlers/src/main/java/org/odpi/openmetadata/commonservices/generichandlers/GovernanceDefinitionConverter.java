@@ -165,7 +165,7 @@ public class GovernanceDefinitionConverter<B> extends OMFConverter<B>
 
         if (returnBean instanceof GovernanceDefinitionElement bean)
         {
-            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;

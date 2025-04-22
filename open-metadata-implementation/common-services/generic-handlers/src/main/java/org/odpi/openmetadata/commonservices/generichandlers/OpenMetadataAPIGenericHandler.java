@@ -7426,26 +7426,71 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        return this.getAttachmentLinks(userId,
-                                       startingGUID,
-                                       startingGUIDParameterName,
-                                       startingTypeName,
-                                       null,
-                                       null,
-                                       null,
-                                       null,
-                                       0,
-                                       limitResultsByStatus,
-                                       asOfTime,
-                                       sequencingOrder,
-                                       sequencingProperty,
-                                       forLineage,
-                                       forDuplicateProcessing,
-                                       supportedZones,
-                                       0,
-                                       invalidParameterHandler.getMaxPagingSize(),
-                                       effectiveTime,
-                                       methodName);
+        int startFrom = 0;
+
+        List<Relationship> relationships = this.getAttachmentLinks(userId,
+                                                                   startingGUID,
+                                                                   startingGUIDParameterName,
+                                                                   startingTypeName,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   limitResultsByStatus,
+                                                                   asOfTime,
+                                                                   sequencingOrder,
+                                                                   sequencingProperty,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   startFrom,
+                                                                   invalidParameterHandler.getMaxPagingSize(),
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        if (relationships != null)
+        {
+            List<Relationship> fullRelationshipList = new ArrayList<>();
+
+            while (relationships != null)
+            {
+                /*
+                 * Save the retrieved relationships.
+                 */
+                fullRelationshipList.addAll(relationships);
+
+                /*
+                 * Get the next set of relationships.
+                 */
+                startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+
+                relationships = this.getAttachmentLinks(userId,
+                                                        startingGUID,
+                                                        startingGUIDParameterName,
+                                                        startingTypeName,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        0,
+                                                        limitResultsByStatus,
+                                                        asOfTime,
+                                                        sequencingOrder,
+                                                        sequencingProperty,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        supportedZones,
+                                                        startFrom,
+                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                        effectiveTime,
+                                                        methodName);
+            }
+
+            return fullRelationshipList;
+        }
+
+        return null;
     }
 
 

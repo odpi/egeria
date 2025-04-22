@@ -4,7 +4,8 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricImplementation;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -130,7 +131,7 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
         if (returnBean instanceof GovernanceMetricImplementation bean)
         {
 
-            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;
@@ -193,7 +194,7 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
 
                     bean.setProperties(governanceMetricProperties);
 
-                    List<RelatedElement> implementations = new ArrayList<>();
+                    List<RelatedElementStub> implementations = new ArrayList<>();
 
                     if (relationships != null)
                     {
@@ -203,15 +204,15 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
                             {
                                 if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityTwoProxy(), methodName);
+                                    RelatedElementStub element = super.getRelatedElement(beanClass, relationship, relationship.getEntityTwoProxy(), methodName);
 
                                     implementations.add(element);
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_RELATIONSHIP.typeName))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
+                                    RelatedBy element = super.getRelatedBy(beanClass, relationship, methodName);
 
-                                    bean.setRelatedElement(element);
+                                    bean.setRelatedBy(element);
                                 }
                             }
                         }

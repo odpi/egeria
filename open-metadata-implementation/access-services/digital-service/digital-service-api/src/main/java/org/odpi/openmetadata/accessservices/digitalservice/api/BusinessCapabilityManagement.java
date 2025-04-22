@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.BusinessCapabilityElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.OrganizationalCapabilityProperties;
@@ -285,10 +285,10 @@ public interface BusinessCapabilityManagement
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getOrganizationalCapability(String userId,
-                                                     String businessCapabilityGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
+    List<RelatedBy> getOrganizationalCapability(String userId,
+                                                String businessCapabilityGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
 
@@ -307,10 +307,10 @@ public interface BusinessCapabilityManagement
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getDigitalSupport(String userId,
-                                           String businessCapabilityGUID,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
+    List<RelatedBy> getDigitalSupport(String userId,
+                                      String businessCapabilityGUID,
+                                      int    startFrom,
+                                      int    pageSize) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException;
 

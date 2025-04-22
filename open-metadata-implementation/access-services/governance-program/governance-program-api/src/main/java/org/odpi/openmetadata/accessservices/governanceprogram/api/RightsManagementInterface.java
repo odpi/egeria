@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
 
@@ -254,12 +254,12 @@ public interface RightsManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getLicensedElements(String userId,
-                                             String licenseGUID,
-                                             int    startFrom,
-                                             int    pageSize) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+    List<RelatedElementStub> getLicensedElements(String userId,
+                                                 String licenseGUID,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**

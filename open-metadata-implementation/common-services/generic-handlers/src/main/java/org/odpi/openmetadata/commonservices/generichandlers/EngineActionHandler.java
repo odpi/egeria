@@ -1750,8 +1750,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (entities != null)
         {
-            String selectedEngineAction = null;
-
             for (EntityDetail entity : entities)
             {
                 String entityGovernanceActionProcessStepGUID = repositoryHelper.getStringProperty(serviceName,
@@ -1761,14 +1759,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                 if (governanceActionProcessStepGUID.equals(entityGovernanceActionProcessStepGUID))
                 {
-                    if (ignoreMultipleTriggers)
-                    {
-                        /*
-                         * Only allowed one triggering of this engine action
-                         */
-                        return null;
-                    }
-
                     /*
                      * Look for an engine action in REQUESTED state.
                      */
@@ -1776,14 +1766,16 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                     if (status == EngineActionStatus.REQUESTED)
                     {
-                        selectedEngineAction = entity.getGUID();
+                        return entity.getGUID();
+                    }
+                    else if (ignoreMultipleTriggers)
+                    {
+                        /*
+                         * Only allowed one triggering of this engine action
+                         */
+                        return null;
                     }
                 }
-            }
-
-            if (selectedEngineAction != null)
-            {
-                return selectedEngineAction;
             }
         }
 
@@ -2961,9 +2953,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     null,
                                                                     serviceSupportedZones,
                                                                     methodName);
-                            }
                         }
                     }
+                }
             }
             else
             {

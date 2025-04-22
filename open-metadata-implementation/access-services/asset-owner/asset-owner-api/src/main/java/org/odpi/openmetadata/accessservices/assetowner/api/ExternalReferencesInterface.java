@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -210,10 +210,10 @@ public interface ExternalReferencesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getElementsForExternalReference(String userId,
-                                                         String externalReferenceGUID,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
+    List<RelatedElementStub> getElementsForExternalReference(String userId,
+                                                             String externalReferenceGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 }

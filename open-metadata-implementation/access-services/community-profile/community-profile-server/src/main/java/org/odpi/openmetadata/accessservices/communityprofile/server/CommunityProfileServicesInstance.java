@@ -31,7 +31,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-    private final ReferenceableHandler<RelatedElement>             relatedElementHandler;
+    private final ReferenceableHandler<RelatedElementStub>         relatedElementHandler;
     private final SoftwareCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
     private final UserIdentityHandler<UserIdentityElement>         userIdentityHandler;
     private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
@@ -96,7 +96,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
         if (repositoryHandler != null)
         {
             this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                                    RelatedElement.class,
+                                                                    RelatedElementStub.class,
                                                                     serviceName,
                                                                     serverName,
                                                                     invalidParameterHandler,
@@ -337,7 +337,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    public ReferenceableHandler<RelatedElementStub> getRelatedElementHandler() throws PropertyServerException
     {
         final String methodName = "getRelatedElementHandler";
 

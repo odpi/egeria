@@ -163,33 +163,6 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     }
 
 
-    /**
-     * Create a new client that is going to be used in an OMAG Server.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param restClient client that issues the REST API calls
-     * @param maxPageSize maximum number of results supported by this server
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public ProjectManagement(String                      serverName,
-                             String                      serverPlatformURLRoot,
-                             ProjectManagementRESTClient restClient,
-                             int                         maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
-
-        projectConverter = new ProjectConverter<>(propertyHelper,
-                                                  AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
-                                                  serverName);
-
-        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
-                                                        AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
-                                                        serverName);
-    }
-
-
     /* =====================================================================================================================
      * A Project describes a targeted set of activities
      */
@@ -800,9 +773,9 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
                         ProjectHierarchy childProjectHierarchy = this.getProjectHierarchy(userId, child.getElement(), coveredProjects);
 
-                        childProjectHierarchy.setStartingElement(projectConverter.getRelatedElement(ProjectElement.class,
-                                                                                                    child,
-                                                                                                    methodName));
+                        childProjectHierarchy.setRelatedBy(projectConverter.getRelatedBy(ProjectElement.class,
+                                                                                         child,
+                                                                                         methodName));
 
                         projectHierarchy.add(childProjectHierarchy);
                     }

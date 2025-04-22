@@ -126,7 +126,7 @@ public class CollectionConverter<B> extends OMFConverter<B>
         if (returnBean instanceof CollectionElement bean)
         {
 
-            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;

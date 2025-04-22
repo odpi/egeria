@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.api;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -519,13 +519,13 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getSemanticAssignees(String  userId,
-                                              String  glossaryTermGUID,
-                                              int     startFrom,
-                                              int     pageSize,
-                                              Date    effectiveTime,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+    List<RelatedBy> getSemanticAssignees(String  userId,
+                                         String  glossaryTermGUID,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
 
@@ -573,13 +573,13 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getGovernedElements(String  userId,
-                                             String  governanceDefinitionGUID,
-                                             int     startFrom,
-                                             int     pageSize,
-                                             Date    effectiveTime,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+    List<RelatedBy> getGovernedElements(String  userId,
+                                        String  governanceDefinitionGUID,
+                                        int     startFrom,
+                                        int     pageSize,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException;
 
@@ -601,13 +601,13 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getSourceElements(String  userId,
-                                           String  elementGUID,
-                                           int     startFrom,
-                                           int     pageSize,
-                                           Date    effectiveTime,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+    List<RelatedBy> getSourceElements(String  userId,
+                                      String  elementGUID,
+                                      int     startFrom,
+                                      int     pageSize,
+                                      Date    effectiveTime,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
 
@@ -629,13 +629,13 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getElementsSourceFrom(String  userId,
-                                               String  elementGUID,
-                                               int     startFrom,
-                                               int     pageSize,
-                                               Date    effectiveTime,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+    List<RelatedBy> getElementsSourceFrom(String  userId,
+                                          String  elementGUID,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;
 }

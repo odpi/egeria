@@ -20,13 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
 {
-    private List<RelatedElement>           parents            = null;
-    private List<RelatedElement>           peers              = null;
-    private List<RelatedElement>           children           = null;
-    private List<RelatedElement>           metrics            = null;
-    private List<RelatedElement>           externalReferences = null;
-    private List<RelatedElement>           others             = null;
-    private String                         mermaidGraph       = null;
+    private List<RelatedElementStub> parents            = null;
+    private List<RelatedElementStub> peers              = null;
+    private List<RelatedElementStub> children           = null;
+    private List<RelatedElementStub> metrics            = null;
+    private List<RelatedElementStub> externalReferences = null;
+    private List<RelatedElementStub> others             = null;
+    private String                   mermaidGraph       = null;
 
 
     /**
@@ -65,7 +65,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElement> getParents()
+    public List<RelatedElementStub> getParents()
     {
         return parents;
     }
@@ -76,7 +76,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param parents list of governance definition stubs
      */
-    public void setParents(List<RelatedElement> parents)
+    public void setParents(List<RelatedElementStub> parents)
     {
         this.parents = parents;
     }
@@ -87,7 +87,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElement> getPeers()
+    public List<RelatedElementStub> getPeers()
     {
         return peers;
     }
@@ -98,7 +98,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param peers list of governance definition stubs
      */
-    public void setPeers(List<RelatedElement> peers)
+    public void setPeers(List<RelatedElementStub> peers)
     {
         this.peers = peers;
     }
@@ -109,7 +109,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElement> getChildren()
+    public List<RelatedElementStub> getChildren()
     {
         return children;
     }
@@ -120,7 +120,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param children list of governance definition stubs
      */
-    public void setChildren(List<RelatedElement> children)
+    public void setChildren(List<RelatedElementStub> children)
     {
         this.children = children;
     }
@@ -131,7 +131,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElement> getMetrics()
+    public List<RelatedElementStub> getMetrics()
     {
         return metrics;
     }
@@ -142,7 +142,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param metrics list of governance definition stubs
      */
-    public void setMetrics(List<RelatedElement> metrics)
+    public void setMetrics(List<RelatedElementStub> metrics)
     {
         this.metrics = metrics;
     }
@@ -153,7 +153,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of links to external references
      */
-    public List<RelatedElement> getExternalReferences()
+    public List<RelatedElementStub> getExternalReferences()
     {
         return externalReferences;
     }
@@ -164,7 +164,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param externalReferences list of links to external references
      */
-    public void setExternalReferences(List<RelatedElement> externalReferences)
+    public void setExternalReferences(List<RelatedElementStub> externalReferences)
     {
         this.externalReferences = externalReferences;
     }
@@ -175,7 +175,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return details of other related elements
      */
-    public List<RelatedElement> getOthers()
+    public List<RelatedElementStub> getOthers()
     {
         return others;
     }
@@ -186,7 +186,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param others details of other related elements
      */
-    public void setOthers(List<RelatedElement> others)
+    public void setOthers(List<RelatedElementStub> others)
     {
         this.others = others;
     }
@@ -222,17 +222,14 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
     public String toString()
     {
         return "GovernanceDefinitionGraph{" +
-                       "relatedElement=" + getRelatedElement() +
-                       ", elementHeader=" + getElementHeader() +
-                       ", properties=" + getProperties() +
-                       ", parents=" + parents +
-                       ", peers=" + peers +
-                       ", children=" + children +
-                       ", metrics=" + metrics +
-                       ", externalReferences=" + externalReferences +
-                       ", others=" + others +
-                       ", mermaidGraph='" + mermaidGraph + '\'' +
-                '}';
+                "parents=" + parents +
+                ", peers=" + peers +
+                ", children=" + children +
+                ", metrics=" + metrics +
+                ", externalReferences=" + externalReferences +
+                ", others=" + others +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                "} " + super.toString();
     }
 
 

@@ -126,7 +126,7 @@ public class ProjectConverter<B> extends OMFConverter<B>
 
                 if (relationship != null)
                 {
-                    bean.setStartingElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+                    bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
                 }
 
                 bean.setProperties(projectProperties);

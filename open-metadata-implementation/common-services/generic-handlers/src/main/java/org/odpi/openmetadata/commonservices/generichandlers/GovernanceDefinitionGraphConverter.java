@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.mermaid.GovernanceDefinitionMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
@@ -131,19 +131,19 @@ public class GovernanceDefinitionGraphConverter<B> extends OMFConverter<B>
 
                     if (relationships != null)
                     {
-                        List<RelatedElement> parents            = new ArrayList<>();
-                        List<RelatedElement> peers              = new ArrayList<>();
-                        List<RelatedElement> children           = new ArrayList<>();
-                        List<RelatedElement> metrics            = new ArrayList<>();
-                        List<RelatedElement> externalReferences = new ArrayList<>();
-                        List<RelatedElement> others             = new ArrayList<>();
+                        List<RelatedElementStub> parents            = new ArrayList<>();
+                        List<RelatedElementStub> peers              = new ArrayList<>();
+                        List<RelatedElementStub> children           = new ArrayList<>();
+                        List<RelatedElementStub> metrics            = new ArrayList<>();
+                        List<RelatedElementStub> externalReferences = new ArrayList<>();
+                        List<RelatedElementStub> others             = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
                             if (relationship != null)
                             {
-                                EntityProxy otherEnd = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
-                                RelatedElement element = super.getRelatedElement(beanClass, relationship, otherEnd, methodName);
+                                EntityProxy        otherEnd = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+                                RelatedElementStub element  = super.getRelatedElement(beanClass, relationship, otherEnd, methodName);
 
                                 if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName))
                                 {

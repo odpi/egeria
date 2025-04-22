@@ -29,17 +29,17 @@ public enum VisualStyle
 
     SOLUTION_BLUEPRINT(Colour.WHITE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-rect"),
     SOLUTION_ROLE(Colour.WHITE.getColourNumber(), Colour.CERISE.getColourNumber(), Colour.PINKY.getColourNumber(), "trap-t"),
-    SOLUTION_SUBGRAPH(Colour.BLACK.getColourNumber(), Colour.PINKY.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
+    SOLUTION_SUBGRAPH(Colour.BLACK.getColourNumber(), Colour.LIGHT_STEEL_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
 
 
-    DEFAULT_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "rect"),
-    AUTOMATED_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "subproc"),
-    THIRD_PARTY_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "processes"),
-    MANUAL_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "docs"),
-    DATA_STORAGE_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "lin-cyl"),
-    DATA_DISTRIBUTION_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "das"),
-    DOCUMENT_PUBLISHING_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "odd"),
-    INSIGHT_MODEL_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.PINKY.getColourNumber(), "stadium"),
+    DEFAULT_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    AUTOMATED_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "subproc"),
+    THIRD_PARTY_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "processes"),
+    MANUAL_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "docs"),
+    DATA_STORAGE_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "lin-cyl"),
+    DATA_DISTRIBUTION_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "das"),
+    DOCUMENT_PUBLISHING_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "odd"),
+    INSIGHT_MODEL_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "stadium"),
 
     SOLUTION_PORT(Colour.WHITE.getColourNumber(), Colour.MAUVE.getColourNumber(), Colour.PINKY.getColourNumber(), "delay"),
 

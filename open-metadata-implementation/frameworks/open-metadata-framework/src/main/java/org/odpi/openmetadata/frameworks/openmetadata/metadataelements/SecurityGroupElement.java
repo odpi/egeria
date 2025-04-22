@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SecurityGroupElement implements MetadataElement
 {
     private ElementHeader           elementHeader = null;
-    private SecurityGroupProperties properties    = null;
-    private RelatedElement          relatedElement = null;
+    private SecurityGroupProperties properties = null;
+    private RelatedBy               relatedBy  = null;
 
 
     /**
@@ -47,7 +47,7 @@ public class SecurityGroupElement implements MetadataElement
         {
             this.elementHeader = template.getElementHeader();
             this.properties = template.getProperties();
-            this.relatedElement = template.getRelatedElement();
+            this.relatedBy  = template.getRelatedBy();
         }
     }
 
@@ -104,9 +104,9 @@ public class SecurityGroupElement implements MetadataElement
      *
      * @return list of element stubs
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedBy()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
@@ -114,11 +114,11 @@ public class SecurityGroupElement implements MetadataElement
      * Set up details of the relationship used to retrieve this element.
      * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param relatedElement relationship details
+     * @param relatedBy relationship details
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedBy(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -133,7 +133,7 @@ public class SecurityGroupElement implements MetadataElement
         return "SecurityGroupElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                       ", relatedElement=" + relatedElement +
+                       ", relatedBy=" + relatedBy +
                        '}';
     }
 
@@ -158,7 +158,7 @@ public class SecurityGroupElement implements MetadataElement
         SecurityGroupElement that = (SecurityGroupElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedElement, that.relatedElement);
+                       Objects.equals(relatedBy, that.relatedBy);
     }
 
 
@@ -170,6 +170,6 @@ public class SecurityGroupElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy);
     }
 }

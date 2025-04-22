@@ -6,7 +6,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedElementsResponse extends FFDCResponseBase
 {
-    private List<RelatedElement> elements = null;
+    private List<RelatedElementStub> elements = null;
 
 
     /**
@@ -54,7 +55,7 @@ public class RelatedElementsResponse extends FFDCResponseBase
      *
      * @return result object
      */
-    public List<RelatedElement> getElements()
+    public List<RelatedElementStub> getElements()
     {
         return elements;
     }
@@ -65,7 +66,7 @@ public class RelatedElementsResponse extends FFDCResponseBase
      *
      * @param elements result object
      */
-    public void setElements(List<RelatedElement> elements)
+    public void setElements(List<RelatedElementStub> elements)
     {
         this.elements = elements;
     }

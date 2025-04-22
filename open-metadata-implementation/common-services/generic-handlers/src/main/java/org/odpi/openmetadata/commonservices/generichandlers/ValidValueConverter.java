@@ -73,7 +73,7 @@ public class ValidValueConverter<B> extends OMFConverter<B>
                         bean.setIsDefaultValue(this.removeIsDefaultValue(relationship.getProperties()));
                     }
 
-                    bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+                    bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
                 }
             }
 

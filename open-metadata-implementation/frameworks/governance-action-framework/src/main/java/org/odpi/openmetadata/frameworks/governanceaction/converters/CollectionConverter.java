@@ -166,7 +166,7 @@ public class CollectionConverter<B> extends OpenMetadataConverterBase<B>
 
                 bean.setProperties(collectionProperties);
 
-                bean.setRelatedElement(super.getRelatedElement(beanClass, relatedMetadataElement, methodName));
+                bean.setRelatedBy(super.getRelatedBy(beanClass, relatedMetadataElement, methodName));
             }
 
             return returnBean;
@@ -192,16 +192,16 @@ public class CollectionConverter<B> extends OpenMetadataConverterBase<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewBean(Class<B>                beanClass,
-                        OpenMetadataElement     element,
+    public B getNewBean(Class<B>                 beanClass,
+                        OpenMetadataElement      element,
                         OpenMetadataRelationship relationship,
-                        String                  methodName) throws PropertyServerException
+                        String                   methodName) throws PropertyServerException
     {
         B returnBean = this.getNewBean(beanClass, element, methodName);
 
         if (returnBean instanceof CollectionElement bean)
         {
-            bean.setRelatedElement(super.getRelatedElement(beanClass, element, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;

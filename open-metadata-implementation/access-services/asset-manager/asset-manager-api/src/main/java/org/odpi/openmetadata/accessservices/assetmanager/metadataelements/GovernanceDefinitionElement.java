@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorr
 import java.util.List;
 import java.util.Objects;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 
 /**
@@ -20,8 +20,8 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
 {
     private ElementHeader                   elementHeader      = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;
-    private GovernanceDefinitionProperties  properties         = null;
-    private RelatedElement                  relatedElement     = null;
+    private GovernanceDefinitionProperties properties = null;
+    private RelatedBy                      relatedBy  = null;
 
 
 
@@ -46,7 +46,7 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
             this.elementHeader = template.getElementHeader();
             this.correlationHeaders = template.getCorrelationHeaders();
             this.properties = template.getProperties();
-            this.relatedElement = template.getRelatedElement();
+            this.relatedBy  = template.getRelatedBy();
         }
     }
 
@@ -82,15 +82,6 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
     @Override
     public List<MetadataCorrelationHeader> getCorrelationHeaders()
     {
-        if (correlationHeaders == null)
-        {
-            return null;
-        }
-        else if (correlationHeaders.isEmpty())
-        {
-            return null;
-        }
-
         return correlationHeaders;
     }
 
@@ -137,9 +128,9 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
      *
      * @return list of element stubs
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedBy()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
@@ -147,11 +138,11 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
      * Set up details of the relationship used to retrieve this element.
      * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param relatedElement relationship details
+     * @param relatedBy relationship details
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedBy(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -167,7 +158,7 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
                        "elementHeader=" + elementHeader +
                        ", correlationHeaders=" + correlationHeaders +
                        ", properties=" + properties +
-                       ", relatedElement=" + relatedElement +
+                       ", relatedBy=" + relatedBy +
                        '}';
     }
 
@@ -192,7 +183,7 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(correlationHeaders, that.correlationHeaders) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedElement, that.relatedElement);
+                       Objects.equals(relatedBy, that.relatedBy);
     }
 
 
@@ -204,6 +195,6 @@ public class GovernanceDefinitionElement implements CorrelatedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, properties, relatedElement);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, properties, relatedBy);
     }
 }

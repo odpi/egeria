@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.LicenseHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -761,7 +761,7 @@ public class LicenseRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAttachedElements(userId,
                                                              licenseTypeGUID,
@@ -825,7 +825,7 @@ public class LicenseRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAttachedElements(userId,
                                                              elementGUID,

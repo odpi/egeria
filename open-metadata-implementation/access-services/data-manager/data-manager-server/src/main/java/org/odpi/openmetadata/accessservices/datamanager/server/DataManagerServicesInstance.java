@@ -60,7 +60,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     private final EndpointHandler<EndpointElement>           endpointHandler;
 
     private final ValidValuesHandler<ValidValueSetElement> validValuesSetHandler;
-    private final ReferenceableHandler<RelatedElement>     relatedElementHandler;
+    private final ReferenceableHandler<RelatedElementStub>          relatedElementHandler;
     private final ValidValuesHandler<ValidValueElement>    validValuesHandler;
 
 
@@ -413,7 +413,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                            auditLog);
 
         this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
-                                                                RelatedElement.class,
+                                                                RelatedElementStub.class,
                                                                 serviceName,
                                                                 serverName,
                                                                 invalidParameterHandler,
@@ -768,7 +768,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    ReferenceableHandler<RelatedElementStub> getRelatedElementHandler() throws PropertyServerException
     {
         final String methodName = "getRelatedElementHandler";
 

@@ -8,12 +8,12 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.CertificationTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.CertificationTypesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
 
 import java.util.List;
@@ -410,12 +410,12 @@ public class AssetCertificationManager extends AssetOwnerBaseClient implements A
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getCertifiedElements(String userId,
-                                                     String certificationTypeGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public List<RelatedElementStub> getCertifiedElements(String userId,
+                                                         String certificationTypeGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "getCertifiedElements";
         final String guidParameter = "certificationTypeGUID";
@@ -440,12 +440,12 @@ public class AssetCertificationManager extends AssetOwnerBaseClient implements A
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getCertifications(String userId,
-                                                  String elementGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getCertifications(String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";

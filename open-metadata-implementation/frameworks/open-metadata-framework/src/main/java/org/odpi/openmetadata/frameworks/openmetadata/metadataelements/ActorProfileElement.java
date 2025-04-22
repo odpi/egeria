@@ -23,9 +23,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProf
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ActorProfileElement implements MetadataElement
 {
-    private ElementHeader                elementHeader     = null;
-    private ActorProfileProperties       profileProperties = null;
-    private List<ContactMethodElement>   contactMethods    = null;
+    private ElementHeader                elementHeader        = null;
+    private ActorProfileProperties       profileProperties    = null;
+    private List<ContactMethodElement>   contactMethods       = null;
     private ContributionRecordElement    contributionRecord   = null; /* Person only */
     private List<ElementStub>            personRoles          = null; /* Person only */
     private List<ElementStub>            peers                = null; /* Person only */
@@ -35,7 +35,7 @@ public class ActorProfileElement implements MetadataElement
     private List<ElementStub>            subTeams             = null; /* Team only */
     private List<ElementStub>            teamLeaderRoles      = null; /* Team only */
     private List<ElementStub>            teamMemberRoles      = null; /* Team only */
-    private List<RelatedElement>         businessCapability   = null; /* Team only */
+    private List<RelatedElementStub>     businessCapability   = null; /* Team only */
     private List<ElementStub>            linkedInfrastructure = null; /* ITProfile only */
 
 
@@ -345,7 +345,7 @@ public class ActorProfileElement implements MetadataElement
      *
      * @return list of capabilities
      */
-    public List<RelatedElement> getBusinessCapability()
+    public List<RelatedElementStub> getBusinessCapability()
     {
         return businessCapability;
     }
@@ -356,7 +356,7 @@ public class ActorProfileElement implements MetadataElement
      *
      * @param businessCapability list of capabilities
      */
-    public void setBusinessCapability(List<RelatedElement> businessCapability)
+    public void setBusinessCapability(List<RelatedElementStub> businessCapability)
     {
         this.businessCapability = businessCapability;
     }

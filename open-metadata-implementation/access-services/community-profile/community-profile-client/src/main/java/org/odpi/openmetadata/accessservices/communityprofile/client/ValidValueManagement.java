@@ -558,8 +558,8 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
     public List<ValidValueElement> getAllValidValues(String userId,
                                                      int    startFrom,
                                                      int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String methodName = "getValidValues";
 
@@ -651,12 +651,12 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/sets/{2}?startFrom={3}&pageSize={4}";
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     validValueGUID,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               validValueGUID,
+                                                                               startFrom,
+                                                                               validatedPageSize);
 
         return restResult.getElements();
     }
@@ -714,12 +714,12 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getConsumersOfValidValue(String userId,
-                                                         String validValueGUID,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<RelatedElementStub> getConsumersOfValidValue(String userId,
+                                                             String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName        = "getConsumersOfValidValue";
         final String guidPropertyName  = "validValueGUID";
@@ -731,12 +731,12 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/{2}/consumers?startFrom={3}&pageSize={4}";
 
         RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          validValueGUID,
-                                                                                          startFrom,
-                                                                                          validatedPageSize);
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       validValueGUID,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
 
         return restResult.getElements();
     }
@@ -772,11 +772,11 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/by-reference-value-tags/{2}?startFrom={3}&pageSize={4}";
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               startFrom,
+                                                                               validatedPageSize);
 
         return restResult.getElements();
     }
@@ -797,12 +797,12 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getAssigneesOfReferenceValue(String userId,
-                                                             String validValueGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<RelatedElementStub> getAssigneesOfReferenceValue(String userId,
+                                                                 String validValueGUID,
+                                                                 int    startFrom,
+                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String methodName        = "getAssigneesOfReferenceValue";
         final String guidPropertyName  = "validValueGUID";
@@ -815,12 +815,12 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/{2}/by-reference-value-tag-assignees?startFrom={3}&pageSize={4}";
 
         RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          validValueGUID,
-                                                                                          startFrom,
-                                                                                          validatedPageSize);
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       validValueGUID,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
 
         return restResult.getElements();
     }

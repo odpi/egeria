@@ -7,7 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -760,7 +760,7 @@ public class CertificationRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAttachedElements(userId,
                                                              certificationTypeGUID,
@@ -824,7 +824,7 @@ public class CertificationRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAttachedElements(userId,
                                                              elementGUID,

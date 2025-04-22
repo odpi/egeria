@@ -28,6 +28,7 @@ Content-Type: application/json
 ###
 # @name=getAssetGraph
 # Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+# Note the number of anchored elements returned is controlled by the paging.
 #
 # Asset: https://egeria-project.org/concepts/asset/
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-graph?startFrom=0&pageSize=0

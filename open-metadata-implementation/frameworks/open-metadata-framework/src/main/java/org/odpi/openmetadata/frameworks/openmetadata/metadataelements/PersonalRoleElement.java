@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class PersonalRoleElement implements MetadataElement
 {
     private ElementHeader       elementHeader  = null;
-    private ActorRoleProperties properties     = null;
-    private RelatedElement      relatedElement = null;
+    private ActorRoleProperties properties = null;
+    private RelatedBy           relatedBy  = null;
 
 
     /**
@@ -46,7 +46,7 @@ public class PersonalRoleElement implements MetadataElement
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-            relatedElement = template.getRelatedElement();
+            relatedBy  = template.getRelatedElement();
         }
     }
 
@@ -103,9 +103,9 @@ public class PersonalRoleElement implements MetadataElement
      *
      * @return list of element stubs
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedElement()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
@@ -113,11 +113,11 @@ public class PersonalRoleElement implements MetadataElement
      * Set up details of the relationship used to retrieve this element.
      * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param relatedElement relationship details
+     * @param relatedBy relationship details
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedElement(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -132,7 +132,7 @@ public class PersonalRoleElement implements MetadataElement
         return "PersonalRoleElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                       ", relatedElement=" + relatedElement +
+                       ", relatedBy=" + relatedBy +
                        '}';
     }
 
@@ -157,7 +157,7 @@ public class PersonalRoleElement implements MetadataElement
         PersonalRoleElement that = (PersonalRoleElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedElement, that.relatedElement);
+                       Objects.equals(relatedBy, that.relatedBy);
     }
 
 
@@ -169,6 +169,6 @@ public class PersonalRoleElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy);
     }
 }

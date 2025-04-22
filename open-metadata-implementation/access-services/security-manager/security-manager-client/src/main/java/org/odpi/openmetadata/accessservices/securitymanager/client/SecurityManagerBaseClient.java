@@ -11,7 +11,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
@@ -534,15 +535,15 @@ public class SecurityManagerBaseClient
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getRelatedElements(String userId,
-                                            String startingElementGUID,
-                                            String startingElementGUIDParameterName,
-                                            String urlTemplate,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    List<RelatedElementStub> getRelatedElements(String userId,
+                                                String startingElementGUID,
+                                                String startingElementGUIDParameterName,
+                                                String urlTemplate,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);

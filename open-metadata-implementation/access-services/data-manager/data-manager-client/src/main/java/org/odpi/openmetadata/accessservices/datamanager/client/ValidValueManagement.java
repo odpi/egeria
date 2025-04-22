@@ -703,10 +703,10 @@ public class ValidValueManagement extends DataManagerBaseClient implements Valid
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getConsumersOfValidValue(String userId,
-                                                         String validValueGUID,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
+    public List<RelatedElementStub> getConsumersOfValidValue(String userId,
+                                                    String validValueGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
@@ -786,10 +786,10 @@ public class ValidValueManagement extends DataManagerBaseClient implements Valid
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getAssigneesOfReferenceValue(String userId,
-                                                             String validValueGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
+    public List<RelatedElementStub> getAssigneesOfReferenceValue(String userId,
+                                                        String validValueGUID,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {

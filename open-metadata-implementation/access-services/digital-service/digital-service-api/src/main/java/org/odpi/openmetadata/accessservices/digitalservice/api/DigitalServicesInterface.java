@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DigitalServiceElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalServiceStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceDependencyProperties;
@@ -250,10 +250,10 @@ public interface DigitalServicesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getDependentDigitalServices(String userId,
-                                                     String digitalServiceGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
+    List<RelatedBy> getDependentDigitalServices(String userId,
+                                                String digitalServiceGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
 
@@ -272,10 +272,10 @@ public interface DigitalServicesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getDigitalServiceDependencies(String userId,
-                                                       String digitalServiceGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
+    List<RelatedBy> getDigitalServiceDependencies(String userId,
+                                                  String digitalServiceGUID,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
 
@@ -294,10 +294,10 @@ public interface DigitalServicesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getSupportedBusinessCapabilities(String userId,
-                                                          String digitalServiceGUID,
-                                                          int    startFrom,
-                                                          int    pageSize) throws InvalidParameterException,
+    List<RelatedBy> getSupportedBusinessCapabilities(String userId,
+                                                     String digitalServiceGUID,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
 
@@ -316,10 +316,10 @@ public interface DigitalServicesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getSupportedDigitalProducts(String userId,
-                                                     String digitalServiceGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
+    List<RelatedBy> getSupportedDigitalProducts(String userId,
+                                                String digitalServiceGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
 

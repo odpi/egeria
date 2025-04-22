@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -730,7 +730,7 @@ public class ExternalReferenceRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAttachedElements(userId,
                                                              externalReferenceGUID,

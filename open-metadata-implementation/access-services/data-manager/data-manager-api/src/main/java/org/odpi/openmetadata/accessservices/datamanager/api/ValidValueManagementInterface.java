@@ -82,8 +82,8 @@ public interface ValidValueManagementInterface
                                String                         validValueSetGUID,
                                ValidValueMembershipProperties properties,
                                String                         validValueMemberGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                          PropertyServerException;
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
 
     /**
@@ -129,8 +129,8 @@ public interface ValidValueManagementInterface
                           String                         elementGUID,
                           ValidValueAssignmentProperties properties,
                           String                         validValueGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**
@@ -151,8 +151,8 @@ public interface ValidValueManagementInterface
                           String externalSourceName,
                           String elementGUID,
                           String validValueGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException;
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException;
 
 
     /**
@@ -363,12 +363,12 @@ public interface ValidValueManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getConsumersOfValidValue(String userId,
-                                                  String validValueGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
+    List<RelatedElementStub> getConsumersOfValidValue(String userId,
+                                                      String validValueGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -408,12 +408,12 @@ public interface ValidValueManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getAssigneesOfReferenceValue(String userId,
-                                                      String validValueGUID,
-                                                      int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
+    List<RelatedElementStub> getAssigneesOfReferenceValue(String userId,
+                                                          String validValueGUID,
+                                                          int    startFrom,
+                                                          int    pageSize) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
 
     /**
      * Retrieve the validValue metadata element with the supplied unique identifier.

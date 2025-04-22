@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 import org.odpi.openmetadata.accessservices.assetowner.api.RelatedElementsManagementInterface;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StakeholderProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -695,15 +695,15 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getRelatedElements(String userId,
-                                            String startingElementGUID,
-                                            String startingElementGUIDParameterName,
-                                            String urlTemplate,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    List<RelatedElementStub> getRelatedElements(String userId,
+                                                String startingElementGUID,
+                                                String startingElementGUIDParameterName,
+                                                String urlTemplate,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
@@ -884,12 +884,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getMoreInformation(String userId,
-                                                   String elementGUID,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<RelatedElementStub> getMoreInformation(String userId,
+                                                       String elementGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
@@ -914,12 +914,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getDescriptiveElements(String userId,
-                                                       String detailGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getDescriptiveElements(String userId,
+                                                           String detailGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
@@ -1019,12 +1019,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholders(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getStakeholders(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
@@ -1049,12 +1049,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholderCommissionedElements(String userId,
-                                                                   String stakeholderGUID,
-                                                                   int    startFrom,
-                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedElementStub> getStakeholderCommissionedElements(String userId,
+                                                                       String stakeholderGUID,
+                                                                       int    startFrom,
+                                                                       int    pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
@@ -1064,7 +1064,7 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
         return this.getRelatedElements(userId, stakeholderGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
 
-    
+
     /**
      * Create a "ResourceList" relationship between a consuming element and an element that represents resources.
      *
@@ -1152,12 +1152,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getResourceList(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getResourceList(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
@@ -1182,12 +1182,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSupportedByResource(String userId,
-                                                       String resourceGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getSupportedByResource(String userId,
+                                                           String resourceGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";
@@ -1283,12 +1283,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getCatalogTemplateList(String userId,
-                                                       String elementGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getCatalogTemplateList(String userId,
+                                                           String elementGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getCatalogTemplateList";
         final String guidPropertyName  = "elementGUID";
@@ -1313,12 +1313,12 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSupportedByTemplate(String userId,
-                                                       String templateGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getSupportedByTemplate(String userId,
+                                                           String templateGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getSupportedByTemplate";
         final String guidPropertyName  = "templateGUID";

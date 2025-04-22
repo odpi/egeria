@@ -521,12 +521,12 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getLicensedElements(String userId,
-                                                    String licenseGUID,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<RelatedElementStub> getLicensedElements(String userId,
+                                                        String licenseGUID,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "getLicencedElements";
         final String guidParameter = "licenseGUID";

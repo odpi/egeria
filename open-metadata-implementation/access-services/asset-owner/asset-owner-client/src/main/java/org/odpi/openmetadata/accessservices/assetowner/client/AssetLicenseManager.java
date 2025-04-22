@@ -9,12 +9,12 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.LicenseTypesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.LicensesResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 
 import java.util.List;
@@ -412,12 +412,12 @@ public class AssetLicenseManager extends AssetOwnerBaseClient implements AssetLi
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getLicensedElements(String userId,
-                                                    String licenseGUID,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<RelatedElementStub> getLicensedElements(String userId,
+                                                        String licenseGUID,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "getLicencedElements";
         final String guidParameter = "licenseGUID";

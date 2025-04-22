@@ -196,15 +196,15 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
 
                     if (relationships != null)
                     {
-                        List<ElementStub> peers     = new ArrayList<>();
-                        ElementStub       superTeam = null;
+                        List<ElementStub>            peers                = new ArrayList<>();
+                        ElementStub                  superTeam            = null;
                         List<ElementStub>            subTeams             = new ArrayList<>();
                         List<ElementStub>            teamLeaders          = new ArrayList<>();
                         List<ElementStub>            teamMembers          = new ArrayList<>();
                         List<ProfileIdentityElement> profileIdentities    = new ArrayList<>();
                         List<ProfileLocationElement> locations            = new ArrayList<>();
                         List<ElementStub>            roles                = new ArrayList<>();
-                        List<RelatedElement>         businessCapabilities   = new ArrayList<>();
+                        List<RelatedElementStub>     businessCapabilities = new ArrayList<>();
                         List<ElementStub>            linkedInfrastructure = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
@@ -273,7 +273,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
-                                    RelatedElement relatedElement = super.getRelatedElement(beanClass, relationship, entityProxy, methodName);
+                                    RelatedElementStub relatedElement = super.getRelatedElement(beanClass, relationship, entityProxy, methodName);
 
                                     businessCapabilities.add(relatedElement);
                                 }

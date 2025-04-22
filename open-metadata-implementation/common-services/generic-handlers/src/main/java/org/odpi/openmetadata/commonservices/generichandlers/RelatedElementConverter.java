@@ -10,7 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * RelatedElementConverter generates a RelatedElement from a relationship and attached entity
+ * RelatedElementConverter generates a RelatedBy from a relationship and attached entity
  */
 public class RelatedElementConverter<B> extends OMFConverter<B>
 {

@@ -129,7 +129,7 @@ public class LicenseTypeConverter<B> extends OMFConverter<B>
         if (returnBean instanceof LicenseTypeElement bean)
         {
 
-            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StakeholderProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -66,7 +66,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -152,7 +152,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -226,7 +226,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getMoreInformation(userId,
                                                             elementGUID,
@@ -283,7 +283,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getDescriptiveElements(userId,
                                                                 detailGUID,
@@ -341,7 +341,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -433,7 +433,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -507,7 +507,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getStakeholders(userId,
                                                          elementGUID,
@@ -564,7 +564,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getCommissionedByStakeholder(userId,
                                                                       stakeholderGUID,
@@ -622,7 +622,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -721,7 +721,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -795,7 +795,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getResourceList(userId,
                                                          elementGUID,
@@ -852,7 +852,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getSupportedByResource(userId,
                                                                 resourceGUID,
@@ -909,7 +909,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1000,7 +1000,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1074,7 +1074,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getCatalogTemplateList(userId,
                                                                 elementGUID,
@@ -1131,7 +1131,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getSupportedByTemplate(userId,
                                                                 templateGUID,

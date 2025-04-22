@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelatedElement contains the properties and header for a relationship retrieved from the metadata repository along with the stub
+ * RelatedBy contains the properties and header for a relationship retrieved from the metadata repository along with the stub
  * of the related element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -156,7 +156,7 @@ public class RelatedMetadataElementStub
     @Override
     public String toString()
     {
-        return "RelatedElement{" +
+        return "RelatedBy{" +
                        "relationshipHeader=" + relationshipHeader +
                        ", relationshipProperties=" + relationshipProperties +
                        ", relatedElement=" + relatedElement +

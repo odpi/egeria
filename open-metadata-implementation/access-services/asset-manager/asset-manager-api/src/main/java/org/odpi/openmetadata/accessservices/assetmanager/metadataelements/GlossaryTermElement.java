@@ -14,7 +14,7 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 
 /**
@@ -28,8 +28,8 @@ public class GlossaryTermElement implements CorrelatedMetadataElement
 {
     private ElementHeader                   elementHeader          = null;
     private List<MetadataCorrelationHeader> correlationHeaders     = null;
-    private GlossaryTermProperties          glossaryTermProperties = null;
-    private RelatedElement                  relatedElement         = null;
+    private GlossaryTermProperties glossaryTermProperties = null;
+    private RelatedBy              relatedBy              = null;
 
 
     /**
@@ -53,7 +53,7 @@ public class GlossaryTermElement implements CorrelatedMetadataElement
             elementHeader = template.getElementHeader();
             correlationHeaders = template.getCorrelationHeaders();
             glossaryTermProperties = template.getGlossaryTermProperties();
-            relatedElement = template.getRelatedElement();
+            relatedBy              = template.getRelatedElement();
         }
     }
 
@@ -144,20 +144,20 @@ public class GlossaryTermElement implements CorrelatedMetadataElement
      *
      * @return relationship properties and starting element
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedElement()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
     /**
      * Set up details of the relationship used to retrieve the element.
      *
-     * @param relatedElement relationship properties and starting element
+     * @param relatedBy relationship properties and starting element
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedElement(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -173,7 +173,7 @@ public class GlossaryTermElement implements CorrelatedMetadataElement
                        "elementHeader=" + elementHeader +
                        ", correlationHeaders=" + correlationHeaders +
                        ", glossaryTermProperties=" + glossaryTermProperties +
-                       ", relatedElement=" + relatedElement +
+                       ", relatedBy=" + relatedBy +
                        '}';
     }
 
@@ -211,6 +211,6 @@ public class GlossaryTermElement implements CorrelatedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, glossaryTermProperties, relatedElement);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, glossaryTermProperties, relatedBy);
     }
 }

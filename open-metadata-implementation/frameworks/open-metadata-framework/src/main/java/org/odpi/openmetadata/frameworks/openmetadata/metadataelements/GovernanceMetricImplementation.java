@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceMetricImplementation extends GovernanceMetricElement
 {
-    private List<RelatedElement> implementations = null;
+    private List<RelatedElementStub> implementations = null;
 
     /**
      * Default constructor
@@ -64,7 +64,7 @@ public class GovernanceMetricImplementation extends GovernanceMetricElement
      *
      * @return related elements
      */
-    public List<RelatedElement> getImplementations()
+    public List<RelatedElementStub> getImplementations()
     {
         return implementations;
     }
@@ -75,7 +75,7 @@ public class GovernanceMetricImplementation extends GovernanceMetricElement
      *
      * @param implementations related elements
      */
-    public void setImplementations(List<RelatedElement> implementations)
+    public void setImplementations(List<RelatedElementStub> implementations)
     {
         this.implementations = implementations;
     }
@@ -86,6 +86,13 @@ public class GovernanceMetricImplementation extends GovernanceMetricElement
      *
      * @return string containing the properties and their values
      */
+    @Override
+    public String toString()
+    {
+        return "GovernanceMetricImplementation{" +
+                "implementations=" + implementations +
+                "} " + super.toString();
+    }
 
 
 

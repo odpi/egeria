@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
@@ -716,15 +716,15 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getRelatedElements(String userId,
-                                            String startingElementGUID,
-                                            String startingElementGUIDParameterName,
-                                            String urlTemplate,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    List<RelatedElementStub> getRelatedElements(String userId,
+                                                String startingElementGUID,
+                                                String startingElementGUIDParameterName,
+                                                String urlTemplate,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
@@ -880,12 +880,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getMoreInformation(String userId,
-                                                   String elementGUID,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<RelatedElementStub> getMoreInformation(String userId,
+                                                       String elementGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
@@ -910,12 +910,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getDescriptiveElements(String userId,
-                                                       String detailGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getDescriptiveElements(String userId,
+                                                           String detailGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
@@ -1023,12 +1023,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholders(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getStakeholders(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
@@ -1053,12 +1053,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholderCommissionedElements(String userId,
-                                                                   String stakeholderGUID,
-                                                                   int    startFrom,
-                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedElementStub> getStakeholderCommissionedElements(String userId,
+                                                                       String stakeholderGUID,
+                                                                       int    startFrom,
+                                                                       int    pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
@@ -1159,12 +1159,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getAssignedScopes(String userId,
-                                                  String elementGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getAssignedScopes(String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName        = "getAssignedScopes";
         final String guidPropertyName  = "elementGUID";
@@ -1189,12 +1189,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getAssignedActors(String userId,
-                                                  String scopeGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getAssignedActors(String userId,
+                                                      String scopeGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
@@ -1236,7 +1236,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
 
         final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/resource-list/{3}";
 
-        this.setupRelationship(userId, 
+        this.setupRelationship(userId,
                                externalSourceGUID,
                                externalSourceName,
                                elementGUID,
@@ -1295,12 +1295,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getResourceList(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getResourceList(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
@@ -1325,12 +1325,12 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSupportedByResource(String userId,
-                                                       String resourceGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getSupportedByResource(String userId,
+                                                           String resourceGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";

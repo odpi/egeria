@@ -46,8 +46,8 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
     private final EndpointHandler<EndpointElement>                   endpointHandler;
     private final ExternalReferenceHandler<ExternalReferenceElement> externalReferenceHandler;
     private final CertificationHandler<CertificationTypeElement>     certificationTypeHandler;
-    private final LicenseHandler<LicenseTypeElement>                 licenseTypeHandler;
-    private final ReferenceableHandler<RelatedElement> relatedElementHandler;
+    private final LicenseHandler<LicenseTypeElement> licenseTypeHandler;
+    private final ReferenceableHandler<RelatedElementStub>    relatedElementHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -251,7 +251,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                      auditLog);
 
         this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
-                                                                RelatedElement.class,
+                                                                RelatedElementStub.class,
                                                                 serviceName,
                                                                 serverName,
                                                                 invalidParameterHandler,
@@ -539,7 +539,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    public ReferenceableHandler<RelatedElementStub> getRelatedElementHandler() throws PropertyServerException
     {
         final String methodName = "getRelatedElementHandler";
 

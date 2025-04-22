@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -115,18 +115,9 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
 
                     if (relationship != null)
                     {
-                        RelatedElement relatedElement = new RelatedElement();
+                        RelatedBy relatedBy = new RelatedBy();
 
-                        relatedElement.setRelationshipHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));
-
-                        if (entity.getGUID().equals(relationship.getEntityOneProxy().getGUID()))
-                        {
-                            relatedElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
-                        }
-                        else
-                        {
-                            relatedElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
-                        }
+                        relatedBy.setRelationshipHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));
 
                         if (relationship.getProperties() != null)
                         {
@@ -137,10 +128,10 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
                             relationshipProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                             relationshipProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
-                            relatedElement.setRelationshipProperties(relationshipProperties);
+                            relatedBy.setRelationshipProperties(relationshipProperties);
                         }
 
-                        bean.setRelatedElement(relatedElement);
+                        bean.setRelatedElement(relatedBy);
                     }
                 }
                 else

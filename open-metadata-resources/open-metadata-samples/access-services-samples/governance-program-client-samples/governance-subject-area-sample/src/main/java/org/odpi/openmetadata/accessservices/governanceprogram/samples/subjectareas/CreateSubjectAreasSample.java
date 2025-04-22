@@ -399,7 +399,7 @@ public class CreateSubjectAreasSample
             subjectAreaManager.setupGovernedBy(clientUserId, subjectAreaGUID, null, governanceControl1GUID);
         }
 
-        List<RelatedElement> governedElements = subjectAreaManager.getGovernedElements(clientUserId, governanceControl1GUID, 0, 0);
+        List<RelatedElementStub> governedElements = subjectAreaManager.getGovernedElements(clientUserId, governanceControl1GUID, 0, 0);
 
         if ((governedElements == null) || (governedElements.isEmpty()))
         {
@@ -413,7 +413,7 @@ public class CreateSubjectAreasSample
             {
                 boolean found = false;
 
-                for (RelatedElement relatedElement : governedElements)
+                for (RelatedElementStub relatedElement : governedElements)
                 {
                     if (subjectAreaGUID.equals(relatedElement.getRelatedElement().getGUID()))
                     {
