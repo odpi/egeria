@@ -373,11 +373,11 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    ReferenceableHandler<RelatedElement> getRelatedElementHandler(String userId,
-                                                                  String serverName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    ReferenceableHandler<RelatedElementStub> getRelatedElementHandler(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 

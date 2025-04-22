@@ -710,7 +710,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         null,
                                                                         qualifiedName + ":SetZones",
-                                                                        "Publish asset",
+                                                                        "Publish asset (set governance zones)",
                                                                         "Set up the zones in the asset so that is it visible in the data lake.",
                                                                         0,
                                                                         null,

@@ -20,7 +20,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 
 class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
 {
@@ -136,11 +137,11 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ReferenceableHandler<RelatedElement> getRelatedElementHandler(String userId,
-                                                                  String serverName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    ReferenceableHandler<RelatedElementStub> getRelatedElementHandler(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                              serverName,

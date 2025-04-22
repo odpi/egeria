@@ -231,12 +231,12 @@ public interface CertificationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getCertifiedElements(String userId,
-                                              String certificationTypeGUID,
-                                              int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+    List<RelatedElementStub> getCertifiedElements(String userId,
+                                                  String certificationTypeGUID,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
@@ -253,10 +253,10 @@ public interface CertificationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getCertifications(String userId,
-                                           String elementGUID,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    List<RelatedElementStub> getCertifications(String userId,
+                                               String elementGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 }

@@ -23,7 +23,7 @@ public class LocationElement implements MetadataElement
 {
     private ElementHeader      elementHeader = null;
     private LocationProperties locationProperties = null;
-    private RelatedElement     relatedElement   = null;
+    private RelatedBy          relatedBy          = null;
 
 
     /**
@@ -46,7 +46,7 @@ public class LocationElement implements MetadataElement
         {
             elementHeader = template.getElementHeader();
             locationProperties = template.getLocationProperties();
-            relatedElement = template.getRelatedElement();
+            relatedBy          = template.getRelatedElement();
         }
     }
 
@@ -103,9 +103,9 @@ public class LocationElement implements MetadataElement
      *
      * @return list of element stubs
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedElement()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
@@ -113,11 +113,11 @@ public class LocationElement implements MetadataElement
      * Set up details of the relationship used to retrieve this element.
      * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param relatedElement relationship details
+     * @param relatedBy relationship details
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedElement(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -132,7 +132,7 @@ public class LocationElement implements MetadataElement
         return "LocationElement{" +
                        "elementHeader=" + elementHeader +
                        ", locationProperties=" + locationProperties +
-                       ", relatedElement=" + relatedElement +
+                       ", relatedBy=" + relatedBy +
                        '}';
     }
 
@@ -161,7 +161,7 @@ public class LocationElement implements MetadataElement
         LocationElement that = (LocationElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(locationProperties, that.locationProperties) &&
-                       Objects.equals(relatedElement, that.relatedElement);
+                       Objects.equals(relatedBy, that.relatedBy);
     }
 
 
@@ -173,6 +173,6 @@ public class LocationElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, locationProperties, relatedElement);
+        return Objects.hash(super.hashCode(), elementHeader, locationProperties, relatedBy);
     }
 }

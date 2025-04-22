@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Project Manager OMVS
 

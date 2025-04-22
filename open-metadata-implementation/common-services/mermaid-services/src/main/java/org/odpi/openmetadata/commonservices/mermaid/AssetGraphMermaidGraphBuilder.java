@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
+    private String informationSupplyChainMermaidGraph = null;
+
     /**
      * Constructor for the graph
      *
@@ -95,5 +97,16 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                 }
             }
         }
+
+        AssetISCGraphMermaidGraphBuilder iscGraphMermaidGraphBuilder = new AssetISCGraphMermaidGraphBuilder(assetGraph);
+
+        informationSupplyChainMermaidGraph = iscGraphMermaidGraphBuilder.getMermaidGraph();
+    }
+
+
+
+    public String getInformationSupplyChainMermaidGraph()
+    {
+        return informationSupplyChainMermaidGraph;
     }
 }

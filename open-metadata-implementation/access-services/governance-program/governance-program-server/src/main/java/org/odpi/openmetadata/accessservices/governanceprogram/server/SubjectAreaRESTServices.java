@@ -933,7 +933,7 @@ public class SubjectAreaRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1004,7 +1004,7 @@ public class SubjectAreaRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {

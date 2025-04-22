@@ -4,10 +4,11 @@ package org.odpi.openmetadata.accessservices.assetowner.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 
 import java.util.List;
@@ -178,12 +179,12 @@ public interface AssetLicenseInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getLicensedElements(String userId,
-                                             String licenseGUID,
-                                             int    startFrom,
-                                             int    pageSize) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+    List<RelatedElementStub> getLicensedElements(String userId,
+                                                 String licenseGUID,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**

@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Connection
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileSystemElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareCapabilityElement;
@@ -608,11 +608,11 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ReferenceableHandler<RelatedElement> getRelatedElementHandler(String userId,
-                                                                  String serverName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    ReferenceableHandler<RelatedElementStub> getRelatedElementHandler(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
 
         DataManagerServicesInstance instance = (DataManagerServicesInstance) super.getServerServiceInstance(userId,

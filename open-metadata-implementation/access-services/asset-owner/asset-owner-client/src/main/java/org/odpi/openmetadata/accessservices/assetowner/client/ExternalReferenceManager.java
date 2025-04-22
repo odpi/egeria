@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRES
 import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalReferenceResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalReferencesResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -57,7 +57,7 @@ public class ExternalReferenceManager extends AssetOwnerBaseClient implements Ex
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
-    
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -453,12 +453,12 @@ public class ExternalReferenceManager extends AssetOwnerBaseClient implements Ex
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getElementsForExternalReference(String userId,
-                                                                String externalReferenceGUID,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<RelatedElementStub> getElementsForExternalReference(String userId,
+                                                                    String externalReferenceGUID,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "getElementsForExternalReference";
         final String guidParameter = "externalReferenceGUID";

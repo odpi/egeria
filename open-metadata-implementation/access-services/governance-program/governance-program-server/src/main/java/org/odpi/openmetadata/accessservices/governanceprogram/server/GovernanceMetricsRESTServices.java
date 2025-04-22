@@ -4,7 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionMetricProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceExpectationsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsDataSetProperties;
@@ -635,7 +636,7 @@ public class GovernanceMetricsRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler<RelatedElement> handler = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
+            AssetHandler<RelatedBy> handler = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -704,7 +705,7 @@ public class GovernanceMetricsRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler<RelatedElement> handler = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
+            AssetHandler<RelatedBy> handler = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -772,7 +773,7 @@ public class GovernanceMetricsRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -843,7 +844,7 @@ public class GovernanceMetricsRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -911,7 +912,7 @@ public class GovernanceMetricsRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -982,7 +983,7 @@ public class GovernanceMetricsRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {

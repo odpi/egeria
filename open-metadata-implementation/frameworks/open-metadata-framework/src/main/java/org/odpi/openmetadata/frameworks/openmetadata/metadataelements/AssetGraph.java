@@ -13,9 +13,11 @@ import java.util.Objects;
  */
 public class AssetGraph extends AssetElement
 {
-    private List<MetadataElementSummary> anchoredElements = null;
-    private List<MetadataRelationship>   relationships    = null;
-    private String                       mermaidGraph     = null;
+    private List<MetadataElementSummary> anchoredElements                   = null;
+    private List<MetadataRelationship>   relationships                      = null;
+    private String                       mermaidGraph                       = null;
+    private List<MetadataElementSummary> informationSupplyChains            = null;
+    private String                       informationSupplyChainMermaidGraph = null;
 
     /**
      * Default constructor
@@ -47,9 +49,11 @@ public class AssetGraph extends AssetElement
 
         if (template != null)
         {
-            anchoredElements = template.getAnchoredElements();
-            relationships = template.getRelationships();
-            mermaidGraph = getMermaidGraph();
+            anchoredElements                   = template.getAnchoredElements();
+            relationships                      = template.getRelationships();
+            mermaidGraph                       = template.getMermaidGraph();
+            informationSupplyChains            = template.getInformationSupplyChains();
+            informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
         }
     }
 
@@ -123,6 +127,52 @@ public class AssetGraph extends AssetElement
 
 
     /**
+     * Return the list of information supply chains that are associated with the lineage relationships to the asset.
+     *
+     * @return list of information supply chain elements
+     */
+    public List<MetadataElementSummary> getInformationSupplyChains()
+    {
+        return informationSupplyChains;
+    }
+
+
+    /**
+     * Set up the list of information supply chains that are associated with the lineage relationships to the asset.
+     *
+     * @param informationSupplyChains list of information supply chain elements
+     */
+    public void setInformationSupplyChains(List<MetadataElementSummary> informationSupplyChains)
+    {
+        this.informationSupplyChains = informationSupplyChains;
+    }
+
+
+    /**
+     * Return the mermaid string used to render a summary graph of the information supply chains that the
+     * asset is a part of.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getInformationSupplyChainMermaidGraph()
+    {
+        return informationSupplyChainMermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid string used to render a summary graph of the information supply chains that the
+     * asset is a part of.
+     *
+     * @param informationSupplyChainMermaidGraph string in Mermaid markdown
+     */
+    public void setInformationSupplyChainMermaidGraph(String informationSupplyChainMermaidGraph)
+    {
+        this.informationSupplyChainMermaidGraph = informationSupplyChainMermaidGraph;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -133,7 +183,8 @@ public class AssetGraph extends AssetElement
         return "AssetGraph{" +
                 "anchoredElements=" + anchoredElements +
                 ", relationships=" + relationships +
-                ", mermaidGraph=" + mermaidGraph +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -153,7 +204,8 @@ public class AssetGraph extends AssetElement
         AssetGraph that = (AssetGraph) objectToCompare;
         return Objects.equals(anchoredElements, that.anchoredElements) &&
                 Objects.equals(relationships, that.relationships) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+                Objects.equals(mermaidGraph, that.mermaidGraph) &&
+                Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph);
     }
 
 
@@ -165,6 +217,6 @@ public class AssetGraph extends AssetElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchoredElements, relationships);
+        return Objects.hash(super.hashCode(), anchoredElements, relationships, mermaidGraph, informationSupplyChainMermaidGraph);
     }
 }

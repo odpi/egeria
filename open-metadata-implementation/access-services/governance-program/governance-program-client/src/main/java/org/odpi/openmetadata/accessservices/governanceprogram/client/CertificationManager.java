@@ -499,12 +499,12 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getCertifiedElements(String userId,
-                                                     String certificationTypeGUID,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public List<RelatedElementStub> getCertifiedElements(String userId,
+                                                         String certificationTypeGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "getCertifiedElements";
         final String guidParameter = "certificationTypeGUID";
@@ -529,12 +529,12 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getCertifications(String userId,
-                                                  String elementGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getCertifications(String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";

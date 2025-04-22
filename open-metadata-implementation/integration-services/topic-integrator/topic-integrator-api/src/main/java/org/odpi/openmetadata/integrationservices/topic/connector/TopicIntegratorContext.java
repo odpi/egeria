@@ -495,7 +495,7 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                             PropertyServerException
     {
         String eventTypeGUID;
-        
+
         if (externalSourceIsHome)
         {
             eventTypeGUID = eventBrokerClient.createEventTypeFromTemplate(userId,
@@ -542,7 +542,7 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         eventBrokerClient.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, isMergeUpdate, properties);
-        
+
         if (integrationReportWriter != null)
         {
             integrationReportWriter.reportElementUpdate(eventTypeGUID);
@@ -566,7 +566,7 @@ public class TopicIntegratorContext extends IntegrationContext
                                                              PropertyServerException
     {
         eventBrokerClient.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, qualifiedName);
-        
+
         if (integrationReportWriter != null)
         {
             integrationReportWriter.reportElementDelete(eventTypeGUID);
@@ -691,7 +691,7 @@ public class TopicIntegratorContext extends IntegrationContext
     /* =====================================================================================================================
      * A schemaType is used to describe complex structures found in the schema of an event type
      */
-    
+
     /**
      * Create a new metadata element to represent a primitive schema type such as a string, integer or character.
      *
@@ -783,18 +783,18 @@ public class TopicIntegratorContext extends IntegrationContext
         if (externalSourceIsHome)
         {
             schemaTypeGUID = eventBrokerClient.createEnumSchemaType(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   schemaTypeProperties,
-                                                                   validValuesSetGUID);
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    schemaTypeProperties,
+                                                                    validValuesSetGUID);
         }
         else
         {
             schemaTypeGUID = eventBrokerClient.createEnumSchemaType(userId,
-                                                                   null,
-                                                                   null,
-                                                                   schemaTypeProperties,
-                                                                   validValuesSetGUID);
+                                                                    null,
+                                                                    null,
+                                                                    schemaTypeProperties,
+                                                                    validValuesSetGUID);
         }
 
         if (integrationReportWriter != null)
@@ -911,7 +911,7 @@ public class TopicIntegratorContext extends IntegrationContext
         if (externalSourceIsHome)
         {
             schemaTypeGUID = eventBrokerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties,
-                                                                     schemaTypeOptionGUIDs);
+                                                                      schemaTypeOptionGUIDs);
         }
         else
         {
@@ -951,20 +951,20 @@ public class TopicIntegratorContext extends IntegrationContext
         if (externalSourceIsHome)
         {
             schemaTypeGUID = eventBrokerClient.createMapSchemaType(userId,
-                                                                  externalSourceGUID,
-                                                                  externalSourceName,
-                                                                  schemaTypeProperties,
-                                                                  mapFromSchemaTypeGUID,
-                                                                  mapToSchemaTypeGUID);
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   schemaTypeProperties,
+                                                                   mapFromSchemaTypeGUID,
+                                                                   mapToSchemaTypeGUID);
         }
         else
         {
             schemaTypeGUID = eventBrokerClient.createMapSchemaType(userId,
-                                                                  null,
-                                                                  null,
-                                                                  schemaTypeProperties,
-                                                                  mapFromSchemaTypeGUID,
-                                                                  mapToSchemaTypeGUID);
+                                                                   null,
+                                                                   null,
+                                                                   schemaTypeProperties,
+                                                                   mapFromSchemaTypeGUID,
+                                                                   mapToSchemaTypeGUID);
         }
 
         if (integrationReportWriter != null)
@@ -998,18 +998,18 @@ public class TopicIntegratorContext extends IntegrationContext
         if (externalSourceIsHome)
         {
             schemaTypeGUID = eventBrokerClient.createSchemaTypeFromTemplate(userId,
-                                                                           externalSourceGUID,
-                                                                           externalSourceName,
-                                                                           templateGUID,
-                                                                           templateProperties);
+                                                                            externalSourceGUID,
+                                                                            externalSourceName,
+                                                                            templateGUID,
+                                                                            templateProperties);
         }
         else
         {
             schemaTypeGUID = eventBrokerClient.createSchemaTypeFromTemplate(userId,
-                                                                           null,
-                                                                           null,
-                                                                           templateGUID,
-                                                                           templateProperties);
+                                                                            null,
+                                                                            null,
+                                                                            templateGUID,
+                                                                            templateProperties);
         }
 
         if (integrationReportWriter != null)
@@ -1091,12 +1091,12 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                          PropertyServerException
     {
         eventBrokerClient.setupSchemaElementRelationship(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        endOneGUID,
-                                                        endTwoGUID,
-                                                        relationshipTypeName,
-                                                        properties);
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         endOneGUID,
+                                                         endTwoGUID,
+                                                         relationshipTypeName,
+                                                         properties);
 
         if (integrationReportWriter != null)
         {
@@ -2521,11 +2521,11 @@ public class TopicIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<RelatedElement> getConsumersOfValidValue(String validValueGUID,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<RelatedElementStub> getConsumersOfValidValue(String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         return validValueManagement.getConsumersOfValidValue(userId, validValueGUID, startFrom, pageSize);
     }
@@ -2567,11 +2567,11 @@ public class TopicIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<RelatedElement> getAssigneesOfReferenceValue(String validValueGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<RelatedElementStub> getAssigneesOfReferenceValue(String validValueGUID,
+                                                                 int    startFrom,
+                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         return validValueManagement.getAssigneesOfReferenceValue(userId, validValueGUID, startFrom, pageSize);
     }

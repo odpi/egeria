@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.api;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -77,12 +78,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getMoreInformation(String userId,
-                                            String elementGUID,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    List<RelatedElementStub> getMoreInformation(String userId,
+                                                String elementGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -98,12 +99,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getDescriptiveElements(String userId,
-                                                String detailGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    List<RelatedElementStub> getDescriptiveElements(String userId,
+                                                    String detailGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
@@ -165,12 +166,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getStakeholders(String userId,
-                                         String elementGUID,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
+    List<RelatedElementStub> getStakeholders(String userId,
+                                             String elementGUID,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 
 
     /**
@@ -186,12 +187,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getStakeholderCommissionedElements(String userId,
-                                                            String stakeholderGUID,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+    List<RelatedElementStub> getStakeholderCommissionedElements(String userId,
+                                                                String stakeholderGUID,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
 
 
     /**
@@ -253,12 +254,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getAssignedScopes(String userId,
-                                           String elementGUID,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    List<RelatedElementStub> getAssignedScopes(String userId,
+                                               String elementGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -274,12 +275,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getAssignedActors(String userId,
-                                           String scopeGUID,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    List<RelatedElementStub> getAssignedActors(String userId,
+                                               String scopeGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -341,12 +342,12 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getResourceList(String userId,
-                                         String elementGUID,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
+    List<RelatedElementStub> getResourceList(String userId,
+                                             String elementGUID,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 
 
     /**
@@ -362,10 +363,10 @@ public interface RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getSupportedByResource(String userId,
-                                                String resourceGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    List<RelatedElementStub> getSupportedByResource(String userId,
+                                                    String resourceGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 }

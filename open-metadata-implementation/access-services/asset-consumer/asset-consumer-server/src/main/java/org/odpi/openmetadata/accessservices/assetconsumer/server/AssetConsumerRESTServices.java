@@ -188,6 +188,7 @@ public class AssetConsumerRESTServices
 
     /**
      * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     * Note the number of anchored elements returned is controlled by the paging.
      *
      * @param serverName name of the server instances for this request
      * @param userId the userId of the requesting user
@@ -222,6 +223,10 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            /*
+             * Retrieve the starting asset.  This proves that the supplied GUID is valid and retrieves
+             * the asset details that form the root of the graph.
+             */
             AssetElement asset = assetHandler.getBeanFromRepository(userId,
                                                                     assetGUID,
                                                                     parameterName,
@@ -230,9 +235,22 @@ public class AssetConsumerRESTServices
 
             if (asset != null)
             {
+                /*
+                 * Save the asset details into the asset graph bean.
+                 */
                 AssetGraph assetGraph = new AssetGraph(asset);
 
+                /*
+                 * This map will hold all of the relationships retrieved for the graph.  It initially,
+                 * holds the relationships connected to the starting asset - however, as the related
+                 * elements are extracted, their relationships are added.
+                 */
                 Map<String, Relationship> receivedRelationships = new HashMap<>();
+
+                /*
+                 * This list holds the qualified names of information supply chains listed in the lineage relationships.
+                 */
+                List<String> iscQualifiedNames = new ArrayList<>();
 
                 List<Relationship>  relationships = metadataRelationshipHandler.getAllAttachmentLinks(userId,
                                                                                                       asset.getElementHeader().getGUID(),
@@ -253,10 +271,26 @@ public class AssetConsumerRESTServices
                         if (relationship != null)
                         {
                             receivedRelationships.put(relationship.getGUID(), relationship);
+
+                            String iscQualifiedName = assetHandler.getRepositoryHelper().getStringProperty(assetHandler.getServiceName(),
+                                                                                                           OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                           relationship.getProperties(),
+                                                                                                           methodName);
+
+                            if ((iscQualifiedName != null) && (!iscQualifiedNames.contains(iscQualifiedName)))
+                            {
+                                iscQualifiedNames.add(iscQualifiedName);
+                            }
                         }
                     }
                 }
 
+
+                /*
+                 * Now retrieve all the entities anchored to the starting asset.  This is done as a single
+                 * query for performance reasons (each call to the repository costs).  Notice the
+                 * results are limited by the paging values set by the caller.
+                 */
                 SearchClassifications         searchClassifications    = new SearchClassifications();
                 List<ClassificationCondition> classificationConditions = new ArrayList<>();
                 ClassificationCondition       classificationCondition  = new ClassificationCondition();
@@ -292,7 +326,7 @@ public class AssetConsumerRESTServices
                                                                                                  null,
                                                                                                  null,
                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                 false,
+                                                                                                 true,
                                                                                                  false,
                                                                                                  startFrom,
                                                                                                  pageSize,
@@ -302,6 +336,10 @@ public class AssetConsumerRESTServices
 
                 assetGraph.setAnchoredElements(anchoredElements);
 
+                /*
+                 * For each anchored element, retrieve all of its relationships.  After this we have the information
+                 * to create a graph.
+                 */
                 if (anchoredElements != null)
                 {
                     final String anchoredElementParameterName = "anchoredElement.getGUID";
@@ -318,7 +356,7 @@ public class AssetConsumerRESTServices
                                                                                               null,
                                                                                               SequencingOrder.CREATION_DATE_RECENT,
                                                                                               null,
-                                                                                              false,
+                                                                                              true,
                                                                                               false,
                                                                                               new Date(),
                                                                                               methodName);
@@ -329,6 +367,16 @@ public class AssetConsumerRESTServices
                                     if (relationship != null)
                                     {
                                         receivedRelationships.put(relationship.getGUID(), relationship);
+
+                                        String iscQualifiedName = assetHandler.getRepositoryHelper().getStringProperty(assetHandler.getServiceName(),
+                                                                                                                       OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                                       relationship.getProperties(),
+                                                                                                                       methodName);
+
+                                        if ((iscQualifiedName != null) && (!iscQualifiedNames.contains(iscQualifiedName)))
+                                        {
+                                            iscQualifiedNames.add(iscQualifiedName);
+                                        }
                                     }
                                 }
                             }
@@ -357,8 +405,46 @@ public class AssetConsumerRESTServices
                     assetGraph.setRelationships(metadataRelationships);
                 }
 
+                /*
+                 * This list contains the information supply chains associated with the asset.
+                 */
+                List<MetadataElementSummary> informationSupplyChains = new ArrayList<>();
+
+                if (! iscQualifiedNames.isEmpty())
+                {
+                    final String iscQualifiedNameParameterName = "iscParameterName";
+
+                    for (String iscQualifiedName : iscQualifiedNames)
+                    {
+                        MetadataElementSummary informationSupplyChain = metadataElementHandler.getBeanByUniqueName(userId,
+                                                                                                                   iscQualifiedName,
+                                                                                                                   iscQualifiedNameParameterName,
+                                                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                   OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeGUID,
+                                                                                                                   OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                                                                                   null,
+                                                                                                                   null,
+                                                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                   null,
+                                                                                                                   true,
+                                                                                                                   false,
+                                                                                                                   new Date(),
+                                                                                                                   methodName);
+                        if (informationSupplyChain != null)
+                        {
+                            informationSupplyChains.add(informationSupplyChain);
+                        }
+                    }
+                }
+
+                if (! informationSupplyChains.isEmpty())
+                {
+                    assetGraph.setInformationSupplyChains(informationSupplyChains);
+                }
+
                 AssetGraphMermaidGraphBuilder graphBuilder = new AssetGraphMermaidGraphBuilder(assetGraph);
                 assetGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+                assetGraph.setInformationSupplyChainMermaidGraph(graphBuilder.getInformationSupplyChainMermaidGraph());
 
                 response.setAssetGraph(assetGraph);
             }

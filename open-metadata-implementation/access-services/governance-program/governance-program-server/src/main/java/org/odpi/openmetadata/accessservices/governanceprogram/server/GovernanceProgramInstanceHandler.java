@@ -43,11 +43,11 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    ReferenceableHandler<RelatedElement> getRelatedElementHandler(String userId,
-                                                                  String serverName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    ReferenceableHandler<RelatedElementStub> getRelatedElementHandler(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                        serverName,
@@ -103,9 +103,9 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    AssetHandler<RelatedElement> getRelatedAssetHandler(String userId,
-                                                        String serverName,
-                                                        String serviceOperationName) throws InvalidParameterException,
+    AssetHandler<RelatedBy> getRelatedAssetHandler(String userId,
+                                                   String serverName,
+                                                   String serviceOperationName) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {

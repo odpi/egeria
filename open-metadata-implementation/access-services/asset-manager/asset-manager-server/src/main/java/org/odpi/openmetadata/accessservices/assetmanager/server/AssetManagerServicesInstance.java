@@ -29,7 +29,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -42,9 +42,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 {
     private static final AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
 
-    private final ReferenceableHandler<ElementStub>    elementStubHandler;
-    private final ReferenceableHandler<RelatedElement> relatedElementHandler;
-    private final AssetHandler<AssetElement>           assetHandler;
+    private final ReferenceableHandler<ElementStub> elementStubHandler;
+    private final ReferenceableHandler<RelatedElementStub>   relatedElementHandler;
+    private final AssetHandler<AssetElement>        assetHandler;
     private final SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
     private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private final ConnectionExchangeHandler                                           connectionExchangeHandler;
@@ -120,7 +120,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                              auditLog);
 
         this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                                RelatedElement.class,
+                                                                RelatedElementStub.class,
                                                                 serviceName,
                                                                 serverName,
                                                                 invalidParameterHandler,
@@ -385,7 +385,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    ReferenceableHandler<RelatedElementStub> getRelatedElementHandler() throws PropertyServerException
     {
         final String methodName = "getRelatedElementHandler";
 

@@ -125,8 +125,7 @@ public class GovernanceMetricConverter<B> extends OMFConverter<B>
 
         if (returnBean instanceof GovernanceMetricElement bean)
         {
-
-            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+            bean.setRelatedBy(super.getRelatedBy(beanClass, relationship, methodName));
         }
 
         return returnBean;

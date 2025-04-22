@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * RelatedElementConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a RelatedElement bean.
+ * EntityDetail object into a RelatedBy bean.
  */
 public class RelatedElementConverter<B> extends OpenMetadataStoreConverter<B>
 {

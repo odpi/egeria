@@ -1572,7 +1572,7 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-       return databaseManagerClient.findDatabaseColumns(userId, searchString, startFrom, pageSize);
+        return databaseManagerClient.findDatabaseColumns(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -2740,11 +2740,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<RelatedElement> getConsumersOfValidValue(String validValueGUID,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<RelatedElementStub> getConsumersOfValidValue(String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         return validValueManagement.getConsumersOfValidValue(userId, validValueGUID, startFrom, pageSize);
     }
@@ -2786,11 +2786,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<RelatedElement> getAssigneesOfReferenceValue(String validValueGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<RelatedElementStub> getAssigneesOfReferenceValue(String validValueGUID,
+                                                                 int    startFrom,
+                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         return validValueManagement.getAssigneesOfReferenceValue(userId, validValueGUID, startFrom, pageSize);
     }

@@ -24,8 +24,8 @@ public class ValidValueElement implements MetadataElement
     private ElementHeader        elementHeader = null;
     private ValidValueProperties validValueProperties = null;
     private String               setGUID = null;
-    private boolean              isDefaultValue = false;
-    private RelatedElement       relatedElement = null;
+    private boolean   isDefaultValue = false;
+    private RelatedBy relatedBy      = null;
 
 
     /**
@@ -50,7 +50,7 @@ public class ValidValueElement implements MetadataElement
             validValueProperties = template.getValidValueProperties();
             setGUID = template.setGUID;
             isDefaultValue = getIsDefaultValue();
-            relatedElement = getRelatedElement();
+            relatedBy      = getRelatedBy();
         }
     }
 
@@ -151,9 +151,9 @@ public class ValidValueElement implements MetadataElement
      *
      * @return related element
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedBy()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
@@ -161,11 +161,11 @@ public class ValidValueElement implements MetadataElement
      * Set up information about the related element and relationship (if any) that was
      * used to retrieve the valid value.
      *
-     * @param relatedElement related element
+     * @param relatedBy related element
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedBy(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -182,7 +182,7 @@ public class ValidValueElement implements MetadataElement
                 ", validValueProperties=" + validValueProperties +
                 ", setGUID='" + setGUID + '\'' +
                 ", isDefaultValue=" + isDefaultValue +
-                ", relatedElement=" + relatedElement +
+                ", relatedBy=" + relatedBy +
                 '}';
     }
 
@@ -209,7 +209,7 @@ public class ValidValueElement implements MetadataElement
                 Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(validValueProperties, that.validValueProperties) &&
                 Objects.equals(setGUID, that.setGUID) &&
-                Objects.equals(relatedElement, that.relatedElement);
+                Objects.equals(relatedBy, that.relatedBy);
     }
 
 

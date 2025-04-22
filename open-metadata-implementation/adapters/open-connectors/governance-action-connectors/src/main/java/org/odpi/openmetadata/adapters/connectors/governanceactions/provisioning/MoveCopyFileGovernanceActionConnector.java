@@ -1012,15 +1012,17 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
             if (schemaType != null)
             {
-                List<OpenMetadataElement> sourceFileSchemaAttributes = this.getSchemaAttributes(metadataStore, sourceFileGUID);
-                List<OpenMetadataElement> newFileSchemaAttributes    = this.getSchemaAttributes(metadataStore, newFileGUID);
+                Map<Integer, OpenMetadataElement> sourceFileSchemaAttributes = this.getSchemaAttributes(metadataStore, sourceFileGUID);
+                Map<Integer, OpenMetadataElement> newFileSchemaAttributes    = this.getSchemaAttributes(metadataStore, newFileGUID);
 
                 if ((sourceFileSchemaAttributes != null) && (newFileSchemaAttributes != null))
                 {
                     int attributePointer = 0;
 
-                    for (OpenMetadataElement sourceAttribute : sourceFileSchemaAttributes)
+                    for (Integer position : sourceFileSchemaAttributes.keySet())
                     {
+                        OpenMetadataElement sourceAttribute = sourceFileSchemaAttributes.get(position);
+
                         if (sourceAttribute != null)
                         {
                             OpenMetadataElement destinationAttribute = newFileSchemaAttributes.get(attributePointer);
@@ -1063,10 +1065,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      *
      * @param metadataStore client
      * @param assetGUID asset to start from
-     * @return ordered list of schema attributes
+     * @return map of schema attributes
      */
-    private List<OpenMetadataElement> getSchemaAttributes(OpenMetadataStore metadataStore,
-                                                          String            assetGUID)
+    private Map<Integer, OpenMetadataElement> getSchemaAttributes(OpenMetadataStore metadataStore,
+                                                                  String            assetGUID)
     {
         final String methodName = "getSchemaAttributes";
 
@@ -1083,13 +1085,12 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
                 if (schemaType != null)
                 {
-                    int arrayCapacity = 200;
                     int startFrom = 0;
 
                     /*
                      * Reserve plenty of space for schema attributes.
                      */
-                    List<OpenMetadataElement>  schemaAttributes = new ArrayList<>(arrayCapacity);
+                    Map<Integer, OpenMetadataElement>  schemaAttributes = new HashMap<>();
 
                     RelatedMetadataElementList relatedMetadataElementList = metadataStore.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
                                                                                                                      1,
@@ -1107,16 +1108,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                              OpenMetadataProperty.POSITION.name,
                                                                              relatedMetadataElement.getElement().getElementProperties(),
                                                                              methodName);
-                                if (position >= arrayCapacity)
-                                {
-                                    arrayCapacity = position + 10;
-                                    List<OpenMetadataElement>  newSchemaAttributes = new ArrayList<>(arrayCapacity);
-
-                                    newSchemaAttributes.addAll(schemaAttributes);
-                                    schemaAttributes = newSchemaAttributes;
-                                }
-
-                                schemaAttributes.add(position, relatedMetadataElement.getElement());
+                                schemaAttributes.put(position, relatedMetadataElement.getElement());
                             }
                         }
 

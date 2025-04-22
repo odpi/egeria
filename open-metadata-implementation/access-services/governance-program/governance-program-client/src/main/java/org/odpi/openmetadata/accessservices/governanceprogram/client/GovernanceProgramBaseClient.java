@@ -898,15 +898,15 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getRelatedElements(String userId,
-                                            String startingElementGUID,
-                                            String startingElementGUIDParameterName,
-                                            String urlTemplate,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    List<RelatedElementStub> getRelatedElements(String userId,
+                                                String startingElementGUID,
+                                                String startingElementGUIDParameterName,
+                                                String urlTemplate,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
@@ -1168,12 +1168,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getMoreInformation(String userId,
-                                                   String elementGUID,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<RelatedElementStub> getMoreInformation(String userId,
+                                                       String elementGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
@@ -1198,12 +1198,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getDescriptiveElements(String userId,
-                                                       String detailGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getDescriptiveElements(String userId,
+                                                           String detailGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
@@ -1331,12 +1331,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getGovernedElements(String userId,
-                                                    String governanceDefinitionGUID,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<RelatedElementStub> getGovernedElements(String userId,
+                                                        String governanceDefinitionGUID,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName        = "getGovernedElements";
         final String guidPropertyName  = "governanceDefinitionGUID";
@@ -1433,12 +1433,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getGovernanceDefinitionScopes(String userId,
-                                                              String governanceDefinitionGUID,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<RelatedElementStub> getGovernanceDefinitionScopes(String userId,
+                                                                  String governanceDefinitionGUID,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName        = "getGovernanceDefinitionScopes";
         final String guidPropertyName  = "governanceDefinitionGUID";
@@ -1568,8 +1568,8 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
                                                            String governanceResponsibilityGUID,
                                                            int    startFrom,
                                                            int    pageSize) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getResponsibleRole";
         final String guidPropertyName  = "governanceResponsibilityGUID";
@@ -1698,12 +1698,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholders(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getStakeholders(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
@@ -1728,12 +1728,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholderCommissionedElements(String userId,
-                                                                   String stakeholderGUID,
-                                                                   int    startFrom,
-                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedElementStub> getStakeholderCommissionedElements(String userId,
+                                                                       String stakeholderGUID,
+                                                                       int    startFrom,
+                                                                       int    pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
@@ -1832,12 +1832,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getAssignedScopes(String userId,
-                                                  String elementGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getAssignedScopes(String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName        = "getAssignedScopes";
         final String guidPropertyName  = "elementGUID";
@@ -1862,12 +1862,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getAssignedActors(String userId,
-                                                  String scopeGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getAssignedActors(String userId,
+                                                      String scopeGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
@@ -1966,12 +1966,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getResourceList(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getResourceList(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
@@ -1996,12 +1996,12 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSupportedByResource(String userId,
-                                                       String resourceGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getSupportedByResource(String userId,
+                                                           String resourceGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";

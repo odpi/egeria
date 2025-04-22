@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FeedbackTargetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 
 import java.util.List;
@@ -29,9 +29,9 @@ public class CommentElement implements CorrelatedMetadataElement
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
     private CommentProperties               properties            = null;
-    private FeedbackTargetElement           feedbackTargetElement = null;
-    private List<RelatedElement>            acceptedAnswers       = null;
-    private List<RelatedElement>            questionsAnswered     = null;
+    private FeedbackTargetElement feedbackTargetElement = null;
+    private List<RelatedBy>       acceptedAnswers       = null;
+    private List<RelatedBy>       questionsAnswered     = null;
 
 
     /**
@@ -172,7 +172,7 @@ public class CommentElement implements CorrelatedMetadataElement
      *
      * @return list of comment headers
      */
-    public List<RelatedElement> getAcceptedAnswers()
+    public List<RelatedBy> getAcceptedAnswers()
     {
         return acceptedAnswers;
     }
@@ -183,7 +183,7 @@ public class CommentElement implements CorrelatedMetadataElement
      *
      * @param acceptedAnswers  list of comment headers
      */
-    public void setAcceptedAnswers(List<RelatedElement> acceptedAnswers)
+    public void setAcceptedAnswers(List<RelatedBy> acceptedAnswers)
     {
         this.acceptedAnswers = acceptedAnswers;
     }
@@ -194,7 +194,7 @@ public class CommentElement implements CorrelatedMetadataElement
      *
      * @return  list of comment headers
      */
-    public List<RelatedElement> getQuestionsAnswered()
+    public List<RelatedBy> getQuestionsAnswered()
     {
         return questionsAnswered;
     }
@@ -205,7 +205,7 @@ public class CommentElement implements CorrelatedMetadataElement
      *
      * @param questionsAnswered  list of comment headers
      */
-    public void setQuestionsAnswered(List<RelatedElement> questionsAnswered)
+    public void setQuestionsAnswered(List<RelatedBy> questionsAnswered)
     {
         this.questionsAnswered = questionsAnswered;
     }

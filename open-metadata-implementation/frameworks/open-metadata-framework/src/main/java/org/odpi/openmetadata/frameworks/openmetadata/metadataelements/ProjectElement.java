@@ -23,13 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProjectElement implements MetadataElement
 {
     private ElementHeader                       elementHeader   = null;
-    private ProjectProperties                   properties      = null;
-    private RelatedElement                      startingElement = null;
-    private List<RelatedMetadataElementSummary> resourceList    = null;
+    private ProjectProperties                   properties   = null;
+    private RelatedBy                           relatedBy    = null;
+    private List<RelatedMetadataElementSummary> resourceList = null;
     private List<RelatedMetadataElementSummary> projectManagers = null;
     private List<RelatedMetadataElementSummary> projectTeam     = null;
 
-    protected String                              mermaidGraph = null;
+    protected String                            mermaidGraph = null;
 
     /**
      * Default constructor
@@ -50,9 +50,9 @@ public class ProjectElement implements MetadataElement
         if (template != null)
         {
             elementHeader   = template.getElementHeader();
-            properties      = template.getProperties();
-            startingElement = template.getStartingElement();
-            resourceList    = template.getResourceList();
+            properties   = template.getProperties();
+            relatedBy    = template.getRelatedBy();
+            resourceList = template.getResourceList();
             projectManagers = template.getProjectManagers();
             projectTeam     = template.getProjectTeam();
             mermaidGraph    = template.getMermaidGraph();
@@ -112,9 +112,9 @@ public class ProjectElement implements MetadataElement
      *
      * @return list of element stubs
      */
-    public RelatedElement getStartingElement()
+    public RelatedBy getRelatedBy()
     {
-        return startingElement;
+        return relatedBy;
     }
 
 
@@ -122,11 +122,11 @@ public class ProjectElement implements MetadataElement
      * Set up details of the relationship used to retrieve this element.
      * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param startingElement relationship details
+     * @param relatedBy relationship details
      */
-    public void setStartingElement(RelatedElement startingElement)
+    public void setRelatedBy(RelatedBy relatedBy)
     {
-        this.startingElement = startingElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -229,7 +229,7 @@ public class ProjectElement implements MetadataElement
         return "ProjectElement{" +
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
-                ", startingElement=" + startingElement +
+                ", relatedBy=" + relatedBy +
                 ", resourceList=" + resourceList +
                 ", projectManagers=" + projectManagers +
                 ", projectTeam=" + projectTeam +
@@ -261,7 +261,7 @@ public class ProjectElement implements MetadataElement
                 Objects.equals(resourceList, that.resourceList) &&
                 Objects.equals(projectManagers, that.projectManagers) &&
                 Objects.equals(projectTeam, that.projectTeam) &&
-                Objects.equals(startingElement, that.startingElement) &&
+                Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
@@ -274,6 +274,6 @@ public class ProjectElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, startingElement, resourceList, projectManagers, projectTeam, mermaidGraph);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy, resourceList, projectManagers, projectTeam, mermaidGraph);
     }
 }

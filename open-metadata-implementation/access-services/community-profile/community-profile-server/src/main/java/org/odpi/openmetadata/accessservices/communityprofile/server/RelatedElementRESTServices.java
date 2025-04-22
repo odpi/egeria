@@ -6,7 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -63,7 +63,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -149,7 +149,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -223,7 +223,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getMoreInformation(userId,
                                                             elementGUID,
@@ -280,7 +280,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getDescriptiveElements(userId,
                                                                 detailGUID,
@@ -338,7 +338,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -431,7 +431,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -488,10 +488,10 @@ public class RelatedElementRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public RelatedElementsResponse getStakeholders(String serverName,
-                                                                                                              String userId,
-                                                                                                              String elementGUID,
-                                                                                                              int    startFrom,
-                                                                                                              int    pageSize)
+                                                   String userId,
+                                                   String elementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize)
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
@@ -505,7 +505,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getStakeholders(userId,
                                                          elementGUID,
@@ -545,10 +545,10 @@ public class RelatedElementRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public RelatedElementsResponse getStakeholderCommissionedElements(String serverName,
-                                                                                                                                 String userId,
-                                                                                                                                 String stakeholderGUID,
-                                                                                                                                 int    startFrom,
-                                                                                                                                 int    pageSize)
+                                                                      String userId,
+                                                                      String stakeholderGUID,
+                                                                      int    startFrom,
+                                                                      int    pageSize)
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
@@ -562,7 +562,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getCommissionedByStakeholder(userId,
                                                                       stakeholderGUID,
@@ -620,7 +620,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -714,7 +714,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -788,7 +788,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAssignmentScope(userId,
                                                             elementGUID,
@@ -828,10 +828,10 @@ public class RelatedElementRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public RelatedElementsResponse getAssignedActors(String serverName,
-                                                                                                                String userId,
-                                                                                                                String scopeGUID,
-                                                                                                                int    startFrom,
-                                                                                                                int    pageSize)
+                                                     String userId,
+                                                     String scopeGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
     {
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
@@ -845,7 +845,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAssignedActors(userId,
                                                            scopeGUID,
@@ -903,7 +903,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1001,7 +1001,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1075,7 +1075,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getResourceList(userId,
                                                          elementGUID,
@@ -1132,7 +1132,7 @@ public class RelatedElementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getSupportedByResource(userId,
                                                                 resourceGUID,

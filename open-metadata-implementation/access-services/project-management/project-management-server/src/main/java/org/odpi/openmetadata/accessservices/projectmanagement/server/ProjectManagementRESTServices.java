@@ -4,29 +4,28 @@ package org.odpi.openmetadata.accessservices.projectmanagement.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ProjectHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -809,82 +808,6 @@ public class ProjectManagementRESTServices
 
 
     /**
-     * Set up the vendor properties in the retrieved elements.
-     *
-     * @param userId calling user
-     * @param retrievedResults results from the repositories
-     * @param handler handler used to retrieve the vendor properties
-     * @param methodName calling method
-     *
-     * @return updated results
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    private List<ProjectElement> setUpVendorProperties(String                              userId,
-                                                       List<ProjectElement>             retrievedResults,
-                                                       ProjectHandler<ProjectElement> handler,
-                                                       String                             methodName) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
-    {
-        if (retrievedResults != null)
-        {
-            for (ProjectElement element : retrievedResults)
-            {
-                if (element != null)
-                {
-                    setUpVendorProperties(userId, element, handler, methodName);
-                }
-            }
-        }
-
-        return retrievedResults;
-    }
-
-
-    /**
-     * Set up the vendor properties in the retrieved element.
-     *
-     * @param userId calling user
-     * @param element results from the repositories
-     * @param handler handler used to retrieve the vendor properties
-     * @param methodName calling method
-     *
-     * @return updated results
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    private ProjectElement setUpVendorProperties(String                         userId,
-                                                 ProjectElement                 element,
-                                                 ProjectHandler<ProjectElement> handler,
-                                                 String                         methodName) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
-    {
-        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
-
-        if (element != null)
-        {
-            ProjectProperties properties = element.getProperties();
-
-            properties.setVendorProperties(handler.getVendorProperties(userId,
-                                                                       element.getElementHeader().getGUID(),
-                                                                       elementGUIDParameterName,
-                                                                       false,
-                                                                       false,
-                                                                       new Date(),
-                                                                       methodName));
-        }
-
-        return element;
-    }
-
-
-    /**
      * Create a "MoreInformation" relationship between an element that is descriptive and one that is providing the detail.
      *
      * @param serverName name of the service to route the request to.
@@ -917,7 +840,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1003,7 +926,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1077,7 +1000,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getMoreInformation(userId,
                                                             elementGUID,
@@ -1134,7 +1057,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getDescriptiveElements(userId,
                                                                 detailGUID,
@@ -1192,7 +1115,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1284,7 +1207,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1358,7 +1281,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getStakeholders(userId,
                                                          elementGUID,
@@ -1415,7 +1338,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getCommissionedByStakeholder(userId,
                                                                       stakeholderGUID,
@@ -1473,7 +1396,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1567,7 +1490,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1641,7 +1564,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAssignmentScope(userId,
                                                             elementGUID,
@@ -1698,7 +1621,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getAssignedActors(userId,
                                                            scopeGUID,
@@ -1756,7 +1679,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1854,7 +1777,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1928,7 +1851,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getResourceList(userId,
                                                          elementGUID,
@@ -1985,7 +1908,7 @@ public class ProjectManagementRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElementStub> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
             response.setElements(handler.getSupportedByResource(userId,
                                                                 resourceGUID,

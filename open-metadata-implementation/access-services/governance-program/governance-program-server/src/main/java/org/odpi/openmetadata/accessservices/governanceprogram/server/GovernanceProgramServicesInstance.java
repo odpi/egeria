@@ -28,10 +28,10 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
 
-    private final ReferenceableHandler<RelatedElement>                     relatedElementHandler;
-    private final ReferenceableHandler<ElementStub>                        elementStubHandler;
-    private final AssetHandler<RelatedElement>                             relatedAssetHandler;
-    private final AssetHandler<ElementStub>                                assetHandler;
+    private final ReferenceableHandler<RelatedElementStub>   relatedElementHandler;
+    private final ReferenceableHandler<ElementStub> elementStubHandler;
+    private final AssetHandler<RelatedBy>           relatedAssetHandler;
+    private final AssetHandler<ElementStub>         assetHandler;
     private final ElementStubConverter<ElementStub>                        elementStubConverter;
     private final GovernanceZoneHandler<GovernanceZoneElement>             governanceZoneHandler;
     private final PersonRoleHandler<GovernanceRoleElement>                 governanceRoleHandler;
@@ -83,7 +83,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
         if (repositoryHandler != null)
         {
             this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
-                                                                    RelatedElement.class,
+                                                                    RelatedElementStub.class,
                                                                     serviceName,
                                                                     serverName,
                                                                     invalidParameterHandler,
@@ -111,7 +111,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                                     auditLog);
 
             this.relatedAssetHandler = new AssetHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                          RelatedElement.class,
+                                                          RelatedBy.class,
                                                           serviceName,
                                                           serverName,
                                                           invalidParameterHandler,
@@ -316,7 +316,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    public ReferenceableHandler<RelatedElement> getRelatedElementHandler() { return relatedElementHandler; }
+    public ReferenceableHandler<RelatedElementStub> getRelatedElementHandler() { return relatedElementHandler; }
 
 
 
@@ -333,7 +333,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    public AssetHandler<RelatedElement> getRelatedAssetHandler() { return relatedAssetHandler; }
+    public AssetHandler<RelatedBy> getRelatedAssetHandler() { return relatedAssetHandler; }
 
     /**
      * Return the handler for related assets.
@@ -472,16 +472,5 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     SubjectAreaHandler<SubjectAreaElement> getSubjectAreaHandler()
     {
         return subjectAreaHandler;
-    }
-
-
-    /**
-     * Return the handler for profile requests.
-     *
-     * @return handler object
-     */
-    ActorProfileHandler<ProfileElement> getProfileHandler()
-    {
-        return profileHandler;
     }
 }

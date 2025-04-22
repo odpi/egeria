@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.projectmanagement.client;
 import org.odpi.openmetadata.accessservices.projectmanagement.api.RelatedElementsInterface;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.TemplateRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
@@ -161,35 +161,6 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
         this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
-
-    /**
-     * Create a new client that is going to be used in an OMAG Server.
-     *
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param restClient            client that issues the REST API calls
-     * @param maxPageSize           maximum number of results supported by this server
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public ProjectManagementBaseClient(String                      serverName,
-                                       String                      serverPlatformURLRoot,
-                                       ProjectManagementRESTClient restClient,
-                                       int                         maxPageSize) throws InvalidParameterException
-    {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
-    }
 
 
     /* =====================================================================================================================
@@ -561,15 +532,15 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getRelatedElements(String userId,
-                                            String startingElementGUID,
-                                            String startingElementGUIDParameterName,
-                                            String urlTemplate,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    List<RelatedElementStub> getRelatedElements(String userId,
+                                                String startingElementGUID,
+                                                String startingElementGUIDParameterName,
+                                                String urlTemplate,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
@@ -610,8 +581,8 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
                                     boolean cascadedDelete,
                                     String  urlTemplate,
                                     String  methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -728,12 +699,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getMoreInformation(String userId,
-                                                   String elementGUID,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<RelatedElementStub> getMoreInformation(String userId,
+                                                       String elementGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
@@ -758,12 +729,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getDescriptiveElements(String userId,
-                                                       String detailGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getDescriptiveElements(String userId,
+                                                           String detailGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
@@ -871,12 +842,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholders(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getStakeholders(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
@@ -901,12 +872,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getStakeholderCommissionedElements(String userId,
-                                                                   String stakeholderGUID,
-                                                                   int    startFrom,
-                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedElementStub> getStakeholderCommissionedElements(String userId,
+                                                                       String stakeholderGUID,
+                                                                       int    startFrom,
+                                                                       int    pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
@@ -1007,12 +978,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getAssignedScopes(String userId,
-                                                  String elementGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getAssignedScopes(String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName        = "getAssignedScopes";
         final String guidPropertyName  = "elementGUID";
@@ -1037,12 +1008,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getAssignedActors(String userId,
-                                                  String scopeGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public List<RelatedElementStub> getAssignedActors(String userId,
+                                                      String scopeGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
@@ -1084,7 +1055,7 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
 
         final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/resource-list/{3}";
 
-        this.setupRelationship(userId, 
+        this.setupRelationship(userId,
                                externalSourceGUID,
                                externalSourceName,
                                elementGUID,
@@ -1143,12 +1114,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getResourceList(String userId,
-                                                String elementGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<RelatedElementStub> getResourceList(String userId,
+                                                    String elementGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
@@ -1173,12 +1144,12 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSupportedByResource(String userId,
-                                                       String resourceGUID,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<RelatedElementStub> getSupportedByResource(String userId,
+                                                           String resourceGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";

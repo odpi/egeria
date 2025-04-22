@@ -22,7 +22,7 @@ public class ProjectManagementServicesInstance extends OMASServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS;
 
-    private final ReferenceableHandler<RelatedElement>     relatedElementHandler;
+    private final ReferenceableHandler<RelatedElementStub> relatedElementHandler;
     private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
     private final PersonRoleHandler<ActorRoleElement>      personRoleHandler;
     private final ProjectHandler<ProjectElement>           projectHandler;
@@ -57,7 +57,7 @@ public class ProjectManagementServicesInstance extends OMASServiceInstance
         if (repositoryHandler != null)
         {
             this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                                    RelatedElement.class,
+                                                                    RelatedElementStub.class,
                                                                     serviceName,
                                                                     serverName,
                                                                     invalidParameterHandler,
@@ -129,7 +129,7 @@ public class ProjectManagementServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    public ReferenceableHandler<RelatedElementStub> getRelatedElementHandler() throws PropertyServerException
     {
         final String methodName = "getRelatedElementHandler";
 

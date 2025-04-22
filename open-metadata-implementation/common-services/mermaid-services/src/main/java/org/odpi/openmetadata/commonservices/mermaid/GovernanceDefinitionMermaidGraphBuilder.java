@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
         if (governanceDefinitionGraph.getParents() != null)
         {
-            for (RelatedElement parent : governanceDefinitionGraph.getParents())
+            for (RelatedElementStub parent : governanceDefinitionGraph.getParents())
             {
                 if ((parent != null) && (! usedNodeNames.contains(parent.getRelatedElement().getGUID())))
                 {
@@ -68,7 +68,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
         if (governanceDefinitionGraph.getPeers() != null)
         {
-            for (RelatedElement peer : governanceDefinitionGraph.getPeers())
+            for (RelatedElementStub peer : governanceDefinitionGraph.getPeers())
             {
                 if ((peer != null) && (! usedNodeNames.contains(peer.getRelatedElement().getGUID())))
                 {
@@ -92,7 +92,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
         if (governanceDefinitionGraph.getChildren() != null)
         {
-            for (RelatedElement child : governanceDefinitionGraph.getChildren())
+            for (RelatedElementStub child : governanceDefinitionGraph.getChildren())
             {
                 if ((child != null) && (! usedNodeNames.contains(child.getRelatedElement().getGUID())))
                 {
@@ -116,7 +116,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
         if (governanceDefinitionGraph.getMetrics() != null)
         {
-            for (RelatedElement metrics : governanceDefinitionGraph.getMetrics())
+            for (RelatedElementStub metrics : governanceDefinitionGraph.getMetrics())
             {
                 if ((metrics != null) && (! usedNodeNames.contains(metrics.getRelatedElement().getGUID())))
                 {
@@ -140,7 +140,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
         if (governanceDefinitionGraph.getExternalReferences() != null)
         {
-            for (RelatedElement externalReference : governanceDefinitionGraph.getExternalReferences())
+            for (RelatedElementStub externalReference : governanceDefinitionGraph.getExternalReferences())
             {
                 if ((externalReference != null) && (! usedNodeNames.contains(externalReference.getRelatedElement().getGUID())))
                 {
@@ -164,7 +164,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
 
         if (governanceDefinitionGraph.getOthers() != null)
         {
-            for (RelatedElement other : governanceDefinitionGraph.getOthers())
+            for (RelatedElementStub other : governanceDefinitionGraph.getOthers())
             {
                 if ((other != null) && (! usedNodeNames.contains(other.getRelatedElement().getGUID())))
                 {

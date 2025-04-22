@@ -24,7 +24,7 @@ public class GlossaryTermElement implements MetadataElement
 {
     private ElementHeader          elementHeader          = null;
     private GlossaryTermProperties glossaryTermProperties = null;
-    private RelatedElement         relatedElement         = null;
+    private RelatedBy              relatedBy              = null;
 
 
     /**
@@ -47,7 +47,7 @@ public class GlossaryTermElement implements MetadataElement
         {
             elementHeader = template.getElementHeader();
             glossaryTermProperties = template.getGlossaryTermProperties();
-            relatedElement = template.getRelatedElement();
+            relatedBy              = template.getRelatedBy();
         }
     }
 
@@ -103,20 +103,20 @@ public class GlossaryTermElement implements MetadataElement
      *
      * @return relationship properties and starting element
      */
-    public RelatedElement getRelatedElement()
+    public RelatedBy getRelatedBy()
     {
-        return relatedElement;
+        return relatedBy;
     }
 
 
     /**
      * Set up details of the relationship used to retrieve the element.
      *
-     * @param relatedElement relationship properties and starting element
+     * @param relatedBy relationship properties and starting element
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setRelatedRelatedBy(RelatedBy relatedBy)
     {
-        this.relatedElement = relatedElement;
+        this.relatedBy = relatedBy;
     }
 
 
@@ -131,7 +131,7 @@ public class GlossaryTermElement implements MetadataElement
         return "GlossaryTermElement{" +
                        "elementHeader=" + elementHeader +
                         ", glossaryTermProperties=" + glossaryTermProperties +
-                        ", relatedElement=" + relatedElement +
+                        ", relatedBy=" + relatedBy +
                        '}';
     }
 
@@ -145,18 +145,12 @@ public class GlossaryTermElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         GlossaryTermElement that = (GlossaryTermElement) objectToCompare;
-        return Objects.equals(getElementHeader(), that.getElementHeader()) &&
-                       Objects.equals(getRelatedElement(), that.getRelatedElement()) &&
-                       Objects.equals(getGlossaryTermProperties(), that.getGlossaryTermProperties());
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(glossaryTermProperties, that.glossaryTermProperties) &&
+                Objects.equals(relatedBy, that.relatedBy);
     }
 
 
@@ -168,6 +162,6 @@ public class GlossaryTermElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, relatedElement, glossaryTermProperties);
+        return Objects.hash(super.hashCode(), elementHeader, relatedBy, glossaryTermProperties);
     }
 }

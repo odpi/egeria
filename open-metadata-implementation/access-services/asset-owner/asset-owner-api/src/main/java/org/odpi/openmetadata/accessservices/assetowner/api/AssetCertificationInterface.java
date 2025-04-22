@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
 
 import java.util.List;
@@ -96,8 +97,8 @@ public interface AssetCertificationInterface
                                                                   int    domainIdentifier,
                                                                   int    startFrom,
                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 
     /* =======================================
      * Certifications
@@ -175,12 +176,12 @@ public interface AssetCertificationInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getCertifiedElements(String userId,
-                                              String certificationTypeGUID,
-                                              int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+    List<RelatedElementStub> getCertifiedElements(String userId,
+                                                  String certificationTypeGUID,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
@@ -197,10 +198,10 @@ public interface AssetCertificationInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getCertifications(String userId,
-                                           String elementGUID,
-                                           int    startFrom,
-                                           int    pageSize) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    List<RelatedElementStub> getCertifications(String userId,
+                                               String elementGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 }

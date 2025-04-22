@@ -13,9 +13,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 
 import java.util.List;
 
@@ -453,12 +454,12 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getElementsForExternalReference(String userId,
-                                                                String externalReferenceGUID,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<RelatedElementStub> getElementsForExternalReference(String userId,
+                                                                    String externalReferenceGUID,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "getElementsForExternalReference";
         final String guidParameter = "externalReferenceGUID";

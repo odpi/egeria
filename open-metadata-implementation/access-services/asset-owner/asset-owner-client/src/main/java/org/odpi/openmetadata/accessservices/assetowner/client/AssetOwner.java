@@ -4388,8 +4388,8 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSemanticAssignees(String userId, String glossaryTermGUID, int startFrom, int pageSize, Date effectiveTime,
-                                                     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    public List<RelatedBy> getSemanticAssignees(String userId, String glossaryTermGUID, int startFrom, int pageSize, Date effectiveTime,
+                                                boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
     {
         return null;
     }
@@ -4433,11 +4433,11 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getGovernedElements(String userId,
-                                                    String governanceDefinitionGUID,
-                                                    int startFrom,
-                                                    int pageSize,
-                                                    Date effectiveTime
+    public List<RelatedBy> getGovernedElements(String userId,
+                                               String governanceDefinitionGUID,
+                                               int startFrom,
+                                               int pageSize,
+                                               Date effectiveTime
     , boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
     {
         return null;
@@ -4461,8 +4461,8 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSourceElements(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime,
-     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    public List<RelatedBy> getSourceElements(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime,
+                                             boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
     {
         return null;
     }
@@ -4484,7 +4484,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getElementsSourceFrom(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime, boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    public List<RelatedBy> getElementsSourceFrom(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime, boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
     {
         return null;
     }

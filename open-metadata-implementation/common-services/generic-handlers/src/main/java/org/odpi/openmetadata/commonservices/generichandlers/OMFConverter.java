@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -217,112 +216,6 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
-     * contain a combination of the properties from an entity and that of a connected relationship.
-     *
-     * @param beanClass    name of the class to create
-     * @param entity       entity containing the properties
-     * @param relationship relationship containing the properties
-     * @param methodName   calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    public RelatedElement getRelatedElement(Class<B> beanClass,
-                                            EntityDetail entity,
-                                            Relationship relationship,
-                                            String methodName) throws PropertyServerException
-    {
-        RelatedElement relatedElement = new RelatedElement();
-
-        relatedElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, null, methodName));
-
-        if (relationship != null)
-        {
-            InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
-
-            RelationshipProperties relationshipProperties = new RelationshipProperties();
-
-            relationshipProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
-            relationshipProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
-            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-            relatedElement.setRelationshipProperties(relationshipProperties);
-        }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.RELATIONSHIP_DEF, methodName);
-        }
-
-
-        if (entity != null)
-        {
-            ElementStub elementStub = this.getElementStub(beanClass, entity, methodName);
-
-            relatedElement.setRelatedElement(elementStub);
-        }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
-        }
-
-        return relatedElement;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
-     * contain a combination of the properties from an entityProxy and that of a connected relationship.
-     *
-     * @param beanClass    name of the class to create
-     * @param entityProxy  entityProxy containing the properties
-     * @param relationship relationship containing the properties
-     * @param methodName   calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    public RelatedElement getRelatedElement(Class<B> beanClass,
-                                            Relationship relationship,
-                                            EntityProxy entityProxy,
-                                            String methodName) throws PropertyServerException
-    {
-        RelatedElement relatedElement = new RelatedElement();
-
-        relatedElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, null, methodName));
-
-        if (relationship != null)
-        {
-            InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
-
-            RelationshipProperties relationshipProperties = new RelationshipProperties();
-
-            relationshipProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
-            relationshipProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
-            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-            relatedElement.setRelationshipProperties(relationshipProperties);
-        }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.RELATIONSHIP_DEF, methodName);
-        }
-
-
-        if (entityProxy != null)
-        {
-            ElementStub elementStub = this.getElementStub(beanClass, entityProxy, methodName);
-
-            relatedElement.setRelatedElement(elementStub);
-        }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
-        }
-
-        return relatedElement;
     }
 
 
