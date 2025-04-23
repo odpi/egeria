@@ -42,7 +42,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
         appendNewMermaidNode(centreNodeName,
                              centreDisplayName,
                              assetLineageGraph.getElementHeader().getType().getTypeName(),
-                             VisualStyle.PRINCIPAL_ASSET);
+                             checkForClassifications(assetLineageGraph.getElementHeader(), VisualStyle.PRINCIPAL_ASSET));
 
         String currentNodeName;
         String currentDisplayName;
@@ -71,7 +71,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getElementHeader().getType().getTypeName(),
-                                         VisualStyle.LINKED_ELEMENT);
+                                         checkForClassifications(node.getElementHeader(), VisualStyle.LINKED_ELEMENT));
 
                     super.appendMermaidLine(null,
                                             currentNodeName,
@@ -105,7 +105,7 @@ public class AssetLineageEdgeGraphMermaidGraphBuilder extends MermaidGraphBuilde
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getElementHeader().getType().getTypeName(),
-                                         VisualStyle.LINKED_ELEMENT);
+                                         checkForClassifications(node.getElementHeader(), VisualStyle.LINKED_ELEMENT));
 
                     super.appendMermaidLine(null,
                                             centreNodeName,

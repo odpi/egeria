@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadata
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
@@ -19,9 +18,6 @@ import java.util.List;
  */
 public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-    private final String         serviceName = "Mermaid Graph Builder";
-
     /**
      * Construct a graph.
      *
@@ -42,7 +38,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              elementGraph.getType().getTypeName(),
-                             VisualStyle.ANCHOR_ELEMENT);
+                             checkForClassifications(elementGraph, VisualStyle.ANCHOR_ELEMENT));
 
         if (elementGraph.getAnchoredElements() != null)
         {
@@ -56,7 +52,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getType().getTypeName(),
-                                         VisualStyle.ANCHORED_ELEMENT);
+                                         checkForClassifications(node, VisualStyle.ANCHORED_ELEMENT));
                 }
             }
         }
@@ -78,7 +74,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getElementAtEnd1().getGUID(),
                                          endName,
                                          line.getElementAtEnd1().getType().getTypeName(),
-                                         visualStyle);
+                                         checkForClassifications(line.getElementAtEnd1(), visualStyle));
 
                     endName = line.getElementAtEnd2().getGUID();
                     if (line.getElementAtEnd2().getUniqueName() != null)
@@ -89,10 +85,10 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getElementAtEnd2().getGUID(),
                                          endName,
                                          line.getElementAtEnd2().getType().getTypeName(),
-                                         visualStyle);
+                                         checkForClassifications(line.getElementAtEnd2(), visualStyle));
 
                     super.appendMermaidLine(line.getRelationshipGUID(),
-                                            this.removeSpaces(line.getElementAtEnd2().getGUID()),
+                                            this.removeSpaces(line.getElementAtEnd1().getGUID()),
                                             super.addSpacesToTypeName(line.getType().getTypeName()),
                                             this.removeSpaces(line.getElementAtEnd2().getGUID()));
                 }
@@ -341,13 +337,13 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
     {
         final String methodName = "getDisplayName";
 
-        String currentDisplayName = propertyHelper.getStringProperty(serviceName,
+        String currentDisplayName = propertyHelper.getStringProperty(sourceName,
                                                                      OpenMetadataProperty.NAME.name,
                                                                      elementProperties,
                                                                      methodName);
         if (currentDisplayName == null)
         {
-            currentDisplayName = propertyHelper.getStringProperty(serviceName,
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   elementProperties,
                                                                   methodName);
@@ -355,7 +351,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         if (currentDisplayName == null)
         {
-            currentDisplayName = propertyHelper.getStringProperty(serviceName,
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
                                                                   OpenMetadataProperty.RESOURCE_NAME.name,
                                                                   elementProperties,
                                                                   methodName);
@@ -363,7 +359,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         if (currentDisplayName == null)
         {
-            currentDisplayName = propertyHelper.getStringProperty(serviceName,
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   elementProperties,
                                                                   methodName);

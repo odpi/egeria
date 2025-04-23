@@ -118,7 +118,6 @@ public class DataClassConverter<B> extends OpenMetadataConverterBase<B>
             dataClassProperties.setValueRangeTo(this.removeValueRangeTo(elementProperties));
             dataClassProperties.setSampleValues(this.removeSampleValues(elementProperties));
             dataClassProperties.setDataPatterns(this.removeDataPatterns(elementProperties));
-            dataClassProperties.setNamePatterns(this.removeNamePatterns(elementProperties));
             dataClassProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
             dataClassProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 

@@ -25,6 +25,7 @@ public class DataFieldProperties extends ReferenceableProperties
     private String            displayName       = null;
     private String            namespace         = null;
     private List<String>      aliases           = null;
+    private List<String>      namePatterns      = null;
     private String            description       = null;
     private boolean           isDeprecated      = false;
     private String            versionIdentifier = null;
@@ -61,6 +62,7 @@ public class DataFieldProperties extends ReferenceableProperties
             displayName       = template.getDisplayName();
             namespace         = template.getNamespace();
             aliases           = template.getAliases();
+            namePatterns      = template.getNamePatterns();
             description       = template.getDescription();
             isDeprecated      = template.getIsDeprecated();
             versionIdentifier = template.getVersionIdentifier();
@@ -139,6 +141,28 @@ public class DataFieldProperties extends ReferenceableProperties
     public void setAliases(List<String> aliases)
     {
         this.aliases = aliases;
+    }
+
+
+    /**
+     * Return a regular expression that characterizes the name used for this type of data field.
+     *
+     * @return string
+     */
+    public List<String> getNamePatterns()
+    {
+        return namePatterns;
+    }
+
+
+    /**
+     * Set up  a regular expression that characterizes the name used for this type of data field.
+     *
+     * @param namePatterns string
+     */
+    public void setNamePatterns(List<String> namePatterns)
+    {
+        this.namePatterns = namePatterns;
     }
 
 
@@ -394,6 +418,7 @@ public class DataFieldProperties extends ReferenceableProperties
                 "displayName='" + displayName + '\'' +
                 ", namespace='" + namespace + '\'' +
                 ", aliases=" + aliases +
+                ", namePatterns=" + namePatterns +
                 ", description='" + description + '\'' +
                 ", isDeprecated=" + isDeprecated +
                 ", versionIdentifier='" + versionIdentifier + '\'' +
@@ -427,6 +452,7 @@ public class DataFieldProperties extends ReferenceableProperties
                 minimumLength == that.minimumLength && length == that.length && precision == that.precision &&
                 orderedValues == that.orderedValues && Objects.equals(displayName, that.displayName) &&
                 Objects.equals(namespace, that.namespace) && Objects.equals(aliases, that.aliases) &&
+                Objects.equals(namePatterns, that.namePatterns) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
@@ -442,7 +468,7 @@ public class DataFieldProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, namespace, aliases, description, isDeprecated,
+        return Objects.hash(super.hashCode(), displayName, namespace, aliases, namePatterns, description, isDeprecated,
                             versionIdentifier, defaultValue, isNullable, dataType,
                             minimumLength, length, precision, orderedValues, sortOrder);
     }

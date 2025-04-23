@@ -75,7 +75,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String methodName = "writeGlossary";
 
-        String glossaryGUID = archiveHelper.addGlossary("Glossary:TeddyBearDropFootTerminology",
+        String glossaryGUID = archiveHelper.addGlossary("Glossary::TeddyBearDropFootTerminology",
                                                         "Teddy Bear Drop Foot Terminology",
                                                         "This glossary describes terminology invented for the fictitious study into Teddy Bear Drop Foot that is being used to demonstrate aspects of open governance without risk to real patient data. ",
                                                         "English",

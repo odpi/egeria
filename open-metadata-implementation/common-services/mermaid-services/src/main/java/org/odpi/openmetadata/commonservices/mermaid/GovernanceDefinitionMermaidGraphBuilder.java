@@ -36,7 +36,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              governanceDefinitionGraph.getElementHeader().getType().getTypeName(),
-                             VisualStyle.GOVERNANCE_DEFINITION);
+                             checkForClassifications(governanceDefinitionGraph.getElementHeader(), VisualStyle.GOVERNANCE_DEFINITION));
 
         usedNodeNames.add(currentNodeName);
 
@@ -54,7 +54,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          parent.getRelatedElement().getType().getTypeName(),
-                                         VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION);
+                                         checkForClassifications(parent.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
                     usedNodeNames.add(currentNodeName);
 
@@ -78,7 +78,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          peer.getRelatedElement().getType().getTypeName(),
-                                         VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION);
+                                         checkForClassifications(peer.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
                     usedNodeNames.add(currentNodeName);
 
@@ -102,7 +102,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          child.getRelatedElement().getType().getTypeName(),
-                                         VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION);
+                                         checkForClassifications(child.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
                     usedNodeNames.add(currentNodeName);
 
@@ -126,7 +126,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          metrics.getRelatedElement().getType().getTypeName(),
-                                         VisualStyle.GOVERNANCE_METRIC);
+                                         checkForClassifications(metrics.getRelatedElement(), VisualStyle.GOVERNANCE_METRIC));
 
                     usedNodeNames.add(currentNodeName);
 
@@ -150,7 +150,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          externalReference.getRelatedElement().getType().getTypeName(),
-                                         VisualStyle.EXTERNAL_REFERENCES);
+                                         checkForClassifications(externalReference.getRelatedElement(), VisualStyle.EXTERNAL_REFERENCES));
 
                     usedNodeNames.add(currentNodeName);
 
@@ -174,7 +174,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          other.getRelatedElement().getType().getTypeName(),
-                                         VisualStyle.GOVERNED_ELEMENT);
+                                         checkForClassifications(other.getRelatedElement(), VisualStyle.GOVERNED_ELEMENT));
 
                     usedNodeNames.add(currentNodeName);
 

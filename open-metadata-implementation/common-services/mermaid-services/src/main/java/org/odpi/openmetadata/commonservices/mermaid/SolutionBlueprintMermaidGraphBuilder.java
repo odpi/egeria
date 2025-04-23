@@ -38,7 +38,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
             mermaidGraph.append("subgraph " );
             mermaidGraph.append(currentNodeName);
             mermaidGraph.append(" [Components and Actors]\n");
-            nodeColours.put(currentNodeName, VisualStyle.SOLUTION_BLUEPRINT);
+            nodeColours.put(currentNodeName, VisualStyle.SOLUTION_BLUEPRINT_GRAPH);
 
             addDescription(solutionBlueprintElement, false);
 
@@ -63,7 +63,8 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
             appendNewMermaidNode(currentNodeName,
                                  currentDisplayName,
                                  solutionBlueprintElement.getElementHeader().getType().getTypeName(),
-                                 VisualStyle.SOLUTION_BLUEPRINT);
+                                 checkForClassifications(solutionBlueprintElement.getElementHeader(),
+                                                         VisualStyle.SOLUTION_BLUEPRINT));
 
             addDescription(solutionBlueprintElement, true);
         }

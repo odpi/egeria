@@ -13,6 +13,7 @@ public enum Colour
     CERISE      ("#AA00FF"),
     EGERIA_BLUE ("#39add1"),
     DARK_BLUE   ("#3079ab"),
+    CORNFLOWER_BLUE   ("#6495ed"),
     BLUE_SKY    ("#A8C2FF"),
     LIGHT_BLUE  ("#CCE5FF"),
     PALE_TURQUOISE("#afeeee"),
@@ -38,6 +39,8 @@ public enum Colour
     SLATE       ("#004563"),
     SAND        ("#F9F7ED"),
 
+    GHOST_WHITE ("#f8f8ff"),
+    POWDER_BLUE("#b0e0e6"),
 
     LIGHT_ORANGE("FFE599"),
     ORANGE      ("#f9845b"),
