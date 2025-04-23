@@ -212,39 +212,57 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a node in the mermaid graph.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#extractAnchorInfo(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">extractAnchorInfo</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkForClassifications(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)" class="member-name-link">checkForClassifications</a><wbr>(<a href="../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;openMetadataElement,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;defaultVisualStyle)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract any anchor information to allow the graph to include linkages to anchors.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListLabel(java.util.List)" class="member-name-link">getListLabel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;labelValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Convert an array into a comma separated string.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add any style requests and return the built mermaid graph.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph(boolean)" class="member-name-link">getMermaidGraph</a><wbr>(boolean&nbsp;allAnchors)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add anchors, any style requests and return the built mermaid graph.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodeDisplayName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">getNodeDisplayName</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;metadataElementSummary)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the name of a node.</div>
+<div class="block">Switch the visual style of an element if the Memento or Template classification is set.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForRelationship(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader)" class="member-name-link">getVisualStyleForRelationship</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a>&nbsp;relationshipHeader)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkForClassifications(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementStub,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)" class="member-name-link">checkForClassifications</a><wbr>(<a href="../../frameworks/governanceaction/properties/OpenMetadataElementStub.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElementStub</a>&nbsp;openMetadataElement,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;defaultVisualStyle)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Use the type of the relationship to determine the shape of a linked entity.</div>
+<div class="block">Switch the visual style of an element if the Memento or Template classification is set.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForSolutionComponent(java.lang.String)" class="member-name-link">getVisualStyleForSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentType)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkForClassifications(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)" class="member-name-link">checkForClassifications</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;defaultVisualStyle)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Switch the visual style of an element if the Memento or Template classification is set.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#extractAnchorInfo(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">extractAnchorInfo</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract any anchor information to allow the graph to include linkages to anchors.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListLabel(java.util.List)" class="member-name-link">getListLabel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;labelValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert an array into a comma separated string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add any style requests and return the built mermaid graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph(boolean)" class="member-name-link">getMermaidGraph</a><wbr>(boolean&nbsp;allAnchors)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add anchors, any style requests and return the built mermaid graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodeDisplayName(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">getNodeDisplayName</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;metadataElementSummary)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the name of a node.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForRelationship(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader)" class="member-name-link">getVisualStyleForRelationship</a><wbr>(<a href="../../frameworks/openmetadata/metadataelements/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementControlHeader</a>&nbsp;relationshipHeader)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Use the type of the relationship to determine the shape of a linked entity.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVisualStyleForSolutionComponent(java.lang.String)" class="member-name-link">getVisualStyleForSolutionComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Map the solution component type to an appropriate visual style.</div>
 </div>
 </div>
@@ -338,6 +356,51 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>allAnchors</code> - should all anchors be added - or just those to known nodes?</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="checkForClassifications(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)">
+<h3>checkForClassifications</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></span>&nbsp;<span class="element-name">checkForClassifications</span><wbr><span class="parameters">(<a href="../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;defaultVisualStyle)</span></div>
+<div class="block">Switch the visual style of an element if the Memento or Template classification is set.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elementHeader</code> - header of element</dd>
+<dd><code>defaultVisualStyle</code> - normal visual style for element</dd>
+<dt>Returns:</dt>
+<dd>visual style to use</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="checkForClassifications(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)">
+<h3>checkForClassifications</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></span>&nbsp;<span class="element-name">checkForClassifications</span><wbr><span class="parameters">(<a href="../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;openMetadataElement,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;defaultVisualStyle)</span></div>
+<div class="block">Switch the visual style of an element if the Memento or Template classification is set.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataElement</code> - header of element</dd>
+<dd><code>defaultVisualStyle</code> - normal visual style for element</dd>
+<dt>Returns:</dt>
+<dd>visual style to use</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="checkForClassifications(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementStub,org.odpi.openmetadata.commonservices.mermaid.VisualStyle)">
+<h3>checkForClassifications</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a></span>&nbsp;<span class="element-name">checkForClassifications</span><wbr><span class="parameters">(<a href="../../frameworks/governanceaction/properties/OpenMetadataElementStub.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElementStub</a>&nbsp;openMetadataElement,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.commonservices.mermaid">VisualStyle</a>&nbsp;defaultVisualStyle)</span></div>
+<div class="block">Switch the visual style of an element if the Memento or Template classification is set.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataElement</code> - header of element</dd>
+<dd><code>defaultVisualStyle</code> - normal visual style for element</dd>
+<dt>Returns:</dt>
+<dd>visual style to use</dd>
 </dl>
 </section>
 </li>
