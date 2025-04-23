@@ -32,7 +32,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
-                             VisualStyle.ANCHOR_ELEMENT);
+                             checkForClassifications(assetGraph.getElementHeader(), VisualStyle.ANCHOR_ELEMENT));
 
         if (assetGraph.getAnchoredElements() != null)
         {
@@ -56,9 +56,9 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     }
 
                     appendNewMermaidNode(currentNodeName,
-                                             currentDisplayName,
-                                             node.getElementHeader().getType().getTypeName(),
-                                             VisualStyle.ANCHORED_ELEMENT);
+                                         currentDisplayName,
+                                         node.getElementHeader().getType().getTypeName(),
+                                         checkForClassifications(node.getElementHeader(), VisualStyle.ANCHORED_ELEMENT));
                 }
             }
 
@@ -77,7 +77,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getEnd1().getGUID(),
                                          endName,
                                          line.getEnd1().getType().getTypeName(),
-                                         visualStyle);
+                                         checkForClassifications(line.getEnd1(), visualStyle));
 
                     endName = line.getEnd2().getGUID();
                     if (line.getEnd2().getUniqueName() != null)
@@ -88,7 +88,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getEnd2().getGUID(),
                                          endName,
                                          line.getEnd2().getType().getTypeName(),
-                                         visualStyle);
+                                         checkForClassifications(line.getEnd2(),visualStyle));
 
                     super.appendMermaidLine(line.getGUID(),
                                             this.removeSpaces(line.getEnd1().getGUID()),

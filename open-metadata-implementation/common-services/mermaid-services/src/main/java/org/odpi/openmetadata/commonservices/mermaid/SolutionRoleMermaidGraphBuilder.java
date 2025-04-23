@@ -34,7 +34,8 @@ public class SolutionRoleMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              solutionRoleElement.getElementHeader().getType().getTypeName(),
-                             VisualStyle.SOLUTION_ROLE);
+                             checkForClassifications(solutionRoleElement.getElementHeader(),
+                                                     VisualStyle.SOLUTION_ROLE));
 
 
         if (solutionRoleElement.getSolutionComponents() != null)
@@ -53,7 +54,8 @@ public class SolutionRoleMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                         checkForClassifications(node.getRelatedElement().getElementHeader(),
+                                                                 VisualStyle.DEFAULT_SOLUTION_COMPONENT));
 
 
                     super.appendMermaidLine(node.getRelationshipHeader().getGUID(),

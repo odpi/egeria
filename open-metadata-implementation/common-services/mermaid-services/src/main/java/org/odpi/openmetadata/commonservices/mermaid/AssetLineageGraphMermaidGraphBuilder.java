@@ -42,7 +42,7 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              assetLineageGraph.getElementHeader().getType().getTypeName(),
-                             VisualStyle.PRINCIPAL_ASSET);
+                             checkForClassifications(assetLineageGraph.getElementHeader(), VisualStyle.PRINCIPAL_ASSET));
 
         if (assetLineageGraph.getLinkedAssets() != null)
         {
@@ -70,7 +70,7 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getElementHeader().getType().getTypeName(),
-                                         VisualStyle.LINEAGE_ELEMENT);
+                                         checkForClassifications(node.getElementHeader(), VisualStyle.LINEAGE_ELEMENT));
                 }
             }
 

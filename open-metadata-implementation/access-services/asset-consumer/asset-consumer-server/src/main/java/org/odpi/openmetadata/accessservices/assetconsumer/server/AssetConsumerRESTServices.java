@@ -613,7 +613,7 @@ public class AssetConsumerRESTServices
      * Retrieve the asset and its lineage relationships.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the asset
+     * @param elementGUID unique identifier of the asset
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
@@ -632,7 +632,7 @@ public class AssetConsumerRESTServices
      * @throws UserNotAuthorizedException security problem
      */
     void getAssetLineageGraphNodes(String                                                userId,
-                                   String                                                assetGUID,
+                                   String                                                elementGUID,
                                    int                                                   direction,
                                    List<String>                                          lineageRelationshipTypeNames, 
                                    String                                                limitToInformationSupplyChain, 
@@ -653,7 +653,7 @@ public class AssetConsumerRESTServices
         Map<String, LineageLink> downstreamAssets = new HashMap<>();
 
         AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
-                                                                    assetGUID,
+                                                                    elementGUID,
                                                                     direction,
                                                                     lineageRelationshipTypeNames,
                                                                     limitToInformationSupplyChain,
@@ -1122,7 +1122,7 @@ public class AssetConsumerRESTServices
         List<Relationship> lineageRelationships = new ArrayList<>(this.getLineageRelationshipsForElement(userId,
                                                                                                          assetGUID,
                                                                                                          assetGUIDParameterName,
-                                                                                                         OpenMetadataType.ASSET.typeName,
+                                                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                                          direction,
                                                                                                          lineageRelationshipTypeNames,
                                                                                                          limitToInformationSupplyChain,

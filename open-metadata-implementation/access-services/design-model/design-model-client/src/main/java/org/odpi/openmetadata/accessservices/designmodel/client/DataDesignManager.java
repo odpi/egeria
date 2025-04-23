@@ -2248,6 +2248,10 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                       OpenMetadataProperty.ALIASES.name,
                                                                       properties.getAliases());
 
+            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                      OpenMetadataProperty.NAME_PATTERNS.name,
+                                                                      properties.getNamePatterns());
+
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
                                                                   properties.getIsDeprecated());
@@ -2415,12 +2419,6 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
             elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                       OpenMetadataProperty.DATA_PATTERNS.name,
                                                                       properties.getDataPatterns());
-
-            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                      OpenMetadataProperty.NAME_PATTERNS.name,
-                                                                      properties.getNamePatterns());
-
-
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,

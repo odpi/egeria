@@ -67,7 +67,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getElementHeader().getType().getTypeName(),
-                                         VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+                                         checkForClassifications(node.getElementHeader(), VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG));
 
 
                     if (node.getLinks() != null)
@@ -130,7 +130,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                     appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
                                                          implementedByRelationship.getEnd2Element().getUniqueName(),
                                                          implementedByRelationship.getEnd2Element().getType().getTypeName(),
-                                                         visualStyle);
+                                                         checkForClassifications(implementedByRelationship.getEnd2Element(), visualStyle));
                                 }
                             }
                         }
@@ -165,7 +165,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                     appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
                                                          implementedByRelationship.getEnd2Element().getUniqueName(),
                                                          implementedByRelationship.getEnd2Element().getType().getTypeName(),
-                                                         visualStyle);
+                                                         checkForClassifications(implementedByRelationship.getEnd2Element(), visualStyle));
                                 }
 
                                 List<String> labelList = new ArrayList<>();
@@ -197,12 +197,12 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                 appendNewMermaidNode(relationship.getEnd1Element().getGUID(),
                                                      relationship.getEnd1Element().getUniqueName(),
                                                      relationship.getEnd1Element().getType().getTypeName(),
-                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                                     checkForClassifications(relationship.getEnd1Element(), VisualStyle.DEFAULT_SOLUTION_COMPONENT));
 
                                 appendNewMermaidNode(relationship.getEnd2Element().getGUID(),
                                                      relationship.getEnd2Element().getUniqueName(),
                                                      relationship.getEnd2Element().getType().getTypeName(),
-                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                                     checkForClassifications(relationship.getEnd2Element(), VisualStyle.DEFAULT_SOLUTION_COMPONENT));
 
                                 if (!solutionLinkingWireGUIDs.contains(relationship.getElementHeader().getGUID()))
                                 {
@@ -285,14 +285,14 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
                                              lineageRelationship.getEnd1().getUniqueName(),
                                              lineageRelationship.getEnd1().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                             checkForClassifications(lineageRelationship.getEnd1(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
                     }
                     else
                     {
                         appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
                                              lineageRelationship.getEnd1().getGUID(),
                                              lineageRelationship.getEnd1().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                             checkForClassifications(lineageRelationship.getEnd1(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
                     }
 
                     if (lineageRelationship.getEnd2().getUniqueName() != null)
@@ -300,14 +300,14 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         appendNewMermaidNode(lineageRelationship.getEnd2().getGUID(),
                                              lineageRelationship.getEnd2().getUniqueName(),
                                              lineageRelationship.getEnd2().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                             checkForClassifications(lineageRelationship.getEnd2(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
                     }
                     else
                     {
                         appendNewMermaidNode(lineageRelationship.getEnd2().getGUID(),
                                              lineageRelationship.getEnd2().getGUID(),
                                              lineageRelationship.getEnd2().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                             checkForClassifications(lineageRelationship.getEnd2(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
                     }
 
                     String label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
@@ -362,7 +362,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              informationSupplyChainElement.getElementHeader().getType().getTypeName(),
-                             VisualStyle.INFORMATION_SUPPLY_CHAIN);
+                             checkForClassifications( informationSupplyChainElement.getElementHeader(), VisualStyle.INFORMATION_SUPPLY_CHAIN));
 
         this.addDescriptionArea(informationSupplyChainElement);
 

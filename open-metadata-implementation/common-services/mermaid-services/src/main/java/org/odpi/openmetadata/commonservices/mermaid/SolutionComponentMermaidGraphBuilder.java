@@ -59,7 +59,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                                 appendNewMermaidNode(parentComponentName,
                                                      parentComponentDisplayName,
                                                      parentComponent.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                     super.getVisualStyleForSolutionComponent(parentComponent.getRelatedElement().getElementHeader().getType().getTypeName()));
+                                                     checkForClassifications(parentComponent.getRelatedElement().getElementHeader(),
+                                                                             super.getVisualStyleForSolutionComponent(parentComponent.getRelatedElement().getElementHeader().getType().getTypeName())));
 
                                 appendMermaidLine(parentComponent.getRelationshipHeader().getGUID(),
                                                   parentComponentName,
@@ -79,7 +80,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendNewMermaidNode(segmentName,
                                              segmentDisplayName,
                                              informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+                                             checkForClassifications(informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader(),
+                                                                     VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG));
 
                         appendMermaidLine(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getGUID(),
                                           segmentName,
@@ -97,7 +99,8 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendNewMermaidNode(iscName,
                                              iscDisplayName,
                                              informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             VisualStyle.INFORMATION_SUPPLY_CHAIN);
+                                             checkForClassifications(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader(),
+                                                                     VisualStyle.INFORMATION_SUPPLY_CHAIN));
 
                         appendMermaidLine(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getGUID(),
                                           iscName,

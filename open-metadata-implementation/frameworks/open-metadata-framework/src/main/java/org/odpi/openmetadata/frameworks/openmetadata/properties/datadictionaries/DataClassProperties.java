@@ -41,7 +41,6 @@ public class DataClassProperties extends ReferenceableProperties
     private String              valueRangeTo          = null;
     private List<String>        sampleValues          = null;
     private List<String>        dataPatterns          = null;
-    private List<String>        namePatterns          = null;
 
 
     /**
@@ -81,7 +80,6 @@ public class DataClassProperties extends ReferenceableProperties
             valueRangeTo          = template.getValueRangeTo();
             sampleValues          = template.getSampleValues();
             dataPatterns          = template.getDataPatterns();
-            namePatterns          = template.getNamePatterns();
         }
     }
 
@@ -459,28 +457,6 @@ public class DataClassProperties extends ReferenceableProperties
 
 
     /**
-     * Return a regular expression that characterizes the name used for this type of data field.
-     *
-     * @return string
-     */
-    public List<String> getNamePatterns()
-    {
-        return namePatterns;
-    }
-
-
-    /**
-     * Set up  a regular expression that characterizes the name used for this type of data field.
-     *
-     * @param namePatterns string
-     */
-    public void setNamePatterns(List<String> namePatterns)
-    {
-        this.namePatterns = namePatterns;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -506,7 +482,6 @@ public class DataClassProperties extends ReferenceableProperties
                 ", valueRangeTo='" + valueRangeTo + '\'' +
                 ", sampleValues=" + sampleValues +
                 ", dataPatterns=" + dataPatterns +
-                ", namePatterns=" + namePatterns +
                 "} " + super.toString();
     }
 
@@ -540,8 +515,7 @@ public class DataClassProperties extends ReferenceableProperties
                 Objects.equals(valueRangeFrom, that.valueRangeFrom) &&
                 Objects.equals(valueRangeTo, that.valueRangeTo) &&
                 Objects.equals(sampleValues, that.sampleValues) &&
-                Objects.equals(dataPatterns, that.dataPatterns) &&
-                Objects.equals(namePatterns, that.namePatterns);
+                Objects.equals(dataPatterns, that.dataPatterns);
     }
 
     /**
@@ -555,6 +529,6 @@ public class DataClassProperties extends ReferenceableProperties
         return Objects.hash(super.hashCode(), displayName, description, matchPropertyNames, namespace,
                             matchThreshold, specification, specificationDetails, dataType, allowsDuplicateValues,
                             isNullable, defaultValue, averageValue, valueList, valueRangeFrom, valueRangeTo, sampleValues,
-                            dataPatterns, namePatterns);
+                            dataPatterns);
     }
 }

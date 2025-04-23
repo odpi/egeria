@@ -43,7 +43,7 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(dataStructureNodeName,
                              dataStructureElement.getElementHeader().getGUID(),
                              dataStructureElement.getElementHeader().getType().getTypeName(),
-                             VisualStyle.DATA_STRUCTURE);
+                             checkForClassifications(dataStructureElement.getElementHeader(), VisualStyle.DATA_STRUCTURE));
 
         if ((dataStructureElement.getMemberDataFields() != null) && (! dataStructureElement.getMemberDataFields().isEmpty()))
         {
@@ -73,7 +73,7 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
             appendNewMermaidNode(schemaNodeName,
                                  dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader().getGUID(),
                                  dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                 VisualStyle.DATA_STRUCTURE);
+                                 checkForClassifications(dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader(),VisualStyle.DATA_STRUCTURE));
 
             super.appendMermaidLine(null,
                                     dataStructureNodeName,
@@ -107,7 +107,7 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.appendNewMermaidNode(currentNodeName,
                                        currentDisplayName,
                                        dataFieldElement.getElementHeader().getType().getTypeName(),
-                                       VisualStyle.DATA_FIELD);
+                                       checkForClassifications(dataFieldElement.getElementHeader(), VisualStyle.DATA_FIELD));
 
             super.appendMermaidLine(null,
                                     parentNodeName,

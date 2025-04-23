@@ -430,6 +430,7 @@ Content-Type: application/json
       "alias1",
       "alias2"
     ],
+    "namePatterns": [],
     "isDeprecated": false,
     "isNullable": false,
     "defaultValue": "",
@@ -515,6 +516,7 @@ Content-Type: application/json
     "description": "add description here",
     "versionIdentifier": "add version",
     "aliases": ["alias1", "alias2"],
+    "namePatterns": [],
     "isDeprecated": false,
     "isNullable" : false,
     "defaultValue": "",
@@ -771,7 +773,6 @@ Content-Type: application/json
     "valueRangeTo": "",
     "sampleValues": [],
     "dataPatterns" : [],
-    "namePatterns": [],
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -815,7 +816,6 @@ Content-Type: application/json
     "valueRangeTo": "",
     "sampleValues": [],
     "dataPatterns": [],
-    "namePatterns": [],
     "additionalProperties": {
       "property1": "propertyValue1",
       "property2": "propertyValue2"
@@ -907,7 +907,6 @@ Content-Type: application/json
     "valueRangeTo": "",
     "sampleValues": [],
     "dataPatterns" : [],
-    "namePatterns": [],
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"

@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -140,6 +143,102 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Switch the visual style of an element if the Memento or Template classification is set.
+     *
+     * @param elementHeader header of element
+     * @param defaultVisualStyle normal visual style for element
+     * @return visual style to use
+     */
+    protected VisualStyle checkForClassifications(ElementHeader elementHeader,
+                                                  VisualStyle   defaultVisualStyle)
+    {
+        if ((elementHeader != null) && (elementHeader.getClassifications() != null))
+        {
+            for (ElementClassification classification : elementHeader.getClassifications())
+            {
+                if (classification != null)
+                {
+                    if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.MEMENTO;
+                    }
+                    else if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.TEMPLATE;
+                    }
+                }
+            }
+        }
+
+        return defaultVisualStyle;
+    }
+
+
+    /**
+     * Switch the visual style of an element if the Memento or Template classification is set.
+     *
+     * @param openMetadataElement header of element
+     * @param defaultVisualStyle normal visual style for element
+     * @return visual style to use
+     */
+    protected VisualStyle checkForClassifications(OpenMetadataElement openMetadataElement,
+                                                  VisualStyle         defaultVisualStyle)
+    {
+        if ((openMetadataElement != null) && (openMetadataElement.getClassifications() != null))
+        {
+            for (AttachedClassification classification : openMetadataElement.getClassifications())
+            {
+                if (classification != null)
+                {
+                    if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.MEMENTO;
+                    }
+                    else if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.TEMPLATE;
+                    }
+                }
+            }
+        }
+
+        return defaultVisualStyle;
+    }
+
+
+    /**
+     * Switch the visual style of an element if the Memento or Template classification is set.
+     *
+     * @param openMetadataElement header of element
+     * @param defaultVisualStyle normal visual style for element
+     * @return visual style to use
+     */
+    protected VisualStyle checkForClassifications(OpenMetadataElementStub openMetadataElement,
+                                                  VisualStyle            defaultVisualStyle)
+    {
+        if ((openMetadataElement != null) && (openMetadataElement.getClassifications() != null))
+        {
+            for (AttachedClassification classification : openMetadataElement.getClassifications())
+            {
+                if (classification != null)
+                {
+                    if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.MEMENTO;
+                    }
+                    else if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.TEMPLATE;
+                    }
+                }
+            }
+        }
+
+        return defaultVisualStyle;
+    }
+
+
+    /**
      * Use the type of the relationship to determine the shape of a linked entity.
      *
      * @param relationshipHeader header of the relationship
@@ -168,6 +267,7 @@ public class MermaidGraphBuilderBase
         return visualStyle;
     }
 
+
     /**
      * Map the solution component type to an appropriate visual style.
      *
@@ -189,7 +289,6 @@ public class MermaidGraphBuilderBase
 
         return VisualStyle.DEFAULT_SOLUTION_COMPONENT;
     }
-
 
 
     /**
@@ -526,8 +625,13 @@ public class MermaidGraphBuilderBase
      */
     String removeSpaces(String currentQualifiedName)
     {
-        String noSpaces = currentQualifiedName.replaceAll("\\s+","");
-        return noSpaces.replaceAll("[\\[\\](){}]", "");
+        if (currentQualifiedName != null)
+        {
+            String noSpaces = currentQualifiedName.replaceAll("\\s+", "");
+            return noSpaces.replaceAll("[\\[\\](){}]", "");
+        }
+
+        return null;
     }
 
 
@@ -660,14 +764,16 @@ public class MermaidGraphBuilderBase
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
                                      solutionComponentElement.getElementHeader().getType().getTypeName(),
-                                     this.getVisualStyleForSolutionComponent(solutionComponentElement.getProperties().getSolutionComponentType()));
+                                     checkForClassifications(solutionComponentElement.getElementHeader(),
+                                                             this.getVisualStyleForSolutionComponent(solutionComponentElement.getProperties().getSolutionComponentType())));
             }
             else
             {
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
                                      solutionComponentElement.getElementHeader().getType().getTypeName(),
-                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                     checkForClassifications(solutionComponentElement.getElementHeader(),
+                                                             VisualStyle.DEFAULT_SOLUTION_COMPONENT));
             }
 
             if (solutionComponentElement.getWiredToLinks() != null)
@@ -685,8 +791,8 @@ public class MermaidGraphBuilderBase
 
                         appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
                                              relatedComponentDisplayName,
-                                             solutionComponentElement.getElementHeader().getType().getTypeName(),
-                                             VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                             line.getElementHeader().getType().getTypeName(),
+                                             checkForClassifications(line.getElementHeader(), VisualStyle.DEFAULT_SOLUTION_COMPONENT));
 
                         List<String> labelList = new ArrayList<>();
 
@@ -720,8 +826,9 @@ public class MermaidGraphBuilderBase
 
                         appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
                                              relatedComponentDisplayName,
-                                             solutionComponentElement.getElementHeader().getType().getTypeName(),
-                                             VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                                             line.getLinkedElement().getElementHeader().getType().getTypeName(),
+                                             checkForClassifications(line.getLinkedElement().getElementHeader(),
+                                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT));
 
                         List<String> labelList = new ArrayList<>();
 
@@ -756,7 +863,8 @@ public class MermaidGraphBuilderBase
                         appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                              actorRoleName,
                                              line.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             VisualStyle.SOLUTION_ROLE);
+                                             checkForClassifications(line.getRelatedElement().getElementHeader(),
+                                                                     VisualStyle.SOLUTION_ROLE));
 
                         String actorRoleDescription = line.getRelationshipProperties().get(OpenMetadataProperty.ROLE.name);
 
@@ -786,7 +894,8 @@ public class MermaidGraphBuilderBase
                             appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                                  actorRoleName,
                                                  line.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                 VisualStyle.SOLUTION_BLUEPRINT);
+                                                 checkForClassifications(line.getRelatedElement().getElementHeader(),
+                                                                         VisualStyle.SOLUTION_BLUEPRINT));
 
                             String label = null;
 
@@ -819,7 +928,8 @@ public class MermaidGraphBuilderBase
                             appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                                  actorRoleName,
                                                  this.addSpacesToTypeName(line.getRelatedElement().getElementHeader().getType().getTypeName()),
-                                                 VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                                 checkForClassifications(line.getRelatedElement().getElementHeader(),
+                                                                         VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
 
                             String label = null;
 
@@ -852,7 +962,8 @@ public class MermaidGraphBuilderBase
                             appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                                  nodeName,
                                                  this.addSpacesToTypeName(line.getRelatedElement().getElementHeader().getType().getTypeName()),
-                                                 VisualStyle.LINKED_ELEMENT);
+                                                 checkForClassifications(line.getRelatedElement().getElementHeader(),
+                                                                         VisualStyle.LINKED_ELEMENT));
 
                             String label = null;
 

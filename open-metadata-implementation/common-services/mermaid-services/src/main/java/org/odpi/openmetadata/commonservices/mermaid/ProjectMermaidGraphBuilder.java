@@ -48,7 +48,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              getProjectType(projectElement.getElementHeader()),
-                             VisualStyle.PROJECT);
+                             checkForClassifications(projectElement.getElementHeader(), VisualStyle.PROJECT));
 
         this.addProjectResources(projectElement);
     }
@@ -153,7 +153,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                     super.appendNewMermaidNode(currentNodeName,
                                                currentDisplayName,
                                                node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                               VisualStyle.PROJECT_RESOURCE);
+                                               checkForClassifications(node.getRelatedElement().getElementHeader(), VisualStyle.PROJECT_RESOURCE));
 
                     String label = null;
 
@@ -216,7 +216,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         VisualStyle.PROJECT_ROLE);
+                                         checkForClassifications(node.getRelatedElement().getElementHeader(), VisualStyle.PROJECT_ROLE));
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
                                                 this.removeSpaces(projectElement.getElementHeader().getGUID()),
@@ -246,7 +246,8 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         VisualStyle.PROJECT_ROLE);
+                                         checkForClassifications(node.getRelatedElement().getElementHeader(),
+                                                                 VisualStyle.PROJECT_ROLE));
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
                                                 this.removeSpaces(projectElement.getElementHeader().getGUID()),
