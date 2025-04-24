@@ -48,10 +48,8 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
         if ((dataStructureElement.getMemberDataFields() != null) && (! dataStructureElement.getMemberDataFields().isEmpty()))
         {
             final String subcomponentArea = "Data fields";
-            mermaidGraph.append("subgraph ");
-            mermaidGraph.append(subcomponentArea);
-            mermaidGraph.append("\n");
-            nodeColours.put(subcomponentArea, VisualStyle.DATA_STRUCTURE_INTERNALS);
+
+            super.startSubgraph(subcomponentArea, VisualStyle.DATA_STRUCTURE_INTERNALS);
 
             for (MemberDataField node : dataStructureElement.getMemberDataFields())
             {
@@ -61,9 +59,12 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
                 }
             }
 
-            mermaidGraph.append("end\n");
-            mermaidGraph.append(dataStructureElement.getElementHeader().getGUID());
-            mermaidGraph.append(" ===> Data fields\n");
+            super.endSubgraph();
+
+            super.appendMermaidLine(null,
+                                    dataStructureElement.getElementHeader().getGUID(),
+                                    "contains",
+                                    subcomponentArea);
         }
 
         if (dataStructureElement.getEquivalentSchemaType() != null)

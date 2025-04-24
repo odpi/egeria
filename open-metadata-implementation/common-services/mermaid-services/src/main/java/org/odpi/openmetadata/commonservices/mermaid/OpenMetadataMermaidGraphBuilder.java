@@ -88,9 +88,9 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          checkForClassifications(line.getElementAtEnd2(), visualStyle));
 
                     super.appendMermaidLine(line.getRelationshipGUID(),
-                                            this.removeSpaces(line.getElementAtEnd1().getGUID()),
+                                            line.getElementAtEnd1().getGUID(),
                                             super.addSpacesToTypeName(line.getType().getTypeName()),
-                                            this.removeSpaces(line.getElementAtEnd2().getGUID()));
+                                            line.getElementAtEnd2().getGUID());
                 }
             }
         }
@@ -146,11 +146,11 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(this.removeSpaces(elementGUID));
+                    mermaidGraph.append(this.lookupNodeName(elementGUID));
                     mermaidGraph.append("-->|");
                     mermaidGraph.append(line.getType().getTypeName());
                     mermaidGraph.append("|");
-                    mermaidGraph.append(this.removeSpaces(line.getElement().getElementGUID()));
+                    mermaidGraph.append(this.lookupNodeName(line.getElement().getElementGUID()));
                     mermaidGraph.append("\n");
                 }
             }
@@ -233,11 +233,11 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(this.removeSpaces(line.getElementGUIDAtEnd1()));
+                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd1()));
                     mermaidGraph.append("-->|");
                     mermaidGraph.append(line.getType().getTypeName());
                     mermaidGraph.append("|");
-                    mermaidGraph.append(this.removeSpaces(line.getElementGUIDAtEnd2()));
+                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd2()));
                     mermaidGraph.append("\n");
                 }
             }
@@ -313,11 +313,11 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(this.removeSpaces(line.getElementGUIDAtEnd1()));
+                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd1()));
                     mermaidGraph.append("-->|");
                     mermaidGraph.append(line.getType().getTypeName());
                     mermaidGraph.append("|");
-                    mermaidGraph.append(this.removeSpaces(line.getElementGUIDAtEnd2()));
+                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd2()));
                     mermaidGraph.append("\n");
                 }
             }

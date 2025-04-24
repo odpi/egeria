@@ -767,7 +767,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         if (genericProcess != null)
         {
             String processGUID = super.createGovernanceActionProcess(processQualifiedName,
-                                                                     "Onboard Landing Area Files for " + clinicalTrialName,
+                                                                     "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
                                                                      null,
                                                                      clinicalTrialGUID);
 

@@ -5,11 +5,11 @@ package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
-    private String informationSupplyChainMermaidGraph = null;
+    private final String informationSupplyChainMermaidGraph;
+    private final String fieldLevelLineageGraph;
 
     /**
      * Constructor for the graph
@@ -91,9 +91,9 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          checkForClassifications(line.getEnd2(),visualStyle));
 
                     super.appendMermaidLine(line.getGUID(),
-                                            this.removeSpaces(line.getEnd1().getGUID()),
+                                            line.getEnd1().getGUID(),
                                             super.addSpacesToTypeName(line.getType().getTypeName()),
-                                            this.removeSpaces(line.getEnd2().getGUID()));
+                                            line.getEnd2().getGUID());
                 }
             }
         }
@@ -101,12 +101,31 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         AssetISCGraphMermaidGraphBuilder iscGraphMermaidGraphBuilder = new AssetISCGraphMermaidGraphBuilder(assetGraph);
 
         informationSupplyChainMermaidGraph = iscGraphMermaidGraphBuilder.getMermaidGraph();
+
+        FieldLevelLineageMermaidGraphBuilder fieldLevelLineageMermaidGraphBuilder = new FieldLevelLineageMermaidGraphBuilder(assetGraph);
+
+        fieldLevelLineageGraph = fieldLevelLineageMermaidGraphBuilder.getMermaidGraph(true);
     }
 
 
-
+    /**
+     * Return the information supply chain graph.
+     *
+     * @return mermaid graph
+     */
     public String getInformationSupplyChainMermaidGraph()
     {
         return informationSupplyChainMermaidGraph;
+    }
+
+
+    /**
+     * Return the field level lineage graph.
+     *
+     * @return mermaid graph
+     */
+    public String getFieldLevelLineageGraph()
+    {
+        return fieldLevelLineageGraph;
     }
 }

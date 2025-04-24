@@ -1565,7 +1565,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 InformationSupplyChainMermaidGraphBuilder graphBuilder = new InformationSupplyChainMermaidGraphBuilder(informationSupplyChainElement);
 
-                informationSupplyChainElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+                informationSupplyChainElement.setMermaidGraph(graphBuilder.getMermaidGraph(false));
             }
 
             return informationSupplyChainElement;

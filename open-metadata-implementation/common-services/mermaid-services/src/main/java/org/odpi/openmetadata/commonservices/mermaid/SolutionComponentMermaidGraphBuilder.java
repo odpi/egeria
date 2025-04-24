@@ -104,7 +104,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
 
                         appendMermaidLine(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getGUID(),
                                           iscName,
-                                          informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getType().getTypeName(),
+                                          addSpacesToTypeName(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getType().getTypeName()),
                                           currentNodeName);
                     }
                 }
@@ -115,10 +115,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                 (! solutionComponentElement.getSubComponents().isEmpty()))
         {
             final String subcomponentArea = "Subcomponents";
-            mermaidGraph.append("subgraph ");
-            mermaidGraph.append(subcomponentArea);
-            mermaidGraph.append("\n");
-            nodeColours.put(subcomponentArea, VisualStyle.SOLUTION_SUBGRAPH);
+            super.startSubgraph(subcomponentArea, VisualStyle.SOLUTION_SUBGRAPH);
 
             for (SolutionComponentElement node : solutionComponentElement.getSubComponents())
             {
@@ -132,9 +129,12 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                 }
             }
 
-            mermaidGraph.append("end\n");
-            mermaidGraph.append(solutionComponentElement.getElementHeader().getGUID());
-            mermaidGraph.append(" ===> Subcomponents\n");
+            super.endSubgraph(); // subcomponents
+
+            super.appendMermaidLine(null,
+                                    solutionComponentElement.getElementHeader().getGUID(),
+                                    null,
+                                    subcomponentArea);
         }
     }
 

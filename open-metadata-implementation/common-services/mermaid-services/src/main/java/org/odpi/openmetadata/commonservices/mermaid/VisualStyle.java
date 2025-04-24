@@ -36,18 +36,18 @@ public enum VisualStyle
     SOLUTION_SUBGRAPH(Colour.BLACK.getColourNumber(), Colour.LIGHT_STEEL_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
 
 
-    DEFAULT_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
-    AUTOMATED_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "subproc"),
-    THIRD_PARTY_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "processes"),
-    MANUAL_PROCESS_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "docs"),
-    DATA_STORAGE_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "lin-cyl"),
-    DATA_DISTRIBUTION_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "das"),
-    DOCUMENT_PUBLISHING_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "odd"),
-    INSIGHT_MODEL_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "stadium"),
+    DEFAULT_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    AUTOMATED_PROCESS_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "subproc"),
+    THIRD_PARTY_PROCESS_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "processes"),
+    MANUAL_PROCESS_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "docs"),
+    DATA_STORAGE_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "lin-cyl"),
+    DATA_DISTRIBUTION_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "das"),
+    DOCUMENT_PUBLISHING_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "odd"),
+    INSIGHT_MODEL_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "stadium"),
 
     SOLUTION_PORT(Colour.WHITE.getColourNumber(), Colour.MAUVE.getColourNumber(), Colour.PINKY.getColourNumber(), "delay"),
 
-    GOVERNANCE_ACTION_PROCESS(Colour.WHITE.getColourNumber(), Colour.TEAL.getColourNumber(), Colour.BLACK.getColourNumber(), "tag-rect"),
+    GOVERNANCE_ACTION_PROCESS(Colour.WHITE.getColourNumber(), Colour.TURQUOISE.getColourNumber(), Colour.BLACK.getColourNumber(), "tag-rect"),
     GOVERNANCE_ACTION_PROCESS_STEP(Colour.WHITE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
     ACTION_TARGET(Colour.BLACK.getColourNumber(), Colour.MUSTARD.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     REQUEST_PARAMETERS(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.BLACK.getColourNumber(), "flag"),
@@ -69,6 +69,8 @@ public enum VisualStyle
     DATA_STRUCTURE(Colour.BLACK.getColourNumber(), Colour.ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     DATA_STRUCTURE_INTERNALS(Colour.BLACK.getColourNumber(), Colour.PALE_ORANGE.getColourNumber(), Colour.ORANGE.getColourNumber(), "rect"),
     DATA_FIELD(Colour.BLACK.getColourNumber(), Colour.WHITE_ORANGE.getColourNumber(), Colour.ORANGE.getColourNumber(), "rect"),
+
+    SCHEMA_ELEMENT(Colour.LIGHT_YELLOW.getColourNumber(), Colour.PURPLE.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), "rect"),
 
     ;
 
