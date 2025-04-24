@@ -445,6 +445,7 @@ public class AssetConsumerRESTServices
                 AssetGraphMermaidGraphBuilder graphBuilder = new AssetGraphMermaidGraphBuilder(assetGraph);
                 assetGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
                 assetGraph.setInformationSupplyChainMermaidGraph(graphBuilder.getInformationSupplyChainMermaidGraph());
+                assetGraph.setFieldLevelLineageGraph(graphBuilder.getFieldLevelLineageGraph());
 
                 response.setAssetGraph(assetGraph);
             }

@@ -18,13 +18,22 @@ import java.util.*;
  */
 public class MermaidGraphBuilderBase
 {
-    protected final StringBuilder            mermaidGraph   = new StringBuilder();
-    private   final Set<String>              usedNodeNames  = new HashSet<>();
-    private   final Set<String>              usedLinkNames  = new HashSet<>();
-    protected final Map<String, VisualStyle> nodeColours    = new HashMap<>();
-    protected final PropertyHelper           propertyHelper = new PropertyHelper();
-    protected final String                   sourceName       = "MermaidGraphBuilder";
+    protected final StringBuilder            mermaidGraph      = new StringBuilder();
+    private final   Set<String>              usedNodeNames     = new HashSet<>();
+    private final   Set<String>              usedLinkNames     = new HashSet<>();
+    private final   Set<String>              animatedLinkNames = new HashSet<>();
+    protected final Map<String, VisualStyle> nodeColours       = new HashMap<>();
+    protected final PropertyHelper           propertyHelper    = new PropertyHelper();
+    protected final String                   sourceName        = "MermaidGraphBuilder";
 
+    /**
+     * Map from guid to nodeId
+     */
+    protected final Map<String, String> guidToNodeIdMap = new HashMap<>();
+
+    /**
+     * Map from anchorGUID to the AnchorNode record consisting of the anchorGUID and its typeName
+     */
     private final Map<String, AnchorNode>    extractedAnchors = new HashMap<>();
     private final Map<String, Set<String>>   anchorLinks      = new HashMap<>();
 
@@ -123,9 +132,9 @@ public class MermaidGraphBuilderBase
                 for (String anchoredElement : anchoredElements)
                 {
                     appendMermaidDottedLine(null,
-                                            anchoredElement,
+                                            anchorGUID,
                                             OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
-                                            anchorGUID);
+                                            anchoredElement);
                 }
             }
             else if (usedNodeNames.contains(anchorGUID))
@@ -133,9 +142,9 @@ public class MermaidGraphBuilderBase
                 for (String anchoredElement : anchoredElements)
                 {
                     appendMermaidDottedLine(null,
-                                            anchoredElement,
+                                            anchorGUID,
                                             OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
-                                            anchorGUID);
+                                            anchoredElement);
                 }
             }
         }
@@ -357,7 +366,7 @@ public class MermaidGraphBuilderBase
                                   String        currentDisplayName,
                                   String        currentType)
     {
-        mermaidGraph.append(this.removeSpaces(currentNodeName));
+        mermaidGraph.append(this.lookupNodeName(currentNodeName));
         mermaidGraph.append("(\"`*");
         mermaidGraph.append(addSpacesToTypeName(currentType));
         mermaidGraph.append("*\n**");
@@ -386,10 +395,10 @@ public class MermaidGraphBuilderBase
 
             if (visualStyle != null)
             {
-                nodeColours.put(currentNodeName, visualStyle);
+                nodeColours.put(this.lookupNodeName(currentNodeName), visualStyle);
             }
 
-            mermaidGraph.append(this.removeSpaces(currentNodeName));
+            mermaidGraph.append(this.lookupNodeName(currentNodeName));
             mermaidGraph.append("@{ shape: ");
             if ((visualStyle != null) && (visualStyle.getShape() != null))
             {
@@ -434,10 +443,10 @@ public class MermaidGraphBuilderBase
 
             if (visualStyle != null)
             {
-                nodeColours.put(currentNodeName, visualStyle);
+                nodeColours.put(this.lookupNodeName(currentNodeName), visualStyle);
             }
 
-            mermaidGraph.append(this.removeSpaces(currentNodeName));
+            mermaidGraph.append(this.lookupNodeName(currentNodeName));
             mermaidGraph.append("@{ shape: ");
             if ((visualStyle != null) && (visualStyle.getShape() != null))
             {
@@ -505,7 +514,7 @@ public class MermaidGraphBuilderBase
                 usedLinkNames.add(lineName);
             }
 
-            mermaidGraph.append(this.removeSpaces(end1Id));
+            mermaidGraph.append(this.lookupNodeName(end1Id));
 
             if (label != null)
             {
@@ -518,7 +527,57 @@ public class MermaidGraphBuilderBase
                 mermaidGraph.append("-->");
             }
 
-            mermaidGraph.append(this.removeSpaces(end2Id));
+            mermaidGraph.append(this.lookupNodeName(end2Id));
+            mermaidGraph.append("\n");
+        }
+    }
+
+
+
+    /**
+     * Append a new single pixel width line to the graph.
+     *
+     * @param lineName unique identifier of the line - may be null
+     * @param end1Id identifier of the starting end
+     * @param label label for the line
+     * @param end2Id identifier of the ending end
+     */
+    public void appendMermaidLongAnimatedLine(String lineName,
+                                              String end1Id,
+                                              String label,
+                                              String end2Id)
+    {
+        if ((lineName == null) || (! usedLinkNames.contains(lineName)))
+        {
+            if (lineName != null)
+            {
+                usedLinkNames.add(lineName);
+            }
+
+            mermaidGraph.append(this.lookupNodeName(end1Id));
+            mermaidGraph.append(" ");
+
+            if (lineName != null)
+            {
+                mermaidGraph.append(this.lookupNodeName(lineName));
+                mermaidGraph.append("@");
+
+                animatedLinkNames.add(this.lookupNodeName(lineName));
+            }
+
+            if (label != null)
+            {
+
+                mermaidGraph.append("-- \"");
+                mermaidGraph.append(label);
+                mermaidGraph.append("\" ------>");
+            }
+            else
+            {
+                mermaidGraph.append("------>");
+            }
+
+            mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
         }
     }
@@ -544,20 +603,20 @@ public class MermaidGraphBuilderBase
                 usedLinkNames.add(lineName);
             }
 
-            mermaidGraph.append(this.removeSpaces(end1Id));
+            mermaidGraph.append(this.lookupNodeName(end1Id));
 
             if (label != null)
             {
-                mermaidGraph.append("-,|\"");
+                mermaidGraph.append("-. \"");
                 mermaidGraph.append(label);
-                mermaidGraph.append("\"|");
+                mermaidGraph.append("\" .->");
             }
             else
             {
-                mermaidGraph.append("-,->");
+                mermaidGraph.append("-.->");
             }
 
-            mermaidGraph.append(this.removeSpaces(end2Id));
+            mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
         }
     }
@@ -582,7 +641,7 @@ public class MermaidGraphBuilderBase
             {
                 usedLinkNames.add(lineName);
             }
-            mermaidGraph.append(this.removeSpaces(end1Id));
+            mermaidGraph.append(this.lookupNodeName(end1Id));
 
             if (label != null)
             {
@@ -595,7 +654,7 @@ public class MermaidGraphBuilderBase
                 mermaidGraph.append("==>");
             }
 
-            mermaidGraph.append(this.removeSpaces(end2Id));
+            mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
         }
     }
@@ -610,28 +669,76 @@ public class MermaidGraphBuilderBase
     public void appendInvisibleMermaidLine(String end1Id,
                                            String end2Id)
     {
-        mermaidGraph.append(this.removeSpaces(end1Id));
+        mermaidGraph.append(this.lookupNodeName(end1Id));
         mermaidGraph.append("~~~");
-        mermaidGraph.append(this.removeSpaces(end2Id));
+        mermaidGraph.append(this.lookupNodeName(end2Id));
         mermaidGraph.append("\n");
     }
 
 
     /**
-     * Remove all the spaces from the qualifiedName along with the curly braces - found in the templates.
+     * Start a subgraph in the mermaid graph.
      *
-     * @param currentQualifiedName qualifiedName
+     * @param subgraphName name of subgraph
+     * @param visualStyle style of subgraph background
+     */
+    public void startSubgraph(String      subgraphName,
+                              VisualStyle visualStyle)
+    {
+        String subgraphId = this.lookupNodeName(subgraphName);
+
+        mermaidGraph.append("subgraph ");
+        mermaidGraph.append(subgraphId);
+        mermaidGraph.append(" [");
+        mermaidGraph.append(subgraphName);
+        mermaidGraph.append("]\n");
+
+        nodeColours.put(subgraphId, visualStyle);
+    }
+
+
+    public void endSubgraph()
+    {
+        mermaidGraph.append("end\n");
+    }
+
+
+
+    /**
+     * Remove all the spaces from the node name along with the curly braces - found in the templates.
+     *
+     * @param currentNodeName qualifiedName
      * @return qualified name without spaces
      */
-    String removeSpaces(String currentQualifiedName)
+    String removeSpaces(String currentNodeName)
     {
-        if (currentQualifiedName != null)
+        if (currentNodeName != null)
         {
-            String noSpaces = currentQualifiedName.replaceAll("\\s+", "");
+            String noSpaces = currentNodeName.replaceAll("\\s+", "");
             return noSpaces.replaceAll("[\\[\\](){}]", "");
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the name of the node to use in the mermaid graph.
+     *
+     * @param guid unique identifier of element
+     * @return nodeId to use in mermaid
+     */
+    String lookupNodeName(String guid)
+    {
+        String nodeId = guidToNodeIdMap.get(guid);
+
+        if (nodeId == null)
+        {
+            nodeId = Integer.toString(guidToNodeIdMap.size() + 1);
+            guidToNodeIdMap.put(guid, nodeId);
+        }
+
+        return nodeId;
     }
 
 
@@ -791,8 +898,9 @@ public class MermaidGraphBuilderBase
 
                         appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
                                              relatedComponentDisplayName,
-                                             line.getElementHeader().getType().getTypeName(),
-                                             checkForClassifications(line.getElementHeader(), VisualStyle.DEFAULT_SOLUTION_COMPONENT));
+                                             line.getLinkedElement().getElementHeader().getType().getTypeName(),
+                                             checkForClassifications(line.getElementHeader(),
+                                                                     this.getVisualStyleForSolutionComponent(line.getLinkedElement().getElementHeader().getType().getTypeName())));
 
                         List<String> labelList = new ArrayList<>();
 
@@ -998,6 +1106,20 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Add the names of links that should be animated
+     */
+    private void addAnimation()
+    {
+        for (String lineName : animatedLinkNames)
+        {
+            mermaidGraph.append(lineName);
+            mermaidGraph.append("@{ animation: fast }");
+            mermaidGraph.append("\n");
+        }
+    }
+
+
+    /**
      * Add anchors, any style requests and return the built mermaid graph.
      *
      * @param allAnchors should all anchors be added - or just those to known nodes?
@@ -1019,6 +1141,7 @@ public class MermaidGraphBuilderBase
     public String getMermaidGraph()
     {
         addStyles(nodeColours);
+        addAnimation();
 
         return mermaidGraph.toString();
     }

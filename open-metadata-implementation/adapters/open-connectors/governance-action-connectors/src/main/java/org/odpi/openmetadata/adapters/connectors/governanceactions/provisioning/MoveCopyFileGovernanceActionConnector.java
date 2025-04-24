@@ -1017,15 +1017,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
                 if ((sourceFileSchemaAttributes != null) && (newFileSchemaAttributes != null))
                 {
-                    int attributePointer = 0;
-
                     for (Integer position : sourceFileSchemaAttributes.keySet())
                     {
                         OpenMetadataElement sourceAttribute = sourceFileSchemaAttributes.get(position);
 
                         if (sourceAttribute != null)
                         {
-                            OpenMetadataElement destinationAttribute = newFileSchemaAttributes.get(attributePointer);
+                            OpenMetadataElement destinationAttribute = newFileSchemaAttributes.get(position);
 
                             if (destinationAttribute != null)
                             {

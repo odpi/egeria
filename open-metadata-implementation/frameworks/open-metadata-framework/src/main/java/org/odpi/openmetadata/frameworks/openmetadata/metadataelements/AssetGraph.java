@@ -18,6 +18,7 @@ public class AssetGraph extends AssetElement
     private String                       mermaidGraph                       = null;
     private List<MetadataElementSummary> informationSupplyChains            = null;
     private String                       informationSupplyChainMermaidGraph = null;
+    private String                       fieldLevelLineageGraph             = null;
 
     /**
      * Default constructor
@@ -54,6 +55,7 @@ public class AssetGraph extends AssetElement
             mermaidGraph                       = template.getMermaidGraph();
             informationSupplyChains            = template.getInformationSupplyChains();
             informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
+            fieldLevelLineageGraph             = template.getFieldLevelLineageGraph();
         }
     }
 
@@ -173,6 +175,28 @@ public class AssetGraph extends AssetElement
 
 
     /**
+     * Return field-level lineage graph.
+     *
+     * @return mermaid string
+     */
+    public String getFieldLevelLineageGraph()
+    {
+        return fieldLevelLineageGraph;
+    }
+
+
+    /**
+     * Set up field-level lineage graph.
+     *
+     * @param fieldLevelLineageGraph mermaid string
+     */
+    public void setFieldLevelLineageGraph(String fieldLevelLineageGraph)
+    {
+        this.fieldLevelLineageGraph = fieldLevelLineageGraph;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -184,7 +208,9 @@ public class AssetGraph extends AssetElement
                 "anchoredElements=" + anchoredElements +
                 ", relationships=" + relationships +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", informationSupplyChains=" + informationSupplyChains +
                 ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
+                ", fieldLevelLineageGraph='" + fieldLevelLineageGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -205,7 +231,8 @@ public class AssetGraph extends AssetElement
         return Objects.equals(anchoredElements, that.anchoredElements) &&
                 Objects.equals(relationships, that.relationships) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph) &&
-                Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph);
+                Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph) &&
+                Objects.equals(fieldLevelLineageGraph, that.fieldLevelLineageGraph);
     }
 
 
@@ -217,6 +244,7 @@ public class AssetGraph extends AssetElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchoredElements, relationships, mermaidGraph, informationSupplyChainMermaidGraph);
+        return Objects.hash(super.hashCode(), anchoredElements, relationships, mermaidGraph,
+                            informationSupplyChainMermaidGraph, fieldLevelLineageGraph);
     }
 }

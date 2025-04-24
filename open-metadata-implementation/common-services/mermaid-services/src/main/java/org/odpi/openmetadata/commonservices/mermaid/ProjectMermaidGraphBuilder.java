@@ -172,9 +172,9 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                     }
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
-                                                this.removeSpaces(projectElement.getElementHeader().getGUID()),
+                                                projectElement.getElementHeader().getGUID(),
                                                 label,
-                                                this.removeSpaces(node.getRelatedElement().getElementHeader().getGUID()));
+                                                node.getRelatedElement().getElementHeader().getGUID());
                 }
             }
 
@@ -219,9 +219,9 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                                          checkForClassifications(node.getRelatedElement().getElementHeader(), VisualStyle.PROJECT_ROLE));
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
-                                                this.removeSpaces(projectElement.getElementHeader().getGUID()),
+                                                projectElement.getElementHeader().getGUID(),
                                                 label,
-                                                this.removeSpaces(node.getRelatedElement().getElementHeader().getGUID()));
+                                                node.getRelatedElement().getElementHeader().getGUID());
                 }
             }
         }
@@ -250,9 +250,9 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                                  VisualStyle.PROJECT_ROLE));
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
-                                                this.removeSpaces(projectElement.getElementHeader().getGUID()),
+                                                projectElement.getElementHeader().getGUID(),
                                                 super.addSpacesToTypeName(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName),
-                                                this.removeSpaces(node.getRelatedElement().getElementHeader().getGUID()));
+                                                node.getRelatedElement().getElementHeader().getGUID());
                 }
             }
         }

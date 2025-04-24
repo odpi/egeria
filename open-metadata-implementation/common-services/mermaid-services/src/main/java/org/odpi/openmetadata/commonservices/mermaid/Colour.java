@@ -27,7 +27,8 @@ public enum Colour
     PLUM        ("#dda0dd"),
     LIGHT_STEEL_BLUE("#b0c4de"),
     PURPLE      ("#7d669e"),
-    TEAL        ("#53bbb4"),
+    TURQUOISE   ("#53bbb4"),
+    TEAL        ("#008080"),
     GREEN       ("#51b46d"),
     LIGHT_GREEN ("#B9E0A5"),
 

@@ -49,7 +49,7 @@ public class SpecificationMermaidGraphBuilder extends MermaidGraphBuilderBase
                                 String propertyDescriptionId = propertyType + ":" + listItemIndex;
                                 String propertyName          = propertyDescription.get(propertyType + "Name");
 
-                                mermaidGraph.append(this.removeSpaces(propertyDescriptionId));
+                                mermaidGraph.append(this.lookupNodeName(this.removeSpaces(propertyDescriptionId)));
                                 mermaidGraph.append("(\"`**");
                                 mermaidGraph.append(propertyName);
                                 mermaidGraph.append("**\n");

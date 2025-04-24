@@ -97,9 +97,9 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
                 if (line != null)
                 {
                     super.appendMermaidLine(null,
-                                            this.removeSpaces(line.getPreviousProcessStep().getGUID()),
+                                            line.getPreviousProcessStep().getGUID(),
                                             line.getGuard(),
-                                            this.removeSpaces(line.getNextProcessStep().getGUID()));
+                                            line.getNextProcessStep().getGUID());
                 }
             }
         }

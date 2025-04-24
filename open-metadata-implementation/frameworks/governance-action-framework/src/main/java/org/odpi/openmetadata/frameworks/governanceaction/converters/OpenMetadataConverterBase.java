@@ -836,7 +836,7 @@ public class OpenMetadataConverterBase<B>
     {
         if (element != null)
         {
-            ElementControlHeader elementHeader = getMetadataElementHeader(beanClass, element, element.getGUID(), element.getClassifications(), methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, element, element.getGUID(), element.getClassifications(), methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             elementStub.setUniqueName(element.getUniqueName());

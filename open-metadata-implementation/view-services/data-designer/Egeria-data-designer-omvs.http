@@ -78,7 +78,7 @@ Content-Type: application/json
 ###
 # @name createDataStructure
 # Create a data structure.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/create
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -248,6 +248,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "add name",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -261,7 +262,7 @@ Content-Type: application/json
 ###
 # @name findDataStructures
 # Retrieve the list of data structure metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -273,13 +274,13 @@ Content-Type: application/json
 ###
 # @name findDataStructures - with full request body
 # Retrieve the list of data structure metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "asOfTime" : "{{$isoTimestamp}}",
+ "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
@@ -293,7 +294,7 @@ Content-Type: application/json
 
 # @name getDataStructuresByName
 # Returns the list of data structures with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -306,7 +307,7 @@ Content-Type: application/json
 
 # @name getDataStructuresByName - with full request body
 # Returns the list of data structures with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -333,7 +334,7 @@ Content-Type: application/json
 ###
 # @name getDataStructureByGUID - with request body
 # Return the properties of a specific data structure.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/retrieve?addImplementation=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -414,7 +415,7 @@ Content-Type: application/json
 ###
 # @name createDataField
 # Create a data field.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/create
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -626,7 +627,7 @@ Content-Type: application/json
 ###
 # @name findDataFields
 # Retrieve the list of data field metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -638,7 +639,7 @@ Content-Type: application/json
 ###
 # @name findDataFields - with full request body
 # Retrieve the list of data field metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -658,7 +659,7 @@ Content-Type: application/json
 
 # @name getDataFieldsByName
 # Returns the list of data fields with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -671,7 +672,7 @@ Content-Type: application/json
 
 # @name getDataFieldsByName - with full request body
 # Returns the list of data fields with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -698,7 +699,7 @@ Content-Type: application/json
 ###
 # @name getDataFieldByGUID - with request body
 # Return the properties of a specific data field.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/retrieve?addImplementation=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -785,7 +786,7 @@ Content-Type: application/json
 ###
 # @name createDataClass
 # Create an data class.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/create
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1032,7 +1033,7 @@ Content-Type: application/json
 ###
 # @name findDataClasses
 # Retrieve the list of data class metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1044,7 +1045,7 @@ Content-Type: application/json
 ###
 # @name findDataClasses - with full request body
 # Retrieve the list of data class metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1064,7 +1065,7 @@ Content-Type: application/json
 
 # @name getDataClassesByName
 # Returns the list of data classes with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1077,7 +1078,7 @@ Content-Type: application/json
 
 # @name getDataClassesByName - with full request body
 # Returns the list of data classes with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1104,7 +1105,7 @@ Content-Type: application/json
 ###
 # @name getDataClassByGUID - with request body
 # Return the properties of a specific data class.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/retrieve?addImplementation=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
