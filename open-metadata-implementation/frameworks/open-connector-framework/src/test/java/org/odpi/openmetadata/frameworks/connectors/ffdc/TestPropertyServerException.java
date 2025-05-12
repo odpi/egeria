@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;

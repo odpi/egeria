@@ -433,7 +433,7 @@ public enum IntegrationConnectorDefinition
      */
     public String getQualifiedName(String integrationGroupQualifiedName)
     {
-        return integrationGroupQualifiedName + ":" + displayName;
+        return integrationGroupQualifiedName + "::" + displayName;
     }
 
 

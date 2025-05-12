@@ -60,7 +60,7 @@ public class BigGlossaryArchiveBuilder
     {
         List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
-        String archiveName = archiveNamePrefix + ":" + glossaryIdentifier;
+        String archiveName = archiveNamePrefix + "::" + glossaryIdentifier;
 
         this.glossaryIdentifier = glossaryIdentifier;
 
@@ -109,7 +109,7 @@ public class BigGlossaryArchiveBuilder
 
         for (int i=1; i<3001 ; i++)
         {
-            String glossaryTermName = "Glossary:" + glossaryIdentifier + ":" + MessageFormat.format("Term{0, number,000000}", i);
+            String glossaryTermName = "Glossary::" + glossaryIdentifier + "::" + MessageFormat.format("Term{0, number,000000}", i);
 
             System.out.println("Adding glossary term: " + glossaryTermName);
 

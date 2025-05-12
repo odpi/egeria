@@ -4,10 +4,16 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.IncidentDependency;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.IncidentImpactedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 
 import java.util.Date;
@@ -154,10 +160,10 @@ public interface GovernanceContext
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    void recordCompletionStatus(CompletionStatus    status,
-                                List<String>        outputGuards) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+    void recordCompletionStatus(CompletionStatus status,
+                                List<String>     outputGuards) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**

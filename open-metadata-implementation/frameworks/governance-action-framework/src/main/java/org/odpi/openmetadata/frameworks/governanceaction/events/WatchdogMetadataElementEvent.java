@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.governanceaction.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 
 import java.util.Objects;
 

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 import java.util.HashMap;
 import java.util.List;

@@ -5,13 +5,13 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 
 import java.util.*;
 
@@ -379,7 +379,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
                                                                   actionTargets,
                                                                   null);
             }
-            catch (OCFCheckedExceptionBase nestedError)
+            catch (OMFCheckedExceptionBase nestedError)
             {
                 if (auditLog != null)
                 {

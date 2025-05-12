@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -362,24 +362,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                   description,
                                                                   methodName);
 
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataProperty.POSITION.name,
-                                                               elementPosition,
-                                                               methodName);
-
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataProperty.MIN_CARDINALITY.name,
-                                                               minCardinality,
-                                                               methodName);
-
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataProperty.MAX_CARDINALITY.name,
-                                                               maxCardinality,
-                                                               methodName);
-
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
                                                                    OpenMetadataProperty.IS_DEPRECATED.name,
@@ -454,6 +436,39 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                        OpenMetadataProperty.ALIASES.name,
                                                                        aliases,
                                                                        methodName);
+
+        return properties;
+    }
+
+
+    /**
+     * Return the supplied parent relationship properties in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getParentRelationshipProperties(String  methodName)
+    {
+        InstanceProperties properties = null;
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataProperty.POSITION.name,
+                                                               elementPosition,
+                                                               methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataProperty.MIN_CARDINALITY.name,
+                                                               minCardinality,
+                                                               methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataProperty.MAX_CARDINALITY.name,
+                                                               maxCardinality,
+                                                               methodName);
+
 
         return properties;
     }

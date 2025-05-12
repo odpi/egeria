@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.viewservices.solutionarchitect.server;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.SolutionManager;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.TemplateManager;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 /**
  * SolutionArchitectInstance caches references to the objects it needs for a specific server.

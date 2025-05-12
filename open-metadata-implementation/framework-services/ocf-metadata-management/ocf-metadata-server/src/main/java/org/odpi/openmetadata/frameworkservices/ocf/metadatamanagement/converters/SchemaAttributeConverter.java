@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -66,10 +66,8 @@ public class SchemaAttributeConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SchemaAttribute)
+            if (returnBean instanceof SchemaAttribute bean)
             {
-                SchemaAttribute  bean = (SchemaAttribute) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
@@ -86,10 +84,6 @@ public class SchemaAttributeConverter<B> extends OMFConverter<B>
                 bean.setDisplayName(this.removeDisplayName(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
                 bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setElementPosition(this.removePosition(instanceProperties));
-                bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
                 bean.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
                 bean.setOrderedValues(this.removeOrderedValues(instanceProperties));
                 bean.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
@@ -100,6 +94,21 @@ public class SchemaAttributeConverter<B> extends OMFConverter<B>
                 bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                 bean.setAliases(this.removeAliases(instanceProperties));
                 bean.setSortOrder(this.removeSortOrder(instanceProperties));
+
+                if (schemaAttributeRelationships != null)
+                {
+                    for (Relationship relationship : schemaAttributeRelationships)
+                    {
+                        if ((relationship != null) && (relationship.getType() != null) &&
+                                ((relationship.getType().getTypeDefName().equals(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName)) ||
+                                 (relationship.getType().getTypeDefName().equals(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName))))
+                        {
+                            bean.setElementPosition(this.getPosition(instanceProperties));
+                            bean.setMinCardinality(this.getMinCardinality(instanceProperties));
+                            bean.setMaxCardinality(this.getMaxCardinality(instanceProperties));
+                        }
+                    }
+                }
 
                 instanceProperties = super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName, schemaAttributeEntity);
 
@@ -138,7 +147,9 @@ public class SchemaAttributeConverter<B> extends OMFConverter<B>
         {
             for (Relationship relationship : relationships)
             {
-                if ((relationship != null) && (relationship.getType() != null))
+                if ((relationship != null) && (relationship.getType() != null) &&
+                        ((relationship.getType().getTypeDefName().equals(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName)) ||
+                         (relationship.getType().getTypeDefName().equals(OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName))))
                 {
                     SchemaAttributeRelationship schemaAttributeRelationship = new SchemaAttributeRelationship();
 

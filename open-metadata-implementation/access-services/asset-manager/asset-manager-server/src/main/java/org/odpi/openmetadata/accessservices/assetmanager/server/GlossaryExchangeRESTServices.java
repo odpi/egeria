@@ -13,7 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.HistoryExternalIdentifiersRequestBody;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;

@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 
-import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 
 /**

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.metadatasecurity.accessconnector;
 
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.AccessOperation;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;

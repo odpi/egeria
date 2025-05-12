@@ -5,9 +5,9 @@ package org.odpi.openmetadata.frameworks.integration.iterator;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  * MemberElement describes a single element in a metadata collection.  It is also able to determine the
  * action to take in the synchronization process provided targetPermittedSynchronization is set up
  * to be To/From/Both and the third party technology supports creation/last update dates (because if these
- * dates are null, the classifier assumes the element does not exist in the third party.
+ * dates are null, the classifier assumes the element does not exist in the third party.)
  */
 public class MemberElement
 {
@@ -276,7 +276,7 @@ public class MemberElement
     /**
      * Enum to represent the comparison of ages of the
      */
-    static enum DateComparison
+    enum DateComparison
     {
         EGERIA_COPY_NEWEST,
         DATES_EQUAL,

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.HashMap;

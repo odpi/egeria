@@ -2,23 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.commonservices.generichandlers.CommentConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;

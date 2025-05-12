@@ -1124,7 +1124,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         String connectorTypeGUID = provider.getConnectorType().getGUID();
         String networkAddress = "https://localhost:9443";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
         String               versionIdentifier  = "V1.0";
         String               description        = "Default OMAG Server Platform running on local host and port 9443.";
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -1151,7 +1151,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         assert(guid.equals(assetGUID));
 
         archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
-                                            qualifiedName + ":" + softwareCapabilityName,
+                                            qualifiedName + "::" + softwareCapabilityName,
                                             softwareCapabilityName,
                                             null,
                                             softwareCapabilityType.getDeployedImplementationType(),
@@ -1166,7 +1166,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataType.ASSET.typeName,
                                             null);
 
-        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + "::" + softwareCapabilityName,
                                                                  qualifiedName,
                                                                  null,
                                                                  null,

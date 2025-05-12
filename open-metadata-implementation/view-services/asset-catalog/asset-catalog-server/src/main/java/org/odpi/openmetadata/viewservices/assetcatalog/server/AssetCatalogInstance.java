@@ -8,11 +8,11 @@ import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataSto
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
 import org.odpi.openmetadata.viewservices.assetcatalog.beans.Type;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     private final AssetConsumer                assetConsumerClient;
     private final OpenIntegrationServiceClient openIntegrationServiceClient;
     private final OpenMetadataStoreClient      openMetadataStoreClient;
-    private final List<Type>                 supportedAssetTypes;
+    private final List<Type>                   supportedAssetTypes;
 
 
     /**

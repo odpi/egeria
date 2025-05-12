@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;

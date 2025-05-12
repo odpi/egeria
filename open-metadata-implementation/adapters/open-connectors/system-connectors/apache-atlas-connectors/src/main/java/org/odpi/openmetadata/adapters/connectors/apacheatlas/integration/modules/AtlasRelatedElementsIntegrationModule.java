@@ -14,12 +14,12 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasInstanceStatus;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.ArrayList;

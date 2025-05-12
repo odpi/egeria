@@ -13,14 +13,14 @@ import org.odpi.openmetadata.adminservices.configuration.registration.EngineServ
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
@@ -298,7 +298,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
         Date                creationTime = new Date();
         Map<String, String> analysisParameters = governanceServiceCache.getRequestParameters(requestParameters);
 
-        String reportQualifiedName = "SurveyReport:" + requestType + ":" + assetGUID + ":" + creationTime;
+        String reportQualifiedName = "SurveyReport::" + requestType + "::" + assetGUID + "::" + creationTime;
         String reportDisplayName   = "Survey Report for " + assetGUID;
         String reportDescription   = "This is the " + requestType + " survey report for asset " + assetGUID + " generated at " +
                                              creationTime +

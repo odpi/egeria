@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SubjectAreaElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaClassificationProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 
 import java.util.List;

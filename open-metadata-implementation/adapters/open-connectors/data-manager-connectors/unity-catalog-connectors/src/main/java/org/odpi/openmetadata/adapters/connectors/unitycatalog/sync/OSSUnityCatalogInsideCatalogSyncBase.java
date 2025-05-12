@@ -11,12 +11,12 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicEl
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
@@ -199,7 +199,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      */
     protected String getQualifiedName(String fullName)
     {
-        return deployedImplementationType.getDeployedImplementationType() + ":" + ucServerEndpoint + ":" + fullName;
+        return deployedImplementationType.getDeployedImplementationType() + "::" + ucServerEndpoint + "::" + fullName;
     }
 
 
@@ -281,7 +281,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                               parentQualifiedName + "_propertyFacet");
+                                                                               parentQualifiedName + "::propertyFacet");
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.SCHEMA_VERSION.name,

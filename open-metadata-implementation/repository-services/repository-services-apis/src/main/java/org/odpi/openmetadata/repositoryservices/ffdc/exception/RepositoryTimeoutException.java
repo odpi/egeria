@@ -4,7 +4,7 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -137,7 +137,7 @@ public class RepositoryTimeoutException extends RepositoryErrorException
      *
      * @param caughtException the exception/error that caused this exception to be raised
      */
-    public RepositoryTimeoutException(OCFCheckedExceptionBase caughtException)
+    public RepositoryTimeoutException(OMFCheckedExceptionBase caughtException)
     {
         super(caughtException);
     }

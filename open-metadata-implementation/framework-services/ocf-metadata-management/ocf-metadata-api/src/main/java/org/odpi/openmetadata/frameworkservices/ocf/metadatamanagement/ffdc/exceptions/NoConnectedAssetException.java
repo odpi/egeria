@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.exceptions;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * The NoConnectedAssetException is thrown by the Connected Asset OMAS when there is no asset linked to
  * the supplied connection object.
  */
-public class NoConnectedAssetException extends OCFCheckedExceptionBase
+public class NoConnectedAssetException extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -144,7 +144,7 @@ public class NoConnectedAssetException extends OCFCheckedExceptionBase
      * @param template   object to copy
      */
     public NoConnectedAssetException(String                  errorMessage,
-                                     OCFCheckedExceptionBase template)
+                                     OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

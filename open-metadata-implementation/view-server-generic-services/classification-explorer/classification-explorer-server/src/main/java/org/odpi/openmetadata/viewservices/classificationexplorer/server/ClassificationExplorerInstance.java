@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.viewservices.classificationexplorer.ffdc.ClassificationExplorerErrorCode;
 import org.odpi.openmetadata.viewservices.classificationexplorer.handler.OpenMetadataStoreHandler;
 import org.odpi.openmetadata.viewservices.classificationexplorer.handler.StewardshipManagementHandler;

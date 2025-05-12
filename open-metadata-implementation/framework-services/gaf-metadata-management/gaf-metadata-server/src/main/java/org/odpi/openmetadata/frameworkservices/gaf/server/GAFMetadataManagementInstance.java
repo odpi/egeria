@@ -8,15 +8,18 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.MetadataElementConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreErrorCode;
+import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceErrorCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
-import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
@@ -31,13 +34,10 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
     private final GovernanceEngineConfigurationHandler                                   governanceEngineConfigurationHandler;
     private final IntegrationGroupConfigurationHandler                                   integrationGroupConfigurationHandler;
     private final MetadataElementHandler<OpenMetadataElement>                            metadataElementHandler;
-    private final ValidValuesHandler<ValidMetadataValue>                                 validMetadataValuesHandler;
-    private final ValidValuesHandler<ValidMetadataValueDetail>                           validMetadataValuesDetailHandler;
     private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
     private final AssetHandler<GovernanceActionProcessElement>                           governanceActionProcessHandler;
     private final GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> governanceActionProcessStepHandler;
     private final GovernanceActionTypeHandler<GovernanceActionTypeElement>               governanceActionTypeHandler;
-    private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader>    externalIdentifierHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -109,35 +109,6 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                        publishZones,
                                                                        auditLog);
 
-
-            this.validMetadataValuesHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
-                                                                       ValidMetadataValue.class,
-                                                                       serviceName,
-                                                                       serverName,
-                                                                       invalidParameterHandler,
-                                                                       repositoryHandler,
-                                                                       repositoryHelper,
-                                                                       localServerUserId,
-                                                                       securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
-                                                                       auditLog);
-
-            this.validMetadataValuesDetailHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             ValidMetadataValueDetail.class,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
-
             this.engineActionHandler = new EngineActionHandler<>(new EngineActionConverter<>(repositoryHelper, serviceName, serverName),
                                                                  EngineActionElement.class,
                                                                  serviceName,
@@ -194,27 +165,10 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                                  defaultZones,
                                                                                  publishZones,
                                                                                  auditLog);
-
-            this.externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             MetadataCorrelationHeader.class,
-                                                                             new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             ElementHeader.class,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
-
         }
         else
         {
-            throw new NewInstanceException(OpenMetadataStoreErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+            throw new NewInstanceException(OpenGovernanceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
                                            methodName);
         }
@@ -250,37 +204,6 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
     public MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
     {
         return metadataElementHandler;
-    }
-
-    /**
-     * Return the handler for open metadata store requests.
-     *
-     * @return handler object
-     */
-    public ValidValuesHandler<ValidMetadataValue> getValidMetadataValuesHandler()
-    {
-        return validMetadataValuesHandler;
-    }
-
-    /**
-     * Return the handler for reference data requests.
-     *
-     * @return handler object
-     */
-    public ValidValuesHandler<ValidMetadataValueDetail> getValidMetadataValuesDetailHandler()
-    {
-        return validMetadataValuesDetailHandler;
-    }
-
-
-    /**
-     * Return the handler for external identifiers requests.
-     *
-     * @return handler object
-     */
-    public ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> getExternalIdentifierHandler()
-    {
-        return externalIdentifierHandler;
     }
 
 

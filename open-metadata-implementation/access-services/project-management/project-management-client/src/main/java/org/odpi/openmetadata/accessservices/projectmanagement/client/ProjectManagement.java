@@ -5,11 +5,10 @@ package org.odpi.openmetadata.accessservices.projectmanagement.client;
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
 import org.odpi.openmetadata.commonservices.mermaid.ProjectGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.mermaid.ProjectMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectHierarchyConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.TeamMemberConverter;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.ProjectConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.ProjectHierarchyConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.TeamMemberConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -17,15 +16,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.Project
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 
 import java.util.*;
 
@@ -228,7 +227,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                 ProjectProperties    properties,
                                 String               parentGUID,
                                 String               parentRelationshipTypeName,
-                                ElementProperties    parentRelationshipProperties,
+                                ElementProperties parentRelationshipProperties,
                                 boolean              parentAtEnd1) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException

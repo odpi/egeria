@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 import java.io.Serial;
 

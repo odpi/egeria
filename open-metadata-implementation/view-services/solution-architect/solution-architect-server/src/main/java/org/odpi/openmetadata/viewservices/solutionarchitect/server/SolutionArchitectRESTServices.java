@@ -12,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -777,7 +777,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * @param serverName name of the service to route the request to
      * @param informationSupplyChainGUID    unique identifier of the required element
      * @param addImplementation should details of the implementation of the information supply chain be extracted too?
-     * @param requestBody string to find in the properties
+     * @param requestBody time values for the query
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid

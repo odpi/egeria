@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;

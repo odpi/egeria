@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
  * The CommunityProfileErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
-public abstract class CommunityProfileCheckedExceptionBase extends OCFCheckedExceptionBase
+public abstract class CommunityProfileCheckedExceptionBase extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;

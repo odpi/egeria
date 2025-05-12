@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  * or power user.  However, there may be the odd bug that surfaces here. The OMAGAdminErrorCode can be used with
  * this exception to populate it with standard messages.
  */
-class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
+class OMAGCheckedExceptionBase extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -138,7 +138,7 @@ class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
      * @param template   object to copy
      */
     OMAGCheckedExceptionBase(String                  errorMessage,
-                             OCFCheckedExceptionBase template)
+                             OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

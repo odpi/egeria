@@ -12,9 +12,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Governance
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleHistory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDomain;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProfileIdentityElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
@@ -342,7 +342,7 @@ public class GovernanceLeadershipSample
         ActorProfileProperties actorProfileProperties = new ActorProfileProperties();
 
         actorProfileProperties.setTypeName(typeName);
-        actorProfileProperties.setQualifiedName(typeName + ":" + actorEmployeeNo);
+        actorProfileProperties.setQualifiedName(typeName + "::" + actorEmployeeNo);
         actorProfileProperties.setKnownName(knownName);
         actorProfileProperties.setDescription(jobDescription);
 

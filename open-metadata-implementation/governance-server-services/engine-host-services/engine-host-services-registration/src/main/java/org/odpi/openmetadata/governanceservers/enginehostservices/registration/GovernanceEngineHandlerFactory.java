@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceCo
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 
 /**

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.client.rest;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 /**
  * GovernanceActionRESTClient is responsible for issuing the REST API calls

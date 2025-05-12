@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FeedbackTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;

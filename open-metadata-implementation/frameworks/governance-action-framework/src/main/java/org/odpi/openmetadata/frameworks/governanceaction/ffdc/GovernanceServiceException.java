@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 
@@ -56,7 +56,7 @@ public class GovernanceServiceException extends ConnectorCheckedException
      * @param template   object to copy
      */
     public GovernanceServiceException(String                  errorMessage,
-                                      OCFCheckedExceptionBase template)
+                                      OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

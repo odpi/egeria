@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.viewservices.metadataexplorer.handlers;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
-import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.OpenMetadataClientBase;
+import org.odpi.openmetadata.frameworkservices.omf.client.rest.OMFRESTClient;
 
 public class OpenMetadataHandler extends OpenMetadataClientBase
 {
@@ -56,7 +56,7 @@ public class OpenMetadataHandler extends OpenMetadataClientBase
      * @param maxPageSize           pre-initialized parameter limit
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public OpenMetadataHandler(String serviceURLMarker, String serverName, String serverPlatformURLRoot, GAFRESTClient restClient, int maxPageSize) throws InvalidParameterException
+    public OpenMetadataHandler(String serviceURLMarker, String serverName, String serverPlatformURLRoot, OMFRESTClient restClient, int maxPageSize) throws InvalidParameterException
     {
         super(serviceURLMarker, serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }

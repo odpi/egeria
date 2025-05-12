@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
@@ -9,7 +10,7 @@ import static org.testng.Assert.assertTrue;
 
 
 /**
- * Validate that the OCFRuntimeException is properly populated and supports toString, hashCode and
+ * Validate that the OMFRuntimeException is properly populated and supports toString, hashCode and
  * equals.
  */
 public class TestOCFRuntimeException
@@ -35,7 +36,7 @@ public class TestOCFRuntimeException
      */
     @Test public void testNewException()
     {
-        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
+        OMFRuntimeException exception = new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                 reportingClassName,
                                                                 reportingActionDescription);
 
@@ -51,7 +52,7 @@ public class TestOCFRuntimeException
      */
     @Test public void testWrappingException()
     {
-        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
+        OMFRuntimeException exception = new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                 reportingClassName,
                                                                 reportingActionDescription,
                                                                 reportedCaughtException);
@@ -69,12 +70,12 @@ public class TestOCFRuntimeException
      */
     @Test public void testHashCode()
     {
-        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
+        OMFRuntimeException exception = new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                 reportingClassName,
                                                                 reportingActionDescription,
                                                                 reportedCaughtException);
 
-        OCFRuntimeException exception2 = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
+        OMFRuntimeException exception2 = new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                  reportingClassName,
                                                                  reportingActionDescription,
                                                                  reportedCaughtException);
@@ -87,7 +88,7 @@ public class TestOCFRuntimeException
         assertFalse(exception.equals(reportedCaughtException));
         assertTrue(exception.equals(exception2));
 
-        assertTrue(exception.toString().contains("OCFRuntimeException"));
+        assertTrue(exception.toString().contains("OMFRuntimeException"));
 
         assertTrue(exception.toString().equals(exception2.toString()));
     }

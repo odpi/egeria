@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converter
 
 
 import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;

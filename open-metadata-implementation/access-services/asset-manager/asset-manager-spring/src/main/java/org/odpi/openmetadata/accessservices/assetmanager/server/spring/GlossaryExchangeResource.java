@@ -9,9 +9,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.GlossaryExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.HistoryExternalIdentifiersRequestBody;
 import org.springframework.web.bind.annotation.*;
 
 

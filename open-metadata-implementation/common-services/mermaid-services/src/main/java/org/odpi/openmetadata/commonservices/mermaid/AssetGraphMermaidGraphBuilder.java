@@ -25,6 +25,41 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
+        if ((assetGraph.getElementHeader().getClassifications() != null) || (! assetGraph.getElementHeader().getClassifications().isEmpty()))
+        {
+            super.startSubgraph("Classifications", VisualStyle.DESCRIPTION, "TB");
+
+            for (ElementClassification classification : assetGraph.getElementHeader().getClassifications())
+            {
+                if (classification != null)
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (classification.getClassificationProperties() != null)
+                    {
+                        for (String propertyName : classification.getClassificationProperties().keySet())
+                        {
+                            stringBuilder.append(propertyName);
+
+                            Object propertyValue = classification.getClassificationProperties().get(propertyName);
+                            if (propertyValue != null)
+                            {
+                                stringBuilder.append("\n");
+                                stringBuilder.append(" - ");
+                                stringBuilder.append(propertyValue);
+                                stringBuilder.append("\n");
+                            }
+                        }
+                    }
+
+                    appendNewMermaidNode(assetGraph.getElementHeader().getGUID() + ":" + classification.getClassificationName(),
+                                         stringBuilder.toString(),
+                                         classification.getClassificationName(),
+                                         VisualStyle.ANCHOR_ELEMENT);
+                }
+            }
+
+            endSubgraph();
+        }
 
         String currentNodeName    = assetGraph.getElementHeader().getGUID();
         String currentDisplayName = assetGraph.getProperties().getDisplayName();

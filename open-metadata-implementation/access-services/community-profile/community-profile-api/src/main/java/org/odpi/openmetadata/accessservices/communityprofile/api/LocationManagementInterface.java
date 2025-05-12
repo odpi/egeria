@@ -12,9 +12,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Nested
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 

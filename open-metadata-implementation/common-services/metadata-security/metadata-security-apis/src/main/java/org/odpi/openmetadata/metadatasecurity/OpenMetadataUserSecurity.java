@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.metadatasecurity;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 
 /**

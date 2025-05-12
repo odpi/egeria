@@ -4,6 +4,9 @@
 package org.odpi.openmetadata.accessservices.datamanager.api;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 /**
  * DataManagerEventInterface defines how a client gets access to the

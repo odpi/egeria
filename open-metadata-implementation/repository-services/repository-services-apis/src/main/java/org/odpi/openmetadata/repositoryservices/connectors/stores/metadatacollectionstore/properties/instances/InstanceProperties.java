@@ -307,11 +307,10 @@ public class InstanceProperties extends InstanceElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof InstanceProperties))
+        if (!(objectToCompare instanceof InstanceProperties that))
         {
             return false;
         }
-        InstanceProperties that = (InstanceProperties) objectToCompare;
         return Objects.equals(getEffectiveFromTime(), that.getEffectiveFromTime()) &&
                 Objects.equals(getEffectiveToTime(), that.getEffectiveToTime()) &&
                 Objects.equals(getInstanceProperties(), that.getInstanceProperties());

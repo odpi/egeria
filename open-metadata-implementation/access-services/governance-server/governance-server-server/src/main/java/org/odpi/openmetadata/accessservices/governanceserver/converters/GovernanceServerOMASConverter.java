@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceserver.converters;
 
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.OpenMetadataStoreConverter;
+import org.odpi.openmetadata.frameworkservices.omf.converters.OpenMetadataStoreConverter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;

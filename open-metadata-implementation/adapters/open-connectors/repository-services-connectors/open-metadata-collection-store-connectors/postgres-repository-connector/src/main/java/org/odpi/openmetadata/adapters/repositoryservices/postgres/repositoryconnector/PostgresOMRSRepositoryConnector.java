@@ -13,7 +13,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -59,9 +59,9 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
             {
                 for (Connector embeddedConnector : embeddedConnectors)
                 {
-                    if (embeddedConnector instanceof JDBCResourceConnector jdbcResourceConnector)
+                    if (embeddedConnector instanceof JDBCResourceConnector embeddedJDBCResourceConnector)
                     {
-                        this.jdbcResourceConnector = jdbcResourceConnector;
+                        this.jdbcResourceConnector = embeddedJDBCResourceConnector;
 
                         try
                         {

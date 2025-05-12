@@ -3,19 +3,19 @@
 package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceCompletionInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.WatchDogEventInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.ActionTargetStatusRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody;

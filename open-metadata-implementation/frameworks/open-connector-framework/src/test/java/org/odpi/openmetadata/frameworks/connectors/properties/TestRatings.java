@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
@@ -106,7 +106,7 @@ public class TestRatings
         {
             getPropertyIterator(30, 10).remove();
         }
-        catch (OCFRuntimeException err)
+        catch (OMFRuntimeException err)
         {
             assertTrue(err.getMessage().contains("OCF-PROPERTIES-400-018 "));
         }

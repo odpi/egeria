@@ -113,7 +113,7 @@ public abstract class CatalogIntegratorConnector extends IntegrationConnectorBas
                             auditLog.logMessage(methodName,
                                                 OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                        error.getClass().getName(),
-                                                                                                       methodName + ":" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
                                                                                                        error.getMessage()));
                         }
                     }

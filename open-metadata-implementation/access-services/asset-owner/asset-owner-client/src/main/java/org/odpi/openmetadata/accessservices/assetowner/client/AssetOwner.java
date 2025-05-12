@@ -16,9 +16,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.RetentionClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
@@ -4371,6 +4371,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
     {
         return null;
     }
+
 
     /**
      * Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.

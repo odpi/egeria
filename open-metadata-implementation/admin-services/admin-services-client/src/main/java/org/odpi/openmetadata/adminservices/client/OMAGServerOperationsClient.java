@@ -14,7 +14,7 @@ import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**

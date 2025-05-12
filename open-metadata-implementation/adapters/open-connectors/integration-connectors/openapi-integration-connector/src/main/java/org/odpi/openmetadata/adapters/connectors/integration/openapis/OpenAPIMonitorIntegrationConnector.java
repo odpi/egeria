@@ -8,7 +8,11 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
@@ -19,11 +23,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenA
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISpecification;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPITag;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorContext;
@@ -96,7 +96,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                 getRESTClients();
             }
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(methodName, error);
         }

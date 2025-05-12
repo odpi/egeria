@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.viewservices.feedbackmanager.converters;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataConverterBase;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 
 /**
  * Provide base converter functions for the Feedback Manager OMVS.

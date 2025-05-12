@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.datamanager.api;
 
 
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;

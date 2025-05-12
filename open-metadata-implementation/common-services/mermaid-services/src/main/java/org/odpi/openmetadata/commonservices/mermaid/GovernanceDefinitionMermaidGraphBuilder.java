@@ -7,8 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Governance
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -28,8 +26,6 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         mermaidGraph.append(governanceDefinitionGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
-
         String currentNodeName = governanceDefinitionGraph.getElementHeader().getGUID();
         String currentDisplayName = governanceDefinitionGraph.getProperties().getTitle();
 
@@ -38,31 +34,26 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                              governanceDefinitionGraph.getElementHeader().getType().getTypeName(),
                              checkForClassifications(governanceDefinitionGraph.getElementHeader(), VisualStyle.GOVERNANCE_DEFINITION));
 
-        usedNodeNames.add(currentNodeName);
-
         this.addDescription(governanceDefinitionGraph);
 
         if (governanceDefinitionGraph.getParents() != null)
         {
             for (RelatedElementStub parent : governanceDefinitionGraph.getParents())
             {
-                if ((parent != null) && (! usedNodeNames.contains(parent.getRelatedElement().getGUID())))
-                {
-                    currentNodeName    = parent.getRelatedElement().getGUID();
-                    currentDisplayName = parent.getRelatedElement().getUniqueName();
+                currentNodeName    = parent.getRelatedElement().getGUID();
+                currentDisplayName = parent.getRelatedElement().getUniqueName();
 
-                    appendNewMermaidNode(currentNodeName,
-                                         currentDisplayName,
-                                         parent.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(parent.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
+                appendNewMermaidNode(currentNodeName,
+                                     currentDisplayName,
+                                     parent.getRelatedElement().getType().getTypeName(),
+                                     checkForClassifications(parent.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
-                    usedNodeNames.add(currentNodeName);
 
-                    super.appendMermaidLine(parent.getRelationshipHeader().getGUID(),
-                                            parent.getRelatedElement().getGUID(),
-                                            parent.getRelationshipHeader().getType().getTypeName(),
-                                            governanceDefinitionGraph.getElementHeader().getGUID());
-                }
+                super.appendMermaidLine(parent.getRelationshipHeader().getGUID(),
+                                        parent.getRelatedElement().getGUID(),
+                                        parent.getRelationshipHeader().getType().getTypeName(),
+                                        governanceDefinitionGraph.getElementHeader().getGUID());
+
             }
         }
 
@@ -70,7 +61,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         {
             for (RelatedElementStub peer : governanceDefinitionGraph.getPeers())
             {
-                if ((peer != null) && (! usedNodeNames.contains(peer.getRelatedElement().getGUID())))
+                if (peer != null)
                 {
                     currentNodeName    = peer.getRelatedElement().getGUID();
                     currentDisplayName = peer.getRelatedElement().getUniqueName();
@@ -79,8 +70,6 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                                          currentDisplayName,
                                          peer.getRelatedElement().getType().getTypeName(),
                                          checkForClassifications(peer.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
-
-                    usedNodeNames.add(currentNodeName);
 
                     super.appendMermaidThinLine(peer.getRelationshipHeader().getGUID(),
                                                 peer.getRelatedElement().getGUID(),
@@ -94,7 +83,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         {
             for (RelatedElementStub child : governanceDefinitionGraph.getChildren())
             {
-                if ((child != null) && (! usedNodeNames.contains(child.getRelatedElement().getGUID())))
+                if (child != null)
                 {
                     currentNodeName    = child.getRelatedElement().getGUID();
                     currentDisplayName = child.getRelatedElement().getUniqueName();
@@ -103,8 +92,6 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                                          currentDisplayName,
                                          child.getRelatedElement().getType().getTypeName(),
                                          checkForClassifications(child.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
-
-                    usedNodeNames.add(currentNodeName);
 
                     super.appendMermaidLine(child.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),
@@ -118,7 +105,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         {
             for (RelatedElementStub metrics : governanceDefinitionGraph.getMetrics())
             {
-                if ((metrics != null) && (! usedNodeNames.contains(metrics.getRelatedElement().getGUID())))
+                if (metrics != null)
                 {
                     currentNodeName    = metrics.getRelatedElement().getGUID();
                     currentDisplayName = metrics.getRelatedElement().getUniqueName();
@@ -127,8 +114,6 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                                          currentDisplayName,
                                          metrics.getRelatedElement().getType().getTypeName(),
                                          checkForClassifications(metrics.getRelatedElement(), VisualStyle.GOVERNANCE_METRIC));
-
-                    usedNodeNames.add(currentNodeName);
 
                     super.appendMermaidLine(metrics.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),
@@ -142,7 +127,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         {
             for (RelatedElementStub externalReference : governanceDefinitionGraph.getExternalReferences())
             {
-                if ((externalReference != null) && (! usedNodeNames.contains(externalReference.getRelatedElement().getGUID())))
+                if (externalReference != null)
                 {
                     currentNodeName    = externalReference.getRelatedElement().getGUID();
                     currentDisplayName = externalReference.getRelatedElement().getUniqueName();
@@ -150,9 +135,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          externalReference.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(externalReference.getRelatedElement(), VisualStyle.EXTERNAL_REFERENCES));
-
-                    usedNodeNames.add(currentNodeName);
+                                         checkForClassifications(externalReference.getRelatedElement(), VisualStyle.EXTERNAL_REFERENCE));
 
                     super.appendMermaidLine(externalReference.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),
@@ -166,7 +149,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         {
             for (RelatedElementStub other : governanceDefinitionGraph.getOthers())
             {
-                if ((other != null) && (! usedNodeNames.contains(other.getRelatedElement().getGUID())))
+                if (other != null)
                 {
                     currentNodeName    = other.getRelatedElement().getGUID();
                     currentDisplayName = other.getRelatedElement().getUniqueName();
@@ -175,8 +158,6 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                                          currentDisplayName,
                                          other.getRelatedElement().getType().getTypeName(),
                                          checkForClassifications(other.getRelatedElement(), VisualStyle.GOVERNED_ELEMENT));
-
-                    usedNodeNames.add(currentNodeName);
 
                     super.appendMermaidLine(other.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),

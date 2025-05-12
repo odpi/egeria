@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryCategoryElement;
 
 import java.util.Arrays;
 import java.util.Objects;

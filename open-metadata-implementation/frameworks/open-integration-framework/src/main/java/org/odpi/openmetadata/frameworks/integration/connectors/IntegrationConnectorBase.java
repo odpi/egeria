@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
@@ -191,7 +191,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                             auditLog.logMessage(methodName,
                                                 OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                        error.getClass().getName(),
-                                                                                                       methodName + ":" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
                                                                                                        error.getMessage()));
                         }
                     }

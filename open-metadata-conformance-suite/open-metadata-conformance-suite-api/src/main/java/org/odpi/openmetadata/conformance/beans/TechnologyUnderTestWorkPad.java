@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.conformance.beans;
 
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 import java.util.ArrayList;
 import java.util.Date;

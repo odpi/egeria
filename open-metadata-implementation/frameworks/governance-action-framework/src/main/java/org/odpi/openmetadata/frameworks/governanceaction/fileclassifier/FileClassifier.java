@@ -3,14 +3,14 @@
 
 package org.odpi.openmetadata.frameworks.governanceaction.fileclassifier;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
 
 import java.io.File;
 import java.io.IOException;

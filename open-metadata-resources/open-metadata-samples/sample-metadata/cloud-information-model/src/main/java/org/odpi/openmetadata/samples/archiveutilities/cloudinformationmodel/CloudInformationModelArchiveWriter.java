@@ -166,7 +166,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                      * Then each property within the property group is a term linked to its property group category.
                      */
                     String propertyGroupCategoryId = archiveHelper.addGlossaryCategory(glossaryId,
-                                                                               propertyGroup.getGUID() + ":" + propertyGroup.getTechnicalName(),
+                                                                               propertyGroup.getGUID() + "::" + propertyGroup.getTechnicalName(),
                                                                                propertyGroup.getDisplayName(),
                                                                                propertyGroup.getDescription(),
                                                                                null);
@@ -187,7 +187,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                             {
                                 String propertyTermId = archiveHelper.addTerm(glossaryId,
                                                                               categoryList,
-                                                                              propertyGroup. getGUID() + propertyGroup.getTechnicalName() + ":" + propertyDescription.getTechnicalName(),
+                                                                              propertyGroup. getGUID() + propertyGroup.getTechnicalName() + "::" + propertyDescription.getTechnicalName(),
                                                                               propertyDescription.getDisplayName(),
                                                                               propertyDescription.getDescription());
                             }
@@ -224,7 +224,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 
                     String subjectAreaTermId = archiveHelper.addTerm(glossaryId,
                                                                      null,
-                                                                     "ModelSubjectArea:" + model.getModelTechnicalName() + ":" + subjectArea.getTechnicalName(),
+                                                                     "ModelSubjectArea::" + model.getModelTechnicalName() + "::" + subjectArea.getTechnicalName(),
                                                                      subjectArea.getDisplayName(),
                                                                      subjectArea.getDescription());
 
@@ -239,7 +239,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                             if (conceptGroup != null)
                             {
                                 String conceptGroupCategoryId = archiveHelper.addGlossaryCategory(glossaryId,
-                                                                                          "ConceptGroup:" + conceptGroup.getGUID() + ":" + conceptGroup.getTechnicalName(),
+                                                                                          "ConceptGroup::" + conceptGroup.getGUID() + "::" + conceptGroup.getTechnicalName(),
                                                                                           conceptGroup.getDisplayName(),
                                                                                           conceptGroup.getDescription(),
                                                                                           conceptGroup.getDisplayName());
@@ -248,7 +248,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 
                                 String conceptGroupTermId = archiveHelper.addTerm(glossaryId,
                                                                                   null,
-                                                                                  "ModelConceptGroup:" + model.getModelTechnicalName() + ":" + subjectArea.getTechnicalName() + ":" + conceptGroup.getGUID() + ":" + conceptGroup.getTechnicalName(),
+                                                                                  "ModelConceptGroup::" + model.getModelTechnicalName() + "::" + subjectArea.getTechnicalName() + "::" + conceptGroup.getGUID() + "::" + conceptGroup.getTechnicalName(),
                                                                                   conceptGroup.getDisplayName(),
                                                                                   conceptGroup.getDescription());
 
@@ -268,7 +268,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                         {
                                             String conceptTermId = archiveHelper.addTerm(glossaryId,
                                                                                          categoryList,
-                                                                                         "SubjectArea:" + subjectArea.getTechnicalName() + ":" + ":" + conceptGroup.getGUID() + concept.getTechnicalName(),
+                                                                                         "SubjectArea::" + subjectArea.getTechnicalName() + "::" + conceptGroup.getGUID() + "::" + concept.getTechnicalName(),
                                                                                          concept.getDisplayName(),
                                                                                          concept.getDescription());
 

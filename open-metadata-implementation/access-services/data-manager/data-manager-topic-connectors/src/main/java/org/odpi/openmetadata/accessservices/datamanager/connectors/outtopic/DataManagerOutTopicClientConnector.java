@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventInte
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

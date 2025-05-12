@@ -5,10 +5,10 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalReferenceConverter;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalReferenceLinkConverter;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceLinkHandler;
@@ -17,9 +17,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;

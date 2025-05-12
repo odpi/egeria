@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.mermaid.AssetGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.mermaid.AssetLineageGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
@@ -270,8 +270,23 @@ public class AssetConsumerRESTServices
                     {
                         if (relationship != null)
                         {
-                            receivedRelationships.put(relationship.getGUID(), relationship);
+                            /*
+                             * Save the relationship if it is structural.  The relationships relating to ongoing dynamic activity are ignored.
+                             */
+                            if ((! assetHandler.getRepositoryHelper().isTypeOf(instanceHandler.getServiceName(),
+                                                                              relationship.getType().getTypeDefName(),
+                                                                              OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName)) &&
+                                    (! assetHandler.getRepositoryHelper().isTypeOf(instanceHandler.getServiceName(),
+                                                                                   relationship.getType().getTypeDefName(),
+                                                                                   OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName)))
+                            {
+                                receivedRelationships.put(relationship.getGUID(), relationship);
+                            }
 
+                            /*
+                             * The information supply chain is extracted from all relationships to build up the list of
+                             * information supply chains that the asset is involved with.
+                             */
                             String iscQualifiedName = assetHandler.getRepositoryHelper().getStringProperty(assetHandler.getServiceName(),
                                                                                                            OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                                            relationship.getProperties(),
@@ -366,7 +381,15 @@ public class AssetConsumerRESTServices
                                 {
                                     if (relationship != null)
                                     {
-                                        receivedRelationships.put(relationship.getGUID(), relationship);
+                                        if ((! assetHandler.getRepositoryHelper().isTypeOf(instanceHandler.getServiceName(),
+                                                                                           relationship.getType().getTypeDefName(),
+                                                                                           OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName)) &&
+                                                (! assetHandler.getRepositoryHelper().isTypeOf(instanceHandler.getServiceName(),
+                                                                                               relationship.getType().getTypeDefName(),
+                                                                                               OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName)))
+                                        {
+                                            receivedRelationships.put(relationship.getGUID(), relationship);
+                                        }
 
                                         String iscQualifiedName = assetHandler.getRepositoryHelper().getStringProperty(assetHandler.getServiceName(),
                                                                                                                        OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
@@ -602,7 +625,15 @@ public class AssetConsumerRESTServices
             lineageRelationshipTypeNames.add(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
+
+            /*
+             * Pick up requests for actions and ToDos
+             */
+            lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName);
         }
+
         return lineageRelationshipTypeNames;
     }
 
@@ -819,6 +850,9 @@ public class AssetConsumerRESTServices
                                                                 assetGUID,
                                                                 assetGUIDParameterName,
                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                true,
+                                                                false,
+                                                                effectiveTime,
                                                                 methodName);
 
         if (asset != null)

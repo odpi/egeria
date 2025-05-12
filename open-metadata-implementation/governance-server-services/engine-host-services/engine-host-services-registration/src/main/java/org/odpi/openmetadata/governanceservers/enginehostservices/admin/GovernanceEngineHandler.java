@@ -9,6 +9,9 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
@@ -59,14 +62,14 @@ public abstract class GovernanceEngineHandler
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
-    public GovernanceEngineHandler(EngineConfig                        engineConfig,
-                                   String                              serverName,
-                                   String                              serverUserId,
-                                   String                              engineServiceName,
+    public GovernanceEngineHandler(EngineConfig                  engineConfig,
+                                   String                        serverName,
+                                   String                        serverUserId,
+                                   String                        engineServiceName,
                                    GovernanceConfigurationClient configurationClient,
-                                   GovernanceContextClient             engineActionClient,
-                                   AuditLog                            auditLog,
-                                   int                                 maxPageSize)
+                                   GovernanceContextClient       engineActionClient,
+                                   AuditLog                      auditLog,
+                                   int                           maxPageSize)
     {
         this.engineServiceName = engineServiceName;
         this.governanceEngineName = engineConfig.getEngineQualifiedName();
@@ -345,10 +348,26 @@ public abstract class GovernanceEngineHandler
     {
         if (governanceEngineProperties == null)
         {
-            throw new PropertyServerException(EngineHostServicesErrorCode.GOVERNANCE_ENGINE_NOT_INITIALIZED.getMessageDefinition(serverName,
-                                                                                                                                 governanceEngineName),
-                                               this.getClass().getName(),
-                                               methodName);
+            try
+            {
+                refreshConfig();
+            }
+            catch (Exception error)
+            {
+                throw new PropertyServerException(EngineHostServicesErrorCode.GOVERNANCE_ENGINE_NOT_INITIALIZED.getMessageDefinition(serverName,
+                                                                                                                                     governanceEngineName),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  error);
+            }
+
+            if (governanceEngineProperties == null)
+            {
+                throw new PropertyServerException(EngineHostServicesErrorCode.GOVERNANCE_ENGINE_NOT_INITIALIZED.getMessageDefinition(serverName,
+                                                                                                                                     governanceEngineName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
         }
 
         if (expectedTypeName.equals(governanceEngineTypeName))

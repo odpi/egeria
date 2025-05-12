@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.validmetadata.server.ValidMetadataRESTServices;
 import org.springframework.web.bind.annotation.*;
 

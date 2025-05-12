@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.MeaningConverter;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.RatingConverter;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.ReferenceableConverter;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;

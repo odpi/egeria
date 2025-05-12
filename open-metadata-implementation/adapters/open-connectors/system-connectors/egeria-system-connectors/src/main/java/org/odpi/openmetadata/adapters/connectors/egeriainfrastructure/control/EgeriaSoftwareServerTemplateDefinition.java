@@ -275,7 +275,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
      */
     public String getQualifiedName()
     {
-        return deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        return deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
     }
 
 

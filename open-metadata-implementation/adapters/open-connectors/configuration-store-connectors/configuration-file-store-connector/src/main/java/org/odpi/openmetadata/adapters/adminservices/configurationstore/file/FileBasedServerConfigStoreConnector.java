@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
@@ -219,7 +219,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         if (!isTemplateValid(templateString))
         {
             // bad template supplied - error
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE.getMessageDefinition(templateString),
+            throw new OMFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE.getMessageDefinition(templateString),
                                           this.getClass().getName(),
                                           methodName);
         }
@@ -378,7 +378,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         }
         catch (IOException error)
         {
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(error.getClass().getName(), error.getMessage(), configStoreName),
+            throw new OMFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(error.getClass().getName(), error.getMessage(), configStoreName),
                                           this.getClass().getName(),
                                           methodName, error);
         }

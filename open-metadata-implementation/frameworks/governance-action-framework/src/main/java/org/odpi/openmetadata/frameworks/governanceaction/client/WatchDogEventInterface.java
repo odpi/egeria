@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction.client;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 

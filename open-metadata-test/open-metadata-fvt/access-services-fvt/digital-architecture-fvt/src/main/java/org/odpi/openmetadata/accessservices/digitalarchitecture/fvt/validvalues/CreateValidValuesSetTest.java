@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.client.Reference
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;

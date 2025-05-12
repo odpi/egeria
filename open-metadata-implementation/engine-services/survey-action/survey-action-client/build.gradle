@@ -6,6 +6,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:survey-action-framework')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')

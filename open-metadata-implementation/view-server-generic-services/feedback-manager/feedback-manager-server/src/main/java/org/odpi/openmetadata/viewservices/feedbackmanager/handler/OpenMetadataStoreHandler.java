@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.feedbackmanager.handler;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.OpenMetadataClientBase;
 
 /**
  * OpenMetadataStoreHandler provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)

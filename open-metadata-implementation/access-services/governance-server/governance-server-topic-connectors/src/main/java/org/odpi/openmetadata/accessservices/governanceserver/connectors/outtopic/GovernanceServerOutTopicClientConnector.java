@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.api.GovernanceServe
 import org.odpi.openmetadata.accessservices.governanceserver.api.GovernanceServerEventListener;
 import org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServerEvent;
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

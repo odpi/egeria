@@ -7,6 +7,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventLi
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientConnector;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

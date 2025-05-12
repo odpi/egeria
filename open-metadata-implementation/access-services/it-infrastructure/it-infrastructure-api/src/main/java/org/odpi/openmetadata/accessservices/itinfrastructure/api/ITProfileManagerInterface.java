@@ -9,9 +9,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactMe
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.Date;
 import java.util.List;

@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 

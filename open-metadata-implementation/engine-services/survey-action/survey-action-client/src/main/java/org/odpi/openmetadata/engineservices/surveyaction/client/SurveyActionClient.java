@@ -8,9 +8,9 @@ import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.engineservices.surveyaction.api.SurveyActionAPI;
 import org.odpi.openmetadata.engineservices.surveyaction.client.rest.SurveyActionRESTClient;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 /**
  * SurveyActionClient is a client-side library for calling a specific survey action engine with an engine host server.

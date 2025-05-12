@@ -10,8 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.springframework.core.ParameterizedTypeReference;
 
 

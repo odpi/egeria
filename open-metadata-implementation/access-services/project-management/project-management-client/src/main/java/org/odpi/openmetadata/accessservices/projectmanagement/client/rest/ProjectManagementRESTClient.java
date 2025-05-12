@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.projectmanagement.client.rest;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 /**
  * ProjectManagementRESTClient is responsible for issuing calls to the Project Profile OMAS REST APIs.

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile;
 
 import org.junit.jupiter.api.Test;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 
 import java.util.Set;
 
@@ -58,14 +58,14 @@ public class TestEncryptedFileBasedServerConfigStoreConnector {
             templateString = "src/test/resources/test10/data/{0}/{0}/{0}.config";
             connector.getFileNames(templateString, "testMethod");
             assertFalse(true, "Expected an error");
-        } catch (OCFRuntimeException e) {
+        } catch (OMFRuntimeException e) {
 
         }
         try {
             templateString = "src/test/resources/test10/data/test/my.config";
             connector.getFileNames(templateString, "testMethod");
             assertFalse(true, "Expected an error");
-        } catch (OCFRuntimeException e) {
+        } catch (OMFRuntimeException e) {
 
         }
 

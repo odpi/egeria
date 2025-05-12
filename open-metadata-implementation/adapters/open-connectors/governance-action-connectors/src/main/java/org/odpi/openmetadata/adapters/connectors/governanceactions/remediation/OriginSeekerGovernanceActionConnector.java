@@ -11,10 +11,12 @@ import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,9 +54,9 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
         super.start();
 
-        List<String>              outputGuards = new ArrayList<>();
-        CompletionStatus          completionStatus;
-        Map<String, String>       newRequestParameters = new HashMap<>();
+        List<String>        outputGuards = new ArrayList<>();
+        CompletionStatus    completionStatus;
+        Map<String, String> newRequestParameters = new HashMap<>();
 
         governanceContext.getOpenMetadataStore().setForLineage(true);
 
@@ -102,7 +104,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters, null);
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }

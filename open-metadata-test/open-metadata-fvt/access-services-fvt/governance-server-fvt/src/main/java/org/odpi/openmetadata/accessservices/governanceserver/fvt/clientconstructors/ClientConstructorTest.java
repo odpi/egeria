@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.governanceserver.fvt.clientconstruc
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;

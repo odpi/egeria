@@ -24,7 +24,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
     public SolutionBlueprintMermaidGraphBuilder(SolutionBlueprintElement solutionBlueprintElement)
     {
         mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Component for Solution Blueprint - ");
+        mermaidGraph.append("title: Components and Roles for Solution Blueprint - ");
         mermaidGraph.append(solutionBlueprintElement.getProperties().getDisplayName());
         mermaidGraph.append(" [");
         mermaidGraph.append(solutionBlueprintElement.getElementHeader().getGUID());

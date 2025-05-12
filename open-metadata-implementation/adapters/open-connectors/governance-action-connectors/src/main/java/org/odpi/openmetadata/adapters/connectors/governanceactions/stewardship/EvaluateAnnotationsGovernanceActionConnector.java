@@ -11,6 +11,9 @@ import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceAction
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 
@@ -48,9 +51,9 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
 
         try
         {
-            List<String>              outputGuards        = new ArrayList<>();
-            List<NewActionTarget>     outputActionTargets = new ArrayList<>();
-            CompletionStatus          completionStatus;
+            List<String>          outputGuards        = new ArrayList<>();
+            List<NewActionTarget> outputActionTargets = new ArrayList<>();
+            CompletionStatus      completionStatus;
             AuditLogMessageDefinition messageDefinition;
             ActionTargetElement       surveyReport        = null;
             String                    stewardGUID         = null;
@@ -112,7 +115,7 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                             {
                                 rfaCount++;
 
-                                String toDoGUID = governanceContext.openToDo(governanceServiceName + ":" + connectorInstanceId,
+                                String toDoGUID = governanceContext.openToDo(governanceServiceName + "::" + connectorInstanceId,
                                                                              ToDoType.REQUEST_FOR_ACTION.getDescription(),
                                                                              "Follow the link for the request for action to discover the issue and suggested remedy.",
                                                                              ToDoType.REQUEST_FOR_ACTION.getName(),

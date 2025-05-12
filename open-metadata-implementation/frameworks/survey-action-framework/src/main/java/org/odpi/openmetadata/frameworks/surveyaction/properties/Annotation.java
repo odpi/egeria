@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 
 import java.util.*;

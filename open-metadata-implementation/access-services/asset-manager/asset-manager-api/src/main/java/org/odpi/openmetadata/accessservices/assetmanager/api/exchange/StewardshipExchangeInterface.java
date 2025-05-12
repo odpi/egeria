@@ -3,16 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetmanager.api.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
 import java.util.Date;

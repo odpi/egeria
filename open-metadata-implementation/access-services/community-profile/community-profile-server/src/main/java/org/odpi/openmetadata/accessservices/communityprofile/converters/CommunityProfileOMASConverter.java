@@ -3,12 +3,6 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 

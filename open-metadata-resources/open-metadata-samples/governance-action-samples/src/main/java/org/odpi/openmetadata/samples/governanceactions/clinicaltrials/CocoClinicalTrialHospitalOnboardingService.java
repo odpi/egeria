@@ -11,8 +11,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -361,7 +365,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         {
             throw error;
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }
@@ -463,10 +467,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         int startFrom = 0;
         RelatedMetadataElementList certifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(hospitalGUID,
-                                                                                                                          1,
-                                                                                                                          OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
-                                                                                                                          startFrom,
-                                                                                                                          governanceContext.getOpenMetadataStore().getMaxPagingSize());
+                                                                                                                        1,
+                                                                                                                        OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                                                                                                        startFrom,
+                                                                                                                        governanceContext.getOpenMetadataStore().getMaxPagingSize());
 
         while ((certifications != null) && (certifications.getElementList() != null))
         {
@@ -572,7 +576,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 String instructions = "Contact the clinical records clerk for this project to resolve the certification status of the hospital.  Once it is resolved, rerun this onboarding process.";
                 instructions = instructions + "\n\n Contact Details:\n\n * Name: " + custodianContactDetails.contactName + "\n * Email: " + custodianContactDetails.contactEmail + "\n * GUID: " + custodianContactDetails.personGUID;
 
-                governanceContext.openToDo("From " + governanceServiceName + ":" + connectorInstanceId + " to " + stewardGUID,
+                governanceContext.openToDo("From " + governanceServiceName + "::" + connectorInstanceId + " to " + stewardGUID,
                                            title,
                                            instructions,
                                            "Clinical Trial Action",
@@ -585,7 +589,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 instructions = "Determine whether this hospital is to be included in the clinical trial.  If it is to be included, review the certification status and contact the hospital to complete the certification process.  Contact the steward to keep them informed of the hospital's status";
                 instructions = instructions + "\n\n Contact Details for Steward:\n\n * Name: " + stewardContactDetails.contactName + "\n * Email: " + stewardContactDetails.contactEmail + "\n * GUID: " + stewardContactDetails.personGUID;
 
-                governanceContext.openToDo("From " + governanceServiceName + ":" + connectorInstanceId + " to " + custodianContactDetails.personGUID,
+                governanceContext.openToDo("From " + governanceServiceName + "::" + connectorInstanceId + " to " + custodianContactDetails.personGUID,
                                            title,
                                            instructions,
                                            "Clinical Trial Action",
@@ -603,7 +607,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 String title        = "Set up of onboarding pipeline for hospital " + hospitalName + "(" + hospitalGUID + ") failed because this hospital is not nominated for project " + clinicalTrialName + "(" + projectGUID + ")";
                 String instructions = "Check with the clinical records clerk if you think this hospital should be included in the clinical trial.  Otherwise ignore this message.";
 
-                governanceContext.openToDo("From " + governanceServiceName + ":" + connectorInstanceId + " to " + stewardGUID,
+                governanceContext.openToDo("From " + governanceServiceName + "::" + connectorInstanceId + " to " + stewardGUID,
                                            title,
                                            instructions,
                                            "Clinical Trial Action",
@@ -760,7 +764,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
     {
         final String methodName = "createNewFileProcess";
 
-        String processQualifiedName = "Coco:GovernanceActionProcess:" + clinicalTrialId + ":" + hospitalName + ":WeeklyMeasurements:Onboarding";
+        String processQualifiedName = "Coco::GovernanceActionProcess::" + clinicalTrialId + "::" + hospitalName + "::WeeklyMeasurements::Onboarding";
 
         OpenMetadataElement genericProcess = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(onboardingProcessGUID);
 
@@ -925,7 +929,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
     {
         CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
-        catalogTargetProperties.setCatalogTargetName(clinicalTrialId + ":" + clinicalTrialName + ":" + hospitalName);
+        catalogTargetProperties.setCatalogTargetName(clinicalTrialId + "::" + clinicalTrialName + "::" + hospitalName);
 
         Map<String, String> templateProperties = new HashMap<>();
         templateProperties.put(OpenMetadataType.DATA_FILE.typeName, templateName);

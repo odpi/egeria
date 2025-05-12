@@ -161,7 +161,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     securityVerifier.validateUserForTypeRead(userId, metadataCollectionName, typeDef);
                     validatedTypeDefs.add(typeDef);
                 }
-                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+                catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
                 {
                     savedException = new UserNotAuthorizedException(error);
                 }
@@ -210,7 +210,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     securityVerifier.validateUserForTypeRead(userId, metadataCollectionName, attributeTypeDef);
                     validatedAttributeTypeDefs.add(attributeTypeDef);
                 }
-                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+                catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
                 {
                     savedException = new UserNotAuthorizedException(error);
                 }
@@ -522,7 +522,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 securityVerifier.validateUserForTypeRead(userId, metadataCollectionName, typeDef);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -574,7 +574,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 securityVerifier.validateUserForTypeRead(userId, metadataCollectionName, attributeTypeDef);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -625,7 +625,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 securityVerifier.validateUserForTypeRead(userId, metadataCollectionName, typeDef);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -676,7 +676,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 securityVerifier.validateUserForTypeRead(userId, metadataCollectionName, attributeTypeDef);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -727,7 +727,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForTypeCreate(userId, metadataCollectionName, newTypeDef);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -795,7 +795,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForTypeCreate(userId, metadataCollectionName, newAttributeTypeDef);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -937,7 +937,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForTypeUpdate(userId, metadataCollectionName, typeDef, typeDefPatch);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -1014,7 +1014,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForTypeDelete(userId, metadataCollectionName, typeDef);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -1094,7 +1094,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForTypeDelete(userId, metadataCollectionName, attributeTypeDef);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -1185,7 +1185,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForTypeReIdentify(userId, metadataCollectionName, originalTypeDef, newTypeDefGUID, newTypeDefName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -1286,7 +1286,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                            newAttributeTypeDefGUID,
                                                            newAttributeTypeDefName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -1599,7 +1599,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 return securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, retrievedEntity);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -1631,7 +1631,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 return securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, retrievedRelationship);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -1794,7 +1794,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -3102,7 +3102,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                          initialClassifications,
                                                          initialStatus);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -3211,7 +3211,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                          initialClassifications,
                                                          initialStatus);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -3609,7 +3609,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityUpdate(userId, metadataCollectionName, currentEntity);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -3674,7 +3674,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityUpdate(userId, metadataCollectionName, currentEntity);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -3735,7 +3735,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityUpdate(userId, metadataCollectionName, currentEntity);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -3824,7 +3824,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityDelete(userId, metadataCollectionName, currentEntity);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -3915,7 +3915,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 securityVerifier.validateUserForEntityDelete(userId, metadataCollectionName, entity);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -3991,7 +3991,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityRestore(userId, metadataCollectionName, deletedEntityGUID);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4083,7 +4083,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     classificationName,
                                                                     classificationProperties);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4179,7 +4179,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     classificationName,
                                                                     classificationProperties);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4283,7 +4283,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     classificationName,
                                                                     classificationProperties);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4391,7 +4391,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     classificationName,
                                                                     classificationProperties);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4482,7 +4482,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                        currentEntity,
                                                                        classificationName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4559,7 +4559,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                        entityProxy,
                                                                        classificationName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4647,7 +4647,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                        classificationName,
                                                                        properties);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4736,7 +4736,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                        classificationName,
                                                                        properties);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4847,7 +4847,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                end2,
                                                                initialStatus);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -4960,7 +4960,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                end2,
                                                                initialStatus);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5046,7 +5046,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                metadataCollectionName,
                                                                currentRelationship);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5115,7 +5115,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                metadataCollectionName,
                                                                currentRelationship);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5203,7 +5203,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                metadataCollectionName,
                                                                currentRelationship);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5292,7 +5292,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                metadataCollectionName,
                                                                currentRelationship);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5395,7 +5395,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                    metadataCollectionName,
                                                                    relationship);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -5473,7 +5473,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                 metadataCollectionName,
                                                                 deletedRelationshipGUID);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5567,7 +5567,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityReIdentification(userId, metadataCollectionName, currentEntity, newEntityGUID);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5664,7 +5664,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForEntityReTyping(userId, metadataCollectionName, currentEntity, newTypeDefSummary);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -5784,7 +5784,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                newHomeMetadataCollectionId,
                                                                newHomeMetadataCollectionName);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -5907,7 +5907,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForRelationshipReIdentification(userId, metadataCollectionName, currentRelationship, newRelationshipGUID);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -6004,7 +6004,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             securityVerifier.validateUserForRelationshipReTyping(userId, metadataCollectionName, currentRelationship, newTypeDefSummary);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -6123,7 +6123,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                      newHomeMetadataCollectionId,
                                                                      newHomeMetadataCollectionName);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -6241,7 +6241,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     realMetadataCollection.saveEntityReferenceCopy(userId, entity);
                 }
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException notAuth)
             {
                 throw new UserNotAuthorizedException(notAuth);
             }
@@ -6930,7 +6930,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
                 }
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+            catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException notAuth)
             {
                 throw new UserNotAuthorizedException(notAuth);
             }
@@ -7232,7 +7232,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                             validatedEntities.add(entity);
                         }
                     }
-                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+                    catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException notAuth)
                     {
                         // ignore
                     }
@@ -7261,7 +7261,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                             validatedRelationships.add(relationship);
                         }
                     }
-                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+                    catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException notAuth)
                     {
                         // ignore
                     }

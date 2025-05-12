@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.frameworkservices.omf.rest.OMAGOMFAPIResponse;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.CommentElement;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentResponse extends OMAGGAFAPIResponse
+public class CommentResponse extends OMAGOMFAPIResponse
 {
     private CommentElement element = null;
 

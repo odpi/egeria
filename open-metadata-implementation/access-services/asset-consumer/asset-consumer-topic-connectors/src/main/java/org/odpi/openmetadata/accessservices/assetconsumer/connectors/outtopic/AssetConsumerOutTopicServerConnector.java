@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerOu
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicSenderConnectorBase;
 
 import java.util.concurrent.CompletionException;

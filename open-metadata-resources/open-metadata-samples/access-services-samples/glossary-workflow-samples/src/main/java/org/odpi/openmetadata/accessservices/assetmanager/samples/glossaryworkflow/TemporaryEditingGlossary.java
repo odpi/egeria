@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.samples.glossaryworkflow;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
