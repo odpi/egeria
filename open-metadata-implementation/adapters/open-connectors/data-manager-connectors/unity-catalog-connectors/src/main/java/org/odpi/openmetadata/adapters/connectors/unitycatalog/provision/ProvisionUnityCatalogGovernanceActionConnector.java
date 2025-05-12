@@ -11,14 +11,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
@@ -452,7 +452,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
     private String getCatalogAnchorGUID(String serverNetworkAddress,
                                         String catalogName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        return governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType() + ":" + serverNetworkAddress + ":" + catalogName,
+        return governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType() + "::" + serverNetworkAddress + "::" + catalogName,
                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name);
     }
 
@@ -472,7 +472,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
                                        String catalogName,
                                        String schemaName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        return governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType() + ":" + serverNetworkAddress + ":" + catalogName + "." + schemaName,
+        return governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType() + "::" + serverNetworkAddress + "::" + catalogName + "." + schemaName,
                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name);
     }
 

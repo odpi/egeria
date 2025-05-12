@@ -26,6 +26,7 @@ public class DataFieldElement extends AttributedMetadataElement
     private List<MemberDataField>               nestedDataFields    = null;
     private List<RelatedMetadataElementSummary> assignedDataClasses = null;
     private List<RelatedMetadataElementSummary> assignedMeanings    = null;
+    private String                              mermaidGraph        = null;
 
 
     /**
@@ -48,10 +49,11 @@ public class DataFieldElement extends AttributedMetadataElement
 
         if (template != null)
         {
-            properties = template.getProperties();
+            properties          = template.getProperties();
             nestedDataFields    = template.getNestedDataFields();
             assignedDataClasses = template.getAssignedDataClasses();
             assignedMeanings    = template.getAssignedMeanings();
+            mermaidGraph        = template.getMermaidGraph();
         }
     }
 
@@ -145,6 +147,28 @@ public class DataFieldElement extends AttributedMetadataElement
 
 
     /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -157,6 +181,7 @@ public class DataFieldElement extends AttributedMetadataElement
                 ", nestedDataFields=" + nestedDataFields +
                 ", assignedDataClasses=" + assignedDataClasses +
                 ", assignedMeanings=" + assignedMeanings +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -177,7 +202,8 @@ public class DataFieldElement extends AttributedMetadataElement
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(nestedDataFields, that.nestedDataFields) &&
                 Objects.equals(assignedDataClasses, that.assignedDataClasses) &&
-                Objects.equals(assignedMeanings, that.assignedMeanings);
+                Objects.equals(assignedMeanings, that.assignedMeanings) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -189,6 +215,6 @@ public class DataFieldElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses, assignedMeanings);
+        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses, assignedMeanings, mermaidGraph);
     }
 }

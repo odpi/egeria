@@ -4,6 +4,9 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 /**
  * CommunityProfileEventInterface defines how a client gets access to the events produced by the Community Profile OMAS.

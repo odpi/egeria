@@ -15,9 +15,9 @@ import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZ
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.http.HttpHelper;

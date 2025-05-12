@@ -7,9 +7,9 @@ import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlers
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeAction;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.SupplementaryPropertiesValidValues;
@@ -7793,6 +7793,267 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                             {
                                 log.debug("Accepting relationship: " + relationship.getGUID());
                                 results.add(relationship);
+                            }
+                            else
+                            {
+                                log.debug("Ignoring relationship as other end is not authorized: " + relationship.getGUID());
+                            }
+                        }
+                        else
+                        {
+                            log.debug("Ignoring relationship based on entity instance: " + relationship.getGUID());
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignoring relationship based on type of attachment: " + relationship.getGUID());
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Return all relationships attached to a specific entity.
+     *
+     * @param userId     calling user
+     * @param startingEntity the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of the parameter used to pass the guid
+     * @param startingTypeName type name for anchor
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage is this a lineage request
+     * @param forDuplicateProcessing is this processing part of duplicate processing?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved relationships or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<RelatedEntity> getAllRelatedEntities(String               userId,
+                                                     EntityDetail         startingEntity,
+                                                     String               startingGUIDParameterName,
+                                                     String               startingTypeName,
+                                                     List<InstanceStatus> limitResultsByStatus,
+                                                     Date                 asOfTime,
+                                                     SequencingOrder      sequencingOrder,
+                                                     String               sequencingProperty,
+                                                     boolean              forLineage,
+                                                     boolean              forDuplicateProcessing,
+                                                     Date                 effectiveTime,
+                                                     String               methodName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        int startFrom = 0;
+
+        List<RelatedEntity> relatedEntities = this.getRelatedEntities(userId,
+                                                                      startingEntity,
+                                                                      startingGUIDParameterName,
+                                                                      startingTypeName,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      0,
+                                                                      limitResultsByStatus,
+                                                                      asOfTime,
+                                                                      sequencingOrder,
+                                                                      sequencingProperty,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      supportedZones,
+                                                                      startFrom,
+                                                                      invalidParameterHandler.getMaxPagingSize(),
+                                                                      effectiveTime,
+                                                                      methodName);
+
+        if (relatedEntities != null)
+        {
+            List<RelatedEntity> fullRelatedEntityList = new ArrayList<>();
+
+            while (relatedEntities != null)
+            {
+                /*
+                 * Save the retrieved relationships.
+                 */
+                fullRelatedEntityList.addAll(relatedEntities);
+
+                /*
+                 * Get the next set of relationships.
+                 */
+                startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+
+                relatedEntities = this.getRelatedEntities(userId,
+                                                          startingEntity,
+                                                          startingGUIDParameterName,
+                                                          startingTypeName,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          0,
+                                                          limitResultsByStatus,
+                                                          asOfTime,
+                                                          sequencingOrder,
+                                                          sequencingProperty,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          supportedZones,
+                                                          startFrom,
+                                                          invalidParameterHandler.getMaxPagingSize(),
+                                                          effectiveTime,
+                                                          methodName);
+            }
+
+            return fullRelatedEntityList;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the relationships to required elements attached to a specific entity.  Note that the entities are not checked.
+     *
+     * @param userId     calling user
+     * @param startingEntity  the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of the parameter used to pass the guid
+     * @param startingTypeName type name for anchor
+     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
+     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
+     * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage is this a lineage request
+     * @param forDuplicateProcessing is this processing part of duplicate processing?
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved relationships or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<RelatedEntity> getRelatedEntities(String               userId,
+                                                  EntityDetail         startingEntity,
+                                                  String               startingGUIDParameterName,
+                                                  String               startingTypeName,
+                                                  String               attachmentRelationshipTypeGUID,
+                                                  String               attachmentRelationshipTypeName,
+                                                  String               attachmentEntityGUID,
+                                                  String               attachmentEntityTypeName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  List<String>         serviceSupportedZones,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(startingEntity, startingGUIDParameterName, methodName);
+
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+
+        List<Relationship> retrievedRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                             startingEntity,
+                                                                                             startingTypeName,
+                                                                                             attachmentRelationshipTypeGUID,
+                                                                                             attachmentRelationshipTypeName,
+                                                                                             attachmentEntityEnd,
+                                                                                             limitResultsByStatus,
+                                                                                             asOfTime,
+                                                                                             sequencingOrder,
+                                                                                             sequencingProperty,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             startingFrom,
+                                                                                             queryPageSize,
+                                                                                             effectiveTime,
+                                                                                             methodName);
+
+        if (retrievedRelationships == null)
+        {
+            return null;
+        }
+
+        /*
+         * Retrieve all of the entities linked to the relationships.  This is done as a single retrieve
+         * to minimise the calls to the repositories.  It also performs security checks
+         */
+        Map<String, EntityDetail> retrievedEntities = this.getValidatedEntities(userId,
+                                                                                startingEntity.getGUID(),
+                                                                                startingEntity.getType().getTypeDefName(),
+                                                                                retrievedRelationships,
+                                                                                attachmentEntityTypeName,
+                                                                                null,
+                                                                                null,
+                                                                                0,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                serviceSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
+
+        List<RelatedEntity> results = new ArrayList<>();
+
+        if (retrievedEntities != null)
+        {
+            retrievedEntities.put(startingEntity.getGUID(), startingEntity);
+
+            /*
+             * Only return relationships that link to approved entities.
+             */
+            for (Relationship relationship : retrievedRelationships)
+            {
+                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+                {
+                    EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), startingTypeName, relationship, attachmentEntityEnd, methodName);
+
+                    /*
+                     * Does the relationship point to an appropriate type of entity?
+                     */
+                    if (repositoryHelper.isTypeOf(serviceName, otherEnd.getType().getTypeDefName(), attachmentEntityTypeName))
+                    {
+                        if ((attachmentEntityGUID == null) || (attachmentEntityGUID.equals(otherEnd.getGUID())))
+                        {
+                            /*
+                             * Only return the relationship if the entity is visible to the caller.
+                             */
+                            EntityDetail retrievedEntity = retrievedEntities.get(otherEnd.getGUID());
+
+                            if (retrievedEntity != null)
+                            {
+                                log.debug("Accepting relationship: " + relationship.getGUID());
+                                results.add(new RelatedEntity(relationship, retrievedEntity));
                             }
                             else
                             {

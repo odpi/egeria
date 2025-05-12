@@ -187,6 +187,6 @@ public class DataStructureElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType,mermaidGraph);
+        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType, mermaidGraph);
     }
 }

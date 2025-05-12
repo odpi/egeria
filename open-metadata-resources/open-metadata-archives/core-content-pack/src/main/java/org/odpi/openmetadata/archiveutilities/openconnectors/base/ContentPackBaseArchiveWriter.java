@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.M
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
@@ -92,7 +92,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     {
         final String methodName = "createDataFileCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType()  + ":" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType()  + "::" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + "::" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -411,7 +411,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         if (softwareCapabilityType != null)
         {
             archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
-                                                qualifiedName + ":" + softwareCapabilityName,
+                                                qualifiedName + "::" + softwareCapabilityName,
                                                 softwareCapabilityName,
                                                 null,
                                                 softwareCapabilityType.getDeployedImplementationType(),
@@ -426,7 +426,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                 OpenMetadataType.ASSET.typeName,
                                                 null);
 
-            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + "::" + softwareCapabilityName,
                                                                      qualifiedName,
                                                                      null,
                                                                      null,
@@ -599,7 +599,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     {
         final String methodName = "createEndpointCatalogTemplate";
 
-        String         qualifiedName            = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        String         qualifiedName            = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
         Classification templateClassification   = archiveHelper.getTemplateClassification(templateName,
                                                                                           templateDescription,
                                                                                           templateVersion,
@@ -655,7 +655,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     {
         final String methodName = "createHostCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.HOST_URL.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + PlaceholderProperty.HOST_URL.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -683,7 +683,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         if (softwareCapabilityType != null)
         {
             archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
-                                                qualifiedName + ":" + softwareCapabilityName,
+                                                qualifiedName + "::" + softwareCapabilityName,
                                                 softwareCapabilityName,
                                                 null,
                                                 softwareCapabilityType.getDeployedImplementationType(),
@@ -698,7 +698,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                 OpenMetadataType.ASSET.typeName,
                                                 null);
 
-            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + "::" + softwareCapabilityName,
                                                                      qualifiedName,
                                                                      null,
                                                                      null,
@@ -746,7 +746,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     {
         final String methodName = "createSoftwareCapabilityCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getAssociatedTypeName() + ":" +deployedImplementationType.getDeployedImplementationType() + ":" + serverQualifiedName + ":" + softwareCapabilityName;
+        String               qualifiedName      = deployedImplementationType.getAssociatedTypeName() + "::" + deployedImplementationType.getDeployedImplementationType() + "::" + serverQualifiedName + "::" + softwareCapabilityName;
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1357,7 +1357,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                            String                      governanceActionTypeGUID,
                                            String                      supportedElementQualifiedName)
     {
-        String governanceActionTypeQualifiedName = governanceEngineName + ":" + governanceRequestType;
+        String governanceActionTypeQualifiedName = governanceEngineName + "::" + governanceRequestType;
 
         archiveHelper.setGUID(governanceActionTypeQualifiedName, governanceActionTypeGUID);
 
@@ -1366,7 +1366,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             governanceEngineTypeName,
                                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                             null,
-                                                            governanceEngineName + ":" + governanceRequestType,
+                                                            governanceEngineName + "::" + governanceRequestType,
                                                             governanceRequestType + " (" + governanceEngineName + ")",
                                                             governanceActionDescription.governanceServiceDescription,
                                                             0,

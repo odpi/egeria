@@ -7,10 +7,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Connec
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;

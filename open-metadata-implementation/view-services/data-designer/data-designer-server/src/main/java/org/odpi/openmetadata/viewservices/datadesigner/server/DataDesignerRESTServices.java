@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -267,11 +267,10 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
-
                 handler.linkMemberDataField(userId,
                                             requestBody.getExternalSourceGUID(),
                                             requestBody.getExternalSourceName(),
@@ -284,7 +283,15 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkMemberDataField(userId,
+                                            null,
+                                            null,
+                                            parentDataStructureGUID,
+                                            nestedDataFieldGUID,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date());
             }
         }
         catch (Throwable error)
@@ -562,7 +569,7 @@ public class DataDesignerRESTServices extends TokenController
                                                                 null,
                                                                 startFrom,
                                                                 pageSize,
-                                                                true,
+                                                                false,
                                                                 false,
                                                                 new Date()));
             }
@@ -624,7 +631,7 @@ public class DataDesignerRESTServices extends TokenController
                 response.setElement(handler.getDataStructureByGUID(userId,
                                                                    dataStructureGUID,
                                                                    null,
-                                                                   true,
+                                                                   false,
                                                                    false,
                                                                    new Date()));
             }
@@ -867,11 +874,10 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
-
                 handler.linkNestedDataFields(userId,
                                              requestBody.getExternalSourceGUID(),
                                              requestBody.getExternalSourceName(),
@@ -884,7 +890,15 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkNestedDataFields(userId,
+                                             null,
+                                             null,
+                                             parentDataFieldGUID,
+                                             nestedDataFieldGUID,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date());
             }
         }
         catch (Throwable error)
@@ -1162,7 +1176,7 @@ public class DataDesignerRESTServices extends TokenController
                                                             null,
                                                             startFrom,
                                                             pageSize,
-                                                            true,
+                                                            false,
                                                             false,
                                                             new Date()));
             }
@@ -1224,7 +1238,7 @@ public class DataDesignerRESTServices extends TokenController
                 response.setElement(handler.getDataFieldByGUID(userId,
                                                                dataFieldGUID,
                                                                null,
-                                                               true,
+                                                               false,
                                                                false,
                                                                new Date()));
             }
@@ -1467,11 +1481,10 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
-
                 handler.linkNestedDataClass(userId,
                                             requestBody.getExternalSourceGUID(),
                                             requestBody.getExternalSourceName(),
@@ -1483,7 +1496,14 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkNestedDataClass(userId,
+                                            null,
+                                            null,
+                                            parentDataClassGUID,
+                                            childDataClassGUID,
+                                            false,
+                                            false,
+                                            new Date());
             }
         }
         catch (Throwable error)
@@ -1596,11 +1616,10 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
-
                 handler.linkSpecialistDataClass(userId,
                                                 requestBody.getExternalSourceGUID(),
                                                 requestBody.getExternalSourceName(),
@@ -1612,7 +1631,14 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkSpecialistDataClass(userId,
+                                                null,
+                                                null,
+                                                parentDataClassGUID,
+                                                childDataClassGUID,
+                                                false,
+                                                false,
+                                                new Date());
             }
         }
         catch (Throwable error)
@@ -1890,7 +1916,7 @@ public class DataDesignerRESTServices extends TokenController
                                                              null,
                                                              startFrom,
                                                              pageSize,
-                                                             true,
+                                                             false,
                                                              false,
                                                              new Date()));
             }
@@ -1952,7 +1978,7 @@ public class DataDesignerRESTServices extends TokenController
                 response.setElement(handler.getDataClassByGUID(userId,
                                                                dataClassGUID,
                                                                null,
-                                                               true,
+                                                               false,
                                                                false,
                                                                new Date()));
             }
@@ -2132,10 +2158,10 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
                 handler.linkSemanticDefinition(userId,
                                                requestBody.getExternalSourceGUID(),
@@ -2148,7 +2174,14 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkSemanticDefinition(userId,
+                                               null,
+                                               null,
+                                               dataDefinitionGUID,
+                                               glossaryTermGUID,
+                                               false,
+                                               false,
+                                               new Date());
             }
         }
         catch (Throwable error)
@@ -2265,11 +2298,10 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
-
                 handler.linkCertificationTypeToDataStructure(userId,
                                                              requestBody.getExternalSourceGUID(),
                                                              requestBody.getExternalSourceName(),
@@ -2281,7 +2313,14 @@ public class DataDesignerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.linkCertificationTypeToDataStructure(userId,
+                                                             null,
+                                                             null,
+                                                             certificationTypeGUID,
+                                                             dataStructureGUID,
+                                                             false,
+                                                             false,
+                                                             new Date());
             }
         }
         catch (Throwable error)

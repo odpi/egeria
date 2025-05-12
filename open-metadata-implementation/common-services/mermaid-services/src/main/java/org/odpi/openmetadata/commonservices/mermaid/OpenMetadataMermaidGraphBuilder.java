@@ -3,11 +3,11 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementGraph;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;

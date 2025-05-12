@@ -4,7 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 
 import java.util.List;
 import java.util.Objects;

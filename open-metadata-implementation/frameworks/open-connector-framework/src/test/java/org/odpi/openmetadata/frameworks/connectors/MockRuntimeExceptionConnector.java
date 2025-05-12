@@ -5,6 +5,9 @@ package org.odpi.openmetadata.frameworks.connectors;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -70,7 +73,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
     public void initialize(String               connectorInstanceId,
                            ConnectionDetails connectionDetails)
     {
-        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
+        throw new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                       this.getClass().getName(),
                                       "getCachedList");
     }

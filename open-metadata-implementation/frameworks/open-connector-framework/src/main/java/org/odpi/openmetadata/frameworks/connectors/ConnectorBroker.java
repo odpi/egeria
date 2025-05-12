@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollecti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeDetails;
 import org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionDetails;
@@ -517,7 +517,7 @@ public class ConnectorBroker
             /*
              * Build and throw exception.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NULL_CONNECTOR.getMessageDefinition(requestedConnectorType.getConnectorProviderClassName(),
+            throw new OMFRuntimeException(OCFErrorCode.NULL_CONNECTOR.getMessageDefinition(requestedConnectorType.getConnectorProviderClassName(),
                                                                                            connection.getConnectionName()),
                                           this.getClass().getName(),
                                           methodName);

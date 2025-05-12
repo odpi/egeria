@@ -6,12 +6,12 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifier
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;

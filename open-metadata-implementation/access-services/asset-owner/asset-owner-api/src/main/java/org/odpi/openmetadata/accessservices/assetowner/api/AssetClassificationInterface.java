@@ -7,9 +7,9 @@ package org.odpi.openmetadata.accessservices.assetowner.api;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.RetentionClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 import java.util.Map;

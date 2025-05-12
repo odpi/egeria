@@ -370,7 +370,7 @@ public class SimpleCatalogArchiveHelper
             {
                 if (keyword != null)
                 {
-                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword);
+                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
                     InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
@@ -383,7 +383,7 @@ public class SimpleCatalogArchiveHelper
                     if (keywordEntity == null)
                     {
                         keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD.typeName,
-                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword),
+                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword),
                                                                        keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
@@ -531,7 +531,7 @@ public class SimpleCatalogArchiveHelper
             {
                 if (keyword != null)
                 {
-                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword);
+                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
                     InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
@@ -544,7 +544,7 @@ public class SimpleCatalogArchiveHelper
                     if (keywordEntity == null)
                     {
                         keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD.typeName,
-                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword),
+                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword),
                                                                        keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
@@ -4160,20 +4160,32 @@ public class SimpleCatalogArchiveHelper
      * Create the relationship between a SchemaType element and a child SchemaAttribute element using the AttributeForSchema relationship.
      *
      * @param schemaTypeGUID unique identifier of the parent element
+     * @param position position in the schema at this level
+     * @param minCardinality minimum number of instances in the schema at this level
+     * @param maxCardinality maximum number of instances in the schema at this level
      * @param schemaAttributeGUID unique identifier of the child element
      */
     public void addAttributeForSchemaType(String schemaTypeGUID,
+                                          int    position,
+                                          int    minCardinality,
+                                          int    maxCardinality,
                                           String schemaAttributeGUID)
     {
+        final String methodName = "addAttributeForSchemaType";
+
         EntityDetail schemaTypeChoiceEntity = archiveBuilder.getEntity(schemaTypeGUID);
         EntityDetail schemaTypeOptionEntity = archiveBuilder.getEntity(schemaAttributeGUID);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(schemaTypeChoiceEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(schemaTypeOptionEntity);
 
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(schemaTypeGUID + "_to_" + schemaAttributeGUID + "_attribute_for_schema_relationship"),
-                                                                     null,
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -4184,20 +4196,32 @@ public class SimpleCatalogArchiveHelper
      * Create the relationship between a SchemaAttribute element and a child SchemaAttribute element using the NestedSchemaAttribute relationship.
      *
      * @param parentSchemaAttributeGUID unique identifier of the parent element
+     * @param position position in the schema at this level
+     * @param minCardinality minimum number of instances in the schema at this level
+     * @param maxCardinality maximum number of instances in the schema at this level
      * @param childSchemaAttributeGUID unique identifier of the child element
      */
     public void addNestedSchemaAttribute(String parentSchemaAttributeGUID,
+                                         int    position,
+                                         int    minCardinality,
+                                         int    maxCardinality,
                                          String childSchemaAttributeGUID)
     {
+        final String methodName = "addNestedSchemaAttribute";
+
         EntityDetail parentSchemaAttributeEntity = archiveBuilder.getEntity(parentSchemaAttributeGUID);
         EntityDetail childSchemaAttributeEntity = archiveBuilder.getEntity(childSchemaAttributeGUID);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(parentSchemaAttributeEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(childSchemaAttributeEntity);
 
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(parentSchemaAttributeGUID + "_to_" + childSchemaAttributeGUID + "_nested_schema_attribute_relationship"),
-                                                                     null,
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -4216,7 +4240,6 @@ public class SimpleCatalogArchiveHelper
      * @param description description about the schema attribute
      * @param dataType data type for the schema attribute
      * @param length length of the storage used by the schema attribute
-     * @param position position in the schema at this level
      * @param encodingStandard encoding standard
      * @param additionalProperties any other properties.
      *
@@ -4231,7 +4254,6 @@ public class SimpleCatalogArchiveHelper
                                      String              description,
                                      String              dataType,
                                      int                 length,
-                                     int                 position,
                                      String              encodingStandard,
                                      Map<String, String> additionalProperties)
     {
@@ -4255,7 +4277,6 @@ public class SimpleCatalogArchiveHelper
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.LENGTH.name, length, methodName);
-        entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.POSITION.name, position, methodName);
         entityProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.SCHEMA_TYPE_NAME.name, schemaTypeTypeName, methodName);

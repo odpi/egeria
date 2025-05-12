@@ -11,16 +11,18 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.TemplateRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
+import org.odpi.openmetadata.frameworkservices.omf.rest.UpdateMetadataCorrelatorsRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
@@ -438,7 +440,7 @@ public class AutomatedCurationRESTServices extends TokenController
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
-        AuditLog                     auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {

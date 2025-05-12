@@ -67,5 +67,9 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                 }
             }
         }
+        else
+        {
+            super.clearGraph();
+        }
     }
 }

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.metadatahighway.cohortregistry;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor;
@@ -575,7 +575,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                        remoteMetadataCollectionName,
                                                        remoteRepositoryConnection);
             }
-            catch (OCFCheckedExceptionBase error)
+            catch (OMFCheckedExceptionBase error)
             {
                 auditLog.logMessage(actionDescription,
                                     OMRSAuditCode.OUTGOING_BAD_CONNECTION.getMessageDefinition(cohortName,

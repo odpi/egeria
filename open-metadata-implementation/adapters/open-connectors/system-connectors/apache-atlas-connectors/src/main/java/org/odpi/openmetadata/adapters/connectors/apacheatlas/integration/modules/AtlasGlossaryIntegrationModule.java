@@ -5,11 +5,11 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.module
 
 
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryCategoryElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
@@ -25,9 +25,9 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;

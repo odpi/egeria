@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction;
 
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 
 /**
  * SurveyOpenMetadataStore provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)

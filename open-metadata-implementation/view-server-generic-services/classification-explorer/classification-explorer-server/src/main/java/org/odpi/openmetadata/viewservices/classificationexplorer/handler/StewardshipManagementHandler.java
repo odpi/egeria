@@ -7,14 +7,14 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.mermaid.OpenMetadataMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.MetadataElementSummaryConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.MetadataRelationshipSummaryConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.RelatedMetadataElementSummaryConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataElementSummaryConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.RelatedMetadataElementSummaryConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
@@ -430,8 +430,8 @@ public class StewardshipManagementHandler
                                                            String                  classificationName)
     {
         List<ClassificationCondition> classificationConditions = new ArrayList<>();
-        ClassificationCondition       classificationCondition  = new ClassificationCondition();
-        SearchProperties              searchProperties         = new SearchProperties();
+        ClassificationCondition classificationCondition = new ClassificationCondition();
+        SearchProperties        searchProperties        = new SearchProperties();
 
         searchProperties.setConditions(propertyConditions);
         searchProperties.setMatchCriteria(MatchCriteria.ALL);

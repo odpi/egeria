@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * OCFErrorCode, is to identify exactly what is wrong with the contents of the connection object
  * and the consequences of this error.
  */
-public class ConnectionCheckedException extends OCFCheckedExceptionBase
+public class ConnectionCheckedException extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;

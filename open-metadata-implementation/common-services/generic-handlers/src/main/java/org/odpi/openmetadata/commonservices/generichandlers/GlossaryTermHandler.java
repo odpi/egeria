@@ -5,9 +5,9 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -788,6 +788,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 forDuplicateProcessing,
                                                 effectiveTime,
                                                 methodName);
+
+        // todo check that the anchor classification is correctly reestablished by linkElementToElement.
+        // in particular, the anchorScopeGUID must be set up to the new glossary.
 
         /*
          * This will set up the correct anchor
@@ -1775,7 +1778,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                     {
                         if (glossaryGUID == null)
                         {
-                            results.add(converter.getNewBean(beanClass, entity, methodName));
+                            results.add(this.getGlossaryTermBean(userId, entity, null, forLineage, forDuplicateProcessing, effectiveTime));
                         }
                         else
                         {
@@ -1783,7 +1786,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
                             if (glossaryGUID.equals(anchorIdentifiers.anchorScopeGUID))
                             {
-                                results.add(converter.getNewBean(beanClass, entity, methodName));
+                                results.add(this.getGlossaryTermBean(userId, entity, null, forLineage, forDuplicateProcessing, effectiveTime));
                             }
                         }
                     }
@@ -1890,14 +1893,18 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                   PropertyServerException,
                                                   UserNotAuthorizedException
     {
-        return this.getBeanFromRepository(userId,
-                                          guid,
-                                          guidParameter,
-                                          OpenMetadataType.GLOSSARY_TERM.typeName,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          effectiveTime,
-                                          methodName);
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           guid,
+                                                           guidParameter,
+                                                           OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                           null,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
+                                                           methodName);
+
+        return this.getGlossaryTermBean(userId, entity, null, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -1975,19 +1982,154 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                                              effectiveTime,
                                                                                              methodName);
 
+        return this.getGlossaryTermBeans(userId, termEntities, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Convert the returned glossary term entities into a list of glossary term elements.
+     *
+     * @param userId calling user
+     * @param termEntities list of entities returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of glossary term elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<B> getGlossaryTermBeans(String             userId,
+                                         List<EntityDetail> termEntities,
+                                         boolean            forLineage,
+                                         boolean            forDuplicateProcessing,
+                                         Date               effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
         if (termEntities != null)
         {
             List<B> results = new ArrayList<>();
 
             for (EntityDetail termEntity : termEntities)
             {
-                if (termEntity != null)
+                results.add(getGlossaryTermBean(userId,
+                                                    termEntity,
+                                                    null,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime));
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the returned glossary term entities into a list of glossary term elements.
+     *
+     * @param userId calling user
+     * @param relatedTerms list of entities returned
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of glossary term elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<B> getGlossaryTermBeans(String              userId,
+                                         List<RelatedEntity> relatedTerms,
+                                         List<Integer>       limitResultsByStatus,
+                                         boolean             forLineage,
+                                         boolean             forDuplicateProcessing,
+                                         Date                effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName = "getGlossaryTermBeans";
+
+        if (relatedTerms != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (RelatedEntity relatedTerm : relatedTerms)
+            {
+                if ((relatedTerm != null) && (relatedTerm.relationship() != null) && (relatedTerm.entityDetail() != null))
                 {
-                    results.add(converter.getNewBean(beanClass, termEntity, methodName));
+                    if ((limitResultsByStatus != null) && (!limitResultsByStatus.isEmpty()))
+                    {
+                        Integer relationshipOrdinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                                              OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                                                                              relatedTerm.relationship().getProperties(),
+                                                                                              methodName);
+
+                        if (limitResultsByStatus.contains(relationshipOrdinal))
+                        {
+                            results.add(this.getGlossaryTermBean(userId, relatedTerm.entityDetail(), relatedTerm.relationship(), forLineage, forDuplicateProcessing, effectiveTime));
+                        }
+                    }
+                    else
+                    {
+                        results.add(this.getGlossaryTermBean(userId, relatedTerm.entityDetail(), relatedTerm.relationship(), forLineage, forDuplicateProcessing, effectiveTime));
+                    }
                 }
             }
 
             return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the returned glossary term entity into an element.
+     *
+     * @param userId calling user
+     * @param termEntity entity returned
+     * @param relatedByRelationship optional relationship used to find entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of glossary term elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private B getGlossaryTermBean(String       userId,
+                                  EntityDetail termEntity,
+                                  Relationship relatedByRelationship,
+                                  boolean      forLineage,
+                                  boolean      forDuplicateProcessing,
+                                  Date         effectiveTime) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        final String methodName = "getGlossaryTermBeans";
+        final String startingGUIDParameterName = "termEntity.guid";
+
+        if (termEntity != null)
+        {
+            List<RelatedEntity> relatedEntities = this.getAllRelatedEntities(userId,
+                                                                             termEntity,
+                                                                             startingGUIDParameterName,
+                                                                             OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                             null,
+                                                                             null,
+                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                             null,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime,
+                                                                             methodName);
+
+            return converter.getNewComplexBean(beanClass, termEntity, relatedByRelationship, relatedEntities, methodName);
         }
 
         return null;
@@ -2028,64 +2170,48 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        if ((limitResultsByStatus == null) || (limitResultsByStatus.isEmpty()))
-        {
-            return this.getAttachedElements(userId,
-                                            glossaryCategoryGUID,
-                                            glossaryCategoryGUIDParameterName,
-                                            OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                            OpenMetadataType.TERM_CATEGORIZATION.typeGUID,
-                                            OpenMetadataType.TERM_CATEGORIZATION.typeName,
-                                            OpenMetadataType.GLOSSARY_TERM.typeName,
-                                            null,
-                                            null,
-                                            2,
-                                            null,
-                                            null,
-                                            SequencingOrder.CREATION_DATE_RECENT,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            startFrom,
-                                            pageSize,
-                                            effectiveTime,
-                                            methodName);
-        }
-        else
-        {
-            return this.getAttachedElements(userId,
-                                            glossaryCategoryGUID,
-                                            glossaryCategoryGUIDParameterName,
-                                            OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                            OpenMetadataType.TERM_CATEGORIZATION.typeGUID,
-                                            OpenMetadataType.TERM_CATEGORIZATION.typeName,
-                                            OpenMetadataType.GLOSSARY_TERM.typeName,
-                                            null,
-                                            null,
-                                            limitResultsByStatus,
-                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                            2,
-                                            null,
-                                            null,
-                                            SequencingOrder.CREATION_DATE_RECENT,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            supportedZones,
-                                            startFrom,
-                                            pageSize,
-                                            effectiveTime,
-                                            methodName);
-        }
+        EntityDetail categoryEntity = this.getEntityFromRepository(userId,
+                                                                   glossaryCategoryGUID,
+                                                                   glossaryCategoryGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        List<RelatedEntity> relatedTerms = this.getRelatedEntities(userId,
+                                                                   categoryEntity,
+                                                                   glossaryCategoryGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                   OpenMetadataType.TERM_CATEGORIZATION.typeGUID,
+                                                                   OpenMetadataType.TERM_CATEGORIZATION.typeName,
+                                                                   null,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   2,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        return this.getGlossaryTermBeans(userId, relatedTerms, limitResultsByStatus, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
     /**
-     * Retrieve the list of glossary terms associated with a glossary.
+     * Retrieve the list of glossary terms associated with a glossary term.
      *
      * @param userId calling user
-     * @param glossaryGUID unique identifier of the glossary of interest
-     * @param glossaryGUIDParameterName property supplying the glossaryGUID
+     * @param glossaryTermGUID unique identifier of the glossary of interest
+     * @param glossaryTermGUIDParameterName property supplying the glossaryTermGUID
      * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
@@ -2103,8 +2229,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<B>  getRelatedTerms(String        userId,
-                                    String        glossaryGUID,
-                                    String        glossaryGUIDParameterName,
+                                    String        glossaryTermGUID,
+                                    String        glossaryTermGUIDParameterName,
                                     String        relationshipTypeName,
                                     List<Integer> limitResultsByStatus,
                                     int           startFrom,
@@ -2127,55 +2253,39 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                             repositoryHelper);
         }
 
-        if ((limitResultsByStatus == null) || (limitResultsByStatus.isEmpty()))
-        {
-            return this.getAttachedElements(userId,
-                                            glossaryGUID,
-                                            glossaryGUIDParameterName,
-                                            OpenMetadataType.GLOSSARY_TERM.typeName,
-                                            relationshipTypeGUID,
-                                            relationshipTypeName,
-                                            OpenMetadataType.GLOSSARY_TERM.typeName,
-                                            null,
-                                            null,
-                                            0,
-                                            null,
-                                            null,
-                                            SequencingOrder.CREATION_DATE_RECENT,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            startFrom,
-                                            pageSize,
-                                            effectiveTime,
-                                            methodName);
-        }
-        else
-        {
-            return this.getAttachedElements(userId,
-                                            glossaryGUID,
-                                            glossaryGUIDParameterName,
-                                            OpenMetadataType.GLOSSARY_TERM.typeName,
-                                            relationshipTypeGUID,
-                                            relationshipTypeName,
-                                            OpenMetadataType.GLOSSARY_TERM.typeName,
-                                            null,
-                                            null,
-                                            limitResultsByStatus,
-                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                            0,
-                                            null,
-                                            null,
-                                            SequencingOrder.CREATION_DATE_RECENT,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            supportedZones,
-                                            startFrom,
-                                            pageSize,
-                                            effectiveTime,
-                                            methodName);
-        }
+        EntityDetail startingTermEntity = this.getEntityFromRepository(userId,
+                                                                       glossaryTermGUID,
+                                                                       glossaryTermGUIDParameterName,
+                                                                       OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                       null,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
+
+        List<RelatedEntity> relatedTerms = this.getRelatedEntities(userId,
+                                                                   startingTermEntity,
+                                                                   glossaryTermGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   relationshipTypeGUID,
+                                                                   relationshipTypeName,
+                                                                   null,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        return this.getGlossaryTermBeans(userId, relatedTerms, limitResultsByStatus, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -2212,29 +2322,38 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        elementGUID,
-                                        elementGUIDParameterName,
-                                        elementTypeName,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeGUID,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
-                                        OpenMetadataType.GLOSSARY_TERM.typeName,
-                                        (String)null,
-                                        null,
-                                        0,
-                                        null,
-                                        null,
-                                        SequencingOrder.CREATION_DATE_RECENT,
-                                        null,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        serviceSupportedZones,
-                                        startingFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
-    }
+        EntityDetail startingEntity = this.getEntityFromRepository(userId,
+                                                                       elementGUID,
+                                                                       elementGUIDParameterName,
+                                                                       elementTypeName,
+                                                                       null,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
 
+        List<RelatedEntity> relatedTerms = this.getRelatedEntities(userId,
+                                                                   startingEntity,
+                                                                   elementGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeGUID,
+                                                                   OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                   null,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   serviceSupportedZones,
+                                                                   startingFrom,
+                                                                   pageSize,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        return this.getGlossaryTermBeans(userId, relatedTerms, null, forLineage, forDuplicateProcessing, effectiveTime);
+    }
 }

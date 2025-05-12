@@ -11,12 +11,11 @@ import org.odpi.openmetadata.commonservices.mermaid.SolutionBlueprintMermaidGrap
 import org.odpi.openmetadata.commonservices.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.mermaid.SolutionRoleMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
@@ -26,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsuppl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainSegmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -185,7 +185,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                InformationSupplyChainProperties properties,
                                                String                           parentGUID,
                                                String                           parentRelationshipTypeName,
-                                               ElementProperties                parentRelationshipProperties,
+                                               ElementProperties parentRelationshipProperties,
                                                boolean                          parentAtEnd1,
                                                boolean                          forLineage,
                                                boolean                          forDuplicateProcessing,
@@ -1508,9 +1508,9 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                 lineageRelationships = new ArrayList<>();
                 startFrom = 0;
 
-                SearchProperties searchProperties = new SearchProperties();
+                SearchProperties        searchProperties   = new SearchProperties();
                 List<PropertyCondition> propertyConditions = new ArrayList<>();
-                PropertyCondition       propertyCondition = new PropertyCondition();
+                PropertyCondition       propertyCondition  = new PropertyCondition();
 
                 propertyCondition.setProperty(OpenMetadataProperty.ISC_QUALIFIED_NAME.name);
 
@@ -1721,7 +1721,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     {
         try
         {
-            OpenMetadataConverterBase<ElementStub> wireConverter = new OpenMetadataConverterBase<>(propertyHelper, serviceName, serverName);
+            OpenMetadataConverterBase<ElementStub> wireConverter                    = new OpenMetadataConverterBase<>(propertyHelper, serviceName, serverName);
             List<SolutionLinkingWireRelationship>  solutionLinkingWireRelationships = new ArrayList<>();
 
             ElementStub solutionComponentStub = wireConverter.getElementStub(ElementStub.class, solutionComponent, methodName);
@@ -1998,8 +1998,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                 invalidParameterHandler.getMaxPagingSize());
             }
 
-            SolutionBlueprintConverter<SolutionBlueprintElement> converter = new SolutionBlueprintConverter<>(propertyHelper, serviceName, serverName, solutionBlueprintComponents);
-            SolutionBlueprintElement solutionBlueprintElement =  converter.getNewBean(SolutionBlueprintElement.class, openMetadataElement, methodName);
+            SolutionBlueprintConverter<SolutionBlueprintElement> converter                = new SolutionBlueprintConverter<>(propertyHelper, serviceName, serverName, solutionBlueprintComponents);
+            SolutionBlueprintElement                             solutionBlueprintElement =  converter.getNewBean(SolutionBlueprintElement.class, openMetadataElement, methodName);
 
             if (solutionBlueprintElement != null)
             {
@@ -2225,7 +2225,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                 invalidParameterHandler.getMaxPagingSize());
             }
 
-            SolutionComponentConverter<SolutionComponentElement> converter = new SolutionComponentConverter<>(propertyHelper, serviceName, serverName,relatedSubComponentsElements, relatedPortElements);
+            SolutionComponentConverter<SolutionComponentElement> converter = new SolutionComponentConverter<>(propertyHelper, serviceName, serverName, relatedSubComponentsElements, relatedPortElements);
             SolutionComponentElement solutionComponentElement = converter.getNewComplexBean(SolutionComponentElement.class,
                                                                                             openMetadataElement,
                                                                                             relatedMetadataElements,

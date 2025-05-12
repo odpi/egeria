@@ -285,7 +285,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
 
                     OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
-                    assetConnector.setUCInstanceName(connectorName + ":" + requestedCatalogTarget.getCatalogTargetName());
+                    assetConnector.setUCInstanceName(connectorName + "::" + requestedCatalogTarget.getCatalogTargetName());
                     assetConnector.start();
 
                     String ucServerEndpoint = this.getNetworkAddress(assetConnector);

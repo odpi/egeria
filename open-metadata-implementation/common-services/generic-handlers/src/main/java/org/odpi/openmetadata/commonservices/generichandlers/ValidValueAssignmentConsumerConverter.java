@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueAssignmentConsumerElement;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

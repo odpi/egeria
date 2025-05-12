@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt.dataassets;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
@@ -15,7 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAtt
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;

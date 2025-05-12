@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.templatemanager.server.TemplateManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 

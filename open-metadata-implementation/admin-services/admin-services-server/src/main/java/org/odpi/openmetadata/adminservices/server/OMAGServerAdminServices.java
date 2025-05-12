@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
@@ -4758,7 +4759,7 @@ public class OMAGServerAdminServices
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
             response.setOMAGServerConfigs(configStore.retrieveAllServerConfigs(userId));
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }

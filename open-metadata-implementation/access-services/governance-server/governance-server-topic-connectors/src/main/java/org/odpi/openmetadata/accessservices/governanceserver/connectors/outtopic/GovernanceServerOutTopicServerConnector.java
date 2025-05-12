@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServ
 import org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServerEvent;
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicSenderConnectorBase;
 
 import java.util.concurrent.CompletionException;

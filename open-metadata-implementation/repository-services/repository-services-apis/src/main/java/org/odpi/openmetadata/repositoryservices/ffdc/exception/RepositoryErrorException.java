@@ -4,7 +4,7 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -136,7 +136,7 @@ public class RepositoryErrorException extends OMRSCheckedExceptionBase
      *
      * @param caughtException the exception/error that caused this exception to be raised
      */
-    public RepositoryErrorException(OCFCheckedExceptionBase caughtException)
+    public RepositoryErrorException(OMFCheckedExceptionBase caughtException)
     {
         super(caughtException.getReportedErrorMessage(), caughtException);
     }

@@ -10,16 +10,17 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -162,6 +163,7 @@ public class CollectionManagerRESTServices extends TokenController
      * Returns the list of collections matching the search string - this is coded as a regular expression.
      *
      * @param serverName name of the service to route the request to
+     * @param classificationName option name of a collection classification
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
      * @param ignoreCase should the search ignore case?
@@ -175,6 +177,7 @@ public class CollectionManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public CollectionsResponse findCollections(String            serverName,
+                                               String            classificationName,
                                                boolean           startsWith,
                                                boolean           endsWith,
                                                boolean           ignoreCase,
@@ -202,18 +205,32 @@ public class CollectionManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.findCollections(userId,
+                                                             classificationName,
                                                              instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                             requestBody.getLimitResultsByStatus(),
+                                                             requestBody.getAsOfTime(),
+                                                             requestBody.getSequencingOrder(),
+                                                             requestBody.getSequencingProperty(),
                                                              startFrom,
                                                              pageSize,
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
                                                              requestBody.getEffectiveTime()));
             }
             else
             {
                 response.setElements(handler.findCollections(userId,
+                                                             classificationName,
                                                              instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                             null,
                                                              startFrom,
                                                              pageSize,
-                                                             null));
+                                                             false,
+                                                             false,
+                                                             new Date()));
             }
         }
         catch (Throwable error)
@@ -231,6 +248,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @param serverName    name of called server
      * @param requestBody      name of the collections to return - match is full text match in qualifiedName or name
+     * @param classificationName option name of a collection classification
      * @param startFrom index of the list to start from (0 for start)
      * @param pageSize  maximum number of elements to return
      *
@@ -240,6 +258,7 @@ public class CollectionManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public CollectionsResponse getCollectionsByName(String            serverName,
+                                                    String            classificationName,
                                                     int               startFrom,
                                                     int               pageSize,
                                                     FilterRequestBody requestBody)
@@ -262,9 +281,16 @@ public class CollectionManagerRESTServices extends TokenController
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
             response.setElements(handler.getCollectionsByName(userId,
+                                                              classificationName,
                                                               requestBody.getFilter(),
+                                                              requestBody.getLimitResultsByStatus(),
+                                                              requestBody.getAsOfTime(),
+                                                              requestBody.getSequencingOrder(),
+                                                              requestBody.getSequencingProperty(),
                                                               startFrom,
                                                               pageSize,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
                                                               requestBody.getEffectiveTime()));
         }
         catch (Throwable error)
@@ -281,6 +307,7 @@ public class CollectionManagerRESTServices extends TokenController
      * Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.
      *
      * @param serverName         name of called server
+     * @param classificationName option name of a collection classification
      * @param requestBody the collection type value to match on.  If it is null, all collections with a null collectionType are returned
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return
@@ -291,6 +318,7 @@ public class CollectionManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public CollectionsResponse getCollectionsByType(String            serverName,
+                                                    String            classificationName,
                                                     int               startFrom,
                                                     int               pageSize,
                                                     FilterRequestBody requestBody)
@@ -315,6 +343,7 @@ public class CollectionManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getCollectionsByType(userId,
+                                                                  classificationName,
                                                                   requestBody.getFilter(),
                                                                   startFrom,
                                                                   pageSize));
@@ -322,6 +351,7 @@ public class CollectionManagerRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getCollectionsByType(userId,
+                                                                  classificationName,
                                                                   null,
                                                                   startFrom,
                                                                   pageSize));
@@ -342,14 +372,16 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @param serverName         name of called server
      * @param collectionGUID unique identifier of the required collection
+     * @param requestBody time values for the query
      *
      * @return collection properties
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionResponse getCollection(String serverName,
-                                            String collectionGUID)
+    public CollectionResponse getCollection(String             serverName,
+                                            String             collectionGUID,
+                                            AnyTimeRequestBody requestBody)
     {
         final String methodName = "getCollection";
 
@@ -368,7 +400,19 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElement(handler.getCollection(userId, collectionGUID));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getCollection(userId,
+                                                          collectionGUID,
+                                                          requestBody.getAsOfTime(),
+                                                          requestBody.getForLineage(),
+                                                          requestBody.getForDuplicateProcessing(),
+                                                          requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getCollection(userId, collectionGUID, null, false, false, new Date()));
+            }
         }
         catch (Throwable error)
         {

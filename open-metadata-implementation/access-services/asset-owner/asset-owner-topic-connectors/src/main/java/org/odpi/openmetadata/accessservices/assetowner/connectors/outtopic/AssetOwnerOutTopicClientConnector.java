@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetowner.api.AssetOwnerEventInterf
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOwnerEventListener;
 import org.odpi.openmetadata.accessservices.assetowner.events.AssetOwnerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

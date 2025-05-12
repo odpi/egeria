@@ -74,7 +74,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeFacilityTypeValidValueSet()
     {
-        String validValueSetQName = OpenMetadataType.VALID_VALUE_SET.typeName + ":" + FacilityTypeDefinition.validValueSetName;
+        String validValueSetQName = OpenMetadataType.VALID_VALUE_SET.typeName + "::" + FacilityTypeDefinition.validValueSetName;
 
         String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                validValueSetQName,

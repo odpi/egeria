@@ -4,11 +4,8 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.threads;
 
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;

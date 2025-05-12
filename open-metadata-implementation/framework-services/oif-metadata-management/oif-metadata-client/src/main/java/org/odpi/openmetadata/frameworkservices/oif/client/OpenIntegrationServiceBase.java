@@ -15,6 +15,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReport;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportsResponse;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -34,8 +37,6 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
     private final ConnectedAssetClientBase  connectedAssetClientBase; /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-    private final NullRequestBody nullRequestBody = new NullRequestBody();
 
 
     /**

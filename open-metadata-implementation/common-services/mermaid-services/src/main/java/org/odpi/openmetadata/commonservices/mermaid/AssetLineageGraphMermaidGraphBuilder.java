@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -70,7 +71,8 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getElementHeader().getType().getTypeName(),
-                                         checkForClassifications(node.getElementHeader(), VisualStyle.LINEAGE_ELEMENT));
+                                         checkForClassifications(node.getElementHeader(),
+                                                                 this.getLineageElementVisualStyle(node.getElementHeader())));
                 }
             }
 
@@ -126,6 +128,18 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                 edgeMermaidGraph = edgeGraphBuilder.getMermaidGraph();
             }
         }
+    }
+
+
+    private VisualStyle getLineageElementVisualStyle(ElementControlHeader element)
+    {
+        if ((propertyHelper.isTypeOf(element, OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName)) ||
+                (propertyHelper.isTypeOf(element, OpenMetadataType.TO_DO.typeName)))
+        {
+            return VisualStyle.REQUEST_FOR_ACTION;
+        }
+
+        return VisualStyle.LINEAGE_ELEMENT;
     }
 
 

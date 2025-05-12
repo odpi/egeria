@@ -382,7 +382,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
                             {
                                 if (classification != null)
                                 {
-                                    String classificationId = classification.getEntityToClassify().getGUID() + ":" + classification.getClassification().getName();
+                                    String classificationId = classification.getEntityToClassify().getGUID() + "::" + classification.getClassification().getName();
 
                                     classificationMap.put(classificationId, classification);
                                 }
@@ -1481,7 +1481,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
         {
             log.debug("Adding Classification: " + classification);
 
-            String classificationId = classification.getEntityToClassify().getGUID() + ":" + classification.getClassification().getName();
+            String classificationId = classification.getEntityToClassify().getGUID() + "::" + classification.getClassification().getName();
 
             ClassificationEntityExtension   duplicateElement = classificationMap.put(classificationId, classification);
 
@@ -1513,7 +1513,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     {
         final String methodName = "getClassification";
 
-        String identifier = entityGUID + ":" + classificationName;
+        String identifier = entityGUID + "::" + classificationName;
 
         ClassificationEntityExtension   classification = classificationMap.get(identifier);
 
@@ -1540,7 +1540,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     public ClassificationEntityExtension queryClassification(String entityGUID,
                                                              String classificationName)
     {
-        String identifier = entityGUID + ":" + classificationName;
+        String identifier = entityGUID + "::" + classificationName;
 
         return classificationMap.get(identifier);
     }

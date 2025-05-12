@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceSe
 import org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationConnectorConfigurationEvent;
 import org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationGroupConfigurationEvent;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 

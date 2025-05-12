@@ -7,9 +7,13 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
@@ -161,7 +165,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
         {
             throw error;
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanc
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
+import org.odpi.openmetadata.frameworkservices.omf.admin.OMFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
@@ -37,6 +38,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
     private OMAGServerConfig                     operationalConfiguration                     = null;
     private OMRSOperationalServices              operationalRepositoryServices                = null;
+    private OMFMetadataOperationalServices       operationalOMFMetadataServices               = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices               = null;
     private GAFMetadataOperationalServices       operationalGAFMetadataServices               = null;
     private OIFMetadataOperationalServices       operationalOIFMetadataServices               = null;
@@ -209,6 +211,28 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalRepositoryServices(OMRSOperationalServices operationalRepositoryServices)
     {
         this.operationalRepositoryServices = operationalRepositoryServices;
+    }
+
+
+    /**
+     * Return the running instance of the Open Metadata Framework (OMF) metadata services.
+     *
+     * @return OMFMetadataOperationalServices object
+     */
+    public OMFMetadataOperationalServices getOperationalOMFMetadataServices()
+    {
+        return operationalOMFMetadataServices;
+    }
+
+
+    /**
+     * Set up the running instance of the Open Metadata Framework (OMF) metadata services.
+     *
+     * @param operationalOMFMetadataServices OMFMetadataOperationalServices object
+     */
+    public void setOperationalOMFMetadataServices(OMFMetadataOperationalServices operationalOMFMetadataServices)
+    {
+        this.operationalOMFMetadataServices = operationalOMFMetadataServices;
     }
 
 

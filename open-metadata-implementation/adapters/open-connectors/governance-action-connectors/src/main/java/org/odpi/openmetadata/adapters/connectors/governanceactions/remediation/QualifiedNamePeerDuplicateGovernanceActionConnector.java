@@ -5,20 +5,20 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyCondition;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PrimitiveTypeCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PrimitiveTypePropertyValue;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyCondition;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +115,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards);
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }

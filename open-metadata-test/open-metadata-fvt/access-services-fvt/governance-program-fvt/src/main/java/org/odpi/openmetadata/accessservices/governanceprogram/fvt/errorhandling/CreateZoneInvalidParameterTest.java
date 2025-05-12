@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 

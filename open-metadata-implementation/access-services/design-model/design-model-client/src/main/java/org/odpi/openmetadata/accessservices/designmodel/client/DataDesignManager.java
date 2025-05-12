@@ -5,17 +5,21 @@ package org.odpi.openmetadata.accessservices.designmodel.client;
 
 import org.odpi.openmetadata.accessservices.designmodel.api.DataDesignInterface;
 import org.odpi.openmetadata.accessservices.designmodel.ffdc.DesignModelAuditCode;
+import org.odpi.openmetadata.commonservices.mermaid.DataClassMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.DataFieldMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.mermaid.DataStructureMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.DataClassConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.DataFieldConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.converters.DataStructureConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.DataClassConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.DataFieldConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.DataStructureConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
@@ -59,23 +63,6 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
 
 
     /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param maxPageSize           maximum number of results supported by this server
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public DataDesignManager(String serverName,
-                             String serverPlatformURLRoot,
-                             int    maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, maxPageSize);
-    }
-
-
-    /**
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
@@ -96,28 +83,6 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                              AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param userId                caller's userId embedded in all HTTP requests
-     * @param password              caller's userId embedded in all HTTP requests
-     * @param maxPageSize           maximum number of results supported by this server
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public DataDesignManager(String serverName,
-                             String serverPlatformURLRoot,
-                             String userId,
-                             String password,
-                             int    maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 
@@ -2389,6 +2354,10 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                   properties.getAllowsDuplicateValues());
 
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                  OpenMetadataProperty.IS_CASE_SENSITIVE.name,
+                                                                  properties.getIsCaseSensitive());
+
+            elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                   OpenMetadataProperty.IS_NULLABLE.name,
                                                                   properties.getIsNullable());
 
@@ -2507,7 +2476,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
     {
         try
         {
-            List<MemberDataField>        relatedFields = new ArrayList<>();
+            List<MemberDataField>        relatedFields        = new ArrayList<>();
             List<RelatedMetadataElement> otherRelatedElements = new ArrayList<>();
 
             int startFrom = 0;
@@ -2721,7 +2690,6 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                                                 invalidParameterHandler.getMaxPagingSize());
             }
 
-
             DataFieldConverter<DataFieldElement> converter = new DataFieldConverter<>(propertyHelper, serviceName, serverName);
             DataFieldElement dataFieldElement = converter.getNewComplexBean(DataFieldElement.class,
                                                                             openMetadataElement,
@@ -2733,6 +2701,10 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                 {
                     dataFieldElement.setNestedDataFields(relatedFields);
                 }
+
+                DataFieldMermaidGraphBuilder graphBuilder = new DataFieldMermaidGraphBuilder(dataFieldElement);
+
+                dataFieldElement.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
 
             return dataFieldElement;
@@ -2877,10 +2849,18 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
 
             DataClassConverter<DataClassElement> converter = new DataClassConverter<>(propertyHelper, serviceName, serverName);
 
-            return converter.getNewComplexBean(DataClassElement.class,
-                                               openMetadataElement,
-                                               relatedMetadataElementList,
-                                               methodName);
+            DataClassElement dataClassElement = converter.getNewComplexBean(DataClassElement.class,
+                                                                            openMetadataElement,
+                                                                            relatedMetadataElementList,
+                                                                            methodName);
+            if (dataClassElement != null)
+            {
+                DataClassMermaidGraphBuilder graphBuilder = new DataClassMermaidGraphBuilder(dataClassElement);
+
+                dataClassElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+            }
+
+            return dataClassElement;
         }
         catch (Exception error)
         {

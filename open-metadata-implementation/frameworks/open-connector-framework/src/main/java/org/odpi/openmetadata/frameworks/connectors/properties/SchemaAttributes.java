@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 
@@ -98,7 +97,7 @@ public abstract class SchemaAttributes extends PropertyIteratorBase implements I
     @Override
     public void remove()
     {
-        throw new OCFRuntimeException(OCFErrorCode.UNABLE_TO_REMOVE.getMessageDefinition(this.getClass().getName()),
+        throw new OMFRuntimeException(OCFErrorCode.UNABLE_TO_REMOVE.getMessageDefinition(this.getClass().getName()),
                                       this.getClass().getName(),
                                       "remove");
     }

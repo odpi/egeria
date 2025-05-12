@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttrib
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
@@ -213,7 +213,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     {
                         int errorCount = 0;
 
-                        for (int i = 0; i < expectedColumnNames.size(); i++)
+                        for (int i = 1; i <= expectedColumnNames.size(); i++)
                         {
                             if ((expectedColumnNames.get(i) == null) || (actualColumnNames.get(i) == null) ||
                                     (!actualColumnNames.get(i).contains(expectedColumnNames.get(i))))

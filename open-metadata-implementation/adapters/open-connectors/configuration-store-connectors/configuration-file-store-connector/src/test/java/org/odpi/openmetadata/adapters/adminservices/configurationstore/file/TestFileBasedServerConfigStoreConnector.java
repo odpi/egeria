@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import org.junit.jupiter.api.Test;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 
 import java.util.Set;
 
@@ -62,7 +62,7 @@ public class TestFileBasedServerConfigStoreConnector
             connector.getFileNames(templateString, "testMethod");
             assertFalse(true, "Expected an error");
         }
-        catch (OCFRuntimeException e)
+        catch (OMFRuntimeException e)
         {
 
         }
@@ -72,7 +72,7 @@ public class TestFileBasedServerConfigStoreConnector
             connector.getFileNames(templateString, "testMethod");
             assertFalse(true, "Expected an error");
         }
-        catch (OCFRuntimeException e)
+        catch (OMFRuntimeException e)
         {
 
         }

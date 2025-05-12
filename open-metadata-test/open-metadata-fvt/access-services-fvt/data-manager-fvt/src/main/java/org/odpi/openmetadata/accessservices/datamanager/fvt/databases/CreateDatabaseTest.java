@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerR
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;

@@ -65,7 +65,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
@@ -110,7 +110,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),

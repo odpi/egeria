@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.frameworkservices.omf.rest.OMAGOMFAPIResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentTypeListResponse extends OMAGGAFAPIResponse
+public class CommentTypeListResponse extends OMAGOMFAPIResponse
 {
     private List<CommentType> types = null;
 

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelement
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 
 import java.util.List;
 import java.util.Map;

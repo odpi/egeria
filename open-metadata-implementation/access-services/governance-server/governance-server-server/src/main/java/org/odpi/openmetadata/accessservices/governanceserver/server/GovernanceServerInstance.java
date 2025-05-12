@@ -5,20 +5,17 @@ package org.odpi.openmetadata.accessservices.governanceserver.server;
 
 import org.odpi.openmetadata.accessservices.governanceserver.connectors.outtopic.GovernanceServerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.EngineActionConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.MetadataElementConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.frameworkservices.omf.converters.MetadataElementConverter;
+import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;

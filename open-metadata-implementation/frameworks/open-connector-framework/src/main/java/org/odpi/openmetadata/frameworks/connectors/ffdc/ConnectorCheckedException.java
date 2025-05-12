@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  * ConnectorProvider/Connector implementation can be used.  The aim is to be able to uniquely identify the cause
  * and remedy for the error.
  */
-public class ConnectorCheckedException extends OCFCheckedExceptionBase
+public class ConnectorCheckedException extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -194,7 +195,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
      * @param template   object to copy
      */
     public ConnectorCheckedException(String                  errorMessage,
-                                     OCFCheckedExceptionBase template)
+                                     OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

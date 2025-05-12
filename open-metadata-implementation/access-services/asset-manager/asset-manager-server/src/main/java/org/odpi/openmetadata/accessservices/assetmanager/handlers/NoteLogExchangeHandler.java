@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.NoteConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.NoteLogConverter;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.NoteHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.NoteLogHandler;
@@ -16,9 +16,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NotePro
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 

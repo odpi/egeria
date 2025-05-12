@@ -10,16 +10,23 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -477,7 +484,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         {
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, newActionTargets, completionMessage);
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }
@@ -821,7 +828,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
          * Cataloguing the new destination file.
          */
         String assetTypeName = destinationFileClassification.getAssetTypeName();
-        String qualifiedName = assetTypeName + ":" + destinationFilePathName;
+        String qualifiedName = assetTypeName + "::" + destinationFilePathName;
 
         OpenMetadataElement parentElement = governanceContext.getOpenMetadataStore().getMetadataElementByUniqueName(destinationFolderName, OpenMetadataProperty.PATH_NAME.name);
 
@@ -1104,7 +1111,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                             {
                                 int position = propertyHelper.getIntProperty(governanceServiceName,
                                                                              OpenMetadataProperty.POSITION.name,
-                                                                             relatedMetadataElement.getElement().getElementProperties(),
+                                                                             relatedMetadataElement.getRelationshipProperties(),
                                                                              methodName);
                                 schemaAttributes.put(position, relatedMetadataElement.getElement());
                             }

@@ -25,6 +25,8 @@ public class DataClassElement extends AttributedMetadataElement
     private DataClassProperties                 properties             = null;
     private List<RelatedMetadataElementSummary> nestedDataClasses      = null;
     private List<RelatedMetadataElementSummary> specializedDataClasses = null;
+    private String                              mermaidGraph           = null;
+
 
     /**
      * Default constructor
@@ -49,6 +51,7 @@ public class DataClassElement extends AttributedMetadataElement
             properties = template.getProperties();
             nestedDataClasses = template.getNestedDataClasses();
             specializedDataClasses = template.getSpecializedDataClasses();
+            mermaidGraph = template.getMermaidGraph();
         }
     }
 
@@ -118,6 +121,29 @@ public class DataClassElement extends AttributedMetadataElement
         this.specializedDataClasses = specializedDataClasses;
     }
 
+
+    /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -130,6 +156,7 @@ public class DataClassElement extends AttributedMetadataElement
                 "properties=" + properties +
                 ", nestedDataClasses=" + nestedDataClasses +
                 ", specializedDataClasses=" + specializedDataClasses +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -149,7 +176,8 @@ public class DataClassElement extends AttributedMetadataElement
         DataClassElement that = (DataClassElement) objectToCompare;
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(nestedDataClasses, that.nestedDataClasses) &&
-                Objects.equals(specializedDataClasses, that.specializedDataClasses);
+                Objects.equals(specializedDataClasses, that.specializedDataClasses) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -161,6 +189,6 @@ public class DataClassElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, nestedDataClasses, specializedDataClasses);
+        return Objects.hash(super.hashCode(), properties, nestedDataClasses, specializedDataClasses, mermaidGraph);
     }
 }

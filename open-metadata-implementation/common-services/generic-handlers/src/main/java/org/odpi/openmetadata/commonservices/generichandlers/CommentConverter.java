@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CommentEle
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FeedbackTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

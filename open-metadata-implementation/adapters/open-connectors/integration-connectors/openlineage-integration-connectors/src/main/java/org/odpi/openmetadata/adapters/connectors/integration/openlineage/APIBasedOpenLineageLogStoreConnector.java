@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

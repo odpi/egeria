@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
-import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -16,6 +15,10 @@ import org.odpi.openmetadata.frameworks.integration.context.IntegrationContextRe
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
@@ -903,7 +906,7 @@ public class IntegrationConnectorHandler
         updateStatus(IntegrationConnectorStatus.CONFIG_FAILED);
         failingExceptionMessage = error.getMessage();
 
-        if (error instanceof OCFCheckedExceptionBase)
+        if (error instanceof OMFCheckedExceptionBase)
         {
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
@@ -937,7 +940,7 @@ public class IntegrationConnectorHandler
         updateStatus(IntegrationConnectorStatus.FAILED);
         failingExceptionMessage = error.getMessage();
 
-        if (error instanceof OCFCheckedExceptionBase)
+        if (error instanceof OMFCheckedExceptionBase)
         {
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.CONNECTOR_ERROR.getMessageDefinition(integrationConnectorName,
@@ -971,7 +974,7 @@ public class IntegrationConnectorHandler
         updateStatus(IntegrationConnectorStatus.INITIALIZE_FAILED);
         failingExceptionMessage = error.getMessage();
 
-        if (error instanceof OCFCheckedExceptionBase)
+        if (error instanceof OMFCheckedExceptionBase)
         {
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.INITIALIZE_ERROR.getMessageDefinition(integrationConnectorName,

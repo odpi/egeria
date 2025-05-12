@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAss
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTyp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;

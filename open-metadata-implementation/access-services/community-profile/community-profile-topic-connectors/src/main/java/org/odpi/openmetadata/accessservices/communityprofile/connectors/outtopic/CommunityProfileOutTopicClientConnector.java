@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.api.CommunityProfil
 import org.odpi.openmetadata.accessservices.communityprofile.api.CommunityProfileEventListener;
 import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEvent;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

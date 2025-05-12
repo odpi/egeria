@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.commonservices.ffdc.exceptions;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
  * OMAGCheckedExceptionBase provides a checked exception for reporting errors found when using
  * the Open Metadata and Governance (OMAG) services.
  */
-public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase
+public abstract class OMAGCheckedExceptionBase extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -136,7 +136,7 @@ public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.fra
      * @param template   object to copy
      */
     public OMAGCheckedExceptionBase(String                  errorMessage,
-                                    OCFCheckedExceptionBase template)
+                                    OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

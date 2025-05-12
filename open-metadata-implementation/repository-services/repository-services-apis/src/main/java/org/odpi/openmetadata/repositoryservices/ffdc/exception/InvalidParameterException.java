@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -158,7 +158,7 @@ public class InvalidParameterException extends OMRSCheckedExceptionBase
      * @param caughtError  the error that resulted in this exception.
      * @param parameterName  new parameter name
      */
-    public InvalidParameterException(OCFCheckedExceptionBase caughtError,
+    public InvalidParameterException(OMFCheckedExceptionBase caughtError,
                                      String parameterName)
     {
         super(caughtError.getReportedErrorMessage(), caughtError);

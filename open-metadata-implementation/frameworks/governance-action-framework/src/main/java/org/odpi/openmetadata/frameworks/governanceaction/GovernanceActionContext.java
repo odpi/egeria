@@ -4,16 +4,19 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.governanceaction.client.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
@@ -53,9 +56,9 @@ public class GovernanceActionContext implements GovernanceContext,
     private final DuplicateManagementInterface     duplicateManagementClient;
     private final GovernanceActionProcessInterface governanceActionProcessClient;
     private final GovernanceCompletionInterface    governanceCompletionClient;
-    private final WatchDogEventInterface           watchDogEventClient;
-    private final OpenMetadataClient               openMetadataClient;
-    private final OpenMetadataStore                openMetadataStore;
+    private final WatchDogEventInterface watchDogEventClient;
+    private final OpenMetadataClient     openMetadataClient;
+    private final OpenMetadataStore      openMetadataStore;
     private final GovernanceConfiguration          governanceConfiguration;
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 

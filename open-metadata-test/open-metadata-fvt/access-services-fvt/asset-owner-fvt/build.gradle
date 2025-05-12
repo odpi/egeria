@@ -26,6 +26,8 @@ dependencies {
     compileOnly  project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     compileOnly  project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
+    compileOnly project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-client')
     testImplementation project(':open-metadata-distribution:omag-server-platform')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.stewardshipaction.events.Stewardship
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionAuditCode;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicSenderConnectorBase;
 
 import java.util.concurrent.CompletionException;

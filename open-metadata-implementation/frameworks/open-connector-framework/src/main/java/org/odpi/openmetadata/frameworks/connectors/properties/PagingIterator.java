@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 import org.slf4j.Logger;
@@ -103,7 +103,7 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
             /*
              * Throw runtime exception to show the caller they are not using the list correctly.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NO_ITERATOR.getMessageDefinition(this.getClass().getSimpleName()),
+            throw new OMFRuntimeException(OCFErrorCode.NO_ITERATOR.getMessageDefinition(this.getClass().getSimpleName()),
                                           this.getClass().getName(),
                                           "next");
         }
@@ -141,7 +141,7 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
                /*
                 * Throw runtime exception to show the caller they are not using the list correctly.
                 */
-                throw new OCFRuntimeException(OCFErrorCode.NO_ITERATOR.getMessageDefinition(this.getClass().getSimpleName()),
+                throw new OMFRuntimeException(OCFErrorCode.NO_ITERATOR.getMessageDefinition(this.getClass().getSimpleName()),
                                               this.getClass().getName(),
                                               "next");
             }
@@ -185,11 +185,11 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
                 /*
                  * Problem retrieving next cache.  The exception includes a detailed error message,
                  */
-                throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
+                throw new OMFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
                                                                                                          this.toString()),
-                                                                                                         this.getClass().getName(),
-                                                                                                         "next",
-                                                                                                         error);
+                                              this.getClass().getName(),
+                                              "next",
+                                              error);
             }
         }
 
@@ -201,7 +201,7 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
      * Return the next element in the list
      *
      * @return ElementBase next element.
-     * @throws OCFRuntimeException if there are no more elements in the list or there are problems retrieving
+     * @throws OMFRuntimeException if there are no more elements in the list or there are problems retrieving
      *                             elements from the property (metadata) server.
      */
     @Override
@@ -224,9 +224,9 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
             /*
              * Throw runtime exception to show the caller they are not using the list correctly.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getName()),
-                                                                                             this.getClass().getName(),
-                                                                                             "next");
+            throw new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getName()),
+                                          this.getClass().getName(),
+                                          "next");
         }
     }
 
@@ -238,7 +238,7 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
     @Override
     public void remove()
     {
-        throw new OCFRuntimeException(OCFErrorCode.UNABLE_TO_REMOVE.getMessageDefinition(iterator.getClass().getName()),
+        throw new OMFRuntimeException(OCFErrorCode.UNABLE_TO_REMOVE.getMessageDefinition(iterator.getClass().getName()),
                                       this.getClass().getName(),
                                       "remove");
     }

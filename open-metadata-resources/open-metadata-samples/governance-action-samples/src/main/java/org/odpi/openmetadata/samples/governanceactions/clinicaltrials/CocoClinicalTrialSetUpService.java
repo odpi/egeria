@@ -6,8 +6,15 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -278,7 +285,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
                 setUpCertificationType(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeGUID);
 
-                String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":nominate-hospital",
+                String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
                                                                                          "Nominate Hospital (" + clinicalTrialId + ")",
                                                                                          "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
                                                                                          genericHospitalNominationGUID,
@@ -293,7 +300,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.CLINICAL_TRIAL_OWNER.getName(), clinicalTrialOwnerGUID);
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
 
-                String certifyHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":certify-hospital",
+                String certifyHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
                                                                                         "Certify Hospital (" + clinicalTrialId + ")",
                                                                                         "Confirms the certification for a hospital so that it may contribute data to the clinical trial.",
                                                                                         genericHospitalCertificationGUID,
@@ -308,7 +315,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName(), clinicalTrialManagerGUID);
 
 
-                String onboardHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":onboard-hospital",
+                String onboardHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
                                                                                         "Onboard Hospital (" + clinicalTrialId + ")",
                                                                                         "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
                                                                                         genericHospitalOnboardingGUID,
@@ -326,7 +333,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), informationSupplyChainGUID);
 
 
-                String setUpDataLakeProcessGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":set-up-data-lake",
+                String setUpDataLakeProcessGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
                                                                                              "Set Up Data Lake (" + clinicalTrialId + ")",
                                                                                              "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
                                                                                              genericSetUpDataLakeGUID,
@@ -354,7 +361,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }
-        catch (OCFCheckedExceptionBase error)
+        catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }
@@ -672,7 +679,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":" + clinicalTrialName);
+                                                                        "Project::" + clinicalTrialId + "::" + clinicalTrialName);
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, clinicalTrialName);
@@ -731,7 +738,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":DataSpecification");
+                                                                        "Project::" + clinicalTrialId + "::DataSpecification");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-SPEC");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create Data Specification for " + clinicalTrialName);
@@ -776,7 +783,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         properties = propertyHelper.addStringProperty(null,
                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                      "Collection:" + clinicalTrialId + ":DataSpecification");
+                                                      "Collection::" + clinicalTrialId + "::DataSpecification");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Data Specification for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "The data needed to conduct this clinical trial.");
@@ -833,7 +840,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":DataSharingAgreement");
+                                                                        "Project::" + clinicalTrialId + "::DataSharingAgreement");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-AGREEMENT");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create Base Data Sharing Agreement for " + clinicalTrialName);
@@ -901,7 +908,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":ITDevelopment");
+                                                                        "Project::" + clinicalTrialId + "::ITDevelopment");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-DEV");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create new components for " + clinicalTrialName);
@@ -964,7 +971,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":TemplatesAndStores");
+                                                                        "Project::" + clinicalTrialId + "::TemplatesAndStores");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-TEMPLATES");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create new templates and data stores for " + clinicalTrialName);
@@ -1020,7 +1027,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":DataQualityComponents");
+                                                                        "Project::" + clinicalTrialId + "::DataQualityComponents");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-DQ");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Create new data quality survey services for " + clinicalTrialName);
@@ -1076,7 +1083,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":HospitalManagement");
+                                                                        "Project::" + clinicalTrialId + "::HospitalManagement");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-HM");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Manage hospitals relationships for " + clinicalTrialName);
@@ -1138,10 +1145,10 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":OnboardingPipelines");
+                                                                        "Project::" + clinicalTrialId + "::OnboardingPipelines");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-PIPELINES");
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Hospital onboarding pipelines for " + clinicalTrialName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Weekly data onboarding pipelines for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Set up data onboarding pipelines from hospitals to support this clinical trial.");
 
         String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
@@ -1200,7 +1207,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        "Project:" + clinicalTrialId + ":DataAnalysis");
+                                                                        "Project::" + clinicalTrialId + "::DataAnalysis");
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.IDENTIFIER.name, clinicalTrialId + "-ANALYSIS");
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, "Data analysis for " + clinicalTrialName);

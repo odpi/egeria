@@ -106,6 +106,13 @@ public class FieldLevelLineageMermaidGraphBuilder extends MermaidGraphBuilderBas
                     }
                 }
             }
+            else
+            {
+                /*
+                 * No useful content in the graph.
+                 */
+                super.clearGraph();
+            }
         }
     }
 }

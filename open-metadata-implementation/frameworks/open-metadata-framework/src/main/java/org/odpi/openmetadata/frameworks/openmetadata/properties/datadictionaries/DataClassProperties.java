@@ -33,6 +33,7 @@ public class DataClassProperties extends ReferenceableProperties
     private Map<String, String> specificationDetails  = null;
     private String              dataType              = null;
     private boolean             allowsDuplicateValues = true;
+    private boolean             isCaseSensitive       = false;
     private boolean             isNullable            = true;
     private String              defaultValue          = null;
     private String              averageValue          = null;
@@ -72,6 +73,7 @@ public class DataClassProperties extends ReferenceableProperties
             dataType              = template.getDataType();
             matchThreshold        = template.getMatchThreshold();
             allowsDuplicateValues = template.getAllowsDuplicateValues();
+            isCaseSensitive       = template.getIsCaseSensitive();
             isNullable            = template.getIsNullable();
             defaultValue          = template.getDefaultValue();
             valueList             = template.getValueList();
@@ -255,6 +257,28 @@ public class DataClassProperties extends ReferenceableProperties
     public void setAllowsDuplicateValues(boolean allowsDuplicateValues)
     {
         this.allowsDuplicateValues = allowsDuplicateValues;
+    }
+
+
+    /**
+     * Return whether this data class is case-sensitive, or will match irrespective of case.
+     *
+     * @return boolean flag
+     */
+    public boolean getIsCaseSensitive()
+    {
+        return isCaseSensitive;
+    }
+
+
+    /**
+     * Set up whether this data class is case-sensitive, or will match irrespective of case.
+     *
+     * @param caseSensitive boolean flag
+     */
+    public void setIsCaseSensitive(boolean caseSensitive)
+    {
+        isCaseSensitive = caseSensitive;
     }
 
 
@@ -474,6 +498,7 @@ public class DataClassProperties extends ReferenceableProperties
                 ", specificationDetails=" + specificationDetails +
                 ", dataType='" + dataType + '\'' +
                 ", allowsDuplicateValues=" + allowsDuplicateValues +
+                ", isCaseSensitive=" + isCaseSensitive +
                 ", isNullable=" + isNullable +
                 ", defaultValue='" + defaultValue + '\'' +
                 ", averageValue='" + averageValue + '\'' +
@@ -501,6 +526,7 @@ public class DataClassProperties extends ReferenceableProperties
         DataClassProperties that = (DataClassProperties) objectToCompare;
         return allowsDuplicateValues == that.allowsDuplicateValues &&
                 isNullable == that.isNullable &&
+                isCaseSensitive == that.isCaseSensitive &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(matchPropertyNames, that.matchPropertyNames) &&
@@ -528,7 +554,7 @@ public class DataClassProperties extends ReferenceableProperties
     {
         return Objects.hash(super.hashCode(), displayName, description, matchPropertyNames, namespace,
                             matchThreshold, specification, specificationDetails, dataType, allowsDuplicateValues,
-                            isNullable, defaultValue, averageValue, valueList, valueRangeFrom, valueRangeTo, sampleValues,
-                            dataPatterns);
+                            isCaseSensitive, isNullable, defaultValue, averageValue, valueList, valueRangeFrom,
+                            valueRangeTo, sampleValues, dataPatterns);
     }
 }

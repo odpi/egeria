@@ -51,6 +51,7 @@ public class AssetLineageGraphRequestBody extends EffectiveTimeQueryRequestBody
             this.relationshipTypes         = template.getRelationshipTypes();
             this.limitToISCQualifiedName   = template.getLimitToISCQualifiedName();
             this.highlightISCQualifiedName = template.getHighlightISCQualifiedName();
+            this.allAnchors                = template.getAllAnchors();
         }
     }
 

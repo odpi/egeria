@@ -7,9 +7,9 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 
 import java.util.*;
 

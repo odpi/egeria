@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.client;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.OpenMetadataClientBase;
 
 /**
  * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)

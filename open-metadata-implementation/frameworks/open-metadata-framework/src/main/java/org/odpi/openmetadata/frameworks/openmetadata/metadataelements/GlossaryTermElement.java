@@ -6,8 +6,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,11 +22,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermElement implements MetadataElement
+public class GlossaryTermElement extends AttributedMetadataElement implements CorrelatedMetadataElement
 {
-    private ElementHeader          elementHeader          = null;
-    private GlossaryTermProperties glossaryTermProperties = null;
-    private RelatedBy              relatedBy              = null;
+    private List<MetadataCorrelationHeader>     correlationHeaders     = null;
+    private GlossaryTermProperties              glossaryTermProperties = null;
+    private RelatedBy                           relatedBy              = null;
+    private RelatedMetadataElementSummary       parentGlossary         = null;
+    private List<RelatedMetadataElementSummary> categoryMembership     = null;
+    private List<RelatedMetadataElementSummary> relatedToTerms         = null;
+    private List<RelatedMetadataElementSummary> relatedFromTerms       = null;
+    private List<RelatedMetadataElementSummary> relatedDefinitions     = null;
+    private List<RelatedMetadataElementSummary> semanticAssignments    = null;
+    private List<RelatedMetadataElementSummary> otherRelatedElements   = null;
+    private String                              mermaidGraph           = null;
 
 
     /**
@@ -43,36 +53,48 @@ public class GlossaryTermElement implements MetadataElement
      */
     public GlossaryTermElement(GlossaryTermElement template)
     {
+        super (template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
+            correlationHeaders     = template.getCorrelationHeaders();
             glossaryTermProperties = template.getGlossaryTermProperties();
-            relatedBy              = template.getRelatedBy();
+            relatedBy              = template.getRelatedElement();
+            parentGlossary         = template.getParentGlossary();
+            categoryMembership     = template.getCategoryMembership();
+            relatedToTerms         = template.getRelatedToTerms();
+            relatedFromTerms       = template.getRelatedFromTerms();
+            relatedDefinitions     = template.getRelatedDefinitions();
+            semanticAssignments    = template.getSemanticAssignments();
+            otherRelatedElements   = template.getOtherRelatedElements();
+            mermaidGraph           = template.getMermaidGraph();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return the details of the external identifier and other correlation properties about the metadata source.
      *
-     * @return element header object
+     * @return properties object
      */
     @Override
-    public ElementHeader getElementHeader()
+    public List<MetadataCorrelationHeader> getCorrelationHeaders()
     {
-        return elementHeader;
+        return correlationHeaders;
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @param elementHeader element header object
+     * @param correlationHeaders list of correlation properties objects
      */
     @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setCorrelationHeaders(List<MetadataCorrelationHeader> correlationHeaders)
     {
-        this.elementHeader = elementHeader;
+        this.correlationHeaders = correlationHeaders;
     }
 
 
@@ -103,7 +125,7 @@ public class GlossaryTermElement implements MetadataElement
      *
      * @return relationship properties and starting element
      */
-    public RelatedBy getRelatedBy()
+    public RelatedBy getRelatedElement()
     {
         return relatedBy;
     }
@@ -114,9 +136,185 @@ public class GlossaryTermElement implements MetadataElement
      *
      * @param relatedBy relationship properties and starting element
      */
-    public void setRelatedRelatedBy(RelatedBy relatedBy)
+    public void setRelatedElement(RelatedBy relatedBy)
     {
         this.relatedBy = relatedBy;
+    }
+
+
+    /**
+     * Return the parent glossary for this element.
+     *
+     * @return glossary details
+     */
+    public RelatedMetadataElementSummary getParentGlossary()
+    {
+        return parentGlossary;
+    }
+
+
+    /**
+     * Set up parent glossary for this element.
+     *
+     * @param parentGlossary glossary details
+     */
+    public void setParentGlossary(RelatedMetadataElementSummary parentGlossary)
+    {
+        this.parentGlossary = parentGlossary;
+    }
+
+
+    /**
+     * Return the list of categories that the term is linked to.
+     *
+     * @return list of categories
+     */
+    public List<RelatedMetadataElementSummary> getCategoryMembership()
+    {
+        return categoryMembership;
+    }
+
+
+    /**
+     * Set up the list of categories that the term is linked to.
+     *
+     * @param categoryMembership list of categories
+     */
+    public void setCategoryMembership(List<RelatedMetadataElementSummary> categoryMembership)
+    {
+        this.categoryMembership = categoryMembership;
+    }
+
+
+    /**
+     * Return the related terms.
+     *
+     * @return list of terms
+     */
+    public List<RelatedMetadataElementSummary> getRelatedToTerms()
+    {
+        return relatedToTerms;
+    }
+
+
+    /**
+     * Set up  the related terms.
+     *
+     * @param relatedToTerms list of terms
+     */
+    public void setRelatedToTerms(List<RelatedMetadataElementSummary> relatedToTerms)
+    {
+        this.relatedToTerms = relatedToTerms;
+    }
+
+
+    /**
+     * Return the related terms.
+     *
+     * @return list of terms
+     */
+    public List<RelatedMetadataElementSummary> getRelatedFromTerms()
+    {
+        return relatedFromTerms;
+    }
+
+
+    /**
+     * Set up  the related terms.
+     *
+     * @param relatedFromTerms list of terms
+     */
+    public void setRelatedFromTerms(List<RelatedMetadataElementSummary> relatedFromTerms)
+    {
+        this.relatedFromTerms = relatedFromTerms;
+    }
+
+
+    /**
+     * Return the data definitions that are linked to this glossary term via the semantic definition relationship.
+     *
+     * @return list of data definitions
+     */
+    public List<RelatedMetadataElementSummary> getRelatedDefinitions()
+    {
+        return relatedDefinitions;
+    }
+
+
+    /**
+     * Set up the data definitions that are linked to this glossary term via the semantic definition relationship.
+     *
+     * @param relatedDefinitions list of data definitions
+     */
+    public void setRelatedDefinitions(List<RelatedMetadataElementSummary> relatedDefinitions)
+    {
+        this.relatedDefinitions = relatedDefinitions;
+    }
+
+
+    /**
+     * Return the list of elements assigned to the glossary term via the semantic assignment relationship,
+     *
+     * @return list of related elements
+     */
+    public List<RelatedMetadataElementSummary> getSemanticAssignments()
+    {
+        return semanticAssignments;
+    }
+
+
+    /**
+     * Set up the list of elements assigned to the glossary term via the semantic assignment relationship,
+     *
+     * @param semanticAssignments list of related elements
+     */
+    public void setSemanticAssignments(List<RelatedMetadataElementSummary> semanticAssignments)
+    {
+        this.semanticAssignments = semanticAssignments;
+    }
+
+
+    /**
+     * Return details of other related elements retrieved from the repository.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getOtherRelatedElements()
+    {
+        return otherRelatedElements;
+    }
+
+
+    /**
+     * Set up details of other related elements retrieved from the repository.
+     *
+     * @param otherRelatedElements list
+     */
+    public void setOtherRelatedElements(List<RelatedMetadataElementSummary> otherRelatedElements)
+    {
+        this.otherRelatedElements = otherRelatedElements;
+    }
+
+
+    /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -129,12 +327,19 @@ public class GlossaryTermElement implements MetadataElement
     public String toString()
     {
         return "GlossaryTermElement{" +
-                       "elementHeader=" + elementHeader +
-                        ", glossaryTermProperties=" + glossaryTermProperties +
-                        ", relatedBy=" + relatedBy +
-                       '}';
+                "correlationHeaders=" + correlationHeaders +
+                ", glossaryTermProperties=" + glossaryTermProperties +
+                ", relatedBy=" + relatedBy +
+                ", parentGlossary=" + parentGlossary +
+                ", categoryMembership=" + categoryMembership +
+                ", relatedToTerms=" + relatedToTerms +
+                ", relatedFromTerms=" + relatedToTerms +
+                ", relatedDefinitions=" + relatedDefinitions +
+                ", semanticAssignments=" + semanticAssignments +
+                ", otherRelatedElements=" + otherRelatedElements +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -147,10 +352,19 @@ public class GlossaryTermElement implements MetadataElement
     {
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         GlossaryTermElement that = (GlossaryTermElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
+        return Objects.equals(correlationHeaders, that.correlationHeaders) &&
                 Objects.equals(glossaryTermProperties, that.glossaryTermProperties) &&
-                Objects.equals(relatedBy, that.relatedBy);
+                Objects.equals(relatedBy, that.relatedBy) &&
+                Objects.equals(parentGlossary, that.parentGlossary) &&
+                Objects.equals(categoryMembership, that.categoryMembership) &&
+                Objects.equals(relatedToTerms, that.relatedToTerms) &&
+                Objects.equals(relatedFromTerms, that.relatedFromTerms) &&
+                Objects.equals(relatedDefinitions, that.relatedDefinitions) &&
+                Objects.equals(semanticAssignments, that.semanticAssignments) &&
+                Objects.equals(otherRelatedElements, that.otherRelatedElements) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -162,6 +376,8 @@ public class GlossaryTermElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, relatedBy, glossaryTermProperties);
+        return Objects.hash(super.hashCode(), mermaidGraph, correlationHeaders, glossaryTermProperties, relatedBy,
+                            parentGlossary, categoryMembership, relatedToTerms, relatedFromTerms, relatedDefinitions,
+                            semanticAssignments, otherRelatedElements);
     }
 }

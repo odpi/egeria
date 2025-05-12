@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.metadatasecurity;
 
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 /**
  * OpenMetadataPlatformSecurity provides the interface for a security connector that validates whether a calling

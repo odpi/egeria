@@ -31,7 +31,7 @@ public enum InformationSupplyChain
      * Delivering data relating to the teddy bear drop foot clinical trial from the hospitals to the Coco Researchers.
      */
     CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE(ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getGUID(),
-                                                  ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName() + ":" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
+                                                  ClinicalTrialInformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION.getDisplayName() + "::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(),
                                                   "Delivering data relating to the " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder() + " clinical trial from the hospitals to the Coco Researchers so that they can then determine the efficacy of the treatment to report to the regulators.",
                                                   ScopeDefinition.WITHIN_PROJECT,
                                                   new String[]

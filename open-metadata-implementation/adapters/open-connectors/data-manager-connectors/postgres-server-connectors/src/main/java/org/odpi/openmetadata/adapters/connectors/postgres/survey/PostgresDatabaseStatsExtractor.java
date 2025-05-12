@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;

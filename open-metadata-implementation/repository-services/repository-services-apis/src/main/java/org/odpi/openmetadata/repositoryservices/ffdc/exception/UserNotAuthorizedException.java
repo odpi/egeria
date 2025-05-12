@@ -158,7 +158,7 @@ public class UserNotAuthorizedException extends OMRSCheckedExceptionBase
      * @param caughtError OCF exception
      */
 
-    public UserNotAuthorizedException(org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  caughtError)
+    public UserNotAuthorizedException(org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException caughtError)
     {
         super(caughtError.getReportedErrorMessage(), caughtError);
 

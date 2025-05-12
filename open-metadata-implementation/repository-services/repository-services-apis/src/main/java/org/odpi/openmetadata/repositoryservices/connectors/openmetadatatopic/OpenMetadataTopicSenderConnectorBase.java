@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 
 import java.util.concurrent.CompletableFuture;
