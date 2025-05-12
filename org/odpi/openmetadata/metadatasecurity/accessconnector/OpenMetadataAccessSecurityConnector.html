@@ -857,7 +857,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="getUserAccount(java.lang.String)">
 <h3>getUserAccount</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a></span>&nbsp;<span class="element-name">getUserAccount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Retrieve information about a specific user.  This is used during a user's request for a token</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -867,7 +867,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>security properties about the user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not recognized - or supplied an incorrect password</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not recognized - or supplied an incorrect password</dd>
 </dl>
 </section>
 </li>
@@ -965,7 +965,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <h3>validateUserInGroup</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">validateUserInGroup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">This method does the lookup of the user and group in the secrets store.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -974,7 +974,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>boolean indicating that they are not members of the group</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - bad user id</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - bad user id</dd>
 </dl>
 </section>
 </li>
@@ -1012,7 +1012,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserForNewServer(java.lang.String)">
 <h3>validateUserForNewServer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForNewServer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                              throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to create new servers.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1022,7 +1022,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this platform</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this platform</dd>
 </dl>
 </section>
 </li>
@@ -1030,7 +1030,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserAsOperatorForPlatform(java.lang.String)">
 <h3>validateUserAsOperatorForPlatform</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserAsOperatorForPlatform</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1040,7 +1040,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue operator commands to this platform</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue operator commands to this platform</dd>
 </dl>
 </section>
 </li>
@@ -1048,7 +1048,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserAsInvestigatorForPlatform(java.lang.String)">
 <h3>validateUserAsInvestigatorForPlatform</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserAsInvestigatorForPlatform</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                           throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue diagnostic requests to the OMAG Server Platform.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1058,7 +1058,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue diagnostic commands to this platform</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue diagnostic commands to this platform</dd>
 </dl>
 </section>
 </li>
@@ -1066,7 +1066,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserForServer(java.lang.String)">
 <h3>validateUserForServer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForServer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                           throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue a (any) request to the OMAG Server Platform.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1076,7 +1076,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this function</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this function</dd>
 </dl>
 </section>
 </li>
@@ -1084,7 +1084,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserAsServerAdmin(java.lang.String)">
 <h3>validateUserAsServerAdmin</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserAsServerAdmin</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to update the configuration for a server.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1094,7 +1094,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change configuration</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change configuration</dd>
 </dl>
 </section>
 </li>
@@ -1102,7 +1102,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserAsServerOperator(java.lang.String)">
 <h3>validateUserAsServerOperator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserAsServerOperator</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                  throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1112,7 +1112,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue operator commands to this server</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue operator commands to this server</dd>
 </dl>
 </section>
 </li>
@@ -1120,7 +1120,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <section class="detail" id="validateUserAsServerInvestigator(java.lang.String)">
 <h3>validateUserAsServerInvestigator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserAsServerInvestigator</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1130,7 +1130,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue diagnostic commands to this server</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue diagnostic commands to this server</dd>
 </dl>
 </section>
 </li>
@@ -1139,7 +1139,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <h3>validateUserForService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName)</span>
-                            throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                            throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue this request.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1150,7 +1150,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>userId</code> - calling user</dd>
 <dd><code>serviceName</code> - name of called service</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
 </dl>
 </section>
 </li>
@@ -1160,7 +1160,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForServiceOperation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceOperationName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                     throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Check that the calling user is authorized to issue this specific request.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1172,7 +1172,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - name of called service</dd>
 <dd><code>serviceOperationName</code> - name of called operation</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
 </dl>
 </section>
 </li>
@@ -1182,7 +1182,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">setSupportedZonesForUser</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;user)</span>
-                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Determine the appropriate setting for the supported zones depending on the user and the
  default supported zones set up for the service.  This is called whenever an asset is accessed.</div>
 <dl class="notes">
@@ -1195,7 +1195,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>list of supported zones for the user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - unknown user</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - unknown user</dd>
 </dl>
 </section>
 </li>
@@ -1210,7 +1210,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                     throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Determine whether the security tags provide access to the element</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1225,7 +1225,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>true=the user has access; false=no information on access for this user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized for this type of access</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized for this type of access</dd>
 </dl>
 </section>
 </li>
@@ -1242,7 +1242,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                              throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Determine whether the security tags provide access to the element</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1259,7 +1259,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>true=the user has access; false=no information on access for this user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized for this type of access</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized for this type of access</dd>
 </dl>
 </section>
 </li>
@@ -1275,7 +1275,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                        throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Determine whether the classifications provide access or restrict access to the element</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1291,7 +1291,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>true=the user has access; false=no information on access for this user</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized for this type of access to this entity</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized for this type of access to this entity</dd>
 </dl>
 </section>
 </li>
@@ -1307,7 +1307,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                  throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to create an element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1323,7 +1323,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to perform this command</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to perform this command</dd>
 </dl>
 </section>
 </li>
@@ -1335,7 +1335,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific element and its contents.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1347,7 +1347,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
 </dl>
 </section>
 </li>
@@ -1360,7 +1360,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                     throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific element and its contents.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1373,7 +1373,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
 </dl>
 </section>
 </li>
@@ -1386,7 +1386,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                        throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update the properties of an element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1399,7 +1399,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1412,7 +1412,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                        throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update the properties of an element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1425,7 +1425,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1439,7 +1439,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                  throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to link unanchored elements to this element</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1453,7 +1453,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1467,7 +1467,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                  throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to link unanchored elements to this element</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1481,7 +1481,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1494,7 +1494,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to attach feedback - such as comments,
  ratings, tags and likes, to the element.</div>
 <dl class="notes">
@@ -1508,7 +1508,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1521,7 +1521,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                          throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                          throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to detach feedback - such as comments,
  ratings, tags and likes, to the element.</div>
 <dl class="notes">
@@ -1535,7 +1535,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1548,7 +1548,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                    throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                    throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to add or update a classification on this element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1561,7 +1561,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1574,7 +1574,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to remove a classification from this element</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1587,7 +1587,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1599,7 +1599,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update elements attached directly
  to an anchor such as glossary terms and categories attached to an element.  These updates could be to their properties,
  classifications and relationships.</div>
@@ -1613,7 +1613,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1627,7 +1627,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                             throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update the instance status of an element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1641,7 +1641,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>originalEntity</code> - entity being updated</dd>
 <dd><code>newStatus</code> - new value for status</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1655,7 +1655,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to link unanchored  elements</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1669,7 +1669,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1683,7 +1683,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to link unanchored  elements</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1697,7 +1697,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1710,7 +1710,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to attach feedback - such as comments,
  ratings, tags and likes, to the anchor or member element.</div>
 <dl class="notes">
@@ -1724,7 +1724,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1737,7 +1737,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                         throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                         throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to detach feedback - such as comments,
  ratings, tags and likes, to the anchor or member element.</div>
 <dl class="notes">
@@ -1751,7 +1751,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1764,7 +1764,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to add or update a classification on this anchor or member element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1777,7 +1777,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1790,7 +1790,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                     throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to remove a classification from this anchor or member element</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1803,7 +1803,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1816,7 +1816,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete an element and all of its contents.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1828,7 +1828,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1840,7 +1840,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                  throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete an element and all of its contents.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1852,7 +1852,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1866,7 +1866,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                    throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                    throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to attach feedback - such as comments,
  ratings, tags and likes, to the element.</div>
 <dl class="notes">
@@ -1881,7 +1881,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this element</dd>
 </dl>
 </section>
 </li>
@@ -1894,7 +1894,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                              throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Use the security connector to make a choice on which connection to supply to the requesting user.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1909,7 +1909,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>single connection entity, or null</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not able to use any of the connections</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not able to use any of the connections</dd>
 </dl>
 </section>
 </li>
@@ -1919,7 +1919,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForTypeCreate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to create a type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1931,7 +1931,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>typeDef</code> - type details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -1941,7 +1941,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForTypeCreate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to create a type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1953,7 +1953,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>attributeTypeDef</code> - type details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -1963,7 +1963,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForTypeRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</span>
-                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                             throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1975,7 +1975,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>typeDef</code> - type details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve types</dd>
 </dl>
 </section>
 </li>
@@ -1985,7 +1985,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForTypeRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)</span>
-                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                             throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -1997,7 +1997,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>attributeTypeDef</code> - type details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve types</dd>
 </dl>
 </section>
 </li>
@@ -2008,7 +2008,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;patch)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update a typeDef within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2021,7 +2021,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>typeDef</code> - current typeDef details</dd>
 <dd><code>patch</code> - proposed changes to type</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -2031,7 +2031,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForTypeDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete a type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2043,7 +2043,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>typeDef</code> - type details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -2053,7 +2053,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForTypeDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;attributeTypeDef)</span>
-                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete a type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2065,7 +2065,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>attributeTypeDef</code> - type details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -2077,7 +2077,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;originalTypeDef,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newTypeDefGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newTypeDefName)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the identifiers for a type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2091,7 +2091,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>newTypeDefGUID</code> - the new identifier for the type.</dd>
 <dd><code>newTypeDefName</code> - new name for this type.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -2103,7 +2103,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&nbsp;originalAttributeTypeDef,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newTypeDefGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newTypeDefName)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the identifiers for a type within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2117,7 +2117,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>newTypeDefGUID</code> - the new identifier for the type.</dd>
 <dd><code>newTypeDefName</code> - new name for this type.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain types</dd>
 </dl>
 </section>
 </li>
@@ -2130,7 +2130,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;initialProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;initialClassifications,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;initialStatus)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to create an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2145,7 +2145,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>initialClassifications</code> - initial list of classifications for the new entity null means no classifications.</dd>
 <dd><code>initialStatus</code> - initial status typically DRAFT, PREPARED or ACTIVE.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2155,7 +2155,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></span>&nbsp;<span class="element-name">validateUserForEntityRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2169,7 +2169,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>entity to return (maybe altered by the connector)</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
 </dl>
 </section>
 </li>
@@ -2179,7 +2179,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForEntitySummaryRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;instance)</span>
-                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2191,7 +2191,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>instance</code> - instance details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
 </dl>
 </section>
 </li>
@@ -2201,7 +2201,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForEntityProxyRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;instance)</span>
-                                    throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                    throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2213,7 +2213,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>instance</code> - instance details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
 </dl>
 </section>
 </li>
@@ -2223,7 +2223,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForEntityUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2235,7 +2235,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>instance</code> - instance details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2247,7 +2247,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)</span>
-                                            throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                            throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to add a classification to an entity instance
  within a repository.</div>
 <dl class="notes">
@@ -2262,7 +2262,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>classificationName</code> - String name for the classification.</dd>
 <dd><code>properties</code> - list of properties for the classification.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2274,7 +2274,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties)</span>
-                                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update the classification for an entity instance
  within a repository.</div>
 <dl class="notes">
@@ -2289,7 +2289,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>classificationName</code> - String name for the classification.</dd>
 <dd><code>properties</code> - list of properties for the classification.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2300,7 +2300,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</span>
-                                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete a classification from an entity instance
  within a repository.</div>
 <dl class="notes">
@@ -2314,7 +2314,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>instance</code> - instance details</dd>
 <dd><code>classificationName</code> - String name for the classification.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2324,7 +2324,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForEntityDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2336,7 +2336,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>instance</code> - instance details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2346,7 +2346,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForEntityRestore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deletedEntityGUID)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                  throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to restore an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2358,7 +2358,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>deletedEntityGUID</code> - String unique identifier (guid) for the entity.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2369,7 +2369,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newGUID)</span>
-                                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                           throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the guid on an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2382,7 +2382,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>instance</code> - instance details</dd>
 <dd><code>newGUID</code> - the new guid for the instance.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2393,7 +2393,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the type name of an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2406,7 +2406,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>instance</code> - instance details</dd>
 <dd><code>newTypeDefSummary</code> - details of this instance's new TypeDef.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2418,7 +2418,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionName)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the home of an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2432,7 +2432,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>newHomeMetadataCollectionId</code> - unique identifier for the new home metadata collection/repository.</dd>
 <dd><code>newHomeMetadataCollectionName</code> - display name for the new home metadata collection/repository.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2446,7 +2446,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entityOneSummary,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entityTwoSummary,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;initialStatus)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to create an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2462,7 +2462,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>entityTwoSummary</code> - the unique identifier of the other entity that the relationship is connecting together.</dd>
 <dd><code>initialStatus</code> - initial status typically DRAFT, PREPARED or ACTIVE.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2472,7 +2472,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></span>&nbsp;<span class="element-name">validateUserForRelationshipRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</span>
-                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                             throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have read access to a specific instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2486,7 +2486,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>relationship to return (maybe altered by the connector)</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to retrieve instances</dd>
 </dl>
 </section>
 </li>
@@ -2496,7 +2496,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForRelationshipUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to update an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2508,7 +2508,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>instance</code> - instance details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2518,7 +2518,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForRelationshipDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to delete an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2530,7 +2530,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>instance</code> - instance details</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2540,7 +2540,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForRelationshipRestore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deletedRelationshipGUID)</span>
-                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                        throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to restore an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2552,7 +2552,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>metadataCollectionName</code> - configurable name of the metadata collection</dd>
 <dd><code>deletedRelationshipGUID</code> - String unique identifier (guid) for the relationship.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2563,7 +2563,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newGUID)</span>
-                                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the guid on an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2576,7 +2576,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>instance</code> - instance details</dd>
 <dd><code>newGUID</code> - the new guid for the instance.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2587,7 +2587,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</span>
-                                         throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                         throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the type name of an instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2600,7 +2600,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>instance</code> - instance details</dd>
 <dd><code>newTypeDefSummary</code> - details of this instance's new TypeDef.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2612,7 +2612,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionName)</span>
-                                         throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                         throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a specific user should have the right to change the home of a instance within a repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2626,7 +2626,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dd><code>newHomeMetadataCollectionId</code> - unique identifier for the new home metadata collection/repository.</dd>
 <dd><code>newHomeMetadataCollectionName</code> - display name for the new home metadata collection/repository.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2635,7 +2635,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <h3>validateEntityReferenceCopySave</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">validateEntityReferenceCopySave</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</span>
-                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                        throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a reference copy should be saved to the repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2646,7 +2646,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>flag indicating whether the reference copy should be saved</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>
@@ -2655,7 +2655,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <h3>validateRelationshipReferenceCopySave</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">validateRelationshipReferenceCopySave</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</span>
-                                              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                              throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Tests for whether a reference copy should be saved to the repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2666,7 +2666,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <dt>Returns:</dt>
 <dd>flag indicating whether the reference copy should be saved</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to maintain instances</dd>
 </dl>
 </section>
 </li>

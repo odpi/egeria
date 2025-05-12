@@ -283,9 +283,9 @@ implements <a href="OpenLineageLogStore.html" title="interface in org.odpi.openm
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">storeEvent</span><wbr><span class="parameters">(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logDestinationAddress)</span>
-                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                         throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Store the open lineage event in the open lineage log store.  If the raw event is null, a json version of the open lineage event is
  generated using the Egeria beans.</div>
 <dl class="notes">
@@ -296,9 +296,9 @@ implements <a href="OpenLineageLogStore.html" title="interface in org.odpi.openm
 <dd><code>rawEvent</code> - event in Json form from the originator - may have facets that are not known to Egeria</dd>
 <dd><code>logDestinationAddress</code> - address to send the event to</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - indicates that the openLineageEvent parameter is invalid.</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - indicates that the caller is not authorized to access the log store.</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - indicates that the  log store is not available or has an error.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the openLineageEvent parameter is invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - indicates that the caller is not authorized to access the log store.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - indicates that the  log store is not available or has an error.</dd>
 </dl>
 </section>
 </li>
@@ -382,13 +382,13 @@ implements <a href="OpenLineageLogStore.html" title="interface in org.odpi.openm
 <section class="detail" id="logNoRawEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent)">
 <h3>logNoRawEvent</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logNoRawEvent</span><wbr><span class="parameters">(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent)</span>
-                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Throws an invalid parameter exception.  Used by the subclasses when this class has failed to pass a raw event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openLineageEvent</code> - supplied open lineage event - may also be null</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - resulting exception</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - resulting exception</dd>
 </dl>
 </section>
 </li>

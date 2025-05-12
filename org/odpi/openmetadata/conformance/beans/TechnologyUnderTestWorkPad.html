@@ -223,7 +223,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getProfileReport(java.lang.String)">
 <h3>getProfileReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataConformanceProfileResults.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataConformanceProfileResults</a></span>&nbsp;<span class="element-name">getProfileReport</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;profileName)</span>
-                                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                                       throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Requests detailed information on the execution of a specific profile.
  Null is returned if the profile has not run.</div>
 <dl class="notes">
@@ -232,7 +232,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>Profile Report</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the profile name is not known</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the profile name is not known</dd>
 </dl>
 </section>
 </li>
@@ -240,7 +240,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getTestCaseReport(java.lang.String)">
 <h3>getTestCaseReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataTestCaseResult.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataTestCaseResult</a></span>&nbsp;<span class="element-name">getTestCaseReport</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseId)</span>
-                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                             throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Requests detailed information on the execution of a specific test case.
  Null is returned if the test case has not run.</div>
 <dl class="notes">
@@ -249,7 +249,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>Test Case Report</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the test case id is not known</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the test case id is not known</dd>
 </dl>
 </section>
 </li>
@@ -268,7 +268,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getWorkbenchReport(java.lang.String)">
 <h3>getWorkbenchReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataConformanceWorkbenchResults.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataConformanceWorkbenchResults</a></span>&nbsp;<span class="element-name">getWorkbenchReport</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;workbenchId)</span>
-                                                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                                           throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Requests information on the level of conformance discovered by a specific workbench.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -276,7 +276,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>WorkbenchReportResponse or</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the  workbenchId is not known.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the  workbenchId is not known.</dd>
 </dl>
 </section>
 </li>
@@ -284,7 +284,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getWorkbenchStatus(java.lang.String)">
 <h3>getWorkbenchStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenMetadataConformanceWorkbenchStatus.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataConformanceWorkbenchStatus</a></span>&nbsp;<span class="element-name">getWorkbenchStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;workbenchId)</span>
-                                                          throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                                          throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Requests (completion) status of a specific workbench.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -292,7 +292,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>OpenMetadataConformanceWorkbenchStatus or</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the  workbenchId is not known.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the  workbenchId is not known.</dd>
 </dl>
 </section>
 </li>

@@ -332,7 +332,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Link an actor (profile/person role) to a scope.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAttributeForSchemaType(java.lang.String,java.lang.String)" class="member-name-link">addAttributeForSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAttributeForSchemaType(java.lang.String,int,int,int,java.lang.String)" class="member-name-link">addAttributeForSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ int&nbsp;position,
+ int&nbsp;minCardinality,
+ int&nbsp;maxCardinality,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create the relationship between a SchemaType element and a child SchemaAttribute element using the AttributeForSchema relationship.</div>
@@ -1067,7 +1070,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a navigation link from one referenceable to another to show they provide more information.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addNestedSchemaAttribute(java.lang.String,java.lang.String)" class="member-name-link">addNestedSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSchemaAttributeGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addNestedSchemaAttribute(java.lang.String,int,int,int,java.lang.String)" class="member-name-link">addNestedSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSchemaAttributeGUID,
+ int&nbsp;position,
+ int&nbsp;minCardinality,
+ int&nbsp;maxCardinality,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childSchemaAttributeGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create the relationship between a SchemaAttribute element and a child SchemaAttribute element using the NestedSchemaAttribute relationship.</div>
@@ -1289,7 +1295,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add the ResourceList relationship to the archive.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.lang.String,java.util.Map)" class="member-name-link">addSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map)" class="member-name-link">addSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeName,
@@ -1298,7 +1304,6 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataType,
  int&nbsp;length,
- int&nbsp;position,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encodingStandard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -4056,33 +4061,45 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addAttributeForSchemaType(java.lang.String,java.lang.String)">
+<section class="detail" id="addAttributeForSchemaType(java.lang.String,int,int,int,java.lang.String)">
 <h3>addAttributeForSchemaType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addAttributeForSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ int&nbsp;position,
+ int&nbsp;minCardinality,
+ int&nbsp;maxCardinality,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID)</span></div>
 <div class="block">Create the relationship between a SchemaType element and a child SchemaAttribute element using the AttributeForSchema relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>schemaTypeGUID</code> - unique identifier of the parent element</dd>
+<dd><code>position</code> - position in the schema at this level</dd>
+<dd><code>minCardinality</code> - minimum number of instances in the schema at this level</dd>
+<dd><code>maxCardinality</code> - maximum number of instances in the schema at this level</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the child element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addNestedSchemaAttribute(java.lang.String,java.lang.String)">
+<section class="detail" id="addNestedSchemaAttribute(java.lang.String,int,int,int,java.lang.String)">
 <h3>addNestedSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addNestedSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentSchemaAttributeGUID,
+ int&nbsp;position,
+ int&nbsp;minCardinality,
+ int&nbsp;maxCardinality,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childSchemaAttributeGUID)</span></div>
 <div class="block">Create the relationship between a SchemaAttribute element and a child SchemaAttribute element using the NestedSchemaAttribute relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>parentSchemaAttributeGUID</code> - unique identifier of the parent element</dd>
+<dd><code>position</code> - position in the schema at this level</dd>
+<dd><code>minCardinality</code> - minimum number of instances in the schema at this level</dd>
+<dd><code>maxCardinality</code> - maximum number of instances in the schema at this level</dd>
 <dd><code>childSchemaAttributeGUID</code> - unique identifier of the child element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.lang.String,java.util.Map)">
+<section class="detail" id="addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map)">
 <h3>addSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
@@ -4093,7 +4110,6 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataType,
  int&nbsp;length,
- int&nbsp;position,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encodingStandard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties)</span></div>
 <div class="block">Create a schema attribute with a TypeEmbeddedAttribute classification.</div>
@@ -4108,7 +4124,6 @@ loadScripts(document, 'script');</script>
 <dd><code>description</code> - description about the schema attribute</dd>
 <dd><code>dataType</code> - data type for the schema attribute</dd>
 <dd><code>length</code> - length of the storage used by the schema attribute</dd>
-<dd><code>position</code> - position in the schema at this level</dd>
 <dd><code>encodingStandard</code> - encoding standard</dd>
 <dd><code>additionalProperties</code> - any other properties.</dd>
 <dt>Returns:</dt>

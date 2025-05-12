@@ -137,10 +137,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.ActionTargetStatusRequestBody)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../rest/ActionTargetStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">ActionTargetStatusRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../omf/rest/ActionTargetStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ActionTargetStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of a specific action target.</div>
 </div>
@@ -279,7 +279,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.ActionTargetStatusRequestBody)">
+<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody)">
 <h3>updateActionTargetStatus</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/action-targets/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateActionTargetStatus</span><wbr><span class="parameters">(@PathVariable
@@ -289,7 +289,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
- <a href="../../rest/ActionTargetStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">ActionTargetStatusRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../omf/rest/ActionTargetStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ActionTargetStatusRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the status of a specific action target. By default, these values are derived from
  the values for the governance action service.  However, if the governance action service has to process name
  target elements, then setting the status on each individual target will show the progress of the

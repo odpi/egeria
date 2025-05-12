@@ -468,7 +468,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the glossary term metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody)" class="member-name-link">getGlossaryTermHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryExternalIdentifiersRequestBody)" class="member-name-link">getGlossaryTermHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  int&nbsp;startFrom,
@@ -476,7 +476,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;oldestFirst,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../../../../frameworkservices/gaf/rest/HistoryExternalIdentifiersRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">HistoryExternalIdentifiersRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworkservices/omf/rest/HistoryExternalIdentifiersRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryExternalIdentifiersRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve all the versions of a glossary term.</div>
 </div>
@@ -2863,7 +2863,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGlossaryTermHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody)">
+<section class="detail" id="getGlossaryTermHistory(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.HistoryExternalIdentifiersRequestBody)">
 <h3>getGlossaryTermHistory</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/terms/{glossaryTermGUID}/history")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></span>&nbsp;<span class="element-name">getGlossaryTermHistory</span><wbr><span class="parameters">(@PathVariable
@@ -2883,7 +2883,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
  @RequestBody(required=false)
- <a href="../../../../frameworkservices/gaf/rest/HistoryExternalIdentifiersRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">HistoryExternalIdentifiersRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworkservices/omf/rest/HistoryExternalIdentifiersRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">HistoryExternalIdentifiersRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve all the versions of a glossary term.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

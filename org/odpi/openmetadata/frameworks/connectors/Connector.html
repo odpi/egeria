@@ -339,8 +339,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getConnectedAssetProperties(java.lang.String)">
 <h3>getConnectedAssetProperties</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="properties/ConnectedAssetDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetDetails</a></span>&nbsp;<span class="element-name">getConnectedAssetProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                                           throws <span class="exceptions"><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                                           throws <span class="exceptions"><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
  metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
  method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
@@ -352,8 +352,8 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>ConnectedAssetDetails   connected asset properties</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - indicates a problem retrieving properties from a metadata repository</dd>
-<dd><code><a href="ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - indicates that the user is not authorized to access the asset properties.</dd>
+<dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - indicates a problem retrieving properties from a metadata repository</dd>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - indicates that the user is not authorized to access the asset properties.</dd>
 </dl>
 </section>
 </li>
@@ -386,7 +386,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeStatisticCounter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;counterName,
  int&nbsp;counterValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Reset (or initialize) the value of a counter.  This method reserves the counterName as a name for counters.  This means the same name
  can not be used for a property or a timestamp.</div>
 <dl class="notes">
@@ -395,7 +395,7 @@ loadScripts(document, 'script');</script>
 <dd><code>counterValue</code> - initial value of the counter</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the counter name is already in use as a timestamp or property</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter name is already in use as a timestamp or property</dd>
 </dl>
 </section>
 </li>
@@ -404,14 +404,14 @@ loadScripts(document, 'script');</script>
 <h3>incrementStatisticCounter</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">incrementStatisticCounter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;counterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                               throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                               throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Increment the named counter.  If the counter name is new, it is assumed to be set to zero, resulting in a value of 1.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>counterName</code> - name of counter</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the counter name is already in use as a timestamp or property</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter name is already in use as a timestamp or property</dd>
 </dl>
 </section>
 </li>
@@ -420,7 +420,7 @@ loadScripts(document, 'script');</script>
 <h3>getStatisticCounter</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getStatisticCounter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;counterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                        throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                        throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Retrieve the value for a specific counter statistic.  If the counter is not known, it is defined in the statistics list with a zero value.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -429,7 +429,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>counter value or 0 if the counter is not known</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the counter name is actually in use as a timestamp or property</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter name is actually in use as a timestamp or property</dd>
 </dl>
 </section>
 </li>
@@ -439,7 +439,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStatisticProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                          throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                          throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Set up the requested property.  An exception is thrown if the property name clashes with a counter or timestamp statistic.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -447,7 +447,7 @@ loadScripts(document, 'script');</script>
 <dd><code>propertyValue</code> - new value</dd>
 <dd><code>methodName</code> - calling method name</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is already in use as either a counter or timestamp statistic</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the property name is already in use as either a counter or timestamp statistic</dd>
 </dl>
 </section>
 </li>
@@ -456,14 +456,14 @@ loadScripts(document, 'script');</script>
 <h3>clearStatisticProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearStatisticProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                            throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                            throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Remove a property statistic.  An exception is thrown if the property name is actually the name of either a counter or timestamp statistic.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>propertyName</code> - name of property</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is actually a counter or timestamp statistic</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the property name is actually a counter or timestamp statistic</dd>
 </dl>
 </section>
 </li>
@@ -472,7 +472,7 @@ loadScripts(document, 'script');</script>
 <h3>getStatisticProperty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getStatisticProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                            throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                            throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the value associated with the supplied property name (or null if the property name is not known.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -481,7 +481,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>property value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is actually a counter or timestamp statistic</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the property name is actually a counter or timestamp statistic</dd>
 </dl>
 </section>
 </li>
@@ -491,7 +491,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStatisticTimestamp</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;timestampName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;timestampValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                           throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                           throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Set up the requested timestamp.  An exception is thrown if the timestamp name clashes with a counter or property statistic.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -499,7 +499,7 @@ loadScripts(document, 'script');</script>
 <dd><code>timestampValue</code> - new value</dd>
 <dd><code>methodName</code> - calling method name</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the timestamp name is already in use as either a counter or property statistic</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the timestamp name is already in use as either a counter or property statistic</dd>
 </dl>
 </section>
 </li>
@@ -508,14 +508,14 @@ loadScripts(document, 'script');</script>
 <h3>clearStatisticTimestamp</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearStatisticTimestamp</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;timestampName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                             throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                             throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Remove a timestamp statistic.  An exception is thrown if the timestamp name is actually the name of either a counter or property statistic.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>timestampName</code> - name of timestamp</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the timestamp name is actually a counter or property statistic</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the timestamp name is actually a counter or property statistic</dd>
 </dl>
 </section>
 </li>
@@ -524,7 +524,7 @@ loadScripts(document, 'script');</script>
 <h3>getStatisticTimestamp</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getStatisticTimestamp</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;timestampName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                           throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                           throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the value associated with the supplied timestamp name (or null if the timestamp name is not known).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -533,7 +533,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>timestamp value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the timestamp name is actually a counter or property statistic</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the timestamp name is actually a counter or property statistic</dd>
 </dl>
 </section>
 </li>

@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="AnnotationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationBuilder</a></code>, <code><a href="AnnotationReviewBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationReviewBuilder</a></code>, <code><a href="ContactDetailsBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContactDetailsBuilder</a></code>, <code><a href="EmbeddedConnectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EmbeddedConnectionBuilder</a></code>, <code><a href="InformalTagBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagBuilder</a></code>, <code><a href="../../frameworkservices/oif/builder/IntegrationReportBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.oif.builder">IntegrationReportBuilder</a></code>, <code><a href="ITInfrastructureBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITInfrastructureBuilder</a></code>, <code><a href="LikeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeBuilder</a></code>, <code><a href="../../frameworkservices/gaf/handlers/MetadataElementBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.handlers">MetadataElementBuilder</a></code>, <code><a href="RatingBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingBuilder</a></code>, <code><a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableBuilder</a></code>, <code><a href="SearchKeywordBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordBuilder</a></code></dd>
+<dd><code><a href="AnnotationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationBuilder</a></code>, <code><a href="AnnotationReviewBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationReviewBuilder</a></code>, <code><a href="ContactDetailsBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContactDetailsBuilder</a></code>, <code><a href="EmbeddedConnectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EmbeddedConnectionBuilder</a></code>, <code><a href="InformalTagBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagBuilder</a></code>, <code><a href="../../frameworkservices/oif/builder/IntegrationReportBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.oif.builder">IntegrationReportBuilder</a></code>, <code><a href="ITInfrastructureBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITInfrastructureBuilder</a></code>, <code><a href="LikeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeBuilder</a></code>, <code><a href="../../frameworkservices/omf/handlers/MetadataElementBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.omf.handlers">MetadataElementBuilder</a></code>, <code><a href="RatingBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingBuilder</a></code>, <code><a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableBuilder</a></code>, <code><a href="SearchKeywordBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordBuilder</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataAPIGenericBuilder</span>
@@ -488,7 +488,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;templateClassifications,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Set up the list of classifications from a template entity.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -499,7 +499,7 @@ loadScripts(document, 'script');</script>
 <dd><code>placeholderProperties</code> - map of placeholder names to placeholder values to substitute into the template properties</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type of one of the classifications is not supported</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type of one of the classifications is not supported</dd>
 </dl>
 </section>
 </li>
@@ -508,7 +508,7 @@ loadScripts(document, 'script');</script>
 <h3>setTemplateSubstitute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTemplateSubstitute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                           throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Set up the "TemplateSubstitute" classification for this entity.  This is used when a new entity is being created, and it is known to be
  created as a template substitute.</div>
 <dl class="notes">
@@ -516,7 +516,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - a null anchors GUID has been supplied</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a null anchors GUID has been supplied</dd>
 </dl>
 </section>
 </li>
@@ -526,7 +526,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAnchors</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="OpenMetadataAPIAnchorHandler.AnchorIdentifiers.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIAnchorHandler.AnchorIdentifiers</a>&nbsp;anchorIdentifiers,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Set up the "Anchors" classification for this entity.  This is used when a new entity is being created, and it is known to be
  connected to a specific anchor.</div>
 <dl class="notes">
@@ -535,7 +535,7 @@ loadScripts(document, 'script');</script>
 <dd><code>anchorIdentifiers</code> - values for anchors classification</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - a null anchors GUID has been supplied</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a null anchors GUID has been supplied</dd>
 </dl>
 </section>
 </li>
@@ -548,7 +548,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorDomainName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Set up the "Anchors" classification for this entity.  This is used when a new entity is being created, and it is known to be
  connected to a specific anchor.</div>
 <dl class="notes">
@@ -560,7 +560,7 @@ loadScripts(document, 'script');</script>
 <dd><code>anchorScopeGUID</code> - unique identifier of the anchor's scope</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - a null anchors GUID has been supplied</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a null anchors GUID has been supplied</dd>
 </dl>
 </section>
 </li>
@@ -614,7 +614,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getInstanceProperties(java.lang.String)">
 <h3>getInstanceProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">getInstanceProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                         throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                         throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the supplied bean properties in an InstanceProperties object.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -622,7 +622,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>InstanceProperties object</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the properties</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem with the properties</dd>
 </dl>
 </section>
 </li>
@@ -632,7 +632,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">getInstanceProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstancePropertyValue.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstancePropertyValue</a>&gt;&nbsp;propertyMap,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</span>
-                                         throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                         throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the properties based on the parameters supplied.  This is typically used for
  relationship and classification properties.</div>
 <dl class="notes">
@@ -643,7 +643,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>repository services properties</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem mapping properties</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - problem mapping properties</dd>
 </dl>
 </section>
 </li>
@@ -652,7 +652,7 @@ loadScripts(document, 'script');</script>
 <h3>updateInstanceProperties</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">updateInstanceProperties</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstancePropertyValue.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstancePropertyValue</a>&gt;&nbsp;propertyMap)</span>
-                                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                               throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Add the supplied properties to the supplied instance properties object.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -661,7 +661,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>repository services properties</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem mapping properties</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - problem mapping properties</dd>
 </dl>
 </section>
 </li>

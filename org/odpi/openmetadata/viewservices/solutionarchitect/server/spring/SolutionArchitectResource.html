@@ -199,10 +199,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/InformationSupplyChainResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainByGUID(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.AnyTimeRequestBody)" class="member-name-link">getInformationSupplyChainByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformationSupplyChainByGUID(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)" class="member-name-link">getInformationSupplyChainByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSupplyChainGUID,
  boolean&nbsp;addImplementation,
- <a href="../../../../frameworkservices/gaf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of a specific information supply chain.</div>
 </div>
@@ -215,7 +215,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of information supply chains with a particular name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/RelatedMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RelatedMetadataElementsResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/omf/rest/RelatedMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">RelatedMetadataElementsResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentImplementations(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getSolutionComponentImplementations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
  int&nbsp;startFrom,
@@ -578,7 +578,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getInformationSupplyChainByGUID(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.AnyTimeRequestBody)">
+<section class="detail" id="getInformationSupplyChainByGUID(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody)">
 <h3>getInformationSupplyChainByGUID</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/information-supply-chains/{informationSupplyChainGUID}/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/InformationSupplyChainResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">InformationSupplyChainResponse</a></span>&nbsp;<span class="element-name">getInformationSupplyChainByGUID</span><wbr><span class="parameters">(@PathVariable
@@ -588,7 +588,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="true")
  boolean&nbsp;addImplementation,
  @RequestBody(required=false)
- <a href="../../../../frameworkservices/gaf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworkservices/omf/rest/AnyTimeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">AnyTimeRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return the properties of a specific information supply chain.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -716,7 +716,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getSolutionComponentImplementations(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getSolutionComponentImplementations</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/solution-components/{solutionComponentGUID}/implementations")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/RelatedMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RelatedMetadataElementsResponse</a></span>&nbsp;<span class="element-name">getSolutionComponentImplementations</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/omf/rest/RelatedMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">RelatedMetadataElementsResponse</a></span>&nbsp;<span class="element-name">getSolutionComponentImplementations</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,

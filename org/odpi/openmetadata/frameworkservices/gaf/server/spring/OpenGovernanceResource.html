@@ -326,19 +326,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Using the named governance action process as a template, initiate a chain of engine actions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.ConsolidatedDuplicatesRequestBody)" class="member-name-link">linkConsolidatedDuplicate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody)" class="member-name-link">linkConsolidatedDuplicate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../rest/ConsolidatedDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">ConsolidatedDuplicatesRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../omf/rest/ConsolidatedDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ConsolidatedDuplicatesRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between two elements that shows that one is a combination of a number of duplicates, and it should
  be used instead.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.PeerDuplicatesRequestBody)" class="member-name-link">linkElementsAsPeerDuplicates</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody)" class="member-name-link">linkElementsAsPeerDuplicates</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../rest/PeerDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">PeerDuplicatesRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../omf/rest/PeerDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">PeerDuplicatesRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between two elements that show they represent the same "thing".</div>
 </div>
@@ -1624,7 +1624,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.PeerDuplicatesRequestBody)">
+<section class="detail" id="linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody)">
 <h3>linkElementsAsPeerDuplicates</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/link-as-peer-duplicate")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkElementsAsPeerDuplicates</span><wbr><span class="parameters">(@PathVariable
@@ -1634,7 +1634,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
- <a href="../../rest/PeerDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">PeerDuplicatesRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../omf/rest/PeerDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">PeerDuplicatesRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a relationship between two elements that show they represent the same "thing". If the relationship already exists,
  the properties are updated.</div>
 <dl class="notes">
@@ -1652,7 +1652,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkConsolidatedDuplicate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.ConsolidatedDuplicatesRequestBody)">
+<section class="detail" id="linkConsolidatedDuplicate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody)">
 <h3>linkConsolidatedDuplicate</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/link-as-consolidated-duplicate")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkConsolidatedDuplicate</span><wbr><span class="parameters">(@PathVariable
@@ -1662,7 +1662,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
- <a href="../../rest/ConsolidatedDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">ConsolidatedDuplicatesRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../omf/rest/ConsolidatedDuplicatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ConsolidatedDuplicatesRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a relationship between two elements that shows that one is a combination of a number of duplicates, and it should
  be used instead. If the relationship already exists, the properties are updated.</div>
 <dl class="notes">

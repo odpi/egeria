@@ -523,7 +523,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a></span>&nbsp;<span class="element-name">createCatalog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</span>
-                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create catalog.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -533,7 +533,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting catalog info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -542,14 +542,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>deleteCatalog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteCatalog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  boolean&nbsp;force)</span>
-                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                   throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete catalog.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>name</code> - name of the catalog</dd>
 <dd><code>force</code> - force the deletion</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -557,7 +557,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getCatalog(java.lang.String)">
 <h3>getCatalog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a></span>&nbsp;<span class="element-name">getCatalog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span>
-                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get catalog.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -565,7 +565,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting catalog info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -573,13 +573,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="listCatalogs()">
 <h3>listCatalogs</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a>&gt;</span>&nbsp;<span class="element-name">listCatalogs</span>()
-                               throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                               throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all catalog.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>resulting catalog info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -590,7 +590,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</span>
-                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update catalog.  This call overrides all existing properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -601,7 +601,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting catalog info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -612,7 +612,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -623,7 +623,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting schema info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -632,14 +632,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>deleteSchema</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  boolean&nbsp;force)</span>
-                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                  throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>fullName</code> - fullName of the schema</dd>
 <dd><code>force</code> - force the deletion</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -647,7 +647,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getSchema(java.lang.String)">
 <h3>getSchema</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a></span>&nbsp;<span class="element-name">getSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                     throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -655,7 +655,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting schema info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -663,13 +663,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="listSchemas(java.lang.String)">
 <h3>listSchemas</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a>&gt;</span>&nbsp;<span class="element-name">listSchemas</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName)</span>
-                             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                             throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all schema.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>resulting schema info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -680,7 +680,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -691,7 +691,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting schema info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -704,7 +704,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;volumeType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageLocation)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create volume.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -717,7 +717,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting volume info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -725,7 +725,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="createVolume(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeProperties)">
 <h3>createVolume</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></span>&nbsp;<span class="element-name">createVolume</span><wbr><span class="parameters">(<a href="../properties/VolumeProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeProperties</a>&nbsp;volumeProperties)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create volume.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -733,7 +733,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting volume info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -741,13 +741,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="deleteVolume(java.lang.String)">
 <h3>deleteVolume</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteVolume</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                  throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete volume.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>fullName</code> - fullName of the volume</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -755,7 +755,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getVolume(java.lang.String)">
 <h3>getVolume</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></span>&nbsp;<span class="element-name">getVolume</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                     throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get volume.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -763,7 +763,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting volume info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -772,7 +772,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>listVolumes</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a>&gt;</span>&nbsp;<span class="element-name">listVolumes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</span>
-                             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                             throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all volumes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -781,7 +781,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting volume info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -791,7 +791,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></span>&nbsp;<span class="element-name">updateVolume</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update volume.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -801,7 +801,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting volume info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -816,7 +816,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSourceFormat,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/ColumnInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ColumnInfo</a>&gt;&nbsp;columns,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageLocation)</span>
-                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create table.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -831,7 +831,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting table info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -839,7 +839,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="createTable(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.TableProperties)">
 <h3>createTable</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a></span>&nbsp;<span class="element-name">createTable</span><wbr><span class="parameters">(<a href="../properties/TableProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableProperties</a>&nbsp;tableProperties)</span>
-                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create table.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -847,7 +847,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting table info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -855,13 +855,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="deleteTable(java.lang.String)">
 <h3>deleteTable</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                 throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete table.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>fullName</code> - fullName of the table</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -869,7 +869,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getTable(java.lang.String)">
 <h3>getTable</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a></span>&nbsp;<span class="element-name">getTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                   throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get table.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -877,7 +877,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting table info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -886,7 +886,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>listTables</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a>&gt;</span>&nbsp;<span class="element-name">listTables</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</span>
-                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                           throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all tables.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -895,7 +895,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting table info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -903,7 +903,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="createFunction(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.FunctionProperties)">
 <h3>createFunction</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/FunctionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">FunctionInfo</a></span>&nbsp;<span class="element-name">createFunction</span><wbr><span class="parameters">(<a href="../properties/FunctionProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">FunctionProperties</a>&nbsp;functionProperties)</span>
-                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                            throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create function.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -911,7 +911,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting function info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -919,13 +919,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="deleteFunction(java.lang.String)">
 <h3>deleteFunction</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteFunction</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                    throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete function.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>fullName</code> - fullName of the function</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -933,7 +933,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getFunction(java.lang.String)">
 <h3>getFunction</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/FunctionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">FunctionInfo</a></span>&nbsp;<span class="element-name">getFunction</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                         throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get function.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -941,7 +941,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting function info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -950,7 +950,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>listFunctions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/FunctionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">FunctionInfo</a>&gt;</span>&nbsp;<span class="element-name">listFunctions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</span>
-                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all functions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -959,7 +959,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting function info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -971,7 +971,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageLocation)</span>
-                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -983,7 +983,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -991,7 +991,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="createRegisteredModel(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.RegisteredModelProperties)">
 <h3>createRegisteredModel</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RegisteredModelInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">RegisteredModelInfo</a></span>&nbsp;<span class="element-name">createRegisteredModel</span><wbr><span class="parameters">(<a href="../properties/RegisteredModelProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">RegisteredModelProperties</a>&nbsp;registeredModelProperties)</span>
-                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create registered model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -999,7 +999,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting registered info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1007,13 +1007,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="deleteRegisteredModel(java.lang.String)">
 <h3>deleteRegisteredModel</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRegisteredModel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                           throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>fullName</code> - fullName of the model</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1021,7 +1021,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getRegisteredModel(java.lang.String)">
 <h3>getRegisteredModel</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RegisteredModelInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">RegisteredModelInfo</a></span>&nbsp;<span class="element-name">getRegisteredModel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get registered model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1029,7 +1029,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1038,7 +1038,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>listRegisteredModels</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RegisteredModelInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">RegisteredModelInfo</a>&gt;</span>&nbsp;<span class="element-name">listRegisteredModels</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</span>
-                                               throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                               throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all registered models.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1047,7 +1047,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1057,7 +1057,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RegisteredModelInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">RegisteredModelInfo</a></span>&nbsp;<span class="element-name">updateRegisteredModel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment)</span>
-                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update registered model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1067,7 +1067,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1075,7 +1075,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="createModelVersion(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ModelVersionProperties)">
 <h3>createModelVersion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/ModelVersionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ModelVersionInfo</a></span>&nbsp;<span class="element-name">createModelVersion</span><wbr><span class="parameters">(<a href="../properties/ModelVersionProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ModelVersionProperties</a>&nbsp;modelVersionProperties)</span>
-                                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                    throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create registered model version.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1083,7 +1083,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting registered info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1092,7 +1092,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>getModelVersion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/ModelVersionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ModelVersionInfo</a></span>&nbsp;<span class="element-name">getModelVersion</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  long&nbsp;version)</span>
-                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                 throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get registered model version.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1101,7 +1101,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1109,7 +1109,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="listModelVersions(java.lang.String)">
 <h3>listModelVersions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/ModelVersionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ModelVersionInfo</a>&gt;</span>&nbsp;<span class="element-name">listModelVersions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
-                                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                         throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get all versions of model.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1117,7 +1117,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1127,7 +1127,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/ModelVersionInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ModelVersionInfo</a></span>&nbsp;<span class="element-name">updateModelVersion</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  long&nbsp;version,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment)</span>
-                                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                                    throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update registered model version.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1137,7 +1137,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>resulting model info</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>
@@ -1146,14 +1146,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>deleteModelVersion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteModelVersion</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  long&nbsp;version)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Delete model version.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>fullName</code> - fullName of the model</dd>
 <dd><code>version</code> - version to work with</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with the call</dd>
 </dl>
 </section>
 </li>

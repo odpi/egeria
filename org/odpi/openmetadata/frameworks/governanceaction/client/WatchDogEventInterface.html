@@ -127,7 +127,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../events/WatchdogEventType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.events">WatchdogEventType</a>&gt;&nbsp;interestingEventTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;interestingMetadataTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificInstance)</span>
-               throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+               throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Register a listener to receive events about changes to metadata elements in the open metadata store.
  There can be only one registered listener.  If this method is called more than once, the new parameters
  replace the existing parameters.  This means the watchdog governance action service can change the
@@ -146,7 +146,7 @@ loadScripts(document, 'script');</script>
 <dd><code>interestingMetadataTypes</code> - types of elements that are the subject of the interesting event types</dd>
 <dd><code>specificInstance</code> - unique identifier of a specific instance to watch for</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one or more of the type names are unrecognized</dd>
+<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one or more of the type names are unrecognized</dd>
 </dl>
 </section>
 </li>

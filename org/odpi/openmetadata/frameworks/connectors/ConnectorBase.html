@@ -655,8 +655,8 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <section class="detail" id="getConnectedAssetProperties(java.lang.String)">
 <h3>getConnectedAssetProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/ConnectedAssetDetails.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectedAssetDetails</a></span>&nbsp;<span class="element-name">getConnectedAssetProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
-                                                  throws <span class="exceptions"><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                                  throws <span class="exceptions"><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
  metadata repository and cached in the ConnectedAssetDetails object each time the getConnectedAssetProperties
  method is requested by the caller.   Once the ConnectedAssetDetails object has the metadata cached, it can be
@@ -670,8 +670,8 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <dt>Returns:</dt>
 <dd>ConnectedAssetDetails   connected asset properties</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - indicates a problem retrieving properties from a metadata repository</dd>
-<dd><code><a href="ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - indicates that the user is not authorized to access the asset properties.</dd>
+<dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - indicates a problem retrieving properties from a metadata repository</dd>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - indicates that the user is not authorized to access the asset properties.</dd>
 </dl>
 </section>
 </li>
@@ -836,7 +836,7 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <h3>getDateConfigurationProperty</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getDateConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span>
-                                     throws <span class="exceptions"><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+                                     throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Retrieve a configuration property that is a string formatted date or null if not set.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -845,7 +845,7 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <dt>Returns:</dt>
 <dd>string value of property or null if not supplied</dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code></dd>
 </dl>
 </section>
 </li>
