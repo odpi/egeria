@@ -84,7 +84,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">GlossaryTermDefinition</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a>&gt;</span></div>
-<div class="block">The GlossaryTermDefinition is used to populate the teddy bear drop foot glossary.</div>
+<div class="block">The GlossaryTermDefinition is used to populate the teddy bear drop foot glossary.  Because these glossary terms are
+ used in templates, two versions of each term are produced - the first is the pure term and the second is a
+ template substitute that is used in templates - to ensure that semantic assignments to the template elements are kept
+ apart from the genuine semantic assignments.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,13 +116,29 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The number of degrees of rotation of the right foot measured from vertical.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MEASUREMENT_DATE" class="member-name-link">MEASUREMENT_DATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#BLOOD_PRESSURE" class="member-name-link">BLOOD_PRESSURE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Blood pressure of patient (systolic and diastolic).</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATE_OF_BIRTH" class="member-name-link">DATE_OF_BIRTH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Day, month and year that the patient was born.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#HEIGHT" class="member-name-link">HEIGHT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Height of patient.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MEASUREMENT_DATE" class="member-name-link">MEASUREMENT_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The date that the measurement was made.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PATIENT_IDENTIFIER" class="member-name-link">PATIENT_IDENTIFIER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PATIENT_IDENTIFIER" class="member-name-link">PATIENT_IDENTIFIER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier of patient.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#WEIGHT" class="member-name-link">WEIGHT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Weight of patient.</div>
 </div>
 </div>
 </section>
@@ -137,50 +156,77 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAbbreviation()" class="member-name-link">getAbbreviation</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the short name (abbreviation) for the glossary term.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GlossaryCategoryDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryCategoryDefinition</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCategory()" class="member-name-link">getCategory</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the category for the main term - may be null.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the description for this glossary term.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the main term.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSummary()" class="member-name-link">getSummary</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteName()" class="member-name-link">getTemplateSubstituteName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteQualifiedName()" class="member-name-link">getTemplateSubstituteQualifiedName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteSummary()" class="member-name-link">getTemplateSubstituteSummary</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteUsage()" class="member-name-link">getTemplateSubstituteUsage</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsage()" class="member-name-link">getUsage</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Qualified name of the main glossary term.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GlossaryCategoryDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryCategoryDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubstituteCategory()" class="member-name-link">getSubstituteCategory</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the standard category for the template substitute.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSummary()" class="member-name-link">getSummary</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the summary for the main term.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteName()" class="member-name-link">getTemplateSubstituteName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the template substitute term.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteQualifiedName()" class="member-name-link">getTemplateSubstituteQualifiedName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the qualified name for the template substitute.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteSummary()" class="member-name-link">getTemplateSubstituteSummary</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the summary for the template substitute.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateSubstituteUsage()" class="member-name-link">getTemplateSubstituteUsage</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the usage of the template substitute term.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsage()" class="member-name-link">getUsage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The usage for the main term.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -209,6 +255,34 @@ the order they are declared.</div>
 <h3>PATIENT_IDENTIFIER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></span>&nbsp;<span class="element-name">PATIENT_IDENTIFIER</span></div>
 <div class="block">Unique identifier of patient.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATE_OF_BIRTH">
+<h3>DATE_OF_BIRTH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></span>&nbsp;<span class="element-name">DATE_OF_BIRTH</span></div>
+<div class="block">Day, month and year that the patient was born.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HEIGHT">
+<h3>HEIGHT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></span>&nbsp;<span class="element-name">HEIGHT</span></div>
+<div class="block">Height of patient.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="WEIGHT">
+<h3>WEIGHT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></span>&nbsp;<span class="element-name">WEIGHT</span></div>
+<div class="block">Weight of patient.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BLOOD_PRESSURE">
+<h3>BLOOD_PRESSURE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></span>&nbsp;<span class="element-name">BLOOD_PRESSURE</span></div>
+<div class="block">Blood pressure of patient (systolic and diastolic).</div>
 </section>
 </li>
 <li>
@@ -275,66 +349,132 @@ not permitted.)</div>
 <section class="detail" id="getQualifiedName()">
 <h3>getQualifiedName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
+<div class="block">Qualified name of the main glossary term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getTemplateSubstituteQualifiedName()">
 <h3>getTemplateSubstituteQualifiedName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateSubstituteQualifiedName</span>()</div>
+<div class="block">Return the qualified name for the template substitute.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getName()">
 <h3>getName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
+<div class="block">Return the name of the main term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getTemplateSubstituteName()">
 <h3>getTemplateSubstituteName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateSubstituteName</span>()</div>
+<div class="block">Return the name of the template substitute term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSummary()">
 <h3>getSummary</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSummary</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getUsage()">
-<h3>getUsage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUsage</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getTemplateSubstituteUsage()">
-<h3>getTemplateSubstituteUsage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateSubstituteUsage</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getDescription()">
-<h3>getDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
+<div class="block">Return the summary for the main term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getTemplateSubstituteSummary()">
 <h3>getTemplateSubstituteSummary</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateSubstituteSummary</span>()</div>
+<div class="block">Return the summary for the template substitute.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUsage()">
+<h3>getUsage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUsage</span>()</div>
+<div class="block">The usage for the main term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTemplateSubstituteUsage()">
+<h3>getTemplateSubstituteUsage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTemplateSubstituteUsage</span>()</div>
+<div class="block">Return the usage of the template substitute term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDescription()">
+<h3>getDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
+<div class="block">Return the description for this glossary term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getAbbreviation()">
 <h3>getAbbreviation</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAbbreviation</span>()</div>
+<div class="block">Return the short name (abbreviation) for the glossary term.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getCategory()">
 <h3>getCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="GlossaryCategoryDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryCategoryDefinition</a></span>&nbsp;<span class="element-name">getCategory</span>()</div>
+<div class="block">Return the category for the main term - may be null.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>category definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSubstituteCategory()">
+<h3>getSubstituteCategory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="GlossaryCategoryDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryCategoryDefinition</a></span>&nbsp;<span class="element-name">getSubstituteCategory</span>()</div>
+<div class="block">Return the standard category for the template substitute.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>category definition</dd>
+</dl>
 </section>
 </li>
 <li>
