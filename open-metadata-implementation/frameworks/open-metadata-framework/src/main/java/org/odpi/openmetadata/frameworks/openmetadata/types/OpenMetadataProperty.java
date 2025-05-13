@@ -458,7 +458,12 @@ public enum OpenMetadataProperty
     /**
      * The name of a primitive data type.
      */
-    DATA_TYPE("dataType", DataType.STRING.getName(), "The name of a primitive data type.", null, "50e73f9f-10a0-4b41-9cb6-bf55630f3734"),
+    DATA_TYPE("dataType", DataType.STRING.getName(), "The name of a primitive data type.", "string", "50e73f9f-10a0-4b41-9cb6-bf55630f3734"),
+
+    /**
+     * The units of measure used in the data field.
+     */
+    UNITS("units", DataType.STRING.getName(), "The units of measure used in the data field.", "centimetres", "a62374e7-c4b9-4b5e-871d-d7bcf72faf4c"),
 
     /**
      * Value that is used when an instance of the data field is created.

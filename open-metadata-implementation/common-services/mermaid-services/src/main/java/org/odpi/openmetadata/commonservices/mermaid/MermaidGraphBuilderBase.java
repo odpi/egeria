@@ -134,7 +134,7 @@ public class MermaidGraphBuilderBase
                 {
                     appendMermaidDottedLine(null,
                                             anchorGUID,
-                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                            "Anchor for",
                                             anchoredElement);
                 }
             }
@@ -144,7 +144,7 @@ public class MermaidGraphBuilderBase
                 {
                     appendMermaidDottedLine(null,
                                             anchorGUID,
-                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                            "Anchor for",
                                             anchoredElement);
                 }
             }
@@ -153,7 +153,7 @@ public class MermaidGraphBuilderBase
 
 
     /**
-     * Switch the visual style of an element if the Memento or Template classification is set.
+     * Switch the visual style of an element if the Memento or Template/TemplateSubstitute classification is set.
      *
      * @param elementHeader header of element
      * @param defaultVisualStyle normal visual style for element
@@ -173,6 +173,10 @@ public class MermaidGraphBuilderBase
                         return VisualStyle.MEMENTO;
                     }
                     else if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                    {
+                        return VisualStyle.TEMPLATE;
+                    }
+                    else if (OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
                     {
                         return VisualStyle.TEMPLATE;
                     }
@@ -953,7 +957,7 @@ public class MermaidGraphBuilderBase
         {
             appendNewMermaidNode(relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
                                  this.getNodeDisplayName(relatedMetadataElement.getRelatedElement()),
-                                 relatedMetadataElement.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                 this.addSpacesToTypeName(relatedMetadataElement.getRelatedElement().getElementHeader().getType().getTypeName()),
                                  this.checkForClassifications(relatedMetadataElement.getRelatedElement().getElementHeader(), visualStyle));
 
             String label = null;
@@ -972,7 +976,7 @@ public class MermaidGraphBuilderBase
 
             if (label == null)
             {
-                label = relatedMetadataElement.getRelationshipHeader().getType().getTypeName();
+                label = this.addSpacesToTypeName(relatedMetadataElement.getRelationshipHeader().getType().getTypeName());
             }
 
             appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
@@ -1019,7 +1023,7 @@ public class MermaidGraphBuilderBase
         {
             appendNewMermaidNode(relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
                                  this.getNodeDisplayName(relatedMetadataElement.getRelatedElement()),
-                                 relatedMetadataElement.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                 this.addSpacesToTypeName(relatedMetadataElement.getRelatedElement().getElementHeader().getType().getTypeName()),
                                  this.checkForClassifications(relatedMetadataElement.getRelatedElement().getElementHeader(), visualStyle));
 
             String label = null;
@@ -1038,7 +1042,7 @@ public class MermaidGraphBuilderBase
 
             if (label == null)
             {
-                label = relatedMetadataElement.getRelationshipHeader().getType().getTypeName();
+                label = this.addSpacesToTypeName(relatedMetadataElement.getRelationshipHeader().getType().getTypeName());
             }
 
             appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),

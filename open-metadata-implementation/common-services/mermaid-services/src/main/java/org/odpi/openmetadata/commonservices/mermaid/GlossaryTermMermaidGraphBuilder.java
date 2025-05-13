@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -32,8 +33,6 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         if (glossaryTermElement != null)
         {
-            this.addDescription(glossaryTermElement);
-
             String currentDisplayName = glossaryTermElement.getGlossaryTermProperties().getDisplayName();
 
             if (currentDisplayName == null)
@@ -43,16 +42,81 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
 
             super.appendNewMermaidNode(glossaryTermElement.getElementHeader().getGUID(),
                                        currentDisplayName,
-                                       glossaryTermElement.getElementHeader().getType().getTypeName(),
+                                       super.addSpacesToTypeName(glossaryTermElement.getElementHeader().getType().getTypeName()),
                                        checkForClassifications(glossaryTermElement.getElementHeader(), VisualStyle.GLOSSARY_TERM));
 
-            super.addRelatedFromElementSummaries(glossaryTermElement.getCategoryMembership(), VisualStyle.GLOSSARY_CATEGORY, glossaryTermElement.getElementHeader().getGUID());
+            this.addDescription(glossaryTermElement);
 
             super.addRelatedToElementSummaries(glossaryTermElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryTermElement.getElementHeader().getGUID());
             super.addRelatedFromElementSummaries(glossaryTermElement.getRelatedDefinitions(), VisualStyle.DATA_FIELD, glossaryTermElement.getElementHeader().getGUID());
-            super.addRelatedFromElementSummaries(glossaryTermElement.getSemanticAssignments(), VisualStyle.LINKED_ELEMENT, glossaryTermElement.getElementHeader().getGUID());
             super.addRelatedToElementSummaries(glossaryTermElement.getRelatedToTerms(), VisualStyle.GLOSSARY_TERM, glossaryTermElement.getElementHeader().getGUID());
             super.addRelatedFromElementSummaries(glossaryTermElement.getRelatedFromTerms(), VisualStyle.GLOSSARY_TERM, glossaryTermElement.getElementHeader().getGUID());
+
+            if (glossaryTermElement.getSemanticAssignments() != null)
+            {
+                for (RelatedMetadataElementSummary assignee : glossaryTermElement.getSemanticAssignments())
+                {
+                    if (assignee != null)
+                    {
+                        super.appendNewMermaidNode(assignee.getRelatedElement().getElementHeader().getGUID(),
+                                                   super.getNodeDisplayName(assignee.getRelatedElement()),
+                                                   assignee.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                   checkForClassifications(glossaryTermElement.getElementHeader(), VisualStyle.LINKED_ELEMENT));
+
+                        super.appendMermaidLongAnimatedLine(assignee.getRelationshipHeader().getGUID(),
+                                                            glossaryTermElement.getElementHeader().getGUID(),
+                                                            super.addSpacesToTypeName(assignee.getRelationshipHeader().getType().getTypeName()),
+                                                            assignee.getRelatedElement().getElementHeader().getGUID());
+
+                        if (assignee.getRelatedElement().getElementHeader().getClassifications() != null)
+                        {
+                            for (ElementClassification classification : assignee.getRelatedElement().getElementHeader().getClassifications())
+                            {
+                                if (classification != null)
+                                {
+                                    if (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                                    {
+                                        if (classification.getClassificationProperties() != null)
+                                        {
+                                            if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name) != null)
+                                            {
+                                                String anchorGUID = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+
+                                                if ((anchorGUID != null) && (! anchorGUID.equals(assignee.getRelatedElement().getElementHeader().getGUID())))
+                                                {
+                                                    String anchorTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+
+                                                    if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name) != null)
+                                                    {
+                                                        anchorTypeName = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_TYPE_NAME.name).toString();
+                                                    }
+                                                    else if (classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name) != null)
+                                                    {
+                                                        /*
+                                                         * Try to narrow down the type of the anchor since its actual type is not defined
+                                                         */
+                                                        anchorTypeName = classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name).toString();
+                                                    }
+
+                                                    super.appendNewMermaidNode(anchorGUID,
+                                                                               anchorGUID,
+                                                                               super.addSpacesToTypeName(anchorTypeName),
+                                                                               checkForClassifications(glossaryTermElement.getElementHeader(), VisualStyle.ANCHOR_ELEMENT));
+
+                                                    super.appendMermaidDottedLine(assignee.getRelationshipHeader().getGUID() + "_Anchor",
+                                                                                  assignee.getRelatedElement().getElementHeader().getGUID(),
+                                                                                  "Anchored to",
+                                                                                  anchorGUID);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             super.addRelatedToElementSummaries(glossaryTermElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryTermElement.getElementHeader().getGUID());
         }
@@ -66,34 +130,11 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
      */
     private void addDescription(GlossaryTermElement glossaryTermElement)
     {
+        final String termDetails = "Term Details";
+
         if (glossaryTermElement.getGlossaryTermProperties() != null)
         {
-            super.startSubgraph("Term Details", VisualStyle.DESCRIPTION);
-
-            String lastNodeName = null;
-
-            if (glossaryTermElement.getGlossaryTermProperties().getAliases() != null)
-            {
-                for (String alias : glossaryTermElement.getGlossaryTermProperties().getAliases())
-                {
-                    if (alias != null)
-                    {
-                        String descriptionNodeName = UUID.randomUUID().toString();
-
-                        appendNewMermaidNode(descriptionNodeName,
-                                             alias,
-                                             "Alias",
-                                             VisualStyle.DESCRIPTION);
-
-                        if (lastNodeName != null)
-                        {
-                            appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                        }
-
-                        lastNodeName = descriptionNodeName;
-                    }
-                }
-            }
+            super.startSubgraph(termDetails, VisualStyle.DESCRIPTION);
 
             if (glossaryTermElement.getGlossaryTermProperties().getSummary() != null)
             {
@@ -104,15 +145,9 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                                      "Summary",
                                      VisualStyle.DESCRIPTION);
 
-                if (lastNodeName != null)
-                {
-                    appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-
-                lastNodeName = descriptionNodeName;
+                appendInvisibleMermaidLine(descriptionNodeName, glossaryTermElement.getElementHeader().getGUID());
             }
-
-            if (glossaryTermElement.getGlossaryTermProperties().getDescription() != null)
+            else if (glossaryTermElement.getGlossaryTermProperties().getDescription() != null)
             {
                 String descriptionNodeName = UUID.randomUUID().toString();
 
@@ -121,61 +156,7 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                                      "Description",
                                      VisualStyle.DESCRIPTION);
 
-                if (lastNodeName != null)
-                {
-                    appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-
-                lastNodeName = descriptionNodeName;
-            }
-
-            if (glossaryTermElement.getGlossaryTermProperties().getAbbreviation() != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     glossaryTermElement.getGlossaryTermProperties().getAbbreviation(),
-                                     "Abbreviation",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-
-                lastNodeName = descriptionNodeName;
-            }
-
-            if (glossaryTermElement.getGlossaryTermProperties().getExamples() != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     glossaryTermElement.getGlossaryTermProperties().getExamples(),
-                                     "Examples",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-
-                lastNodeName = descriptionNodeName;
-            }
-
-            if (glossaryTermElement.getGlossaryTermProperties().getUsage() != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     glossaryTermElement.getGlossaryTermProperties().getUsage(),
-                                     "Usage",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
+                appendInvisibleMermaidLine(descriptionNodeName, glossaryTermElement.getElementHeader().getGUID());
             }
 
             super.endSubgraph();
@@ -228,8 +209,15 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendMermaidDottedLine(null,
                                             parentCategoryNodeName,
                                             null,
-                                            glossaryTermElement.getElementHeader().getGUID());
+                                            termDetails);
                 }
+            }
+            else
+            {
+                appendMermaidDottedLine(null,
+                                        glossaryNodeName,
+                                        null,
+                                        termDetails);
             }
         }
     }

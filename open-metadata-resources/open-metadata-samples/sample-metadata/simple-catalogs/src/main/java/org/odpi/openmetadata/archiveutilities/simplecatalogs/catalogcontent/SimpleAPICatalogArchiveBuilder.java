@@ -154,7 +154,9 @@ public class SimpleAPICatalogArchiveBuilder
                                                                        null,
                                                                        null);
 
-        String apiOperationGUID = archiveHelper.addAPIOperation(apiSchemaTypeGUID,
+        String apiOperationGUID = archiveHelper.addAPIOperation(assetGUID,
+                                                                apiAssetTypeName,
+                                                                apiSchemaTypeGUID,
                                                                 getCustomerQualifiedName,
                                                                 getCustomerDisplayName,
                                                                 getCustomerDescription,
@@ -162,7 +164,9 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 getCustomerCommand,
                                                                 null);
 
-        String requestGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
+        String requestGUID = archiveHelper.addAPIParameterList(assetGUID,
+                                                               apiAssetTypeName,
+                                                               apiOperationGUID,
                                                                OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
                                                                getCustomerQualifiedName + "_request",
                                                                getCustomerDisplayName + " Request Parameter List",
@@ -184,7 +188,9 @@ public class SimpleAPICatalogArchiveBuilder
 
         archiveHelper.addAttributeForSchemaType(requestGUID, 1, 1, 1, parameterGUID);
 
-        String responseGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
+        String responseGUID = archiveHelper.addAPIParameterList(assetGUID,
+                                                                apiAssetTypeName,
+                                                                apiOperationGUID,
                                                                 OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
                                                                 getCustomerQualifiedName + "_response",
                                                                 getCustomerDisplayName + " Response Parameter List",

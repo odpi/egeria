@@ -3863,6 +3863,27 @@ public class OpenMetadataConverterBase<B>
         return null;
     }
 
+    /**
+     * Extract and delete the units property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeUnits(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.UNITS.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the defaultValue property from the supplied element properties.

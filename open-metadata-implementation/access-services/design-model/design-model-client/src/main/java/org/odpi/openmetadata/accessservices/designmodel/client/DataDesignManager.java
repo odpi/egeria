@@ -2233,6 +2233,10 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                  OpenMetadataProperty.DATA_TYPE.name,
                                                                  properties.getDataType());
 
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.UNITS.name,
+                                                                 properties.getUnits());
+
             elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                               OpenMetadataProperty.MINIMUM_LENGTH.name,
                                                               properties.getMinimumLength());
