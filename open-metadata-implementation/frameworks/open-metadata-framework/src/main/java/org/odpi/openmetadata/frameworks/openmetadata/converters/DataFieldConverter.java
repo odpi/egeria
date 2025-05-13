@@ -112,6 +112,8 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
             dataFieldProperties.setDefaultValue(this.removeDefaultValue(elementProperties));
             dataFieldProperties.setIsNullable(this.removeIsNullable(elementProperties));
             dataFieldProperties.setIsDeprecated(this.removeIsDeprecated(elementProperties));
+            dataFieldProperties.setDataType(this.removeDataType(elementProperties));
+            dataFieldProperties.setUnits(this.removeUnits(elementProperties));
             dataFieldProperties.setMinimumLength(this.removeMinimumLength(elementProperties));
             dataFieldProperties.setLength(this.removeLength(elementProperties));
             dataFieldProperties.setPrecision(this.removePrecision(elementProperties));

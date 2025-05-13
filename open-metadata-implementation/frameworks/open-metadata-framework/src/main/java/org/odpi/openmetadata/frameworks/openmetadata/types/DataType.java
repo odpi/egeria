@@ -81,7 +81,7 @@ public enum DataType implements OpenMetadataEnum
     ARRAY_STRING(9, "8e3dad3b-9590-4903-b2d0-3e549b8e1cb9", "array<string>", "An ordered list of strings.", false),
 
     /**
-     * An ordered list of strings.
+     * An ordered list of integers.
      */
     ARRAY_INT(10, "fed660e8-f43b-459a-8d6e-76be1117a573", "array<int>", "An ordered list of integers.", false),
 

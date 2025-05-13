@@ -262,6 +262,29 @@ public enum CocoSubjectAreaDefinition
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Education on the terminology associated with a governance domain",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
+
+
+    /**
+     * Product Development - information relating to the Coco Pharmaceuticals' product development initiatives.
+     */
+    PRODUCT_DEVELOPMENT("ProductDevelopment",
+               null,
+               "Product Development",
+               "Information relating to the Coco Pharmaceuticals' treatment development initiatives.",
+               "Within research and the board.",
+               "Coordinating and regulating data during the development of new treatments",
+               GovernanceDomainDefinition.ALL.getDomainIdentifier()),
+
+    /**
+     * Clinical Trial - Coordinating and regulating data during a clinical trial.
+     */
+    CLINICAL_TRIAL("ProductDevelopment:ClinicalTrial",
+                    CocoSubjectAreaDefinition.PRODUCT_DEVELOPMENT,
+                    "Clinical Trial",
+                        "Information relating to the clinical trials run to support Coco Pharmaceuticals' product development initiatives.",
+                        "Within research and the board.",
+                        "Coordinating and regulating data during a clinical trial.",
+                        GovernanceDomainDefinition.ALL.getDomainIdentifier()),
     ;
 
 

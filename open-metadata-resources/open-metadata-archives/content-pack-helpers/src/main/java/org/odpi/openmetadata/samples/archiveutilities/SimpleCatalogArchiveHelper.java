@@ -3943,6 +3943,8 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create the schema type for an API operation.
      *
+     * @param assetGUID anchor guid
+     * @param assetTypeName anchor type name
      * @param apiSchemaTypeGUID unique identifier of top level schemaType
      * @param qualifiedName unique name for the schema type
      * @param displayName display name for the schema type
@@ -3953,7 +3955,9 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the schemaType
      */
-    public String addAPIOperation(String              apiSchemaTypeGUID,
+    public String addAPIOperation(String              assetGUID,
+                                  String              assetTypeName,
+                                  String              apiSchemaTypeGUID,
                                   String              qualifiedName,
                                   String              displayName,
                                   String              description,
@@ -3970,11 +3974,20 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COMMAND.name, command, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = null;
+
+        if (assetGUID != null)
+        {
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        }
+
         EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(OpenMetadataType.API_OPERATION.typeName,
                                                                       idToGUIDMap.getGUID(qualifiedName),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
-                                                                      null);
+                                                                      classifications);
 
         archiveBuilder.addEntity(schemaTypeEntity);
 
@@ -4000,6 +4013,8 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a parameter list schema type for an API operation.
      *
+     * @param assetGUID anchor guid
+     * @param assetTypeName anchor type name
      * @param apiOperationGUID unique identifier of top level schemaType
      * @param relationshipTypeName name of relationship type - default is APIRequest
      * @param qualifiedName unique name for the schema type
@@ -4010,7 +4025,9 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the schemaType
      */
-    public String addAPIParameterList(String              apiOperationGUID,
+    public String addAPIParameterList(String              assetGUID,
+                                      String              assetTypeName,
+                                      String              apiOperationGUID,
                                       String              relationshipTypeName,
                                       String              qualifiedName,
                                       String              displayName,
@@ -4033,11 +4050,20 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUIRED.name, required, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = null;
+
+        if (assetGUID != null)
+        {
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        }
+
         EntityDetail parameterListEntity = archiveHelper.getEntityDetail(OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                                          idToGUIDMap.getGUID(qualifiedName),
                                                                          properties,
                                                                          InstanceStatus.ACTIVE,
-                                                                         null);
+                                                                         classifications);
 
         archiveBuilder.addEntity(parameterListEntity);
 

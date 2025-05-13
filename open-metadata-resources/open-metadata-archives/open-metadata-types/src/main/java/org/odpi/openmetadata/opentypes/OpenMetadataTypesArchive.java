@@ -485,6 +485,7 @@ public class OpenMetadataTypesArchive
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UNITS));
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_LENGTH));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LENGTH));
