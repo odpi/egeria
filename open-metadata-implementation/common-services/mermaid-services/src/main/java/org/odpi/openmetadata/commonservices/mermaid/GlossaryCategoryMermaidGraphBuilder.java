@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -43,7 +42,7 @@ public class GlossaryCategoryMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.appendNewMermaidNode(glossaryCategoryElement.getElementHeader().getGUID(),
                                        currentDisplayName,
                                        glossaryCategoryElement.getElementHeader().getType().getTypeName(),
-                                       checkForClassifications(glossaryCategoryElement.getElementHeader(), VisualStyle.GLOSSARY_CATEGORY));
+                                       getVisualStyleForEntity(glossaryCategoryElement.getElementHeader(), VisualStyle.GLOSSARY_CATEGORY));
 
             this.addDescription(glossaryCategoryElement);
 
@@ -51,7 +50,7 @@ public class GlossaryCategoryMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.addRelatedToElementSummaries(glossaryCategoryElement.getChildCategories(), VisualStyle.GLOSSARY_CATEGORY, glossaryCategoryElement.getElementHeader().getGUID());
             super.addRelatedToElementSummaries(glossaryCategoryElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryCategoryElement.getElementHeader().getGUID());
 
-            if (glossaryCategoryElement.getTerms() != null)
+            if ((glossaryCategoryElement.getTerms() != null) && (! glossaryCategoryElement.getTerms().isEmpty()))
             {
                 /*
                  * Build a grid of elements in a subgraph
@@ -63,25 +62,28 @@ public class GlossaryCategoryMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                 for (RelatedMetadataElementSummary term : glossaryCategoryElement.getTerms())
                 {
-                    appendNewMermaidNode(term.getRelatedElement().getElementHeader().getGUID(),
-                                         super.getNodeDisplayName(term.getRelatedElement()),
-                                         super.addSpacesToTypeName(term.getRelatedElement().getElementHeader().getType().getTypeName()),
-                                         super.checkForClassifications(term.getRelatedElement().getElementHeader(), VisualStyle.GLOSSARY_TERM));
-
-                    if (nodeIds[nodePointer] != null)
+                    if (term != null)
                     {
-                        appendInvisibleMermaidLine(nodeIds[nodePointer], term.getRelatedElement().getElementHeader().getGUID());
-                    }
+                        appendNewMermaidNode(term.getRelatedElement().getElementHeader().getGUID(),
+                                             super.getNodeDisplayName(term.getRelatedElement()),
+                                             super.getTypeNameForEntity(term.getRelatedElement().getElementHeader()),
+                                             super.getVisualStyleForEntity(term.getRelatedElement().getElementHeader(), VisualStyle.GLOSSARY_TERM));
 
-                    nodeIds[nodePointer] = term.getRelatedElement().getElementHeader().getGUID();
+                        if (nodeIds[nodePointer] != null)
+                        {
+                            appendInvisibleMermaidLine(nodeIds[nodePointer], term.getRelatedElement().getElementHeader().getGUID());
+                        }
 
-                    if (nodePointer == 9)
-                    {
-                        nodePointer = 0;
-                    }
-                    else
-                    {
-                        nodePointer++;
+                        nodeIds[nodePointer] = term.getRelatedElement().getElementHeader().getGUID();
+
+                        if (nodePointer == 9)
+                        {
+                            nodePointer = 0;
+                        }
+                        else
+                        {
+                            nodePointer++;
+                        }
                     }
                 }
 

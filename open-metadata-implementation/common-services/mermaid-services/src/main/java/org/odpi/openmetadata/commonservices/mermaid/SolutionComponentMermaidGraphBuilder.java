@@ -80,7 +80,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendNewMermaidNode(segmentName,
                                              segmentDisplayName,
                                              informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             checkForClassifications(informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader(),
+                                             getVisualStyleForEntity(informationSupplyChainContext.linkedSegment().getRelatedElement().getElementHeader(),
                                                                      VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG));
 
                         appendMermaidLine(informationSupplyChainContext.linkedSegment().getRelationshipHeader().getGUID(),
@@ -99,7 +99,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendNewMermaidNode(iscName,
                                              iscDisplayName,
                                              informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             checkForClassifications(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader(),
+                                             getVisualStyleForEntity(informationSupplyChainContext.owningInformationSupplyChain().getRelatedElement().getElementHeader(),
                                                                      VisualStyle.INFORMATION_SUPPLY_CHAIN));
 
                         appendMermaidLine(informationSupplyChainContext.owningInformationSupplyChain().getRelationshipHeader().getGUID(),

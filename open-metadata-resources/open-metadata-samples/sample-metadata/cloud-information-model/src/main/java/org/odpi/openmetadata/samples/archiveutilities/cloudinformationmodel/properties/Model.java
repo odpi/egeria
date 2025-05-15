@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +12,12 @@ public class Model
 {
     private String                           modelName              = null;
     private String                           modelTechnicalName     = null;
+    private String                           modelSummary           = null;
     private String                           modelDescription       = null;
     private String                           modelLocation          = null;
     private String                           modelScope             = null;
     private String                           modelLanguage          = null;
+    private String                           modelUsage             = null;
     private Map<String, SubjectArea>         subjectAreaMap         = null;
     private Map<String, Concept>             conceptBeadMap         = null;
     private Map<String, PropertyDescription> propertyDescriptionMap = null;
@@ -49,6 +50,17 @@ public class Model
     }
 
 
+    public String getModelSummary()
+    {
+        return modelSummary;
+    }
+
+    public void setModelSummary(String modelSummary)
+    {
+        this.modelSummary = modelSummary;
+    }
+
+
     public String getModelDescription()
     {
         return modelDescription;
@@ -60,6 +72,15 @@ public class Model
         this.modelDescription = modelDescription;
     }
 
+    public String getModelUsage()
+    {
+        return modelUsage;
+    }
+
+    public void setModelUsage(String modelUsage)
+    {
+        this.modelUsage = modelUsage;
+    }
 
     public String getModelLocation()
     {

@@ -562,7 +562,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Convert the returned glossary category entities into a list of glossary term elements.
+     * Convert the returned glossary category entities into a list of glossary category elements.
      *
      * @param userId calling user
      * @param relatedCategories list of entities returned
@@ -603,7 +603,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Convert the returned glossary term entity into an element.
+     * Convert the returned glossary category entities into an element.
      *
      * @param userId calling user
      * @param categoryEntities entities returned
@@ -643,7 +643,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Convert the returned glossary term entity into an element.
+     * Convert the returned glossary category entity into an element.
      *
      * @param userId calling user
      * @param categoryEntity entity returned

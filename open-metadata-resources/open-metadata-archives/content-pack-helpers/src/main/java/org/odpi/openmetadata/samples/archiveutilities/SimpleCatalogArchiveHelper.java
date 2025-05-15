@@ -2026,7 +2026,7 @@ public class SimpleCatalogArchiveHelper
      * @param otherClassifications additional classifications for the collection (eg Template)
      * @param extendedProperties additional properties defined in the subtype
      *
-     * @return unique identifier for subject area (collectionGUID)
+     * @return unique identifier for collection (collectionGUID)
      */
     public String addCollection(String               suppliedTypeName,
                                 String               anchorGUID,
@@ -2053,13 +2053,13 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = otherClassifications;
 
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
+
         if (classificationName != null)
         {
-            if (classifications == null)
-            {
-                classifications = new ArrayList<>();
-            }
-
             Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
 
             classifications.add(classification);
@@ -2118,6 +2118,122 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(collectionGUID + "_to_" + memberGUID + "_collection_membership_relationship"),
                                                                      properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a data field entity.
+     *
+     * @param suppliedTypeName type of data field
+     * @param anchorGUID unique identifier of the anchor for the data field - if null then own anchor
+     * @param anchorTypeName unique type name of the anchor for the data field
+     * @param anchorDomainName unique type name of the anchor's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
+     * @param classificationName name of classification to attach
+     * @param qualifiedName unique name for the data field entity
+     * @param displayName display name for the data field
+     * @param description description about the data field
+     * @param versionIdentifier version
+     * @param dataType logical data type
+     * @param namespace type of data field
+     * @param additionalProperties any other properties
+     * @param otherClassifications additional classifications for the data field (eg Template)
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for data field (dataFieldGUID)
+     */
+    public String addDataField(String               suppliedTypeName,
+                               String               anchorGUID,
+                               String               anchorTypeName,
+                               String               anchorDomainName,
+                               String               anchorScopeGUID,
+                               String               classificationName,
+                               String               qualifiedName,
+                               String               displayName,
+                               String               description,
+                               String               versionIdentifier,
+                               String               namespace,
+                               String               dataType,
+                               Map<String, String>  additionalProperties,
+                               List<Classification> otherClassifications,
+                               Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addDataField";
+
+        String typeName = OpenMetadataType.DATA_FIELD.typeName;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        List<Classification> classifications = otherClassifications;
+
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
+
+        if (classificationName != null)
+        {
+            Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+        }
+
+        if (anchorTypeName != null)
+        {
+            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_TYPE.name, dataType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               classifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+
+    /**
+     * Link a term to a data definition using the SemanticDefinition relationship (0370).
+     *
+     * @param referenceableGUID unique identifier of the referenceable
+     * @param termGUID unique identifier of the term
+     */
+    public void addSemanticDefinition(String referenceableGUID,
+                                      String termGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(referenceableGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(termGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + termGUID + "_semantic_definition_relationship"),
+                                                                     null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
