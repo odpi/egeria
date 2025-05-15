@@ -13,26 +13,48 @@ public enum Colour
     CERISE      ("#AA00FF"),
     EGERIA_BLUE ("#39add1"),
     DARK_BLUE   ("#3079ab"),
-    CORNFLOWER_BLUE   ("#6495ed"),
+    CORNFLOWER_BLUE  ("#6495ed"),
     BLUE_SKY    ("#A8C2FF"),
+    POWDER_BLUE("#b0e0e6"),
     LIGHT_BLUE  ("#CCE5FF"),
+    STEEL_BLUE  ("#04682b4"),
+    LIGHT_STEEL_BLUE("#b0c4de"),
     PALE_TURQUOISE("#afeeee"),
     LIGHT_AQUA  ("#CCFFFF"),
+    TURQUOISE   ("#53bbb4"),
+    MEDIUM_AQUAMARINE("#66cdaa"),
+    TEAL        ("#008080"),
+
+
     LIGHT_YELLOW("#FFFFCC"),
+
+    RED         ("#e15258"),
+
+
     ROSY_BROWN  ("#bc8f8f"),
     PINKY       ("#E1D5E7"),
     DUSKY_ROSE  ("#B5739D"),
     MAUVE       ("#EFEFFF"),
-    RED         ("#e15258"),
     LAVENDER    ("#838cc7"),
     PLUM        ("#dda0dd"),
-    LIGHT_STEEL_BLUE("#b0c4de"),
     PURPLE      ("#7d669e"),
-    TURQUOISE   ("#53bbb4"),
-    MEDIUM_AQUAMARINE("#66cdaa"),
-    TEAL        ("#008080"),
-    GREEN       ("#51b46d"),
-    LIGHT_GREEN ("#B9E0A5"),
+
+
+    DARK_GREEN  ("#006400"),
+    GREEN       ("#008000"),
+    LIGHT_GREEN ("#90ee90"),
+    LIME        ("#00ff00"),
+
+    LIME_GREEN("#32cd32"),
+    FOREST_GREEN("#228b22"),
+    DARK_SEA_GREEN("#8fbc8f"),
+    SEA_GREEN("#2e8b57"),
+    MEDIUM_SEA_GREEN("#3cb371"),
+    SPRING_GREEN("#00ff7f"),
+    MINT_CREAM("#f5fffa"),
+
+    BURLY_WOOD  ("#deb887"),
+    CHOCOLATE   ("#d2691e"),
 
     MUSTARD     ("#e0ab18"),
     YELLOW      ("#FFFF88"),
@@ -43,7 +65,6 @@ public enum Colour
     SAND        ("#F9F7ED"),
 
     GHOST_WHITE ("#f8f8ff"),
-    POWDER_BLUE("#b0e0e6"),
 
     LIGHT_ORANGE("FFE599"),
     ORANGE      ("#f9845b"),

@@ -38,7 +38,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              elementGraph.getType().getTypeName(),
-                             checkForClassifications(elementGraph, VisualStyle.ANCHOR_ELEMENT));
+                             this.getVisualStyleForEntity(elementGraph, VisualStyle.ANCHOR_ELEMENT));
 
         if (elementGraph.getAnchoredElements() != null)
         {
@@ -52,7 +52,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getType().getTypeName(),
-                                         checkForClassifications(node, VisualStyle.ANCHORED_ELEMENT));
+                                         this.getVisualStyleForEntity(node, VisualStyle.ANCHORED_ELEMENT));
                 }
             }
         }

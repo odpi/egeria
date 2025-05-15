@@ -60,7 +60,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
             appendNewMermaidNode(currentNodeName,
                                  currentDisplayName,
                                  solutionBlueprintElement.getElementHeader().getType().getTypeName(),
-                                 checkForClassifications(solutionBlueprintElement.getElementHeader(),
+                                 getVisualStyleForEntity(solutionBlueprintElement.getElementHeader(),
                                                          VisualStyle.SOLUTION_BLUEPRINT));
 
             addDescription(solutionBlueprintElement, true);

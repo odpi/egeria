@@ -70,7 +70,7 @@ public class FieldLevelLineageMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendNewMermaidNode(end1NodeName,
                                              end1DisplayName,
                                              relationship.getEnd1().getType().getTypeName(),
-                                             checkForClassifications(relationship.getEnd1(), VisualStyle.SCHEMA_ELEMENT));
+                                             getVisualStyleForEntity(relationship.getEnd1(), VisualStyle.SCHEMA_ELEMENT));
 
                     }
 
@@ -86,7 +86,7 @@ public class FieldLevelLineageMermaidGraphBuilder extends MermaidGraphBuilderBas
                         appendNewMermaidNode(end2NodeName,
                                              end2DisplayName,
                                              relationship.getEnd2().getType().getTypeName(),
-                                             checkForClassifications(relationship.getEnd2(), VisualStyle.SCHEMA_ELEMENT));
+                                             getVisualStyleForEntity(relationship.getEnd2(), VisualStyle.SCHEMA_ELEMENT));
 
                     }
 

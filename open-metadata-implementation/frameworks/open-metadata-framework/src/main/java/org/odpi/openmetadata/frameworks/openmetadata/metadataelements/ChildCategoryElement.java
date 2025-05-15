@@ -51,6 +51,18 @@ public class ChildCategoryElement extends RelatedMetadataElementSummary
         }
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public ChildCategoryElement(RelatedMetadataElementSummary template)
+    {
+        super(template);
+    }
+
+
     /**
      * Return the optional child categories.
      *

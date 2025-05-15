@@ -32,7 +32,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              governanceDefinitionGraph.getElementHeader().getType().getTypeName(),
-                             checkForClassifications(governanceDefinitionGraph.getElementHeader(), VisualStyle.GOVERNANCE_DEFINITION));
+                             getVisualStyleForEntity(governanceDefinitionGraph.getElementHeader(), VisualStyle.GOVERNANCE_DEFINITION));
 
         this.addDescription(governanceDefinitionGraph);
 
@@ -46,7 +46,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
                                      parent.getRelatedElement().getType().getTypeName(),
-                                     checkForClassifications(parent.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
+                                     getVisualStyleForEntity(parent.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
 
                 super.appendMermaidLine(parent.getRelationshipHeader().getGUID(),
@@ -69,7 +69,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          peer.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(peer.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
+                                         getVisualStyleForEntity(peer.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
                     super.appendMermaidThinLine(peer.getRelationshipHeader().getGUID(),
                                                 peer.getRelatedElement().getGUID(),
@@ -91,7 +91,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          child.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(child.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
+                                         getVisualStyleForEntity(child.getRelatedElement(), VisualStyle.SUPPORTING_GOVERNANCE_DEFINITION));
 
                     super.appendMermaidLine(child.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),
@@ -113,7 +113,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          metrics.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(metrics.getRelatedElement(), VisualStyle.GOVERNANCE_METRIC));
+                                         getVisualStyleForEntity(metrics.getRelatedElement(), VisualStyle.GOVERNANCE_METRIC));
 
                     super.appendMermaidLine(metrics.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),
@@ -135,7 +135,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          externalReference.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(externalReference.getRelatedElement(), VisualStyle.EXTERNAL_REFERENCE));
+                                         getVisualStyleForEntity(externalReference.getRelatedElement(), VisualStyle.EXTERNAL_REFERENCE));
 
                     super.appendMermaidLine(externalReference.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),
@@ -157,7 +157,7 @@ public class GovernanceDefinitionMermaidGraphBuilder extends MermaidGraphBuilder
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          other.getRelatedElement().getType().getTypeName(),
-                                         checkForClassifications(other.getRelatedElement(), VisualStyle.GOVERNED_ELEMENT));
+                                         getVisualStyleForEntity(other.getRelatedElement(), VisualStyle.GOVERNED_ELEMENT));
 
                     super.appendMermaidLine(other.getRelationshipHeader().getGUID(),
                                             governanceDefinitionGraph.getElementHeader().getGUID(),

@@ -42,8 +42,8 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
 
             super.appendNewMermaidNode(glossaryTermElement.getElementHeader().getGUID(),
                                        currentDisplayName,
-                                       super.addSpacesToTypeName(glossaryTermElement.getElementHeader().getType().getTypeName()),
-                                       checkForClassifications(glossaryTermElement.getElementHeader(), VisualStyle.GLOSSARY_TERM));
+                                       super.getTypeNameForEntity(glossaryTermElement.getElementHeader()),
+                                       super.getVisualStyleForEntity(glossaryTermElement.getElementHeader(), VisualStyle.GLOSSARY_TERM));
 
             this.addDescription(glossaryTermElement);
 
@@ -60,8 +60,8 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                     {
                         super.appendNewMermaidNode(assignee.getRelatedElement().getElementHeader().getGUID(),
                                                    super.getNodeDisplayName(assignee.getRelatedElement()),
-                                                   assignee.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                   checkForClassifications(glossaryTermElement.getElementHeader(), VisualStyle.LINKED_ELEMENT));
+                                                   super.getTypeNameForEntity(assignee.getRelatedElement().getElementHeader()),
+                                                   super.getVisualStyleForEntity(assignee.getRelatedElement().getElementHeader(), VisualStyle.LINKED_ELEMENT));
 
                         super.appendMermaidLongAnimatedLine(assignee.getRelationshipHeader().getGUID(),
                                                             glossaryTermElement.getElementHeader().getGUID(),
@@ -101,7 +101,7 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                     super.appendNewMermaidNode(anchorGUID,
                                                                                anchorGUID,
                                                                                super.addSpacesToTypeName(anchorTypeName),
-                                                                               checkForClassifications(glossaryTermElement.getElementHeader(), VisualStyle.ANCHOR_ELEMENT));
+                                                                               VisualStyle.ANCHOR_ELEMENT);
 
                                                     super.appendMermaidDottedLine(assignee.getRelationshipHeader().getGUID() + "_Anchor",
                                                                                   assignee.getRelatedElement().getElementHeader().getGUID(),
@@ -144,8 +144,6 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                                      glossaryTermElement.getGlossaryTermProperties().getSummary(),
                                      "Summary",
                                      VisualStyle.DESCRIPTION);
-
-                appendInvisibleMermaidLine(descriptionNodeName, glossaryTermElement.getElementHeader().getGUID());
             }
             else if (glossaryTermElement.getGlossaryTermProperties().getDescription() != null)
             {
@@ -155,8 +153,6 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                                      glossaryTermElement.getGlossaryTermProperties().getDescription(),
                                      "Description",
                                      VisualStyle.DESCRIPTION);
-
-                appendInvisibleMermaidLine(descriptionNodeName, glossaryTermElement.getElementHeader().getGUID());
             }
 
             super.endSubgraph();
@@ -209,7 +205,7 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendMermaidDottedLine(null,
                                             parentCategoryNodeName,
                                             null,
-                                            termDetails);
+                                            glossaryTermElement.getElementHeader().getGUID());
                 }
             }
             else
@@ -217,7 +213,7 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                 appendMermaidDottedLine(null,
                                         glossaryNodeName,
                                         null,
-                                        termDetails);
+                                        glossaryTermElement.getElementHeader().getGUID());
             }
         }
     }
