@@ -8,13 +8,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataE
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFieldElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -171,43 +170,6 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
 
 
     /**
-     * Summarize the elements linked via the MoreInformation relationship.
-     *
-     * @param beanClass bean class
-     * @param elementTypeName type of the element to process
-     * @param relatedMetadataElements elements to summarize
-     * @return list or null
-     * @throws PropertyServerException problem in converter
-     */
-    protected List<RelatedMetadataElementSummary> getMoreInformation(Class<B>                     beanClass,
-                                                                     String                       elementTypeName,
-                                                                     List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
-    {
-        final String methodName = "getMoreInformation";
-
-        if (relatedMetadataElements != null)
-        {
-            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
-            {
-                if ((relatedMetadataElement != null) &&
-                        (relatedMetadataElement.getElement() != null) &&
-                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName)) &&
-                        (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), elementTypeName)))
-                {
-                    moreInformation.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
-                }
-            }
-
-            return moreInformation;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
      *
@@ -250,9 +212,16 @@ public class DataFieldConverter<B> extends OpenMetadataConverterBase<B>
 
                 if (relationships != null)
                 {
-                    bean.setAssignedMeanings(this.getMoreInformation(beanClass, OpenMetadataType.GLOSSARY_TERM.typeName, relationships));
-                    bean.setAssignedDataClasses(this.getMoreInformation(beanClass, OpenMetadataType.DATA_CLASS.typeName, relationships));
+                    bean.setAssignedMeanings(this.getSemanticDefinition(beanClass, relationships));
+                    bean.setAssignedDataClasses(this.getDataClassDefinition(beanClass, relationships));
                     bean.setExternalReferences(this.getAttribution(beanClass, relationships));
+                    bean.setMemberOfCollections(this.getParentCollectionMembership(beanClass, relationships));
+                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
+                                                                              relationships,
+                                                                              Arrays.asList(OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)));
                 }
             }
 

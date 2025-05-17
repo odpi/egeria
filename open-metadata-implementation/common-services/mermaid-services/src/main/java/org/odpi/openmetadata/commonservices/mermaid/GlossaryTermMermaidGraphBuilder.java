@@ -13,7 +13,7 @@ import java.util.UUID;
 
 
 /**
- * Creates a mermaid graph rendering of the Open Metadata Framework's data class graph.
+ * Creates a mermaid graph rendering of the Open Metadata Framework's glossary term graph.
  */
 public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
@@ -47,10 +47,9 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
 
             this.addDescription(glossaryTermElement);
 
-            super.addRelatedToElementSummaries(glossaryTermElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryTermElement.getElementHeader().getGUID());
-            super.addRelatedFromElementSummaries(glossaryTermElement.getRelatedDefinitions(), VisualStyle.DATA_FIELD, glossaryTermElement.getElementHeader().getGUID());
-            super.addRelatedToElementSummaries(glossaryTermElement.getRelatedToTerms(), VisualStyle.GLOSSARY_TERM, glossaryTermElement.getElementHeader().getGUID());
-            super.addRelatedFromElementSummaries(glossaryTermElement.getRelatedFromTerms(), VisualStyle.GLOSSARY_TERM, glossaryTermElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryTermElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryTermElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryTermElement.getRelatedDefinitions(), VisualStyle.DATA_FIELD, glossaryTermElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryTermElement.getRelatedTerms(), VisualStyle.GLOSSARY_TERM, glossaryTermElement.getElementHeader().getGUID());
 
             if (glossaryTermElement.getSemanticAssignments() != null)
             {
@@ -118,7 +117,7 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                 }
             }
 
-            super.addRelatedToElementSummaries(glossaryTermElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryTermElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryTermElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryTermElement.getElementHeader().getGUID());
         }
     }
 

@@ -4,32 +4,31 @@ package org.odpi.openmetadata.accessservices.digitalservice.client;
 
 import org.odpi.openmetadata.accessservices.digitalservice.api.CollectionsInterface;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.mermaid.CollectionMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.CollectionConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.CollectionMemberConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMemberGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The CollectionsClient supports requests related to collections.
@@ -44,7 +43,6 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
 
     final private boolean forLineage = false;
     final private boolean forDuplicateProcessing = false;
-
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -974,7 +972,7 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      *
      * @param userId         userId of user making request.
      * @param collectionGUID unique identifier of the collection
-     * @param cascadedDelete should nested collections be deleted? If false, the delete fails if there are nested
+     * @param cascadedDelete should any nested collections be deleted? If false, the delete fails if there are nested
      *                       collections.  If true, nested collections are delete - but not member elements
      *                       unless they are anchored to the collection
      *
@@ -1009,22 +1007,36 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      *
      * @param userId         userId of user making request.
      * @param collectionGUID unique identifier of the collection.
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
      *
-     * @return list of asset details
+     * @return list of member details
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<CollectionMember> getCollectionMembers(String userId,
-                                                       String collectionGUID,
-                                                       int    startFrom,
-                                                       int    pageSize,
-                                                       Date   effectiveTime) throws InvalidParameterException,
+    public List<CollectionMember> getCollectionMembers(String              userId,
+                                                       String              collectionGUID,
+                                                       List<ElementStatus> limitResultsByStatus,
+                                                       Date                asOfTime,
+                                                       String              sequencingProperty,
+                                                       SequencingOrder     sequencingOrder,
+                                                       boolean             forLineage,
+                                                       boolean             forDuplicateProcessing,
+                                                       Date                effectiveTime,
+                                                       int                 startFrom,
+                                                       int                 pageSize) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
@@ -1036,18 +1048,18 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                          collectionGUID,
-                                                                                                          1,
-                                                                                                          OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                          false,
-                                                                                                          false,
-                                                                                                          new Date(),
-                                                                                                          startFrom,
-                                                                                                          pageSize);
+                                                                                                        collectionGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                        limitResultsByStatus,
+                                                                                                        asOfTime,
+                                                                                                        sequencingProperty,
+                                                                                                        sequencingOrder,
+                                                                                                        forLineage,
+                                                                                                        forDuplicateProcessing,
+                                                                                                        effectiveTime,
+                                                                                                        startFrom,
+                                                                                                        pageSize);
 
         if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
@@ -1062,6 +1074,190 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
             {
                 return collectionMembers;
             }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return a graph of elements that are the nested members of a collection along
+     * with elements immediately connected to the starting collection.  The result
+     * includes a mermaid graph of the returned elements.
+     *
+     * @param userId         userId of user making request.
+     * @param collectionGUID unique identifier of the collection.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of member details
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public CollectionGraph getCollectionGraph(String              userId,
+                                              String              collectionGUID,
+                                              List<ElementStatus> limitResultsByStatus,
+                                              Date                asOfTime,
+                                              String              sequencingProperty,
+                                              SequencingOrder     sequencingOrder,
+                                              boolean             forLineage,
+                                              boolean             forDuplicateProcessing,
+                                              Date                effectiveTime,
+                                              int                 startFrom,
+                                              int                 pageSize) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "getCollectionGraph";
+        final String collectionGUIDParameterName = "collectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId,
+                                                                                                   collectionGUID,
+                                                                                                   false,
+                                                                                                   false,
+                                                                                                   null,
+                                                                                                   new Date());
+
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION.typeName)))
+        {
+            RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                            collectionGUID,
+                                                                                                            0,
+                                                                                                            null,
+                                                                                                            limitResultsByStatus,
+                                                                                                            asOfTime,
+                                                                                                            sequencingProperty,
+                                                                                                            sequencingOrder,
+                                                                                                            forLineage,
+                                                                                                            forDuplicateProcessing,
+                                                                                                            effectiveTime,
+                                                                                                            startFrom,
+                                                                                                            pageSize);
+
+            List<CollectionMemberGraph>  collectionMembers    = new ArrayList<>();
+            List<RelatedMetadataElement> otherRelatedElements = new ArrayList<>();
+
+            if ((linkedResources != null) && (linkedResources.getElementList() != null))
+            {
+                for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
+                {
+                    if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)) && (!relatedMetadataElement.getElementAtEnd1()))
+                    {
+                        collectionMembers.add(this.convertCollectionMemberGraph(userId,
+                                                                                relatedMetadataElement,
+                                                                                asOfTime,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName));
+                    }
+                    else
+                    {
+                        otherRelatedElements.add(relatedMetadataElement);
+                    }
+                }
+
+                if (collectionMembers.isEmpty())
+                {
+                    collectionMembers = null;
+                }
+            }
+
+            CollectionGraph collectionGraph = new CollectionGraph(collectionConverter.getNewComplexBean(collectionBeanClass, openMetadataElement, otherRelatedElements, methodName));
+
+            collectionGraph.setCollectionMemberGraphs(collectionMembers);
+            CollectionMermaidGraphBuilder graphBuilder = new CollectionMermaidGraphBuilder(collectionGraph);
+
+            collectionGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+
+            return collectionGraph;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the member related element extracted from the open metadata element.
+     *
+     * @param userId calling user
+     * @param startingMetadataElement element extracted from the repository
+     * @param asOfTime repository time to use
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime effectivity dating for elements
+     * @param methodName calling method
+     * @return bean or null
+     */
+    private CollectionMemberGraph convertCollectionMemberGraph(String                 userId,
+                                                               RelatedMetadataElement startingMetadataElement,
+                                                               Date                   asOfTime,
+                                                               boolean                forLineage,
+                                                               boolean                forDuplicateProcessing,
+                                                               Date                   effectiveTime,
+                                                               String                 methodName) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        if (startingMetadataElement != null)
+        {
+            CollectionMemberGraph collectionMemberGraph = new CollectionMemberGraph(collectionMemberConverter.getNewBean(CollectionMember.class,
+                                                                                                                         startingMetadataElement,
+                                                                                                                         methodName));
+
+            if (propertyHelper.isTypeOf(startingMetadataElement.getElement(), OpenMetadataType.COLLECTION.typeName))
+            {
+                RelatedMetadataElementList linkedMembers = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                              startingMetadataElement.getElement().getElementGUID(),
+                                                                                                              1,
+                                                                                                              OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                              null,
+                                                                                                              asOfTime,
+                                                                                                              null,
+                                                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                              forLineage,
+                                                                                                              forDuplicateProcessing,
+                                                                                                              effectiveTime,
+                                                                                                              0,
+                                                                                                              invalidParameterHandler.getMaxPagingSize());
+
+                if ((linkedMembers != null) && (linkedMembers.getElementList() != null))
+                {
+                    List<CollectionMemberGraph> collectionMembers = new ArrayList<>();
+
+                    for (RelatedMetadataElement relatedMetadataElement : linkedMembers.getElementList())
+                    {
+                        collectionMembers.add(this.convertCollectionMemberGraph(userId,
+                                                                                relatedMetadataElement,
+                                                                                asOfTime,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName));
+                    }
+
+                    collectionMemberGraph.setNestedMembers(collectionMembers);
+                }
+            }
+
+            return collectionMemberGraph;
         }
 
         return null;

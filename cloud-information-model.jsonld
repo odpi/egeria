@@ -292,14 +292,14 @@
         {
           "@id" : "legalIncorporationJurisdiction",
           "@type" : "Property",
-          "description" : "Name of the territory or other political subdivision that authoized the incorporation",
+          "description" : "Name of the territory or other political subdivision that authorized the incorporation",
           "name" : "Legal Incorporation Jurisdiction",
           "range" : "DataType"
         },
         {
           "@id" : "legalOrganizationTypeId",
           "@type" : "Property",
-          "description" : "E.g. Sole proprietor, Partnership, Limited Partnereshp, S-Corporation",
+          "description" : "E.g. Sole proprietor, Partnership, Limited Partnership, S-Corporation",
           "name" : "Legal Organization Type",
           "range" : "LegalOrganizationType"
         },
@@ -334,7 +334,7 @@
         {
           "@id" : "yearStarted",
           "@type" : "Property",
-          "description" : "What year the business started, normally derviced from incorporation date",
+          "description" : "What year the business started, normally derived from incorporation date",
           "name" : "Year Started",
           "range" : "DataType"
         }
@@ -468,7 +468,7 @@
           "@id" : "sellerTierId",
           "@type" : "Property",
           "description" : "Levels in a hierarchy that describe the importance of a Seller, for example Gold, Silver, Bronze.",
-          "name" : "Seler Tier",
+          "name" : "Seller Tier",
           "range" : "SellerTier"
         }
       ]
@@ -495,7 +495,7 @@
         {
           "@id" : "expirationDate",
           "@type" : "Property",
-          "description" : "When coupons derived from this defintion will expire",
+          "description" : "When coupons derived from this definition will expire",
           "name" : "Expiration Date",
           "range" : "DataType"
         },
@@ -663,7 +663,7 @@
         {
           "@id" : "churnScore",
           "@type" : "Property",
-          "description" : "How big is the chance this customer will defect from behing our customer",
+          "description" : "How big is the chance this customer will defect from being our customer",
           "name" : "Churn Score",
           "range" : "DataType"
         },
@@ -747,7 +747,7 @@
         {
           "@id" : "partyRelationshipTypeId",
           "@type" : "Property",
-          "description" : "Type of affilation",
+          "description" : "Type of affiliation",
           "name" : "Party Relationship Type",
           "range" : "PartyRelationshipType"
         },
@@ -859,7 +859,7 @@
         {
           "@id" : "originalOrderId",
           "@type" : "Property",
-          "description" : "Reference to the a parent order. Needed for reship, excahnge and even swap orders",
+          "description" : "Reference to the a parent order. Needed for reship, exchange and even swap orders",
           "name" : "Original Order",
           "range" : "SalesOrder"
         },
@@ -909,13 +909,13 @@
           "@id" : "isPreOrderable",
           "@type" : "Property",
           "description" : "If the product is not yet for sale can product be pre ordered",
-          "name" : "Is Pre Orderable",
+          "name" : "Is Pre-Orderable",
           "range" : "DataType"
         },
         {
           "@id" : "isRainCheckAllowed",
           "@type" : "Property",
-          "description" : "If product is not in stock can customer be promised get it later at todays price",
+          "description" : "If product is not in stock can customer be promised get it later at today's price",
           "name" : "Is Rain Check Allowed",
           "range" : "DataType"
         },
@@ -971,7 +971,7 @@
         {
           "@id" : "minimumAdvertisementAmountStartDate",
           "@type" : "Property",
-          "description" : "What is the earliest date the lowest manufactureres prices can be stated in an ad",
+          "description" : "What is the earliest date the lowest manufacturers prices can be stated in an ad",
           "name" : "Minimum Advertisement Amount Start Date",
           "range" : "DataType"
         },
@@ -1039,7 +1039,7 @@
           "range" : "DataType"
         },
         {
-          "@id" : "requiresInvididualUnitPricing",
+          "@id" : "requiresIndividualUnitPricing",
           "@type" : "Property",
           "description" : "Indicates high priced items or variable weight items need individual price",
           "name" : "Requires Individual Unit Pricing",
@@ -1146,7 +1146,7 @@
         {
           "@id" : "isHistoricalOnly",
           "@type" : "Property",
-          "description" : "Flag the indicates whether or not the order is historical. If the order is Historical it a cannot be changed. Cancelations, invoices, shipping, refunds and other post sale activities cannot be driven from this order. This allows past orders to be imported",
+          "description" : "Flag the indicates whether or not the order is historical. If the order is Historical it a cannot be changed. Cancellations, invoices, shipping, refunds and other post sale activities cannot be driven from this order. This allows past orders to be imported",
           "name" : "Is Historical Only",
           "range" : "DataType"
         },
@@ -1272,7 +1272,7 @@
         {
           "@id" : "salesOrderChangeTypeCode",
           "@type" : "Property",
-          "description" : "Codes that define reasons for changing a Sales Order, e.g. quantity change, new distributed adjustment, new line adjustmenmt, etc.",
+          "description" : "Codes that define reasons for changing a Sales Order, e.g. quantity change, new distributed adjustment, new line adjustment, etc.",
           "name" : "Sales Order Change Type Code",
           "range" : "DataType"
         },
@@ -1475,7 +1475,7 @@
         {
           "@id" : "isBonusProduct",
           "@type" : "Property",
-          "description" : "Defines if the the sales order item a bonus product. Bonus products are usually free products add to an order. Being bonus has implecations on returns and adjustments.",
+          "description" : "Defines if the the sales order item a bonus product. Bonus products are usually free products add to an order. Being bonus has implications on returns and adjustments.",
           "name" : "Is Bonus Product",
           "range" : "DataType"
         },
@@ -1587,14 +1587,14 @@
         {
           "@id" : "segmentIndexId",
           "@type" : "Property",
-          "description" : "Used with Segment Indexes for pricing subscriptions. A Segment Index is unique to a customer's purchase of a product that uses segment pricing, and is used to group the segmements together.",
+          "description" : "Used with Segment Indexes for pricing subscriptions. A Segment Index is unique to a customer's purchase of a product that uses segment pricing, and is used to group the segments together.",
           "name" : "Segment Index",
           "range" : "DataType"
         },
         {
           "@id" : "sellerAccountId",
           "@type" : "Property",
-          "description" : "Lookup to the Seller Account assigne to this order product. This will normally be used only in marketplace configurations, where the ecommerce site provides a customer with access to products that are sold by multiple other entities.",
+          "description" : "Lookup to the Seller Account assigned to this order product. This will normally be used only in marketplace configurations, where the ecommerce site provides a customer with access to products that are sold by multiple other entities.",
           "name" : "Seller Account",
           "range" : "Account"
         },
@@ -1937,7 +1937,7 @@
         {
           "@id" : "averageConvertedLeadAmount",
           "@type" : "Property",
-          "description" : "How much is the value amound on average that the seller helped us with",
+          "description" : "How much is the value amount on average that the seller helped us with",
           "name" : "Average Converted Lead Amount",
           "range" : "DataType"
         },
@@ -1949,10 +1949,10 @@
           "range" : "Currency"
         },
         {
-          "@id" : "demonstationsGivenCount",
+          "@id" : "demonstrationsGivenCount",
           "@type" : "Property",
           "description" : "How many demonstrations of our products have the seller given",
-          "name" : "Demonstations Given Count",
+          "name" : "Demonstrations Given Count",
           "range" : "DataType"
         },
         {
@@ -1979,14 +1979,14 @@
         {
           "@id" : "opportunityInvolvementCount",
           "@type" : "Property",
-          "description" : "How many opportuities have the seller been involved in",
+          "description" : "How many opportunities have the seller been involved in",
           "name" : "Opportunity Involvement Count",
           "range" : "DataType"
         },
         {
           "@id" : "opportunityWinRate",
           "@type" : "Property",
-          "description" : "How many opportunities was actually won that nvolved the seller",
+          "description" : "How many opportunities was actually won that involved the seller",
           "name" : "Opportunity Win Rate",
           "range" : "DataType"
         },
@@ -2119,14 +2119,14 @@
         {
           "@id" : "bankruptcyHistoryFlag",
           "@type" : "Property",
-          "description" : "Set to indicate if company ever been in baunkruptcy even if it is not currently",
+          "description" : "Set to indicate if company ever been in bankruptcy even if it is not currently",
           "name" : "Bankruptcy History Flag",
           "range" : "DataType"
         },
         {
           "@id" : "bankruptcyTypeId",
           "@type" : "Property",
-          "description" : "What type of bankcruptcy the business ent through e.g. chapter 7, chapter 11",
+          "description" : "What type of bankruptcy the business ent through e.g. chapter 7, chapter 11",
           "name" : "Bankruptcy Type",
           "range" : "BankruptcyType"
         },
@@ -2138,7 +2138,7 @@
           "range" : "BusinessSizeType"
         },
         {
-          "@id" : "dunnandBradstreetRating",
+          "@id" : "dunnAndBradstreetRating",
           "@type" : "Property",
           "description" : "Indication of a business size and creditworthiness as stated by Dunn and Bradstreet",
           "name" : "Dunn and Bradstreet Rating",
@@ -2147,7 +2147,7 @@
         {
           "@id" : "employeeCount",
           "@type" : "Property",
-          "description" : "How many employess does the business have",
+          "description" : "How many employees does the business have",
           "name" : "Employee Count",
           "range" : "DataType"
         },
@@ -2336,7 +2336,7 @@
         {
           "@id" : "softwareAppPriorVerName",
           "@type" : "Property",
-          "description" : "The version of the Softwrare Application that was installed on the user's device prior to the version that is currently installed.",
+          "description" : "The version of the Software Application that was installed on the user's device prior to the version that is currently installed.",
           "name" : "Software Application Prior Version",
           "range" : "DataType"
         },
@@ -2462,7 +2462,7 @@
         {
           "@id" : "parentPartyIdentificationTypeId",
           "@type" : "Property",
-          "description" : "Provides a way to group together more than one Party Identification Type. For example groupinig Driving License and Tax Id together as 'Government-issued Identification'.",
+          "description" : "Provides a way to group together more than one Party Identification Type. For example grouping Driving License and Tax Id together as 'Government-issued Identification'.",
           "name" : "Parent Party Identification Type",
           "range" : "PartyIdentificationType"
         },
@@ -2497,7 +2497,7 @@
         {
           "@id" : "taxExemptionStartDate",
           "@type" : "Property",
-          "description" : "The date the tax exemption status begiins",
+          "description" : "The date the tax exemption status begins",
           "name" : "Tax Exemption Start Date",
           "range" : "DataType"
         },
@@ -2560,7 +2560,7 @@
         {
           "@id" : "trainingPointTotalNumber",
           "@type" : "Property",
-          "description" : "The total number of accrued training poins",
+          "description" : "The total number of accrued training points",
           "name" : "Training Point Total",
           "range" : "DataType"
         },
@@ -2903,7 +2903,7 @@
         {
           "@id" : "partyId",
           "@type" : "Property",
-          "description" : "An orgnization (Party) that provides the degree defined by Education.",
+          "description" : "An organization (Party) that provides the degree defined by Education.",
           "name" : "Educational Institution",
           "range" : "Party"
         },
@@ -2931,7 +2931,7 @@
         {
           "@id" : "influencerRating",
           "@type" : "Property",
-          "description" : "No matter how we do business with this person, how influencial is the person",
+          "description" : "No matter how we do business with this person, how influential is the person",
           "name" : "Influencer Rating",
           "range" : "DataType"
         }
@@ -2945,7 +2945,7 @@
         {
           "@id" : "hasAlcoholAbuseHistory",
           "@type" : "Property",
-          "description" : "Indicator whether individual have a history of Alchol abuse",
+          "description" : "Indicator whether individual have a history of Alcohol abuse",
           "name" : "Has Alcohol Abuse History",
           "range" : "DataType"
         },
@@ -3006,9 +3006,9 @@
           "range" : "DataType"
         },
         {
-          "@id" : "personHeightUnitofMeasureId",
+          "@id" : "personHeightUnitOfMeasureId",
           "@type" : "Property",
-          "description" : "What unit of mesure is used for height",
+          "description" : "What unit of measure is used for height",
           "name" : "Person Height Unit of Measure",
           "range" : "HeightUOM"
         },
@@ -3020,7 +3020,7 @@
           "range" : "DataType"
         },
         {
-          "@id" : "personWeightUnitofMeasureId",
+          "@id" : "personWeightUnitOfMeasureId",
           "@type" : "Property",
           "description" : "What unit of measure is used for weight",
           "name" : "Person Weight Unit of Measure",
@@ -3216,7 +3216,7 @@
           "range" : "ContactPointAddress"
         },
         {
-          "@id" : "partyIdentificationtId",
+          "@id" : "partyIdentificationId",
           "@type" : "Property",
           "description" : "The related Identity Document, which is related to a Sales Order Product, usually to document authorization to make a type of purchase.",
           "name" : "Party Identification",
@@ -3386,7 +3386,7 @@
         {
           "@id" : "institutionName",
           "@type" : "Property",
-          "description" : "Name of instituation where education was given",
+          "description" : "Name of institution where education was given",
           "name" : "Institution Name",
           "range" : "DataType"
         },
@@ -3608,10 +3608,10 @@
           "range" : "DataType"
         },
         {
-          "@id" : "competitorTheats",
+          "@id" : "competitorThreats",
           "@type" : "Property",
           "description" : "What threats are the competitor bringing against us",
-          "name" : "Competitor Theats",
+          "name" : "Competitor Threats",
           "range" : "DataType"
         },
         {
@@ -3708,7 +3708,7 @@
         {
           "@id" : "householdDissolvedDate",
           "@type" : "Property",
-          "description" : "When was the houshold dissolved",
+          "description" : "When was the household dissolved",
           "name" : "Household Dissolved Date",
           "range" : "DataType"
         },
@@ -4093,7 +4093,7 @@
         {
           "@id" : "allocatedQuantity",
           "@type" : "Property",
-          "description" : "Quanity allocated for fulfillment",
+          "description" : "Quantity allocated for fulfillment",
           "name" : "Allocated Quantity",
           "range" : "DataType"
         },
@@ -4261,7 +4261,7 @@
         {
           "@id" : "issuerName",
           "@type" : "Property",
-          "description" : "Name of the entity that issued the tax exeption",
+          "description" : "Name of the entity that issued the tax exception",
           "name" : "Issuer",
           "range" : "DataType"
         }
@@ -4282,7 +4282,7 @@
         {
           "@id" : "shipToEmailId",
           "@type" : "Property",
-          "description" : "Email to shiop to contact",
+          "description" : "Email for shop to contact",
           "name" : "Ship To Email",
           "range" : "ContactPointEmail"
         },
@@ -4303,7 +4303,7 @@
         {
           "@id" : "orderDeliveryMethodId",
           "@type" : "Property",
-          "description" : "Unless overriden how will goods be delivered e.g. Bus, Overnight, In Person, Pickup",
+          "description" : "Unless overridden how will goods be delivered e.g. Bus, Overnight, In Person, Pickup",
           "name" : "Order Delivery Method",
           "range" : "OrderDeliveryMethod"
         },
@@ -4322,7 +4322,7 @@
           "range" : "ContactPointEmail"
         },
         {
-          "@id" : "shippingPhoneid",
+          "@id" : "shippingPhoneId",
           "@type" : "Property",
           "description" : "What phone to use for shipping purposes",
           "name" : "Shipping Phone",
@@ -4373,7 +4373,7 @@
         {
           "@id" : "productCategoryId",
           "@type" : "Property",
-          "description" : "A catalog consist of many categories e.g. shoes, tshirts",
+          "description" : "A catalog consist of many categories e.g. shoes, tee-shirts",
           "name" : "Product Category",
           "range" : "ProductCategory"
         },
@@ -4408,7 +4408,7 @@
         {
           "@id" : "name",
           "@type" : "Property",
-          "description" : "Name of the assignment of an Assortment to a Sales Store. For example, carbonated beverages at Lucky Convience Mart",
+          "description" : "Name of the assignment of an Assortment to a Sales Store. For example, carbonated beverages at Lucky Convenience Mart",
           "name" : "Name",
           "range" : "DataType"
         },
@@ -4471,7 +4471,7 @@
         {
           "@id" : "currencyId",
           "@type" : "Property",
-          "description" : "Internal id referening a currency code",
+          "description" : "Internal id referencing a currency code",
           "name" : "Currency",
           "range" : "Currency"
         }
@@ -4541,7 +4541,7 @@
         {
           "@id" : "requiredTemperatureUOMId",
           "@type" : "Property",
-          "description" : "Unit of Measure for a product storage e.g. Celcius",
+          "description" : "Unit of Measure for a product storage e.g. Celsius",
           "name" : "Required Temperature UOM",
           "range" : "TemperatureUOM"
         }
@@ -4583,7 +4583,7 @@
         {
           "@id" : "diameter",
           "@type" : "Property",
-          "description" : "What is the diameter size of the cylindracal product",
+          "description" : "What is the diameter size of the cylindrical product",
           "name" : "Diameter",
           "range" : "DataType"
         },
@@ -4611,7 +4611,7 @@
         {
           "@id" : "width",
           "@type" : "Property",
-          "description" : "What is the wdth(length) size of the product",
+          "description" : "What is the width(length) size of the product",
           "name" : "Width",
           "range" : "DataType"
         }
@@ -4625,7 +4625,7 @@
         {
           "@id" : "drainedWeight",
           "@type" : "Property",
-          "description" : "What is the weigth of the product excluding packaging after drainage",
+          "description" : "What is the weight of the product excluding packaging after drainage",
           "name" : "Drained Weight",
           "range" : "DataType"
         },
@@ -4646,7 +4646,7 @@
         {
           "@id" : "tareWeight",
           "@type" : "Property",
-          "description" : "What is the weigth of the product packaging without product content",
+          "description" : "What is the weight of the product packaging without product content",
           "name" : "Tare Weight",
           "range" : "DataType"
         },
@@ -4700,10 +4700,10 @@
           "range" : "DataType"
         },
         {
-          "@id" : "trainingCertificactionCount",
+          "@id" : "trainingCertificationCount",
           "@type" : "Property",
           "description" : "How many people from seller have been certified on our products",
-          "name" : "Training Certificaction Count",
+          "name" : "Training Certification Count",
           "range" : "DataType"
         },
         {
@@ -5283,7 +5283,7 @@
         {
           "@id" : "stateProvinceName",
           "@type" : "Property",
-          "description" : "Goegraphical State Province for the address of the lead.",
+          "description" : "Geographical State Province for the address of the lead.",
           "name" : "State Province Name",
           "range" : "DataType"
         },
@@ -5687,10 +5687,10 @@
           "range" : "DataType"
         },
         {
-          "@id" : "bankcruptcyTypeName",
+          "@id" : "bankruptcyTypeName",
           "@type" : "Property",
-          "description" : "What type of bankcruptcy the business ent through e.g. chapter 7, chapter 11",
-          "name" : "Bankcruptcy Type Name",
+          "description" : "What type of bankruptcy the business ent through e.g. chapter 7, chapter 11",
+          "name" : "Bankruptcy Type Name",
           "range" : "DataType"
         },
         {
@@ -5738,7 +5738,7 @@
         {
           "@id" : "doNotProcessReasonName",
           "@type" : "Property",
-          "description" : "Why no processing allowed e.g accurancy questioned, processing unlawful, legal prohibit delete, data subject objection",
+          "description" : "Why no processing allowed e.g accuracy questioned, processing unlawful, legal prohibit delete, data subject objection",
           "name" : "Do Not Process Reason Name",
           "range" : "DataType"
         },
@@ -5752,7 +5752,7 @@
         {
           "@id" : "heightUOMName",
           "@type" : "Property",
-          "description" : "What unit of mesure is used for height e.g. inches, centimeter",
+          "description" : "What unit of measure is used for height e.g. inches, centimeter",
           "name" : "Height UOM Name",
           "range" : "DataType"
         },
@@ -5780,7 +5780,7 @@
         {
           "@id" : "legalOrganizationTypeName",
           "@type" : "Property",
-          "description" : "E.g. Sole proprietor, Partnership, Limited Partnereshp, S-Corporation",
+          "description" : "E.g. Sole proprietor, Partnership, Limited Partnership, S-Corporation",
           "name" : "Legal Organization Type Name",
           "range" : "DataType"
         },
@@ -6179,7 +6179,7 @@
         {
           "@id" : "isDynamicBundle",
           "@type" : "Property",
-          "description" : "Is actual content of the product bunde derived at point of use or not",
+          "description" : "Is actual content of the product bundle derived at point of use or not",
           "name" : "Is Dynamic Bundle",
           "range" : "DataType"
         },
@@ -6375,7 +6375,7 @@
         {
           "@id" : "isQuantityEntryRequired",
           "@type" : "Property",
-          "description" : "Must quanitty be entered for this item at checkout",
+          "description" : "Must quantity be entered for this item at checkout",
           "name" : "Is Quantity Entry Required",
           "range" : "DataType"
         },
@@ -6828,7 +6828,7 @@
           "range" : "DataType"
         },
         {
-          "@id" : "dandBCompanyName",
+          "@id" : "dAndBCompanyName",
           "@type" : "Property",
           "description" : "Name as stated by the company Dun and Bradstreet",
           "name" : "D&B Company Name",
@@ -6886,7 +6886,7 @@
         {
           "@id" : "majorCitationCount",
           "@type" : "Property",
-          "description" : "Major citations individual currently have on record e.g. wreckless driving",
+          "description" : "Major citations individual currently have on record e.g. reckless driving",
           "name" : "Major Citation Count",
           "range" : "DataType"
         },
@@ -6926,7 +6926,7 @@
           "range" : "Currency"
         },
         {
-          "@id" : "orderinsuranceAmountCurrency",
+          "@id" : "orderInsuranceAmountCurrency",
           "@type" : "Property",
           "description" : "Currency for Order insurance Amount",
           "name" : "Order insurance Amount Currency",
@@ -6984,7 +6984,7 @@
         {
           "@id" : "listPriceTermUOMId",
           "@type" : "Property",
-          "description" : "The unit of measure for the list price when the product is a subscription with a term. Yearly, quaterly, monthly, etc... are some examples",
+          "description" : "The unit of measure for the list price when the product is a subscription with a term. Yearly, quarterly, monthly, etc... are some examples",
           "name" : "List Price Term Unit of Measure",
           "range" : "ProductValidityTimePeriodUOM"
         },
@@ -7143,14 +7143,14 @@
           "range" : "ContactPointAddress"
         },
         {
-          "@id" : "billtoEmailId",
+          "@id" : "billToEmailId",
           "@type" : "Property",
           "description" : "Customer email address associated to the sales order",
           "name" : "Bill to Email",
           "range" : "ContactPointEmail"
         },
         {
-          "@id" : "billtoPhoneNumberId",
+          "@id" : "billToPhoneNumberId",
           "@type" : "Property",
           "description" : "Customer phone number associated with the sales order",
           "name" : "Bill to Phone Number",
@@ -7311,10 +7311,10 @@
           "range" : "DataType"
         },
         {
-          "@id" : "isFoodstampPaymentAllowed",
+          "@id" : "isFoodStampPaymentAllowed",
           "@type" : "Property",
           "description" : "Can this product be paid with food stamps",
-          "name" : "Is Foodstamp Payment Allowed",
+          "name" : "Is FoodStamp Payment Allowed",
           "range" : "DataType"
         },
         {
@@ -7463,7 +7463,7 @@
           "name" : "Payment Card",
           "@type" : "Class",
           "subClassOf" : "PaymentMethod",
-          "description" : "A payment system issued by a financial instutition to a customer that allows its owner (the cardholder) to access funds in designated bank accounts"
+          "description" : "A payment system issued by a financial institution to a customer that allows its owner (the cardholder) to access funds in designated bank accounts"
         },
         {
           "@id" : "PaymentCardCategory",
@@ -10631,13 +10631,13 @@
           "@id" : "CustomerStatusHistory",
           "name" : "Customer Status History",
           "@type" : "Class",
-          "description" : "History of when customer changed frome one status to another"
+          "description" : "History of when customer changed from one status to another"
         },
         {
           "@id" : "CustomerType",
           "name" : "CustomerType",
           "@type" : "Class",
-          "description" : "What type of customer is this e.g. High Roller, Low Value or other segementation value"
+          "description" : "What type of customer is this e.g. High Roller, Low Value or other segmentation value"
         },
         {
           "@id" : "Seller",
@@ -10720,7 +10720,7 @@
           ]
         },
         {
-          "@id" : "competitorTheats",
+          "@id" : "competitorThreats",
           "@type" : "Property",
           "domain" : [
             "Competitor"
@@ -11106,7 +11106,7 @@
           ]
         },
         {
-          "@id" : "demonstationsGivenCount",
+          "@id" : "demonstrationsGivenCount",
           "@type" : "Property",
           "domain" : [
             "Seller"
@@ -11299,7 +11299,7 @@
           ]
         },
         {
-          "@id" : "trainingCertificactionCount",
+          "@id" : "trainingCertificationCount",
           "@type" : "Property",
           "domain" : [
             "Seller"
@@ -11536,7 +11536,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "competitorTheats",
+              "path" : "competitorThreats",
               "@id" : "e1f1424e-abcb-4c3c-bb7b-be43c4c829af",
               "datatype" : "xsd:string",
               "maxCount" : "1"
@@ -12005,7 +12005,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "trainingCertificactionCount",
+              "path" : "trainingCertificationCount",
               "@id" : "24c7b88a-ddbd-4999-b474-ca9a9bb3d950",
               "datatype" : "xsd:integer",
               "maxCount" : "1"
@@ -12183,7 +12183,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "demonstationsGivenCount",
+              "path" : "demonstrationsGivenCount",
               "@id" : "f2cbccdf-f32c-4d3d-afaf-36ce94de70ab",
               "datatype" : "xsd:integer",
               "maxCount" : "1"
@@ -12687,7 +12687,7 @@
           "@id" : "BankruptcyType",
           "name" : "Bankruptcy Type",
           "@type" : "Class",
-          "description" : "What type of bankcruptcy the business ent through e.g. chapter 7, chapter 11"
+          "description" : "What type of bankruptcy the business ent through e.g. chapter 7, chapter 11"
         },
         {
           "@id" : "BusinessActivity",
@@ -12766,7 +12766,7 @@
           "@id" : "HeightUOM",
           "name" : "Height Unit Of Measure",
           "@type" : "Class",
-          "description" : "What unit of mesure is used for height e.g. inches, centimeter"
+          "description" : "What unit of measure is used for height e.g. inches, centimeter"
         },
         {
           "@id" : "Hobby",
@@ -12828,7 +12828,7 @@
           "@id" : "LegalOrganizationType",
           "name" : "Legal Organization Type",
           "@type" : "Class",
-          "description" : "E.g. Sole proprietor, Partnership, Limited Partnereshp, S-Corporation"
+          "description" : "E.g. Sole proprietor, Partnership, Limited Partnership, S-Corporation"
         },
         {
           "@id" : "LifeAttitudeType",
@@ -12877,7 +12877,7 @@
           "name" : "Organization",
           "@type" : "Class",
           "subClassOf" : "Party",
-          "description" : "A company we intend, or are, doing business with e.g. Northern Trail Outfitters USA. Can also be a lower level business than a company e.g. Northern Trail Outfitters - Calfornia USA. If there some form of a (apply to Americ) DUNS number for it, then it is"
+          "description" : "A company we intend, or are, doing business with e.g. Northern Trail Outfitters USA. Can also be a lower level business than a company e.g. Northern Trail Outfitters - California USA. If there some form of a (apply to America) DUNS number for it, then it is"
         },
         {
           "@id" : "OrganizationMilestone",
@@ -12973,7 +12973,7 @@
           "@id" : "PartyRelationshipRole",
           "name" : "Party Relationship Role",
           "@type" : "Class",
-          "description" : "What role does a party play in the relationshp e.g. Household of, Household member"
+          "description" : "What role does a party play in the relationship e.g. Household of, Household member"
         },
         {
           "@id" : "PartyRelationshipType",
@@ -13033,7 +13033,7 @@
           "@id" : "PersonLifeEvent",
           "name" : "Person Life Event",
           "@type" : "Class",
-          "description" : "Major events a person had in their lives e.g. graudation date, marriage date"
+          "description" : "Major events a person had in their lives e.g. graduation date, marriage date"
         },
         {
           "@id" : "PersonLifeEventType",
@@ -13816,7 +13816,7 @@
           ]
         },
         {
-          "@id" : "dandBCompanyName",
+          "@id" : "dAndBCompanyName",
           "@type" : "Property",
           "domain" : [
             "Organization"
@@ -14092,7 +14092,7 @@
           ]
         },
         {
-          "@id" : "bankcruptcyTypeName",
+          "@id" : "bankruptcyTypeName",
           "@type" : "Property",
           "domain" : [
             "BankruptcyType"
@@ -14840,14 +14840,14 @@
           ]
         },
         {
-          "@id" : "dunnandBradstreetRating",
+          "@id" : "dunnAndBradstreetRating",
           "@type" : "Property",
           "domain" : [
             "Organization"
           ]
         },
         {
-          "@id" : "personHeightUnitofMeasureId",
+          "@id" : "personHeightUnitOfMeasureId",
           "@type" : "Property",
           "domain" : [
             "Individual"
@@ -14950,7 +14950,7 @@
           ]
         },
         {
-          "@id" : "personWeightUnitofMeasureId",
+          "@id" : "personWeightUnitOfMeasureId",
           "@type" : "Property",
           "domain" : [
             "Individual"
@@ -15555,7 +15555,7 @@
               "minCount" : "1"
             },
             {
-              "path" : "bankcruptcyTypeName",
+              "path" : "bankruptcyTypeName",
               "@id" : "af9ab1de-02bc-4101-9494-9e32ff8e048e",
               "datatype" : "xsd:string",
               "maxCount" : "1",
@@ -16723,7 +16723,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "personWeightUnitofMeasureId",
+              "path" : "personWeightUnitOfMeasureId",
               "@id" : "ad592051-2520-371a-acec-19d4b99e218f",
               "node" : "e640be2c-6fc8-3335-90e6-6a339e3c0e16",
               "maxCount" : "1"
@@ -16748,7 +16748,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "personHeightUnitofMeasureId",
+              "path" : "personHeightUnitOfMeasureId",
               "@id" : "24e9897d-d8ac-3193-95a0-7d7b7c12e55e",
               "node" : "feded462-47c4-4b9b-a727-50f1ba61bdb6",
               "maxCount" : "1"
@@ -18198,7 +18198,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "dunnandBradstreetRating",
+              "path" : "dunnAndBradstreetRating",
               "@id" : "8890ef43-d271-39f3-9bfc-0fb00db7be20",
               "datatype" : "xsd:integer",
               "maxCount" : "1"
@@ -18210,7 +18210,7 @@
               "maxCount" : "1"
             },
             {
-              "path" : "dandBCompanyName",
+              "path" : "dAndBCompanyName",
               "@id" : "3c8405a4-13db-3ec2-82d0-4a625a3c0789",
               "datatype" : "xsd:string",
               "maxCount" : "1"
@@ -21694,7 +21694,7 @@
           "name" : "Contact Point Social",
           "@type" : "Class",
           "subClassOf" : "ContactPoint",
-          "description" : "Social handle for a party e.g. trustednews at twitter"
+          "description" : "Social handle for a party e.g. trusted news at twitter"
         },
         {
           "@id" : "ContactPointType",
@@ -24218,7 +24218,7 @@
           "@id" : "PaymentType",
           "name" : "Payment Type",
           "@type" : "Class",
-          "description" : "Idnetifies the Payment as either a Capture Payment or Refund Payment"
+          "description" : "Identifies the Payment as either a Capture Payment or Refund Payment"
         },
         {
           "@id" : "RefundAllocation",
@@ -24263,7 +24263,7 @@
           "@id" : "SystemCredential",
           "name" : "System Credential",
           "@type" : "Class",
-          "description" : "Contains the authentication information about how to connect to a merchant's remote site: Merchant Id, password, gateway endpoint, authentication settings  using NamedCredentail entity."
+          "description" : "Contains the authentication information about how to connect to a merchant's remote site: Merchant Id, password, gateway endpoint, authentication settings using NamedCredential entity."
         }
       ],
       "propertyConcepts" : [

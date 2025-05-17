@@ -6,28 +6,29 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Contains the properties and header for a data spec entity retrieved from the metadata repository.
+ * CollectionGraph contains the properties, header and nested members of a collection entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataSpecElement implements MetadataElement
+public class CollectionGraph extends CollectionElement
 {
-    private ElementHeader      elementHeader = null;
-    private DataSpecProperties properties    = null;
+    private List<CollectionMemberGraph> collectionMemberGraphs = null;
+
 
     /**
      * Default constructor
      */
-    public DataSpecElement()
+    public CollectionGraph()
     {
         super();
     }
@@ -38,59 +39,48 @@ public class DataSpecElement implements MetadataElement
      *
      * @param template object to copy
      */
-    public DataSpecElement(DataSpecElement template)
+    public CollectionGraph(CollectionGraph template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
+            collectionMemberGraphs = template.getCollectionMemberGraphs();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public CollectionGraph(CollectionElement template)
     {
-        return elementHeader;
+        super(template);
+    }
+
+
+
+    /**
+     * Return the members of the collection, organized hierarchically.
+     *
+     * @return hierarchy of members
+     */
+    public List<CollectionMemberGraph> getCollectionMemberGraphs()
+    {
+        return collectionMemberGraphs;
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the members of the collection, organized hierarchically.
      *
-     * @param elementHeader element header object
+     * @param collectionMemberGraphs  list of category hierarchies
      */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setCollectionMemberGraphs(List<CollectionMemberGraph> collectionMemberGraphs)
     {
-        this.elementHeader = elementHeader;
-    }
-
-
-    /**
-     * Return details of the data field
-     *
-     * @return data field properties
-     */
-    public DataSpecProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up data field properties
-     *
-     * @param properties data field properties
-     */
-    public void setProperties(DataSpecProperties properties)
-    {
-        this.properties = properties;
+        this.collectionMemberGraphs = collectionMemberGraphs;
     }
 
     /**
@@ -101,10 +91,9 @@ public class DataSpecElement implements MetadataElement
     @Override
     public String toString()
     {
-        return "DataSpecElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+        return "CollectionGraph{" +
+                "collectionMemberGraphs=" + collectionMemberGraphs +
+                "} " + super.toString();
     }
 
 
@@ -125,9 +114,12 @@ public class DataSpecElement implements MetadataElement
         {
             return false;
         }
-        DataSpecElement that = (DataSpecElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        CollectionGraph that = (CollectionGraph) objectToCompare;
+        return Objects.equals(collectionMemberGraphs, that.collectionMemberGraphs);
     }
 
 
@@ -139,6 +131,6 @@ public class DataSpecElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), collectionMemberGraphs);
     }
 }

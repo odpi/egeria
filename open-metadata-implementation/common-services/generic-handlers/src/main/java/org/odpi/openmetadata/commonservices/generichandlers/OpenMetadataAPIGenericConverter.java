@@ -965,7 +965,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Convert information from a repository instance into an Open Connector Framework ElementType.
+     * Convert information from a repository instance into an Open Metadata Framework ElementType.
      *
      * @param instanceHeader values from the server
      * @return OCF ElementType object

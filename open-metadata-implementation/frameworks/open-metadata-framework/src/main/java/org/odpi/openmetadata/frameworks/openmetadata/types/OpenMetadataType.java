@@ -5004,11 +5004,11 @@ public enum OpenMetadataType
     /**
      * Links a referencable with its data value specification in the form of a data class.
      */
-    DATA_CLASS_DEFINITION("6fa9eec1-e5b0-44da-ace9-09e4de91c8ca",
-                         "DataClassDefinition",
-                         OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
-                         "e83f0ff2-b8f9-4dd6-8d2d-7cce39345953",
-                         "Links a referencable with its data value specification in the form of a data class."),
+    DATA_CLASS_DEFINITION_RELATIONSHIP("6fa9eec1-e5b0-44da-ace9-09e4de91c8ca",
+                                       "DataClassDefinition",
+                                       OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+                                       "e83f0ff2-b8f9-4dd6-8d2d-7cce39345953",
+                                       "Links a referencable with its data value specification in the form of a data class."),
 
     /**
      * Links a data class to another in a parent child hierarchy.

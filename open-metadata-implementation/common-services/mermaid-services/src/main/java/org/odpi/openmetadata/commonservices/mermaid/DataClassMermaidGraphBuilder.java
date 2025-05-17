@@ -43,9 +43,10 @@ public class DataClassMermaidGraphBuilder extends MermaidGraphBuilderBase
                                        dataClassElement.getElementHeader().getType().getTypeName(),
                                        getVisualStyleForEntity(dataClassElement.getElementHeader(), VisualStyle.DATA_CLASS));
 
-            super.addRelatedToElementSummaries(dataClassElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, dataClassElement.getElementHeader().getGUID());
-            super.addRelatedToElementSummaries(dataClassElement.getNestedDataClasses(), VisualStyle.DATA_CLASS, dataClassElement.getElementHeader().getGUID());
-            super.addRelatedToElementSummaries(dataClassElement.getSpecializedDataClasses(), VisualStyle.DATA_CLASS, dataClassElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(dataClassElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, dataClassElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(dataClassElement.getNestedDataClasses(), VisualStyle.DATA_CLASS, dataClassElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(dataClassElement.getSpecializedDataClasses(), VisualStyle.DATA_CLASS, dataClassElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(dataClassElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, dataClassElement.getElementHeader().getGUID());
         }
     }
 

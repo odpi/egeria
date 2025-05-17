@@ -80,9 +80,17 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
                                     dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader().getGUID());
         }
 
-        super.addRelatedToElementSummaries(dataStructureElement.getExternalReferences(),
-                                           VisualStyle.EXTERNAL_REFERENCE,
-                                           dataStructureElement.getElementHeader().getGUID());
+        super.addRelatedElementSummaries(dataStructureElement.getExternalReferences(),
+                                         VisualStyle.EXTERNAL_REFERENCE,
+                                         dataStructureElement.getElementHeader().getGUID());
+
+        super.addRelatedElementSummaries(dataStructureElement.getMemberOfCollections(),
+                                         VisualStyle.COLLECTION,
+                                         dataStructureElement.getElementHeader().getGUID());
+
+        super.addRelatedElementSummaries(dataStructureElement.getOtherRelatedElements(),
+                                         VisualStyle.LINKED_ELEMENT,
+                                         dataStructureElement.getElementHeader().getGUID());
     }
 
 

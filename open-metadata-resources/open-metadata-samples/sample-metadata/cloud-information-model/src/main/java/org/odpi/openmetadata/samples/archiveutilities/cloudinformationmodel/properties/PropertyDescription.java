@@ -2,10 +2,27 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * Property description represents the glossary term for a particular type of attribute (represented by a data field
+ * and a concept).  It is set up if the description is not null.  The GUID is used got yhe glossary term guid.
+ */
 public class PropertyDescription extends ModelElement
 {
     boolean  primitive   = false;
     String   dataTypeId  = null;
+
+
+
+    public PropertyDescription()
+    {
+        super.setGUID(UUID.randomUUID().toString());
+    }
+
+    List<Attribute> attributes = new ArrayList<>();
 
     public boolean isPrimitive()
     {
@@ -19,6 +36,12 @@ public class PropertyDescription extends ModelElement
     }
 
 
+    /**
+     * Return the type - only set if the attribute is a link to another table - for primitives,
+     * the type is set in the attribute.
+     *
+     * @return string
+     */
     public String getDataTypeId()
     {
         return dataTypeId;
@@ -36,5 +59,17 @@ public class PropertyDescription extends ModelElement
         }
 
         this.dataTypeId = dataTypeId;
+    }
+
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+
+    public void addAttribute(Attribute attribute)
+    {
+        attributes.add(attribute);
     }
 }

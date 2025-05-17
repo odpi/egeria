@@ -1,12 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
-package org.odpi.openmetadata.commonservices.ffdc.rest;
+package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataDictionaryElement;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,22 +13,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataDictionariesResponse is a response object for passing back a a list of data fields
- * or an exception if the request failed.
+ * CollectionMemberGraph describes the nested list of members in a collection.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataDictionariesResponse extends FFDCResponseBase
+public class CollectionMemberGraph extends CollectionMember
 {
-    private List<DataDictionaryElement> elements = null;
-
+    private List<CollectionMemberGraph> nestedMembers = null;
 
     /**
      * Default constructor
      */
-    public DataDictionariesResponse()
+    public CollectionMemberGraph()
     {
+        super();
     }
 
 
@@ -39,36 +36,47 @@ public class DataDictionariesResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public DataDictionariesResponse(DataDictionariesResponse template)
+    public CollectionMemberGraph(CollectionMemberGraph template)
     {
         super(template);
 
         if (template != null)
         {
-            elements = template.getElements();
+            nestedMembers = template.getNestedMembers();
         }
     }
 
 
     /**
-     * Return the list of metadata elements.
+     * Copy/clone constructor
      *
-     * @return result object
+     * @param template object to copy
      */
-    public List<DataDictionaryElement> getElements()
+    public CollectionMemberGraph(CollectionMember template)
     {
-        return elements;
+        super(template);
     }
 
 
     /**
-     * Set up the metadata element to return.
+     * Return the nested members of the collection.
      *
-     * @param elements result object
+     * @return list
      */
-    public void setElements(List<DataDictionaryElement> elements)
+    public List<CollectionMemberGraph> getNestedMembers()
     {
-        this.elements = elements;
+        return nestedMembers;
+    }
+
+
+    /**
+     * Set up the nested members of the collection.
+     *
+     * @param nestedMembers list
+     */
+    public void setNestedMembers(List<CollectionMemberGraph> nestedMembers)
+    {
+        this.nestedMembers = nestedMembers;
     }
 
 
@@ -80,11 +88,10 @@ public class DataDictionariesResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "DataDictionariesResponse{" +
-                "elements=" + elements +
+        return "CollectionMemberGraph{" +
+                "nestedMembers=" + nestedMembers +
                 "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -95,20 +102,11 @@ public class DataDictionariesResponse extends FFDCResponseBase
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        DataDictionariesResponse that = (DataDictionariesResponse) objectToCompare;
-        return Objects.equals(elements, that.elements);
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        CollectionMemberGraph that = (CollectionMemberGraph) objectToCompare;
+        return Objects.equals(nestedMembers, that.nestedMembers);
     }
 
 
@@ -120,6 +118,6 @@ public class DataDictionariesResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elements);
+        return Objects.hash(super.hashCode(), nestedMembers);
     }
 }
