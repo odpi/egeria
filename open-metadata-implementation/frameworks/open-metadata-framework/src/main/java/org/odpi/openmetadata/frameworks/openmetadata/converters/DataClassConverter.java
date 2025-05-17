@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -246,6 +247,11 @@ public class DataClassConverter<B> extends OpenMetadataConverterBase<B>
                     bean.setNestedDataClasses(this.getDataClassComposition(beanClass, relationships));
                     bean.setSpecializedDataClasses(this.getDataClassHierarchy(beanClass, relationships));
                     bean.setExternalReferences(this.getAttribution(beanClass, relationships));
+                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
+                                                                              relationships,
+                                                                              Arrays.asList(OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
+                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.DATA_CLASS_COMPOSITION.typeName)));
                 }
             }
 

@@ -2125,7 +2125,8 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a data field entity.
+     * Create a data field entity.  These are not all of the properties of a data field - but enough for current
+     * use cases.
      *
      * @param suppliedTypeName type of data field
      * @param anchorGUID unique identifier of the anchor for the data field - if null then own anchor
@@ -2214,6 +2215,233 @@ public class SimpleCatalogArchiveHelper
         return newEntity.getGUID();
     }
 
+
+    /**
+     * Add a nested data field to a complex data field.
+     *
+     * @param parentDataFieldGUID unique identifier of the parent data field
+     * @param nestedDataFieldGUID unique identifier of the nested data field
+     * @param position position of the data field in the parent
+     */
+    public void addNestedDataField(String parentDataFieldGUID,
+                                   String nestedDataFieldGUID,
+                                   int    position,
+                                   int    minCardinality,
+                                   int    maxCardinality)
+    {
+        final String methodName = "addNestedDataField";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(parentDataFieldGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(nestedDataFieldGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(parentDataFieldGUID + "_to_" + nestedDataFieldGUID + "_nested_data_field_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link data fields.  There are more properties available fore this relationship.  However, this is all
+     * that is needed at the moment.
+     *
+     * @param domainDataFieldGUID unique identifier of the parent data field
+     * @param rangeDataFieldGUID unique identifier of the nested data field
+     * @param relationshipTypeName name of the relationship
+     */
+    public void addLinkedDataField(String domainDataFieldGUID,
+                                   String rangeDataFieldGUID,
+                                   String relationshipTypeName)
+    {
+        final String methodName = "addLinkedDataField";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(domainDataFieldGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(rangeDataFieldGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.name, relationshipTypeName, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(domainDataFieldGUID + "_to_" + rangeDataFieldGUID + "_linked_data_field_relationship_" + relationshipTypeName),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Create a data structure entity.
+     *
+     * @param suppliedTypeName type of data structure
+     * @param anchorGUID unique identifier of the anchor for the data structure - if null then own anchor
+     * @param anchorTypeName unique type name of the anchor for the data structure
+     * @param anchorDomainName unique type name of the anchor's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
+     * @param qualifiedName unique name for the data structure entity
+     * @param displayName display name for the data structure
+     * @param description description about the data structure
+     * @param versionIdentifier version
+     * @param namespace type of data structure
+     * @param additionalProperties any other properties
+     * @param otherClassifications additional classifications for the data structure (eg Template)
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for data structure (dataStructureGUID)
+     */
+    public String addDataStructure(String               suppliedTypeName,
+                                   String               anchorGUID,
+                                   String               anchorTypeName,
+                                   String               anchorDomainName,
+                                   String               anchorScopeGUID,
+                                   String               qualifiedName,
+                                   String               displayName,
+                                   String               description,
+                                   String               versionIdentifier,
+                                   String               namespace,
+                                   Map<String, String>  additionalProperties,
+                                   List<Classification> otherClassifications,
+                                   Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addDataStructure";
+
+        String typeName = OpenMetadataType.DATA_STRUCTURE.typeName;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        List<Classification> classifications = otherClassifications;
+
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
+
+        if (anchorTypeName != null)
+        {
+            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               classifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Add a data field to a data structure.
+     *
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param memberDataFieldGUID unique identifier of the member
+     * @param position position of the data field in the parent
+     */
+    public void addMemberDataField(String dataStructureGUID,
+                                   String memberDataFieldGUID,
+                                   int    position,
+                                   int    minCardinality,
+                                   int    maxCardinality)
+    {
+        final String methodName = "addMemberDataField";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(dataStructureGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(memberDataFieldGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(dataStructureGUID + "_to_" + memberDataFieldGUID + "_member_data_field_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Link a term to a data definition using the DataStructureDefinition relationship (0580).
+     *
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the schema type - may be a template
+     */
+    public void addSchemaTypeDefinition(String dataStructureGUID,
+                                        String schemaTypeGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(dataStructureGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(schemaTypeGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName,
+                                                                     idToGUIDMap.getGUID(dataStructureGUID + "_to_" + schemaTypeGUID + "_schema_type_definition_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a term to a data definition using the DataStructureDefinition relationship (0580).
+     *
+     * @param certificationTypeGUID unique identifier of the certification type
+     * @param dataStructureGUID unique identifier of the data structure
+     */
+    public void addDataStructureDefinition(String certificationTypeGUID,
+                                           String dataStructureGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(certificationTypeGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(dataStructureGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(certificationTypeGUID + "_to_" + dataStructureGUID + "_data_structure_definition_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
 
 
     /**

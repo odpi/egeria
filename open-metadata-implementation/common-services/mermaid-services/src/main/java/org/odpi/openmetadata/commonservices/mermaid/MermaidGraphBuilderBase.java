@@ -6,6 +6,7 @@ package org.odpi.openmetadata.commonservices.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
@@ -497,7 +498,23 @@ public class MermaidGraphBuilderBase
      * @return visual style to use
      */
     protected VisualStyle getVisualStyleForEntity(OpenMetadataElement openMetadataElement,
-                                                  VisualStyle   defaultVisualStyle)
+                                                  VisualStyle         defaultVisualStyle)
+    {
+        VisualStyle typeBasedStyle = this.getVisualStyleForEntityType(openMetadataElement, defaultVisualStyle);
+
+        return this.checkForClassifications(openMetadataElement, typeBasedStyle);
+    }
+
+
+    /**
+     * Return the standard visual styles for entities.
+     *
+     * @param openMetadataElement header of the entity
+     * @param defaultVisualStyle default style to use if no special style defined
+     * @return visual style to use
+     */
+    protected VisualStyle getVisualStyleForEntity(OpenMetadataElementStub openMetadataElement,
+                                                  VisualStyle             defaultVisualStyle)
     {
         VisualStyle typeBasedStyle = this.getVisualStyleForEntityType(openMetadataElement, defaultVisualStyle);
 
@@ -1220,6 +1237,92 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Extract the name of a node.
+     *
+     * @param elementHeader element header
+     * @param properties description of an element
+     * @return string name
+     */
+    protected String getNodeDisplayName(ElementHeader           elementHeader,
+                                        ReferenceableProperties properties)
+    {
+        Object nodeDisplayName = null;
+
+        if (properties != null)
+        {
+            nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.NAME.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.RESOURCE_NAME.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.ROLE.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.FULL_NAME.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.USER_ID.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.DISTINGUISHED_NAME.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.IDENTIFIER.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.TAG_NAME.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.TITLE.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.ANNOTATION_TYPE.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.STARS.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getExtendedProperties().get(OpenMetadataProperty.URL.name);
+            }
+            if (nodeDisplayName == null)
+            {
+                nodeDisplayName = properties.getQualifiedName();
+            }
+        }
+
+        if (nodeDisplayName == null)
+        {
+            if (elementHeader.getType().getTypeName().equals(OpenMetadataType.LIKE.typeName))
+            {
+                nodeDisplayName = elementHeader.getVersions().getCreatedBy();
+            }
+            else
+            {
+                nodeDisplayName = elementHeader.getGUID();
+            }
+        }
+
+        return nodeDisplayName.toString();
+    }
+
+
+    /**
      * Add a data field to graph.  If it has sub-fields, they are recursively added.
      *
      * @param dataFieldElement element to process
@@ -1252,17 +1355,25 @@ public class MermaidGraphBuilderBase
                 }
             }
 
-            this.addRelatedToElementSummaries(dataFieldElement.getExternalReferences(),
-                                              VisualStyle.EXTERNAL_REFERENCE,
-                                              dataFieldElement.getElementHeader().getGUID());
+            this.addRelatedElementSummaries(dataFieldElement.getExternalReferences(),
+                                            VisualStyle.EXTERNAL_REFERENCE,
+                                            dataFieldElement.getElementHeader().getGUID());
 
-            this.addRelatedToElementSummaries(dataFieldElement.getAssignedDataClasses(),
-                                              VisualStyle.DATA_CLASS,
-                                              dataFieldElement.getElementHeader().getGUID());
+            this.addRelatedElementSummaries(dataFieldElement.getAssignedDataClasses(),
+                                            VisualStyle.DATA_CLASS,
+                                            dataFieldElement.getElementHeader().getGUID());
 
-            this.addRelatedToElementSummaries(dataFieldElement.getAssignedMeanings(),
-                                              VisualStyle.GLOSSARY_TERM,
-                                              dataFieldElement.getElementHeader().getGUID());
+            this.addRelatedElementSummaries(dataFieldElement.getAssignedMeanings(),
+                                            VisualStyle.GLOSSARY_TERM,
+                                            dataFieldElement.getElementHeader().getGUID());
+
+            this.addRelatedElementSummaries(dataFieldElement.getMemberOfCollections(),
+                                             VisualStyle.COLLECTION,
+                                             dataFieldElement.getElementHeader().getGUID());
+
+            this.addRelatedElementSummaries(dataFieldElement.getOtherRelatedElements(),
+                                             VisualStyle.LINKED_ELEMENT,
+                                             dataFieldElement.getElementHeader().getGUID());
         }
     }
 
@@ -1296,15 +1407,15 @@ public class MermaidGraphBuilderBase
      * @param visualStyle visual style for new nodes
      * @param startingEndId identity of the starting node
      */
-    public void addRelatedToElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
-                                             VisualStyle                         visualStyle,
-                                             String                              startingEndId)
+    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+                                           VisualStyle                         visualStyle,
+                                           String                              startingEndId)
     {
         if (relatedMetadataElements != null)
         {
             for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
             {
-                addRelatedToElementSummary(relatedMetadataElement, visualStyle, startingEndId);
+                addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId);
             }
         }
     }
@@ -1315,11 +1426,10 @@ public class MermaidGraphBuilderBase
      *
      * @param relatedMetadataElement related element (if null, nothing is added to the graph)
      * @param visualStyle visual style for new nodes
-     * @param end1Id identity of the starting node
      */
-    public void addRelatedToElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
-                                           VisualStyle                   visualStyle,
-                                           String                        end1Id)
+    public void addRelatedElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
+                                         VisualStyle                   visualStyle,
+                                         String                        startingEndId)
     {
         if (relatedMetadataElement != null)
         {
@@ -1347,76 +1457,20 @@ public class MermaidGraphBuilderBase
                 label = this.addSpacesToTypeName(relatedMetadataElement.getRelationshipHeader().getType().getTypeName());
             }
 
-            appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
-                              end1Id,
-                              label,
-                              relatedMetadataElement.getRelatedElement().getElementHeader().getGUID());
-        }
-    }
-
-
-    /**
-     * Link the list of related elements into the graph.
-     *
-     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
-     * @param visualStyle visual style for new nodes
-     * @param startingEndId identity of the starting node
-     */
-    public void addRelatedFromElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
-                                               VisualStyle                         visualStyle,
-                                               String                              startingEndId)
-    {
-        if (relatedMetadataElements != null)
-        {
-            for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
+            if (relatedMetadataElement.getRelatedElementAtEnd1())
             {
-                addRelatedFromElementSummary(relatedMetadataElement, visualStyle, startingEndId);
+                appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
+                                  relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
+                                  label,
+                                  startingEndId);
             }
-        }
-    }
-
-
-    /**
-     * Link the related element into the graph.
-     *
-     * @param relatedMetadataElement related element (if null, nothing is added to the graph)
-     * @param visualStyle visual style for new nodes
-     * @param end2Id identity of the starting node
-     */
-    public void addRelatedFromElementSummary(RelatedMetadataElementSummary relatedMetadataElement,
-                                             VisualStyle                   visualStyle,
-                                             String                        end2Id)
-    {
-        if (relatedMetadataElement != null)
-        {
-            appendNewMermaidNode(relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                 this.getNodeDisplayName(relatedMetadataElement.getRelatedElement()),
-                                 this.getTypeNameForEntity(relatedMetadataElement.getRelatedElement().getElementHeader()),
-                                 this.getVisualStyleForEntity(relatedMetadataElement.getRelatedElement().getElementHeader(), visualStyle));
-
-            String label = null;
-
-            if (relatedMetadataElement.getRelationshipProperties() != null)
+            else
             {
-                label = relatedMetadataElement.getRelationshipProperties().get(OpenMetadataProperty.LABEL.name);
-
-                if (label == null)
-                {
-                    label = getCardinalityLabel(relatedMetadataElement.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name),
-                                                relatedMetadataElement.getRelationshipProperties().get(OpenMetadataProperty.MIN_CARDINALITY.name),
-                                                relatedMetadataElement.getRelationshipProperties().get(OpenMetadataProperty.MAX_CARDINALITY.name));
-                }
+                appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
+                                  startingEndId,
+                                  label,
+                                  relatedMetadataElement.getRelatedElement().getElementHeader().getGUID());
             }
-
-            if (label == null)
-            {
-                label = this.addSpacesToTypeName(relatedMetadataElement.getRelationshipHeader().getType().getTypeName());
-            }
-
-            appendMermaidLine(relatedMetadataElement.getRelationshipHeader().getGUID(),
-                              relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
-                              label,
-                              end2Id);
         }
     }
 
@@ -1445,17 +1499,17 @@ public class MermaidGraphBuilderBase
 
         if (positionString != null)
         {
-            position = Integer.getInteger(positionString);
+            position = Integer.parseInt(positionString);
         }
 
         if (minCardinalityString != null)
         {
-            minCardinality = Integer.getInteger(minCardinalityString);
+            minCardinality = Integer.parseInt(minCardinalityString);
         }
 
         if (minCardinalityString != null)
         {
-            minCardinality = Integer.getInteger(minCardinalityString);
+            minCardinality = Integer.parseInt(minCardinalityString);
         }
 
         return getCardinalityLabel(position, minCardinality, maxCardinality);

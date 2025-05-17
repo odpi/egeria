@@ -14,7 +14,6 @@ import java.util.*;
 /**
  * CloudInformationModelParser reads the CloudInformationModel and parses it into a set of Java Beans
  * ready for the archive builder.  It hides the format of the model from the builder.
- *
  * The subject areas contain concept groups which in turn contain the concepts. These may be entities
  * or relationships.  Inside the concepts are the properties that link to the property descriptions
  * found in the property groups.
@@ -51,10 +50,10 @@ class CloudInformationModelParser
 
     private static final String modelName = "Cloud Information Model (CIM)";
     private static final String modelTechnicalName = "CloudInformationModel";
-    private static final String modelSummary = "The Cloud Information Model (CIM) is an open source glossary and data model that describes commerce concepts such as parties, products, sales order, payments and shipments.";
+    private static final String modelSummary = "The Cloud Information Model (CIM) is an open source data model that describes commerce concepts such as parties, products, sales order, payments and shipments.";
 
     private static final String modelDescription = """
-            The Cloud Information Model (CIM) is an open source glossary and data model that spans the following subject areas:
+            The Cloud Information Model (CIM) is an open source data model that spans the following subject areas:
 
             •\tParty – people, their roles and organizations.
             •\tProduct – product descriptions, structures and packaging.
@@ -71,7 +70,7 @@ class CloudInformationModelParser
             """;
 
     private static final String modelUsage = "Use the contents of the CIM to create consistent data definitions and data schemas for your organization.";
-    private static final String modelLocation = "https://cloudinformationmodel.org/";
+    private static final String modelLocation = "https://github.com/cloudinformationmodel/cloudinformationmodel";
     private static final String modelScope = "People, organizations, accounts and contact details, orders and payments.";
     private static final String modelLanguage = "En_US";
 
@@ -638,7 +637,7 @@ class CloudInformationModelParser
         Link link = new Link(propertyGUID, propertyTechnicalName, propertyDescription);
 
         link.setDomainConceptGUID(domainConcept.getGUID());
-        link.setDomainConceptGUID(domainConcept.getTechnicalName());
+        link.setDomainConceptName(domainConcept.getTechnicalName());
 
         link.setRangeConceptGUID(rangeConcept.getGUID());
         link.setRangeConceptName(rangeConcept.getTechnicalName());
@@ -901,7 +900,7 @@ class CloudInformationModelParser
                     {
                         for (Map<String, Object> propertyJsonLD : propertiesJsonLD)
                         {
-                            String propertyGUID = getStringValue(propertyJsonLD.get(AT_TYPE_TAG));
+                            String propertyGUID = getStringValue(propertyJsonLD.get(AT_ID_TAG));
                             String propertyTechnicalName = getStringValue(propertyJsonLD.get(PATH_TAG));
                             String dataType = getStringValue(propertyJsonLD.get(DATA_TYPE_TAG));
                             Object node = propertyJsonLD.get(NODE_TAG);

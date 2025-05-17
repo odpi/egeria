@@ -11,7 +11,7 @@ import java.util.UUID;
 
 
 /**
- * Creates a mermaid graph rendering of the Open Metadata Framework's data class graph.
+ * Creates a mermaid graph rendering of the Open Metadata Framework's glossary graph.
  */
 public class GlossaryMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
@@ -46,8 +46,8 @@ public class GlossaryMermaidGraphBuilder extends MermaidGraphBuilderBase
             this.addDescription(glossaryElement);
 
             super.addClassifications(glossaryElement.getElementHeader());
-            super.addRelatedToElementSummaries(glossaryElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryElement.getElementHeader().getGUID());
-            super.addRelatedToElementSummaries(glossaryElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryElement.getElementHeader().getGUID());
 
             if (glossaryElement.getCategories() != null)
             {

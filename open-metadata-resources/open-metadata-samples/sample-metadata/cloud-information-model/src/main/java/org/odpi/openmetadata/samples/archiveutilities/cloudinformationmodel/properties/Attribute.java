@@ -14,6 +14,7 @@ public class Attribute extends Property
                      PropertyDescription propertyDescription)
     {
         super(guid, technicalName, propertyDescription);
+        propertyDescription.addAttribute(this);
     }
 
     public String getDataType()

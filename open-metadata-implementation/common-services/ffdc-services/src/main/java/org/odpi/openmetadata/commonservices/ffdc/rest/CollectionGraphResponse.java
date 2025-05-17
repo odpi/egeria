@@ -1,35 +1,36 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataSpecElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionGraph;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * DataSpecResponse is a response object for passing back a single data field
- * element or an exception if the request failed.
+ * CollectionResponse is the response structure used on the OMAS REST API calls that return a
+ * CollectionElement object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataSpecResponse extends FFDCResponseBase
+public class CollectionGraphResponse extends FFDCResponseBase
 {
-    private DataSpecElement element = null;
+    private CollectionGraph graph = null;
 
 
     /**
      * Default constructor
      */
-    public DataSpecResponse()
+    public CollectionGraphResponse()
     {
+        super();
     }
 
 
@@ -38,36 +39,36 @@ public class DataSpecResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public DataSpecResponse(DataSpecResponse template)
+    public CollectionGraphResponse(CollectionGraphResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            element = template.getElement();
+            this.graph = template.getGraph();
         }
     }
 
 
     /**
-     * Return the metadata element.
+     * Return the element result.
      *
-     * @return result object
+     * @return details of person role
      */
-    public DataSpecElement getElement()
+    public CollectionGraph getGraph()
     {
-        return element;
+        return graph;
     }
 
 
     /**
-     * Set up the metadata element to return.
+     * Set up the element result.
      *
-     * @param element result object
+     * @param graph details of person role
      */
-    public void setElement(DataSpecElement element)
+    public void setGraph(CollectionGraph graph)
     {
-        this.element = element;
+        this.graph = graph;
     }
 
 
@@ -79,8 +80,8 @@ public class DataSpecResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "DataSpecResponse{" +
-                "element=" + element +
+        return "CollectionGraphResponse{" +
+                "graph=" + graph +
                 "} " + super.toString();
     }
 
@@ -98,7 +99,7 @@ public class DataSpecResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (!(objectToCompare instanceof CollectionGraphResponse that))
         {
             return false;
         }
@@ -106,8 +107,7 @@ public class DataSpecResponse extends FFDCResponseBase
         {
             return false;
         }
-        DataSpecResponse that = (DataSpecResponse) objectToCompare;
-        return Objects.equals(element, that.element);
+        return Objects.equals(graph, that.graph);
     }
 
 
@@ -119,6 +119,6 @@ public class DataSpecResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), element);
+        return Objects.hash(super.hashCode(), graph);
     }
 }

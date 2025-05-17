@@ -12,7 +12,7 @@ import java.util.UUID;
 
 
 /**
- * Creates a mermaid graph rendering of the Open Metadata Framework's data class graph.
+ * Creates a mermaid graph rendering of the Open Metadata Framework's glossary category graph.
  */
 public class GlossaryCategoryMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
@@ -46,9 +46,9 @@ public class GlossaryCategoryMermaidGraphBuilder extends MermaidGraphBuilderBase
 
             this.addDescription(glossaryCategoryElement);
 
-            super.addRelatedToElementSummaries(glossaryCategoryElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryCategoryElement.getElementHeader().getGUID());
-            super.addRelatedToElementSummaries(glossaryCategoryElement.getChildCategories(), VisualStyle.GLOSSARY_CATEGORY, glossaryCategoryElement.getElementHeader().getGUID());
-            super.addRelatedToElementSummaries(glossaryCategoryElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryCategoryElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryCategoryElement.getExternalReferences(), VisualStyle.EXTERNAL_REFERENCE, glossaryCategoryElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryCategoryElement.getChildCategories(), VisualStyle.GLOSSARY_CATEGORY, glossaryCategoryElement.getElementHeader().getGUID());
+            super.addRelatedElementSummaries(glossaryCategoryElement.getOtherRelatedElements(), VisualStyle.LINKED_ELEMENT, glossaryCategoryElement.getElementHeader().getGUID());
 
             if ((glossaryCategoryElement.getTerms() != null) && (! glossaryCategoryElement.getTerms().isEmpty()))
             {

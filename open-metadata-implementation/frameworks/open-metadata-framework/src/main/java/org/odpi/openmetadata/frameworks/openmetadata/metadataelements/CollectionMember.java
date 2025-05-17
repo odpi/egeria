@@ -23,10 +23,8 @@ public class CollectionMember implements MetadataElement
 {
     private ElementHeader                  relationshipHeader     = null;
     private CollectionMembershipProperties relationshipProperties = null;
-
-    private ElementHeader                  elementHeader    = null;
-
-    private ReferenceableProperties        properties = null;
+    private ElementHeader                  elementHeader          = null;
+    private ReferenceableProperties        properties             = null;
 
 
     /**

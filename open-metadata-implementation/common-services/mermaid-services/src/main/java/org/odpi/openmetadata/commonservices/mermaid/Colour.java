@@ -66,7 +66,7 @@ public enum Colour
 
     GHOST_WHITE ("#f8f8ff"),
 
-    LIGHT_ORANGE("FFE599"),
+    LIGHT_ORANGE("#FFE599"),
     ORANGE      ("#f9845b"),
     WHITE_ORANGE ("#ffe3cc"),
     PALE_ORANGE  ("#ffab66"),

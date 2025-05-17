@@ -29,12 +29,9 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
     private RelatedBy                           relatedBy              = null;
     private RelatedMetadataElementSummary       parentGlossary         = null;
     private List<RelatedMetadataElementSummary> categoryMembership     = null;
-    private List<RelatedMetadataElementSummary> relatedToTerms         = null;
-    private List<RelatedMetadataElementSummary> relatedFromTerms       = null;
+    private List<RelatedMetadataElementSummary> relatedTerms           = null;
     private List<RelatedMetadataElementSummary> relatedDefinitions     = null;
     private List<RelatedMetadataElementSummary> semanticAssignments    = null;
-    private List<RelatedMetadataElementSummary> otherRelatedElements   = null;
-    private String                              mermaidGraph           = null;
 
 
     /**
@@ -62,12 +59,9 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
             relatedBy              = template.getRelatedElement();
             parentGlossary         = template.getParentGlossary();
             categoryMembership     = template.getCategoryMembership();
-            relatedToTerms         = template.getRelatedToTerms();
-            relatedFromTerms       = template.getRelatedFromTerms();
+            relatedTerms           = template.getRelatedTerms();
             relatedDefinitions     = template.getRelatedDefinitions();
             semanticAssignments    = template.getSemanticAssignments();
-            otherRelatedElements   = template.getOtherRelatedElements();
-            mermaidGraph           = template.getMermaidGraph();
         }
     }
 
@@ -191,42 +185,20 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
      *
      * @return list of terms
      */
-    public List<RelatedMetadataElementSummary> getRelatedToTerms()
+    public List<RelatedMetadataElementSummary> getRelatedTerms()
     {
-        return relatedToTerms;
+        return relatedTerms;
     }
 
 
     /**
-     * Set up  the related terms.
+     * Set up the related terms.
      *
      * @param relatedToTerms list of terms
      */
     public void setRelatedToTerms(List<RelatedMetadataElementSummary> relatedToTerms)
     {
-        this.relatedToTerms = relatedToTerms;
-    }
-
-
-    /**
-     * Return the related terms.
-     *
-     * @return list of terms
-     */
-    public List<RelatedMetadataElementSummary> getRelatedFromTerms()
-    {
-        return relatedFromTerms;
-    }
-
-
-    /**
-     * Set up  the related terms.
-     *
-     * @param relatedFromTerms list of terms
-     */
-    public void setRelatedFromTerms(List<RelatedMetadataElementSummary> relatedFromTerms)
-    {
-        this.relatedFromTerms = relatedFromTerms;
+        this.relatedTerms = relatedToTerms;
     }
 
 
@@ -275,50 +247,6 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
 
 
     /**
-     * Return details of other related elements retrieved from the repository.
-     *
-     * @return list
-     */
-    public List<RelatedMetadataElementSummary> getOtherRelatedElements()
-    {
-        return otherRelatedElements;
-    }
-
-
-    /**
-     * Set up details of other related elements retrieved from the repository.
-     *
-     * @param otherRelatedElements list
-     */
-    public void setOtherRelatedElements(List<RelatedMetadataElementSummary> otherRelatedElements)
-    {
-        this.otherRelatedElements = otherRelatedElements;
-    }
-
-
-    /**
-     * Return the mermaid representation of this data structure.
-     *
-     * @return string markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the mermaid representation of this data structure.
-     *
-     * @param mermaidGraph markdown string
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -332,14 +260,13 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
                 ", relatedBy=" + relatedBy +
                 ", parentGlossary=" + parentGlossary +
                 ", categoryMembership=" + categoryMembership +
-                ", relatedToTerms=" + relatedToTerms +
-                ", relatedFromTerms=" + relatedToTerms +
+                ", relatedTerms=" + relatedTerms +
                 ", relatedDefinitions=" + relatedDefinitions +
                 ", semanticAssignments=" + semanticAssignments +
-                ", otherRelatedElements=" + otherRelatedElements +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", relatedElement=" + getRelatedElement() +
                 "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -359,12 +286,9 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
                 Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(parentGlossary, that.parentGlossary) &&
                 Objects.equals(categoryMembership, that.categoryMembership) &&
-                Objects.equals(relatedToTerms, that.relatedToTerms) &&
-                Objects.equals(relatedFromTerms, that.relatedFromTerms) &&
+                Objects.equals(relatedTerms, that.relatedTerms) &&
                 Objects.equals(relatedDefinitions, that.relatedDefinitions) &&
-                Objects.equals(semanticAssignments, that.semanticAssignments) &&
-                Objects.equals(otherRelatedElements, that.otherRelatedElements) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+                Objects.equals(semanticAssignments, that.semanticAssignments);
     }
 
 
@@ -376,8 +300,7 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), mermaidGraph, correlationHeaders, glossaryTermProperties, relatedBy,
-                            parentGlossary, categoryMembership, relatedToTerms, relatedFromTerms, relatedDefinitions,
-                            semanticAssignments, otherRelatedElements);
+        return Objects.hash(super.hashCode(), correlationHeaders, glossaryTermProperties, relatedBy,
+                            parentGlossary, categoryMembership, relatedTerms, relatedDefinitions, semanticAssignments);
     }
 }

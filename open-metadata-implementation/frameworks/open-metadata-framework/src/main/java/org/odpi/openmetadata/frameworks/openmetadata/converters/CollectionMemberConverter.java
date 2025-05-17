@@ -58,44 +58,15 @@ public class CollectionMemberConverter<B> extends OpenMetadataConverterBase<B>
 
             if (returnBean instanceof CollectionMember bean)
             {
-                CollectionMembershipProperties membershipProperties = new CollectionMembershipProperties();
-
                 bean.setRelationshipHeader(super.getMetadataElementHeader(beanClass,
                                                                           relatedMetadataElement,
                                                                           relatedMetadataElement.getRelationshipGUID(),
                                                                           null,
                                                                           methodName));
 
-                /*
-                 * The initial set of values come from the relationship properties.
-                 */
-                if (relatedMetadataElement.getRelationshipProperties() != null)
-                {
-                    ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
-
-                    membershipProperties.setMembershipRationale(this.removeMembershipRationale(elementProperties));
-                    membershipProperties.setCreatedBy(relatedMetadataElement.getVersions().getCreatedBy());
-                    membershipProperties.setExpression(this.removeExpression(elementProperties));
-                    membershipProperties.setConfidence(this.removeConfidence(elementProperties));
-                    membershipProperties.setSteward(this.removeSteward(elementProperties));
-                    membershipProperties.setStewardTypeName(this.removeStewardTypeName(elementProperties));
-                    membershipProperties.setStewardPropertyName(this.removeStewardPropertyName(elementProperties));
-                    membershipProperties.setSource(this.removeSource(elementProperties));
-                    membershipProperties.setNotes(this.removeNotes(elementProperties));
-                    membershipProperties.setStatus(this.removeCollectionMemberStatus(elementProperties));
-                    membershipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
-                    membershipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    membershipProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
-
-                    bean.setRelationshipProperties(membershipProperties);
-                }
-
+                bean.setRelationshipProperties(super.getCollectionMembershipProperties(relatedMetadataElement));
                 bean.setElementHeader(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
+                bean.setProperties(super.getReferenceableProperties(relatedMetadataElement.getElement()));
             }
 
             return returnBean;
@@ -103,36 +74,6 @@ public class CollectionMemberConverter<B> extends OpenMetadataConverterBase<B>
         catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the CollectionMemberStatus property from the supplied element properties.
-     *
-     * @param elementProperties properties from entity
-     * @return KeyPattern enum
-     */
-     CollectionMemberStatus removeCollectionMemberStatus(ElementProperties elementProperties)
-    {
-        final String methodName = "removeCollectionMemberStatus";
-
-        if (elementProperties != null)
-        {
-            String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataProperty.MEMBERSHIP_STATUS.name,
-                                                                         elementProperties,
-                                                                         methodName);
-
-            for (CollectionMemberStatus status : CollectionMemberStatus.values())
-            {
-                if (status.getName().equals(retrievedProperty))
-                {
-                    return status;
-                }
-            }
         }
 
         return null;
