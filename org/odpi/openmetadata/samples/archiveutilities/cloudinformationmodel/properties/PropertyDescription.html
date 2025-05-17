@@ -80,6 +80,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">PropertyDescription</span>
 <span class="extends-implements">extends <a href="ModelElement.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">ModelElement</a></span></div>
+<div class="block">Property description represents the glossary term for a particular type of attribute (represented by a data field
+ and a concept).  It is set up if the description is not null.  The GUID is used got yhe glossary term guid.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -107,9 +109,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAttribute(org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties.Attribute)" class="member-name-link">addAttribute</a><wbr>(<a href="Attribute.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">Attribute</a>&nbsp;attribute)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Attribute.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">Attribute</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttributes()" class="member-name-link">getAttributes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataTypeId()" class="member-name-link">getDataTypeId</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type - only set if the attribute is a link to another table - for primitives,
+ the type is set in the attribute.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPrimitive()" class="member-name-link">isPrimitive</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -169,12 +180,30 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDataTypeId()">
 <h3>getDataTypeId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDataTypeId</span>()</div>
+<div class="block">Return the type - only set if the attribute is a link to another table - for primitives,
+ the type is set in the attribute.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setDataTypeId(java.lang.String)">
 <h3>setDataTypeId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDataTypeId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataTypeId)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getAttributes()">
+<h3>getAttributes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Attribute.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">Attribute</a>&gt;</span>&nbsp;<span class="element-name">getAttributes</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="addAttribute(org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties.Attribute)">
+<h3>addAttribute</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addAttribute</span><wbr><span class="parameters">(<a href="Attribute.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">Attribute</a>&nbsp;attribute)</span></div>
 </section>
 </li>
 </ul>

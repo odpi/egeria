@@ -81,14 +81,14 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="DataClassElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataClassElement</a></code>, <code><a href="DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a></code>, <code><a href="DataStructureElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataStructureElement</a></code>, <code><a href="GlossaryCategoryElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">GlossaryCategoryElement</a></code>, <code><a href="GlossaryElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">GlossaryElement</a></code>, <code><a href="GlossaryTermElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">GlossaryTermElement</a></code></dd>
+<dd><code><a href="CollectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">CollectionElement</a></code>, <code><a href="DataClassElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataClassElement</a></code>, <code><a href="DataFieldElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFieldElement</a></code>, <code><a href="DataStructureElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataStructureElement</a></code>, <code><a href="GlossaryCategoryElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">GlossaryCategoryElement</a></code>, <code><a href="GlossaryElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">GlossaryElement</a></code>, <code><a href="GlossaryTermElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">GlossaryTermElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AttributedMetadataElement</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></span></div>
 <div class="block">Description of an open metadata element (entity instance) retrieved from the open metadata repositories
- that is expected to have external references attached.</div>
+ that is expected to have external references and other elements attached.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -137,6 +137,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of external references for this element.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the mermaid representation of this data structure.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOtherRelatedElements()" class="member-name-link">getOtherRelatedElements</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return details of other related elements retrieved from the repository.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -151,6 +161,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalReferences(java.util.List)" class="member-name-link">setExternalReferences</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;externalReferences)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of external references for this element</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMermaidGraph(java.lang.String)" class="member-name-link">setMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mermaidGraph)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the mermaid representation of this data structure.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOtherRelatedElements(java.util.List)" class="member-name-link">setOtherRelatedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;otherRelatedElements)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up details of other related elements retrieved from the repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -245,6 +265,50 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>properties map</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getOtherRelatedElements()">
+<h3>getOtherRelatedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getOtherRelatedElements</span>()</div>
+<div class="block">Return details of other related elements retrieved from the repository.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setOtherRelatedElements(java.util.List)">
+<h3>setOtherRelatedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOtherRelatedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;otherRelatedElements)</span></div>
+<div class="block">Set up details of other related elements retrieved from the repository.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>otherRelatedElements</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMermaidGraph()">
+<h3>getMermaidGraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMermaidGraph</span>()</div>
+<div class="block">Return the mermaid representation of this data structure.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string markdown</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMermaidGraph(java.lang.String)">
+<h3>setMermaidGraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMermaidGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mermaidGraph)</span></div>
+<div class="block">Set up the mermaid representation of this data structure.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mermaidGraph</code> - markdown string</dd>
 </dl>
 </section>
 </li>

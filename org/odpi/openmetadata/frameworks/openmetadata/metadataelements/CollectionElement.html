@@ -72,17 +72,22 @@ loadScripts(document, 'script');</script>
 <h1 title="Class CollectionElement" class="title">Class CollectionElement</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AttributedMetadataElement</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
 </dl>
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="CollectionGraph.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">CollectionGraph</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CollectionElement</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></span></div>
+<span class="extends-implements">extends <a href="AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></span></div>
 <div class="block">CollectionElement contains the properties and header for a collection retrieved from the metadata repository.</div>
 </section>
 <section class="summary">
@@ -122,30 +127,20 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the element header associated with the properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of the collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RelatedBy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedBy</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedBy()" class="member-name-link">getRelatedBy</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RelatedBy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedBy</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedBy()" class="member-name-link">getRelatedBy</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return details of the relationship used to retrieve this element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return hash code for this object</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the element header associated with the properties.</div>
+<div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../properties/collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a>&nbsp;properties)</code></div>
@@ -165,6 +160,9 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AttributedMetadataElement">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></h3>
+<code><a href="AttributedMetadataElement.html#getElementHeader()">getElementHeader</a>, <a href="AttributedMetadataElement.html#getExternalReferences()">getExternalReferences</a>, <a href="AttributedMetadataElement.html#getMermaidGraph()">getMermaidGraph</a>, <a href="AttributedMetadataElement.html#getOtherRelatedElements()">getOtherRelatedElements</a>, <a href="AttributedMetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">setElementHeader</a>, <a href="AttributedMetadataElement.html#setExternalReferences(java.util.List)">setExternalReferences</a>, <a href="AttributedMetadataElement.html#setMermaidGraph(java.lang.String)">setMermaidGraph</a>, <a href="AttributedMetadataElement.html#setOtherRelatedElements(java.util.List)">setOtherRelatedElements</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -205,32 +203,6 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getElementHeader()">
-<h3>getElementHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getElementHeader</span>()</div>
-<div class="block">Return the element header associated with the properties.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
-<dt>Returns:</dt>
-<dd>element header object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
-<h3>setElementHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementHeader</span><wbr><span class="parameters">(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</span></div>
-<div class="block">Set up the element header associated with the properties.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>elementHeader</code> - element header object</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getProperties()">
 <h3>getProperties</h3>
@@ -284,7 +256,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="AttributedMetadataElement.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -297,7 +269,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="AttributedMetadataElement.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
@@ -312,7 +284,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="AttributedMetadataElement.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>
