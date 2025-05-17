@@ -30,8 +30,7 @@ public class GlossaryCategoryElement extends AttributedMetadataElement implement
     private RelatedMetadataElementSummary       parentCategory             = null;
     private List<RelatedMetadataElementSummary> childCategories            = null;
     private List<RelatedMetadataElementSummary> terms                      = null;
-    private List<RelatedMetadataElementSummary> otherRelatedElements       = null;
-    private String                              mermaidGraph               = null;
+
 
     /**
      * Default constructor
@@ -53,14 +52,12 @@ public class GlossaryCategoryElement extends AttributedMetadataElement implement
 
         if (template != null)
         {
-            correlationHeaders = template.getCorrelationHeaders();
+            correlationHeaders         = template.getCorrelationHeaders();
             glossaryCategoryProperties = template.getGlossaryCategoryProperties();
-            parentGlossary = template.getParentGlossary();
-            parentCategory = template.getParentCategory();
-            childCategories = template.getChildCategories();
-            terms = template.getTerms();
-            otherRelatedElements = template.getOtherRelatedElements();
-            mermaidGraph = template.getMermaidGraph();
+            parentGlossary             = template.getParentGlossary();
+            parentCategory             = template.getParentCategory();
+            childCategories            = template.getChildCategories();
+            terms                      = template.getTerms();
         }
     }
 
@@ -204,50 +201,6 @@ public class GlossaryCategoryElement extends AttributedMetadataElement implement
 
 
     /**
-     * Return details of other related elements retrieved from the repository.
-     *
-     * @return list
-     */
-    public List<RelatedMetadataElementSummary> getOtherRelatedElements()
-    {
-        return otherRelatedElements;
-    }
-
-
-    /**
-     * Set up details of other related elements retrieved from the repository.
-     *
-     * @param otherRelatedElements list
-     */
-    public void setOtherRelatedElements(List<RelatedMetadataElementSummary> otherRelatedElements)
-    {
-        this.otherRelatedElements = otherRelatedElements;
-    }
-
-
-    /**
-     * Return the mermaid representation of this data structure.
-     *
-     * @return string markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the mermaid representation of this data structure.
-     *
-     * @param mermaidGraph markdown string
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -262,8 +215,6 @@ public class GlossaryCategoryElement extends AttributedMetadataElement implement
                 ", parentCategory=" + parentCategory +
                 ", childCategories=" + childCategories +
                 ", terms=" + terms +
-                ", otherRelatedElements=" + otherRelatedElements +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -286,9 +237,7 @@ public class GlossaryCategoryElement extends AttributedMetadataElement implement
                 Objects.equals(parentGlossary, that.parentGlossary) &&
                 Objects.equals(parentCategory, that.parentCategory) &&
                 Objects.equals(childCategories, that.childCategories) &&
-                Objects.equals(terms, that.terms) &&
-                Objects.equals(otherRelatedElements, that.otherRelatedElements) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+                Objects.equals(terms, that.terms);
     }
 
 
@@ -301,7 +250,6 @@ public class GlossaryCategoryElement extends AttributedMetadataElement implement
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), correlationHeaders, glossaryCategoryProperties,
-                            parentGlossary, parentCategory, childCategories, terms,
-                            otherRelatedElements, mermaidGraph);
+                            parentGlossary, parentCategory, childCategories, terms);
     }
 }

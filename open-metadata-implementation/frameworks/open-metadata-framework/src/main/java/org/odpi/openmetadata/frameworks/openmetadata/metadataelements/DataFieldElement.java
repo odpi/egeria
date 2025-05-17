@@ -26,7 +26,7 @@ public class DataFieldElement extends AttributedMetadataElement
     private List<MemberDataField>               nestedDataFields    = null;
     private List<RelatedMetadataElementSummary> assignedDataClasses = null;
     private List<RelatedMetadataElementSummary> assignedMeanings    = null;
-    private String                              mermaidGraph        = null;
+    private List<RelatedMetadataElementSummary> memberOfCollections   = null;
 
 
     /**
@@ -53,7 +53,7 @@ public class DataFieldElement extends AttributedMetadataElement
             nestedDataFields    = template.getNestedDataFields();
             assignedDataClasses = template.getAssignedDataClasses();
             assignedMeanings    = template.getAssignedMeanings();
-            mermaidGraph        = template.getMermaidGraph();
+            memberOfCollections = template.getMemberOfCollections();
         }
     }
 
@@ -147,24 +147,24 @@ public class DataFieldElement extends AttributedMetadataElement
 
 
     /**
-     * Return the mermaid representation of this data structure.
+     * Return the list of collections that is definition is a member of.
      *
-     * @return string markdown
+     * @return related collections
      */
-    public String getMermaidGraph()
+    public List<RelatedMetadataElementSummary> getMemberOfCollections()
     {
-        return mermaidGraph;
+        return memberOfCollections;
     }
 
 
     /**
-     * Set up the mermaid representation of this data structure.
+     * Set up the list of collections that is definition is a member of.
      *
-     * @param mermaidGraph markdown string
+     * @param memberOfCollections related collections
      */
-    public void setMermaidGraph(String mermaidGraph)
+    public void setMemberOfCollections(List<RelatedMetadataElementSummary> memberOfCollections)
     {
-        this.mermaidGraph = mermaidGraph;
+        this.memberOfCollections = memberOfCollections;
     }
 
 
@@ -181,7 +181,7 @@ public class DataFieldElement extends AttributedMetadataElement
                 ", nestedDataFields=" + nestedDataFields +
                 ", assignedDataClasses=" + assignedDataClasses +
                 ", assignedMeanings=" + assignedMeanings +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", memberOfCollections=" + memberOfCollections +
                 "} " + super.toString();
     }
 
@@ -203,7 +203,7 @@ public class DataFieldElement extends AttributedMetadataElement
                 Objects.equals(nestedDataFields, that.nestedDataFields) &&
                 Objects.equals(assignedDataClasses, that.assignedDataClasses) &&
                 Objects.equals(assignedMeanings, that.assignedMeanings) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+                Objects.equals(memberOfCollections, that.memberOfCollections);
     }
 
 
@@ -215,6 +215,7 @@ public class DataFieldElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses, assignedMeanings, mermaidGraph);
+        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses,
+                            assignedMeanings, memberOfCollections);
     }
 }

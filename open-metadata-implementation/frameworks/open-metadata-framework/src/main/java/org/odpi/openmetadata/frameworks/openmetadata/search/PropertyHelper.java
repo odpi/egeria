@@ -89,11 +89,15 @@ public class PropertyHelper
 
         if ((elementControlHeader != null) && (elementControlHeader.getType() != null))
         {
-            List<String> typeList = elementControlHeader.getType().getSuperTypeNames();
+            List<String> typeList;
 
-            if (typeList == null)
+            if (elementControlHeader.getType().getSuperTypeNames() == null)
             {
                 typeList = new ArrayList<>();
+            }
+            else
+            {
+                typeList = new ArrayList<>(elementControlHeader.getType().getSuperTypeNames());
             }
 
             typeList.add(elementControlHeader.getType().getTypeName());

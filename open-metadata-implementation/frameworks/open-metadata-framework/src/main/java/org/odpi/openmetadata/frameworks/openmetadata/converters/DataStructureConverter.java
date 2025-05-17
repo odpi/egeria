@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -194,6 +195,12 @@ public class DataStructureConverter<B> extends DataFieldConverter<B>
                 {
                     bean.setEquivalentSchemaType(this.getEquivalentSchemaType(beanClass, relationships));
                     bean.setExternalReferences(this.getAttribution(beanClass, relationships));
+                    bean.setMemberOfCollections(this.getParentCollectionMembership(beanClass, relationships));
+                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
+                                                                              relationships,
+                                                                              Arrays.asList(OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName,
+                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)));
                 }
             }
 

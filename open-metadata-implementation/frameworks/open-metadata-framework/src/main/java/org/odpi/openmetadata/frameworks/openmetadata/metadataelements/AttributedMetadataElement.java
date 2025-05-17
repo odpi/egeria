@@ -16,15 +16,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * Description of an open metadata element (entity instance) retrieved from the open metadata repositories
- * that is expected to have external references attached.
+ * that is expected to have external references and other elements attached.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AttributedMetadataElement implements MetadataElement
 {
-    private ElementHeader                       elementHeader      = null;
-    private List<RelatedMetadataElementSummary> externalReferences = null;
+    private ElementHeader                       elementHeader        = null;
+    private List<RelatedMetadataElementSummary> externalReferences   = null;
+    private List<RelatedMetadataElementSummary> otherRelatedElements = null;
+    private String                              mermaidGraph         = null;
 
     /**
      * Default constructor used by subclasses
@@ -43,8 +45,10 @@ public class AttributedMetadataElement implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader      = template.getElementHeader();
-            externalReferences = template.getExternalReferences();
+            elementHeader        = template.getElementHeader();
+            externalReferences   = template.getExternalReferences();
+            otherRelatedElements = template.getOtherRelatedElements();
+            mermaidGraph         = template.getMermaidGraph();
         }
     }
 
@@ -95,6 +99,51 @@ public class AttributedMetadataElement implements MetadataElement
 
 
     /**
+     * Return details of other related elements retrieved from the repository.
+     *
+     * @return list
+     */
+    public List<RelatedMetadataElementSummary> getOtherRelatedElements()
+    {
+        return otherRelatedElements;
+    }
+
+
+    /**
+     * Set up details of other related elements retrieved from the repository.
+     *
+     * @param otherRelatedElements list
+     */
+    public void setOtherRelatedElements(List<RelatedMetadataElementSummary> otherRelatedElements)
+    {
+        this.otherRelatedElements = otherRelatedElements;
+    }
+
+
+    /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -105,6 +154,8 @@ public class AttributedMetadataElement implements MetadataElement
         return "AttributedMetadataElement{" +
                 "elementHeader=" + elementHeader +
                 ", externalReferences=" + externalReferences +
+                ", otherRelatedElements=" + otherRelatedElements +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
 
@@ -118,20 +169,13 @@ public class AttributedMetadataElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         AttributedMetadataElement that = (AttributedMetadataElement) objectToCompare;
-        return Objects.equals(externalReferences, that.externalReferences);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(externalReferences, that.externalReferences) &&
+                Objects.equals(otherRelatedElements, that.otherRelatedElements) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -143,6 +187,6 @@ public class AttributedMetadataElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalReferences);
+        return Objects.hash(elementHeader, externalReferences, otherRelatedElements, mermaidGraph);
     }
 }

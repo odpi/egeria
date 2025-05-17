@@ -124,8 +124,7 @@ public class GlossaryTermConverter<B> extends OMFConverter<B>
                     {
                         List<RelatedMetadataElementSummary> externalReferences     = new ArrayList<>();
                         List<RelatedMetadataElementSummary> categoryMembership     = new ArrayList<>();
-                        List<RelatedMetadataElementSummary> relatedToTerms         = new ArrayList<>();
-                        List<RelatedMetadataElementSummary> relatedFromTerms       = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> relatedTerms           = new ArrayList<>();
                         List<RelatedMetadataElementSummary> relatedDefinitions     = new ArrayList<>();
                         List<RelatedMetadataElementSummary> semanticAssignments    = new ArrayList<>();
                         List<RelatedMetadataElementSummary> otherRelatedElements   = new ArrayList<>();
@@ -170,14 +169,7 @@ public class GlossaryTermConverter<B> extends OMFConverter<B>
                                                                   relatedEntity.entityDetail().getType().getTypeDefName(),
                                                                   OpenMetadataType.GLOSSARY_TERM.typeName))
                                     {
-                                        if (relatedEntity.relationship().getEntityOneProxy().getGUID().equals(primaryEntity.getGUID()))
-                                        {
-                                            relatedToTerms.add(super.getRelatedMetadataElementSummary(beanClass, relatedEntity, methodName));
-                                        }
-                                        else
-                                        {
-                                            relatedFromTerms.add(super.getRelatedMetadataElementSummary(beanClass, relatedEntity, methodName));
-                                        }
+                                        relatedTerms.add(super.getRelatedMetadataElementSummary(beanClass, relatedEntity, methodName));
                                     }
                                     else
                                     {
@@ -195,13 +187,9 @@ public class GlossaryTermConverter<B> extends OMFConverter<B>
                         {
                             bean.setCategoryMembership(categoryMembership);
                         }
-                        if (! relatedToTerms.isEmpty())
+                        if (! relatedTerms.isEmpty())
                         {
-                            bean.setRelatedToTerms(relatedToTerms);
-                        }
-                        if (! relatedFromTerms.isEmpty())
-                        {
-                            bean.setRelatedFromTerms(relatedFromTerms);
+                            bean.setRelatedToTerms(relatedTerms);
                         }
                         if (! relatedDefinitions.isEmpty())
                         {

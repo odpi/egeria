@@ -124,14 +124,7 @@ public class ElementControlHeader
      */
     public ElementType getType()
     {
-        if (type == null)
-        {
-            return null;
-        }
-        else
-        {
-            return type;
-        }
+        return type;
     }
 
 

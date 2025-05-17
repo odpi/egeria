@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
@@ -10,6 +11,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -734,12 +737,15 @@ public class OpenMetadataConverterBase<B>
             }
 
             relatedElementSummary.setRelatedElement(elementSummary);
+            relatedElementSummary.setEffectiveFromTime(relatedElement.getEffectiveFromTime());
+            relatedElementSummary.setEffectiveToTime(relatedElement.getEffectiveToTime());
+            relatedElementSummary.setRelatedElementAtEnd1(relatedElement.getElementAtEnd1());
 
             return relatedElementSummary;
         }
         else
         {
-            this.handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+            this.handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElement.class.getName(), methodName);
         }
 
         return null;
@@ -757,7 +763,249 @@ public class OpenMetadataConverterBase<B>
     protected List<RelatedMetadataElementSummary> getAttribution(Class<B>                     beanClass,
                                                                  List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getMoreInformation";
+        final String methodName = "getAttribution";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the list of collections that the element is a member of (linked via the CollectionMembership) relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getParentCollectionMembership(Class<B>                     beanClass,
+                                                                                List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getParentCollectionMembership";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)) &&
+                        (relatedMetadataElement.getElementAtEnd1()))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the list of elements that tare linked to a data class via the DataClassDefinition relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getDataClassDefinition(Class<B>                     beanClass,
+                                                                         List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getDataClassDefinition";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName)))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the list of elements that tare linked to a data class via the DataClassDefinition relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getDataClassAssignment(Class<B>                     beanClass,
+                                                                         List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getDataClassAssignment";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName)))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the list of elements that tare linked to a glossary term via the SemanticDefinition relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getSemanticDefinition(Class<B>                     beanClass,
+                                                                        List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getSemanticDefinition";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName)))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the list of elements that tare linked to a glossary term via the SemanticAssignment relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getSemanticAssignment(Class<B>                     beanClass,
+                                                                        List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getSemanticAssignment";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName)))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Summarize the list of collections that the element is a member of (linked via the CollectionMembership) relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @param processedRelationshipTypes list of relationships that have already been processed
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getOtherRelatedElements(Class<B>                     beanClass,
+                                                                          List<RelatedMetadataElement> relatedMetadataElements,
+                                                                          List<String>                 processedRelationshipTypes) throws PropertyServerException
+    {
+        final String methodName = "getOtherRelatedElements";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if ((relatedMetadataElement != null) &&
+                        (relatedMetadataElement.getElement() != null) &&
+                        (! processedRelationshipTypes.contains(relatedMetadataElement.getType().getTypeName())))
+                {
+                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                }
+            }
+
+            return moreInformation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Summarize the list of elements that are members of the starting collection entity (linked via the CollectionMembership) relationship.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getCollectionMembership(Class<B>                     beanClass,
+                                                                          List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getAttribution";
 
         if (relatedMetadataElements != null)
         {
@@ -8352,6 +8600,147 @@ public class OpenMetadataConverterBase<B>
             }
 
             return DataItemSortOrder.UNSORTED;
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the data field properties from the retrieved element.
+     *
+     * @param primaryElement element
+     *
+     * @return dataStructure properties
+     */
+    protected ReferenceableProperties getReferenceableProperties(OpenMetadataElement primaryElement)
+    {
+        if (primaryElement.getElementProperties() != null)
+        {
+            ElementProperties    elementProperties    = new ElementProperties(primaryElement.getElementProperties());
+            CollectionProperties collectionProperties = new CollectionProperties();
+
+            collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
+            collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            collectionProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
+            collectionProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
+
+            /*
+             * Any remaining properties are returned in the extended properties.  They are
+             * assumed to be defined in a subtype.
+             */
+            collectionProperties.setTypeName(primaryElement.getType().getTypeName());
+            collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+
+            return collectionProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the data field properties from the retrieved element.
+     *
+     * @param primaryElement element
+     *
+     * @return dataStructure properties
+     */
+    protected CollectionProperties getCollectionProperties(OpenMetadataElement primaryElement)
+    {
+        if (primaryElement.getElementProperties() != null)
+        {
+            ElementProperties   elementProperties   = new ElementProperties(primaryElement.getElementProperties());
+            CollectionProperties collectionProperties = new CollectionProperties();
+
+            collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
+            collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            collectionProperties.setName(this.removeName(elementProperties));
+            collectionProperties.setDescription(this.removeDescription(elementProperties));
+            collectionProperties.setCollectionType(this.removeCollectionType(elementProperties));
+            collectionProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
+            collectionProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
+
+            /*
+             * Any remaining properties are returned in the extended properties.  They are
+             * assumed to be defined in a subtype.
+             */
+            collectionProperties.setTypeName(primaryElement.getType().getTypeName());
+            collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+
+            return collectionProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the member collection member properties from the retrieved relationship.
+     *
+     * @param relatedMetadataElement element
+     *
+     * @return dataStructure properties
+     */
+    public CollectionMembershipProperties getCollectionMembershipProperties(RelatedMetadataElement relatedMetadataElement)
+    {
+        if (relatedMetadataElement.getRelationshipProperties() != null)
+        {
+            CollectionMembershipProperties membershipProperties = new CollectionMembershipProperties();
+
+            ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
+
+            membershipProperties.setMembershipRationale(this.removeMembershipRationale(elementProperties));
+            membershipProperties.setCreatedBy(relatedMetadataElement.getVersions().getCreatedBy());
+            membershipProperties.setExpression(this.removeExpression(elementProperties));
+            membershipProperties.setConfidence(this.removeConfidence(elementProperties));
+            membershipProperties.setSteward(this.removeSteward(elementProperties));
+            membershipProperties.setStewardTypeName(this.removeStewardTypeName(elementProperties));
+            membershipProperties.setStewardPropertyName(this.removeStewardPropertyName(elementProperties));
+            membershipProperties.setSource(this.removeSource(elementProperties));
+            membershipProperties.setNotes(this.removeNotes(elementProperties));
+            membershipProperties.setStatus(this.removeCollectionMemberStatus(elementProperties));
+            membershipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
+            membershipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
+
+            /*
+             * Any remaining properties are returned in the extended properties.  They are
+             * assumed to be defined in a subtype.
+             */
+            membershipProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+
+            return membershipProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the CollectionMemberStatus property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return KeyPattern enum
+     */
+    CollectionMemberStatus removeCollectionMemberStatus(ElementProperties elementProperties)
+    {
+        final String methodName = "removeCollectionMemberStatus";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
+                                                                         OpenMetadataProperty.MEMBERSHIP_STATUS.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (CollectionMemberStatus status : CollectionMemberStatus.values())
+            {
+                if (status.getName().equals(retrievedProperty))
+                {
+                    return status;
+                }
+            }
         }
 
         return null;

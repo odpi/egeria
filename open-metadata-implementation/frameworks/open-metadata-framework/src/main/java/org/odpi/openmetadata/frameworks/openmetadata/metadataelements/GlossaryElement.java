@@ -26,8 +26,7 @@ public class GlossaryElement extends AttributedMetadataElement implements Correl
     private List<MetadataCorrelationHeader>     correlationHeaders   = null;
     private GlossaryProperties                  glossaryProperties   = null;
     private List<ChildCategoryElement>          categories           = null;
-    private List<RelatedMetadataElementSummary> otherRelatedElements = null;
-    private String                              mermaidGraph         = null;
+
 
 
     /**
@@ -53,8 +52,7 @@ public class GlossaryElement extends AttributedMetadataElement implements Correl
             correlationHeaders   = template.getCorrelationHeaders();
             glossaryProperties   = template.getGlossaryProperties();
             categories           = template.getCategories();
-            otherRelatedElements = template.getOtherRelatedElements();
-            mermaidGraph         = template.getMermaidGraph();
+
         }
     }
 
@@ -132,50 +130,6 @@ public class GlossaryElement extends AttributedMetadataElement implements Correl
 
 
     /**
-     * Return details of other related elements retrieved from the repository.
-     *
-     * @return list
-     */
-    public List<RelatedMetadataElementSummary> getOtherRelatedElements()
-    {
-        return otherRelatedElements;
-    }
-
-
-    /**
-     * Set up details of other related elements retrieved from the repository.
-     *
-     * @param otherRelatedElements list
-     */
-    public void setOtherRelatedElements(List<RelatedMetadataElementSummary> otherRelatedElements)
-    {
-        this.otherRelatedElements = otherRelatedElements;
-    }
-
-
-    /**
-     * Return the mermaid representation of this data structure.
-     *
-     * @return string markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the mermaid representation of this data structure.
-     *
-     * @param mermaidGraph markdown string
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -187,8 +141,6 @@ public class GlossaryElement extends AttributedMetadataElement implements Correl
                 "correlationHeaders=" + correlationHeaders +
                 ", glossaryProperties=" + glossaryProperties +
                 ", categories=" + categories +
-                ", otherRelatedElements=" + otherRelatedElements +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -215,11 +167,9 @@ public class GlossaryElement extends AttributedMetadataElement implements Correl
             return false;
         }
         GlossaryElement that = (GlossaryElement) objectToCompare;
-        return Objects.equals(mermaidGraph, that.mermaidGraph) &&
-                Objects.equals(correlationHeaders, that.correlationHeaders) &&
+        return Objects.equals(correlationHeaders, that.correlationHeaders) &&
                 Objects.equals(glossaryProperties, that.glossaryProperties) &&
-                Objects.equals(categories, that.categories) &&
-                Objects.equals(otherRelatedElements, that.otherRelatedElements);
+                Objects.equals(categories, that.categories);
     }
 
 
@@ -231,7 +181,6 @@ public class GlossaryElement extends AttributedMetadataElement implements Correl
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), mermaidGraph, correlationHeaders, glossaryProperties,
-                            categories, otherRelatedElements);
+        return Objects.hash(super.hashCode(), correlationHeaders, glossaryProperties, categories);
     }
 }

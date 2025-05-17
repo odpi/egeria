@@ -1869,7 +1869,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                              externalSourceGUID,
                                                              externalSourceName,
-                                                             OpenMetadataType.DATA_CLASS_DEFINITION.typeName,
+                                                             OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName,
                                                              dataDefinitionGUID,
                                                              dataClassGUID,
                                                              forLineage,
@@ -1920,7 +1920,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         openMetadataStoreClient.detachRelatedElementsInStore(userId,
                                                              externalSourceGUID,
                                                              externalSourceName,
-                                                             OpenMetadataType.DATA_CLASS_DEFINITION.typeName,
+                                                             OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName,
                                                              dataDefinitionGUID,
                                                              dataClassGUID,
                                                              forLineage,
@@ -2486,7 +2486,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
             int startFrom = 0;
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                        openMetadataElement.getElementGUID(),
-                                                                                                                       1,
+                                                                                                                       0,
                                                                                                                        null,
                                                                                                                        null,
                                                                                                                        asOfTime,
@@ -2523,7 +2523,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                 startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
                 relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                 openMetadataElement.getElementGUID(),
-                                                                                                1,
+                                                                                                0,
                                                                                                 null,
                                                                                                 null,
                                                                                                 asOfTime,
@@ -2644,7 +2644,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
             int startFrom = 0;
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                        openMetadataElement.getElementGUID(),
-                                                                                                                       1,
+                                                                                                                       0,
                                                                                                                        null,
                                                                                                                        null,
                                                                                                                        asOfTime,
@@ -2661,7 +2661,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                 {
                     if (relatedMetadataElement != null)
                     {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName))
+                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName)) && (!relatedMetadataElement.getElementAtEnd1()))
                         {
                             relatedFields.add(this.convertMemberDataField(userId,
                                                                           relatedMetadataElement,
@@ -2681,7 +2681,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                 startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
                 relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                 openMetadataElement.getElementGUID(),
-                                                                                                1,
+                                                                                                0,
                                                                                                 null,
                                                                                                 null,
                                                                                                 asOfTime,
@@ -2839,7 +2839,7 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         {
             RelatedMetadataElementList relatedMetadataElementList = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                        openMetadataElement.getElementGUID(),
-                                                                                                                       1,
+                                                                                                                       0,
                                                                                                                        null,
                                                                                                                        null,
                                                                                                                        asOfTime,

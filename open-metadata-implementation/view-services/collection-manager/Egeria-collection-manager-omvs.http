@@ -83,13 +83,61 @@ Content-Type: application/json
 
 ###
 
-@collectionGUID=xxx
+@collectionGUID=6b14500f-9571-4f99-8469-0e872371598d
 
 ###
 # @name getCollection
 # Return the properties of a specific collection.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}
 Authorization: Bearer {{token}}
+
+
+###
+# @name getCollectionMembers
+# Return a list of elements that are a member of a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+###
+# @name getCollectionMembers
+# Return a list of elements that are a member of a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+{
+  "class" : "ResultsRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# @name getCollectionGraph
+# Return a graph of elements that are the nested members of a collection along
+# with elements immediately connected to the starting collection.  The result
+# includes a mermaid graph of the returned elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+###
+# @name getCollectionGraph
+# Return a graph of elements that are the nested members of a collection along
+# with elements immediately connected to the starting collection.  The result
+# includes a mermaid graph of the returned elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+{
+  "class" : "ResultsRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
 
 
 ###
@@ -418,13 +466,6 @@ Content-Type: application/json
 {
   "class" : "NullRequestBody"
 }
-
-###
-# @name getCollectionMembers
-# Return a list of elements that are a member of a collection.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members?startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-
 
 ###
 

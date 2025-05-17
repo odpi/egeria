@@ -19,9 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CollectionElement implements MetadataElement
+public class CollectionElement extends AttributedMetadataElement
 {
-    private ElementHeader        elementHeader  = null;
     private CollectionProperties properties = null;
     private RelatedBy            relatedBy  = null;
 
@@ -42,36 +41,13 @@ public class CollectionElement implements MetadataElement
      */
     public CollectionElement(CollectionElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
             properties = template.getProperties();
             relatedBy  = template.getRelatedBy();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -130,10 +106,9 @@ public class CollectionElement implements MetadataElement
     public String toString()
     {
         return "CollectionElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
-                       ", relatedBy=" + relatedBy +
-                       '}';
+                "properties=" + properties +
+                ", relatedBy=" + relatedBy +
+                "} " + super.toString();
     }
 
 
@@ -146,18 +121,12 @@ public class CollectionElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         CollectionElement that = (CollectionElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedBy, that.relatedBy);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(relatedBy, that.relatedBy);
     }
 
 
@@ -169,6 +138,6 @@ public class CollectionElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy);
+        return Objects.hash(super.hashCode(), properties, relatedBy);
     }
 }

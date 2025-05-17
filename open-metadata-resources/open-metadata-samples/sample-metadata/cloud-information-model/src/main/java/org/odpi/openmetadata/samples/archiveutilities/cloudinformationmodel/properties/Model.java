@@ -18,6 +18,7 @@ public class Model
     private String                           modelScope             = null;
     private String                           modelLanguage          = null;
     private String                           modelUsage             = null;
+    private String                           modelVersion           = "1.0.0";
     private Map<String, SubjectArea>         subjectAreaMap         = null;
     private Map<String, Concept>             conceptBeadMap         = null;
     private Map<String, PropertyDescription> propertyDescriptionMap = null;
@@ -80,6 +81,16 @@ public class Model
     public void setModelUsage(String modelUsage)
     {
         this.modelUsage = modelUsage;
+    }
+
+    public String getModelVersion()
+    {
+        return modelVersion;
+    }
+
+    public void setModelVersion(String modelVersion)
+    {
+        this.modelVersion = modelVersion;
     }
 
     public String getModelLocation()

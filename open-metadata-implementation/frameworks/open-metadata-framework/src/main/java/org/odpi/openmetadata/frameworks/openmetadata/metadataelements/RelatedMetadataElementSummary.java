@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,7 +25,11 @@ public class RelatedMetadataElementSummary
 {
     private ElementHeader          relationshipHeader     = null;
     private Map<String, String>    relationshipProperties = null;
+    private Date                   effectiveFromTime      = null;
+    private Date                   effectiveToTime        = null;
     private MetadataElementSummary relatedElement         = null;
+    private boolean                relatedElementAtEnd1   = false;
+
 
     /**
      * Default constructor
@@ -44,9 +49,12 @@ public class RelatedMetadataElementSummary
     {
         if (template != null)
         {
-            relationshipHeader = template.getRelationshipHeader();
+            relationshipHeader     = template.getRelationshipHeader();
+            effectiveFromTime      = template.getEffectiveFromTime();
+            effectiveToTime        = template.getEffectiveToTime();
             relationshipProperties = template.getRelationshipProperties();
-            relatedElement = template.getRelatedElement();
+            relatedElement         = template.getRelatedElement();
+            relatedElementAtEnd1   = template.getRelatedElementAtEnd1();
         }
     }
 
@@ -70,6 +78,48 @@ public class RelatedMetadataElementSummary
     public void setRelationshipHeader(ElementHeader relationshipHeader)
     {
         this.relationshipHeader = relationshipHeader;
+    }
+
+
+
+    /**
+     * Return the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @return Date object
+     */
+    public Date getEffectiveFromTime() { return effectiveFromTime; }
+
+
+    /**
+     * Set up the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @param effectiveFromTime Date object
+     */
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+
+
+    /**
+     * Return the date/time that this instance should no longer be used.
+     *
+     * @return Date object
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+
+    /**
+     * Set up the date/time that this instance should no longer be used.
+     *
+     * @param effectiveToTime Date object
+     */
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
     }
 
 
@@ -118,6 +168,28 @@ public class RelatedMetadataElementSummary
 
 
     /**
+     * Return whether the element is at end 1 of the relationship.
+     *
+     * @return boolean
+     */
+    public boolean getRelatedElementAtEnd1()
+    {
+        return relatedElementAtEnd1;
+    }
+
+
+    /**
+     * Set up whether the element is at end 1 of the relationship.
+     *
+     * @param relatedElementAtEnd1 boolean
+     */
+    public void setRelatedElementAtEnd1(boolean relatedElementAtEnd1)
+    {
+        this.relatedElementAtEnd1 = relatedElementAtEnd1;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -126,10 +198,13 @@ public class RelatedMetadataElementSummary
     public String toString()
     {
         return "RelatedBy{" +
-                       "relationshipHeader=" + relationshipHeader +
-                       ", relationshipProperties=" + relationshipProperties +
-                       ", relatedElement=" + relatedElement +
-                       '}';
+                "relationshipHeader=" + relationshipHeader +
+                ", effectiveFromTime=" + effectiveFromTime +
+                ", effectiveToTime=" + effectiveToTime +
+                ", relationshipProperties=" + relationshipProperties +
+                ", relatedElement=" + relatedElement +
+                ", relatedElementAtEnd1=" + relatedElementAtEnd1 +
+                '}';
     }
 
 
@@ -151,9 +226,12 @@ public class RelatedMetadataElementSummary
             return false;
         }
         RelatedMetadataElementSummary that = (RelatedMetadataElementSummary) objectToCompare;
-        return Objects.equals(getRelationshipHeader(), that.getRelationshipHeader()) &&
-                       Objects.equals(getRelationshipProperties(), that.getRelationshipProperties()) &&
-                       Objects.equals(getRelatedElement(), that.getRelatedElement());
+        return Objects.equals(relationshipHeader, that.relationshipHeader) &&
+                Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
+                Objects.equals(effectiveToTime, that.effectiveToTime) &&
+                Objects.equals(relationshipProperties, that.relationshipProperties) &&
+                Objects.equals(relatedElement, that.relatedElement) &&
+                relatedElementAtEnd1 == that.relatedElementAtEnd1;
     }
 
 
@@ -165,6 +243,7 @@ public class RelatedMetadataElementSummary
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties, relatedElement);
+        return Objects.hash(super.hashCode(), relationshipHeader, effectiveFromTime, effectiveToTime,
+                            relationshipProperties, relatedElement, relatedElementAtEnd1);
     }
 }

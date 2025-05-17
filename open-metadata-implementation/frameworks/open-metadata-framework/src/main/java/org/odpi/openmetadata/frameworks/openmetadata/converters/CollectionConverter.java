@@ -10,8 +10,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -58,40 +61,16 @@ public class CollectionConverter<B> extends OpenMetadataConverterBase<B>
 
             if (returnBean instanceof CollectionElement bean)
             {
-                CollectionProperties collectionProperties = new CollectionProperties();
-
-                bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
-
-                ElementProperties elementProperties;
-
-                /*
-                 * The initial set of values come from the openMetadataElement.
-                 */
                 if (openMetadataElement != null)
                 {
-                    elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
-
-                    collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
-                    collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    collectionProperties.setName(this.removeName(elementProperties));
-                    collectionProperties.setDescription(this.removeDescription(elementProperties));
-                    collectionProperties.setCollectionType(this.removeCollectionType(elementProperties));
-                    collectionProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
-                    collectionProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    collectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
+                    bean.setProperties(super.getCollectionProperties(openMetadataElement));
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
 
-                bean.setProperties(collectionProperties);
             }
 
             return returnBean;
@@ -130,43 +109,19 @@ public class CollectionConverter<B> extends OpenMetadataConverterBase<B>
 
             if (returnBean instanceof CollectionElement bean)
             {
-                CollectionProperties collectionProperties = new CollectionProperties();
-                OpenMetadataElement  openMetadataElement  = relatedMetadataElement.getElement();
-
-                bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
-
-                ElementProperties elementProperties;
-
                 /*
                  * The initial set of values come from the openMetadataElement.
                  */
-                if (openMetadataElement != null)
+                if (relatedMetadataElement != null)
                 {
-                    elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
-
-                    collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
-                    collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    collectionProperties.setName(this.removeName(elementProperties));
-                    collectionProperties.setDescription(this.removeDescription(elementProperties));
-                    collectionProperties.setCollectionType(this.removeCollectionType(elementProperties));
-                    collectionProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
-                    collectionProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    collectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, relatedMetadataElement.getElement(), methodName));
+                    bean.setProperties(super.getCollectionProperties(relatedMetadataElement.getElement()));
+                    bean.setRelatedBy(super.getRelatedBy(beanClass, relatedMetadataElement, methodName));
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
-
-                bean.setProperties(collectionProperties);
-
-                bean.setRelatedBy(super.getRelatedBy(beanClass, relatedMetadataElement, methodName));
             }
 
             return returnBean;
@@ -205,5 +160,65 @@ public class CollectionConverter<B> extends OpenMetadataConverterBase<B>
         }
 
         return returnBean;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryElement element that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>                     beanClass,
+                               OpenMetadataElement          primaryElement,
+                               List<RelatedMetadataElement> relationships,
+                               String                       methodName) throws PropertyServerException
+    {
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
+
+            if (returnBean instanceof CollectionElement bean)
+            {
+                /*
+                 * The initial set of values come from the openMetadataElement.
+                 */
+                if (primaryElement != null)
+                {
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, primaryElement, methodName));
+                    bean.setProperties(this.getCollectionProperties(primaryElement));
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+                }
+
+                if (relationships != null)
+                {
+                    bean.setExternalReferences(this.getAttribution(beanClass, relationships));
+                    bean.setOtherRelatedElements(this.getOtherRelatedElements(beanClass,
+                                                                              relationships,
+                                                                              Collections.singletonList(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)));
+                }
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
     }
 }

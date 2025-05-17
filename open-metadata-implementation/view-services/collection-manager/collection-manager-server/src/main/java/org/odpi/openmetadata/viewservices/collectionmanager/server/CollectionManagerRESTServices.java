@@ -1146,10 +1146,11 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionMembersResponse getCollectionMembers(String serverName,
-                                                          String collectionGUID,
-                                                          int    startFrom,
-                                                          int    pageSize)
+    public CollectionMembersResponse getCollectionMembers(String             serverName,
+                                                          String             collectionGUID,
+                                                          int                startFrom,
+                                                          int                pageSize,
+                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getCollectionMembers";
 
@@ -1168,7 +1169,34 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElements(handler.getCollectionMembers(userId, collectionGUID, startFrom, pageSize, null));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getCollectionMembers(userId,
+                                                                  collectionGUID,
+                                                                  requestBody.getLimitResultsByStatus(),
+                                                                  requestBody.getAsOfTime(),
+                                                                  requestBody.getSequencingProperty(),
+                                                                  requestBody.getSequencingOrder(),
+                                                                  requestBody.getForLineage(),
+                                                                  requestBody.getForDuplicateProcessing(),
+                                                                  requestBody.getEffectiveTime(),
+                                                                  startFrom,
+                                                                  pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getCollectionMembers(userId,
+                                                                  collectionGUID,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
+                                                                  startFrom,
+                                                                  pageSize));
+            }
         }
         catch (Throwable error)
         {
@@ -1179,6 +1207,82 @@ public class CollectionManagerRESTServices extends TokenController
         return response;
     }
 
+
+    /**
+     * Return a graph of elements that are the nested members of a collection along
+     * with elements immediately connected to the starting collection.  The result
+     * includes a mermaid graph of the returned elements.
+     *
+     * @param serverName         name of called server.
+     * @param collectionGUID unique identifier of the collection.
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return.
+     *
+     * @return list of collection details
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public CollectionGraphResponse getCollectionGraph(String             serverName,
+                                                      String             collectionGUID,
+                                                      int                startFrom,
+                                                      int                pageSize,
+                                                      ResultsRequestBody requestBody)
+    {
+        final String methodName = "getCollectionGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        CollectionGraphResponse response = new CollectionGraphResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGraph(handler.getCollectionGraph(userId,
+                                                             collectionGUID,
+                                                             requestBody.getLimitResultsByStatus(),
+                                                             requestBody.getAsOfTime(),
+                                                             requestBody.getSequencingProperty(),
+                                                             requestBody.getSequencingOrder(),
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime(),
+                                                             startFrom,
+                                                             pageSize));
+            }
+            else
+            {
+                response.setGraph(handler.getCollectionGraph(userId,
+                                                             collectionGUID,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                             false,
+                                                             false,
+                                                             new Date(),
+                                                             startFrom,
+                                                             pageSize));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**
