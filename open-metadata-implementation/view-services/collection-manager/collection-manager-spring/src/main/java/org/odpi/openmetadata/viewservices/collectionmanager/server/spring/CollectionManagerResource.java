@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.viewservices.collectionmanager.server.CollectionManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -111,6 +112,7 @@ public class CollectionManagerResource
      * Returns the list of collections matching the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param classificationName option name of a collection classification
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
      * @param ignoreCase should the search ignore case?
@@ -130,6 +132,8 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse findCollections(@PathVariable String            serverName,
+                                               @RequestParam(required = false)
+                                                                String classificationName,
                                                @RequestParam (required = false, defaultValue = "false")
                                                                 boolean           startsWith,
                                                @RequestParam (required = false, defaultValue = "false")
@@ -143,7 +147,7 @@ public class CollectionManagerResource
                                                @RequestBody  (required = false)
                                                                 FilterRequestBody requestBody)
     {
-        return restAPI.findCollections(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findCollections(serverName, classificationName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
 
 
@@ -151,6 +155,7 @@ public class CollectionManagerResource
      * Returns the list of collections with a particular name.
      *
      * @param serverName    name of called server
+     * @param classificationName option name of a collection classification
      * @param requestBody      name of the collections to return - match is full text match in qualifiedName or name
      * @param startFrom index of the list to start from (0 for start)
      * @param pageSize  maximum number of elements to return
@@ -167,13 +172,15 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse getCollectionsByName(@PathVariable String            serverName,
+                                                    @RequestParam(required = false)
+                                                                    String classificationName,
                                                     @RequestParam(required = false, defaultValue = "0")
                                                                      int    startFrom,
                                                     @RequestParam(required = false, defaultValue = "0")
                                                                      int    pageSize,
                                                     @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getCollectionsByName(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionsByName(serverName, classificationName, startFrom, pageSize, requestBody);
     }
 
 
@@ -181,6 +188,7 @@ public class CollectionManagerResource
      * Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.
      *
      * @param serverName         name of called server
+     * @param classificationName option name of a collection classification
      * @param requestBody the collection type value to match on.  If it is null, all collections with a null collectionType are returned
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return
@@ -197,13 +205,15 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public CollectionsResponse getCollectionsByType(@PathVariable String            serverName,
+                                                    @RequestParam(required = false)
+                                                                     String            classificationName,
                                                     @RequestParam(required = false, defaultValue = "0")
                                                                      int               startFrom,
                                                     @RequestParam(required = false, defaultValue = "0")
                                                                      int               pageSize,
                                                     @RequestBody(required = false)  FilterRequestBody requestBody)
     {
-        return restAPI.getCollectionsByType(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getCollectionsByType(serverName, classificationName, startFrom, pageSize, requestBody);
     }
 
 
@@ -227,7 +237,32 @@ public class CollectionManagerResource
     public CollectionResponse getCollection(@PathVariable String serverName,
                                             @PathVariable String collectionGUID)
     {
-        return restAPI.getCollection(serverName, collectionGUID);
+        return restAPI.getCollection(serverName, collectionGUID, null);
+    }
+
+
+    /**
+     * Return the properties of a specific collection.
+     *
+     * @param serverName         name of called server
+     * @param collectionGUID unique identifier of the required collection
+     *
+     * @return collection properties
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/{collectionGUID}")
+    @Operation(summary="getCollection",
+            description="Return the properties of a specific collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public CollectionResponse getCollection(@PathVariable String serverName,
+                                            @PathVariable String collectionGUID,
+                                            @RequestBody  AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getCollection(serverName, collectionGUID, requestBody);
     }
 
 
@@ -532,7 +567,7 @@ public class CollectionManagerResource
      *
      * @param serverName         name of called server.
      * @param collectionGUID unique identifier of the collection.
-     * @param cascadedDelete should nested collections be deleted? If false, the delete fails if there are nested
+     * @param cascadedDelete should any nested collections be deleted? If false, the delete fails if there are nested
      *                       collections.  If true, nested collections are delete - but not member elements
      *                       unless they are anchored to the collection
      *
@@ -569,7 +604,7 @@ public class CollectionManagerResource
      * @param startFrom      index of the list to start from (0 for start)
      * @param pageSize       maximum number of elements to return.
      *
-     * @return list of asset details
+     * @return list of collection details
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -587,7 +622,74 @@ public class CollectionManagerResource
                                                           @RequestParam(required = false, defaultValue = "0")
                                                                            int    pageSize)
     {
-        return restAPI.getCollectionMembers(serverName, collectionGUID, startFrom, pageSize);
+        return restAPI.getCollectionMembers(serverName, collectionGUID, startFrom, pageSize, null);
+    }
+
+
+    /**
+     * Return a list of elements that are a member of a collection.
+     *
+     * @param serverName         name of called server.
+     * @param collectionGUID unique identifier of the collection.
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return.
+     *
+     * @return list of collection details
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/members")
+    @Operation(summary="getCollectionMembers",
+            description="Return a list of elements that are a member of a collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
+                                                          @PathVariable String collectionGUID,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int    startFrom,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int    pageSize,
+                                                          @RequestBody(required = false)
+                                                              ResultsRequestBody requestBody)
+    {
+        return restAPI.getCollectionMembers(serverName, collectionGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return a graph of elements that are the nested members of a collection along
+     * with elements immediately connected to the starting collection.  The result
+     * includes a mermaid graph of the returned elements.
+     *
+     * @param serverName         name of called server
+     * @param collectionGUID unique identifier of the collection
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return
+     * @param requestBody additional properties for the search
+     *
+     * @return graph of collection details
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/graph")
+    @Operation(summary="getCollectionGraph",
+            description="Return a graph of elements that are the nested members of a collection along with elements immediately connected to the starting collection.  The result includes a mermaid graph of the returned elements.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public CollectionGraphResponse getCollectionGraph(@PathVariable String serverName,
+                                                      @PathVariable String collectionGUID,
+                                                      @RequestParam(required = false, defaultValue = "0")
+                                                          int    startFrom,
+                                                      @RequestParam(required = false, defaultValue = "0")
+                                                          int    pageSize,
+                                                      @RequestBody(required = false)
+                                                          ResultsRequestBody requestBody)
+    {
+        return restAPI.getCollectionGraph(serverName, collectionGUID, startFrom, pageSize, requestBody);
     }
 
 

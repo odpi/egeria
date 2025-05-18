@@ -5,9 +5,9 @@ package org.odpi.openmetadata.conformance.server;
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
 import org.odpi.openmetadata.conformance.rest.*;
 import org.odpi.openmetadata.conformance.beans.TechnologyUnderTestWorkPad;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -472,7 +472,7 @@ public class ConformanceSuiteTestLabServices
      * @param exceptionClassName  class name of the exception to recreate
      */
     private void captureCheckedException(ConformanceServicesAPIResponse       response,
-                                         OCFCheckedExceptionBase              error,
+                                         OMFCheckedExceptionBase error,
                                          String                               exceptionClassName)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
@@ -492,7 +492,7 @@ public class ConformanceSuiteTestLabServices
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
     private void captureCheckedException(ConformanceServicesAPIResponse       response,
-                                         OCFCheckedExceptionBase              error,
+                                         OMFCheckedExceptionBase error,
                                          String                               exceptionClassName,
                                          Map<String, Object>                  exceptionProperties)
     {

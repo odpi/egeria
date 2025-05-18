@@ -11,7 +11,7 @@ import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +140,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                     byte[] ciphertext = aead.encrypt(configStoreFileContents.getBytes(StandardCharsets.UTF_8), null);
                     FileUtils.writeByteArrayToFile(configStoreFile, ciphertext, false);
                 } else {
-                    throw new OCFRuntimeException(DocStoreErrorCode.AEAD_UNAVAILABLE.getMessageDefinition(),
+                    throw new OMFRuntimeException(DocStoreErrorCode.AEAD_UNAVAILABLE.getMessageDefinition(),
                                                   this.getClass().getName(),
                                                   methodName);
                 }
@@ -148,7 +148,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             }
 
         } catch (GeneralSecurityException | IOException e) {
-            throw new OCFRuntimeException(DocStoreErrorCode.WRITE_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+            throw new OMFRuntimeException(DocStoreErrorCode.WRITE_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                           this.getClass().getName(),
                                           methodName, e);
         }
@@ -182,7 +182,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 // If reading it as clear-text fails, and we have no keyset defined, then the configuration document
                 // is probably encrypted and we have no way of decrypting it
                 if (!(isEnvVar || isKeyFile)) {
-                    throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
+                    throw new OMFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
                                                   this.getClass().getName(),
                                                   methodName, e);
                 } else {
@@ -204,12 +204,12 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                         newConfigProperties = OBJECT_READER.readValue(configStoreFileContents, OMAGServerConfig.class);
                     } else {
                         // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
-                        throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
+                        throw new OMFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
                                                       this.getClass().getName(),
                                                       methodName);
                     }
                 } catch (GeneralSecurityException | IOException e) {
-                    throw new OCFRuntimeException(DocStoreErrorCode.READ_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                    throw new OMFRuntimeException(DocStoreErrorCode.READ_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                                   this.getClass().getName(),
                                                   methodName, e);
                 }
@@ -232,7 +232,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             try {
                 Files.delete(keystore.toPath());
             } catch (IOException e) {
-                throw new OCFRuntimeException(DocStoreErrorCode.KEYSTORE_DELETE_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                throw new OMFRuntimeException(DocStoreErrorCode.KEYSTORE_DELETE_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                               this.getClass().getName(),
                                               methodName, e);
             }
@@ -242,7 +242,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             try {
                 Files.delete(configStoreFile.toPath());
             } catch (IOException e) {
-                throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_DELETE_ERROR.getMessageDefinition(configStoreFile.getName(), e.getClass().getName(), e.getMessage()),
+                throw new OMFRuntimeException(DocStoreErrorCode.CONFIG_DELETE_ERROR.getMessageDefinition(configStoreFile.getName(), e.getClass().getName(), e.getMessage()),
                                               this.getClass().getName(),
                                               methodName, e);
             }
@@ -279,7 +279,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     protected Set<String> getFileNames(String templateString, String methodName) {
         if (!isTemplateValid(templateString)) {
             // bad template supplied - error
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE.getMessageDefinition(templateString),
+            throw new OMFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE.getMessageDefinition(templateString),
                                           this.getClass().getName(),
                                           methodName);
         }
@@ -403,7 +403,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 }
             }
         } catch (IOException e) {
-            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
+            throw new OMFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
                                           this.getClass().getName(),
                                           methodName, e);
         }
@@ -554,7 +554,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             try {
                 keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withString(encryptionKey));
             } catch (GeneralSecurityException | IOException e) {
-                throw new OCFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                throw new OMFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                               this.getClass().getName(),
                                               methodName, e);
             }
@@ -593,7 +593,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 try {
                     Files.delete(secureDir.toPath());
                 } catch (IOException e) {
-                    throw new OCFRuntimeException(DocStoreErrorCode.KEYSTORE_EMPTY.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+                    throw new OMFRuntimeException(DocStoreErrorCode.KEYSTORE_EMPTY.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                                   this.getClass().getName(),
                                                   methodName, e);
                 }
@@ -602,7 +602,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 secureFile = keyFiles[0];
             } else {
                 // Otherwise throw an error that there are multiple
-                throw new OCFRuntimeException(DocStoreErrorCode.MULTIPLE_FILES.getMessageDefinition(),
+                throw new OMFRuntimeException(DocStoreErrorCode.MULTIPLE_FILES.getMessageDefinition(),
                                               this.getClass().getName(),
                                               methodName);
             }
@@ -630,7 +630,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             return null;
         } else if (keystoreDirs.length == 1) {
             if (!keystoreDirs[0].isDirectory()) {
-                throw new OCFRuntimeException(DocStoreErrorCode.KEYSTORE_NOT_DIRECTORY.getMessageDefinition(keystoreDirs[0].getAbsolutePath()),
+                throw new OMFRuntimeException(DocStoreErrorCode.KEYSTORE_NOT_DIRECTORY.getMessageDefinition(keystoreDirs[0].getAbsolutePath()),
                                               this.getClass().getName(),
                                               methodName);
             }
@@ -638,7 +638,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             secureDir = keystoreDirs[0];
         } else {
             // Otherwise throw an error that multiple directories exist
-            throw new OCFRuntimeException(DocStoreErrorCode.MULTIPLE_DIRECTORIES.getMessageDefinition(),
+            throw new OMFRuntimeException(DocStoreErrorCode.MULTIPLE_DIRECTORIES.getMessageDefinition(),
                                           this.getClass().getName(),
                                           methodName);
         }
@@ -663,7 +663,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         try {
             keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withInputStream(new FileInputStream(secureFile)));
         } catch (GeneralSecurityException | IOException e) {
-            throw new OCFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
+            throw new OMFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                           this.getClass().getName(),
                                           methodName, e);
         }
@@ -737,7 +737,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 log.warn("Unable to mark secure directory as readable only by owner.");
             }
         } catch (IOException e) {
-            throw new OCFRuntimeException(DocStoreErrorCode.INVALID_DIRECTORY.getMessageDefinition(),
+            throw new OMFRuntimeException(DocStoreErrorCode.INVALID_DIRECTORY.getMessageDefinition(),
                                           this.getClass().getName(),
                                           methodName, e);
         }
@@ -747,7 +747,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             KeysetHandle keysetHandle = KeysetHandle.generateNew(KEY_TEMPLATE);
             CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withOutputStream(new FileOutputStream(secureFile)));
         } catch (GeneralSecurityException | IOException e) {
-            throw new OCFRuntimeException(DocStoreErrorCode.INVALID_FILE.getMessageDefinition(),
+            throw new OMFRuntimeException(DocStoreErrorCode.INVALID_FILE.getMessageDefinition(),
                                           this.getClass().getName(),
                                           methodName, e);
         }

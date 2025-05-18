@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -49,15 +50,15 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
         {
             return (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException error)
         {
             throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException(error);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  error)
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
         {
             throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException(error, error.getParameterName());
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException error)
+        catch (PropertyServerException error)
         {
             throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException(error);
         }

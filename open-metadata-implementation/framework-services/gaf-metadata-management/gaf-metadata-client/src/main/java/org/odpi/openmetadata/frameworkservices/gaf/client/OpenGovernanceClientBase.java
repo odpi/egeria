@@ -5,17 +5,20 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.DuplicateManagementInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionProcessInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionTypeInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -333,6 +336,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         return restResult.getGUID();
     }
+
 
 
     /**

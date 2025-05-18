@@ -5,10 +5,8 @@ package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataStructureElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MemberDataField;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.Collections;
 import java.util.UUID;
 
 
@@ -43,7 +41,7 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(dataStructureNodeName,
                              dataStructureElement.getElementHeader().getGUID(),
                              dataStructureElement.getElementHeader().getType().getTypeName(),
-                             checkForClassifications(dataStructureElement.getElementHeader(), VisualStyle.DATA_STRUCTURE));
+                             getVisualStyleForEntity(dataStructureElement.getElementHeader(), VisualStyle.DATA_STRUCTURE));
 
         if ((dataStructureElement.getMemberDataFields() != null) && (! dataStructureElement.getMemberDataFields().isEmpty()))
         {
@@ -55,7 +53,7 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (node != null)
                 {
-                    this.addDataFieldToGraph(dataStructureNodeName, node);
+                    this.addMemberDataFieldToGraph(dataStructureNodeName, node);
                 }
             }
 
@@ -74,96 +72,25 @@ public class DataStructureMermaidGraphBuilder extends MermaidGraphBuilderBase
             appendNewMermaidNode(schemaNodeName,
                                  dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader().getGUID(),
                                  dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                 checkForClassifications(dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader(),VisualStyle.DATA_STRUCTURE));
+                                 getVisualStyleForEntity(dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader(),VisualStyle.DATA_STRUCTURE));
 
             super.appendMermaidLine(null,
                                     dataStructureNodeName,
                                     null,
                                     dataStructureElement.getEquivalentSchemaType().getRelatedElement().getElementHeader().getGUID());
         }
-    }
 
+        super.addRelatedElementSummaries(dataStructureElement.getExternalReferences(),
+                                         VisualStyle.EXTERNAL_REFERENCE,
+                                         dataStructureElement.getElementHeader().getGUID());
 
+        super.addRelatedElementSummaries(dataStructureElement.getMemberOfCollections(),
+                                         VisualStyle.COLLECTION,
+                                         dataStructureElement.getElementHeader().getGUID());
 
-    /**
-     * Add a data field to graph.  If it has sub-fields, they are recursively added.
-     *
-     * @param parentNodeName identifier of the parent node (maybe null)
-     * @param dataFieldElement element to process
-     */
-    protected void addDataFieldToGraph(String           parentNodeName,
-                                       MemberDataField  dataFieldElement)
-
-    {
-        if (dataFieldElement != null)
-        {
-            String currentNodeName    = dataFieldElement.getElementHeader().getGUID();
-            String currentDisplayName = dataFieldElement.getProperties().getDisplayName();
-
-            if (currentDisplayName == null)
-            {
-                currentDisplayName = dataFieldElement.getProperties().getQualifiedName();
-            }
-
-            super.appendNewMermaidNode(currentNodeName,
-                                       currentDisplayName,
-                                       dataFieldElement.getElementHeader().getType().getTypeName(),
-                                       checkForClassifications(dataFieldElement.getElementHeader(), VisualStyle.DATA_FIELD));
-
-            super.appendMermaidLine(null,
-                                    parentNodeName,
-                                    this.getListLabel(Collections.singletonList(getCardinalityLinkName(dataFieldElement.getMemberDataFieldProperties()))),
-                                    dataFieldElement.getElementHeader().getGUID());
-
-            if (dataFieldElement.getNestedDataFields() != null)
-            {
-                for (MemberDataField nestedDataField: dataFieldElement.getNestedDataFields())
-                {
-                    if (nestedDataField != null)
-                    {
-                        addDataFieldToGraph(currentNodeName, nestedDataField);
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Determine the cardinality of the data field.
-     *
-     * @param memberDataFieldProperties relationship properties
-     * @return label for the mermaid graph line
-     */
-    private String getCardinalityLinkName(MemberDataFieldProperties memberDataFieldProperties)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        if (memberDataFieldProperties != null)
-        {
-            stringBuilder.append("[");
-            stringBuilder.append(memberDataFieldProperties.getDataFieldPosition());
-            stringBuilder.append("] ");
-            if (memberDataFieldProperties.getMinCardinality() < 1)
-            {
-                stringBuilder.append(0);
-            }
-            else
-            {
-                stringBuilder.append(memberDataFieldProperties.getMinCardinality());
-            }
-            stringBuilder.append("..");
-            if (memberDataFieldProperties.getMaxCardinality() < 1)
-            {
-                stringBuilder.append("*");
-            }
-            else
-            {
-                stringBuilder.append(memberDataFieldProperties.getMaxCardinality());
-            }
-        }
-
-        return stringBuilder.toString();
+        super.addRelatedElementSummaries(dataStructureElement.getOtherRelatedElements(),
+                                         VisualStyle.LINKED_ELEMENT,
+                                         dataStructureElement.getElementHeader().getGUID());
     }
 
 

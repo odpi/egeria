@@ -115,7 +115,7 @@ public class RESTCallLogger
             }
             else
             {
-                log.debug(serviceName + ":" + " returned with response " + response);
+                log.debug(serviceName + "::" + " returned with response " + response);
             }
         }
     }

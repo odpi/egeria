@@ -32,7 +32,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              processGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName(),
-                             checkForClassifications(processGraph.getGovernanceActionProcess().getElementHeader(), VisualStyle.GOVERNANCE_ACTION_PROCESS));
+                             getVisualStyleForEntity(processGraph.getGovernanceActionProcess().getElementHeader(), VisualStyle.GOVERNANCE_ACTION_PROCESS));
 
         this.addDescription(processGraph.getGovernanceActionProcess());
 

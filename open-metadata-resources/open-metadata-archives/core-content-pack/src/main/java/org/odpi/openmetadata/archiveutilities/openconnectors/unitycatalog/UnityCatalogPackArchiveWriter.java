@@ -269,7 +269,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG;
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":" + UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder();
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -317,8 +317,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA;
         String                               fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder();
-        String                               qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
-                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+        String                               qualifiedName              = deployedImplementationType.getDeployedImplementationType() + "::"
+                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
 
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -367,8 +367,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder();
-        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
-                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + "::"
+                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
         String connectorTypeGUID = new DataFolderProvider().getConnectorType().getGUID();
 
@@ -414,14 +414,14 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                         deployedImplementationType.getAssociatedTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
                                                         null,
-                                                        qualifiedName + ":Endpoint",
+                                                        qualifiedName + "::Endpoint",
                                                         fullName + " endpoint",
                                                         null,
                                                         UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder(),
                                                         null,
                                                         null);
 
-        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + "::Connection",
                                                             fullName + " connection",
                                                             null,
                                                             null,
@@ -462,8 +462,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                               fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder();
-        String                               qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
-                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+        String                               qualifiedName              = deployedImplementationType.getDeployedImplementationType() + "::"
+                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
 
         Map<String, Object>  extendedProperties   = new HashMap<>();
@@ -551,8 +551,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                                                                         + UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder();
-        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
-                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + "::"
+                                                                        + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                                                                         + fullName;
 
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -601,8 +601,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                 + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                 + UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder();
-        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
-                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + "::"
+                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
                 + fullName;
 
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -651,9 +651,9 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                 + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                 + UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder();
-        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
-                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
-                + fullName + ":" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder();
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + "::"
+                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::"
+                + fullName + "::" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder();
 
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
@@ -670,7 +670,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.setGUID(qualifiedName, guid);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + ":" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
+                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,

@@ -14,7 +14,6 @@ import java.util.*;
 /**
  * CloudInformationModelParser reads the CloudInformationModel and parses it into a set of Java Beans
  * ready for the archive builder.  It hides the format of the model from the builder.
- *
  * The subject areas contain concept groups which in turn contain the concepts. These may be entities
  * or relationships.  Inside the concepts are the properties that link to the property descriptions
  * found in the property groups.
@@ -51,29 +50,27 @@ class CloudInformationModelParser
 
     private static final String modelName = "Cloud Information Model (CIM)";
     private static final String modelTechnicalName = "CloudInformationModel";
-    private static final String modelDescription = "The Cloud Information Model (CIM) is an open source glossary and data model that spans the following subject areas:\n" +
-                                                           "\n" +
-                                                           "•\tParty – people, their roles and organizations.\n" +
-                                                           "•\tProduct – product descriptions, structures and packaging.\n" +
-                                                           "•\tSales Order – customer orders for goods and services.\n" +
-                                                           "•\tPayment Method – payment methods including cards, coupons and digital wallets.\n" +
-                                                           "•\tPayment – individual payments for goods and services.\n" +
-                                                           "•\tShipment – shipment of goods and services to the customer to fulfil an order.\n" +
-                                                           "\n" +
-                                                           "This means it can provide common data structures for new services spanning customer and employee interaction around typical commercial activities such as buying and selling of goods and services.\n" +
-                                                           "\n" +
-                                                           "The motivation behind the cloud information model is to support organizations who are transforming their digital services to run on a variety of cloud platforms and with their own data centres.  " +
-                                                           "Often, they are dealing with systems built on many different generations of technology, with data distributed amongst them.  " +
-                                                           "The CIM provides a common language to describe the different types of data.\n" +
-                                                           "\n" +
-                                                           "The CIM has been created to simplify the growing complexity companies experience when integrating data across different systems" +
-                                                           "in order to deliver highly intelligent and personalized customer engagements. " +
-                                                           "It standardizes data interoperability by creating a set of guidelines to easily connect systems such as a point of sale system, " +
-                                                           "email marketing platform, customer service center, customer relationship management (CRM) system and more. " +
-                                                           "Developers will no longer need to spend months creating custom code in order to deliver innovative customer experiences. " +
-                                                           "The CIM can be easily adopted and extended within days so that developers can focus on creating new innovations faster that " +
-                                                           "deliver a truly connected, personalized and intelligent customer experience. \n";
-    private static final String modelLocation = "https://cloudinformationmodel.org/";
+    private static final String modelSummary = "The Cloud Information Model (CIM) is an open source data model that describes commerce concepts such as parties, products, sales order, payments and shipments.";
+
+    private static final String modelDescription = """
+            The Cloud Information Model (CIM) is an open source data model that spans the following subject areas:
+
+            •\tParty – people, their roles and organizations.
+            •\tProduct – product descriptions, structures and packaging.
+            •\tSales Order – customer orders for goods and services.
+            •\tPayment Method – payment methods including cards, coupons and digital wallets.
+            •\tPayment – individual payments for goods and services.
+            •\tShipment – shipment of goods and services to the customer to fulfil an order.
+
+            This means it can provide common data structures for new services spanning customer and employee interaction around typical commercial activities such as buying and selling of goods and services.
+
+            The motivation behind the cloud information model is to support organizations who are transforming their digital services to run on a variety of cloud platforms and with their own data centres.  Often, they are dealing with systems built on many different generations of technology, with data distributed amongst them.  The CIM provides a common language to describe the different types of data.
+
+            The CIM has been created to simplify the growing complexity companies experience when integrating data across different systems in order to deliver highly intelligent and personalized customer engagements. It standardizes data interoperability by creating a set of guidelines to easily connect systems such as a point of sale system, email marketing platform, customer service center, customer relationship management (CRM) system and more. Developers will no longer need to spend months creating custom code in order to deliver innovative customer experiences. The CIM can be easily adopted and extended within days so that developers can focus on creating new innovations faster that deliver a truly connected, personalized and intelligent customer experience.\s
+            """;
+
+    private static final String modelUsage = "Use the contents of the CIM to create consistent data definitions and data schemas for your organization.";
+    private static final String modelLocation = "https://github.com/cloudinformationmodel/cloudinformationmodel";
     private static final String modelScope = "People, organizations, accounts and contact details, orders and payments.";
     private static final String modelLanguage = "En_US";
 
@@ -640,7 +637,7 @@ class CloudInformationModelParser
         Link link = new Link(propertyGUID, propertyTechnicalName, propertyDescription);
 
         link.setDomainConceptGUID(domainConcept.getGUID());
-        link.setDomainConceptGUID(domainConcept.getTechnicalName());
+        link.setDomainConceptName(domainConcept.getTechnicalName());
 
         link.setRangeConceptGUID(rangeConcept.getGUID());
         link.setRangeConceptName(rangeConcept.getTechnicalName());
@@ -903,7 +900,7 @@ class CloudInformationModelParser
                     {
                         for (Map<String, Object> propertyJsonLD : propertiesJsonLD)
                         {
-                            String propertyGUID = getStringValue(propertyJsonLD.get(AT_TYPE_TAG));
+                            String propertyGUID = getStringValue(propertyJsonLD.get(AT_ID_TAG));
                             String propertyTechnicalName = getStringValue(propertyJsonLD.get(PATH_TAG));
                             String dataType = getStringValue(propertyJsonLD.get(DATA_TYPE_TAG));
                             Object node = propertyJsonLD.get(NODE_TAG);
@@ -985,7 +982,9 @@ class CloudInformationModelParser
 
         model.setModelName(modelName);
         model.setModelTechnicalName(modelTechnicalName);
+        model.setModelSummary(modelSummary);
         model.setModelDescription(modelDescription);
+        model.setModelUsage(modelUsage);
         model.setModelLocation(modelLocation);
         model.setModelScope(modelScope);
         model.setModelLanguage(modelLanguage);

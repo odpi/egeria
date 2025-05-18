@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -19,10 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -97,7 +94,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
-     * @param relationship relationship containing the properties
+     * @param relationship relationship used to access the entity
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
@@ -133,6 +130,34 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                EntityDetail       primaryEntity,
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
+    {
+        final String thisMethodName = "getNewComplexBean";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationship relationship used to access the entity
+     * @param relatedEntities relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>            beanClass,
+                               EntityDetail        primaryEntity,
+                               Relationship        relationship,
+                               List<RelatedEntity> relatedEntities,
+                               String              methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewComplexBean";
 
@@ -940,7 +965,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Convert information from a repository instance into an Open Connector Framework ElementType.
+     * Convert information from a repository instance into an Open Metadata Framework ElementType.
      *
      * @param instanceHeader values from the server
      * @return OCF ElementType object
@@ -1438,6 +1463,44 @@ public abstract class OpenMetadataAPIGenericConverter<B>
             if ((extendedProperties != null) && (! extendedProperties.isEmpty()))
             {
                 return extendedProperties;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the remaining properties into a map that is returned as the extended properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map or null
+     */
+    protected Map<String, String> getPropertiesAsStrings(InstanceProperties  instanceProperties)
+    {
+        if (instanceProperties != null)
+        {
+            Map<String, InstancePropertyValue> propertyMap = instanceProperties.getInstanceProperties();
+
+            if ((propertyMap != null) && (! propertyMap.isEmpty()))
+            {
+                Map<String, String> stringPropertyMap = new HashMap<>();
+
+                for (String propertyName : propertyMap.keySet())
+                {
+                    InstancePropertyValue instancePropertyValue = propertyMap.get(propertyName);
+
+                    if (instancePropertyValue != null)
+                    {
+                        stringPropertyMap.put(propertyName, instancePropertyValue.valueAsString());
+                    }
+                    else
+                    {
+                        stringPropertyMap.put(propertyName, null);
+                    }
+                }
+
+                return stringPropertyMap;
             }
         }
 
@@ -3645,6 +3708,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the minCardinality property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return integer - default 0
+     */
+    protected int getMinCardinality(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getMinCardinality";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getIntProperty(serviceName,
+                                                   OpenMetadataProperty.MIN_CARDINALITY.name,
+                                                   instanceProperties,
+                                                   methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
      * Extract and delete the maxCardinality property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -3660,6 +3745,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                       OpenMetadataProperty.MAX_CARDINALITY.name,
                                                       instanceProperties,
                                                       methodName);
+        }
+
+        return -1;
+    }
+
+
+    /**
+     * Extract the maxCardinality property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return integer - default -1 which is unlimited
+     */
+    protected int getMaxCardinality(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getMaxCardinality";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getIntProperty(serviceName,
+                                                   OpenMetadataProperty.MAX_CARDINALITY.name,
+                                                   instanceProperties,
+                                                   methodName);
         }
 
         return -1;

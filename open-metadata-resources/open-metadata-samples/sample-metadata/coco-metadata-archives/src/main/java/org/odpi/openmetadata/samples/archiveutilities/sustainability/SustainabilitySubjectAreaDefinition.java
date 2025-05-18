@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.GovernanceDomainDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoSubjectAreaDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 
 /**
@@ -12,8 +12,8 @@ import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefiniti
 public enum SustainabilitySubjectAreaDefinition
 {
 
-    SUSTAINABILITY ("Sustainability",
-                    null,
+    SUSTAINABILITY ("Governance:Sustainability",
+                    CocoSubjectAreaDefinition.GOVERNANCE,
                     "Sustainability",
                     "Information relating to the Coco Pharmaceuticals' sustainability initiatives.",
                     ScopeDefinition.ALL_COCO.getPreferredValue(),
@@ -22,9 +22,9 @@ public enum SustainabilitySubjectAreaDefinition
     ;
 
 
-    private final String                              subjectAreaName;
-    private final SustainabilitySubjectAreaDefinition parent;
-    private final String                              displayName;
+    private final String                    subjectAreaName;
+    private final CocoSubjectAreaDefinition parent;
+    private final String                    displayName;
     private final String                    description;
     private final String                    scope;
     private final String                    usage;
@@ -32,7 +32,7 @@ public enum SustainabilitySubjectAreaDefinition
 
 
     SustainabilitySubjectAreaDefinition(String                    name,
-                                        SustainabilitySubjectAreaDefinition parent,
+                                        CocoSubjectAreaDefinition parent,
                                         String                    displayName,
                                         String                    description,
                                         String                    scope,
@@ -77,7 +77,7 @@ public enum SustainabilitySubjectAreaDefinition
      *
      * @return subject area name.
      */
-    public SustainabilitySubjectAreaDefinition getParent()
+    public CocoSubjectAreaDefinition getParent()
     {
         return parent;
     }

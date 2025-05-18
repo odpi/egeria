@@ -7,9 +7,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Governance
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleHistory;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.Date;
 import java.util.List;

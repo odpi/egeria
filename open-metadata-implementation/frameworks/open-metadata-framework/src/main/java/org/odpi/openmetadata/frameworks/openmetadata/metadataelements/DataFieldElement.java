@@ -26,6 +26,7 @@ public class DataFieldElement extends AttributedMetadataElement
     private List<MemberDataField>               nestedDataFields    = null;
     private List<RelatedMetadataElementSummary> assignedDataClasses = null;
     private List<RelatedMetadataElementSummary> assignedMeanings    = null;
+    private List<RelatedMetadataElementSummary> memberOfCollections   = null;
 
 
     /**
@@ -48,10 +49,11 @@ public class DataFieldElement extends AttributedMetadataElement
 
         if (template != null)
         {
-            properties = template.getProperties();
+            properties          = template.getProperties();
             nestedDataFields    = template.getNestedDataFields();
             assignedDataClasses = template.getAssignedDataClasses();
             assignedMeanings    = template.getAssignedMeanings();
+            memberOfCollections = template.getMemberOfCollections();
         }
     }
 
@@ -145,6 +147,28 @@ public class DataFieldElement extends AttributedMetadataElement
 
 
     /**
+     * Return the list of collections that is definition is a member of.
+     *
+     * @return related collections
+     */
+    public List<RelatedMetadataElementSummary> getMemberOfCollections()
+    {
+        return memberOfCollections;
+    }
+
+
+    /**
+     * Set up the list of collections that is definition is a member of.
+     *
+     * @param memberOfCollections related collections
+     */
+    public void setMemberOfCollections(List<RelatedMetadataElementSummary> memberOfCollections)
+    {
+        this.memberOfCollections = memberOfCollections;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -157,6 +181,7 @@ public class DataFieldElement extends AttributedMetadataElement
                 ", nestedDataFields=" + nestedDataFields +
                 ", assignedDataClasses=" + assignedDataClasses +
                 ", assignedMeanings=" + assignedMeanings +
+                ", memberOfCollections=" + memberOfCollections +
                 "} " + super.toString();
     }
 
@@ -177,7 +202,8 @@ public class DataFieldElement extends AttributedMetadataElement
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(nestedDataFields, that.nestedDataFields) &&
                 Objects.equals(assignedDataClasses, that.assignedDataClasses) &&
-                Objects.equals(assignedMeanings, that.assignedMeanings);
+                Objects.equals(assignedMeanings, that.assignedMeanings) &&
+                Objects.equals(memberOfCollections, that.memberOfCollections);
     }
 
 
@@ -189,6 +215,7 @@ public class DataFieldElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses, assignedMeanings);
+        return Objects.hash(super.hashCode(), properties, nestedDataFields, assignedDataClasses,
+                            assignedMeanings, memberOfCollections);
     }
 }

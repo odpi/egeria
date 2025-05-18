@@ -205,7 +205,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         }
         else
         {
-            job.setName(engineAction.getGovernanceEngineName() + ":" + engineAction.getRequestType());
+            job.setName(engineAction.getGovernanceEngineName() + "::" + engineAction.getRequestType());
         }
 
         job.setNamespace(namespace);

@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.client.converters;
 
-import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataConverterBase;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 
 /**
  * Common routines for converters from Asset Manager OMAS

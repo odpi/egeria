@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
@@ -1131,7 +1131,7 @@ public class ConnectorConfigurationFactory
         catch (Exception classException)
         {
             log.error("Bad connectorProviderClassName: " + classException.getMessage());
-            throw new OCFRuntimeException(ConnectorConfigurationFactoryErrorCode.UNKNOWN_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
+            throw new OMFRuntimeException(ConnectorConfigurationFactoryErrorCode.UNKNOWN_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
                                                                                                                                  classException.getClass().getName(),
                                                                                                                                  classException.getMessage()),
                                           this.getClass().getName(),
@@ -1175,7 +1175,7 @@ public class ConnectorConfigurationFactory
             }
             else
             {
-                throw new OCFRuntimeException(ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName),
+                throw new OMFRuntimeException(ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName),
                                               this.getClass().getName(),
                                               methodName);
             }

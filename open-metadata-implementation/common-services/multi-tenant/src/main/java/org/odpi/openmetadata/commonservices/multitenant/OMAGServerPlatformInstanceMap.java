@@ -9,9 +9,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
@@ -47,7 +47,7 @@ public class OMAGServerPlatformInstanceMap
         {
             OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -67,7 +67,7 @@ public class OMAGServerPlatformInstanceMap
         {
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -676,7 +676,7 @@ public class OMAGServerPlatformInstanceMap
                 serverSecurityVerifier.validateUserForService(userId, serviceName);
                 serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
@@ -708,7 +708,7 @@ public class OMAGServerPlatformInstanceMap
         {
             OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -739,7 +739,7 @@ public class OMAGServerPlatformInstanceMap
         {
             OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             throw new UserNotAuthorizedException(error);
         }
@@ -777,7 +777,7 @@ public class OMAGServerPlatformInstanceMap
                 serverSecurityVerifier.validateUserForServer(userId);
                 serverSecurityVerifier.validateUserAsServerInvestigator(userId);
             }
-            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }

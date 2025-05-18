@@ -3,15 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetmanager.api.management;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryCategoryElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 
 import java.util.Date;

@@ -67,7 +67,7 @@ public enum CommonServicesDescription
     GAF_METADATA_MANAGEMENT          (184,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Governance Action Framework Services",
-                                      "open-metadata-store",
+                                      "open-governance-service",
                                       "Support governance action services.",
                                       "https://egeria-project.org/services/gaf-metadata-management",
                                       ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
@@ -117,7 +117,7 @@ public enum CommonServicesDescription
     /**
      * Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).
      */
-    OPEN_METADATA_STORE          (188,
+    OMF_METADATA_MANAGEMENT     (188,
                                   ComponentDevelopmentStatus.STABLE,
                                   "Open Metadata Store Services",
                                   "open-metadata-store",
@@ -126,7 +126,6 @@ public enum CommonServicesDescription
                                   ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
                                   null,
                                   null),
-
     ;
 
 

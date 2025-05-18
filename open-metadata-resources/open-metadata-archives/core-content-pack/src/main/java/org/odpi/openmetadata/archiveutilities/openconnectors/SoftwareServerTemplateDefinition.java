@@ -236,7 +236,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      */
     public String getQualifiedName()
     {
-        return deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        return deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
     }
 
 

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClientBase;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 

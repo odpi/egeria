@@ -28,9 +28,9 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.Atl
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
@@ -39,7 +39,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttrib
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
@@ -1139,7 +1139,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
 
     /**
-     *Create a primitive schema attribute for an Atlas Attribute Type, attaching it
+     * Create a primitive schema attribute for an Atlas Attribute Type, attaching it
      * to the type schema attribute using the NestedSchemaAttribute relationship.
      *
      * @param typeSchemaAttributeGUID unique identifier of the schema attribute that describes the Atlas Type
@@ -1168,13 +1168,16 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              attributeDef.getDescription());
 
-        elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                          OpenMetadataProperty.MIN_CARDINALITY.name,
-                                                          attributeDef.getValuesMinCount());
+        ElementProperties relationshipProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                 OpenMetadataProperty.MIN_CARDINALITY.name,
+                                                                                 attributeDef.getValuesMinCount());
 
-        elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                          OpenMetadataProperty.MAX_CARDINALITY.name,
-                                                          attributeDef.getValuesMaxCount());
+        relationshipProperties = propertyHelper.addIntProperty(relationshipProperties,
+                                                               OpenMetadataProperty.MAX_CARDINALITY.name,
+                                                               attributeDef.getValuesMaxCount());
+        relationshipProperties = propertyHelper.addIntProperty(relationshipProperties,
+                                                               OpenMetadataProperty.POSITION.name,
+                                                               0);
 
         Map<String, ElementProperties> initialClassifications = new HashMap<>();
 
@@ -1204,7 +1207,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                                     elementProperties,
                                                                                     typeSchemaAttributeGUID,
                                                                                     OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
-                                                                                    null,
+                                                                                    relationshipProperties,
                                                                                     true);
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
@@ -1447,7 +1450,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
         void incrementEntityPairCount(String entityOneTypeName,
                                       String entityTwoTypeName)
         {
-            String pairName = entityOneTypeName + ":" + entityTwoTypeName;
+            String pairName = entityOneTypeName + "::" + entityTwoTypeName;
 
             Integer currentCount = entityPairCount.get(pairName);
 

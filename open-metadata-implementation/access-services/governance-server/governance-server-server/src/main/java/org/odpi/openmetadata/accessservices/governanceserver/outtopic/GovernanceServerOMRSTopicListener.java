@@ -7,19 +7,20 @@ import org.odpi.openmetadata.accessservices.governanceserver.converters.Governan
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -45,13 +46,13 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private final GovernanceServerOutTopicPublisher              eventPublisher;
     private final OMRSRepositoryHelper                           repositoryHelper;
-    private final EngineActionHandler<EngineActionElement>        engineActionHandler;
+    private final EngineActionHandler<EngineActionElement>       engineActionHandler;
 
-    private final MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
+    private final MetadataElementHandler<OpenMetadataElement>    metadataElementHandler;
 
-    private final String                                           userId;
-    private final String                                           serverName;
-    private final GovernanceServerOMASConverter<MetadataElement>   converter;
+    private final String                                         userId;
+    private final String                                         serverName;
+    private final GovernanceServerOMASConverter<MetadataElement> converter;
 
 
     /**

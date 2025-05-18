@@ -25,7 +25,9 @@ public class DataStructureElement extends AttributedMetadataElement
     private DataStructureProperties             properties           = null;
     private List<MemberDataField>               memberDataFields     = null;
     private RelatedMetadataElementSummary       equivalentSchemaType = null;
-    private String                              mermaidGraph         = null;
+    private List<RelatedMetadataElementSummary> memberOfCollections   = null;
+
+
 
     /**
      * Default constructor
@@ -50,7 +52,7 @@ public class DataStructureElement extends AttributedMetadataElement
             properties = template.getProperties();
             memberDataFields = template.getMemberDataFields();
             equivalentSchemaType = template.getEquivalentSchemaType();
-            mermaidGraph = template.getMermaidGraph();
+            memberOfCollections = template.getMemberOfCollections();
         }
     }
 
@@ -122,24 +124,24 @@ public class DataStructureElement extends AttributedMetadataElement
 
 
     /**
-     * Return the mermaid representation of this data structure.
+     * Return the list of collections that is definition is a member of.
      *
-     * @return string markdown
+     * @return related collections
      */
-    public String getMermaidGraph()
+    public List<RelatedMetadataElementSummary> getMemberOfCollections()
     {
-        return mermaidGraph;
+        return memberOfCollections;
     }
 
 
     /**
-     * Set up the mermaid representation of this data structure.
+     * Set up the list of collections that is definition is a member of.
      *
-     * @param mermaidGraph markdown string
+     * @param memberOfCollections related collections
      */
-    public void setMermaidGraph(String mermaidGraph)
+    public void setMemberOfCollections(List<RelatedMetadataElementSummary> memberOfCollections)
     {
-        this.mermaidGraph = mermaidGraph;
+        this.memberOfCollections = memberOfCollections;
     }
 
 
@@ -155,7 +157,7 @@ public class DataStructureElement extends AttributedMetadataElement
                 "properties=" + properties +
                 ", memberDataFields=" + memberDataFields +
                 ", equivalentSchemaType=" + equivalentSchemaType +
-                ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", memberOfCollections=" + memberOfCollections +
                 "} " + super.toString();
     }
 
@@ -176,7 +178,7 @@ public class DataStructureElement extends AttributedMetadataElement
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(memberDataFields, that.memberDataFields) &&
                 Objects.equals(equivalentSchemaType, that.equivalentSchemaType) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+                Objects.equals(memberOfCollections, that.memberDataFields);
     }
 
     /**
@@ -187,6 +189,6 @@ public class DataStructureElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType,mermaidGraph);
+        return Objects.hash(super.hashCode(), properties, memberDataFields, equivalentSchemaType, memberOfCollections);
     }
 }

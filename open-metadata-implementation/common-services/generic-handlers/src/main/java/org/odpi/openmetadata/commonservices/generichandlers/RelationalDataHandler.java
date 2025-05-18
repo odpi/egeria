@@ -10,9 +10,9 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -3780,7 +3780,7 @@ public class RelationalDataHandler<DATABASE,
                                                            forDuplicateProcessing,
                                                            parentAttachmentTypeGUID,
                                                            parentAttachmentTypeName,
-                                                           null,
+                                                           schemaAttributeBuilder.getParentRelationshipProperties(methodName),
                                                            effectiveFrom,
                                                            effectiveTo,
                                                            effectiveTime,
@@ -4086,7 +4086,7 @@ public class RelationalDataHandler<DATABASE,
                                                        forDuplicateProcessing,
                                                        parentAttachmentTypeGUID,
                                                        parentAttachmentTypeName,
-                                                       null,
+                                                       builder.getParentRelationshipProperties(methodName),
                                                        effectiveFrom,
                                                        effectiveTo,
                                                        effectiveTime,

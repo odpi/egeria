@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 
@@ -49,7 +50,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
               creationDate,
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
-                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
+                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive()});
     }
 
 
@@ -74,7 +76,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeFacilityTypeValidValueSet()
     {
-        String validValueSetQName = OpenMetadataType.VALID_VALUE_SET.typeName + ":" + FacilityTypeDefinition.validValueSetName;
+        String validValueSetQName = OpenMetadataType.VALID_VALUE_SET.typeName + "::" + FacilityTypeDefinition.validValueSetName;
 
         String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                validValueSetQName,
@@ -130,12 +132,13 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                             null,
                                                                             null);
 
+
             subjectAreaMap.put(subjectAreaDefinition.getSubjectAreaName(), subjectAreaGUID);
 
             if (subjectAreaDefinition.getParent() != null)
             {
-                archiveHelper.addSubjectAreaHierarchy(subjectAreaMap.get(subjectAreaDefinition.getParent().getSubjectAreaName()),
-                                                      subjectAreaGUID);
+                String subjectAreaParentGUID = archiveHelper.queryGUID(subjectAreaDefinition.getParent().getQualifiedName());
+                archiveHelper.addSubjectAreaHierarchy(subjectAreaParentGUID, subjectAreaGUID);
             }
         }
     }

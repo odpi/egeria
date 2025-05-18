@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.admin;
 
-import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceAuditCode;
 import org.odpi.openmetadata.frameworkservices.gaf.server.GAFMetadataManagementInstance;
 import org.odpi.openmetadata.frameworkservices.gaf.server.GAFMetadataManagementInstanceHandler;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -41,11 +41,11 @@ public class GAFMetadataOperationalServices
 
         final String actionDescription = "initialize";
 
-        auditLog.logMessage(actionDescription, OpenMetadataStoreAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
+        auditLog.logMessage(actionDescription, OpenGovernanceAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         try
         {
-            auditLog.logMessage(actionDescription, OpenMetadataStoreAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
+            auditLog.logMessage(actionDescription, OpenGovernanceAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
 
             new GAFMetadataManagementInstance(repositoryConnector, auditLog, localServerUserId, maxPageSize);
         }
@@ -56,7 +56,7 @@ public class GAFMetadataOperationalServices
         catch (Exception error)
         {
             auditLog.logException(actionDescription,
-                                  OpenMetadataStoreAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
+                                  OpenGovernanceAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   error);
         }
     }
@@ -69,7 +69,7 @@ public class GAFMetadataOperationalServices
     {
         final String actionDescription = "shutdown";
 
-        this.auditLog.logMessage(actionDescription, OpenMetadataStoreAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
+        this.auditLog.logMessage(actionDescription, OpenGovernanceAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
 
         new GAFMetadataManagementInstanceHandler().removeServerServiceInstance(serverName);
     }

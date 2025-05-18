@@ -9,8 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 
 import java.io.Serial;
 

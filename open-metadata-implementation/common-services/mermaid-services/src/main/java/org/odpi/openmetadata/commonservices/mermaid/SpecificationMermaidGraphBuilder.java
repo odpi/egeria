@@ -46,7 +46,7 @@ public class SpecificationMermaidGraphBuilder extends MermaidGraphBuilderBase
                             Map<String, String> propertyDescription = propertyList.get(listItemIndex);
                             if (propertyDescription != null)
                             {
-                                String propertyDescriptionId = propertyType + ":" + listItemIndex;
+                                String propertyDescriptionId = propertyType + "::" + listItemIndex;
                                 String propertyName          = propertyDescription.get(propertyType + "Name");
 
                                 mermaidGraph.append(this.lookupNodeName(this.removeSpaces(propertyDescriptionId)));

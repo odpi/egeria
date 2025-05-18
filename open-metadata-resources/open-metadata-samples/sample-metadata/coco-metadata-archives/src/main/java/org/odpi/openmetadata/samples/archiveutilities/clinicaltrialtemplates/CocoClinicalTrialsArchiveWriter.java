@@ -39,7 +39,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveDescription = "Templates for new assets relating to a clinical trial.";
     private static final Date                    creationDate       = new Date(1639984840038L);
 
-    private static final String clinicalTrialsSubjectArea = "SubjectArea:ClinicalTrial:TeddyBearDropFoot";
+    private static final String clinicalTrialsSubjectArea = "SubjectArea::ClinicalTrial:TeddyBearDropFoot";
 
     /**
      * Default constructor initializes the archive.
@@ -75,11 +75,11 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
     {
         final String methodName = "writeGlossary";
 
-        String glossaryGUID = archiveHelper.addGlossary("Glossary::TeddyBearDropFootTerminology",
-                                                        "Teddy Bear Drop Foot Terminology",
-                                                        "This glossary describes terminology invented for the fictitious study into Teddy Bear Drop Foot that is being used to demonstrate aspects of open governance without risk to real patient data. ",
+        String glossaryGUID = archiveHelper.addGlossary("Glossary::Coco::ClinicalTrialTerminology",
+                                                        "Coco Pharmaceuticals Clinical Trial Terminology",
+                                                        "This glossary describes terminology invented for the fictitious Coco Pharmaceuticals case study.  Used in scenarios that show techniques for the collection and processing of data associated with a clinical trial.",
                                                         "English",
-                                                        "Used with the Teddy Bear Drop Foot Demonstration Study.",
+                                                        "Used for demonstration of governance and data management techniques using the Egeria technology.  Not to be used for real clinical trials.",
                                                         null,
                                                         ScopeDefinition.ALL_COCO.getPreferredValue());
 
@@ -150,6 +150,9 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                 archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getCategory().getName()),
                                                 glossaryTermGUID);
             }
+
+            archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getSubstituteCategory().getName()),
+                                            substituteGlossaryTermGUID);
         }
     }
 
@@ -305,11 +308,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                       null,
                                                                       "string",
                                                                       10,
-                                                                      0,
                                                                       null,
                                                                       null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 1, 1, 1, schemaAttributeGUID);
 
         String glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.PATIENT_IDENTIFIER.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -323,11 +325,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                "date",
                                                                10,
-                                                               1,
                                                                "YYYY-MM-DD",
                                                                null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 2, 1,1, schemaAttributeGUID);
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.MEASUREMENT_DATE.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -341,11 +342,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                "integer",
                                                                10,
-                                                               2,
                                                                null,
                                                                null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 3, 1, 1, schemaAttributeGUID);
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_LEFT.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -359,11 +359,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                "integer",
                                                                10,
-                                                               3,
                                                                null,
                                                                null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 4, 1,1, schemaAttributeGUID);
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_RIGHT.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -518,11 +517,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                       null,
                                                                       "string",
                                                                       0,
-                                                                      0,
                                                                       null,
                                                                       null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 1, 1, 1, schemaAttributeGUID);
 
         String glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.PATIENT_IDENTIFIER.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -536,11 +534,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                "date",
                                                                0,
-                                                               1,
                                                                "YYYY-MM-DD",
                                                                null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 2, 1, 1, schemaAttributeGUID);
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.MEASUREMENT_DATE.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -554,11 +551,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                "integer",
                                                                0,
-                                                               2,
                                                                null,
                                                                null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 3, 1, 1, schemaAttributeGUID);
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_LEFT.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
@@ -572,11 +568,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                null,
                                                                "integer",
                                                                0,
-                                                               3,
                                                                null,
                                                                null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 4, 1 ,1, schemaAttributeGUID);
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_RIGHT.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.CertificationsResponse;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.Certifications;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Certification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;

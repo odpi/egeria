@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TabularColumnElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;

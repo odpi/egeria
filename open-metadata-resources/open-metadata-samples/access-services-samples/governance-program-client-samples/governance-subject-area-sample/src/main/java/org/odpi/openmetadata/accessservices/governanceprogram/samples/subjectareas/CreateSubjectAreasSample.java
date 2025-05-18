@@ -6,9 +6,9 @@ import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceD
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceMetricsManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramReviewManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.SubjectAreaManager;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.registration.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworkservices.omf.admin.OMFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -33,9 +34,9 @@ import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServi
 import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
@@ -524,10 +525,31 @@ public class OMAGServerOperationalServices
                  * outside the metadata server.
                  */
                 OMRSRepositoryConnector enterpriseRepositoryConnector
-                        = operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+                        = operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName());
 
                 if (enterpriseRepositoryConnector != null)
                 {
+                    /*
+                     * The enterprise repository services have been requested so OMF metadata management can be started.
+                     */
+                    OMFMetadataOperationalServices operationalOMFMetadataServices;
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
+                    operationalOMFMetadataServices = new OMFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                        enterpriseRepositoryConnector,
+                                                                                        operationalRepositoryServices.getAuditLog(
+                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
+                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                                CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceWiki()),
+                                                                                        configuration.getLocalServerUserId(),
+                                                                                        configuration.getMaxPageSize());
+
+                    instance.setOperationalOMFMetadataServices(operationalOMFMetadataServices);
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
+                    activatedServiceList.add(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName());
+
                     /*
                      * The enterprise repository services have been requested so OCF metadata management can be started.
                      */
@@ -1548,6 +1570,18 @@ public class OMAGServerOperationalServices
 
                         }
                     }
+                }
+
+                /*
+                 * Shutdown the OMF metadata management services
+                 */
+                if (instance.getOperationalOMFMetadataServices() != null)
+                {
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
+
+                    instance.getOperationalOMFMetadataServices().shutdown();
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OMF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*

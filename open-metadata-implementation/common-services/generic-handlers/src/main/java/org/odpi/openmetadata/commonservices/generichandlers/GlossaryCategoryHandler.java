@@ -8,14 +8,15 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -531,7 +532,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                     {
                         if (glossaryGUID == null)
                         {
-                            results.add(converter.getNewBean(beanClass, entity, methodName));
+                            results.add(this.getGlossaryCategoryBean(userId, entity, null, forLineage, forDuplicateProcessing, effectiveTime));
                         }
                         else
                         {
@@ -539,7 +540,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
                             if (glossaryGUID.equals(anchorIdentifiers.anchorGUID))
                             {
-                                results.add(converter.getNewBean(beanClass, entity, methodName));
+                                results.add(this.getGlossaryCategoryBean(userId, entity, null, forLineage, forDuplicateProcessing, effectiveTime));
                             }
                         }
                     }
@@ -554,6 +555,135 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
             {
                 return results;
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the returned glossary category entities into a list of glossary category elements.
+     *
+     * @param userId calling user
+     * @param relatedCategories list of entities returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of glossary term elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<B> getRelatedGlossaryCategoryBeans(String              userId,
+                                                    List<RelatedEntity> relatedCategories,
+                                                    boolean             forLineage,
+                                                    boolean             forDuplicateProcessing,
+                                                    Date                effectiveTime) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        if (relatedCategories != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (RelatedEntity relatedTerm : relatedCategories)
+            {
+                if ((relatedTerm != null) && (relatedTerm.relationship() != null) && (relatedTerm.entityDetail() != null))
+                {
+                    results.add(this.getGlossaryCategoryBean(userId, relatedTerm.entityDetail(), relatedTerm.relationship(), forLineage, forDuplicateProcessing, effectiveTime));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Convert the returned glossary category entities into an element.
+     *
+     * @param userId calling user
+     * @param categoryEntities entities returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of glossary term elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<B> getGlossaryCategoryBeans(String             userId,
+                                             List<EntityDetail> categoryEntities,
+                                             boolean            forLineage,
+                                             boolean            forDuplicateProcessing,
+                                             Date               effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        if (categoryEntities != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (EntityDetail entityDetail : categoryEntities)
+            {
+                if (entityDetail != null)
+                {
+                    results.add(this.getGlossaryCategoryBean(userId, entityDetail, null, forLineage, forDuplicateProcessing, effectiveTime));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the returned glossary category entity into an element.
+     *
+     * @param userId calling user
+     * @param categoryEntity entity returned
+     * @param relatedByRelationship optional relationship used to find entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of glossary term elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private B getGlossaryCategoryBean(String       userId,
+                                      EntityDetail categoryEntity,
+                                      Relationship relatedByRelationship,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
+                                      Date         effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String methodName = "getGlossaryCategoryBean";
+        final String startingGUIDParameterName = "categoryEntity.guid";
+
+        if (categoryEntity != null)
+        {
+            List<RelatedEntity> relatedEntities = this.getAllRelatedEntities(userId,
+                                                                             categoryEntity,
+                                                                             startingGUIDParameterName,
+                                                                             OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                             null,
+                                                                             null,
+                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                             null,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime,
+                                                                             methodName);
+
+            return converter.getNewComplexBean(beanClass, categoryEntity, relatedByRelationship, relatedEntities, methodName);
         }
 
         return null;
@@ -633,22 +763,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                                                   effectiveTime,
                                                                                                   methodName);
 
-        if (retrievedEntities != null)
-        {
-            List<B> results = new ArrayList<>();
-
-            for (EntityDetail entityDetail : retrievedEntities)
-            {
-                if (entityDetail != null)
-                {
-                    results.add(converter.getNewBean(beanClass, entityDetail, methodName));
-                }
-            }
-
-            return results;
-        }
-
-        return null;
+        return this.getGlossaryCategoryBeans(userId, retrievedEntities, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -683,26 +798,39 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        return this.getAttachedElements(userId,
-                                        glossaryTermGUID,
-                                        glossaryTermGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_TERM.typeName,
-                                        OpenMetadataType.TERM_CATEGORIZATION.typeGUID,
-                                        OpenMetadataType.TERM_CATEGORIZATION.typeName,
-                                        OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                        null,
-                                        null,
-                                        1,
-                                        null,
-                                        null,
-                                        SequencingOrder.CREATION_DATE_RECENT,
-                                        null,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
+        EntityDetail termEntity = this.getEntityFromRepository(userId,
+                                                                   glossaryTermGUID,
+                                                                   glossaryTermGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        List<RelatedEntity> relatedCategories = this.getRelatedEntities(userId,
+                                                                   termEntity,
+                                                                   glossaryTermGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   OpenMetadataType.TERM_CATEGORIZATION.typeGUID,
+                                                                   OpenMetadataType.TERM_CATEGORIZATION.typeName,
+                                                                   null,
+                                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                   1,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        return this.getRelatedGlossaryCategoryBeans(userId, relatedCategories, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -808,40 +936,52 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        List<B> results = this.getAttachedElements(userId,
-                                                   glossaryCategoryGUID,
-                                                   glossaryCategoryGUIDParameterName,
-                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                                   OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
-                                                   OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
-                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                                   null,
-                                                   null,
-                                                   1,
-                                                   null,
-                                                   null,
-                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                   null,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   0,
-                                                   invalidParameterHandler.getMaxPagingSize(),
-                                                   effectiveTime,
-                                                   methodName);
+        EntityDetail categoryEntity = this.getEntityFromRepository(userId,
+                                                                   glossaryCategoryGUID,
+                                                                   glossaryCategoryGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
 
-        if ((results == null) || (results.isEmpty()))
+        List<RelatedEntity> parentCategories = this.getRelatedEntities(userId,
+                                                                       categoryEntity,
+                                                                       glossaryCategoryGUIDParameterName,
+                                                                       OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
+                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                                                       null,
+                                                                       OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                       1,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       supportedZones,
+                                                                       0,
+                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                       effectiveTime,
+                                                                       methodName);
+
+
+        if ((parentCategories == null) || (parentCategories.isEmpty()))
         {
             return null;
         }
-        else if (results.size() == 1)
+        else if (parentCategories.size() == 1)
         {
-            return results.get(0);
+            return getGlossaryCategoryBean(userId, parentCategories.get(0).entityDetail(), parentCategories.get(0).relationship(), forLineage, forDuplicateProcessing, effectiveTime);
         }
         else
         {
             throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_BEANS_FOUND.getMessageDefinition(OpenMetadataType.GLOSSARY_CATEGORY.typeName,
                                                                                                                  methodName,
-                                                                                                                 results.toString(),
+                                                                                                                 parentCategories.toString(),
                                                                                                                  glossaryCategoryGUID,
                                                                                                                  serviceName,
                                                                                                                  serverName),
@@ -882,26 +1022,39 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return this.getAttachedElements(userId,
-                                        glossaryCategoryGUID,
-                                        glossaryCategoryGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                        OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
-                                        OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
-                                        OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                        null,
-                                        null,
-                                        2,
-                                        null,
-                                        null,
-                                        SequencingOrder.CREATION_DATE_RECENT,
-                                        null,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
+        EntityDetail categoryEntity = this.getEntityFromRepository(userId,
+                                                                   glossaryCategoryGUID,
+                                                                   glossaryCategoryGUIDParameterName,
+                                                                   OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        List<RelatedEntity> childCategories = this.getRelatedEntities(userId,
+                                                                       categoryEntity,
+                                                                       glossaryCategoryGUIDParameterName,
+                                                                       OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeGUID,
+                                                                       OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
+                                                                       null,
+                                                                       OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                       2,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       supportedZones,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       effectiveTime,
+                                                                       methodName);
+
+        return this.getRelatedGlossaryCategoryBeans(userId, childCategories, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -932,15 +1085,17 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        return this.getBeanFromRepository(userId,
-                                          guid,
-                                          guidParameterName,
-                                          OpenMetadataType.GLOSSARY_CATEGORY.typeName,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          effectiveTime,
-                                          methodName);
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                           null,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
+                                                           methodName);
 
+        return this.getGlossaryCategoryBean(userId, entity, null, forLineage, forDuplicateProcessing, effectiveTime);
     }
 }

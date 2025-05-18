@@ -12,7 +12,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.E
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
@@ -142,7 +142,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                     requestParameters,
                                                     governanceActionDescription.governanceServiceGUID);
 
-        String governanceActionTypeQualifiedName = governanceEngineName + ":" + governanceRequestType;
+        String governanceActionTypeQualifiedName = governanceEngineName + "::" + governanceRequestType;
 
         archiveHelper.setGUID(governanceActionTypeQualifiedName, governanceActionTypeGUID);
 

@@ -12,14 +12,14 @@ import java.util.Map;
  */
 public class Concept extends ModelElement
 {
-    private boolean                relationship     = false;
-    private String                 superClassGUID   = null;
-    private String                 superClassName   = null;
+    private boolean relationship   = false;
+    private String  superClassGUID = null;
+    private String  superClassName = null;
 
-    private List<String>           subClasses       = new ArrayList<>();
-    private Map<String, Link>      domainOfLinks    = new HashMap<>();
-    private Map<String, Link>      rangeOfLinks     = new HashMap<>();
-    private Map<String, Attribute> attributes       = new HashMap<>();
+    private final List<String>           subClasses    = new ArrayList<>();
+    private final Map<String, Link>      domainOfLinks = new HashMap<>();
+    private final Map<String, Link>      rangeOfLinks  = new HashMap<>();
+    private final Map<String, Attribute> attributes    = new HashMap<>();
 
     public Concept()
     {

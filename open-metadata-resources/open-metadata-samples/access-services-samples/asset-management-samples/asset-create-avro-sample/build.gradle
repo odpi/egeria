@@ -14,6 +14,7 @@ dependencies {
     runtimeOnly 'ch.qos.logback:logback-classic'
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     runtimeOnly project(':open-metadata-implementation:user-security:token-manager')

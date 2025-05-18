@@ -32,6 +32,7 @@ public class DataFieldProperties extends ReferenceableProperties
     private String            defaultValue      = null;
     private boolean           isNullable        = true;
     private String            dataType          = null;
+    private String            units             = null;
     private int               minimumLength     = 0;
     private int               length            = 0;
     private int               precision         = 0;
@@ -69,6 +70,7 @@ public class DataFieldProperties extends ReferenceableProperties
             defaultValue      = template.getDefaultValue();
             isNullable        = template.getIsNullable();
             dataType          = template.getDataType();
+            units             = template.getUnits();
             minimumLength     = template.getMinimumLength();
             length            = template.getLength();
             precision         = template.getPrecision();
@@ -295,6 +297,28 @@ public class DataFieldProperties extends ReferenceableProperties
 
 
     /**
+     * Return the units for the data field.
+     *
+     * @return string
+     */
+    public String getUnits()
+    {
+        return units;
+    }
+
+
+    /**
+     * Set up the units for the data field.
+     *
+     * @param units string
+     */
+    public void setUnits(String units)
+    {
+        this.units = units;
+    }
+
+
+    /**
      * Return the minimum length of the data.
      *
      * @return int
@@ -425,6 +449,7 @@ public class DataFieldProperties extends ReferenceableProperties
                 ", defaultValue='" + defaultValue + '\'' +
                 ", isNullable=" + isNullable +
                 ", dataType='" + dataType + '\'' +
+                ", units='" + units + '\'' +
                 ", minimumLength=" + minimumLength +
                 ", length=" + length +
                 ", precision=" + precision +
@@ -456,8 +481,9 @@ public class DataFieldProperties extends ReferenceableProperties
                 Objects.equals(description, that.description) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
-                Objects.equals(dataType, that.dataType)
-                && sortOrder == that.sortOrder;
+                Objects.equals(dataType, that.dataType) &&
+                Objects.equals(units, that.units) &&
+                sortOrder == that.sortOrder;
     }
 
     /**
@@ -469,7 +495,7 @@ public class DataFieldProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), displayName, namespace, aliases, namePatterns, description, isDeprecated,
-                            versionIdentifier, defaultValue, isNullable, dataType,
+                            versionIdentifier, defaultValue, isNullable, dataType, units,
                             minimumLength, length, precision, orderedValues, sortOrder);
     }
 }

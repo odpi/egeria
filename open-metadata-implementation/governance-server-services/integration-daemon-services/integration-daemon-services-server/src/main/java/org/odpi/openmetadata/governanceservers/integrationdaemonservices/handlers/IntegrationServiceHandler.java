@@ -5,10 +5,9 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handle
 
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;

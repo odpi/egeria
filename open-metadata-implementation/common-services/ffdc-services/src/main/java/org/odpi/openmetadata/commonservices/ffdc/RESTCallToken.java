@@ -97,7 +97,7 @@ public class RESTCallToken
      */
     String getRESTCallStartText()
     {
-        return callId + ":" + serviceName + ":" + serverName + ":" + methodName + " call invoked by " + userId;
+        return callId + "::" + serviceName + "::" + serverName + "::" + methodName + " call invoked by " + userId;
     }
 
 
@@ -109,6 +109,6 @@ public class RESTCallToken
      */
     String getRESTCallReturnText(String response)
     {
-        return callId + ":" + serviceName + ":" + serverName + ":" + methodName + " call invoked by " + userId + " returned with response " + response + "; Duration: " + watch.getTime()/1000 + "seconds";
+        return callId + "::" + serviceName + "::" + serverName + "::" + methodName + " call invoked by " + userId + " returned with response " + response + "; Duration: " + watch.getTime()/1000 + "seconds";
     }
 }

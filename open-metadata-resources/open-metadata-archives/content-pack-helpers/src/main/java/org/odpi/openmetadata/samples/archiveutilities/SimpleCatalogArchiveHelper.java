@@ -370,7 +370,7 @@ public class SimpleCatalogArchiveHelper
             {
                 if (keyword != null)
                 {
-                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword);
+                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
                     InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
@@ -383,7 +383,7 @@ public class SimpleCatalogArchiveHelper
                     if (keywordEntity == null)
                     {
                         keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD.typeName,
-                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword),
+                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword),
                                                                        keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
@@ -531,7 +531,7 @@ public class SimpleCatalogArchiveHelper
             {
                 if (keyword != null)
                 {
-                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword);
+                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
                     InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
@@ -544,7 +544,7 @@ public class SimpleCatalogArchiveHelper
                     if (keywordEntity == null)
                     {
                         keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD.typeName,
-                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword),
+                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword),
                                                                        keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
@@ -2026,7 +2026,7 @@ public class SimpleCatalogArchiveHelper
      * @param otherClassifications additional classifications for the collection (eg Template)
      * @param extendedProperties additional properties defined in the subtype
      *
-     * @return unique identifier for subject area (collectionGUID)
+     * @return unique identifier for collection (collectionGUID)
      */
     public String addCollection(String               suppliedTypeName,
                                 String               anchorGUID,
@@ -2053,13 +2053,13 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = otherClassifications;
 
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
+
         if (classificationName != null)
         {
-            if (classifications == null)
-            {
-                classifications = new ArrayList<>();
-            }
-
             Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
 
             classifications.add(classification);
@@ -2118,6 +2118,350 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(collectionGUID + "_to_" + memberGUID + "_collection_membership_relationship"),
                                                                      properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a data field entity.  These are not all of the properties of a data field - but enough for current
+     * use cases.
+     *
+     * @param suppliedTypeName type of data field
+     * @param anchorGUID unique identifier of the anchor for the data field - if null then own anchor
+     * @param anchorTypeName unique type name of the anchor for the data field
+     * @param anchorDomainName unique type name of the anchor's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
+     * @param classificationName name of classification to attach
+     * @param qualifiedName unique name for the data field entity
+     * @param displayName display name for the data field
+     * @param description description about the data field
+     * @param versionIdentifier version
+     * @param dataType logical data type
+     * @param namespace type of data field
+     * @param additionalProperties any other properties
+     * @param otherClassifications additional classifications for the data field (eg Template)
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for data field (dataFieldGUID)
+     */
+    public String addDataField(String               suppliedTypeName,
+                               String               anchorGUID,
+                               String               anchorTypeName,
+                               String               anchorDomainName,
+                               String               anchorScopeGUID,
+                               String               classificationName,
+                               String               qualifiedName,
+                               String               displayName,
+                               String               description,
+                               String               versionIdentifier,
+                               String               namespace,
+                               String               dataType,
+                               Map<String, String>  additionalProperties,
+                               List<Classification> otherClassifications,
+                               Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addDataField";
+
+        String typeName = OpenMetadataType.DATA_FIELD.typeName;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        List<Classification> classifications = otherClassifications;
+
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
+
+        if (classificationName != null)
+        {
+            Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+        }
+
+        if (anchorTypeName != null)
+        {
+            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_TYPE.name, dataType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               classifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Add a nested data field to a complex data field.
+     *
+     * @param parentDataFieldGUID unique identifier of the parent data field
+     * @param nestedDataFieldGUID unique identifier of the nested data field
+     * @param position position of the data field in the parent
+     */
+    public void addNestedDataField(String parentDataFieldGUID,
+                                   String nestedDataFieldGUID,
+                                   int    position,
+                                   int    minCardinality,
+                                   int    maxCardinality)
+    {
+        final String methodName = "addNestedDataField";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(parentDataFieldGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(nestedDataFieldGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(parentDataFieldGUID + "_to_" + nestedDataFieldGUID + "_nested_data_field_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link data fields.  There are more properties available fore this relationship.  However, this is all
+     * that is needed at the moment.
+     *
+     * @param domainDataFieldGUID unique identifier of the parent data field
+     * @param rangeDataFieldGUID unique identifier of the nested data field
+     * @param relationshipTypeName name of the relationship
+     */
+    public void addLinkedDataField(String domainDataFieldGUID,
+                                   String rangeDataFieldGUID,
+                                   String relationshipTypeName)
+    {
+        final String methodName = "addLinkedDataField";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(domainDataFieldGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(rangeDataFieldGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.name, relationshipTypeName, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(domainDataFieldGUID + "_to_" + rangeDataFieldGUID + "_linked_data_field_relationship_" + relationshipTypeName),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Create a data structure entity.
+     *
+     * @param suppliedTypeName type of data structure
+     * @param anchorGUID unique identifier of the anchor for the data structure - if null then own anchor
+     * @param anchorTypeName unique type name of the anchor for the data structure
+     * @param anchorDomainName unique type name of the anchor's domain
+     * @param anchorScopeGUID unique identifier of the anchor's scope
+     * @param qualifiedName unique name for the data structure entity
+     * @param displayName display name for the data structure
+     * @param description description about the data structure
+     * @param versionIdentifier version
+     * @param namespace type of data structure
+     * @param additionalProperties any other properties
+     * @param otherClassifications additional classifications for the data structure (eg Template)
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for data structure (dataStructureGUID)
+     */
+    public String addDataStructure(String               suppliedTypeName,
+                                   String               anchorGUID,
+                                   String               anchorTypeName,
+                                   String               anchorDomainName,
+                                   String               anchorScopeGUID,
+                                   String               qualifiedName,
+                                   String               displayName,
+                                   String               description,
+                                   String               versionIdentifier,
+                                   String               namespace,
+                                   Map<String, String>  additionalProperties,
+                                   List<Classification> otherClassifications,
+                                   Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addDataStructure";
+
+        String typeName = OpenMetadataType.DATA_STRUCTURE.typeName;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        List<Classification> classifications = otherClassifications;
+
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
+
+        if (anchorTypeName != null)
+        {
+            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               classifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Add a data field to a data structure.
+     *
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param memberDataFieldGUID unique identifier of the member
+     * @param position position of the data field in the parent
+     */
+    public void addMemberDataField(String dataStructureGUID,
+                                   String memberDataFieldGUID,
+                                   int    position,
+                                   int    minCardinality,
+                                   int    maxCardinality)
+    {
+        final String methodName = "addMemberDataField";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(dataStructureGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(memberDataFieldGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(dataStructureGUID + "_to_" + memberDataFieldGUID + "_member_data_field_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Link a term to a data definition using the DataStructureDefinition relationship (0580).
+     *
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the schema type - may be a template
+     */
+    public void addSchemaTypeDefinition(String dataStructureGUID,
+                                        String schemaTypeGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(dataStructureGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(schemaTypeGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName,
+                                                                     idToGUIDMap.getGUID(dataStructureGUID + "_to_" + schemaTypeGUID + "_schema_type_definition_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a term to a data definition using the DataStructureDefinition relationship (0580).
+     *
+     * @param certificationTypeGUID unique identifier of the certification type
+     * @param dataStructureGUID unique identifier of the data structure
+     */
+    public void addDataStructureDefinition(String certificationTypeGUID,
+                                           String dataStructureGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(certificationTypeGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(dataStructureGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(certificationTypeGUID + "_to_" + dataStructureGUID + "_data_structure_definition_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a term to a data definition using the SemanticDefinition relationship (0370).
+     *
+     * @param referenceableGUID unique identifier of the referenceable
+     * @param termGUID unique identifier of the term
+     */
+    public void addSemanticDefinition(String referenceableGUID,
+                                      String termGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(referenceableGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(termGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + termGUID + "_semantic_definition_relationship"),
+                                                                     null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -3943,6 +4287,8 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create the schema type for an API operation.
      *
+     * @param assetGUID anchor guid
+     * @param assetTypeName anchor type name
      * @param apiSchemaTypeGUID unique identifier of top level schemaType
      * @param qualifiedName unique name for the schema type
      * @param displayName display name for the schema type
@@ -3953,7 +4299,9 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the schemaType
      */
-    public String addAPIOperation(String              apiSchemaTypeGUID,
+    public String addAPIOperation(String              assetGUID,
+                                  String              assetTypeName,
+                                  String              apiSchemaTypeGUID,
                                   String              qualifiedName,
                                   String              displayName,
                                   String              description,
@@ -3970,11 +4318,20 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COMMAND.name, command, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = null;
+
+        if (assetGUID != null)
+        {
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        }
+
         EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(OpenMetadataType.API_OPERATION.typeName,
                                                                       idToGUIDMap.getGUID(qualifiedName),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
-                                                                      null);
+                                                                      classifications);
 
         archiveBuilder.addEntity(schemaTypeEntity);
 
@@ -4000,6 +4357,8 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a parameter list schema type for an API operation.
      *
+     * @param assetGUID anchor guid
+     * @param assetTypeName anchor type name
      * @param apiOperationGUID unique identifier of top level schemaType
      * @param relationshipTypeName name of relationship type - default is APIRequest
      * @param qualifiedName unique name for the schema type
@@ -4010,7 +4369,9 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the schemaType
      */
-    public String addAPIParameterList(String              apiOperationGUID,
+    public String addAPIParameterList(String              assetGUID,
+                                      String              assetTypeName,
+                                      String              apiOperationGUID,
                                       String              relationshipTypeName,
                                       String              qualifiedName,
                                       String              displayName,
@@ -4033,11 +4394,20 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUIRED.name, required, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = null;
+
+        if (assetGUID != null)
+        {
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+        }
+
         EntityDetail parameterListEntity = archiveHelper.getEntityDetail(OpenMetadataType.API_PARAMETER_LIST.typeName,
                                                                          idToGUIDMap.getGUID(qualifiedName),
                                                                          properties,
                                                                          InstanceStatus.ACTIVE,
-                                                                         null);
+                                                                         classifications);
 
         archiveBuilder.addEntity(parameterListEntity);
 
@@ -4160,20 +4530,32 @@ public class SimpleCatalogArchiveHelper
      * Create the relationship between a SchemaType element and a child SchemaAttribute element using the AttributeForSchema relationship.
      *
      * @param schemaTypeGUID unique identifier of the parent element
+     * @param position position in the schema at this level
+     * @param minCardinality minimum number of instances in the schema at this level
+     * @param maxCardinality maximum number of instances in the schema at this level
      * @param schemaAttributeGUID unique identifier of the child element
      */
     public void addAttributeForSchemaType(String schemaTypeGUID,
+                                          int    position,
+                                          int    minCardinality,
+                                          int    maxCardinality,
                                           String schemaAttributeGUID)
     {
+        final String methodName = "addAttributeForSchemaType";
+
         EntityDetail schemaTypeChoiceEntity = archiveBuilder.getEntity(schemaTypeGUID);
         EntityDetail schemaTypeOptionEntity = archiveBuilder.getEntity(schemaAttributeGUID);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(schemaTypeChoiceEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(schemaTypeOptionEntity);
 
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(schemaTypeGUID + "_to_" + schemaAttributeGUID + "_attribute_for_schema_relationship"),
-                                                                     null,
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -4184,20 +4566,32 @@ public class SimpleCatalogArchiveHelper
      * Create the relationship between a SchemaAttribute element and a child SchemaAttribute element using the NestedSchemaAttribute relationship.
      *
      * @param parentSchemaAttributeGUID unique identifier of the parent element
+     * @param position position in the schema at this level
+     * @param minCardinality minimum number of instances in the schema at this level
+     * @param maxCardinality maximum number of instances in the schema at this level
      * @param childSchemaAttributeGUID unique identifier of the child element
      */
     public void addNestedSchemaAttribute(String parentSchemaAttributeGUID,
+                                         int    position,
+                                         int    minCardinality,
+                                         int    maxCardinality,
                                          String childSchemaAttributeGUID)
     {
+        final String methodName = "addNestedSchemaAttribute";
+
         EntityDetail parentSchemaAttributeEntity = archiveBuilder.getEntity(parentSchemaAttributeGUID);
         EntityDetail childSchemaAttributeEntity = archiveBuilder.getEntity(childSchemaAttributeGUID);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(parentSchemaAttributeEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(childSchemaAttributeEntity);
 
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(parentSchemaAttributeGUID + "_to_" + childSchemaAttributeGUID + "_nested_schema_attribute_relationship"),
-                                                                     null,
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -4216,7 +4610,6 @@ public class SimpleCatalogArchiveHelper
      * @param description description about the schema attribute
      * @param dataType data type for the schema attribute
      * @param length length of the storage used by the schema attribute
-     * @param position position in the schema at this level
      * @param encodingStandard encoding standard
      * @param additionalProperties any other properties.
      *
@@ -4231,7 +4624,6 @@ public class SimpleCatalogArchiveHelper
                                      String              description,
                                      String              dataType,
                                      int                 length,
-                                     int                 position,
                                      String              encodingStandard,
                                      Map<String, String> additionalProperties)
     {
@@ -4255,7 +4647,6 @@ public class SimpleCatalogArchiveHelper
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.LENGTH.name, length, methodName);
-        entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.POSITION.name, position, methodName);
         entityProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.SCHEMA_TYPE_NAME.name, schemaTypeTypeName, methodName);

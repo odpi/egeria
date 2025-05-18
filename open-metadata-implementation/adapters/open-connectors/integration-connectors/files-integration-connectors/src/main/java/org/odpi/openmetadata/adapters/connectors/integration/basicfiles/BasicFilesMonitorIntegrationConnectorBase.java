@@ -93,7 +93,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 }
             }
 
-            DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT.typeName + ":" + OpenMetadataProperty.NETWORK_ADDRESS.name,
+            DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT.typeName + "::" + OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                             endpoint.getAddress(),
                                                                             null,
                                                                             null,
@@ -353,7 +353,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                  */
                 try
                 {
-                    DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + ":" + catalogTarget.getRelationshipGUID(),
+                    DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + "::" + catalogTarget.getRelationshipGUID(),
                                                                                     fileFolderElement.getFileFolderProperties().getPathName(),
                                                                                     catalogTarget.getRelationshipGUID(),
                                                                                     catalogTarget.getDeleteMethod(),

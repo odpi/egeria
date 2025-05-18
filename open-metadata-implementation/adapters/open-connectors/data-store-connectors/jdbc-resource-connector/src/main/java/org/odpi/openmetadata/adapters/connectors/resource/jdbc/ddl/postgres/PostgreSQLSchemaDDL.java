@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres;
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc.JDBCErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

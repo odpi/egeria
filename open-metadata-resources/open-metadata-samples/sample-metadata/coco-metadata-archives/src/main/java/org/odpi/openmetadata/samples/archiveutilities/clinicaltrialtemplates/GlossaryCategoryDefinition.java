@@ -11,9 +11,20 @@ public enum GlossaryCategoryDefinition
     /**
      * These terms describe the types of data collected during the Teddy Bear Drop Foot study.
      */
-    DATA_FIELDS("Teddy Bear Drop Foot Data Fields",
-                "These terms describe the types of data collected during the Teddy Bear Drop Foot study."),
+    TBDF_DATA_FIELDS("Teddy Bear Drop Foot Data Fields",
+                     "These terms describe the types of data collected during the Teddy Bear Drop Foot study."),
 
+    /**
+     * These terms are used to represent real glossary terms in templates.  They are replaced with the term linked via the SourcedFrom relationship.
+     */
+    TEMPLATE_SUBSTITUTES("Template substitutes",
+                     "These terms are used to represent real glossary terms in templates.  They are replaced with the term linked via the SourcedFrom relationship."),
+
+    /**
+     * These terms describe the types of data often collected during a clinical trial.
+     */
+    GENERIC_DATA_FIELDS("Clinical Trials Common Data Fields",
+                    "These terms describe the types of data often collected during a clinical trial."),
 
     ;
 

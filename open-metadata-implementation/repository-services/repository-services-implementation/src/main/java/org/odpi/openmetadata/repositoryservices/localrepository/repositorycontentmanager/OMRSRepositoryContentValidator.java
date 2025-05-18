@@ -477,7 +477,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
 
                 if (! this.validInstanceAuditHeader(sourceName,
-                                                    entity.getGUID() + ":" + classification.getName(),
+                                                    entity.getGUID() + "::" + classification.getName(),
                                                     classification,
                                                     methodName,
                                                     true))

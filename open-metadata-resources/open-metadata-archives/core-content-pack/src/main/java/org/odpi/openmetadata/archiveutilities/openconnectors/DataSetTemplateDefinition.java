@@ -17,7 +17,7 @@ public enum DataSetTemplateDefinition
 {
     DATA_FILE_COLLECTION("26d6bcdc-ce05-4e0b-8685-cd40777dc5f9",
                          DeployedImplementationType.DATA_FILE_COLLECTION,
-                         DeployedImplementationType.DATA_FILE_COLLECTION.getDeployedImplementationType() + ":" + PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                         DeployedImplementationType.DATA_FILE_COLLECTION.getDeployedImplementationType() + "::" + PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
                          new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
 

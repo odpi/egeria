@@ -3,14 +3,13 @@
 
 package org.odpi.openmetadata.commonservices.mermaid;
 
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementGraph;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,18 +26,18 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
     {
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Anchor Element - ");
-        mermaidGraph.append(this.getDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName()));
+        mermaidGraph.append(this.getNodeDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName()));
         mermaidGraph.append(" [");
         mermaidGraph.append(elementGraph.getElementGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
         String currentNodeName    = elementGraph.getElementGUID();
-        String currentDisplayName = this.getDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName());
+        String currentDisplayName = this.getNodeDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName());
 
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              elementGraph.getType().getTypeName(),
-                             checkForClassifications(elementGraph, VisualStyle.ANCHOR_ELEMENT));
+                             this.getVisualStyleForEntity(elementGraph, VisualStyle.ANCHOR_ELEMENT));
 
         if (elementGraph.getAnchoredElements() != null)
         {
@@ -47,12 +46,12 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                 if (node != null)
                 {
                     currentNodeName    = node.getElementGUID();
-                    currentDisplayName = this.getDisplayName(node.getElementProperties(), node.getType().getTypeName());
+                    currentDisplayName = this.getNodeDisplayName(node.getElementProperties(), node.getType().getTypeName());
 
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getType().getTypeName(),
-                                         checkForClassifications(node, VisualStyle.ANCHORED_ELEMENT));
+                                         this.getVisualStyleForEntity(node, VisualStyle.ANCHORED_ELEMENT));
                 }
             }
         }
@@ -111,16 +110,10 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(elementGUID);
         mermaidGraph.append("\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
-
-        String currentNodeName    = elementGUID;
-        String currentDisplayName = elementGUID;
-
-        appendMermaidNode(currentNodeName,
-                          currentDisplayName,
-                          "Starting from");
-
-        usedNodeNames.add(currentNodeName);
+        super.appendNewMermaidNode(elementGUID,
+                                   elementGUID,
+                                   "StartingFrom",
+                                   VisualStyle.ANCHORED_ELEMENT);
 
         if (relatedMetadataElements != null)
         {
@@ -128,17 +121,14 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (node != null)
                 {
-                    currentNodeName    = node.getElement().getElementGUID();
-                    currentDisplayName = this.getDisplayName(node.getElement().getElementProperties(), node.getElement().getType().getTypeName());
+                    String currentDisplayName = this.getNodeDisplayName(node.getElement().getElementProperties(),
+                                                                        node.getElement().getType().getTypeName());
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getType().getTypeName());
+                    super.appendNewMermaidNode(node.getElement().getElementGUID(),
+                                               currentDisplayName,
+                                               node.getType().getTypeName(),
+                                               getVisualStyleForEntity(node.getElement(), VisualStyle.LINKED_ELEMENT));
 
-                        usedNodeNames.add(currentNodeName);
-                    }
                 }
             }
 
@@ -146,12 +136,20 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(this.lookupNodeName(elementGUID));
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(line.getType().getTypeName());
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(this.lookupNodeName(line.getElement().getElementGUID()));
-                    mermaidGraph.append("\n");
+                    if (line.getElementAtEnd1())
+                    {
+                        super.appendMermaidLine(line.getRelationshipGUID(),
+                                                line.getElement().getElementGUID(),
+                                                super.addSpacesToTypeName(line.getType().getTypeName()),
+                                                elementGUID);
+                    }
+                    else
+                    {
+                        super.appendMermaidLine(line.getRelationshipGUID(),
+                                                elementGUID,
+                                                super.addSpacesToTypeName(line.getType().getTypeName()),
+                                                line.getElement().getElementGUID());
+                    }
                 }
             }
         }
@@ -176,72 +174,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(end2GUID);
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
-
-        String currentNodeName;
-        String currentDisplayName;
-
-        if (openMetadataRelationships != null)
-        {
-            for (OpenMetadataRelationship node : openMetadataRelationships)
-            {
-                if (node != null)
-                {
-                    currentNodeName = node.getElementGUIDAtEnd1();
-
-                    if (node.getElementAtEnd1().getUniqueName() != null)
-                    {
-                        currentDisplayName = node.getElementAtEnd1().getUniqueName();
-                    }
-                    else
-                    {
-                        currentDisplayName = node.getElementAtEnd1().getType().getTypeName();
-                    }
-
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
-
-                    currentNodeName = node.getElementGUIDAtEnd2();
-
-                    if (node.getElementAtEnd2().getUniqueName() != null)
-                    {
-                        currentDisplayName = node.getElementAtEnd2().getUniqueName();
-                    }
-                    else
-                    {
-                        currentDisplayName = node.getElementAtEnd2().getType().getTypeName();
-                    }
-
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
-                }
-            }
-
-            for (OpenMetadataRelationship line : openMetadataRelationships)
-            {
-                if (line != null)
-                {
-                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd1()));
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(line.getType().getTypeName());
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd2()));
-                    mermaidGraph.append("\n");
-                }
-            }
-        }
+        addOpenMetadataRelationshipsToGraph(openMetadataRelationships);
     }
 
 
@@ -256,8 +189,17 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append("title: Relationships matching Query");
         mermaidGraph.append("\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedNodeNames = new ArrayList<>();
+        addOpenMetadataRelationshipsToGraph(openMetadataRelationships);
+    }
 
+
+    /**
+     * Add the relationships to the mermaid graph.
+     *
+     * @param openMetadataRelationships list of related metadata elements
+     */
+    private void addOpenMetadataRelationshipsToGraph(List<OpenMetadataRelationship> openMetadataRelationships)
+    {
         String currentNodeName;
         String currentDisplayName;
 
@@ -278,14 +220,10 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                         currentDisplayName = node.getElementAtEnd1().getType().getTypeName();
                     }
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getElementAtEnd1().getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
+                    appendNewMermaidNode(currentNodeName,
+                                         currentDisplayName,
+                                         node.getElementAtEnd1().getType().getTypeName(),
+                                         getVisualStyleForEntity(node.getElementAtEnd1(), VisualStyle.LINKED_ELEMENT));
 
                     currentNodeName = node.getElementGUIDAtEnd2();
 
@@ -298,14 +236,10 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                         currentDisplayName = node.getElementAtEnd2().getType().getTypeName();
                     }
 
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(currentNodeName,
-                                          currentDisplayName,
-                                          node.getElementAtEnd2().getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
+                    appendNewMermaidNode(currentNodeName,
+                                         currentDisplayName,
+                                         node.getElementAtEnd2().getType().getTypeName(),
+                                         getVisualStyleForEntity(node.getElementAtEnd2(), VisualStyle.LINKED_ELEMENT));
                 }
             }
 
@@ -313,12 +247,10 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd1()));
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(line.getType().getTypeName());
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(this.lookupNodeName(line.getElementGUIDAtEnd2()));
-                    mermaidGraph.append("\n");
+                    super.appendMermaidLine(line.getRelationshipGUID(),
+                                            line.getElementGUIDAtEnd1(),
+                                            super.addSpacesToTypeName(line.getType().getTypeName()),
+                                            line.getElementGUIDAtEnd2());
                 }
             }
         }
@@ -332,8 +264,8 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
      * @param typeName type name as a last resource
      * @return display name to use
      */
-    private String getDisplayName(ElementProperties elementProperties,
-                                  String            typeName)
+    private String getNodeDisplayName(ElementProperties elementProperties,
+                                      String            typeName)
     {
         final String methodName = "getDisplayName";
 
@@ -356,6 +288,87 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                                   elementProperties,
                                                                   methodName);
         }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.ROLE.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.FULL_NAME.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.USER_ID.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.IDENTIFIER.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.TAG_NAME.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.TITLE.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.ANNOTATION_TYPE.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getEnumPropertySymbolicName(sourceName,
+                                                                            OpenMetadataProperty.STARS.name,
+                                                                            elementProperties,
+                                                                            methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(sourceName,
+                                                                  OpenMetadataProperty.URL.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
 
         if (currentDisplayName == null)
         {

@@ -458,7 +458,12 @@ public enum OpenMetadataProperty
     /**
      * The name of a primitive data type.
      */
-    DATA_TYPE("dataType", DataType.STRING.getName(), "The name of a primitive data type.", null, "50e73f9f-10a0-4b41-9cb6-bf55630f3734"),
+    DATA_TYPE("dataType", DataType.STRING.getName(), "The name of a primitive data type.", "string", "50e73f9f-10a0-4b41-9cb6-bf55630f3734"),
+
+    /**
+     * The units of measure used in the data field.
+     */
+    UNITS("units", DataType.STRING.getName(), "The units of measure used in the data field.", "centimetres", "a62374e7-c4b9-4b5e-871d-d7bcf72faf4c"),
 
     /**
      * Value that is used when an instance of the data field is created.
@@ -488,7 +493,7 @@ public enum OpenMetadataProperty
     /**
      * Position of the element in a collection of relationships.
      */
-    POSITION("position", DataType.INT.getName(), "Position of the element in a collection of relationships.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae"),
+    POSITION("position", DataType.INT.getName(), "Position of the element in a collection of relationships.  Zero means no position set. A positive value identified the position starting from 1 for the first position.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae"),
 
     /**
      * Minimum length of the data value (zero means unlimited).
@@ -1812,7 +1817,7 @@ public enum OpenMetadataProperty
     /**
      * Details of the type of role position within a group, team, project, eg deputy.
      */
-    ROLE_POSITION("position", DataType.STRING.getName(), "Details of the type of role position within a group, team, project, eg deputy.", null, "dc83ac84-914f-441e-876b-5a02293fc568"),
+    ROLE_POSITION("positionName", DataType.STRING.getName(), "Details of the type of role position within a group, team, project, eg deputy.", null, "dc83ac84-914f-441e-876b-5a02293fc568"),
 
     /**
      * Can delegations and escalations flow on this relationship.

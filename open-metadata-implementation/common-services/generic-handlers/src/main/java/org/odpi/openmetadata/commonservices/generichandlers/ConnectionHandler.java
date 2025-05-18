@@ -9,9 +9,9 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
@@ -924,7 +924,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
              * The caller has provided the connector provider class name so that is used. If an existing connector type is found, it is
              * used, otherwise a new connector type is created.  Notice it is not anchored to the asset.
              */
-            String connectorTypeName = assetTypeName + ":" + assetQualifiedName + " ConnectorType";
+            String connectorTypeName = assetTypeName + "::" + assetQualifiedName + " ConnectorType";
 
             connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
                                                                                    null,

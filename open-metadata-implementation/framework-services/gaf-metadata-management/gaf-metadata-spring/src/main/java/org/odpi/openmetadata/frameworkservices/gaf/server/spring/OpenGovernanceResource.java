@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.server.OpenGovernanceRESTServices;
+import org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

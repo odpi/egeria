@@ -3,13 +3,9 @@
 package org.odpi.openmetadata.accessservices.digitalservice.client.rest;
 
 
-import org.odpi.openmetadata.commonservices.ffdc.rest.DigitalServiceResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DigitalServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 
 /**

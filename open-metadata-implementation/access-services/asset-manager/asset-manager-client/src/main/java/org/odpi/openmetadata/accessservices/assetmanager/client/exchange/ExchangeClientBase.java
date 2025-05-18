@@ -5,16 +5,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.client.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerBaseClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-
-import java.util.Date;
-import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 /**
  * ExchangeClientBase provides the base class for the clients called XXXXExchangeClient

@@ -349,7 +349,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
                     {
                         ((AuditLoggingComponent) connector).setAuditLog(auditLog.createNewAuditLog(connectorComponentDescription.getComponentId(),
                                                                                                    connectorComponentDescription.getComponentDevelopmentStatus(),
-                                                                                                   connectorComponentDescription.getComponentName() + ":" + guid,
+                                                                                                   connectorComponentDescription.getComponentName() + "::" + guid,
                                                                                                    connectorComponentDescription.getComponentDescription(),
                                                                                                    connectorComponentDescription.getComponentWikiURL()));
                     }

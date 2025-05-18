@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetowner.fvt.validmetadatavalues;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValueDetail;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;

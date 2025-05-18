@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
@@ -24,12 +24,12 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasRelationship;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
@@ -595,7 +595,7 @@ public abstract class AtlasIntegrationModuleBase
 
         Map<String, String> mappingProperties = new HashMap<>();
 
-        mappingProperties.put(modulePropertyName, connectorName + ":" + moduleName);
+        mappingProperties.put(modulePropertyName, connectorName + "::" + moduleName);
 
         if (atlasName != null)
         {
@@ -1195,7 +1195,7 @@ public abstract class AtlasIntegrationModuleBase
 
             dataAssetProperties.setTypeName(egeriaTypeName);
             dataAssetProperties.setDeployedImplementationType(atlasEntity.getTypeName());
-            dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
+            dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + "::" + atlasEntity.getTypeName() + "::" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
             dataAssetProperties.setName(getAtlasStringProperty(attributes, atlasNamePropertyName));
             dataAssetProperties.setResourceName(getAtlasStringProperty(attributes, atlasNamePropertyName));
             dataAssetProperties.setResourceDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
@@ -1227,7 +1227,7 @@ public abstract class AtlasIntegrationModuleBase
 
         dataAssetProperties.setTypeName(egeriaTypeName);
         dataAssetProperties.setDeployedImplementationType(atlasFSPathEntity.getTypeName());
-        dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasFSPathEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
+        dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + "::" + atlasFSPathEntity.getTypeName() + "::" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
         dataAssetProperties.setName(getAtlasStringProperty(attributes, atlasNamePropertyName));
         dataAssetProperties.setResourceName(getAtlasStringProperty(attributes, atlasNamePropertyName));
         dataAssetProperties.setResourceDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
@@ -1262,7 +1262,7 @@ public abstract class AtlasIntegrationModuleBase
 
             processProperties.setTypeName(egeriaTypeName);
             processProperties.setDeployedImplementationType(atlasEntity.getTypeName());
-            processProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
+            processProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + "::" + atlasEntity.getTypeName() + "::" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
             processProperties.setName(getAtlasStringProperty(attributes, atlasNamePropertyName));
             processProperties.setResourceName(getAtlasStringProperty(attributes, atlasNamePropertyName));
             processProperties.setResourceDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
@@ -1296,7 +1296,7 @@ public abstract class AtlasIntegrationModuleBase
             Map<String, Object> attributes = atlasEntity.getAttributes();
 
             schemaAttributeProperties.setTypeName(egeriaSchemaAttributeTypeName);
-            schemaAttributeProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, "qualifiedName"));
+            schemaAttributeProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + "::" + atlasEntity.getTypeName() + "::" + getAtlasStringProperty(attributes, "qualifiedName"));
 
             schemaAttributeProperties.setDisplayName(getAtlasStringProperty(attributes, "name") );
             schemaAttributeProperties.setDescription(getAtlasStringProperty(attributes, "description"));

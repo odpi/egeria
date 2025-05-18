@@ -26,6 +26,7 @@ public class DataClassElement extends AttributedMetadataElement
     private List<RelatedMetadataElementSummary> nestedDataClasses      = null;
     private List<RelatedMetadataElementSummary> specializedDataClasses = null;
 
+
     /**
      * Default constructor
      */
@@ -117,6 +118,7 @@ public class DataClassElement extends AttributedMetadataElement
     {
         this.specializedDataClasses = specializedDataClasses;
     }
+
 
     /**
      * JSON-style toString

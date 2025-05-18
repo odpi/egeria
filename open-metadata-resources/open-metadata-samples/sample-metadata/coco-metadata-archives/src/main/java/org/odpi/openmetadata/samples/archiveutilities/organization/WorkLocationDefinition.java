@@ -151,6 +151,21 @@ public enum WorkLocationDefinition
                   "Alberta",
                   "Canada",
                   "UTC-8"),
+
+    /**
+     * Bowden Arrow Hospital
+     */
+    BOWDEN_ARROW_HOSPITAL("11",
+                          "Bowden Arrow Hospital",
+                          "Main Building, Bowden Arrow Hospital",
+                          null,
+                          "Lake View St",
+                          null,
+                          "Chicago",
+                          "IL",
+                          "United States",
+                          "UTC-6"),
+
     ;
 
     public static final String validValueSetName = "WorkLocation";

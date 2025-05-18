@@ -8,10 +8,10 @@ import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlers
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -512,7 +512,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         Map<String, String> executorsRequestParameters = this.getExecutorRequestParameters(governanceActionExecutorRelationship, initialRequestParameters);
 
         String engineActionGUID = createEngineAction(userId,
-                                                     governanceActionTypeName + ":" + UUID.randomUUID(),
+                                                     governanceActionTypeName + "::" + UUID.randomUUID(),
                                                      domainIdentifier,
                                                      displayName,
                                                      description,
@@ -545,7 +545,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
              */
             runEngineActionIfReady(userId,
                                    engineActionGUID,
-                                   governanceActionTypeName + ":" + UUID.randomUUID(),
+                                   governanceActionTypeName + "::" + UUID.randomUUID(),
                                    null,
                                    requestedStartDate,
                                    governanceEngineName,
@@ -758,7 +758,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 String processInstanceQualifiedName = repositoryHelper.getStringProperty(serviceName,
                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                          governanceActionProcessEntity.getProperties(),
-                                                                                         methodName) + "@" + processInstanceStartTime.getTime() + ":" + UUID.randomUUID();
+                                                                                         methodName) + "@" + processInstanceStartTime.getTime() + "::" + UUID.randomUUID();
                 String processInstanceName = repositoryHelper.getStringProperty(serviceName,
                                                                                 OpenMetadataProperty.NAME.name,
                                                                                 governanceActionProcessEntity.getProperties(),
@@ -1142,7 +1142,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<String> mandatoryGuards = this.getMandatoryGuards(userId, governanceActionProcessStepGUID);
 
         String engineActionGUID = getEngineActionForProcessStep(userId,
-                                                                governanceActionProcessStepName + ":" + UUID.randomUUID(),
+                                                                governanceActionProcessStepName + "::" + UUID.randomUUID(),
                                                                 domainIdentifier,
                                                                 displayName,
                                                                 description,
@@ -1201,7 +1201,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
              */
             runEngineActionIfReady(userId,
                                    engineActionGUID,
-                                   governanceActionProcessStepName + ":" + UUID.randomUUID(),
+                                   governanceActionProcessStepName + "::" + UUID.randomUUID(),
                                    mandatoryGuards,
                                    requestedStartDate,
                                    governanceEngineName,
@@ -1783,7 +1783,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
          * No governance actions associated with the governance action process step in REQUESTED state so create a new one.
          */
         return createEngineAction(userId,
-                                  governanceActionProcessStepName + ":" + UUID.randomUUID(),
+                                  governanceActionProcessStepName + "::" + UUID.randomUUID(),
                                   domainIdentifier,
                                   displayName,
                                   description,

@@ -465,12 +465,12 @@ public enum PersonDefinition
                    null,
                    CountryCodeDefinition.USA,
                    EmployeeTypeDefinition.PARTNER,
-                   "Surgeon (Hampton Hospital)",
+                   "Surgeon (Bowden Arrow Hospital)",
                    null,
                    "juliestitched",
                    "cn=juliestitched,ou=people,ou=users,o=cocoPharma",
-                   "Julie-Stitched@hh-care.org",
-                   WorkLocationDefinition.HAMPTON_HOSPITAL),
+                   "Julie-Stitched@bowden-arrow.org",
+                   WorkLocationDefinition.BOWDEN_ARROW_HOSPITAL),
 
     /**
      * Mr Robbert Records
@@ -515,7 +515,7 @@ public enum PersonDefinition
                     WorkLocationDefinition.HAMPTON_HOSPITAL),
 
     /**
-     * Mr Robbert Records
+     * Miss Eleanor Dunn
      */
     NELLIE_DUNN("Nellie Dunn",
                    "She/her/hers",

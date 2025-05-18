@@ -19,6 +19,8 @@ public enum VisualStyle
     LINKED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.EGERIA_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
     LINEAGE_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
     LINEAGE_ANCHOR(Colour.BLACK.getColourNumber(), Colour.LIGHT_YELLOW.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
+    REQUEST_FOR_ACTION(Colour.LIGHT_YELLOW.getColourNumber(), Colour.ROSY_BROWN.getColourNumber(), Colour.SLATE.getColourNumber(), "rounded"),
+    TO_DO(Colour.LIGHT_YELLOW.getColourNumber(), Colour.ROSY_BROWN.getColourNumber(), Colour.SLATE.getColourNumber(), "trap-b"),
 
     HOST(Colour.WHITE.getColourNumber(), Colour.DARK_GRAY.getColourNumber(), Colour.YELLOW.getColourNumber(), "rect"),
 
@@ -57,7 +59,7 @@ public enum VisualStyle
     GOVERNANCE_DEFINITION(Colour.BLACK.getColourNumber(), Colour.GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
     SUPPORTING_GOVERNANCE_DEFINITION(Colour.BLACK.getColourNumber(), Colour.LIGHT_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
     GOVERNANCE_METRIC(Colour.BLACK.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), Colour.BLACK.getColourNumber(), "notch-pent"),
-    EXTERNAL_REFERENCES(Colour.BLACK.getColourNumber(), Colour.YELLOW.getColourNumber(), Colour.BLACK.getColourNumber(), "docs"),
+    EXTERNAL_REFERENCE(Colour.BLACK.getColourNumber(), Colour.YELLOW.getColourNumber(), Colour.BLACK.getColourNumber(), "docs"),
     GOVERNED_ELEMENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "rounded"),
 
 
@@ -66,9 +68,29 @@ public enum VisualStyle
     PROJECT_RESOURCE(Colour.BLACK.getColourNumber(), Colour.PINKY.getColourNumber(), Colour.BLACK.getColourNumber(), "doc"),
     PROJECT_ROLE(Colour.BLACK.getColourNumber(), Colour.LIGHT_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
 
+    DATA_DICTIONARY(Colour.BLACK.getColourNumber(), Colour.CHOCOLATE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    DATA_SPEC(Colour.BLACK.getColourNumber(), Colour.BURLY_WOOD.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    OBJECT_IDENTIFIER(Colour.BLACK.getColourNumber(), Colour.WHITE_ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+
     DATA_STRUCTURE(Colour.BLACK.getColourNumber(), Colour.ORANGE.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     DATA_STRUCTURE_INTERNALS(Colour.BLACK.getColourNumber(), Colour.PALE_ORANGE.getColourNumber(), Colour.ORANGE.getColourNumber(), "rect"),
     DATA_FIELD(Colour.BLACK.getColourNumber(), Colour.WHITE_ORANGE.getColourNumber(), Colour.ORANGE.getColourNumber(), "rect"),
+    DATA_CLASS(Colour.BLACK.getColourNumber(), Colour.CORNFLOWER_BLUE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
+
+    COLLECTION(Colour.BLACK.getColourNumber(), Colour.MINT_CREAM.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    ROOT_COLLECTION(Colour.BLACK.getColourNumber(), Colour.SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    FOLDER(Colour.BLACK.getColourNumber(), Colour.DARK_SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    HOME_COLLECTION(Colour.BLACK.getColourNumber(), Colour.MEDIUM_SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    RESULTS_SET(Colour.BLACK.getColourNumber(), Colour.SPRING_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    RECENT_ACCESS(Colour.BLACK.getColourNumber(), Colour.LIME_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    WORK_ITEM_LIST(Colour.BLACK.getColourNumber(), Colour.FOREST_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+
+    DIGITAL_PRODUCT(Colour.WHITE.getColourNumber(), Colour.STEEL_BLUE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
+
+
+    GLOSSARY_TERM(Colour.BLACK.getColourNumber(), Colour.MEDIUM_AQUAMARINE.getColourNumber(), Colour.TEAL.getColourNumber(), "rect"),
+    GLOSSARY_CATEGORY(Colour.WHITE.getColourNumber(), Colour.TEAL.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    GLOSSARY(Colour.WHITE.getColourNumber(), Colour.TEAL.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
 
     SCHEMA_ELEMENT(Colour.LIGHT_YELLOW.getColourNumber(), Colour.PURPLE.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), "rect"),
 

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.CommentResponse;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.CommentsResponse;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.CommentConversation;
 import org.odpi.openmetadata.frameworks.connectors.properties.Comments;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;

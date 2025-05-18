@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
  * ConnectorProvider/Connector implementation can be used.  The aim is to be able to uniquely identify the cause
  * and remedy for the error.
  */
-public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
+public abstract class OMRSCheckedExceptionBase extends OMFCheckedExceptionBase
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -140,7 +140,7 @@ public abstract class OMRSCheckedExceptionBase extends OCFCheckedExceptionBase
      * @param template   object to copy
      */
     public OMRSCheckedExceptionBase(String                  errorMessage,
-                                    OCFCheckedExceptionBase template)
+                                    OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

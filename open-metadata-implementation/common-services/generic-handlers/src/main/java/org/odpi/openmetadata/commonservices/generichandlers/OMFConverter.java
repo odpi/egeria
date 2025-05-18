@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -23,7 +25,7 @@ import java.util.Map;
  * OMFConverter provides the generic methods for the OCF beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
- * and initializing a Data Manager bean.
+ * and initializing an OMF bean.
  */
 public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
@@ -219,6 +221,56 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param beanClass name of the class to create
+     * @param relatedEntity from the repository
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public RelatedMetadataElementSummary getRelatedMetadataElementSummary(Class<B>      beanClass,
+                                                                          RelatedEntity relatedEntity,
+                                                                          String        methodName) throws PropertyServerException
+    {
+        if ((relatedEntity != null) && (relatedEntity.entityDetail() != null) && (relatedEntity.relationship() != null))
+        {
+            RelatedMetadataElementSummary relatedElementSummary = new RelatedMetadataElementSummary();
+            MetadataElementSummary        elementSummary = new MetadataElementSummary();
+            ElementHeader                 elementHeader  = getMetadataElementHeader(beanClass, relatedEntity.relationship(), null, methodName);
+
+            elementHeader.setGUID(relatedEntity.relationship().getGUID());
+
+            relatedElementSummary.setRelationshipHeader(elementHeader);
+            if (relatedEntity.relationship().getProperties() != null)
+            {
+                relatedElementSummary.setRelationshipProperties(super.getPropertiesAsStrings(relatedEntity.relationship().getProperties()));
+            }
+
+            elementHeader = getMetadataElementHeader(beanClass, relatedEntity.entityDetail(), relatedEntity.entityDetail().getClassifications(), methodName);
+            elementSummary.setElementHeader(elementHeader);
+
+            if (relatedEntity.entityDetail().getProperties() != null)
+            {
+                elementSummary.setProperties(super.getPropertiesAsStrings(relatedEntity.entityDetail().getProperties()));
+            }
+
+            relatedElementSummary.setRelatedElement(elementSummary);
+
+            return relatedElementSummary;
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+        }
+
+        return null;
+    }
+
+
     /**
      * Using the supplied instances, return a new instance of the Connection bean. It may be a Connection or a VirtualConnection.
      *
@@ -271,6 +323,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
+
 
     /**
      * Using the supplied instances, return a new instance of the VirtualConnection bean.  Virtual connections nest other connections

@@ -4,10 +4,10 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
-import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceAuditCode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +69,7 @@ public class GovernanceListenerManager
                         catch (Exception error)
                         {
                             auditLog.logException(actionDescription,
-                                                  OpenMetadataStoreAuditCode.WATCHDOG_EVENT_FAILURE.getMessageDefinition(
+                                                  OpenGovernanceAuditCode.WATCHDOG_EVENT_FAILURE.getMessageDefinition(
                                                           error.getClass().getName(),
                                                           connectorId,
                                                           event.getEventType().toString(),
@@ -288,9 +288,9 @@ public class GovernanceListenerManager
                 final String actionDescription = "publish watchdog event to listener";
 
                 auditLog.logMessage(actionDescription,
-                                    OpenMetadataStoreAuditCode.WATCHDOG_LISTENER_EXCEPTION.getMessageDefinition(governanceEngineName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                error.getMessage()),
+                                    OpenGovernanceAuditCode.WATCHDOG_LISTENER_EXCEPTION.getMessageDefinition(governanceEngineName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             error.getMessage()),
                                     event.toString());
             }
         }

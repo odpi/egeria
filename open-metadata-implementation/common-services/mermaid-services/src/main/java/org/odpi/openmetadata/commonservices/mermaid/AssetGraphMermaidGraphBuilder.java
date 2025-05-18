@@ -25,6 +25,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
+        super.addClassifications(assetGraph.getElementHeader());
 
         String currentNodeName    = assetGraph.getElementHeader().getGUID();
         String currentDisplayName = assetGraph.getProperties().getDisplayName();
@@ -32,7 +33,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
-                             checkForClassifications(assetGraph.getElementHeader(), VisualStyle.ANCHOR_ELEMENT));
+                             getVisualStyleForEntity(assetGraph.getElementHeader(), VisualStyle.ANCHOR_ELEMENT));
 
         if (assetGraph.getAnchoredElements() != null)
         {
@@ -58,7 +59,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getElementHeader().getType().getTypeName(),
-                                         checkForClassifications(node.getElementHeader(), VisualStyle.ANCHORED_ELEMENT));
+                                         getVisualStyleForEntity(node.getElementHeader(), VisualStyle.ANCHORED_ELEMENT));
                 }
             }
 
@@ -77,7 +78,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getEnd1().getGUID(),
                                          endName,
                                          line.getEnd1().getType().getTypeName(),
-                                         checkForClassifications(line.getEnd1(), visualStyle));
+                                         getVisualStyleForEntity(line.getEnd1(), visualStyle));
 
                     endName = line.getEnd2().getGUID();
                     if (line.getEnd2().getUniqueName() != null)
@@ -88,7 +89,7 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(line.getEnd2().getGUID(),
                                          endName,
                                          line.getEnd2().getType().getTypeName(),
-                                         checkForClassifications(line.getEnd2(),visualStyle));
+                                         getVisualStyleForEntity(line.getEnd2(),visualStyle));
 
                     super.appendMermaidLine(line.getGUID(),
                                             line.getEnd1().getGUID(),

@@ -180,11 +180,10 @@ public class SimpleDataCatalogArchiveBuilder
                                                                       customerTableDescription,
                                                                       null,
                                                                       0,
-                                                                      0,
                                                                       null,
                                                                       null);
 
-        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, relationalTableGUID);
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, 0, 0, 0, relationalTableGUID);
 
         String relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
                                                                        databaseSchemaAssetTypeName,
@@ -195,11 +194,10 @@ public class SimpleDataCatalogArchiveBuilder
                                                                        customerIdDescription,
                                                                        customerIdDataType,
                                                                        customerIdLength,
-                                                                       0,
                                                                        null,
                                                                        null);
 
-        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 1, 0, 0, relationalColumnGUID);
 
         relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
                                                                 databaseSchemaAssetTypeName,
@@ -210,11 +208,10 @@ public class SimpleDataCatalogArchiveBuilder
                                                                 customerNameDescription,
                                                                 customerNameDataType,
                                                                 customerNameLength,
-                                                                1,
                                                                 null,
                                                                 null);
 
-        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 2, 1, 1, relationalColumnGUID);
 
         relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
                                                                 databaseSchemaAssetTypeName,
@@ -225,11 +222,10 @@ public class SimpleDataCatalogArchiveBuilder
                                                                 customerStatusDescription,
                                                                 customerStatusDataType,
                                                                 customerStatusLength,
-                                                                2,
                                                                 null,
                                                                 null);
 
-        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 3, 1, 1, relationalColumnGUID);
 
         relationalColumnGUID = archiveHelper.addSchemaAttribute(databaseSchemaGUID,
                                                                 databaseSchemaAssetTypeName,
@@ -240,11 +236,10 @@ public class SimpleDataCatalogArchiveBuilder
                                                                 customerCardIdDescription,
                                                                 customerCardIdDataType,
                                                                 customerCardIdLength,
-                                                                3,
                                                                 null,
                                                                 null);
 
-        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
+        archiveHelper.addNestedSchemaAttribute(relationalTableGUID, 4, 1, 1, relationalColumnGUID);
 
         archiveHelper.saveGUIDs();
     }

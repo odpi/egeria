@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionDetails;
 
 /**
@@ -36,7 +36,7 @@ public class MockRuntimeExceptionConnectorProvider extends ConnectorProviderBase
     @Override
     public Connector getConnector(ConnectionDetails connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
+        throw new OMFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                       this.getClass().getName(),
                                       "getCachedList");
     }

@@ -2,10 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalservice.api;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
@@ -74,9 +77,16 @@ public interface CollectionsInterface
      * Returns the list of collections matching the search string - this is coded as a regular expression.
      *
      * @param userId     userId of user making request
+     * @param classificationName option name of a collection classification
      * @param searchString string to search for
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
@@ -85,22 +95,36 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionElement> findCollections(String userId,
-                                            String searchString,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            Date   effectiveTime) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
+    List<CollectionElement> findCollections(String              userId,
+                                            String              classificationName,
+                                            String              searchString,
+                                            List<ElementStatus> limitResultsByStatus,
+                                            Date                asOfTime,
+                                            SequencingOrder     sequencingOrder,
+                                            String              sequencingProperty,
+                                            int                 startFrom,
+                                            int                 pageSize,
+                                            boolean             forLineage,
+                                            boolean             forDuplicateProcessing,
+                                            Date                effectiveTime) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException;
 
 
     /**
      * Returns the list of collections with a particular name.
      *
      * @param userId     userId of user making request
+     * @param classificationName option name of a collection classification
      * @param name       name of the collections to return - match is full text match in qualifiedName or name
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
@@ -109,19 +133,27 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionElement> getCollectionsByName(String userId,
-                                                 String name,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 Date   effectiveTime) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException;
+    List<CollectionElement> getCollectionsByName(String              userId,
+                                                 String              classificationName,
+                                                 String              name,
+                                                 List<ElementStatus> limitResultsByStatus,
+                                                 Date                asOfTime,
+                                                 SequencingOrder     sequencingOrder,
+                                                 String              sequencingProperty,
+                                                 int                 startFrom,
+                                                 int                 pageSize,
+                                                 boolean             forLineage,
+                                                 boolean             forDuplicateProcessing,
+                                                 Date                effectiveTime) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException;
 
 
     /**
      * Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.
      *
      * @param userId     userId of user making request
+     * @param classificationName option name of a collection classification
      * @param collectionType the collection type value to match on.  If it is null, all collections with a null collectionType are returned
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
@@ -133,6 +165,7 @@ public interface CollectionsInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<CollectionElement> getCollectionsByType(String userId,
+                                                 String classificationName,
                                                  String collectionType,
                                                  int    startFrom,
                                                  int    pageSize) throws InvalidParameterException,
@@ -142,8 +175,12 @@ public interface CollectionsInterface
     /**
      * Return the properties of a specific collection.
      *
-     * @param userId            userId of user making request
-     * @param collectionGUID    unique identifier of the required collection
+     * @param userId                 userId of user making request
+     * @param collectionGUID         unique identifier of the required collection
+     * @param asOfTime               repository time to use
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return collection properties
      *
@@ -151,8 +188,12 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    CollectionElement getCollection(String userId,
-                                    String collectionGUID) throws InvalidParameterException,
+    CollectionElement getCollection(String  userId,
+                                    String  collectionGUID,
+                                    Date    asOfTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException;
 
@@ -398,9 +439,57 @@ public interface CollectionsInterface
      *
      * @param userId     userId of user making request.
      * @param collectionGUID  unique identifier of the collection.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of collection details
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<CollectionMember> getCollectionMembers(String              userId,
+                                                String              collectionGUID,
+                                                List<ElementStatus> limitResultsByStatus,
+                                                Date                asOfTime,
+                                                String              sequencingProperty,
+                                                SequencingOrder     sequencingOrder,
+                                                boolean             forLineage,
+                                                boolean             forDuplicateProcessing,
+                                                Date                effectiveTime,
+                                                int                 startFrom,
+                                                int                 pageSize) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException;
+
+
+    /**
+     * Return a graph of elements that are the nested members of a collection along
+     * with elements immediately connected to the starting collection.  The result
+     * includes a mermaid graph of the returned elements.
+     *
+     * @param userId     userId of user making request.
+     * @param collectionGUID  unique identifier of the collection.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
      *
      * @return list of asset details
      *
@@ -408,13 +497,19 @@ public interface CollectionsInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionMember> getCollectionMembers(String userId,
-                                                String collectionGUID,
-                                                int    startFrom,
-                                                int    pageSize,
-                                                Date   effectiveTime) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+    CollectionGraph getCollectionGraph(String              userId,
+                                       String              collectionGUID,
+                                       List<ElementStatus> limitResultsByStatus,
+                                       Date                asOfTime,
+                                       String              sequencingProperty,
+                                       SequencingOrder     sequencingOrder,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       Date                effectiveTime,
+                                       int                 startFrom,
+                                       int                 pageSize) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException;
 
 
     /**

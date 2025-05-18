@@ -14,8 +14,8 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityC
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
@@ -215,7 +215,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
 
                 OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
-                assetConnector.setUCInstanceName(connectorName + ":" + requestedCatalogTarget.getCatalogTargetName());
+                assetConnector.setUCInstanceName(connectorName + "::" + requestedCatalogTarget.getCatalogTargetName());
                 assetConnector.start();
 
                 PermittedSynchronization permittedSynchronization = this.getContext().getPermittedSynchronization();

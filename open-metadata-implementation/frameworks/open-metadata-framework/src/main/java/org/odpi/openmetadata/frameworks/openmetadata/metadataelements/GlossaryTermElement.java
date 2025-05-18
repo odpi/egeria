@@ -6,8 +6,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,11 +22,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermElement implements MetadataElement
+public class GlossaryTermElement extends AttributedMetadataElement implements CorrelatedMetadataElement
 {
-    private ElementHeader          elementHeader          = null;
-    private GlossaryTermProperties glossaryTermProperties = null;
-    private RelatedBy              relatedBy              = null;
+    private List<MetadataCorrelationHeader>     correlationHeaders     = null;
+    private GlossaryTermProperties              glossaryTermProperties = null;
+    private RelatedBy                           relatedBy              = null;
+    private RelatedMetadataElementSummary       parentGlossary         = null;
+    private List<RelatedMetadataElementSummary> categoryMembership     = null;
+    private List<RelatedMetadataElementSummary> relatedTerms           = null;
+    private List<RelatedMetadataElementSummary> relatedDefinitions     = null;
+    private List<RelatedMetadataElementSummary> semanticAssignments    = null;
 
 
     /**
@@ -43,36 +50,45 @@ public class GlossaryTermElement implements MetadataElement
      */
     public GlossaryTermElement(GlossaryTermElement template)
     {
+        super (template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
+            correlationHeaders     = template.getCorrelationHeaders();
             glossaryTermProperties = template.getGlossaryTermProperties();
-            relatedBy              = template.getRelatedBy();
+            relatedBy              = template.getRelatedElement();
+            parentGlossary         = template.getParentGlossary();
+            categoryMembership     = template.getCategoryMembership();
+            relatedTerms           = template.getRelatedTerms();
+            relatedDefinitions     = template.getRelatedDefinitions();
+            semanticAssignments    = template.getSemanticAssignments();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return the details of the external identifier and other correlation properties about the metadata source.
      *
-     * @return element header object
+     * @return properties object
      */
     @Override
-    public ElementHeader getElementHeader()
+    public List<MetadataCorrelationHeader> getCorrelationHeaders()
     {
-        return elementHeader;
+        return correlationHeaders;
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the details of the external identifier and other correlation properties about the metadata source.
+     * There is one entry in the list for each element in the third party technology that maps to the single open source
+     * element.
      *
-     * @param elementHeader element header object
+     * @param correlationHeaders list of correlation properties objects
      */
     @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setCorrelationHeaders(List<MetadataCorrelationHeader> correlationHeaders)
     {
-        this.elementHeader = elementHeader;
+        this.correlationHeaders = correlationHeaders;
     }
 
 
@@ -103,7 +119,7 @@ public class GlossaryTermElement implements MetadataElement
      *
      * @return relationship properties and starting element
      */
-    public RelatedBy getRelatedBy()
+    public RelatedBy getRelatedElement()
     {
         return relatedBy;
     }
@@ -114,9 +130,119 @@ public class GlossaryTermElement implements MetadataElement
      *
      * @param relatedBy relationship properties and starting element
      */
-    public void setRelatedRelatedBy(RelatedBy relatedBy)
+    public void setRelatedElement(RelatedBy relatedBy)
     {
         this.relatedBy = relatedBy;
+    }
+
+
+    /**
+     * Return the parent glossary for this element.
+     *
+     * @return glossary details
+     */
+    public RelatedMetadataElementSummary getParentGlossary()
+    {
+        return parentGlossary;
+    }
+
+
+    /**
+     * Set up parent glossary for this element.
+     *
+     * @param parentGlossary glossary details
+     */
+    public void setParentGlossary(RelatedMetadataElementSummary parentGlossary)
+    {
+        this.parentGlossary = parentGlossary;
+    }
+
+
+    /**
+     * Return the list of categories that the term is linked to.
+     *
+     * @return list of categories
+     */
+    public List<RelatedMetadataElementSummary> getCategoryMembership()
+    {
+        return categoryMembership;
+    }
+
+
+    /**
+     * Set up the list of categories that the term is linked to.
+     *
+     * @param categoryMembership list of categories
+     */
+    public void setCategoryMembership(List<RelatedMetadataElementSummary> categoryMembership)
+    {
+        this.categoryMembership = categoryMembership;
+    }
+
+
+    /**
+     * Return the related terms.
+     *
+     * @return list of terms
+     */
+    public List<RelatedMetadataElementSummary> getRelatedTerms()
+    {
+        return relatedTerms;
+    }
+
+
+    /**
+     * Set up the related terms.
+     *
+     * @param relatedToTerms list of terms
+     */
+    public void setRelatedToTerms(List<RelatedMetadataElementSummary> relatedToTerms)
+    {
+        this.relatedTerms = relatedToTerms;
+    }
+
+
+    /**
+     * Return the data definitions that are linked to this glossary term via the semantic definition relationship.
+     *
+     * @return list of data definitions
+     */
+    public List<RelatedMetadataElementSummary> getRelatedDefinitions()
+    {
+        return relatedDefinitions;
+    }
+
+
+    /**
+     * Set up the data definitions that are linked to this glossary term via the semantic definition relationship.
+     *
+     * @param relatedDefinitions list of data definitions
+     */
+    public void setRelatedDefinitions(List<RelatedMetadataElementSummary> relatedDefinitions)
+    {
+        this.relatedDefinitions = relatedDefinitions;
+    }
+
+
+    /**
+     * Return the list of elements assigned to the glossary term via the semantic assignment relationship,
+     *
+     * @return list of related elements
+     */
+    public List<RelatedMetadataElementSummary> getSemanticAssignments()
+    {
+        return semanticAssignments;
+    }
+
+
+    /**
+     * Set up the list of elements assigned to the glossary term via the semantic assignment relationship,
+     *
+     * @param semanticAssignments list of related elements
+     */
+    public void setSemanticAssignments(List<RelatedMetadataElementSummary> semanticAssignments)
+    {
+        this.semanticAssignments = semanticAssignments;
     }
 
 
@@ -129,10 +255,16 @@ public class GlossaryTermElement implements MetadataElement
     public String toString()
     {
         return "GlossaryTermElement{" +
-                       "elementHeader=" + elementHeader +
-                        ", glossaryTermProperties=" + glossaryTermProperties +
-                        ", relatedBy=" + relatedBy +
-                       '}';
+                "correlationHeaders=" + correlationHeaders +
+                ", glossaryTermProperties=" + glossaryTermProperties +
+                ", relatedBy=" + relatedBy +
+                ", parentGlossary=" + parentGlossary +
+                ", categoryMembership=" + categoryMembership +
+                ", relatedTerms=" + relatedTerms +
+                ", relatedDefinitions=" + relatedDefinitions +
+                ", semanticAssignments=" + semanticAssignments +
+                ", relatedElement=" + getRelatedElement() +
+                "} " + super.toString();
     }
 
 
@@ -147,10 +279,16 @@ public class GlossaryTermElement implements MetadataElement
     {
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         GlossaryTermElement that = (GlossaryTermElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
+        return Objects.equals(correlationHeaders, that.correlationHeaders) &&
                 Objects.equals(glossaryTermProperties, that.glossaryTermProperties) &&
-                Objects.equals(relatedBy, that.relatedBy);
+                Objects.equals(relatedBy, that.relatedBy) &&
+                Objects.equals(parentGlossary, that.parentGlossary) &&
+                Objects.equals(categoryMembership, that.categoryMembership) &&
+                Objects.equals(relatedTerms, that.relatedTerms) &&
+                Objects.equals(relatedDefinitions, that.relatedDefinitions) &&
+                Objects.equals(semanticAssignments, that.semanticAssignments);
     }
 
 
@@ -162,6 +300,7 @@ public class GlossaryTermElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, relatedBy, glossaryTermProperties);
+        return Objects.hash(super.hashCode(), correlationHeaders, glossaryTermProperties, relatedBy,
+                            parentGlossary, categoryMembership, relatedTerms, relatedDefinitions, semanticAssignments);
     }
 }

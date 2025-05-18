@@ -7,10 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -502,7 +502,7 @@ public class RESTExceptionHandler
      * @param exceptionClassName  class name of the exception to recreate
      */
     protected  void captureCheckedException(FFDCResponse            response,
-                                            OCFCheckedExceptionBase error,
+                                            OMFCheckedExceptionBase error,
                                             String                  exceptionClassName)
     {
         this.captureCheckedException(response, error, exceptionClassName, null);
@@ -518,7 +518,7 @@ public class RESTExceptionHandler
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
     protected  void captureCheckedException(FFDCResponse            response,
-                                            OCFCheckedExceptionBase error,
+                                            OMFCheckedExceptionBase error,
                                             String                  exceptionClassName,
                                             Map<String, Object>     exceptionProperties)
     {

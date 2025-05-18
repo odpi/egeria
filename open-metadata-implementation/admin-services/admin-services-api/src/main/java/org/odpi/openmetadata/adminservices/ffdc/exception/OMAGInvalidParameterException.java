@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
 import java.util.Map;
@@ -136,7 +135,7 @@ public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
      * @param template   object to copy
      */
     public OMAGInvalidParameterException(String                  errorMessage,
-                                         OCFCheckedExceptionBase template)
+                                         OMFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

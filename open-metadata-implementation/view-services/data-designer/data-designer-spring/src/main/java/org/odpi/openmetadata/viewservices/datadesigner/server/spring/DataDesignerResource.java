@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.AnyTimeRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.viewservices.datadesigner.server.DataDesignerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -776,7 +776,7 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specialist-data-classes/{childDataClassGUID}/attach")
+    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specializeddata-classes/{childDataClassGUID}/attach")
     @Operation(summary="linkSpecialistDataClass",
             description="Connect two data classes to show that one provides a more specialist evaluation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -808,7 +808,7 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specialist-data-classes/{childDataClassGUID}/detach")
+    @PostMapping(path = "/data-classes/{parentDataClassGUID}/specializeddata-classes/{childDataClassGUID}/detach")
     @Operation(summary="detachSpecialistDataClass",
             description="Detach two data classes from one another.",
             externalDocs=@ExternalDocumentation(description="Further Information",

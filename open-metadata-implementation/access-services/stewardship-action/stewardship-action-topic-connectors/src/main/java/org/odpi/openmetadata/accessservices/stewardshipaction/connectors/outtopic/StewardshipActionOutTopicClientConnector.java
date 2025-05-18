@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.stewardshipaction.api.StewardshipAct
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.StewardshipActionEventListener;
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionOutTopicEvent;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

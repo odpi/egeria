@@ -955,7 +955,7 @@ Content-Type: application/json
 ###
 # @name linkSpecialistDataClass
 #  Connect two data classes to show that one provides a more specialist evaluation. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specialist-data-classes/{{childDataClassGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specializeddata-classes/{{childDataClassGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -973,7 +973,7 @@ Content-Type: application/json
 
 # @name linkSpecialistDataClass
 # Detach two data classes from one another. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specialist-data-classes/{{childDataClassGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specializeddata-classes/{{childDataClassGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
