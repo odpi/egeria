@@ -54,7 +54,7 @@ import org.apache.lucene.queryparser.classic.QueryParserBase;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "5.3-SNAPSHOT",
+                version = "5.3",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -153,7 +153,7 @@ public class OMAGServerPlatform
     {
         return () ->
         {
-            log.info("Platform release: version 5.3-SNAPSHOT");
+            log.info("Platform release: version 5.3");
             log.info("Working directory is: " + System.getProperty("user.dir"));
 
             if (!strictSSL)
