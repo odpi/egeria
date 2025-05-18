@@ -280,7 +280,7 @@ Content-Type: application/json
 
 ###
 
-#@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.3-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
+#@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.4-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
 @dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data/coco-data-lake/research/clinical-trials/drop-foot/weekly-measurements
 #@dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data
 
