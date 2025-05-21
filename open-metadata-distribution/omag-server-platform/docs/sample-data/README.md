@@ -4,7 +4,7 @@
 # Sample data
 
 The sample data is used in Egeria's education material such as the 
-[Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
+[Egeria Workspaces](https://github.com/odpi/egeria-workspaces).
 
 
 

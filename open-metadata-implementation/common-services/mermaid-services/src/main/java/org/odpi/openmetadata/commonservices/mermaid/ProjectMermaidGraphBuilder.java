@@ -135,25 +135,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (node != null)
                 {
-                    currentNodeName    = node.getRelatedElement().getElementHeader().getGUID();
-                    currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.RESOURCE_NAME.name);
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                    }
-
-                    super.appendNewMermaidNode(currentNodeName,
-                                               currentDisplayName,
-                                               node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                               getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.PROJECT_RESOURCE));
+                    super.appendNewMermaidNode(node.getRelatedElement(), VisualStyle.PROJECT_RESOURCE);
 
                     String label = null;
 
@@ -186,17 +168,6 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (node != null)
                 {
-                    currentNodeName    = node.getRelatedElement().getElementHeader().getGUID();
-                    currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                    }
-
                     String label = null;
 
                     if (node.getRelationshipProperties() != null)
@@ -213,10 +184,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
                         label = super.addSpacesToTypeName(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName);
                     }
 
-                    appendNewMermaidNode(currentNodeName,
-                                         currentDisplayName,
-                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.PROJECT_ROLE));
+                    appendNewMermaidNode(node.getRelatedElement(), VisualStyle.PROJECT_ROLE);
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
                                                 projectElement.getElementHeader().getGUID(),
@@ -232,22 +200,7 @@ public class ProjectMermaidGraphBuilder extends MermaidGraphBuilderBase
             {
                 if (node != null)
                 {
-                    currentNodeName    = node.getRelatedElement().getElementHeader().getGUID();
-                    currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.NAME.name);
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                    }
-
-                    appendNewMermaidNode(currentNodeName,
-                                         currentDisplayName,
-                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         getVisualStyleForEntity(node.getRelatedElement().getElementHeader(),
-                                                                 VisualStyle.PROJECT_ROLE));
+                    super.appendNewMermaidNode(node.getRelatedElement(), VisualStyle.PROJECT_ROLE);
 
                     super.appendMermaidThinLine(node.getRelationshipHeader().getGUID(),
                                                 projectElement.getElementHeader().getGUID(),

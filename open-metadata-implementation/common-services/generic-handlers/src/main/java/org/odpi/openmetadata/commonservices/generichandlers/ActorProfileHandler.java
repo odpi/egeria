@@ -1099,10 +1099,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
             }
         }
 
-        return converter.getNewComplexBean(beanClass,
-                                           primaryEntity,
-                                           supplementaryEntities,
-                                           relationships,
-                                           methodName);
+        return converter.getNewComplexGraphBean(beanClass,
+                                                primaryEntity,
+                                                supplementaryEntities,
+                                                relationships,
+                                                methodName);
     }
 }

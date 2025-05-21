@@ -2484,7 +2484,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 supplementaryEntities = null;
             }
 
-            return converter.getNewComplexBean(beanClass, assetEntity, supplementaryEntities, supplementaryRelationships, methodName);
+            return converter.getNewComplexGraphBean(beanClass, assetEntity, supplementaryEntities, supplementaryRelationships, methodName);
         }
 
         return null;

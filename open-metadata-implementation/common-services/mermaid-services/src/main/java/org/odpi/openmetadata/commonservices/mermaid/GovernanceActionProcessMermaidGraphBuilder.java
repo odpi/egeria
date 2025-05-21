@@ -29,9 +29,14 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
         String currentNodeName = processGraph.getGovernanceActionProcess().getElementHeader().getGUID();
         String currentDisplayName = processGraph.getGovernanceActionProcess().getProcessProperties().getDisplayName();
 
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = processGraph.getGovernanceActionProcess().getProcessProperties().getQualifiedName();
+        }
+
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
-                             processGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName(),
+                             super.getTypeNameForEntity(processGraph.getGovernanceActionProcess().getElementHeader()),
                              getVisualStyleForEntity(processGraph.getGovernanceActionProcess().getElementHeader(), VisualStyle.GOVERNANCE_ACTION_PROCESS));
 
         this.addDescription(processGraph.getGovernanceActionProcess());
@@ -41,11 +46,16 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             currentNodeName    = processGraph.getFirstProcessStep().getElement().getElementHeader().getGUID();
             currentDisplayName = processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getDisplayName();
 
+            if (currentDisplayName == null)
+            {
+                currentDisplayName = processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getQualifiedName();
+            }
+
             if (processGraph.getFirstProcessStep().getElement().getProcessStepProperties().getActionStatus() == EngineActionStatus.FAILED)
             {
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
-                                     processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName(),
+                                     super.getTypeNameForEntity(processGraph.getFirstProcessStep().getElement().getElementHeader()),
                                      this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
                                      VisualStyle.FAILED_GOVERNANCE_ACTION_PROCESS_STEP);
             }
@@ -53,7 +63,7 @@ public class GovernanceActionProcessMermaidGraphBuilder extends MermaidGraphBuil
             {
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
-                                     processGraph.getFirstProcessStep().getElement().getElementHeader().getType().getTypeName(),
+                                     super.getTypeNameForEntity(processGraph.getFirstProcessStep().getElement().getElementHeader()),
                                      this.getAdditionalProcessStepProperties(processGraph.getFirstProcessStep().getElement()),
                                      VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP);
             }

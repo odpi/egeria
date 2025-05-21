@@ -251,11 +251,6 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/landing-area" }
                 fileMode = 0666
             }
-            into('assembly/opt/coco-pharmaceuticals') {
-                // Identify how to add new libs
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/coco-pharmaceuticals" }
-                fileMode = 0666
-            }
             into('assembly/etc') {
                 // Describe the deployment layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc" }
@@ -302,16 +297,8 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
                 fileMode = 0755
             }
-            into('assembly/opt/coco-pharmaceuticals') {
-                from("$rootProject.projectDir/open-metadata-resources/open-metadata-samples/sample-data") {
-                    include '*/*'
-                }
-                fileMode = 0755
-            }
-            into('assembly/platform') {
-                from(rootProject.projectDir) {
-                    include 'content-packs/*'
-                }
+            into('assembly/opt/sample-data') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/sample-data" }
                 fileMode = 0755
             }
             into('assembly/opt/sample-data') {
@@ -319,13 +306,10 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data" }
                 fileMode = 0755
             }
-            into('assembly/opt/sample-data') {
-                // Add all sample data
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals" }
-                        {
-                            include 'data-files/*.csv'
-                            include 'database/*/*.sql'
-                        }
+            into('assembly/platform') {
+                from(rootProject.projectDir) {
+                    include 'content-packs/*'
+                }
                 fileMode = 0755
             }
             into('assembly/opt/sample-clients') {

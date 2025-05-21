@@ -795,7 +795,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                     effectiveTime,
                                                                                     methodName);
 
-            return converter.getNewComplexBean(beanClass, annotationEntity, supplementaryEntities, annotationRelationships, methodName);
+            return converter.getNewComplexGraphBean(beanClass, annotationEntity, supplementaryEntities, annotationRelationships, methodName);
         }
 
         return null;

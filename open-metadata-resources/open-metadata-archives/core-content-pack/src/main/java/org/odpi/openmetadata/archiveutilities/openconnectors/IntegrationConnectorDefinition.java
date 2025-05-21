@@ -45,7 +45,7 @@ public enum IntegrationConnectorDefinition
                            "SampleDataCataloguer",
                            "sampledatacatnpa",
                            null,
-                           "sample-data",
+                           "loading-bay/sample-data",
                            getAllFileCataloguerConfigProperties(),
                            1440,
                            new String[]{DeployedImplementationType.FILE_FOLDER.getQualifiedName()},

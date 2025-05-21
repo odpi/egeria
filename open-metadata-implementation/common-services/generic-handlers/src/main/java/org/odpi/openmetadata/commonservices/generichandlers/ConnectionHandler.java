@@ -2311,7 +2311,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 supplementaryEntities = null;
             }
 
-            return converter.getNewComplexBean(beanClass, connectionEntity, supplementaryEntities, supplementaryRelationships, methodName);
+            return converter.getNewComplexGraphBean(beanClass, connectionEntity, supplementaryEntities, supplementaryRelationships, methodName);
         }
 
         return null;

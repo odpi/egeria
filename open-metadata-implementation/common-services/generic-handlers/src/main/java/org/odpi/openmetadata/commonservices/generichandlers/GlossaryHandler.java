@@ -1088,7 +1088,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                 relatedEntities.addAll(categoryLinks);
             }
 
-            return converter.getNewComplexBean(beanClass, categoryEntity, relatedByRelationship, relatedEntities, methodName);
+            return converter.getNewComplexRelatedEntityBean(beanClass, categoryEntity, relatedByRelationship, relatedEntities, methodName);
         }
 
         return null;

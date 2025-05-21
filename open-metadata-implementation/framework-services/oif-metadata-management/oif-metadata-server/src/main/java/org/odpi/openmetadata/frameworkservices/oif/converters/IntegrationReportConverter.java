@@ -164,11 +164,11 @@ public class IntegrationReportConverter<B> extends OMFConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    public B getNewComplexBean(Class<B>           beanClass,
-                               EntityDetail       primaryEntity,
-                               List<EntityDetail> supplementaryEntities,
-                               List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
+    public B getNewComplexGraphBean(Class<B>           beanClass,
+                                    EntityDetail       primaryEntity,
+                                    List<EntityDetail> supplementaryEntities,
+                                    List<Relationship> relationships,
+                                    String             methodName) throws PropertyServerException
     {
         // todo process supplement properties
         return getNewBean(beanClass, primaryEntity, methodName);

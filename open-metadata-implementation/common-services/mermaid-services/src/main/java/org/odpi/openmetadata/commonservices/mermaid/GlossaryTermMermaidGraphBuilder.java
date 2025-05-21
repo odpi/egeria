@@ -57,10 +57,7 @@ public class GlossaryTermMermaidGraphBuilder extends MermaidGraphBuilderBase
                 {
                     if (assignee != null)
                     {
-                        super.appendNewMermaidNode(assignee.getRelatedElement().getElementHeader().getGUID(),
-                                                   super.getNodeDisplayName(assignee.getRelatedElement()),
-                                                   super.getTypeNameForEntity(assignee.getRelatedElement().getElementHeader()),
-                                                   super.getVisualStyleForEntity(assignee.getRelatedElement().getElementHeader(), VisualStyle.LINKED_ELEMENT));
+                        super.appendNewMermaidNode(assignee.getRelatedElement(), VisualStyle.LINKED_ELEMENT);
 
                         super.appendMermaidLongAnimatedLine(assignee.getRelationshipHeader().getGUID(),
                                                             glossaryTermElement.getElementHeader().getGUID(),

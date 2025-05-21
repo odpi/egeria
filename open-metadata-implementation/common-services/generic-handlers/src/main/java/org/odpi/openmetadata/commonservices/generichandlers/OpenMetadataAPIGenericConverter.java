@@ -153,13 +153,13 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewComplexBean(Class<B>            beanClass,
-                               EntityDetail        primaryEntity,
-                               Relationship        relationship,
-                               List<RelatedEntity> relatedEntities,
-                               String              methodName) throws PropertyServerException
+    public B getNewComplexRelatedEntityBean(Class<B>            beanClass,
+                                            EntityDetail        primaryEntity,
+                                            Relationship        relationship,
+                                            List<RelatedEntity> relatedEntities,
+                                            String              methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewComplexBean";
+        final String thisMethodName = "getNewComplexRelatedEntityBean";
 
         handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
@@ -181,13 +181,13 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewComplexBean(Class<B>           beanClass,
-                               EntityDetail       primaryEntity,
-                               List<EntityDetail> supplementaryEntities,
-                               List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
+    public B getNewComplexGraphBean(Class<B>           beanClass,
+                                    EntityDetail       primaryEntity,
+                                    List<EntityDetail> supplementaryEntities,
+                                    List<Relationship> relationships,
+                                    String             methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewComplexBean(with supplementary entities)";
+        final String thisMethodName = "getNewComplexGraphBean";
 
         handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 

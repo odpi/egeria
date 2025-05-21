@@ -683,7 +683,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                              effectiveTime,
                                                                              methodName);
 
-            return converter.getNewComplexBean(beanClass, categoryEntity, relatedByRelationship, relatedEntities, methodName);
+            return converter.getNewComplexRelatedEntityBean(beanClass, categoryEntity, relatedByRelationship, relatedEntities, methodName);
         }
 
         return null;
