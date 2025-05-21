@@ -2129,7 +2129,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                              effectiveTime,
                                                                              methodName);
 
-            return converter.getNewComplexBean(beanClass, termEntity, relatedByRelationship, relatedEntities, methodName);
+            return converter.getNewComplexRelatedEntityBean(beanClass, termEntity, relatedByRelationship, relatedEntities, methodName);
         }
 
         return null;
@@ -2336,7 +2336,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         List<RelatedEntity> relatedTerms = this.getRelatedEntities(userId,
                                                                    startingEntity,
                                                                    elementGUIDParameterName,
-                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                   elementTypeName,
                                                                    OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeGUID,
                                                                    OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                    null,

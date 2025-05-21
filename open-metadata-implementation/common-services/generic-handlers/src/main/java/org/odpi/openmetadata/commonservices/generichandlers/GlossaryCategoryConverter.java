@@ -52,11 +52,11 @@ public class GlossaryCategoryConverter<B> extends OMFConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public B getNewComplexBean(Class<B>            beanClass,
-                               EntityDetail        primaryEntity,
-                               Relationship        relationship,
-                               List<RelatedEntity> relatedEntities,
-                               String              methodName) throws PropertyServerException
+    public B getNewComplexRelatedEntityBean(Class<B>            beanClass,
+                                            EntityDetail        primaryEntity,
+                                            Relationship        relationship,
+                                            List<RelatedEntity> relatedEntities,
+                                            String              methodName) throws PropertyServerException
     {
         try
         {
@@ -196,7 +196,7 @@ public class GlossaryCategoryConverter<B> extends OMFConverter<B>
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
     {
-        return getNewComplexBean(beanClass, entity, (Relationship) null, null, methodName);
+        return getNewComplexRelatedEntityBean(beanClass, entity, (Relationship) null, null, methodName);
     }
 
 
@@ -217,6 +217,6 @@ public class GlossaryCategoryConverter<B> extends OMFConverter<B>
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return getNewComplexBean(beanClass, entity, relationship, null, methodName);
+        return getNewComplexRelatedEntityBean(beanClass, entity, relationship, null, methodName);
     }
 }

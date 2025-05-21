@@ -202,11 +202,11 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
      */
     @SuppressWarnings(value = "unused")
     @Override
-    public B getNewComplexBean(Class<B>           beanClass,
-                               EntityDetail       primaryEntity,
-                               List<EntityDetail> supplementaryEntities,
-                               List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
+    public B getNewComplexGraphBean(Class<B>           beanClass,
+                                    EntityDetail       primaryEntity,
+                                    List<EntityDetail> supplementaryEntities,
+                                    List<Relationship> relationships,
+                                    String             methodName) throws PropertyServerException
     {
         return this.getNewComplexBean(beanClass, primaryEntity, relationships, methodName);
     }

@@ -48,11 +48,11 @@ public class AnnotationConverter<B> extends SAFConverter<B>
      */
     @Override
     @SuppressWarnings(value = "unchecked")
-    public B getNewComplexBean(Class<B>           beanClass,
-                               EntityDetail       primaryEntity,
-                               List<EntityDetail> supplementaryEntities,
-                               List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
+    public B getNewComplexGraphBean(Class<B>           beanClass,
+                                    EntityDetail       primaryEntity,
+                                    List<EntityDetail> supplementaryEntities,
+                                    List<Relationship> relationships,
+                                    String             methodName) throws PropertyServerException
     {
         try
         {

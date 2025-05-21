@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converter
 
 
 import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.RelatedEntity;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * MeaningConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
@@ -109,5 +111,53 @@ public class MeaningConverter<B> extends OMFConverter<B>
                         String       methodName) throws PropertyServerException
     {
         return this.getNewBean(beanClass, entity, methodName);
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationship relationship used to access the entity
+     * @param relatedEntities relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexRelatedEntityBean(Class<B>            beanClass,
+                                            EntityDetail        primaryEntity,
+                                            Relationship        relationship,
+                                            List<RelatedEntity> relatedEntities,
+                                            String              methodName) throws PropertyServerException
+    {
+        return this.getNewBean(beanClass, primaryEntity, methodName);
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the collection of entities that make up the content of the bean
+     * @param supplementaryEntities entities connected to the primary entity by the relationships
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexGraphBean(Class<B>           beanClass,
+                                    EntityDetail       primaryEntity,
+                                    List<EntityDetail> supplementaryEntities,
+                                    List<Relationship> relationships,
+                                    String             methodName) throws PropertyServerException
+    {
+        return this.getNewBean(beanClass, primaryEntity, methodName);
     }
 }

@@ -742,6 +742,23 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Add a node to the graph for a metadata element summary.
+     *
+     * @param elementSummary entity summary
+     * @param defaultVisualStyle default style to use if nothing is explicitly defined for the element's type or
+     *                          classifications.
+     */
+    public void appendNewMermaidNode(MetadataElementSummary elementSummary,
+                                     VisualStyle            defaultVisualStyle)
+    {
+        this.appendNewMermaidNode(elementSummary.getElementHeader().getGUID(),
+                                  this.getNodeDisplayName(elementSummary),
+                                  this.getTypeNameForEntity(elementSummary.getElementHeader()),
+                                  this.getVisualStyleForEntity(elementSummary.getElementHeader(), defaultVisualStyle));
+    }
+
+
+    /**
      * Create a node in the mermaid graph.
      *
      * @param currentNodeName unique name/identifier
@@ -855,7 +872,7 @@ public class MermaidGraphBuilderBase
                     mermaidGraph.append("\n");
                     mermaidGraph.append(propertyName);
                     mermaidGraph.append(": ");
-                    mermaidGraph.append(additionalProperties.get(propertyName));
+                    mermaidGraph.append(removeDoubleSlash(additionalProperties.get(propertyName)));
                 }
             }
             mermaidGraph.append("\"}\n");
@@ -878,8 +895,13 @@ public class MermaidGraphBuilderBase
      */
     private String removeDoubleSlash(String displayName)
     {
-        String quotesGone = displayName.replaceAll("\"", "'");
-        return quotesGone.replaceAll("//", "/ /");
+        if (displayName != null)
+        {
+            String quotesGone = displayName.replaceAll("\"", "'");
+            return quotesGone.replaceAll("//", "/ /");
+        }
+
+        return null;
     }
 
 
@@ -1433,10 +1455,7 @@ public class MermaidGraphBuilderBase
     {
         if (relatedMetadataElement != null)
         {
-            appendNewMermaidNode(relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                 this.getNodeDisplayName(relatedMetadataElement.getRelatedElement()),
-                                 this.getTypeNameForEntity(relatedMetadataElement.getRelatedElement().getElementHeader()),
-                                 this.getVisualStyleForEntity(relatedMetadataElement.getRelatedElement().getElementHeader(), visualStyle));
+            appendNewMermaidNode(relatedMetadataElement.getRelatedElement(), visualStyle);
 
             String label = null;
 
@@ -1662,13 +1681,7 @@ public class MermaidGraphBuilderBase
                 {
                     if ((line != null) && (! solutionLinkingWireGUIDs.contains(line.getElementHeader().getGUID())))
                     {
-                        String relatedComponentDisplayName = getNodeDisplayName(line.getLinkedElement());
-
-                        appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
-                                             relatedComponentDisplayName,
-                                             line.getLinkedElement().getElementHeader().getType().getTypeName(),
-                                             getVisualStyleForEntity(line.getLinkedElement().getElementHeader(),
-                                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT));
+                        appendNewMermaidNode(line.getLinkedElement(), VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
                         List<String> labelList = new ArrayList<>();
 
@@ -1763,13 +1776,7 @@ public class MermaidGraphBuilderBase
                     {
                         if (line != null)
                         {
-                            String actorRoleName = getNodeDisplayName(line.getRelatedElement());
-
-                            appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
-                                                 actorRoleName,
-                                                 this.getTypeNameForEntity(line.getRelatedElement().getElementHeader()),
-                                                 this.getVisualStyleForEntity(line.getRelatedElement().getElementHeader(),
-                                                                              VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+                            appendNewMermaidNode(line.getRelatedElement(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
 
                             String label = null;
 
@@ -1797,12 +1804,7 @@ public class MermaidGraphBuilderBase
                     {
                         if (line != null)
                         {
-                            String nodeName = getNodeDisplayName(line.getRelatedElement());
-
-                            appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
-                                                 nodeName,
-                                                 this.getTypeNameForEntity(line.getRelatedElement().getElementHeader()),
-                                                 this.getVisualStyleForEntity(line.getRelatedElement().getElementHeader(), VisualStyle.LINKED_ELEMENT));
+                            appendNewMermaidNode(line.getRelatedElement(), VisualStyle.LINKED_ELEMENT);
 
                             String label = null;
 

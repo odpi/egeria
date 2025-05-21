@@ -269,7 +269,9 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 String landingAreaFolderGUID = catalogLandingAreaFolder(hospitalName,
                                                                         landingAreaPathName,
                                                                         landingAreaDirectoryTemplateGUID,
-                                                                        clinicalTrialProjectGUID);
+                                                                        clinicalTrialProjectGUID,
+                                                                        clinicalTrialName,
+                                                                        clinicalTrialId.toLowerCase());
 
                 addSolutionComponentRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
@@ -644,17 +646,19 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
     private String catalogLandingAreaFolder(String hospitalName,
                                             String landingAreaPathName,
                                             String landingAreaDirectoryTemplateGUID,
-                                            String topLevelProjectGUID) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+                                            String topLevelProjectGUID,
+                                            String topLevelProjectName,
+                                            String topLevelProjectFolderName) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         Map<String, String> placeholderPropertyValues = new HashMap<>();
 
         placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), landingAreaPathName);
-        placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_NAME.getName(), "drop-foot");
+        placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_NAME.getName(), topLevelProjectFolderName);
         placeholderPropertyValues.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
         placeholderPropertyValues.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), "");
-        placeholderPropertyValues.put(PlaceholderProperty.DESCRIPTION.getName(), "Landing Area folder for" + hospitalName + "'s Teddy Bear Drop Foot clinical trial.");
+        placeholderPropertyValues.put(PlaceholderProperty.DESCRIPTION.getName(), "Landing Area folder for " + hospitalName + "'s " + topLevelProjectName + ".");
 
         return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.DATA_FOLDER.typeName,
                                                                                        null,

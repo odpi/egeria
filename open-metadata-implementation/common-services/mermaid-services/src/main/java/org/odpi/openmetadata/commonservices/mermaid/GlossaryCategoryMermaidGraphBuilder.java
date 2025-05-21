@@ -64,10 +64,7 @@ public class GlossaryCategoryMermaidGraphBuilder extends MermaidGraphBuilderBase
                 {
                     if (term != null)
                     {
-                        appendNewMermaidNode(term.getRelatedElement().getElementHeader().getGUID(),
-                                             super.getNodeDisplayName(term.getRelatedElement()),
-                                             super.getTypeNameForEntity(term.getRelatedElement().getElementHeader()),
-                                             super.getVisualStyleForEntity(term.getRelatedElement().getElementHeader(), VisualStyle.GLOSSARY_TERM));
+                        appendNewMermaidNode(term.getRelatedElement(), VisualStyle.GLOSSARY_TERM);
 
                         if (nodeIds[nodePointer] != null)
                         {
