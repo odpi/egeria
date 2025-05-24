@@ -326,8 +326,8 @@ implements <a href="../api/DataDesignInterface.html" title="interface in org.odp
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachMemberDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)" class="member-name-link">detachMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataStructureGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
@@ -535,8 +535,8 @@ implements <a href="../api/DataDesignInterface.html" title="interface in org.odp
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMemberDataField(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties,boolean,boolean,java.util.Date)" class="member-name-link">linkMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataStructureGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  <a href="../../../frameworks/openmetadata/properties/datadictionaries/MemberDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">MemberDataFieldProperties</a>&nbsp;relationshipProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -873,8 +873,8 @@ implements <a href="../api/DataDesignInterface.html" title="interface in org.odp
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkMemberDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataStructureGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  <a href="../../../frameworks/openmetadata/properties/datadictionaries/MemberDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">MemberDataFieldProperties</a>&nbsp;relationshipProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -890,8 +890,8 @@ implements <a href="../api/DataDesignInterface.html" title="interface in org.odp
 <dd><code>userId</code> - userId of user making request</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this element</dd>
 <dd><code>externalSourceName</code> - unique name of the software capability that owns this element</dd>
-<dd><code>parentDataStructureGUID</code> - unique identifier of the parent</dd>
-<dd><code>memberDataFieldGUID</code> - unique identifier of the data field</dd>
+<dd><code>dataStructureGUID</code> - unique identifier of the parent</dd>
+<dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
@@ -909,8 +909,8 @@ implements <a href="../api/DataDesignInterface.html" title="interface in org.odp
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachMemberDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataStructureGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -925,8 +925,8 @@ implements <a href="../api/DataDesignInterface.html" title="interface in org.odp
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this element</dd>
 <dd><code>externalSourceName</code> - unique name of the software capability that owns this element</dd>
-<dd><code>parentDataStructureGUID</code> - unique identifier of the parent data field.</dd>
-<dd><code>nestedDataFieldGUID</code> - unique identifier of the nested data field.</dd>
+<dd><code>dataStructureGUID</code> - unique identifier of the parent data field.</dd>
+<dd><code>dataFieldGUID</code> - unique identifier of the nested data field.</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>

@@ -328,8 +328,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMemberDataField(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MemberDataFieldRequestBody)" class="member-name-link">linkMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataStructureGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  <a href="../../../../commonservices/ffdc/rest/MemberDataFieldRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MemberDataFieldRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a data field to a data structure.</div>
@@ -497,21 +497,21 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="linkMemberDataField(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MemberDataFieldRequestBody)">
 <h3>linkMemberDataField</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/data-structures/{parentDataStructureGUID}/member-data-fields/{memberDataFieldGUID}/attach")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/data-structures/{dataStructureGUID}/member-data-fields/{dataFieldGUID}/attach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkMemberDataField</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/MemberDataFieldRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MemberDataFieldRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Attach a data field to a data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
-<dd><code>parentDataStructureGUID</code> - unique identifier of the first data structure</dd>
-<dd><code>memberDataFieldGUID</code> - unique identifier of the second data structure</dd>
+<dd><code>dataStructureGUID</code> - unique identifier of the first data structure</dd>
+<dd><code>dataFieldGUID</code> - unique identifier of the second data structure</dd>
 <dd><code>requestBody</code> - description of the relationship.</dd>
 <dt>Returns:</dt>
 <dd>void or

@@ -1679,8 +1679,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the zoneName from the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpSchemaAttribute(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties)" class="member-name-link">setUpSchemaAttribute</a><wbr>(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;schemaAttributeEntity,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpSchemaAttribute(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties)" class="member-name-link">setUpSchemaAttribute</a><wbr>(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;schemaAttributeEntity,
  <a href="../../frameworks/openmetadata/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SchemaTypeElement</a>&nbsp;schemaTypeElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;&nbsp;schemaAttributeRelationships,
  <a href="../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the properties that can be extracted form the schema type.</div>
@@ -2364,16 +2365,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setUpSchemaAttribute(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties)">
+<section class="detail" id="setUpSchemaAttribute(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties)">
 <h3>setUpSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpSchemaAttribute</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;schemaAttributeEntity,
  <a href="../../frameworks/openmetadata/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SchemaTypeElement</a>&nbsp;schemaTypeElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;&nbsp;schemaAttributeRelationships,
  <a href="../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;properties)</span></div>
 <div class="block">Set up the properties that can be extracted form the schema type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>schemaAttributeEntity</code> - entity to unpack</dd>
 <dd><code>schemaTypeElement</code> - schema type properties</dd>
+<dd><code>schemaAttributeRelationships</code> - relationships containing the links to other schema attributes</dd>
 <dd><code>properties</code> - output column properties</dd>
 </dl>
 </section>
