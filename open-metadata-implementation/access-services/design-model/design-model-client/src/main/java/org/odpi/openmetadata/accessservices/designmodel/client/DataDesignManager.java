@@ -304,8 +304,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
      * @param userId                  userId of user making request
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param parentDataStructureGUID unique identifier of the parent
-     * @param memberDataFieldGUID     unique identifier of the data field
+     * @param dataStructureGUID unique identifier of the parent
+     * @param dataFieldGUID     unique identifier of the data field
      * @param relationshipProperties  description of the relationship.
      * @param forLineage              the query is to support lineage retrieval
      * @param forDuplicateProcessing  the query is for duplicate processing and so must not deduplicate
@@ -318,8 +318,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
     public void linkMemberDataField(String                    userId,
                                     String                    externalSourceGUID,
                                     String                    externalSourceName,
-                                    String                    parentDataStructureGUID,
-                                    String                    memberDataFieldGUID,
+                                    String                    dataStructureGUID,
+                                    String                    dataFieldGUID,
                                     MemberDataFieldProperties relationshipProperties,
                                     boolean                   forLineage,
                                     boolean                   forDuplicateProcessing,
@@ -332,8 +332,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         final String end2GUIDParameterName = "memberDataFieldGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(parentDataStructureGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(memberDataFieldGUID, end2GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataStructureGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataFieldGUID, end2GUIDParameterName, methodName);
 
         if (relationshipProperties != null)
         {
@@ -341,8 +341,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                 parentDataStructureGUID,
-                                                                 memberDataFieldGUID,
+                                                                 dataStructureGUID,
+                                                                 dataFieldGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  relationshipProperties.getEffectiveFrom(),
@@ -356,8 +356,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                 parentDataStructureGUID,
-                                                                 memberDataFieldGUID,
+                                                                 dataStructureGUID,
+                                                                 dataFieldGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  null,
@@ -374,8 +374,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
      * @param userId                 userId of user making request.
      * @param externalSourceGUID     unique identifier of the software capability that owns this element
      * @param externalSourceName     unique name of the software capability that owns this element
-     * @param parentDataStructureGUID    unique identifier of the parent data field.
-     * @param nestedDataFieldGUID    unique identifier of the nested data field.
+     * @param dataStructureGUID    unique identifier of the parent data field.
+     * @param dataFieldGUID    unique identifier of the nested data field.
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -387,8 +387,8 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
     public void detachMemberDataField(String  userId,
                                       String  externalSourceGUID,
                                       String  externalSourceName,
-                                      String  parentDataStructureGUID,
-                                      String  nestedDataFieldGUID,
+                                      String dataStructureGUID,
+                                      String dataFieldGUID,
                                       boolean forLineage,
                                       boolean forDuplicateProcessing,
                                       Date    effectiveTime) throws InvalidParameterException,
@@ -401,15 +401,15 @@ public class DataDesignManager extends DesignModelClientBase implements DataDesi
         final String end2GUIDParameterName = "nestedDataFieldGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(parentDataStructureGUID, end1GUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(nestedDataFieldGUID, end2GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataStructureGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataFieldGUID, end2GUIDParameterName, methodName);
 
         openMetadataStoreClient.detachRelatedElementsInStore(userId,
                                                              externalSourceGUID,
                                                              externalSourceName,
                                                              OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
-                                                             parentDataStructureGUID,
-                                                             nestedDataFieldGUID,
+                                                             dataStructureGUID,
+                                                             dataFieldGUID,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              effectiveTime);

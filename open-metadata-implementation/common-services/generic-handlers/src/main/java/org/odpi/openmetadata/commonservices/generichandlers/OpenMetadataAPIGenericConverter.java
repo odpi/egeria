@@ -2,17 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -1124,10 +1125,12 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      *
      * @param schemaAttributeEntity entity to unpack
      * @param schemaTypeElement schema type properties
+     * @param schemaAttributeRelationships relationships containing the links to other schema attributes
      * @param properties output column properties
      */
     public void setUpSchemaAttribute(EntityDetail              schemaAttributeEntity,
                                      SchemaTypeElement         schemaTypeElement,
+                                     List<Relationship>        schemaAttributeRelationships,
                                      SchemaAttributeProperties properties)
     {
         /*
@@ -1162,6 +1165,24 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (schemaTypeElement != null)
         {
             this.addSchemaTypeToAttribute(schemaTypeElement, properties);
+        }
+
+        if (schemaAttributeRelationships != null)
+        {
+            for (Relationship relationship : schemaAttributeRelationships)
+            {
+                if ((relationship != null) && (relationship.getType() != null) &&
+                        ((relationship.getType().getTypeDefName().equals(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName)) ||
+                                (relationship.getType().getTypeDefName().equals(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName))))
+                {
+                    if (relationship.getProperties() != null)
+                    {
+                        properties.setElementPosition(this.getPosition(relationship.getProperties()));
+                        properties.setMinCardinality(this.getMinCardinality(relationship.getProperties()));
+                        properties.setMaxCardinality(this.getMaxCardinality(relationship.getProperties()));
+                    }
+                }
+            }
         }
     }
 

@@ -38,8 +38,6 @@ public class DataDesignerRESTServices extends TokenController
     }
 
 
-
-
     /**
      * Create a data structure.
      *
@@ -239,8 +237,8 @@ public class DataDesignerRESTServices extends TokenController
      * Attach a data field to a data structure.
      *
      * @param serverName         name of called server
-     * @param parentDataStructureGUID    unique identifier of the parent data structure.
-     * @param nestedDataFieldGUID    unique identifier of the nested data field.
+     * @param dataStructureGUID    unique identifier of the parent data structure.
+     * @param dataFieldGUID    unique identifier of the nested data field.
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -249,8 +247,8 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkMemberDataField(String                                serverName,
-                                            String                                parentDataStructureGUID,
-                                            String                                nestedDataFieldGUID,
+                                            String                                dataStructureGUID,
+                                            String                                dataFieldGUID,
                                             MemberDataFieldRequestBody requestBody)
     {
         final String methodName = "linkMemberDataField";
@@ -274,8 +272,8 @@ public class DataDesignerRESTServices extends TokenController
                 handler.linkMemberDataField(userId,
                                             requestBody.getExternalSourceGUID(),
                                             requestBody.getExternalSourceName(),
-                                            parentDataStructureGUID,
-                                            nestedDataFieldGUID,
+                                            dataStructureGUID,
+                                            dataFieldGUID,
                                             requestBody.getProperties(),
                                             requestBody.getForLineage(),
                                             requestBody.getForDuplicateProcessing(),
@@ -286,8 +284,8 @@ public class DataDesignerRESTServices extends TokenController
                 handler.linkMemberDataField(userId,
                                             null,
                                             null,
-                                            parentDataStructureGUID,
-                                            nestedDataFieldGUID,
+                                            dataStructureGUID,
+                                            dataFieldGUID,
                                             null,
                                             false,
                                             false,
@@ -308,8 +306,8 @@ public class DataDesignerRESTServices extends TokenController
      * Detach a data field from a data structure.
      *
      * @param serverName         name of called server
-     * @param parentDataStructureGUID    unique identifier of the parent data structure.
-     * @param nestedDataFieldGUID    unique identifier of the nested data field.
+     * @param dataStructureGUID    unique identifier of the parent data structure.
+     * @param dataFieldGUID    unique identifier of the nested data field.
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -318,8 +316,8 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachMemberDataField(String                    serverName,
-                                              String                    parentDataStructureGUID,
-                                              String                    nestedDataFieldGUID,
+                                              String                    dataStructureGUID,
+                                              String                    dataFieldGUID,
                                               MetadataSourceRequestBody requestBody)
     {
         final String methodName = "detachMemberDataField";
@@ -344,8 +342,8 @@ public class DataDesignerRESTServices extends TokenController
                 handler.detachMemberDataField(userId,
                                               requestBody.getExternalSourceGUID(),
                                               requestBody.getExternalSourceName(),
-                                              parentDataStructureGUID,
-                                              nestedDataFieldGUID,
+                                              dataStructureGUID,
+                                              dataFieldGUID,
                                               requestBody.getForLineage(),
                                               requestBody.getForDuplicateProcessing(),
                                               requestBody.getEffectiveTime());
@@ -355,8 +353,8 @@ public class DataDesignerRESTServices extends TokenController
                 handler.detachMemberDataField(userId,
                                               null,
                                               null,
-                                              parentDataStructureGUID,
-                                              nestedDataFieldGUID,
+                                              dataStructureGUID,
+                                              dataFieldGUID,
                                               false,
                                               false,
                                               new Date());
@@ -508,6 +506,68 @@ public class DataDesignerRESTServices extends TokenController
      * Retrieve the list of data structure metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param dataStructureGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DataStructureResponse getDataStructureByGUID(String             serverName,
+                                                        String             dataStructureGUID,
+                                                        AnyTimeRequestBody requestBody)
+    {
+        final String methodName = "getDataStructureByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        DataStructureResponse response = new DataStructureResponse();
+        AuditLog                      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getDataStructureByGUID(userId,
+                                                                   dataStructureGUID,
+                                                                   requestBody.getAsOfTime(),
+                                                                   requestBody.getForLineage(),
+                                                                   requestBody.getForDuplicateProcessing(),
+                                                                   requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getDataStructureByGUID(userId,
+                                                                   dataStructureGUID,
+                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   new Date()));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of data structure metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
      * @param ignoreCase should the search ignore case?
@@ -582,69 +642,6 @@ public class DataDesignerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-    /**
-     * Retrieve the list of data structure metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param dataStructureGUID    unique identifier of the required element
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public DataStructureResponse getDataStructureByGUID(String             serverName,
-                                                        String             dataStructureGUID,
-                                                        AnyTimeRequestBody requestBody)
-    {
-        final String methodName = "getDataStructureByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        DataStructureResponse response = new DataStructureResponse();
-        AuditLog                      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElement(handler.getDataStructureByGUID(userId,
-                                                                   dataStructureGUID,
-                                                                   requestBody.getAsOfTime(),
-                                                                   requestBody.getForLineage(),
-                                                                   requestBody.getForDuplicateProcessing(),
-                                                                   requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getDataStructureByGUID(userId,
-                                                                   dataStructureGUID,
-                                                                   null,
-                                                                   false,
-                                                                   false,
-                                                                   new Date()));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
 
 
     /**

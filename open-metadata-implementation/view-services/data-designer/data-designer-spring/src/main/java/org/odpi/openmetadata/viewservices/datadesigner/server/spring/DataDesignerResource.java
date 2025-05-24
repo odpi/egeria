@@ -124,8 +124,8 @@ public class DataDesignerResource
      * Attach a data field to a data structure.
      *
      * @param serverName         name of called server
-     * @param parentDataStructureGUID  unique identifier of the first data structure
-     * @param memberDataFieldGUID      unique identifier of the second data structure
+     * @param dataStructureGUID  unique identifier of the first data structure
+     * @param dataFieldGUID      unique identifier of the second data structure
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -133,22 +133,22 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/data-structures/{parentDataStructureGUID}/member-data-fields/{memberDataFieldGUID}/attach")
+    @PostMapping(path = "/data-structures/{dataStructureGUID}/member-data-fields/{dataFieldGUID}/attach")
     @Operation(summary="linkMemberDataField",
             description="Attach a data field to a data structure.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-structure"))
 
     public VoidResponse linkMemberDataField(@PathVariable
-                                            String                                serverName,
+                                            String                     serverName,
                                             @PathVariable
-                                            String parentDataStructureGUID,
+                                            String                     dataStructureGUID,
                                             @PathVariable
-                                            String memberDataFieldGUID,
+                                            String                     dataFieldGUID,
                                             @RequestBody (required = false)
                                             MemberDataFieldRequestBody requestBody)
     {
-        return restAPI.linkMemberDataField(serverName, parentDataStructureGUID, memberDataFieldGUID, requestBody);
+        return restAPI.linkMemberDataField(serverName, dataStructureGUID, dataFieldGUID, requestBody);
     }
 
 

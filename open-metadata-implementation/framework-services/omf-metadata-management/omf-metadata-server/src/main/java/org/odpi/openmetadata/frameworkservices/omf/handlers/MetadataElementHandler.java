@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -157,6 +158,22 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                           asOfTime,
                                           effectiveTime,
                                           methodName);
+    }
+
+
+    /**
+     * Convert the entity into a  metadata element.
+     *
+     * @param entityDetail properties for the metadata element
+     * @param methodName calling method
+     *
+     * @return metadata element properties
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public B getMetadataElementFromEntity(EntityDetail entityDetail,
+                                          String       methodName) throws PropertyServerException
+    {
+        return this.converter.getNewBean(beanClass, entityDetail, methodName);
     }
 
 
@@ -487,7 +504,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param userId caller's userId
-     * @param elementGUID unique identifier for the starting metadata element
+     * @param startingEntity the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
@@ -511,7 +528,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     public List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
-                                                                   String              elementGUID,
+                                                                   EntityDetail        startingEntity,
                                                                    int                 startingAtEnd,
                                                                    String              relationshipTypeName,
                                                                    List<ElementStatus> limitResultsByStatus,
@@ -531,7 +548,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String guidParameterName = "elementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(startingEntity, guidParameterName, methodName);
 
         String relationshipTypeGUID = null;
 
@@ -554,20 +571,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         {
             selectionEnd = 1;
         }
-
-        /*
-         * Retrieve and validate the starting entity
-         */
-        EntityDetail startingEntity = this.getEntityFromRepository(userId,
-                                                                   elementGUID,
-                                                                   guidParameterName,
-                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                   null,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   effectiveTime,
-                                                                   methodName);
 
         /*
          * Retrieve the relationships (no security calls)

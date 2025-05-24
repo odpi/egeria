@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorRelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 
 import java.util.Objects;
 
@@ -22,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionComponentActorRelationship implements MetadataElement
 {
-    private ElementHeader                                elementHeader = null;
-    private SolutionComponentActorRelationshipProperties properties    = null;
-    private ElementStub                                  end1Element   = null;
+    private ElementHeader                    elementHeader = null;
+    private SolutionComponentActorProperties properties    = null;
+    private ElementStub                      end1Element   = null;
     private ElementStub                                  end2Element   = null;
 
 
@@ -83,7 +83,7 @@ public class SolutionComponentActorRelationship implements MetadataElement
      *
      * @return properties
      */
-    public SolutionComponentActorRelationshipProperties getProperties()
+    public SolutionComponentActorProperties getProperties()
     {
         return properties;
     }
@@ -94,7 +94,7 @@ public class SolutionComponentActorRelationship implements MetadataElement
      *
      * @param properties property map
      */
-    public void setProperties(SolutionComponentActorRelationshipProperties properties)
+    public void setProperties(SolutionComponentActorProperties properties)
     {
         this.properties = properties;
     }

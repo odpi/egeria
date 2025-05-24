@@ -248,7 +248,6 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "add name",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -953,7 +952,7 @@ Content-Type: application/json
 
 
 ###
-# @name linkSpecialistDataClass
+# @name linkSpecializedDataClass
 #  Connect two data classes to show that one provides a more specialist evaluation. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specializeddata-classes/{{childDataClassGUID}}/attach
 Authorization: Bearer {{token}}
@@ -971,7 +970,7 @@ Content-Type: application/json
 
 ###
 
-# @name linkSpecialistDataClass
+# @name linkSpecializedDataClass
 # Detach two data classes from one another. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specializeddata-classes/{{childDataClassGUID}}/detach
 Authorization: Bearer {{token}}

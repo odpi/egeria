@@ -213,10 +213,10 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     {
                         int errorCount = 0;
 
-                        for (int i = 1; i <= expectedColumnNames.size(); i++)
+                        for (int i = 0; i < expectedColumnNames.size(); i++)
                         {
-                            if ((expectedColumnNames.get(i) == null) || (actualColumnNames.get(i) == null) ||
-                                    (!actualColumnNames.get(i).contains(expectedColumnNames.get(i))))
+                            if ((expectedColumnNames.get(i+1) == null) || (actualColumnNames.get(i) == null) ||
+                                    (!actualColumnNames.get(i).contains(expectedColumnNames.get(i+1))))
                             {
                                 errorCount--;
                             }

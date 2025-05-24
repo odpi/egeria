@@ -159,13 +159,13 @@ public interface DataDesignInterface
 
 
     /**
-     * Connect two data fields to show that one is a nested field.
+     * Connect a data field to show that it is a part of the data structure.
      *
      * @param userId          userId of user making request
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param parentDataStructureGUID  unique identifier of the parent
-     * @param memberDataFieldGUID      unique identifier of the data field
+     * @param dataStructureGUID  unique identifier of the parent
+     * @param dataFieldGUID      unique identifier of the data field
      * @param relationshipProperties   description of the relationship.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -178,8 +178,8 @@ public interface DataDesignInterface
     void linkMemberDataField(String                    userId,
                              String                    externalSourceGUID,
                              String                    externalSourceName,
-                             String                    parentDataStructureGUID,
-                             String                    memberDataFieldGUID,
+                             String                    dataStructureGUID,
+                             String                    dataFieldGUID,
                              MemberDataFieldProperties relationshipProperties,
                              boolean                   forLineage,
                              boolean                   forDuplicateProcessing,
@@ -189,13 +189,13 @@ public interface DataDesignInterface
 
 
     /**
-     * Detach two data fields from one another.
+     * Detach a data field from a data structure.
      *
      * @param userId          userId of user making request.
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
-     * @param parentDataFieldGUID  unique identifier of the parent data field.
-     * @param nestedDataFieldGUID      unique identifier of the nested data field.
+     * @param dataStructureGUID  unique identifier of the parent data structure.
+     * @param dataFieldGUID      unique identifier of the member98 data field.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -207,8 +207,8 @@ public interface DataDesignInterface
     void detachMemberDataField(String  userId,
                                String  externalSourceGUID,
                                String  externalSourceName,
-                               String  parentDataFieldGUID,
-                               String  nestedDataFieldGUID,
+                               String  dataStructureGUID,
+                               String  dataFieldGUID,
                                boolean forLineage,
                                boolean forDuplicateProcessing,
                                Date    effectiveTime) throws InvalidParameterException,

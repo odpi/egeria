@@ -103,9 +103,12 @@ public class SchemaAttributeConverter<B> extends OMFConverter<B>
                                 ((relationship.getType().getTypeDefName().equals(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName)) ||
                                  (relationship.getType().getTypeDefName().equals(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName))))
                         {
-                            bean.setElementPosition(this.getPosition(instanceProperties));
-                            bean.setMinCardinality(this.getMinCardinality(instanceProperties));
-                            bean.setMaxCardinality(this.getMaxCardinality(instanceProperties));
+                            if (relationship.getProperties() != null)
+                            {
+                                bean.setElementPosition(this.getPosition(relationship.getProperties()));
+                                bean.setMinCardinality(this.getMinCardinality(relationship.getProperties()));
+                                bean.setMaxCardinality(this.getMaxCardinality(relationship.getProperties()));
+                            }
                         }
                     }
                 }

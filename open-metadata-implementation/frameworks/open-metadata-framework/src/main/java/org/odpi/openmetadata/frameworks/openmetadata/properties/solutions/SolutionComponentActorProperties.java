@@ -13,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SolutionComponentActorRelationshipProperties represents a SolutionComponentActor relationship.
+ * SolutionComponentActorProperties represents a SolutionComponentActor relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionComponentActorRelationshipProperties extends RelationshipProperties
+public class SolutionComponentActorProperties extends RelationshipProperties
 {
     private String description    = null;
     private String role           = null;
@@ -26,7 +26,7 @@ public class SolutionComponentActorRelationshipProperties extends RelationshipPr
     /**
      * Default constructor
      */
-    public SolutionComponentActorRelationshipProperties()
+    public SolutionComponentActorProperties()
     {
         super();
     }
@@ -37,7 +37,7 @@ public class SolutionComponentActorRelationshipProperties extends RelationshipPr
      *
      * @param template object to copy
      */
-    public SolutionComponentActorRelationshipProperties(SolutionComponentActorRelationshipProperties template)
+    public SolutionComponentActorProperties(SolutionComponentActorProperties template)
     {
         super(template);
 
@@ -101,7 +101,7 @@ public class SolutionComponentActorRelationshipProperties extends RelationshipPr
     @Override
     public String toString()
     {
-        return "SolutionComponentActorRelationshipProperties{" +
+        return "SolutionComponentActorProperties{" +
                 "description='" + description + '\'' +
                 ", role='" + role + '\'' +
                 "} " + super.toString();
@@ -121,7 +121,7 @@ public class SolutionComponentActorRelationshipProperties extends RelationshipPr
         {
             return true;
         }
-        if (! (objectToCompare instanceof SolutionComponentActorRelationshipProperties that))
+        if (! (objectToCompare instanceof SolutionComponentActorProperties that))
         {
             return false;
         }

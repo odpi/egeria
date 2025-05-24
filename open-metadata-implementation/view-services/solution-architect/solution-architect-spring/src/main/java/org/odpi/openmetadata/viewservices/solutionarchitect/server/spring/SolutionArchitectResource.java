@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The SolutionArchitectResource provides part of the server-side implementation of the Solution Architect OMVS.
-= */
+ = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/solution-architect")
 
@@ -422,6 +422,250 @@ public class SolutionArchitectResource
 
 
     /**
+     * Create a solution blueprint.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the solution blueprint.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-blueprints")
+
+    @Operation(summary="createSolutionBlueprint",
+            description="Create a solution blueprint.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public GUIDResponse createSolutionBlueprint(@PathVariable
+                                                String                               serverName,
+                                                @RequestBody (required = false)
+                                                NewSolutionBlueprintRequestBody requestBody)
+    {
+        return restAPI.createSolutionBlueprint(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a solution blueprint using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-blueprints/from-template")
+    @Operation(summary="createSolutionBlueprintFromTemplate",
+            description="Create a new metadata element to represent a solution blueprint using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public GUIDResponse createSolutionBlueprintFromTemplate(@PathVariable
+                                                            String              serverName,
+                                                            @RequestBody (required = false)
+                                                            TemplateRequestBody requestBody)
+    {
+        return restAPI.createSolutionBlueprintFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a solution blueprint.
+     *
+     * @param serverName         name of called server.
+     * @param solutionBlueprintGUID unique identifier of the solution blueprint (returned from create)
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/update")
+    @Operation(summary="updateSolutionBlueprint",
+            description="Update the properties of a solution blueprint.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse updateSolutionBlueprint(@PathVariable
+                                                String                                  serverName,
+                                                @PathVariable
+                                                String                                  solutionBlueprintGUID,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                boolean                                 replaceAllProperties,
+                                                @RequestBody (required = false)
+                                                UpdateSolutionBlueprintRequestBody requestBody)
+    {
+        return restAPI.updateSolutionBlueprint(serverName, solutionBlueprintGUID, replaceAllProperties, requestBody);
+    }
+
+
+    /**
+     * Attach a solution component to a solution blueprint.
+     *
+     * @param serverName         name of called server
+     * @param parentSolutionBlueprintGUID  unique identifier of the first solution blueprint
+     * @param solutionComponentGUID      unique identifier of the second solution blueprint
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-blueprints/{parentSolutionBlueprintGUID}/solution-components/{solutionComponentGUID}/attach")
+    @Operation(summary="linkSolutionComponentToBlueprint",
+            description="Attach a solution component to a solution blueprint.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse linkSolutionComponentToBlueprint(@PathVariable
+                                                         String                                serverName,
+                                                         @PathVariable
+                                                         String parentSolutionBlueprintGUID,
+                                                         @PathVariable
+                                                         String solutionComponentGUID,
+                                                         @RequestBody (required = false)
+                                                         SolutionBlueprintCompositionRequestBody requestBody)
+    {
+        return restAPI.linkSolutionComponentToBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution component from a solution blueprint.
+     *
+     * @param serverName         name of called server
+     * @param parentSolutionBlueprintGUID  unique identifier of the first solution blueprint
+     * @param solutionComponentGUID      unique identifier of the second solution blueprint
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-blueprints/{parentSolutionBlueprintGUID}/solution-components/{solutionComponentGUID}/detach")
+    @Operation(summary="detachSolutionComponentFromBlueprint",
+            description="Detach a solution component from a solution blueprint.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse detachSolutionComponentFromBlueprint(@PathVariable
+                                                             String                    serverName,
+                                                             @PathVariable
+                                                             String parentSolutionBlueprintGUID,
+                                                             @PathVariable
+                                                             String solutionComponentGUID,
+                                                             @RequestBody (required = false)
+                                                             MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachSolutionComponentFromBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a solution blueprint.
+     *
+     * @param serverName         name of called server
+     * @param solutionBlueprintGUID  unique identifier of the element to delete
+     * @param cascadedDelete can solution blueprints be deleted if solution components are attached?
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/delete")
+    @Operation(summary="deleteSolutionBlueprint",
+            description="Delete a solution blueprint.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse deleteSolutionBlueprint(@PathVariable
+                                                String                    serverName,
+                                                @PathVariable
+                                                String                    solutionBlueprintGUID,
+                                                @RequestParam(required = false, defaultValue = "false")
+                                                boolean                   cascadedDelete,
+                                                @RequestBody (required = false)
+                                                MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.deleteSolutionBlueprint(serverName, solutionBlueprintGUID, cascadedDelete, requestBody);
+    }
+
+
+    /**
+     * Returns the list of solution blueprints with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-blueprints/by-name")
+    @Operation(summary="getSolutionBlueprintsByName",
+            description="Returns the list of solution blueprints with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public SolutionBlueprintsResponse getSolutionBlueprintsByName(@PathVariable
+                                                                  String            serverName,
+                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                  int                     startFrom,
+                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                  int                     pageSize,
+                                                                  @RequestBody (required = false)
+                                                                  FilterRequestBody requestBody)
+    {
+        return restAPI.getSolutionBlueprintsByName(serverName, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific solution blueprint.
+     *
+     * @param serverName name of the service to route the request to
+     * @param solutionBlueprintGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/retrieve")
+    @Operation(summary="getSolutionBlueprintByGUID",
+            description="Return the properties of a specific solution blueprint.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public SolutionBlueprintResponse getSolutionBlueprintByGUID(@PathVariable
+                                                                String             serverName,
+                                                                @PathVariable
+                                                                String             solutionBlueprintGUID,
+                                                                @RequestBody (required = false)
+                                                                AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getSolutionBlueprintByGUID(serverName, solutionBlueprintGUID, requestBody);
+    }
+
+
+    /**
      * Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.
      *
      * @param serverName name of the service to route the request to
@@ -445,19 +689,235 @@ public class SolutionArchitectResource
 
     public SolutionBlueprintsResponse findSolutionBlueprints(@PathVariable String                  serverName,
                                                              @RequestParam (required = false, defaultValue = "0")
-                                                                       int                     startFrom,
+                                                             int                     startFrom,
                                                              @RequestParam (required = false, defaultValue = "0")
-                                                                       int                     pageSize,
+                                                             int                     pageSize,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 startsWith,
+                                                             boolean                 startsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 endsWith,
+                                                             boolean                 endsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 ignoreCase,
+                                                             boolean                 ignoreCase,
                                                              @RequestBody  (required = false)
-                                                                 FilterRequestBody requestBody)
+                                                             FilterRequestBody requestBody)
     {
         return restAPI.findSolutionBlueprints(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+    }
+
+
+
+    /**
+     * Create a solution role.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the solution role.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-roles")
+
+    @Operation(summary="createSolutionRole",
+            description="Create a solution role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public GUIDResponse createSolutionRole(@PathVariable
+                                           String                  serverName,
+                                           @RequestBody (required = false)
+                                           NewActorRoleRequestBody requestBody)
+    {
+        return restAPI.createSolutionRole(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a solution role using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-roles/from-template")
+    @Operation(summary="createSolutionRoleFromTemplate",
+            description="Create a new metadata element to represent a solution role using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public GUIDResponse createSolutionRoleFromTemplate(@PathVariable
+                                                       String              serverName,
+                                                       @RequestBody (required = false)
+                                                       TemplateRequestBody requestBody)
+    {
+        return restAPI.createSolutionRoleFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a solution role.
+     *
+     * @param serverName         name of called server.
+     * @param solutionRoleGUID unique identifier of the solution role (returned from create)
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/update")
+    @Operation(summary="updateSolutionRole",
+            description="Update the properties of a solution role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public VoidResponse updateSolutionRole(@PathVariable
+                                           String                                  serverName,
+                                           @PathVariable
+                                           String                                  solutionRoleGUID,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                           boolean                                 replaceAllProperties,
+                                           @RequestBody (required = false)
+                                           UpdateActorRoleRequestBody requestBody)
+    {
+        return restAPI.updateSolutionRole(serverName, solutionRoleGUID, replaceAllProperties, requestBody);
+    }
+
+
+    /**
+     * Attach a solution component to a solution role.
+     *
+     * @param serverName         name of called server
+     * @param solutionRoleGUID  unique identifier of the first solution role
+     * @param dataFieldGUID      unique identifier of the second solution role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/solution-component-actors/{dataFieldGUID}/attach")
+    @Operation(summary="linkSolutionComponentActor",
+            description="Attach a solution component to a solution role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public VoidResponse linkSolutionComponentActor(@PathVariable
+                                                   String                     serverName,
+                                                   @PathVariable
+                                                   String                     solutionRoleGUID,
+                                                   @PathVariable
+                                                   String                     dataFieldGUID,
+                                                   @RequestBody (required = false)
+                                                   SolutionComponentActorRequestBody requestBody)
+    {
+        return restAPI.linkSolutionComponentActor(serverName, solutionRoleGUID, dataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution component from a solution role.
+     *
+     * @param serverName         name of called server
+     * @param parentSolutionRoleGUID  unique identifier of the first solution role
+     * @param memberDataFieldGUID      unique identifier of the second solution role
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-roles/{parentSolutionRoleGUID}/solution-component-actors/{memberDataFieldGUID}/detach")
+    @Operation(summary="detachSolutionComponentActor",
+            description="Detach a solution component from a solution role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public VoidResponse detachSolutionComponentActor(@PathVariable
+                                                     String                    serverName,
+                                                     @PathVariable
+                                                     String parentSolutionRoleGUID,
+                                                     @PathVariable
+                                                     String memberDataFieldGUID,
+                                                     @RequestBody (required = false)
+                                                     MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachSolutionComponentActor(serverName, parentSolutionRoleGUID, memberDataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a solution role.
+     *
+     * @param serverName         name of called server
+     * @param solutionRoleGUID  unique identifier of the element to delete
+     * @param cascadedDelete can solution roles be deleted if solution components are attached?
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/delete")
+    @Operation(summary="deleteSolutionRole",
+            description="Delete a solution role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public VoidResponse deleteSolutionRole(@PathVariable
+                                           String                    serverName,
+                                           @PathVariable
+                                           String                    solutionRoleGUID,
+                                           @RequestParam(required = false, defaultValue = "false")
+                                           boolean                   cascadedDelete,
+                                           @RequestBody (required = false)
+                                           MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.deleteSolutionRole(serverName, solutionRoleGUID, cascadedDelete, requestBody);
+    }
+
+
+    /**
+     * Returns the list of solution roles with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-roles/by-name")
+    @Operation(summary="getSolutionRolesByName",
+            description="Returns the list of solution roles with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public SolutionRolesResponse getSolutionRolesByName(@PathVariable
+                                                        String            serverName,
+                                                        @RequestParam (required = false, defaultValue = "0")
+                                                        int                     startFrom,
+                                                        @RequestParam (required = false, defaultValue = "0")
+                                                        int                     pageSize,
+                                                        @RequestBody (required = false)
+                                                        FilterRequestBody requestBody)
+    {
+        return restAPI.getSolutionRolesByName(serverName, startFrom, pageSize, requestBody);
     }
 
 
@@ -485,19 +945,263 @@ public class SolutionArchitectResource
 
     public SolutionRolesResponse findSolutionRoles(@PathVariable String                  serverName,
                                                    @RequestParam (required = false, defaultValue = "0")
-                                                             int                     startFrom,
+                                                   int                     startFrom,
                                                    @RequestParam (required = false, defaultValue = "0")
-                                                             int                     pageSize,
+                                                   int                     pageSize,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 startsWith,
+                                                   boolean                 startsWith,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 endsWith,
+                                                   boolean                 endsWith,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                 ignoreCase,
+                                                   boolean                 ignoreCase,
                                                    @RequestBody  (required = false)
-                                                       FilterRequestBody requestBody)
+                                                   FilterRequestBody requestBody)
     {
         return restAPI.findSolutionRoles(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific solution role.
+     *
+     * @param serverName name of the service to route the request to
+     * @param solutionRoleGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-roles/{solutionRoleGUID}/retrieve")
+    @Operation(summary="getSolutionRoleByGUID",
+            description="Return the properties of a specific solution role.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public SolutionRoleResponse getSolutionRoleByGUID(@PathVariable
+                                                      String             serverName,
+                                                      @PathVariable
+                                                      String             solutionRoleGUID,
+                                                      @RequestBody (required = false)
+                                                      AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getSolutionRoleByGUID(serverName, solutionRoleGUID, requestBody);
+    }
+
+
+    /**
+     * Create a solution component.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the solution component.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components")
+
+    @Operation(summary="createSolutionComponent",
+            description="Create a solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public GUIDResponse createSolutionComponent(@PathVariable
+                                                String                               serverName,
+                                                @RequestBody (required = false)
+                                                NewSolutionComponentRequestBody requestBody)
+    {
+        return restAPI.createSolutionComponent(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a solution component using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-components/from-template")
+    @Operation(summary="createSolutionComponentFromTemplate",
+            description="Create a new metadata element to represent a solution component using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public GUIDResponse createSolutionComponentFromTemplate(@PathVariable
+                                                            String              serverName,
+                                                            @RequestBody (required = false)
+                                                            TemplateRequestBody requestBody)
+    {
+        return restAPI.createSolutionComponentFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a solution component.
+     *
+     * @param serverName         name of called server.
+     * @param solutionComponentGUID unique identifier of the solution component (returned from create)
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentGUID}/update")
+    @Operation(summary="updateSolutionComponent",
+            description="Update the properties of a solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse updateSolutionComponent(@PathVariable
+                                                String                                  serverName,
+                                                @PathVariable
+                                                String                                  solutionComponentGUID,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                boolean                                 replaceAllProperties,
+                                                @RequestBody (required = false)
+                                                UpdateSolutionComponentRequestBody requestBody)
+    {
+        return restAPI.updateSolutionComponent(serverName, solutionComponentGUID, replaceAllProperties, requestBody);
+    }
+
+
+    /**
+     * Attach a solution component to a solution component.
+     *
+     * @param serverName         name of called server
+     * @param solutionComponentGUID  unique identifier of the first solution component
+     * @param subcomponentGUID      unique identifier of the second solution component
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentGUID}/subcomponents/{subcomponentGUID}/attach")
+    @Operation(summary="linkSubcomponent",
+            description="Attach a solution component to a solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse linkSubcomponent(@PathVariable
+                                         String                     serverName,
+                                         @PathVariable
+                                         String                     solutionComponentGUID,
+                                         @PathVariable
+                                         String                     subcomponentGUID,
+                                         @RequestBody (required = false)
+                                         RelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSubcomponent(serverName, solutionComponentGUID, subcomponentGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution component from a solution component.
+     *
+     * @param serverName         name of called server
+     * @param parentSolutionComponentGUID  unique identifier of the first solution component
+     * @param memberDataFieldGUID      unique identifier of the second solution component
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/{parentSolutionComponentGUID}/subcomponents/{memberDataFieldGUID}/detach")
+    @Operation(summary="detachSubcomponent",
+            description="Detach a solution component from a solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse detachSubcomponent(@PathVariable
+                                           String                    serverName,
+                                           @PathVariable
+                                           String parentSolutionComponentGUID,
+                                           @PathVariable
+                                           String memberDataFieldGUID,
+                                           @RequestBody (required = false)
+                                           MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, memberDataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a solution component.
+     *
+     * @param serverName         name of called server
+     * @param solutionComponentGUID  unique identifier of the element to delete
+     * @param cascadedDelete can solution components be deleted if solution components are attached?
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentGUID}/delete")
+    @Operation(summary="deleteSolutionComponent",
+            description="Delete a solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse deleteSolutionComponent(@PathVariable
+                                                String                    serverName,
+                                                @PathVariable
+                                                String                    solutionComponentGUID,
+                                                @RequestParam(required = false, defaultValue = "false")
+                                                boolean                   cascadedDelete,
+                                                @RequestBody (required = false)
+                                                MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.deleteSolutionComponent(serverName, solutionComponentGUID, cascadedDelete, requestBody);
+    }
+
+
+    /**
+     * Returns the list of solution components with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-components/by-name")
+    @Operation(summary="getSolutionComponentsByName",
+            description="Returns the list of solution components with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public SolutionComponentsResponse getSolutionComponentsByName(@PathVariable
+                                                                  String            serverName,
+                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                  int                     startFrom,
+                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                  int                     pageSize,
+                                                                  @RequestBody (required = false)
+                                                                  FilterRequestBody requestBody)
+    {
+        return restAPI.getSolutionComponentsByName(serverName, startFrom, pageSize, requestBody);
     }
 
 
@@ -527,7 +1231,7 @@ public class SolutionArchitectResource
                                                              @RequestParam (required = false, defaultValue = "0")
                                                              int                     startFrom,
                                                              @RequestParam (required = false, defaultValue = "0")
-                                                                 int                     pageSize,
+                                                             int                     pageSize,
                                                              @RequestParam (required = false, defaultValue = "false")
                                                              boolean                 startsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
@@ -535,10 +1239,41 @@ public class SolutionArchitectResource
                                                              @RequestParam (required = false, defaultValue = "false")
                                                              boolean                 ignoreCase,
                                                              @RequestBody (required = false)
-                                                                 FilterRequestBody requestBody)
+                                                             FilterRequestBody requestBody)
     {
         return restAPI.findSolutionComponents(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
+
+
+
+    /**
+     * Return the properties of a specific solution component.
+     *
+     * @param serverName name of the service to route the request to
+     * @param solutionComponentGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentGUID}/retrieve")
+    @Operation(summary="getSolutionComponentByGUID",
+            description="Return the properties of a specific solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-role"))
+
+    public SolutionComponentResponse getSolutionComponentByGUID(@PathVariable
+                                                                String             serverName,
+                                                                @PathVariable
+                                                                String             solutionComponentGUID,
+                                                                @RequestBody (required = false)
+                                                                AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getSolutionComponentByGUID(serverName, solutionComponentGUID, requestBody);
+    }
+
 
 
     /**
@@ -564,11 +1299,11 @@ public class SolutionArchitectResource
     public RelatedMetadataElementsResponse getSolutionComponentImplementations(@PathVariable String                  serverName,
                                                                                @PathVariable String                  solutionComponentGUID,
                                                                                @RequestParam (required = false, defaultValue = "0")
-                                                                                   int                     startFrom,
+                                                                               int                     startFrom,
                                                                                @RequestParam (required = false, defaultValue = "0")
-                                                                                   int                     pageSize,
+                                                                               int                     pageSize,
                                                                                @RequestBody(required = false)
-                                                                                   ResultsRequestBody requestBody)
+                                                                               ResultsRequestBody requestBody)
     {
         return restAPI.getSolutionComponentImplementations(serverName, solutionComponentGUID, startFrom, pageSize, requestBody);
     }
