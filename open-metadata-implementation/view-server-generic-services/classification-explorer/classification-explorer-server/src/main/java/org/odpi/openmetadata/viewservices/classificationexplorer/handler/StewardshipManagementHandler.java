@@ -970,7 +970,7 @@ public class StewardshipManagementHandler
 
             if (! matchedElements.isEmpty())
             {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGUID, matchedElements);
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedMetadataElements.getStartingElement(), matchedElements);
                 summaryList.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
 
@@ -2117,7 +2117,7 @@ public class StewardshipManagementHandler
 
             if (! matchedElements.isEmpty())
             {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGUID, matchedElements);
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedMetadataElements.getStartingElement(), matchedElements);
                 summaryList.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
 
@@ -2255,7 +2255,7 @@ public class StewardshipManagementHandler
 
             if (! matchedElements.isEmpty())
             {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGUID, matchedElements);
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedMetadataElements.getStartingElement(), matchedElements);
                 summaryList.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
 

@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
+public class RelationshipRequestBody extends MetadataSourceRequestBody
 {
     private String                 relationshipName = null;
     private RelationshipProperties properties = null;
@@ -105,10 +105,9 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
     public String toString()
     {
         return "RelationshipRequestBody{" +
-                       "relationshipName='" + relationshipName + '\'' +
-                       ", properties=" + properties +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       '}';
+                "relationshipName='" + relationshipName + '\'' +
+                ", properties=" + properties +
+                "} " + super.toString();
     }
 
 

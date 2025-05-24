@@ -475,6 +475,29 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Return the type name label.
+     *
+     * @param openMetadataElement header of the entity stub
+     * @return visual style to use
+     */
+    protected String getTypeNameForEntity(OpenMetadataElementStub openMetadataElement)
+    {
+        if (openMetadataElement.getClassifications() != null)
+        {
+            for (AttachedClassification classification : openMetadataElement.getClassifications())
+            {
+                if (checkForClassificationTypeName(classification.getClassificationName()))
+                {
+                    return classification.getClassificationName();
+                }
+            }
+        }
+
+        return openMetadataElement.getType().getTypeName();
+    }
+
+
+    /**
      * Return the standard visual styles for entities.
      *
      * @param elementHeader header of the entity

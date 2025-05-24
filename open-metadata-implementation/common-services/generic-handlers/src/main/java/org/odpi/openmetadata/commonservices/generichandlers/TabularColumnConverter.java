@@ -77,7 +77,7 @@ public class TabularColumnConverter<B> extends OMFConverter<B>
                     }
 
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
-                    super.setUpSchemaAttribute(schemaAttributeEntity, schemaTypeElement, properties);
+                    super.setUpSchemaAttribute(schemaAttributeEntity, schemaTypeElement, schemaAttributeRelationships, properties);
 
                     properties.setTypeName(bean.getElementHeader().getType().getTypeName());
 

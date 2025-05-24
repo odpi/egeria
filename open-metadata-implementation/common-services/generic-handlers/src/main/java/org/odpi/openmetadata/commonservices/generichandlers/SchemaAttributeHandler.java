@@ -1197,13 +1197,13 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         List<Relationship> results = new ArrayList<>();
 
         List<Relationship> relationships = this.getAttachmentLinks(userId,
-                                                                   schemaAttributeEntity.getGUID(),
+                                                                   schemaAttributeEntity,
                                                                    schemaAttributeGUIDParameterName,
                                                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                    null,
                                                                    null,
                                                                    null,
-                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                                   null,
                                                                    0,
                                                                    null,
                                                                    null,

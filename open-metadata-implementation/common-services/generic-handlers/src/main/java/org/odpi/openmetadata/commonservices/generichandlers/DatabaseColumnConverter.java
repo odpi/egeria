@@ -77,7 +77,7 @@ public class DatabaseColumnConverter<B> extends OMFConverter<B>
                 if (schemaAttributeEntity != null)
                 {
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
-                    super.setUpSchemaAttribute(schemaAttributeEntity, null, properties);
+                    super.setUpSchemaAttribute(schemaAttributeEntity, null, schemaAttributeRelationships, properties);
 
                     properties.setTypeName(bean.getElementHeader().getType().getTypeName());
 

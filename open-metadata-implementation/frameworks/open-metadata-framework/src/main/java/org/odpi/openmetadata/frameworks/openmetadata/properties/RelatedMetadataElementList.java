@@ -22,8 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementList
 {
-     private List<RelatedMetadataElement> elementList  = null;
-    private String                        mermaidGraph = null;
+    private OpenMetadataElement          startingElement = null;
+    private List<RelatedMetadataElement> elementList     = null;
+    private String                       mermaidGraph    = null;
 
 
     /**
@@ -43,9 +44,32 @@ public class RelatedMetadataElementList
     {
         if (template != null)
         {
+            startingElement = template.getStartingElement();
             elementList = template.getElementList();
             mermaidGraph = template.getMermaidGraph();
         }
+    }
+
+
+    /**
+     * Return the element used as the starting point for the query.
+     *
+     * @return element
+     */
+    public OpenMetadataElement getStartingElement()
+    {
+        return startingElement;
+    }
+
+
+    /**
+     * Set up the element used as the starting point for the query.
+     *
+     * @param startingElement element
+     */
+    public void setStartingElement(OpenMetadataElement startingElement)
+    {
+        this.startingElement = startingElement;
     }
 
 
@@ -102,7 +126,8 @@ public class RelatedMetadataElementList
     public String toString()
     {
         return "RelatedMetadataElementList{" +
-                "elementList=" + elementList +
+                "startingElement=" + startingElement +
+                ", elementList=" + elementList +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
@@ -126,7 +151,8 @@ public class RelatedMetadataElementList
             return false;
         }
         RelatedMetadataElementList that = (RelatedMetadataElementList) objectToCompare;
-        return Objects.equals(elementList, that.elementList) &&
+        return Objects.equals(startingElement, that.startingElement) &&
+                Objects.equals(elementList, that.elementList) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
@@ -139,6 +165,6 @@ public class RelatedMetadataElementList
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementList, mermaidGraph);
+        return Objects.hash(startingElement, elementList, mermaidGraph);
     }
 }

@@ -1582,6 +1582,7 @@ public class OpenMetadataStoreRESTServices
                                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getRelatedMetadataElements";
+        final String guidParameterName = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1598,8 +1599,22 @@ public class OpenMetadataStoreRESTServices
 
             if (requestBody != null)
             {
+                /*
+                 * Retrieve and validate the starting entity
+                 */
+                EntityDetail startingEntity = handler.getEntityFromRepository(userId,
+                                                                           elementGUID,
+                                                                           guidParameterName,
+                                                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                           null,
+                                                                           null,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName);
+                relatedElementList.setStartingElement(handler.getMetadataElementFromEntity(startingEntity, methodName));
                 relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                                  elementGUID,
+                                                                                  startingEntity,
                                                                                   startingAtEnd,
                                                                                   relationshipTypeName,
                                                                                   requestBody.getLimitResultsByStatus(),
@@ -1616,26 +1631,37 @@ public class OpenMetadataStoreRESTServices
             }
             else
             {
+                EntityDetail startingEntity = handler.getEntityFromRepository(userId,
+                                                                              elementGUID,
+                                                                              guidParameterName,
+                                                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                              null,
+                                                                              null,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              new Date(),
+                                                                              methodName);
+                relatedElementList.setStartingElement(handler.getMetadataElementFromEntity(startingEntity, methodName));
                 relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                                  elementGUID,
-                                                                                  startingAtEnd,
-                                                                                  relationshipTypeName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  null,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                  null,
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  methodName));
+                                                                                     startingEntity,
+                                                                                     startingAtEnd,
+                                                                                     relationshipTypeName,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                     new Date(),
+                                                                                     startFrom,
+                                                                                     pageSize,
+                                                                                     methodName));
             }
 
             if (relatedElementList.getElementList() != null)
             {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGUID, relatedElementList.getElementList());
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedElementList.getStartingElement(), relatedElementList.getElementList());
                 relatedElementList.setMermaidGraph(graphBuilder.getMermaidGraph());
             }
 
