@@ -318,7 +318,7 @@ public enum ViewServiceDescription
      * Maintain governance definitions used in all governance domains.
      */
     GOVERNANCE_OFFICER (825,
-                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                      "Governance Officer",
                      "Governance Officer OMVS",
                      "governance-officer",
@@ -368,7 +368,7 @@ public enum ViewServiceDescription
      * Manages the definitions of information supply chains and solution components.
      */
     SOLUTION_ARCHITECT (829,
-                          ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                          ComponentDevelopmentStatus.STABLE,
                           "Solution Architect",
                           "Solution Architect OMVS",
                           "solution-architect",
@@ -384,9 +384,22 @@ public enum ViewServiceDescription
                             "Classification Explorer",
                             "Classification Explorer OMVS",
                             "classification-explorer",
-                            "Retrieve elements based on type or the classifications/relationships attached to these metadata elements",
+                            "Retrieve elements based on type or the classifications/relationships attached to these metadata elements.",
                             "https://egeria-project.org/services/omvs/classification-explorer/overview/",
                             AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manages context events and other time related behaviour.
+     */
+    TIME_KEEPER (831,
+                             ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                             "Time Keeper",
+                             "Time Keeper OMVS",
+                             "time-keeper",
+                             "Manages context events and other time related behaviour.",
+                             "https://egeria-project.org/services/omvs/time-kepper/overview/",
+                             AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName()),
+
     ;
 
 

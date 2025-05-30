@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementStub
 {
-    private static PropertyHelper propertyHelper = new PropertyHelper();
+    private static final PropertyHelper propertyHelper = new PropertyHelper();
 
     private ElementHeader     relationshipHeader     = null;
     private ElementProperties relationshipProperties = null;

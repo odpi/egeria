@@ -263,41 +263,6 @@ public class GovernanceProgramReviewManager extends GovernanceProgramBaseClient 
 
 
     /**
-     * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
-     *
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the governance definition
-     *
-     * @return governance definition and its linked elements
-     *
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the caller is not authorized to issue the request
-     * @throws PropertyServerException the metadata service has problems
-     */
-    @Override
-    public GovernanceDefinitionGraph getGovernanceDefinitionInContext(String userId,
-                                                                      String governanceDefinitionGUID) throws InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              PropertyServerException
-    {
-        final String methodName = "getGovernanceDefinitionInContext";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/review/governance-definitions/{2}/in-context";
-        final String guidParameterName = "governanceDefinitionGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceDefinitionGUID, guidParameterName, methodName);
-
-        GovernanceDefinitionGraphResponse restResult = restClient.callGovernanceDefinitionGraphGetRESTCall(methodName,
-                                                                                                           urlTemplate,
-                                                                                                           serverName,
-                                                                                                           userId,
-                                                                                                           governanceDefinitionGUID);
-
-        return restResult.getElement();
-    }
-
-
-    /**
      * Return the list of governance definitions that match the search string - this can be a regular expression.
      *
      * @param userId calling user

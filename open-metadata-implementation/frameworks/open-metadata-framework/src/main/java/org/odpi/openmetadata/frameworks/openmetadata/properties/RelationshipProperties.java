@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
@@ -127,11 +127,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class RelationshipProperties
 {
-    private Date effectiveFrom = null;
-    private Date effectiveTo   = null;
-
-    private Map<String, Object> extendedProperties = null;
-
+    private Date                 effectiveFrom        = null;
+    private Date                 effectiveTo          = null;
+    private String               typeName             = null;
+    private Map<String, Object>  extendedProperties   = null;
 
     /**
      * Default constructor
@@ -143,7 +142,7 @@ public class RelationshipProperties
 
 
     /**
-     * Copy/clone constructor.  Retrieve values from the supplied template
+     * Copy/clone constructor.  Retrieves values from the supplied template
      *
      * @param template element to copy
      */
@@ -151,9 +150,10 @@ public class RelationshipProperties
     {
         if (template != null)
         {
-            effectiveFrom = template.getEffectiveFrom();
-            effectiveTo = template.getEffectiveTo();
-            extendedProperties = template.getExtendedProperties();
+            effectiveFrom        = template.getEffectiveFrom();
+            effectiveTo          = template.getEffectiveTo();
+            typeName             = template.getTypeName();
+            extendedProperties   = template.getExtendedProperties();
         }
     }
 
@@ -203,6 +203,28 @@ public class RelationshipProperties
 
 
     /**
+     * Return the name of the open metadata type for this metadata element.
+     *
+     * @return string name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the name of the open metadata type for this element.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
      * Return the properties that have been defined for a subtype of this object that are not supported explicitly
      * by this bean.
      *
@@ -235,10 +257,11 @@ public class RelationshipProperties
     public String toString()
     {
         return "RelationshipProperties{" +
-                       "effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", extendedProperties=" + extendedProperties +
-                       '}';
+                "effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                ", typeName='" + typeName + '\'' +
+                ", extendedProperties=" + extendedProperties +
+                '}';
     }
 
 
@@ -261,7 +284,9 @@ public class RelationshipProperties
         }
         RelationshipProperties that = (RelationshipProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo);
+                Objects.equals(effectiveTo, that.effectiveTo) &&
+                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -273,6 +298,6 @@ public class RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo);
+        return Objects.hash(effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

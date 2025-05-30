@@ -84,24 +84,6 @@ public interface GovernanceProgramReviewInterface
 
 
     /**
-     * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
-     *
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the governance definition
-     *
-     * @return governance definition and its linked elements
-     *
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the caller is not authorized to issue the request
-     * @throws PropertyServerException the metadata service has problems
-     */
-    GovernanceDefinitionGraph getGovernanceDefinitionInContext(String userId,
-                                                               String governanceDefinitionGUID) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException;
-
-
-    /**
      * Return the list of governance definitions that match the search string - this can be a regular expression.
      *
      * @param userId calling user

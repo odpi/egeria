@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.viewservices.myprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
 
 /**
  * MyProfileInstance caches references to the objects it needs for a specific server.
@@ -18,8 +19,8 @@ public class MyProfileInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.MY_PROFILE;
 
-    private final OrganizationManagement   organizationManagement;
-    private final ToDoActionManagement     toDoActionManagement;
+    private final OrganizationManagement organizationManagement;
+    private final ToDoActionHandler      toDoActionHandler;
 
 
     /**
@@ -49,7 +50,13 @@ public class MyProfileInstance extends OMVSServiceInstance
               remoteServerURL);
 
         organizationManagement = new OrganizationManagement(remoteServerName, remoteServerURL, auditLog, maxPageSize);
-        toDoActionManagement   = new ToDoActionManagement(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        toDoActionHandler      = new ToDoActionHandler(serverName,
+                                                       remoteServerName,
+                                                       remoteServerURL,
+                                                       auditLog,
+                                                       AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceURLMarker(),
+                                                       AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                       maxPageSize);
     }
 
 
@@ -69,8 +76,8 @@ public class MyProfileInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public ToDoActionManagement getToDoActionManagement()
+    public ToDoActionHandler getToDoActionManagement()
     {
-        return toDoActionManagement;
+        return toDoActionHandler;
     }
 }

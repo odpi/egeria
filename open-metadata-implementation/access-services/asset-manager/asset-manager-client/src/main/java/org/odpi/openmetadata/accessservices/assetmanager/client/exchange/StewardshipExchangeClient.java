@@ -32,6 +32,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyName
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -1416,6 +1417,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param assetManagerName unique name of software capability representing the caller
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param properties properties for the relationship
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1442,22 +1444,44 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         final String glossaryTermGUIDParameterName  = "glossaryTermGUID";
         final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        super.setupRelationship(userId,
-                                assetManagerGUID,
-                                assetManagerName,
-                                elementGUID,
-                                elementGUIDParameterName,
-                                OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
-                                relationshipTypeNameParameterName,
-                                glossaryTermGUID,
-                                glossaryTermGUIDParameterName,
-                                properties.getEffectiveFrom(),
-                                properties.getEffectiveTo(),
-                                this.getElementProperties(properties),
-                                effectiveTime,
-                                forLineage,
-                                forDuplicateProcessing,
-                                methodName);
+        if (properties != null)
+        {
+            super.setupRelationship(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    elementGUID,
+                                    elementGUIDParameterName,
+                                    OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                    relationshipTypeNameParameterName,
+                                    glossaryTermGUID,
+                                    glossaryTermGUIDParameterName,
+                                    properties.getEffectiveFrom(),
+                                    properties.getEffectiveTo(),
+                                    this.getElementProperties(properties),
+                                    effectiveTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    methodName);
+        }
+        else
+        {
+            super.setupRelationship(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    elementGUID,
+                                    elementGUIDParameterName,
+                                    OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                    relationshipTypeNameParameterName,
+                                    glossaryTermGUID,
+                                    glossaryTermGUIDParameterName,
+                                    null,
+                                    null,
+                                    this.getElementProperties(properties),
+                                    effectiveTime,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    methodName);
+        }
     }
 
 
@@ -1518,6 +1542,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         return null;
     }
 
+
     /**
      * Remove a semantic assignment relationship between an element and its glossary term.
      *
@@ -1546,24 +1571,23 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        final String methodName                     = "clearSemanticAssignment";
-        final String elementGUIDParameterName       = "elementGUID";
-        final String glossaryTermGUIDParameterName  = "glossaryTermGUID";
-        final String relationshipTypeNameParameterName = "relationshipTypeName";
+        final String methodName            = "clearSemanticAssignment";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "nestedDataFieldGUID";
 
-        super.clearRelationship(userId,
-                                assetManagerGUID,
-                                assetManagerName,
-                                elementGUID,
-                                elementGUIDParameterName,
-                                OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
-                                relationshipTypeNameParameterName,
-                                glossaryTermGUID,
-                                glossaryTermGUIDParameterName,
-                                effectiveTime,
-                                forLineage,
-                                forDuplicateProcessing,
-                                methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                             elementGUID,
+                                                             glossaryTermGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
 
@@ -1678,8 +1702,8 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
+     * @param definitionGUID identifier of the governance definition to link
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1692,8 +1716,8 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     public void addGovernanceDefinitionToElement(String  userId,
                                                  String  assetManagerGUID,
                                                  String  assetManagerName,
-                                                 String  definitionGUID,
                                                  String  elementGUID,
+                                                 String  definitionGUID,
                                                  Date    effectiveTime,
                                                  boolean forLineage,
                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
@@ -1730,8 +1754,8 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to update
+     * @param definitionGUID identifier of the governance definition to link
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1744,28 +1768,83 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     public void removeGovernanceDefinitionFromElement(String  userId,
                                                       String  assetManagerGUID,
                                                       String  assetManagerName,
-                                                      String  definitionGUID,
                                                       String  elementGUID,
+                                                      String  definitionGUID,
                                                       Date    effectiveTime,
                                                       boolean forLineage,
                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        final String methodName                   = "removeGovernanceDefinitionFromElement";
+        final String methodName            = "removeGovernanceDefinitionFromElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "definitionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(definitionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                             elementGUID,
+                                                             definitionGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+
+
+    /**
+     * Link a stakeholder to an element using the Stakeholder relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID identifier of the stakeholder to link
+     * @param stakeholderGUID unique identifier of the metadata element to link
+     * @param stakeholderRole role of the stakeholder
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addStakeholderToElement(String  userId,
+                                        String  assetManagerGUID,
+                                        String  assetManagerName,
+                                        String  elementGUID,
+                                        String  stakeholderGUID,
+                                        String  stakeholderRole,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName                   = "addStakeholderToElement";
         final String elementGUIDParameterName     = "elementGUID";
-        final String definitionGUIDParameterName  = "definitionGUID";
+        final String stakeholderGUIDParameterName  = "stakeholderGUID";
         final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        super.clearRelationship(userId,
+        super.setupRelationship(userId,
                                 assetManagerGUID,
                                 assetManagerName,
                                 elementGUID,
                                 elementGUIDParameterName,
-                                OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName,
                                 relationshipTypeNameParameterName,
-                                definitionGUID,
-                                definitionGUIDParameterName,
+                                stakeholderGUID,
+                                stakeholderGUIDParameterName,
+                                null,
+                                null,
+                                null,
                                 effectiveTime,
                                 forLineage,
                                 forDuplicateProcessing,
@@ -1773,6 +1852,158 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     }
 
 
+    /**
+     * Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param stakeholderGUID identifier of the governance definition to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeStakeholderFromElement(String  userId,
+                                             String  assetManagerGUID,
+                                             String  assetManagerName,
+                                             String  elementGUID,
+                                             String  stakeholderGUID,
+                                             Date    effectiveTime,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName            = "removeStakeholderFromElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "stakeholderGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(stakeholderGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName,
+                                                             elementGUID,
+                                                             stakeholderGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
+
+
+
+
+    /**
+     * Link a scope to an element using the ScopedBy relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param scopeGUID identifier of the governance definition to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addScopeToElement(String  userId,
+                                  String  assetManagerGUID,
+                                  String  assetManagerName,
+                                  String  elementGUID,
+                                  String  scopeGUID,
+                                  Date    effectiveTime,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String methodName            = "addScopeToElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "scopeGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(scopeGUID, end2GUIDParameterName, methodName);
+
+        super.setupRelationship(userId,
+                                assetManagerGUID,
+                                assetManagerName,
+                                elementGUID,
+                                end1GUIDParameterName,
+                                OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                relationshipTypeNameParameterName,
+                                scopeGUID,
+                                end2GUIDParameterName,
+                                null,
+                                null,
+                                null,
+                                effectiveTime,
+                                forLineage,
+                                forDuplicateProcessing,
+                                methodName);
+    }
+
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param scopeGUID identifier of the governance definition to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeScopeFromElement(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  elementGUID,
+                                       String  scopeGUID,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String methodName            = "removeScopeFromElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "scopeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(scopeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                             elementGUID,
+                                                             scopeGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
 
 
     /**
@@ -1855,24 +2086,23 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        final String methodName                   = "removeMoreInformationFromElement";
-        final String elementGUIDParameterName     = "elementGUID";
-        final String moreInformationGUIDParameterName  = "moreInformationGUID";
-        final String relationshipTypeNameParameterName = "relationshipTypeName";
+        final String methodName            = "removeMoreInformationFromElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "moreInformationGUID";
 
-        super.clearRelationship(userId,
-                                assetManagerGUID,
-                                assetManagerName,
-                                elementGUID,
-                                elementGUIDParameterName,
-                                OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
-                                relationshipTypeNameParameterName,
-                                moreInformationGUID,
-                                moreInformationGUIDParameterName,
-                                effectiveTime,
-                                forLineage,
-                                forDuplicateProcessing,
-                                methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(moreInformationGUID, end2GUIDParameterName, methodName);
+
+        openMetadataStoreClient.detachRelatedElementsInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
+                                                             elementGUID,
+                                                             moreInformationGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
     /**
@@ -2106,6 +2336,601 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                         methodName);
     }
 
+
+
+    /**
+     * Create a link between a license type and an element that has achieved the license.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param elementGUID unique identifier of the element
+     * @param licenseTypeGUID unique identifier of the license type
+     * @param licenseGUID  unique identifier of the license (maybe from an external system)
+     * @param start when did the license start
+     * @param end when will the license end
+     * @param conditions any conditions added to the license
+     * @param licensedBy unique name/identifier of the element for the person/organization licensing the element
+     * @param licensedByTypeName type of the licensedBy element
+     * @param licensedByPropertyName property name for the unique identifier from the licensedBy element
+     * @param custodian unique name/identifier of the element for the person/organization responsible for maintaining the license status
+     * @param custodianTypeName type of the custodian element
+     * @param custodianPropertyName property name for the unique identifier from the custodian element
+     * @param licensee unique name/identifier of the element for the person/organization receiving the license
+     * @param licenseeTypeName type of the licensee element
+     * @param licenseePropertyName property name for the unique identifier from the licensee element
+     * @param notes additional information, endorsements etc
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return guid of license relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String licenseElement(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  elementGUID,
+                                 String  licenseTypeGUID,
+                                 String  licenseGUID,
+                                 Date    start,
+                                 Date    end,
+                                 String  conditions,
+                                 String  licensedBy,
+                                 String  licensedByTypeName,
+                                 String  licensedByPropertyName,
+                                 String  custodian,
+                                 String  custodianTypeName,
+                                 String  custodianPropertyName,
+                                 String  licensee,
+                                 String  licenseeTypeName,
+                                 String  licenseePropertyName,
+                                 String  notes,
+                                 Date    effectiveFrom,
+                                 Date    effectiveTo,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        return openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
+                                                                    elementGUID,
+                                                                    licenseTypeGUID,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveFrom,
+                                                                    effectiveTo,
+                                                                    getLicenseProperties(licenseGUID,
+                                                                                         start,
+                                                                                         end,
+                                                                                         conditions,
+                                                                                         licensedBy,
+                                                                                         licensedByTypeName,
+                                                                                         licensedByPropertyName,
+                                                                                         custodian,
+                                                                                         custodianTypeName,
+                                                                                         custodianPropertyName,
+                                                                                         licensee,
+                                                                                         licenseeTypeName,
+                                                                                         licenseePropertyName,
+                                                                                         notes),
+                                                                    effectiveTime);
+    }
+
+
+    /**
+     * Update the license relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param licenseGUID unique identifier for the relationship
+     * @param licenseId  unique identifier of the license (maybe from an external system)
+     * @param start when did the license start
+     * @param end when will the license end
+     * @param conditions any conditions added to the license
+     * @param licensedBy unique name/identifier of the element for the person/organization licensing the element
+     * @param licensedByTypeName type of the licensedBy element
+     * @param licensedByPropertyName property name for the unique identifier from the licensedBy element
+     * @param custodian unique name/identifier of the element for the person/organization responsible for maintaining the license status
+     * @param custodianTypeName type of the custodian element
+     * @param custodianPropertyName property name for the unique identifier from the custodian element
+     * @param licensee unique name/identifier of the element for the person/organization receiving the license
+     * @param licenseeTypeName type of the licensee element
+     * @param licenseePropertyName property name for the unique identifier from the licensee element
+     * @param notes additional information, endorsements etc
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateLicense(String  userId,
+                              String  externalSourceGUID,
+                              String  externalSourceName,
+                              String  licenseGUID,
+                              String  licenseId,
+                              Date    start,
+                              Date    end,
+                              String  conditions,
+                              String  licensedBy,
+                              String  licensedByTypeName,
+                              String  licensedByPropertyName,
+                              String  custodian,
+                              String  custodianTypeName,
+                              String  custodianPropertyName,
+                              String  licensee,
+                              String  licenseeTypeName,
+                              String  licenseePropertyName,
+                              String  notes,
+                              boolean replaceAllProperties,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        openMetadataStoreClient.updateRelationshipInStore(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          licenseGUID,
+                                                          replaceAllProperties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          getLicenseProperties(licenseId,
+                                                                               start,
+                                                                               end,
+                                                                               conditions,
+                                                                               licensedBy,
+                                                                               licensedByTypeName,
+                                                                               licensedByPropertyName,
+                                                                               custodian,
+                                                                               custodianTypeName,
+                                                                               custodianPropertyName,
+                                                                               licensee,
+                                                                               licenseeTypeName,
+                                                                               licenseePropertyName,
+                                                                               notes),
+                                                          effectiveTime);
+    }
+
+
+    /**
+     * Set up the properties for a license.
+     *
+     * @param licenseId  unique identifier of the license (maybe from an external system)
+     * @param start when did the license start
+     * @param end when will the license end
+     * @param conditions any conditions added to the license
+     * @param licensedBy unique name/identifier of the element for the person/organization licensing the element
+     * @param licensedByTypeName type of the licensedBy element
+     * @param licensedByPropertyName property name for the unique identifier from the licensedBy element
+     * @param custodian unique name/identifier of the element for the person/organization responsible for maintaining the license status
+     * @param custodianTypeName type of the custodian element
+     * @param custodianPropertyName property name for the unique identifier from the custodian element
+     * @param licensee unique name/identifier of the element for the person/organization receiving the license
+     * @param licenseeTypeName type of the licensee element
+     * @param licenseePropertyName property name for the unique identifier from the licensee element
+     * @param notes additional information, endorsements etc
+     * @return element properties
+     */
+    private ElementProperties getLicenseProperties(String  licenseId,
+                                                   Date    start,
+                                                   Date    end,
+                                                   String  conditions,
+                                                   String  licensedBy,
+                                                   String  licensedByTypeName,
+                                                   String  licensedByPropertyName,
+                                                   String  custodian,
+                                                   String  custodianTypeName,
+                                                   String  custodianPropertyName,
+                                                   String  licensee,
+                                                   String  licenseeTypeName,
+                                                   String  licenseePropertyName,
+                                                   String  notes)
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.LICENSE_GUID.name,
+                                                                        licenseId);
+
+        properties = propertyHelper.addDateProperty(properties,
+                                                    OpenMetadataProperty.START.name,
+                                                    start);
+
+        properties = propertyHelper.addDateProperty(properties,
+                                                    OpenMetadataProperty.END.name,
+                                                    end);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CONDITIONS.name,
+                                                      conditions);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.LICENSED_BY.name,
+                                                      licensedBy);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.LICENSED_BY_TYPE_NAME.name,
+                                                      licensedByTypeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.LICENSED_BY_PROPERTY_NAME.name,
+                                                      licensedByPropertyName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CUSTODIAN.name,
+                                                      custodian);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CUSTODIAN_TYPE_NAME.name,
+                                                      custodianTypeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name,
+                                                      custodianPropertyName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.LICENSEE.name,
+                                                      licensee);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.LICENSEE_TYPE_NAME.name,
+                                                      licenseeTypeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.LICENSEE_PROPERTY_NAME.name,
+                                                      licenseePropertyName);
+
+        return propertyHelper.addStringProperty(properties,
+                                                OpenMetadataProperty.NOTES.name,
+                                                notes);
+
+    }
+
+
+    /**
+     * Remove a relationship between two definitions.
+     *
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param userId calling user
+     * @param licenseGUID unique identifier of the license relationship
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void unlicenseElement(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  licenseGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          licenseGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime);
+    }
+
+
+    /**
+     * Create a link between a certification type and an element that has achieved the certification.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param elementGUID unique identifier of the element
+     * @param certificationTypeGUID unique identifier of the certification type
+     * @param certificateGUID  unique identifier of the certificate (maybe from an external system)
+     * @param start when did the certification start
+     * @param end when will the certification end
+     * @param conditions any conditions added to the certification
+     * @param certifiedBy unique name/identifier of the element for the person/organization certifying the element
+     * @param certifiedByTypeName type of the certifiedBy element
+     * @param certifiedByPropertyName property name for the unique identifier from the certifiedBy element
+     * @param custodian unique name/identifier of the element for the person/organization responsible for maintaining the certification status
+     * @param custodianTypeName type of the custodian element
+     * @param custodianPropertyName property name for the unique identifier from the custodian element
+     * @param recipient unique name/identifier of the element for the person/organization receiving the certification
+     * @param recipientTypeName type of the recipient element
+     * @param recipientPropertyName property name for the unique identifier from the recipient element
+     * @param notes additional information, endorsements etc
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return guid of certification relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String certifyElement(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  elementGUID,
+                                 String  certificationTypeGUID,
+                                 String  certificateGUID,
+                                 Date    start,
+                                 Date    end,
+                                 String  conditions,
+                                 String  certifiedBy,
+                                 String  certifiedByTypeName,
+                                 String  certifiedByPropertyName,
+                                 String  custodian,
+                                 String  custodianTypeName,
+                                 String  custodianPropertyName,
+                                 String  recipient,
+                                 String  recipientTypeName,
+                                 String  recipientPropertyName,
+                                 String  notes,
+                                 Date    effectiveFrom,
+                                 Date    effectiveTo,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        return openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                                                    elementGUID,
+                                                                    certificationTypeGUID,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveFrom,
+                                                                    effectiveTo,
+                                                                    getCertificationProperties(certificateGUID,
+                                                                                               start,
+                                                                                               end,
+                                                                                               conditions,
+                                                                                               certifiedBy,
+                                                                                               certifiedByTypeName,
+                                                                                               certifiedByPropertyName,
+                                                                                               custodian,
+                                                                                               custodianTypeName,
+                                                                                               custodianPropertyName,
+                                                                                               recipient,
+                                                                                               recipientTypeName,
+                                                                                               recipientPropertyName,
+                                                                                               notes),
+                                                                    effectiveTime);
+    }
+
+
+    /**
+     * Update the certification relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param certificationGUID unique identifier for the relationship
+     * @param certificateGUID  unique identifier of the certificate (maybe from an external system)
+     * @param start when did the certification start
+     * @param end when will the certification end
+     * @param conditions any conditions added to the certification
+     * @param certifiedBy unique name/identifier of the element for the person/organization certifying the element
+     * @param certifiedByTypeName type of the certifiedBy element
+     * @param certifiedByPropertyName property name for the unique identifier from the certifiedBy element
+     * @param custodian unique name/identifier of the element for the person/organization responsible for maintaining the certification status
+     * @param custodianTypeName type of the custodian element
+     * @param custodianPropertyName property name for the unique identifier from the custodian element
+     * @param recipient unique name/identifier of the element for the person/organization receiving the certification
+     * @param recipientTypeName type of the recipient element
+     * @param recipientPropertyName property name for the unique identifier from the recipient element
+     * @param notes additional information, endorsements etc
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateCertification(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  certificationGUID,
+                                    String  certificateGUID,
+                                    Date    start,
+                                    Date    end,
+                                    String  conditions,
+                                    String  certifiedBy,
+                                    String  certifiedByTypeName,
+                                    String  certifiedByPropertyName,
+                                    String  custodian,
+                                    String  custodianTypeName,
+                                    String  custodianPropertyName,
+                                    String  recipient,
+                                    String  recipientTypeName,
+                                    String  recipientPropertyName,
+                                    String  notes,
+                                    boolean replaceAllProperties,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        openMetadataStoreClient.updateRelationshipInStore(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          certificationGUID,
+                                                          replaceAllProperties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          getCertificationProperties(certificateGUID,
+                                                                                     start,
+                                                                                     end,
+                                                                                     conditions,
+                                                                                     certifiedBy,
+                                                                                     certifiedByTypeName,
+                                                                                     certifiedByPropertyName,
+                                                                                     custodian,
+                                                                                     custodianTypeName,
+                                                                                     custodianPropertyName,
+                                                                                     recipient,
+                                                                                     recipientTypeName,
+                                                                                     recipientPropertyName,
+                                                                                     notes),
+                                                          effectiveTime);
+    }
+
+
+    /**
+     * Set up the properties for a certification.
+     *
+     * @param certificateGUID  unique identifier of the certificate (maybe from an external system)
+     * @param start when did the certification start
+     * @param end when will the certification end
+     * @param conditions any conditions added to the certification
+     * @param certifiedBy unique name/identifier of the element for the person/organization certifying the element
+     * @param certifiedByTypeName type of the certifiedBy element
+     * @param certifiedByPropertyName property name for the unique identifier from the certifiedBy element
+     * @param custodian unique name/identifier of the element for the person/organization responsible for maintaining the certification status
+     * @param custodianTypeName type of the custodian element
+     * @param custodianPropertyName property name for the unique identifier from the custodian element
+     * @param recipient unique name/identifier of the element for the person/organization receiving the certification
+     * @param recipientTypeName type of the recipient element
+     * @param recipientPropertyName property name for the unique identifier from the recipient element
+     * @param notes additional information, endorsements etc
+     * @return element properties
+     */
+    private ElementProperties getCertificationProperties(String  certificateGUID,
+                                                          Date    start,
+                                                          Date    end,
+                                                          String  conditions,
+                                                          String  certifiedBy,
+                                                          String  certifiedByTypeName,
+                                                          String  certifiedByPropertyName,
+                                                          String  custodian,
+                                                          String  custodianTypeName,
+                                                          String  custodianPropertyName,
+                                                          String  recipient,
+                                                          String  recipientTypeName,
+                                                          String  recipientPropertyName,
+                                                          String  notes)
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.CERTIFICATE_GUID.name,
+                                                                        certificateGUID);
+
+        properties = propertyHelper.addDateProperty(properties,
+                                                                OpenMetadataProperty.START.name,
+                                                                start);
+
+        properties = propertyHelper.addDateProperty(properties,
+                                                    OpenMetadataProperty.END.name,
+                                                    end);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CONDITIONS.name,
+                                                      conditions);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CERTIFIED_BY.name,
+                                                      certifiedBy);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CERTIFIED_BY_TYPE_NAME.name,
+                                                      certifiedByTypeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name,
+                                                      certifiedByPropertyName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CUSTODIAN.name,
+                                                      custodian);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CUSTODIAN_TYPE_NAME.name,
+                                                      custodianTypeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name,
+                                                      custodianPropertyName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.RECIPIENT.name,
+                                                      recipient);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.RECIPIENT_TYPE_NAME.name,
+                                                      recipientTypeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name,
+                                                      recipientPropertyName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.NOTES.name,
+                                                      notes);
+
+        return properties;
+    }
+
+
+    /**
+     * Remove a certification relationship.
+     *
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param userId calling user
+     * @param certificationGUID unique identifier of the certification relationship
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void decertifyElement(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  certificationGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        openMetadataStoreClient.deleteRelationshipInStore(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          certificationGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime);
+    }
 
 
     /**
@@ -3027,7 +3852,8 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                          relationshipTypeName,
                                                                                                          propertyHelper.getSearchPropertiesByName(findProperties.getPropertyNames(),
                                                                                                                                                   findProperties.getPropertyValue(),
-                                                                                                                                                  PropertyComparisonOperator.LIKE),
+                                                                                                                                                  PropertyComparisonOperator.LIKE,
+                                                                                                                                                  TemplateFilter.ALL),
                                                                                                          findProperties.getLimitResultsByStatus(),
                                                                                                          findProperties.getAsOfTime(),
                                                                                                          findProperties.getSequencingProperty(),
@@ -3104,7 +3930,8 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                          relationshipTypeName,
                                                                                                          propertyHelper.getSearchPropertiesByName(findProperties.getPropertyNames(),
                                                                                                                                                   findProperties.getPropertyValue(),
-                                                                                                                                                  PropertyComparisonOperator.LIKE),
+                                                                                                                                                  PropertyComparisonOperator.LIKE,
+                                                                                                                                                  TemplateFilter.ALL),
                                                                                                          findProperties.getLimitResultsByStatus(),
                                                                                                          findProperties.getAsOfTime(),
                                                                                                          findProperties.getSequencingProperty(),

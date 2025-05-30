@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.datadesigner.server;
 
-import org.odpi.openmetadata.accessservices.designmodel.client.DataDesignManager;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.DataDesignHandler;
 
 /**
  * DataDesignerInstance caches references to the objects it needs for a specific server.
@@ -17,7 +18,7 @@ public class DataDesignerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.DATA_DESIGNER;
 
-    private final DataDesignManager dataDesignManager;
+    private final DataDesignHandler dataDesignHandler;
 
 
 
@@ -33,11 +34,11 @@ public class DataDesignerInstance extends OMVSServiceInstance
      * @throws InvalidParameterException problem with server name or platform URL
      */
     public DataDesignerInstance(String       serverName,
-                                 AuditLog     auditLog,
-                                 String       localServerUserId,
-                                 int          maxPageSize,
-                                 String       remoteServerName,
-                                 String       remoteServerURL) throws InvalidParameterException
+                                AuditLog     auditLog,
+                                String       localServerUserId,
+                                int          maxPageSize,
+                                String       remoteServerName,
+                                String       remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceName(),
@@ -47,19 +48,24 @@ public class DataDesignerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        dataDesignManager = new DataDesignManager(remoteServerName, remoteServerURL, maxPageSize, auditLog);
-
+        dataDesignHandler = new DataDesignHandler(serverName,
+                                                  remoteServerName,
+                                                  remoteServerURL,
+                                                  auditLog,
+                                                  AccessServiceDescription.DESIGN_MODEL_OMAS.getAccessServiceURLMarker(),
+                                                  ViewServiceDescription.DATA_DESIGNER.getViewServiceFullName(),
+                                                  maxPageSize);
     }
 
 
     /**
-     * Return the solution manager client.  This client is from the Design Model OMAS and is for maintaining
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * data design artifacts.
      *
      * @return client
      */
-    public DataDesignManager getDataDesignManagerClient()
+    public DataDesignHandler getDataDesignManagerHandler()
     {
-        return dataDesignManager;
+        return dataDesignHandler;
     }
 }

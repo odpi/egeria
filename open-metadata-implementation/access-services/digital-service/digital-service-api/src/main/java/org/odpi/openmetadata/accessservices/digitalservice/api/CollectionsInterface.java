@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 
 import java.util.Date;
 import java.util.List;
@@ -33,8 +34,16 @@ public interface CollectionsInterface
      * @param parentGUID unique identifier of referenceable object (typically a personal profile, project or
      *                   community) that the collections hang off of
      * @param collectionType filter response by collection type - if null, any value will do
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
+     * @param templateFilter  should templates be returned?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -42,13 +51,21 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionElement> getAttachedCollections(String userId,
-                                                   String parentGUID,
-                                                   String collectionType,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException;
+    List<CollectionElement> getAttachedCollections(String              userId,
+                                                   String              parentGUID,
+                                                   String              collectionType,
+                                                   TemplateFilter      templateFilter,
+                                                   List<ElementStatus> limitResultsByStatus,
+                                                   Date                asOfTime,
+                                                   SequencingOrder     sequencingOrder,
+                                                   String              sequencingProperty,
+                                                   int                 startFrom,
+                                                   int                 pageSize,
+                                                   boolean             forLineage,
+                                                   boolean             forDuplicateProcessing,
+                                                   Date                effectiveTime) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException;
 
 
     /**
@@ -56,8 +73,16 @@ public interface CollectionsInterface
      *
      * @param userId     userId of user making request
      * @param classificationName name of the classification - if null, all collections are returned
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
+     * @param templateFilter  should templates be returned?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -65,12 +90,20 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionElement> getClassifiedCollections(String userId,
-                                                     String classificationName,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+    List<CollectionElement> getClassifiedCollections(String              userId,
+                                                     String              classificationName,
+                                                     TemplateFilter      templateFilter,
+                                                     List<ElementStatus> limitResultsByStatus,
+                                                     Date                asOfTime,
+                                                     SequencingOrder     sequencingOrder,
+                                                     String              sequencingProperty,
+                                                     int                 startFrom,
+                                                     int                 pageSize,
+                                                     boolean             forLineage,
+                                                     boolean             forDuplicateProcessing,
+                                                     Date                effectiveTime) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException;
 
 
     /**
@@ -79,6 +112,7 @@ public interface CollectionsInterface
      * @param userId     userId of user making request
      * @param classificationName option name of a collection classification
      * @param searchString string to search for
+     * @param templateFilter  should templates be returned?
      * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
      * @param asOfTime             repository time to use
      * @param sequencingOrder      order to retrieve results
@@ -98,6 +132,7 @@ public interface CollectionsInterface
     List<CollectionElement> findCollections(String              userId,
                                             String              classificationName,
                                             String              searchString,
+                                            TemplateFilter      templateFilter,
                                             List<ElementStatus> limitResultsByStatus,
                                             Date                asOfTime,
                                             SequencingOrder     sequencingOrder,
@@ -117,6 +152,7 @@ public interface CollectionsInterface
      * @param userId     userId of user making request
      * @param classificationName option name of a collection classification
      * @param name       name of the collections to return - match is full text match in qualifiedName or name
+     * @param templateFilter  should templates be returned?
      * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
      * @param asOfTime             repository time to use
      * @param sequencingOrder      order to retrieve results
@@ -136,6 +172,7 @@ public interface CollectionsInterface
     List<CollectionElement> getCollectionsByName(String              userId,
                                                  String              classificationName,
                                                  String              name,
+                                                 TemplateFilter      templateFilter,
                                                  List<ElementStatus> limitResultsByStatus,
                                                  Date                asOfTime,
                                                  SequencingOrder     sequencingOrder,
@@ -155,8 +192,16 @@ public interface CollectionsInterface
      * @param userId     userId of user making request
      * @param classificationName option name of a collection classification
      * @param collectionType the collection type value to match on.  If it is null, all collections with a null collectionType are returned
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
+     * @param templateFilter  should templates be returned?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -164,13 +209,21 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionElement> getCollectionsByType(String userId,
-                                                 String classificationName,
-                                                 String collectionType,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
+    List<CollectionElement> getCollectionsByType(String              userId,
+                                                 String              classificationName,
+                                                 String              collectionType,
+                                                 TemplateFilter      templateFilter,
+                                                 List<ElementStatus> limitResultsByStatus,
+                                                 Date                asOfTime,
+                                                 SequencingOrder     sequencingOrder,
+                                                 String              sequencingProperty,
+                                                 int                 startFrom,
+                                                 int                 pageSize,
+                                                 boolean             forLineage,
+                                                 boolean             forDuplicateProcessing,
+                                                 Date                effectiveTime) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException;
 
     /**
      * Return the properties of a specific collection.

@@ -157,7 +157,8 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
-
+        update04xxGovernanceDefinitions();
+        update07xxImplementationRelationships();
     }
 
 
@@ -166,9 +167,107 @@ public class OpenMetadataTypesArchive
      */
 
 
+    /**
+     * A variety of changes to improve consistency and flexibility of the governance definitions
+     */
+    private void update04xxGovernanceDefinitions()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceResponsibilityAssignmentRelationship());
+    }
+
+
+    /**
+     * Link GovernanceResponsibility to PersonRole rather than GovernanceRole.
+     *
+     * @return typeDef patch
+     */
+    private TypeDefPatch updateGovernanceResponsibilityAssignmentRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Update end 2.
+         */
+        final String                     end1AttributeName            = "performedByActors";
+        final String                     end1AttributeDescription     = "The actors assigned to this responsibility.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+
+
+    private void update07xxImplementationRelationships()
+    {
+        this.archiveBuilder.addRelationshipDef(getImplementationResourceRelationship());
+
+    }
+
+
+    private RelationshipDef getImplementationResourceRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "usedInImplementationOf";
+        final String                     end1AttributeDescription     = "Place where the linked resources could be used as part of an implementation.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "implementationResources";
+        final String                     end2AttributeDescription     = "Useful components in creating an implementation.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

@@ -435,7 +435,7 @@ Content-Type: application/json
 
 ###
 # @name getElementsSourcedFrom
-# Retrieve the elements linked via a SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.
+# Retrieve the elements linked via the SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.
 #
 # https://egeria-project.org/types/0/0011-Managing-Referenceables/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/sourced-from?startFrom=0&pageSize=10
@@ -447,6 +447,184 @@ Content-Type: application/json
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "openMetadataTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+
+@stakeholderGUID=add guid here
+
+###
+# @name getStakeholders
+# Retrieve the stakeholders linked via the Stakeholder relationship to the requested element.
+#
+# Stakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/stakeholders?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "openMetadataTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+# @name getStakeholderElements
+# Retrieve the elements linked via the Stakeholder relationship to the stakeholder.
+#
+# Stakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/stakeholders/{{stakeholderGUID}}/?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "openMetadataTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+
+@scopeGUID=add guid here
+
+###
+# @name getScopes
+# Retrieve the scopes linked via the ScopedBy relationship to the requested element.
+#
+# Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/scoped-by?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "openMetadataTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+# @name getScopedElements
+# Retrieve the elements linked via the ScopedBy relationship to the scope.
+#
+# Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/scoped-by/{{scopeGUID}}/?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "openMetadataTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+
+
+@licenseTypeGUID=add guid here
+
+
+###
+# @name getLicensedElements
+# Retrieve the elements linked via a License relationship to the requested LicenseType.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/licenses/{{licenseTypeGUID}}?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getLicenses
+# Retrieve the license types linked via a License relationship to the requested element.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/licenses?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+
+@certificationTypeGUID=8a921039-ad5f-454d-ae17-e5a5b69f9333
+
+
+###
+# @name getCertifiedElements
+# Retrieve the elements linked via a Certification relationship to the requested CertificationType.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/certifications/{{certificationTypeGUID}}?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getCertifications
+# Retrieve the certification types linked via a Certification relationship to the requested element.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/certifications?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -487,8 +665,8 @@ Content-Type: application/json
     "class" : "FindPropertyNameProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
-    "propertyValue" : "qualifiedName",
-    "propertyName" : "????"
+    "propertyValue" : "????",
+    "propertyName" : "qualifiedName"
 }
 
 ###
@@ -504,8 +682,8 @@ Content-Type: application/json
     "class" : "FindPropertyNameProperties",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
-    "propertyValue" : "qualifiedName",
-    "propertyName" : "????"
+    "propertyValue" : "???",
+    "propertyName" : "qualifiedName"
 }
 
 

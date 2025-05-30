@@ -20,13 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
 {
-    private List<RelatedElementStub> parents            = null;
-    private List<RelatedElementStub> peers              = null;
-    private List<RelatedElementStub> children           = null;
-    private List<RelatedElementStub> metrics            = null;
-    private List<RelatedElementStub> externalReferences = null;
-    private List<RelatedElementStub> others             = null;
-    private String                   mermaidGraph       = null;
+    private List<RelatedMetadataElementSummary> parents            = null;
+    private List<RelatedMetadataElementSummary> peers              = null;
+    private List<RelatedMetadataElementSummary> children           = null;
+    private List<RelatedMetadataElementSummary> metrics            = null;
+    private List<RelatedMetadataElementSummary> externalReferences = null;
+    private List<RelatedMetadataElementSummary> others             = null;
+    private String                              mermaidGraph       = null;
 
 
     /**
@@ -65,7 +65,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElementStub> getParents()
+    public List<RelatedMetadataElementSummary> getParents()
     {
         return parents;
     }
@@ -76,7 +76,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param parents list of governance definition stubs
      */
-    public void setParents(List<RelatedElementStub> parents)
+    public void setParents(List<RelatedMetadataElementSummary> parents)
     {
         this.parents = parents;
     }
@@ -87,7 +87,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElementStub> getPeers()
+    public List<RelatedMetadataElementSummary> getPeers()
     {
         return peers;
     }
@@ -98,7 +98,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param peers list of governance definition stubs
      */
-    public void setPeers(List<RelatedElementStub> peers)
+    public void setPeers(List<RelatedMetadataElementSummary> peers)
     {
         this.peers = peers;
     }
@@ -109,7 +109,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElementStub> getChildren()
+    public List<RelatedMetadataElementSummary> getChildren()
     {
         return children;
     }
@@ -120,7 +120,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param children list of governance definition stubs
      */
-    public void setChildren(List<RelatedElementStub> children)
+    public void setChildren(List<RelatedMetadataElementSummary> children)
     {
         this.children = children;
     }
@@ -131,7 +131,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of governance definition stubs
      */
-    public List<RelatedElementStub> getMetrics()
+    public List<RelatedMetadataElementSummary> getMetrics()
     {
         return metrics;
     }
@@ -142,7 +142,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param metrics list of governance definition stubs
      */
-    public void setMetrics(List<RelatedElementStub> metrics)
+    public void setMetrics(List<RelatedMetadataElementSummary> metrics)
     {
         this.metrics = metrics;
     }
@@ -153,7 +153,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return list of links to external references
      */
-    public List<RelatedElementStub> getExternalReferences()
+    public List<RelatedMetadataElementSummary> getExternalReferences()
     {
         return externalReferences;
     }
@@ -164,7 +164,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param externalReferences list of links to external references
      */
-    public void setExternalReferences(List<RelatedElementStub> externalReferences)
+    public void setExternalReferences(List<RelatedMetadataElementSummary> externalReferences)
     {
         this.externalReferences = externalReferences;
     }
@@ -175,7 +175,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @return details of other related elements
      */
-    public List<RelatedElementStub> getOthers()
+    public List<RelatedMetadataElementSummary> getOthers()
     {
         return others;
     }
@@ -186,7 +186,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
      *
      * @param others details of other related elements
      */
-    public void setOthers(List<RelatedElementStub> others)
+    public void setOthers(List<RelatedMetadataElementSummary> others)
     {
         this.others = others;
     }

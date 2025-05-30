@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 
 import java.util.List;
 import java.util.Map;
@@ -47,10 +46,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
                 @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties"),
-                @JsonSubTypes.Type(value = SecurityGroupProperties.class, name = "SecurityGroupProperties"),
-                @JsonSubTypes.Type(value = DataProcessingPurposeProperties.class, name = "DataProcessingPurposeProperties"),
+                @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
+                @JsonSubTypes.Type(value = GovernanceStrategyProperties.class, name = "GovernanceStrategyProperties"),
+                @JsonSubTypes.Type(value = RegulationProperties.class, name = "RegulationProperties"),
         })
-public class GovernanceDefinitionProperties
+public class GovernanceDefinitionProperties extends OpenMetadataRootProperties
 {
     private String              documentIdentifier   = null;
     private Map<String, String> additionalProperties = null;
@@ -63,9 +63,6 @@ public class GovernanceDefinitionProperties
     private List<String>        implications         = null;
     private List<String>        outcomes             = null;
     private List<String>        results              = null;
-
-    private String              typeName           = null;
-    private Map<String, Object> extendedProperties = null;
 
 
     /**
@@ -84,6 +81,7 @@ public class GovernanceDefinitionProperties
      */
     public GovernanceDefinitionProperties(GovernanceDefinitionProperties template)
     {
+        super(template);
         if (template != null)
         {
             this.documentIdentifier = template.getDocumentIdentifier();
@@ -97,33 +95,7 @@ public class GovernanceDefinitionProperties
             this.implications     = template.getImplications();
             this.outcomes = template.getOutcomes();
             this.results = template.getResults();
-            this.typeName = template.getTypeName();
-            this.extendedProperties = template.getExtendedProperties();
         }
-    }
-
-
-    /**
-     * Return the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
-     *
-     * @return string type name
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
-     *
-     * @param typeName string type name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
     }
 
 
@@ -170,31 +142,6 @@ public class GovernanceDefinitionProperties
     {
         this.additionalProperties = additionalProperties;
     }
-
-
-    /**
-     * Return the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
-     *
-     * @return map of properties
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        return extendedProperties;
-    }
-
-
-    /**
-     * Set up the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
-     *
-     * @param extendedProperties map of properties
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
-    }
-
 
 
     /**
@@ -413,22 +360,19 @@ public class GovernanceDefinitionProperties
     public String toString()
     {
         return "GovernanceDefinitionProperties{" +
-                       "documentIdentifier='" + documentIdentifier + '\'' +
-                       ", additionalProperties=" + additionalProperties +
-                       ", title='" + title + '\'' +
-                       ", summary='" + summary + '\'' +
-                       ", description='" + description + '\'' +
-                       ", scope='" + scope + '\'' +
-                       ", domainIdentifier=" + domainIdentifier +
-                       ", priority='" + importance + '\'' +
-                       ", implications=" + implications +
-                       ", outcomes=" + outcomes +
-                       ", results=" + results +
-                       ", typeName='" + typeName + '\'' +
-                       ", extendedProperties=" + extendedProperties +
-                       '}';
+                "documentIdentifier='" + documentIdentifier + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", title='" + title + '\'' +
+                ", summary='" + summary + '\'' +
+                ", description='" + description + '\'' +
+                ", scope='" + scope + '\'' +
+                ", domainIdentifier=" + domainIdentifier +
+                ", importance='" + importance + '\'' +
+                ", implications=" + implications +
+                ", outcomes=" + outcomes +
+                ", results=" + results +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -439,28 +383,21 @@ public class GovernanceDefinitionProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(documentIdentifier, that.documentIdentifier) &&
-                       Objects.equals(additionalProperties, that.additionalProperties) &&
-                       Objects.equals(title, that.title) &&
-                       Objects.equals(summary, that.summary) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(scope, that.scope) &&
-                       Objects.equals(importance, that.importance) &&
-                       Objects.equals(implications, that.implications) &&
-                       Objects.equals(outcomes, that.outcomes) &&
-                       Objects.equals(results, that.results) &&
-                       Objects.equals(typeName, that.typeName) &&
-                       Objects.equals(extendedProperties, that.extendedProperties);
+                Objects.equals(documentIdentifier, that.documentIdentifier) &&
+                Objects.equals(additionalProperties, that.additionalProperties) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(summary, that.summary) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(scope, that.scope) &&
+                Objects.equals(importance, that.importance) &&
+                Objects.equals(implications, that.implications) &&
+                Objects.equals(outcomes, that.outcomes) &&
+                Objects.equals(results, that.results);
     }
 
 
@@ -472,7 +409,6 @@ public class GovernanceDefinitionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, importance,
-                            implications, outcomes, results, typeName, extendedProperties);
+        return Objects.hash(super.hashCode(), documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, importance, implications, outcomes, results);
     }
 }

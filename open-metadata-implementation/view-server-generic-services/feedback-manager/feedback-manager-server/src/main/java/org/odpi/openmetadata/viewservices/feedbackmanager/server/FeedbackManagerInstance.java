@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.viewservices.feedbackmanager.ffdc.FeedbackManagerErrorCode;
-import org.odpi.openmetadata.viewservices.feedbackmanager.handler.CollaborationManagerHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.CollaborationManagerHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +98,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                                                                   viewServiceConfig.getOMAGServerPlatformRootURL(),
                                                                                                   auditLog,
                                                                                                   accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                                  ViewServiceDescription.FEEDBACK_MANAGER.getViewServiceFullName(),
                                                                                                   maxPageSize);
 
                                     collaborationManagerHandlerMap.put(viewServiceURLMarker,

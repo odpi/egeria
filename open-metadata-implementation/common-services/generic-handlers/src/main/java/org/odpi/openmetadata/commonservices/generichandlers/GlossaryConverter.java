@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.mermaid.GlossaryMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.GlossaryMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ChildCategoryElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryElement;

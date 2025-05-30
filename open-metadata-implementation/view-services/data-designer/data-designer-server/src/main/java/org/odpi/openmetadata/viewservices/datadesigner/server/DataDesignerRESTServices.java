@@ -3,13 +3,14 @@
 package org.odpi.openmetadata.viewservices.datadesigner.server;
 
 
-import org.odpi.openmetadata.accessservices.designmodel.client.DataDesignManager;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.DataDesignHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataStructure(userId,
                                                              requestBody.getExternalSourceGUID(),
@@ -134,7 +135,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataStructureFromTemplate(userId,
                                                                          requestBody.getExternalSourceGUID(),
@@ -206,7 +207,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 handler.updateDataStructure(userId,
                                             requestBody.getExternalSourceGUID(),
@@ -265,7 +266,7 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -335,7 +336,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -403,7 +404,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -471,12 +472,13 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getDataStructuresByName(userId,
                                                                      requestBody.getFilter(),
+                                                                     requestBody.getTemplateFilter(),
                                                                      requestBody.getLimitResultsByStatus(),
                                                                      requestBody.getAsOfTime(),
                                                                      requestBody.getSequencingOrder(),
@@ -533,7 +535,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -603,12 +605,13 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findDataStructures(userId,
                                                                 instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                requestBody.getTemplateFilter(),
                                                                 requestBody.getLimitResultsByStatus(),
                                                                 requestBody.getAsOfTime(),
                                                                 requestBody.getSequencingOrder(),
@@ -623,6 +626,7 @@ public class DataDesignerRESTServices extends TokenController
             {
                 response.setElements(handler.findDataStructures(userId,
                                                                 instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                TemplateFilter.ALL,
                                                                 null,
                                                                 null,
                                                                 SequencingOrder.CREATION_DATE_RECENT,
@@ -675,7 +679,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataField(userId,
                                                          requestBody.getExternalSourceGUID(),
@@ -740,7 +744,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataFieldFromTemplate(userId,
                                                                      requestBody.getExternalSourceGUID(),
@@ -812,7 +816,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 handler.updateDataField(userId,
                                         requestBody.getExternalSourceGUID(),
@@ -871,7 +875,7 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -941,7 +945,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1009,7 +1013,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1077,12 +1081,13 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getDataFieldsByName(userId,
                                                                  requestBody.getFilter(),
+                                                                 requestBody.getTemplateFilter(),
                                                                  requestBody.getLimitResultsByStatus(),
                                                                  requestBody.getAsOfTime(),
                                                                  requestBody.getSequencingOrder(),
@@ -1147,12 +1152,13 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findDataFields(userId,
                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                            requestBody.getTemplateFilter(),
                                                             requestBody.getLimitResultsByStatus(),
                                                             requestBody.getAsOfTime(),
                                                             requestBody.getSequencingOrder(),
@@ -1167,6 +1173,7 @@ public class DataDesignerRESTServices extends TokenController
             {
                 response.setElements(handler.findDataFields(userId,
                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                            TemplateFilter.ALL,
                                                             null,
                                                             null,
                                                             SequencingOrder.CREATION_DATE_RECENT,
@@ -1219,7 +1226,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1282,7 +1289,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataClass(userId,
                                                          requestBody.getExternalSourceGUID(),
@@ -1347,7 +1354,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 response.setGUID(handler.createDataClassFromTemplate(userId,
                                                                      requestBody.getExternalSourceGUID(),
@@ -1419,7 +1426,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 handler.updateDataClass(userId,
                                         requestBody.getExternalSourceGUID(),
@@ -1478,7 +1485,7 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1546,7 +1553,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1613,7 +1620,7 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1681,7 +1688,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1749,7 +1756,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1817,12 +1824,13 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getDataClassesByName(userId,
                                                                   requestBody.getFilter(),
+                                                                  requestBody.getTemplateFilter(),
                                                                   requestBody.getLimitResultsByStatus(),
                                                                   requestBody.getAsOfTime(),
                                                                   requestBody.getSequencingOrder(),
@@ -1887,12 +1895,13 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findDataClasses(userId,
                                                              instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                             requestBody.getTemplateFilter(),
                                                              requestBody.getLimitResultsByStatus(),
                                                              requestBody.getAsOfTime(),
                                                              requestBody.getSequencingOrder(),
@@ -1907,6 +1916,7 @@ public class DataDesignerRESTServices extends TokenController
             {
                 response.setElements(handler.findDataClasses(userId,
                                                              instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                             TemplateFilter.ALL,
                                                              null,
                                                              null,
                                                              SequencingOrder.CREATION_DATE_RECENT,
@@ -1959,7 +1969,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2028,7 +2038,7 @@ public class DataDesignerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+                DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
                 handler.linkDataClassDefinition(userId,
                                                 requestBody.getExternalSourceGUID(),
@@ -2087,7 +2097,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2155,7 +2165,7 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2224,7 +2234,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2295,7 +2305,7 @@ public class DataDesignerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2363,7 +2373,7 @@ public class DataDesignerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DataDesignManager handler = instanceHandler.getDataDesignManagerClient(userId, serverName, methodName);
+            DataDesignHandler handler = instanceHandler.getDataDesignManager(userId, serverName, methodName);
 
             if (requestBody != null)
             {

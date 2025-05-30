@@ -128,14 +128,14 @@ public enum CocoRequestTypeDefinition
         NewActionTarget newActionTarget = new NewActionTarget();
 
         newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName());
-        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getGUID());
+        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.CLINICAL_TRIAL_APPROVED_HOSPITAL.getGUID());
 
         actionTargetList.add(newActionTarget);
 
         newActionTarget = new NewActionTarget();
 
         newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
-        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_DATA.getGUID());
+        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.WEEKLY_MEASUREMENTS_APPROVED_DATA.getGUID());
 
         actionTargetList.add(newActionTarget);
 

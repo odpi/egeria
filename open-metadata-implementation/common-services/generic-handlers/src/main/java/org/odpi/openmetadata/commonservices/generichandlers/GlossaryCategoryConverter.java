@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.mermaid.GlossaryCategoryMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.GlossaryCategoryMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;

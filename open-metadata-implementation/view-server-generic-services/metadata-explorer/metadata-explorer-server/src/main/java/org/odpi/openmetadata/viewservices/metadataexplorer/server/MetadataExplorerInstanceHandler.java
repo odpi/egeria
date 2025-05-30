@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.viewservices.metadataexplorer.handlers.OpenMetadataHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
 
 
 /**
@@ -42,12 +42,12 @@ public class MetadataExplorerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public OpenMetadataHandler getOpenMetadataHandler(String userId,
-                                                      String serverName,
-                                                      String viewServiceURLMarker,
-                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+    public OpenMetadataStoreHandler getOpenMetadataHandler(String userId,
+                                                           String serverName,
+                                                           String viewServiceURLMarker,
+                                                           String serviceOperationName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         MetadataExplorerInstance instance = (MetadataExplorerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 

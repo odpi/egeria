@@ -57,7 +57,7 @@ public class CertificationRESTServices
      */
     public GUIDResponse createCertificationType(String                          serverName,
                                                 String                          userId,
-                                                GovernanceDefinitionRequestBody requestBody)
+                                                NewGovernanceDefinitionRequestBody requestBody)
     {
         final String methodName = "createCertificationType";
 
@@ -141,7 +141,7 @@ public class CertificationRESTServices
                                                 String                          userId,
                                                 String                          certificationTypeGUID,
                                                 boolean                         isMergeUpdate,
-                                                GovernanceDefinitionRequestBody requestBody)
+                                                NewGovernanceDefinitionRequestBody requestBody)
     {
         final String methodName = "updateCertificationType";
         final String guidParameterName = "certificationTypeGUID";

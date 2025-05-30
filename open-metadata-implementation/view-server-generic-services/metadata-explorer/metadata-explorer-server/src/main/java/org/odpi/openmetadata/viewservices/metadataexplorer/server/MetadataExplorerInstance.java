@@ -8,8 +8,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
 import org.odpi.openmetadata.viewservices.metadataexplorer.ffdc.MetadataExplorerErrorCode;
-import org.odpi.openmetadata.viewservices.metadataexplorer.handlers.OpenMetadataHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +27,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
     /*
      * This map caches clients for specific view services/access services.
      */
-    private final Map<String, OpenMetadataHandler> openMetadataHandlerMap = new HashMap<>();
+    private final Map<String, OpenMetadataStoreHandler> openMetadataHandlerMap = new HashMap<>();
     private final List<ViewServiceConfig> activeViewServices;
 
     /**
@@ -70,10 +70,10 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
      * @param methodName calling method
      * @return client
      */
-    public OpenMetadataHandler getOpenMetadataHandler(String viewServiceURLMarker,
+    public OpenMetadataStoreHandler getOpenMetadataHandler(String viewServiceURLMarker,
                                                       String methodName) throws InvalidParameterException
     {
-        OpenMetadataHandler openMetadataHandler = null;
+        OpenMetadataStoreHandler openMetadataHandler = null;
 
         if (viewServiceURLMarker != null)
         {
@@ -96,10 +96,10 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
                             {
                                 if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
                                 {
-                                    openMetadataHandler = new OpenMetadataHandler(accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                  viewServiceConfig.getOMAGServerName(),
-                                                                                  viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                  maxPageSize);
+                                    openMetadataHandler = new OpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
+                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                       accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                       maxPageSize);
 
                                     openMetadataHandlerMap.put(viewServiceURLMarker, openMetadataHandler);
                                 }

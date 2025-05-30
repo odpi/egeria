@@ -23,7 +23,6 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:mermaid-services')
     implementation 'org.springframework:spring-core'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

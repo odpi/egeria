@@ -483,8 +483,20 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
-        requestBody.setProperties(properties);
+        RelationshipProperties relationshipProperties;
+
+        if (properties == null)
+        {
+            relationshipProperties = new RelationshipProperties();
+        }
+        else
+        {
+            relationshipProperties = new RelationshipProperties(properties);
+        }
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -533,8 +545,20 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
-        requestBody.setProperties(properties);
+        RelationshipProperties relationshipProperties;
+
+        if (properties == null)
+        {
+            relationshipProperties = new RelationshipProperties();
+        }
+        else
+        {
+            relationshipProperties = new RelationshipProperties(properties);
+        }
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
                                                                 urlTemplate,
@@ -581,8 +605,20 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
-        requestBody.setProperties(properties);
+        RelationshipProperties relationshipProperties;
+
+        if (properties == null)
+        {
+            relationshipProperties = new RelationshipProperties();
+        }
+        else
+        {
+            relationshipProperties = new RelationshipProperties(properties);
+        }
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -623,7 +659,11 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
+        RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -667,7 +707,11 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
+        RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

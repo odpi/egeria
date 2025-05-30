@@ -292,7 +292,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                          governanceContext.getRequestParameters(),
                                                                                          projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.NOMINATE_HOSPITAL.getGUID(), nominateHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.NOMINATE_HOSPITAL.getGUID(), nominateHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.HOSPITAL_MANAGEMENT_PROJECT.getName()), nominateHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
 
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
@@ -307,7 +307,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                         governanceContext.getRequestParameters(),
                                                                                         projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.CERTIFY_HOSPITAL.getGUID(), certifyHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.CERTIFY_HOSPITAL.getGUID(), certifyHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.HOSPITAL_MANAGEMENT_PROJECT.getName()), certifyHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
 
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
@@ -322,7 +322,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                         governanceContext.getRequestParameters(),
                                                                                         projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.ONBOARD_HOSPITAL.getGUID(), onboardHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.ONBOARD_HOSPITAL.getGUID(), onboardHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName()), onboardHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
 
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
@@ -340,7 +340,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                              governanceContext.getRequestParameters(),
                                                                                              projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.SET_UP_DATA_LAKE.getGUID(), setUpDataLakeProcessGUID, null, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.SET_UP_DATA_LAKE.getGUID(), setUpDataLakeProcessGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName()), setUpDataLakeProcessGUID, ResourceUse.SUPPORTING_PROCESS);
 
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
@@ -409,9 +409,9 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                        null,
                                                                                                                        placeholderProperties,
                                                                                                                        clinicalTrialProjectGUID,
-                                                                                                                       OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                                                                                       this.getResourceUseProperties(ResourceUse.RELATED_INFORMATION),
-                                                                                                                       true);
+                                                                                                                       OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                                                                                       null,
+                                                                                                                       false);
 
         return governanceContext.getOpenMetadataStore().getMetadataElementByGUID(informationSupplyChainGUID);
     }
@@ -431,7 +431,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                               certificationTypeGUID,
                                                                               projectGUID,
                                                                               null,

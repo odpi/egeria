@@ -118,28 +118,6 @@ public class GovernanceReviewResource
 
 
     /**
-     * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the governance definition
-     *
-     * @return governance definition and its linked elements or
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the caller is not authorized to issue the request
-     *  PropertyServerException the metadata service has problems
-     */
-    @GetMapping(path = "/review/governance-definitions/{governanceDefinitionGUID}/in-context")
-
-    public GovernanceDefinitionGraphResponse getGovernanceDefinitionInContext(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String governanceDefinitionGUID)
-    {
-        return restAPI.getGovernanceDefinitionInContext(serverName, userId, governanceDefinitionGUID);
-    }
-
-
-    /**
      * Return the list of governance definitions that match the search string - this can be a regular expression.
      *
      * @param serverName name of the server instance to connect to

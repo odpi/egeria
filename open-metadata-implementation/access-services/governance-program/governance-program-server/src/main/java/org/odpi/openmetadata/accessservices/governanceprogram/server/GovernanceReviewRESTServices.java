@@ -203,54 +203,6 @@ public class GovernanceReviewRESTServices
 
 
     /**
-     * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the governance definition
-     *
-     * @return governance definition and its linked elements or
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the caller is not authorized to issue the request
-     *  PropertyServerException the metadata service has problems
-     */
-    public GovernanceDefinitionGraphResponse getGovernanceDefinitionInContext(String serverName,
-                                                                              String userId,
-                                                                              String governanceDefinitionGUID)
-    {
-        final String methodName = "getGovernanceDefinitionInContext";
-        final String guidParameterName = "governanceDefinitionGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GovernanceDefinitionGraphResponse response = new GovernanceDefinitionGraphResponse();
-        AuditLog                          auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GovernanceDefinitionHandler<GovernanceDefinitionGraph> handler = instanceHandler.getGovernanceDefinitionGraphHandler(userId, serverName, methodName);
-
-            response.setElement(handler.getGovernanceDefinitionInContext(userId,
-                                                                         governanceDefinitionGUID,
-                                                                         guidParameterName,
-                                                                         false,
-                                                                         false,
-                                                                         new Date(),
-                                                                         methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Return the list of governance definitions that match the search string - this can be a regular expression.
      *
      * @param serverName name of the server instance to connect to

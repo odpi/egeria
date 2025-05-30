@@ -200,20 +200,20 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                            "Level approved assuming the data remains anonymized.",
                                                                            2));
 
-        classifications.add(archiveHelper.getTemplateClassification("Landing Area weekly teddy bear measurements for drop foot clinical trial",
+        classifications.add(archiveHelper.getTemplateClassification("Landing Area weekly measurements for clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +
                                                                             "Use it to catalog the files as they come into the landing area.",
                                                                     "2.4",
                                                                     null,
                                                                     methodName));
 
-        String qualifiedName = "LandingArea::" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + "::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + "::CSVFile::" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
+        String qualifiedName = "LandingArea::" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + "::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + "::WeeklyMeasurements::" + PlaceholderProperty.FILE_NAME.getPlaceholder();
 
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
                                                   qualifiedName,
-                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                                   "V1.0",
-                                                  "Dated measurements of patient's progression presented in a tabular format with columns of PatientId, Date, AngleLeft and AngleRight.",
+                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on " + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   this.getAssetAdditionalProperties(),
                                                   extendedProperties,
                                                   classifications);
@@ -409,20 +409,20 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         zones.add(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder());
         classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
 
-        classifications.add(archiveHelper.getTemplateClassification("Data Lake weekly teddy bear measurements for drop foot clinical trial",
+        classifications.add(archiveHelper.getTemplateClassification("Data Lake weekly measurements for clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +
                                                                             "Use it to catalog the files as they come into the data lake.",
                                                                     "2.4",
                                                                     null,
                                                                     methodName));
 
-        String qualifiedName = "DataLake::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + "::CSVFile::" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
+        String qualifiedName = "DataLake::" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + "::WeeklyMeasurements::" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + "::" + PlaceholderProperty.FILE_NAME.getPlaceholder();
 
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
                                                   qualifiedName,
-                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on " + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                                   "V1.0",
-                                                  "Dated measurements of patient's progression presented in a tabular format with columns of PatientId, Date, AngleLeft and AngleRight.",
+                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   this.getAssetAdditionalProperties(),
                                                   extendedProperties,
                                                   classifications);

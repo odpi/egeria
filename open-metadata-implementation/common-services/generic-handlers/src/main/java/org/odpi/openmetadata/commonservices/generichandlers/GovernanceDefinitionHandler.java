@@ -1136,8 +1136,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeGUID,
-                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+                                        OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                         governanceDefinitionTypeName,
                                         null,
                                         null,
@@ -1250,65 +1250,4 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
 
     }
 
-
-
-    /**
-     * Retrieve the definition metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     * @param guidParameterName parameter name of guid
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getGovernanceDefinitionInContext(String  userId,
-                                              String  guid,
-                                              String  guidParameterName,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime,
-                                              String  methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        EntityDetail entity = this.getEntityFromRepository(userId,
-                                                           guid,
-                                                           guidParameterName,
-                                                           null,
-                                                           null,
-                                                           OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           supportedZones,
-                                                           effectiveTime,
-                                                           methodName);
-
-        if (entity != null)
-        {
-            List<Relationship> relationships = this.getAllAttachmentLinks(userId,
-                                                                          guid,
-                                                                          guidParameterName,
-                                                                          OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
-                                                                          null,
-                                                                          null,
-                                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
-
-            return converter.getNewComplexBean(beanClass, entity, relationships, methodName);
-        }
-
-        return null;
-    }
 }

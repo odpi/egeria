@@ -5,7 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt.todos;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
@@ -15,7 +16,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -109,8 +109,8 @@ public class ToDosTest
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
 
-        ToDoActionManagement toDoClient = thisTest.getToDoClient(serverName, serverPlatformRootURL, auditLog);
-        OpenMetadataClient   openMetadataClient = thisTest.getOpenMetadataClient(serverName, serverPlatformRootURL, 200);
+        ToDoActionHandler  toDoClient         = thisTest.getToDoClient(serverName, serverPlatformRootURL, auditLog);
+        OpenMetadataClient openMetadataClient = thisTest.getOpenMetadataClient(serverName, serverPlatformRootURL, 200);
 
         String assetGUID = thisTest.getAsset(openMetadataClient, userId);
         String originatorGUID = thisTest.getOriginator(openMetadataClient, userId);
@@ -155,15 +155,21 @@ public class ToDosTest
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private ToDoActionManagement getToDoClient(String   serverName,
-                                               String   serverPlatformRootURL,
-                                               AuditLog auditLog) throws FVTUnexpectedCondition
+    private ToDoActionHandler getToDoClient(String   serverName,
+                                            String   serverPlatformRootURL,
+                                            AuditLog auditLog) throws FVTUnexpectedCondition
     {
         final String activityName = "getToDoActionManagement";
 
         try
         {
-            return new ToDoActionManagement(serverName, serverPlatformRootURL, auditLog, 100);
+            return new ToDoActionHandler("Test",
+                                         serverName,
+                                         serverPlatformRootURL,
+                                         auditLog,
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceURLMarker(),
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                         100);
         }
         catch (Exception unexpectedError)
         {
@@ -386,7 +392,7 @@ public class ToDosTest
      * @return GUID of to Do
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getToDo(ToDoActionManagement client,
+    private String getToDo(ToDoActionHandler client,
                            String               userId,
                            String               assetGUID,
                            String               sponsorGUID,
@@ -449,7 +455,7 @@ public class ToDosTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void checkToDoOK(String               activityName,
-                             ToDoActionManagement client,
+                             ToDoActionHandler client,
                              String               toDoGUID,
                              int                  priority,
                              ToDoStatus           toDoStatus,
@@ -802,13 +808,13 @@ public class ToDosTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null ToDoSource from Retrieve)");
             }
-            if (! originatorGUID.equals(retrievedElement.getToDoSource().getGUID()))
+            if (! originatorGUID.equals(retrievedElement.getToDoSource().getRelatedElement().getElementHeader().getGUID()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad ToDoSource GUID from Retrieve) =>>" + retrievedElement.getToDoSource().getGUID());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad ToDoSource GUID from Retrieve) =>>" + retrievedElement.getToDoSource());
             }
-            if (! originatorQualifiedName.equals(retrievedElement.getToDoSource().getUniqueName()))
+            if (! originatorQualifiedName.equals(retrievedElement.getToDoSource().getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name)))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad ToDoSource Unique name from Retrieve) =>>" + retrievedElement.getToDoSource().getUniqueName());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad ToDoSource Unique name from Retrieve) =>>" + retrievedElement.getToDoSource());
             }
 
             if (retrievedElement.getAssignedActors() == null)
@@ -820,19 +826,19 @@ public class ToDosTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bas Number of AssignedActors from Retrieve) =>> ");
             }
 
-            ElementStub assignedActor = retrievedElement.getAssignedActors().get(0);
+            RelatedMetadataElementSummary assignedActor = retrievedElement.getAssignedActors().get(0);
 
             if (assignedActor == null)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null AssignedActor from Retrieve)");
             }
-            if (! actorGUID.equals(assignedActor.getGUID()))
+            if (! actorGUID.equals(assignedActor.getRelatedElement().getElementHeader().getGUID()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad AssignedActor GUID from Retrieve) =>> " + assignedActor.getGUID());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad AssignedActor GUID from Retrieve) =>> " + assignedActor.getRelatedElement().getElementHeader().getGUID());
             }
-            if (! userQualifiedName.equals(assignedActor.getUniqueName()))
+            if (! userQualifiedName.equals(assignedActor.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name)))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad AssignedActor Unique Name from Retrieve) =>> " + assignedActor.getUniqueName());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad AssignedActor Unique Name from Retrieve) =>> " + assignedActor);
             }
 
 
@@ -845,19 +851,19 @@ public class ToDosTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad number of Sponsors from Retrieve) =>> ");
             }
 
-            ElementStub sponsor = retrievedElement.getSponsors().get(0);
+            RelatedMetadataElementSummary sponsor = retrievedElement.getSponsors().get(0);
 
             if (sponsor == null)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null Sponsor from Retrieve)");
             }
-            if (! sponsorGUID.equals(sponsor.getGUID()))
+            if (! sponsorGUID.equals(sponsor.getRelatedElement().getElementHeader().getGUID()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad Sponsor GUID from Retrieve) =>> " + sponsor.getGUID());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad Sponsor GUID from Retrieve) =>> " + sponsor);
             }
-            if (! sponsorQualifiedName.equals(sponsor.getUniqueName()))
+            if (! sponsorQualifiedName.equals(sponsor.getRelatedElement().getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name)))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad Sponsor Unique Name from Retrieve) =>> " + sponsor.getUniqueName());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad Sponsor Unique Name from Retrieve) =>> " + sponsor);
             }
 
             if (retrievedElement.getActionTargets() == null)
@@ -904,7 +910,7 @@ public class ToDosTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void checkToDoGone(ToDoActionManagement client,
+    private void checkToDoGone(ToDoActionHandler client,
                                String               toDoGUID,
                                String               userId) throws FVTUnexpectedCondition
     {

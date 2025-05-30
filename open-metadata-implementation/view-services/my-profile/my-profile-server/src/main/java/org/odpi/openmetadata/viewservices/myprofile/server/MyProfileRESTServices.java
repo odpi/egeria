@@ -4,7 +4,6 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -16,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleE
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonalProfileProperties;
@@ -172,7 +172,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -231,7 +231,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             handler.updateToDo(userId, toDoGUID, isMergeUpdate, toDoProperties);
         }
@@ -278,7 +278,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             handler.updateActionTargetProperties(userId, actionTargetGUID, isMergeUpdate, actionTargetProperties);
         }
@@ -326,7 +326,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             handler.reassignToDo(userId, toDoGUID, actorGUID);
         }
@@ -372,7 +372,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             handler.deleteToDo(userId, toDoGUID);
         }
@@ -415,7 +415,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             response.setElement(handler.getToDo(userId, toDoGUID));
         }
@@ -464,7 +464,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -528,7 +528,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -592,7 +592,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -660,7 +660,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -720,7 +720,7 @@ public class MyProfileRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+            ToDoActionHandler handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {

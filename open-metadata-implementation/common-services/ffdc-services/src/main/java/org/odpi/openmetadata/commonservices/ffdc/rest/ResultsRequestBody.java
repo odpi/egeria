@@ -30,7 +30,6 @@ public class ResultsRequestBody
     private Date                asOfTime               = null;
     private SequencingOrder     sequencingOrder        = null;
     private String              sequencingProperty     = null;
-    private TemplateFilter      templateFilter         = null;
 
 
     /**
@@ -58,7 +57,6 @@ public class ResultsRequestBody
             asOfTime               = template.getAsOfTime();
             sequencingOrder        = template.getSequencingOrder();
             sequencingProperty     = template.getSequencingProperty();
-            templateFilter         = template.getTemplateFilter();
         }
     }
 
@@ -224,28 +222,6 @@ public class ResultsRequestBody
 
 
     /**
-     * Return the setting of the template filter.
-     *
-     * @return TemplateFilter enum
-     */
-    public TemplateFilter getTemplateFilter()
-    {
-        return templateFilter;
-    }
-
-
-    /**
-     *  Set up the setting of the template filter.
-     *
-     * @param templateFilter enum
-     */
-    public void setTemplateFilter(TemplateFilter templateFilter)
-    {
-        this.templateFilter = templateFilter;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -261,7 +237,6 @@ public class ResultsRequestBody
                 ", asOfTime=" + asOfTime +
                 ", sequencingOrder=" + sequencingOrder +
                 ", sequencingProperty='" + sequencingProperty + '\'' +
-                ", templateFilter=" + templateFilter +
                 '}';
     }
 
@@ -284,7 +259,6 @@ public class ResultsRequestBody
                 Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
                 Objects.equals(asOfTime, that.asOfTime) &&
                 sequencingOrder == that.sequencingOrder &&
-                templateFilter == that.templateFilter &&
                 Objects.equals(sequencingProperty, that.sequencingProperty);
     }
 
@@ -298,7 +272,7 @@ public class ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(forLineage, forDuplicateProcessing, effectiveTime, templateFilter,
+        return Objects.hash(forLineage, forDuplicateProcessing, effectiveTime,
                             limitResultsByStatus, asOfTime, sequencingOrder, sequencingProperty);
     }
 }

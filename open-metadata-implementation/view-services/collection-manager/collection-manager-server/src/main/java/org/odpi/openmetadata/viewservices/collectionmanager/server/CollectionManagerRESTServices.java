@@ -15,6 +15,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.rest.AnyTimeRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -88,11 +90,35 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getAttachedCollections(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
+                response.setElements(handler.getAttachedCollections(userId,
+                                                                    parentGUID,
+                                                                    requestBody.getFilter(),
+                                                                    requestBody.getTemplateFilter(),
+                                                                    requestBody.getLimitResultsByStatus(),
+                                                                    requestBody.getAsOfTime(),
+                                                                    requestBody.getSequencingOrder(),
+                                                                    requestBody.getSequencingProperty(),
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    requestBody.getForLineage(),
+                                                                    requestBody.getForDuplicateProcessing(),
+                                                                    requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElements(handler.getAttachedCollections(userId, parentGUID, null, startFrom, pageSize));
+                response.setElements(handler.getAttachedCollections(userId,
+                                                                    parentGUID,
+                                                                    null,
+                                                                    TemplateFilter.ALL,
+                                                                    null,
+                                                                    null,
+                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                    null,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    false,
+                                                                    false,
+                                                                    new Date()));
             }
         }
         catch (Throwable error)
@@ -142,11 +168,33 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getClassifiedCollections(userId, requestBody.getFilter(), startFrom, pageSize));
+                response.setElements(handler.getClassifiedCollections(userId,
+                                                                      requestBody.getFilter(),
+                                                                      requestBody.getTemplateFilter(),
+                                                                      requestBody.getLimitResultsByStatus(),
+                                                                      requestBody.getAsOfTime(),
+                                                                      requestBody.getSequencingOrder(),
+                                                                      requestBody.getSequencingProperty(),
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      requestBody.getForLineage(),
+                                                                      requestBody.getForDuplicateProcessing(),
+                                                                      requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElements(handler.getClassifiedCollections(userId, null, startFrom, pageSize));
+                response.setElements(handler.getClassifiedCollections(userId,
+                                                                      null,
+                                                                      TemplateFilter.ALL,
+                                                                      null,
+                                                                      null,
+                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                      null,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      false,
+                                                                      false,
+                                                                      new Date()));
             }
         }
         catch (Throwable error)
@@ -207,6 +255,7 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setElements(handler.findCollections(userId,
                                                              classificationName,
                                                              instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                             requestBody.getTemplateFilter(),
                                                              requestBody.getLimitResultsByStatus(),
                                                              requestBody.getAsOfTime(),
                                                              requestBody.getSequencingOrder(),
@@ -222,6 +271,7 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setElements(handler.findCollections(userId,
                                                              classificationName,
                                                              instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                             TemplateFilter.ALL,
                                                              null,
                                                              null,
                                                              SequencingOrder.CREATION_DATE_RECENT,
@@ -283,6 +333,7 @@ public class CollectionManagerRESTServices extends TokenController
             response.setElements(handler.getCollectionsByName(userId,
                                                               classificationName,
                                                               requestBody.getFilter(),
+                                                              requestBody.getTemplateFilter(),
                                                               requestBody.getLimitResultsByStatus(),
                                                               requestBody.getAsOfTime(),
                                                               requestBody.getSequencingOrder(),
@@ -345,16 +396,32 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setElements(handler.getCollectionsByType(userId,
                                                                   classificationName,
                                                                   requestBody.getFilter(),
+                                                                  requestBody.getTemplateFilter(),
+                                                                  requestBody.getLimitResultsByStatus(),
+                                                                  requestBody.getAsOfTime(),
+                                                                  requestBody.getSequencingOrder(),
+                                                                  requestBody.getSequencingProperty(),
                                                                   startFrom,
-                                                                  pageSize));
+                                                                  pageSize,
+                                                                  requestBody.getForLineage(),
+                                                                  requestBody.getForDuplicateProcessing(),
+                                                                  requestBody.getEffectiveTime()));
             }
             else
             {
                 response.setElements(handler.getCollectionsByType(userId,
                                                                   classificationName,
                                                                   null,
+                                                                  TemplateFilter.ALL,
+                                                                  null,
+                                                                  null,
+                                                                  SequencingOrder.PROPERTY_ASCENDING,
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   startFrom,
-                                                                  pageSize));
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  new Date()));
             }
         }
         catch (Throwable error)
@@ -709,6 +776,187 @@ public class CollectionManagerRESTServices extends TokenController
                                                           requestBody.getIsOwnAnchor(),
                                                           requestBody.getAnchorScopeGUID(),
                                                           OpenMetadataType.FOLDER.typeName,
+                                                          requestBody.getCollectionProperties(),
+                                                          requestBody.getParentGUID(),
+                                                          requestBody.getParentRelationshipTypeName(),
+                                                          requestBody.getParentRelationshipProperties(),
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Create a new collection with the ContextEventCollection classification.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createContextEventCollection(String                   serverName,
+                                                     NewCollectionRequestBody requestBody)
+    {
+        final String methodName = "createContextEventCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+                response.setGUID(handler.createCollection(userId,
+                                                          requestBody.getAnchorGUID(),
+                                                          requestBody.getIsOwnAnchor(),
+                                                          requestBody.getAnchorScopeGUID(),
+                                                          OpenMetadataType.FOLDER.typeName,
+                                                          requestBody.getCollectionProperties(),
+                                                          requestBody.getParentGUID(),
+                                                          requestBody.getParentRelationshipTypeName(),
+                                                          requestBody.getParentRelationshipProperties(),
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a new collection with the EventSet classification.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createEventSetCollection(String                   serverName,
+                                                 NewCollectionRequestBody requestBody)
+    {
+        final String methodName = "createEventSetCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+                response.setGUID(handler.createCollection(userId,
+                                                          requestBody.getAnchorGUID(),
+                                                          requestBody.getIsOwnAnchor(),
+                                                          requestBody.getAnchorScopeGUID(),
+                                                          OpenMetadataType.EVENT_SET.typeName,
+                                                          requestBody.getCollectionProperties(),
+                                                          requestBody.getParentGUID(),
+                                                          requestBody.getParentRelationshipTypeName(),
+                                                          requestBody.getParentRelationshipProperties(),
+                                                          requestBody.getParentAtEnd1(),
+                                                          requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a new collection with the NamingStandardRuleSet classification.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createNamingStandardRuleSetCollection(String                   serverName,
+                                                              NewCollectionRequestBody requestBody)
+    {
+        final String methodName = "createNamingStandardRuleSetCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+                response.setGUID(handler.createCollection(userId,
+                                                          requestBody.getAnchorGUID(),
+                                                          requestBody.getIsOwnAnchor(),
+                                                          requestBody.getAnchorScopeGUID(),
+                                                          OpenMetadataType.NAMING_STANDARD_RULE_SET.typeName,
                                                           requestBody.getCollectionProperties(),
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),

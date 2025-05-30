@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalRe
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 
@@ -229,7 +230,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
         final String elementGUIDParameterName = "attachedToGUID";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
 
-        super.setupRelationship(userId, attachedToGUID, elementGUIDParameterName, null, linkProperties, externalReferenceGUID, externalReferenceGUIDParameterName, urlTemplate, methodName);
+        super.setupRelationship(userId, attachedToGUID, elementGUIDParameterName, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, linkProperties, externalReferenceGUID, externalReferenceGUIDParameterName, urlTemplate, methodName);
     }
 
 

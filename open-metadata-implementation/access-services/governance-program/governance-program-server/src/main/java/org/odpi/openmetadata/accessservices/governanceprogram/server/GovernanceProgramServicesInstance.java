@@ -38,7 +38,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     private final ActorProfileHandler<ProfileElement>                      profileHandler;
     private final ExternalReferenceHandler<ExternalReferenceElement>       externalReferenceHandler;
     private final GovernanceDefinitionHandler<GovernanceDefinitionElement> governanceDefinitionHandler;
-    private final GovernanceDefinitionHandler<GovernanceDefinitionGraph>   governanceDefinitionGraphHandler;
     private final CertificationHandler<CertificationTypeElement>           certificationTypeHandler;
     private final LicenseHandler<LicenseTypeElement>                       licenseTypeHandler;
     private final GovernanceMetricHandler<GovernanceMetricElement>         governanceMetricHandler;
@@ -195,20 +194,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                                                  defaultZones,
                                                                                  publishZones,
                                                                                  auditLog);
-
-            this.governanceDefinitionGraphHandler = new GovernanceDefinitionHandler<>(new GovernanceDefinitionGraphConverter<>(repositoryHelper, serviceName, serverName),
-                                                                                      GovernanceDefinitionGraph.class,
-                                                                                      serviceName,
-                                                                                      serverName,
-                                                                                      invalidParameterHandler,
-                                                                                      repositoryHandler,
-                                                                                      repositoryHelper,
-                                                                                      localServerUserId,
-                                                                                      securityVerifier,
-                                                                                      supportedZones,
-                                                                                      defaultZones,
-                                                                                      publishZones,
-                                                                                      auditLog);
 
             this.certificationTypeHandler = new CertificationHandler<>(new CertificationTypeConverter<>(repositoryHelper, serviceName, serverName),
                                                                        CertificationTypeElement.class,
@@ -428,17 +413,6 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     GovernanceDefinitionHandler<GovernanceDefinitionElement> getGovernanceDefinitionHandler()
     {
         return governanceDefinitionHandler;
-    }
-
-
-    /**
-     * Return the handler for governance definition requests.
-     *
-     * @return handler object
-     */
-    GovernanceDefinitionHandler<GovernanceDefinitionGraph> getGovernanceDefinitionGraphHandler()
-    {
-        return governanceDefinitionGraphHandler;
     }
 
 

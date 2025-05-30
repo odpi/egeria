@@ -2558,7 +2558,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governance_definition_scope_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -7398,6 +7398,35 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(derivedFromGUID + "_to_" + implementedByGUID + "_implemented_by_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+
+    /**
+     * Link an element to its implementation
+     *
+     * @param usedInImplementationOfGUID guid of element that the implementation is derived from
+     * @param implementationResourceGUID guid of the element that can be used as part of an implementation
+     * @param description description of the implementation
+     */
+    public void addImplementationResourceRelationship(String usedInImplementationOfGUID,
+                                                      String implementationResourceGUID,
+                                                      String description)
+    {
+        final String methodName = "addImplementationResourceRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(usedInImplementationOfGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(implementationResourceGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(usedInImplementationOfGUID + "_to_" + implementationResourceGUID + "_implementation_resource_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

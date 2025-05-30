@@ -19,6 +19,8 @@ public class AssetGraph extends AssetElement
     private List<MetadataElementSummary> informationSupplyChains            = null;
     private String                       informationSupplyChainMermaidGraph = null;
     private String                       fieldLevelLineageGraph             = null;
+    private String                       actionMermaidGraph                 = null;
+    private String                       localLineageGraph                  = null;
 
     /**
      * Default constructor
@@ -56,6 +58,8 @@ public class AssetGraph extends AssetElement
             informationSupplyChains            = template.getInformationSupplyChains();
             informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
             fieldLevelLineageGraph             = template.getFieldLevelLineageGraph();
+            actionMermaidGraph                 = template.getActionMermaidGraph();
+            localLineageGraph                  = template.getLocalLineageGraph();
         }
     }
 
@@ -197,6 +201,50 @@ public class AssetGraph extends AssetElement
 
 
     /**
+     * Return details of the actions operating on the asset.
+     *
+     * @return mermaid string
+     */
+    public String getActionMermaidGraph()
+    {
+        return actionMermaidGraph;
+    }
+
+
+    /**
+     * Set up details of the actions operating on the asset.
+     *
+     * @param actionMermaidGraph mermaid string
+     */
+    public void setActionMermaidGraph(String actionMermaidGraph)
+    {
+        this.actionMermaidGraph = actionMermaidGraph;
+    }
+
+
+    /**
+     * Return the mermaid graph that shows the directly connected lineage relationships.
+     *
+     * @return mermaid string
+     */
+    public String getLocalLineageGraph()
+    {
+        return localLineageGraph;
+    }
+
+
+    /**
+     * Set up the mermaid graph that shows the directly connected lineage relationships.
+     *
+     * @param localLineageGraph mermaid string
+     */
+    public void setLocalLineageGraph(String localLineageGraph)
+    {
+        this.localLineageGraph = localLineageGraph;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -211,6 +259,8 @@ public class AssetGraph extends AssetElement
                 ", informationSupplyChains=" + informationSupplyChains +
                 ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
                 ", fieldLevelLineageGraph='" + fieldLevelLineageGraph + '\'' +
+                ", actionMermaidGraph='" + actionMermaidGraph + '\'' +
+                ", localLineageGraph='" + localLineageGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -232,6 +282,8 @@ public class AssetGraph extends AssetElement
                 Objects.equals(relationships, that.relationships) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph) &&
                 Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph) &&
+                Objects.equals(actionMermaidGraph, that.actionMermaidGraph) &&
+                Objects.equals(localLineageGraph, that.localLineageGraph) &&
                 Objects.equals(fieldLevelLineageGraph, that.fieldLevelLineageGraph);
     }
 
@@ -245,6 +297,7 @@ public class AssetGraph extends AssetElement
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), anchoredElements, relationships, mermaidGraph,
-                            informationSupplyChainMermaidGraph, fieldLevelLineageGraph);
+                            informationSupplyChainMermaidGraph, fieldLevelLineageGraph,
+                            actionMermaidGraph, localLineageGraph);
     }
 }

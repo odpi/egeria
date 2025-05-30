@@ -1,3 +1,4 @@
+###
 # Egeria-classification-manager-omvs
 
 @baseURL=https://localhost:9443
@@ -42,6 +43,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "GovernanceClassificationProperties",
@@ -68,7 +73,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "EffectiveTimeRequestBody",
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -85,6 +94,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "GovernanceClassificationProperties",
@@ -111,7 +124,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "EffectiveTimeRequestBody",
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -131,6 +148,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "GovernanceClassificationProperties",
@@ -158,7 +179,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "EffectiveTimeRequestBody",
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -177,6 +202,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "RetentionClassificationProperties",
@@ -206,7 +235,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "EffectiveTimeRequestBody",
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -223,6 +256,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "SecurityTagsProperties",
@@ -250,7 +287,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -266,6 +307,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "OwnerProperties",
@@ -287,7 +332,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "ClassificationRequestBody",
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -303,6 +352,10 @@ Content-Type: application/json
 
 {
    "class" : "ClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "SubjectAreaMemberProperties",
@@ -322,7 +375,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "ClassificationRequestBody",
+  "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -342,20 +399,23 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "relationshipProperties" : {
-    "class": "SemanticAssignmentProperties",
-    "expression" : "add value here",
-    "description" : "add value here",
-    "status" : "VALIDATED",
-    "confidence" : 100,
-    "createdBy" : "add value here",
-    "steward" : "add value here",
-    "source" : "add value here"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "relationshipProperties" : {
+     "class": "SemanticAssignmentProperties",
+     "expression" : "add value here",
+     "description" : "add value here",
+     "status" : "VALIDATED",
+     "confidence" : 100,
+     "createdBy" : "add value here",
+     "steward" : "add value here",
+     "source" : "add value here"
   }
 }
-
 
 ###
 # @name clearSemanticAssignment
@@ -368,8 +428,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "EffectiveTimeQueryRequestBody",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 ###
@@ -387,8 +451,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "RelationshipRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -398,354 +466,297 @@ Content-Type: application/json
 #
 # Governance Definition: https://egeria-project.org/types/4/0401-Governance-Definitions/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{definitionGUID}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "EffectiveTimeQueryRequestBody",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
 ###
-# =====================================================================================================================
-# These methods are for retrieving element by different type of search criteria.
-# The request bodies all support a property of "effectiveTime" and request parameters of "forLineage" and "forDuplicateProcessing".
-# They are optional and have a default value of "{{$isoTimestamp}}", false and false respectively.
-# The paging request parameters "startFrom" and "pageSize" are also optional and have default values of 0,
-# which attempts to retrieve as much as is available upto the maximum allowed by the server.
-###
-# @name getMetadataElementByGUID
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
-{
-    "class" : "EffectiveTimeQueryRequestBody",
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
+@stakeholderGUID=add guid here
 
 ###
-# @name getMetadataElementByUniqueName
-# Retrieve the metadata element using its unique name (typically the qualified name).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "NameRequestBody",
-    "name" : "Add name here",
-    "namePropertyName" : "qualifiedName",
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name getMetadataElementGUIDByUniqueName
-# Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/guid-by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "NameRequestBody",
-    "name" : "Add name here",
-    "namePropertyName" : "qualifiedName",
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name getElements
-# Retrieve elements of the requested type name. If no type name is specified then any type of element may be returned.
+# @name addStakeholderToElement
+# Link a stakeholder to an element using the Stakeholder relationship.
 #
-# https://egeria-project.org/types/
+# Stakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-type?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/stakeholders/{{stakeholderGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
-    "openMetadataTypeName" : "CertificationType",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
 ###
-# @name getElementsByPropertyValue
-# Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
-# An open metadata type name may be supplied to restrict the results.
+# @name removeStakeholderFromElement
+# Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
 #
-# https://egeria-project.org/types/
+# Skakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-exact-property-value?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/stakeholders/{{stakeholderGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
-    "propertyValue" : "Campaign:Clinical Trials Management",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+###
+
+@scopeGUID=add guid here
 
 ###
-# @name findElementsByPropertyValue
-# Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
-# properties rather than needing to be an exact match.
-# An open metadata type name may be supplied to restrict the results.
+# @name addScopeToElement
+# Link a scope to an element using the ScopedBy relationship.
 #
-# https://egeria-project.org/types/
+# Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-property-value-search?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "CertificationType",
-    "propertyValue" : "Approved Hospital",
-    "propertyNames" : ["name", "qualifiedName", "title"],
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
-###
-
-@classificationName=GovernanceProject
 
 ###
-# @name getElementsByClassification (any element type)
-# Retrieve elements with the requested classification name. It is also possible to limit the results
-# by specifying a type name for the elements that should be returned. If no type name is specified then
-# any type of element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-classification/{{classificationName}}?startFrom=0&pageSize=10
+# @name removeScopeFromElement
+# Remove the ScopedBy relationship between a scope and an element.
+#
+# Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
+### =======================================
+# Licenses
+#
+
+@licenseTypeGUID=add guid here
+@licenseGUID=add guid here
 
 ###
-# @name getElementsByClassification (specific element type)
-# Retrieve elements with the requested classification name. It is also possible to limit the results
-# by specifying a type name for the elements that should be returned. If no type name is specified then
-# any type of element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-classification/{{classificationName}}?startFrom=0&pageSize=10
+# @name licenseElement
+# Link an element to a license type and include details of the license in the relationship properties.
+# The GUID returned is the identifier of the relationship.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/license-types/{{licenseTypeGUID}}/license
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
-    "openMetadataTypeName" : "Project",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties": {
+      "class" : "LicenseProperties",
+      "licenseId" : "",
+      "startDate" : "{{$isoTimestamp}}",
+      "endDate" : "{{$isoTimestamp}}",
+      "conditions" : "",
+      "licensedBy" : "",
+      "licensedByTypeName" : "",
+      "licensedByPropertyName" : "",
+      "custodian" : "",
+      "custodianTypeName" : "",
+      "custodianPropertyName" : "",
+      "licensee" : "",
+      "licenseeTypeName" : "",
+      "licenseePropertyName" : "",
+      "entitlements" : "",
+      "restrictions" : "",
+      "obligations" : "",
+      "notes" : ""
+   }
 }
 
 
 ###
-# @name getElementsByClassificationWithPropertyValue
-# Retrieve elements with the requested classification name and with the requested a value found in one of the
-# classification's properties specified.  The value must match exactly. An open metadata type name may be supplied
-# to restrict the types of elements returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-classification/{{classificationName}}/with-exact-property-value?startFrom=0&pageSize=10
+# @name updateLicense
+# Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
+# licenses for the same license type.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/licenses/{{licenseGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
-    "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties": {
+      "class" : "LicenseProperties",
+      "licenseId" : "",
+      "startDate" : "{{$isoTimestamp}}",
+      "endDate" : "{{$isoTimestamp}}",
+      "conditions" : "",
+      "licensedBy" : "",
+      "licensedByTypeName" : "",
+      "licensedByPropertyName" : "",
+      "custodian" : "",
+      "custodianTypeName" : "",
+      "custodianPropertyName" : "",
+      "licensee" : "",
+      "licenseeTypeName" : "",
+      "licenseePropertyName" : "",
+      "entitlements" : "",
+      "restrictions" : "",
+      "obligations" : "",
+      "notes" : ""
+   }
 }
 
 ###
-# @name findElementsByClassificationWithPropertyValue
-# Retrieve elements with the requested classification name and with the requested a value found in
-# one of the classification's properties specified.  The value must only be contained in the
-# properties rather than needing to be an exact match.
-# An open metadata type name may be supplied to restrict the results.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-classification/{{classificationName}}/with-property-value-search?startFrom=0&pageSize=10
+# @name unlicenseElement
+# Remove the license for an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/licenses/{licenseGUID}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
-    "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
+### =======================================
+# Certifications
+#
+
+@certificationTypeGUID=Add guid here
+@certificationGUID=Add guid here
+
 ###
-# @name getRelatedElements (all relationship types; specific element type returned)
-# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
-# specifying a type name for the elements that should be returned. If no type name is specified then any type of
-# element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/by-relationship?startFrom=0&pageSize=10&startAtEnd=1
+# @name certifyElement
+# Link an element to a certification type and include details of the certification in the relationship properties.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/certification-types/{{certificationTypeGUID}}/certify
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
-    "openMetadataTypeName" : "Project",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties": {
+      "class" : "LicenseProperties",
+      "certificateId" : "",
+      "startDate" : "{{$isoTimestamp}}",
+      "endDate" : "{{$isoTimestamp}}",
+      "conditions" : "",
+      "certifiedBy" : "",
+      "certifiedByTypeName" : "",
+      "certifiedByPropertyName" : "",
+      "custodian" : "",
+      "custodianTypeName" : "",
+      "custodianPropertyName" : "",
+      "recipient" : "",
+      "recipientTypeName" : "",
+      "recipientPropertyName" : "",
+      "notes" : ""
+   }
 }
 
 
-
 ###
-# @name getRelatedElements (all relationship types, all element types)
-# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
-# specifying a type name for the elements that should be returned. If no type name is specified then any type of
-# element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/by-relationship?startFrom=0&pageSize=10&startAtEnd=1
+# @name updateCertification
+# Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
+# certifications for the same certification type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/certifications/{{certificationGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "RelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties": {
+      "class" : "LicenseProperties",
+      "certificateId" : "",
+      "startDate" : "{{$isoTimestamp}}",
+      "endDate" : "{{$isoTimestamp}}",
+      "conditions" : "",
+      "certifiedBy" : "",
+      "certifiedByTypeName" : "",
+      "certifiedByPropertyName" : "",
+      "custodian" : "",
+      "custodianTypeName" : "",
+      "custodianPropertyName" : "",
+      "recipient" : "",
+      "recipientTypeName" : "",
+      "recipientPropertyName" : "",
+      "notes" : ""
+   }
 }
 
 
-
 ###
-
-@relationshipTypeName=GovernedBy
-
-###
-# @name getRelatedElements
-# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
-# specifying a type name for the elements that should be returned. If no type name is specified then any type of
-# element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startFrom=0&pageSize=10&startAtEnd=1
+# @name decertifyElement
+# Remove the certification for an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/certifications/{{certificationGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
-    "effectiveTime" : "{{$isoTimestamp}}"
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
-
-###
-# @name getRelatedElements (specific element types returned)
-# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
-# specifying a type name for the elements that should be returned. If no type name is specified then any type of
-# element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startFrom=0&pageSize=10&startAtEnd=1
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindProperties",
-    "openMetadataTypeName" : "CertificationType",
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name getRelatedElementsWithPropertyValue
-# Retrieve elements linked via the requested relationship type name and with the requested a value found in one of
-# the classification's properties specified.  The value must match exactly. An open metadata type name may be
-# supplied to restrict the types of elements returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-exact-property-value?startFrom=0&pageSize=10&startAtEnd=1
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
-    "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-###
-# @name findRelatedElementsWithPropertyValue
-# Retrieve elements linked via the requested relationship type name and with the requested value found in one of the
-# relationship's properties specified.  The value must only be contained in the properties rather than needing to be
-# an exact match.  An open metadata type name may be supplied to restrict the results.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-property-value-search?startFrom=0&pageSize=10&startAtEnd=1
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
-    "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name getRelationships
-# Retrieve relationships of the requested relationship type name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/relationships/{{relationshipTypeName}}?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindProperties",
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name getRelationshipsWithPropertyValue
-# Retrieve relationships of the requested relationship type name and with the requested a value found in
-# one of the relationship's properties specified.  The value must match exactly.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/relationships/{{relationshipTypeName}}/with-exact-property-value?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindPropertyNamesProperties",
-    "propertyValue" : "Organization:Hampton Hospital",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-###
-# @name findRelationshipsWithPropertyValue
-# Retrieve relationships of the requested relationship type name and with the requested a value found in one of
-# the relationship's properties specified.  The value must only be contained in the properties rather than
-# needing to be an exact match.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/relationships/{{relationshipTypeName}}/with-property-value-search?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
-    "propertyValue" : "Clinical Trials",
-    "propertyNames" : ["name", "qualifiedName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-###
-
-@guid=Add guid here
-
-###
-# @name retrieveInstanceForGUID
-# Retrieve the header for the instance identified by the supplied unique identifier.  It may be an element (entity) or a relationship between elements.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/guids/{{guid}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "EffectiveTimeRequestBody",
-    "effectiveTime" : "{{$isoTimestamp}}"
-}

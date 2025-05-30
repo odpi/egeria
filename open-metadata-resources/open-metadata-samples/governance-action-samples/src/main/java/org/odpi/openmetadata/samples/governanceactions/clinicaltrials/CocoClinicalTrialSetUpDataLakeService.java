@@ -348,7 +348,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Link the validated data set to the data lake folder solution component.
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), validatedFilesDataSetGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), validatedFilesDataSetGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
                 governanceContext.createLineageRelationship(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
                                                             validatedFilesDataSetGUID,
@@ -379,7 +379,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Link the sandbox schema to the sandbox solution component
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), sandboxSchemaGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.TREATMENT_VALIDATION_SANDBOX.getGUID(), sandboxSchemaGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
                 /*
                  * Indicate that the sandbox is governed by the data quality certification.
@@ -394,7 +394,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                 /*
                  * Link the airflow DAG to the solution component
                  */
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                             validatedFilesDataSetGUID,

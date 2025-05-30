@@ -63,7 +63,7 @@ public interface StewardshipExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -157,7 +157,7 @@ public interface StewardshipExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -253,7 +253,7 @@ public interface StewardshipExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -351,7 +351,7 @@ public interface StewardshipExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -883,15 +883,14 @@ public interface StewardshipExchangeInterface
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException;
 
-
     /**
      * Link a governance definition to an element using the GovernedBy relationship.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
+     * @param definitionGUID identifier of the governance definition to link
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -903,8 +902,8 @@ public interface StewardshipExchangeInterface
     void addGovernanceDefinitionToElement(String  userId,
                                           String  assetManagerGUID,
                                           String  assetManagerName,
-                                          String  definitionGUID,
                                           String  elementGUID,
+                                          String  definitionGUID,
                                           Date    effectiveTime,
                                           boolean forLineage,
                                           boolean forDuplicateProcessing) throws InvalidParameterException,
@@ -919,8 +918,8 @@ public interface StewardshipExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to update
+     * @param definitionGUID identifier of the governance definition to link
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -932,13 +931,129 @@ public interface StewardshipExchangeInterface
     void removeGovernanceDefinitionFromElement(String  userId,
                                                String  assetManagerGUID,
                                                String  assetManagerName,
-                                               String  definitionGUID,
                                                String  elementGUID,
+                                               String  definitionGUID,
                                                Date    effectiveTime,
                                                boolean forLineage,
                                                boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;
+
+    /**
+     * Link a stakeholder to an element using the Stakeholder relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param stakeholderGUID identifier of the stakeholder to link
+     * @param stakeholderRole role of the stakeholder
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void addStakeholderToElement(String  userId,
+                                 String  assetManagerGUID,
+                                 String  assetManagerName,
+                                 String  elementGUID,
+                                 String  stakeholderGUID,
+                                 String  stakeholderRole,
+                                 Date    effectiveTime,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+
+    /**
+     * Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param stakeholderGUID identifier of the stakeholder to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeStakeholderFromElement(String  userId,
+                                      String  assetManagerGUID,
+                                      String  assetManagerName,
+                                      String  elementGUID,
+                                      String  stakeholderGUID,
+                                      Date    effectiveTime,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
+
+
+    /**
+     * Link a scope to an element using the ScopedBy relationship.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param scopeGUID identifier of the scope to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void addScopeToElement(String  userId,
+                           String  assetManagerGUID,
+                           String  assetManagerName,
+                           String  elementGUID,
+                           String  scopeGUID,
+                           Date    effectiveTime,
+                           boolean forLineage,
+                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
+
+
+
+    /**
+     * Remove the ScopedBy relationship between a scope and an element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param scopeGUID identifier of the scope to link
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeScopeFromElement(String  userId,
+                                String  assetManagerGUID,
+                                String  assetManagerName,
+                                String  elementGUID,
+                                String  scopeGUID,
+                                Date    effectiveTime,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
+
 
 
 

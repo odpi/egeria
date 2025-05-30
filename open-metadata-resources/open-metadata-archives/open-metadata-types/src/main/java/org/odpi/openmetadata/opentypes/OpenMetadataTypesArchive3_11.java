@@ -645,7 +645,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "assignedScope";
+        final String                     end2AttributeName            = "scopeOfResponsibility";
         final String                     end2AttributeDescription     = "Elements describing the resources or action the the actors are responsible for.";
         final String                     end2AttributeDescriptionGUID = null;
 

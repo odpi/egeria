@@ -287,9 +287,9 @@ public class OpenMetadataConverterBase<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewRelatedMetadataElementsBean(Class<B>                beanClass,
+    public B getNewRelatedMetadataElementsBean(Class<B>                 beanClass,
                                                OpenMetadataRelationship relationship,
-                                               String                  methodName) throws PropertyServerException
+                                               String                   methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewRelatedMetadataElementsBean";
 
@@ -832,26 +832,7 @@ public class OpenMetadataConverterBase<B>
     protected List<RelatedMetadataElementSummary> getDataClassDefinition(Class<B>                     beanClass,
                                                                          List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getDataClassDefinition";
-
-        if (relatedMetadataElements != null)
-        {
-            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
-            {
-                if ((relatedMetadataElement != null) &&
-                        (relatedMetadataElement.getElement() != null) &&
-                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName)))
-                {
-                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
-                }
-            }
-
-            return moreInformation;
-        }
-
-        return null;
+        return this.getRelatedElements(beanClass, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements);
     }
 
 
@@ -866,26 +847,7 @@ public class OpenMetadataConverterBase<B>
     protected List<RelatedMetadataElementSummary> getDataClassAssignment(Class<B>                     beanClass,
                                                                          List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getDataClassAssignment";
-
-        if (relatedMetadataElements != null)
-        {
-            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
-            {
-                if ((relatedMetadataElement != null) &&
-                        (relatedMetadataElement.getElement() != null) &&
-                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName)))
-                {
-                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
-                }
-            }
-
-            return moreInformation;
-        }
-
-        return null;
+        return this.getRelatedElements(beanClass, OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName, relatedMetadataElements);
     }
 
 
@@ -900,26 +862,7 @@ public class OpenMetadataConverterBase<B>
     protected List<RelatedMetadataElementSummary> getSemanticDefinition(Class<B>                     beanClass,
                                                                         List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getSemanticDefinition";
-
-        if (relatedMetadataElements != null)
-        {
-            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
-            {
-                if ((relatedMetadataElement != null) &&
-                        (relatedMetadataElement.getElement() != null) &&
-                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName)))
-                {
-                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
-                }
-            }
-
-            return moreInformation;
-        }
-
-        return null;
+        return this.getRelatedElements(beanClass, OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements);
     }
 
 
@@ -934,28 +877,58 @@ public class OpenMetadataConverterBase<B>
     protected List<RelatedMetadataElementSummary> getSemanticAssignment(Class<B>                     beanClass,
                                                                         List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getSemanticAssignment";
+        return this.getRelatedElements(beanClass, OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements);
+    }
+
+
+
+    /**
+     * Summarize the related external references.
+     *
+     * @param beanClass bean class
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getExternalReferences(Class<B>                     beanClass,
+                                                                        List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        return getRelatedElements(beanClass,  OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relatedMetadataElements);
+    }
+
+
+    /**
+     * Summarize the related elements of the requested type
+     *
+     * @param beanClass bean class
+     * @param requestedRelationshipType relationship type to extract
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getRelatedElements(Class<B>                     beanClass,
+                                                                     String                       requestedRelationshipType,
+                                                                     List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getRelatedElements";
 
         if (relatedMetadataElements != null)
         {
-            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+            List<RelatedMetadataElementSummary> matchingElements = new ArrayList<>();
 
             for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
             {
-                if ((relatedMetadataElement != null) &&
-                        (relatedMetadataElement.getElement() != null) &&
-                        (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName)))
+                if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement, requestedRelationshipType)))
                 {
-                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    matchingElements.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
                 }
             }
 
-            return moreInformation;
+            return matchingElements;
         }
 
         return null;
     }
-
 
 
     /**
@@ -975,19 +948,29 @@ public class OpenMetadataConverterBase<B>
 
         if (relatedMetadataElements != null)
         {
-            List<RelatedMetadataElementSummary> moreInformation = new ArrayList<>();
+            List<RelatedMetadataElementSummary> others = new ArrayList<>();
 
             for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
             {
-                if ((relatedMetadataElement != null) &&
-                        (relatedMetadataElement.getElement() != null) &&
-                        (! processedRelationshipTypes.contains(relatedMetadataElement.getType().getTypeName())))
+                if (relatedMetadataElement != null)
                 {
-                    moreInformation.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    boolean saveRelationship = true;
+                    for (String ignoreRelationshipType : processedRelationshipTypes)
+                    {
+                        if (propertyHelper.isTypeOf(relatedMetadataElement, ignoreRelationshipType))
+                        {
+                            saveRelationship = false;
+                        }
+                    }
+
+                    if (saveRelationship)
+                    {
+                        others.add(this.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                    }
                 }
             }
 
-            return moreInformation;
+            return others;
         }
 
         return null;

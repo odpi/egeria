@@ -304,6 +304,17 @@ public class SurveyContext
 
 
     /**
+     * Return the survey action service.
+     *
+     * @return qualified name
+     */
+    public String getSurveyActionServiceName()
+    {
+        return surveyActionServiceName;
+    }
+
+
+    /**
      * Return the completion status provided by the survey action service.
      *
      * @return enum

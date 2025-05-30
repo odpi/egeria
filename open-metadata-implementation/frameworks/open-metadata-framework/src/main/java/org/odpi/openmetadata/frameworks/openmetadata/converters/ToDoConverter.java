@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ToDoActionMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -105,9 +106,11 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
 
                     if (relationships != null)
                     {
-                        List<ElementStub>         assignedActors = new ArrayList<>();
-                        List<ElementStub>             sponsors      = new ArrayList<>();
-                        List<ToDoActionTargetElement> actionTargets = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> assignedActors     = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> sponsors           = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> externalReferences = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> others             = new ArrayList<>();
+                        List<ToDoActionTargetElement>       actionTargets      = new ArrayList<>();
 
                         for (RelatedMetadataElement relatedMetadataElement : relationships)
                         {
@@ -115,15 +118,19 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
                             {
                                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName))
                                 {
-                                    bean.setToDoSource(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
+                                    bean.setToDoSource(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName))
                                 {
-                                    assignedActors.add(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
+                                    assignedActors.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName))
                                 {
-                                    sponsors.add(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
+                                    sponsors.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                }
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName))
+                                {
+                                    externalReferences.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName))
                                 {
@@ -151,6 +158,10 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
 
                                     actionTargets.add(actionTargetElement);
                                 }
+                                else
+                                {
+                                    others.add(super.getRelatedElementSummary(beanClass, relatedMetadataElement, methodName));
+                                }
                             }
                         }
 
@@ -168,14 +179,28 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
                         {
                             bean.setActionTargets(actionTargets);
                         }
+
+                        if (! externalReferences.isEmpty())
+                        {
+                            bean.setExternalReferences(externalReferences);
+                        }
+
+                        if (! others.isEmpty())
+                        {
+                            bean.setOtherRelatedElements(others);
+                        }
+
+
                     }
+
+                    ToDoActionMermaidGraphBuilder graphBuilder = new ToDoActionMermaidGraphBuilder(bean);
+
+                    bean.setMermaidGraph(graphBuilder.getMermaidGraph());
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
-
-                bean.setProperties(toDoProperties);
             }
 
             return returnBean;

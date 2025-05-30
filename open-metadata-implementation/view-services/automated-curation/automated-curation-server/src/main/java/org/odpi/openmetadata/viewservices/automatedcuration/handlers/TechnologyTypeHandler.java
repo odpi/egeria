@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.automatedcuration.handlers;
 import org.odpi.openmetadata.accessservices.assetowner.client.ExternalReferenceManager;
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.mermaid.HierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -703,7 +703,7 @@ public class TechnologyTypeHandler
         List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
                                                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                                                           null,
-                                                                                          propertyHelper.getSearchPropertiesByName(propertyNames, technologyTypeName, PropertyComparisonOperator.EQ),
+                                                                                          propertyHelper.getSearchPropertiesByName(propertyNames, technologyTypeName, PropertyComparisonOperator.EQ, TemplateFilter.ALL),
                                                                                           limitResultsByStatus,
                                                                                           asOfTime,
                                                                                           this.getMatchClassifications(getTemplates),

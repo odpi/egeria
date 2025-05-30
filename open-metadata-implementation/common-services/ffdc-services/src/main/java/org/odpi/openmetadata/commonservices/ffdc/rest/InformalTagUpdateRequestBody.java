@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * InformalTags have the userId of the person who added the tag, the name of the tag and its description.
  * <br><br>
  * The content of the tag is a personal judgement (which is why the user's id is in the tag)
- * and there is no formal review of the tags.  However, they can be used as a basis for crowd-sourcing
+ * and there is no formal review of the tags.  However, they can be used as a basis for crowdsourcing
  * Glossary terms.
  * <br><br>
  * Private InformalTags are only returned to the user that created them.
@@ -26,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTagUpdateRequestBody
+public class InformalTagUpdateRequestBody extends MetadataSourceRequestBody
 {
     private String  description  = null;
 
@@ -84,8 +86,8 @@ public class InformalTagUpdateRequestBody
     public String toString()
     {
         return "InformalTagUpdateRequestBody{" +
-                       "description='" + description + '\'' +
-                       '}';
+                "description='" + description + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -98,16 +100,11 @@ public class InformalTagUpdateRequestBody
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof InformalTagUpdateRequestBody that))
-        {
-            return false;
-        }
-
-        return description != null ? description.equals(that.description) : that.description == null;
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        InformalTagUpdateRequestBody that = (InformalTagUpdateRequestBody) objectToCompare;
+        return Objects.equals(description, that.description);
     }
 
 
@@ -119,6 +116,6 @@ public class InformalTagUpdateRequestBody
     @Override
     public int hashCode()
     {
-        return description != null ? description.hashCode() : 0;
+        return Objects.hash(super.hashCode(), description);
     }
 }

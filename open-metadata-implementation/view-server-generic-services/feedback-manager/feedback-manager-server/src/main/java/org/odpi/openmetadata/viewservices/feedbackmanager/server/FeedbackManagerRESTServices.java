@@ -6,14 +6,13 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.feedbackmanager.handler.CollaborationManagerHandler;
-import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.CollaborationManagerHandler;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -169,12 +168,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public RatingElementsResponse getAttachedRatings(String                        serverName,
-                                                     String                        elementGUID,
-                                                     int                           startFrom,
-                                                     int                           pageSize,
-                                                     String                        viewServiceURLMarker,
-                                                     EffectiveTimeQueryRequestBody requestBody)
+    public RatingElementsResponse getAttachedRatings(String             serverName,
+                                                     String             elementGUID,
+                                                     int                startFrom,
+                                                     int                pageSize,
+                                                     String             viewServiceURLMarker,
+                                                     ResultsRequestBody requestBody)
     {
         final String methodName = "getAttachedRatings";
 
@@ -195,11 +194,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getAttachedRatings(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getAttachedRatings(userId,
+                                                                elementGUID,
+                                                                requestBody.getLimitResultsByStatus(),
+                                                                requestBody.getAsOfTime(),
+                                                                requestBody.getSequencingOrder(),
+                                                                requestBody.getSequencingProperty(),
+                                                                startFrom,
+                                                                pageSize,
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.getAttachedRatings(userId, elementGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getAttachedRatings(userId,
+                                                                elementGUID,
+                                                                null,
+                                                                null,
+                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                null,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date()));
             }
         }
         catch (Throwable error)
@@ -341,12 +360,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public LikeElementsResponse getAttachedLikes(String                        serverName,
-                                                 String                        elementGUID,
-                                                 int                           startFrom,
-                                                 int                           pageSize,
-                                                 String                        viewServiceURLMarker,
-                                                 EffectiveTimeQueryRequestBody requestBody)
+    public LikeElementsResponse getAttachedLikes(String             serverName,
+                                                 String             elementGUID,
+                                                 int                startFrom,
+                                                 int                pageSize,
+                                                 String             viewServiceURLMarker,
+                                                 ResultsRequestBody requestBody)
     {
         final String methodName = "getAttachedLikes";
 
@@ -367,11 +386,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getAttachedLikes(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getAttachedLikes(userId,
+                                                              elementGUID,
+                                                              requestBody.getLimitResultsByStatus(),
+                                                              requestBody.getAsOfTime(),
+                                                              requestBody.getSequencingOrder(),
+                                                              requestBody.getSequencingProperty(),
+                                                              startFrom,
+                                                              pageSize,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.getAttachedLikes(userId, elementGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getAttachedLikes(userId,
+                                                              elementGUID,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date()));
             }
         }
         catch (Throwable error)
@@ -424,7 +463,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
+                if (requestBody.getProperties() instanceof CommentProperties commentProperties)
                 {
 
                     response.setGUID(handler.addCommentToElement(userId, elementGUID, isPublic, commentProperties));
@@ -489,7 +528,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
+                if (requestBody.getProperties() instanceof CommentProperties commentProperties)
                 {
                     CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
@@ -556,7 +595,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
+                if (requestBody.getProperties() instanceof CommentProperties commentProperties)
                 {
                     CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
@@ -891,12 +930,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public CommentElementsResponse getAttachedComments(String                        serverName,
-                                                       String                        elementGUID,
-                                                       int                           startFrom,
-                                                       int                           pageSize,
-                                                       String                        viewServiceURLMarker,
-                                                       EffectiveTimeQueryRequestBody requestBody)
+    public CommentElementsResponse getAttachedComments(String             serverName,
+                                                       String             elementGUID,
+                                                       int                startFrom,
+                                                       int                pageSize,
+                                                       String             viewServiceURLMarker,
+                                                       ResultsRequestBody requestBody)
     {
         final String methodName = "getAttachedComments";
 
@@ -917,11 +956,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getAttachedComments(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getAttachedComments(userId,
+                                                                 elementGUID,
+                                                                 requestBody.getLimitResultsByStatus(),
+                                                                 requestBody.getAsOfTime(),
+                                                                 requestBody.getSequencingOrder(),
+                                                                 requestBody.getSequencingProperty(),
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 requestBody.getForLineage(),
+                                                                 requestBody.getForDuplicateProcessing(),
+                                                                 requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.getAttachedComments(userId, elementGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getAttachedComments(userId,
+                                                                 elementGUID,
+                                                                 null,
+                                                                 null,
+                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                 null,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
+                                                                 new Date()));
             }
         }
         catch (Throwable error)
@@ -952,13 +1011,13 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CommentElementsResponse findComments(String                  serverName,
-                                                int                     startFrom,
-                                                int                     pageSize,
-                                                boolean                 startsWith,
-                                                boolean                 endsWith,
-                                                boolean                 ignoreCase,
-                                                String                  viewServiceURLMarker,
+    public CommentElementsResponse findComments(String            serverName,
+                                                int               startFrom,
+                                                int               pageSize,
+                                                boolean           startsWith,
+                                                boolean           endsWith,
+                                                boolean           ignoreCase,
+                                                String            viewServiceURLMarker,
                                                 FilterRequestBody requestBody)
     {
         final String methodName = "findComments";
@@ -980,19 +1039,33 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.findComments(userId,
-                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getEffectiveTime()));
+                response.setElements(handler.findComments(userId,
+                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                          requestBody.getTemplateFilter(),
+                                                          requestBody.getLimitResultsByStatus(),
+                                                          requestBody.getAsOfTime(),
+                                                          requestBody.getSequencingOrder(),
+                                                          requestBody.getSequencingProperty(),
+                                                          startFrom,
+                                                          pageSize,
+                                                          requestBody.getForLineage(),
+                                                          requestBody.getForDuplicateProcessing(),
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.findComments(userId,
-                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                             startFrom,
-                                                             pageSize,
-                                                             new Date()));
+                response.setElements(handler.findComments(userId,
+                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                          TemplateFilter.ALL,
+                                                          null,
+                                                          null,
+                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                          null,
+                                                          startFrom,
+                                                          pageSize,
+                                                          false,
+                                                          false,
+                                                          new Date()));
             }
         }
         catch (Throwable error)
@@ -1203,11 +1276,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setTag(handler.getTag(userId, guid, requestBody.getEffectiveTime()));
+                response.setElement(handler.getTag(userId, guid, requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setTag(handler.getTag(userId, guid, new Date()));
+                response.setElement(handler.getTag(userId, guid, new Date()));
             }
         }
         catch (Throwable error)
@@ -1259,11 +1332,18 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setTags(handler.getTagsByName(userId,
-                                                       requestBody.getFilter(),
-                                                       startFrom,
-                                                       pageSize,
-                                                       requestBody.getEffectiveTime()));
+                response.setElements(handler.getTagsByName(userId,
+                                                           requestBody.getFilter(),
+                                                           TemplateFilter.ALL,
+                                                           null,
+                                                           null,
+                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                           null,
+                                                           startFrom,
+                                                           pageSize,
+                                                           false,
+                                                           false,
+                                                           new Date()));
             }
             else
             {
@@ -1325,19 +1405,33 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setTags(handler.findTags(userId,
-                                                  instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                  startFrom,
-                                                  pageSize,
-                                                  requestBody.getEffectiveTime()));
+                response.setElements(handler.findTags(userId,
+                                                      instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                      requestBody.getTemplateFilter(),
+                                                      requestBody.getLimitResultsByStatus(),
+                                                      requestBody.getAsOfTime(),
+                                                      requestBody.getSequencingOrder(),
+                                                      requestBody.getSequencingProperty(),
+                                                      startFrom,
+                                                      pageSize,
+                                                      requestBody.getForLineage(),
+                                                      requestBody.getForDuplicateProcessing(),
+                                                      requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setTags(handler.findTags(userId,
-                                                  instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                  startFrom,
-                                                  pageSize,
-                                                  new Date()));
+                response.setElements(handler.findTags(userId,
+                                                      instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                      TemplateFilter.ALL,
+                                                      null,
+                                                      null,
+                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                      null,
+                                                      startFrom,
+                                                      pageSize,
+                                                      false,
+                                                      false,
+                                                      new Date()));
             }
         }
         catch (Throwable error)
@@ -1395,19 +1489,33 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setTags(handler.findMyTags(userId,
-                                                    instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                    startFrom,
-                                                    pageSize,
-                                                    requestBody.getEffectiveTime()));
+                response.setElements(handler.findMyTags(userId,
+                                                        instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                        requestBody.getTemplateFilter(),
+                                                        requestBody.getLimitResultsByStatus(),
+                                                        requestBody.getAsOfTime(),
+                                                        requestBody.getSequencingOrder(),
+                                                        requestBody.getSequencingProperty(),
+                                                        startFrom,
+                                                        pageSize,
+                                                        requestBody.getForLineage(),
+                                                        requestBody.getForDuplicateProcessing(),
+                                                        requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setTags(handler.findMyTags(userId,
-                                                    instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                    startFrom,
-                                                    pageSize,
-                                                    new Date()));
+                response.setElements(handler.findMyTags(userId,
+                                                        instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                        TemplateFilter.ALL,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
+                                                        startFrom,
+                                                        pageSize,
+                                                        false,
+                                                        false,
+                                                        new Date()));
             }
         }
         catch (Throwable error)
@@ -1550,19 +1658,19 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public RelatedElementsResponse getElementsByTag(String                        serverName,
-                                                    String                        tagGUID,
-                                                    int                           startFrom,
-                                                    int                           pageSize,
-                                                    String                        viewServiceURLMarker,
-                                                    EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementStubsResponse getElementsByTag(String             serverName,
+                                                                String             tagGUID,
+                                                                int                startFrom,
+                                                                int                pageSize,
+                                                                String             viewServiceURLMarker,
+                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getElementsByTag";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse  response = new RelatedElementsResponse();
-        AuditLog          auditLog = null;
+        RelatedMetadataElementStubsResponse response = new RelatedMetadataElementStubsResponse();
+        AuditLog                            auditLog = null;
 
         try
         {
@@ -1576,11 +1684,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getElementsByTag(userId, tagGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getElementsByTag(userId,
+                                                              tagGUID,
+                                                              requestBody.getLimitResultsByStatus(),
+                                                              requestBody.getAsOfTime(),
+                                                              requestBody.getSequencingOrder(),
+                                                              requestBody.getSequencingProperty(),
+                                                              startFrom,
+                                                              pageSize,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.getElementsByTag(userId, tagGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getElementsByTag(userId,
+                                                              tagGUID,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date()));
             }
         }
         catch (Throwable error)
@@ -1608,12 +1736,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public InformalTagsResponse getAttachedTags(String                        serverName,
-                                                String                        elementGUID,
-                                                int                           startFrom,
-                                                int                           pageSize,
-                                                String                        viewServiceURLMarker,
-                                                EffectiveTimeQueryRequestBody requestBody)
+    public InformalTagsResponse getAttachedTags(String             serverName,
+                                                String             elementGUID,
+                                                int                startFrom,
+                                                int                pageSize,
+                                                String             viewServiceURLMarker,
+                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getAttachedTags";
 
@@ -1634,11 +1762,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setTags(handler.getAttachedTags(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getAttachedTags(userId,
+                                                             elementGUID,
+                                                             requestBody.getLimitResultsByStatus(),
+                                                             requestBody.getAsOfTime(),
+                                                             requestBody.getSequencingOrder(),
+                                                             requestBody.getSequencingProperty(),
+                                                             startFrom,
+                                                             pageSize,
+                                                             requestBody.getForLineage(),
+                                                             requestBody.getForDuplicateProcessing(),
+                                                             requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setTags(handler.getAttachedTags(userId, elementGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getAttachedTags(userId,
+                                                             elementGUID,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                             null,
+                                                             startFrom,
+                                                             pageSize,
+                                                             false,
+                                                             false,
+                                                             new Date()));
             }
         }
         catch (Throwable error)
@@ -1747,7 +1895,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getElementProperties() instanceof  NoteLogProperties noteLogProperties)
+                if (requestBody.getProperties() instanceof  NoteLogProperties noteLogProperties)
                 {
                     CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
@@ -1775,7 +1923,6 @@ public class FeedbackManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -1877,19 +2024,33 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.findNoteLogs(userId,
-                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getEffectiveTime()));
+                response.setElements(handler.findNoteLogs(userId,
+                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                          requestBody.getTemplateFilter(),
+                                                          requestBody.getLimitResultsByStatus(),
+                                                          requestBody.getAsOfTime(),
+                                                          requestBody.getSequencingOrder(),
+                                                          requestBody.getSequencingProperty(),
+                                                          startFrom,
+                                                          pageSize,
+                                                          requestBody.getForLineage(),
+                                                          requestBody.getForDuplicateProcessing(),
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.findNoteLogs(userId,
-                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                             startFrom,
-                                                             pageSize,
-                                                             new Date()));
+                response.setElements(handler.findNoteLogs(userId,
+                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                          TemplateFilter.ALL,
+                                                          null,
+                                                          null,
+                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                          null,
+                                                          startFrom,
+                                                          pageSize,
+                                                          false,
+                                                          false,
+                                                          new Date()));
             }
         }
         catch (Throwable error)
@@ -1943,7 +2104,18 @@ public class FeedbackManagerRESTServices extends TokenController
 
            if (requestBody != null)
            {
-               response.setElementList(handler.getNoteLogsByName(userId, requestBody.getFilter(), startFrom, pageSize, requestBody.getEffectiveTime()));
+               response.setElements(handler.getNoteLogsByName(userId,
+                                                              requestBody.getFilter(),
+                                                              requestBody.getTemplateFilter(),
+                                                              requestBody.getLimitResultsByStatus(),
+                                                              requestBody.getAsOfTime(),
+                                                              requestBody.getSequencingOrder(),
+                                                              requestBody.getSequencingProperty(),
+                                                              startFrom,
+                                                              pageSize,
+                                                              requestBody.getForLineage(),
+                                                              requestBody.getForDuplicateProcessing(),
+                                                              requestBody.getEffectiveTime()));
            }
            else
            {
@@ -1977,12 +2149,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public NoteLogsResponse getNoteLogsForElement(String                        serverName,
-                                                  String                        elementGUID,
-                                                  int                           startFrom,
-                                                  int                           pageSize,
-                                                  String                        viewServiceURLMarker,
-                                                  EffectiveTimeQueryRequestBody requestBody)
+    public NoteLogsResponse getNoteLogsForElement(String             serverName,
+                                                  String             elementGUID,
+                                                  int                startFrom,
+                                                  int                pageSize,
+                                                  String             viewServiceURLMarker,
+                                                  ResultsRequestBody requestBody)
     {
         final String methodName = "getNotesForNoteLog";
 
@@ -2003,11 +2175,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getNoteLogsForElement(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getNoteLogsForElement(userId,
+                                                                   elementGUID,
+                                                                   requestBody.getLimitResultsByStatus(),
+                                                                   requestBody.getAsOfTime(),
+                                                                   requestBody.getSequencingOrder(),
+                                                                   requestBody.getSequencingProperty(),
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getForLineage(),
+                                                                   requestBody.getForDuplicateProcessing(),
+                                                                   requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.getNoteLogsForElement(userId, elementGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getNoteLogsForElement(userId,
+                                                                   elementGUID,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date()));
             }
         }
         catch (Throwable error)
@@ -2171,7 +2363,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getElementProperties() instanceof  NoteProperties noteProperties)
+                if (requestBody.getProperties() instanceof  NoteProperties noteProperties)
                 {
                     CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, methodName);
 
@@ -2301,19 +2493,33 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.findNotes(userId,
-                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                          startFrom,
-                                                          pageSize,
-                                                          requestBody.getEffectiveTime()));
+                response.setElements(handler.findNotes(userId,
+                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                       requestBody.getTemplateFilter(),
+                                                       requestBody.getLimitResultsByStatus(),
+                                                       requestBody.getAsOfTime(),
+                                                       requestBody.getSequencingOrder(),
+                                                       requestBody.getSequencingProperty(),
+                                                       startFrom,
+                                                       pageSize,
+                                                       requestBody.getForLineage(),
+                                                       requestBody.getForDuplicateProcessing(),
+                                                       requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.findNotes(userId,
-                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                          startFrom,
-                                                          pageSize,
-                                                          new Date()));
+                response.setElements(handler.findNotes(userId,
+                                                       instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                       TemplateFilter.ALL,
+                                                       null,
+                                                       null,
+                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                       null,
+                                                       startFrom,
+                                                       pageSize,
+                                                       false,
+                                                       false,
+                                                       new Date()));
             }
         }
         catch (Throwable error)
@@ -2342,12 +2548,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public NotesResponse getNotesForNoteLog(String                        serverName,
-                                            String                        noteLogGUID,
-                                            int                           startFrom,
-                                            int                           pageSize,
-                                            String                        viewServiceURLMarker,
-                                            EffectiveTimeQueryRequestBody requestBody)
+    public NotesResponse getNotesForNoteLog(String             serverName,
+                                            String             noteLogGUID,
+                                            int                startFrom,
+                                            int                pageSize,
+                                            String             viewServiceURLMarker,
+                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getNotesForNoteLog";
 
@@ -2368,11 +2574,31 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getNotesForNoteLog(userId, noteLogGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+                response.setElements(handler.getNotesForNoteLog(userId,
+                                                                noteLogGUID,
+                                                                requestBody.getLimitResultsByStatus(),
+                                                                requestBody.getAsOfTime(),
+                                                                requestBody.getSequencingOrder(),
+                                                                requestBody.getSequencingProperty(),
+                                                                startFrom,
+                                                                pageSize,
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElementList(handler.getNotesForNoteLog(userId, noteLogGUID, startFrom, pageSize, new Date()));
+                response.setElements(handler.getNotesForNoteLog(userId,
+                                                                noteLogGUID,
+                                                                null,
+                                                                null,
+                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                null,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date()));
             }
         }
         catch (Throwable error)

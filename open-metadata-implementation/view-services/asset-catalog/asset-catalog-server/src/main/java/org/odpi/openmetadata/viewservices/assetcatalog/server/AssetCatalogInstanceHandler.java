@@ -4,14 +4,12 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenIntegrationServiceClient;
-import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Type;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.Type;
 
 import java.util.List;
 
@@ -89,60 +87,4 @@ public class AssetCatalogInstanceHandler extends OMVSServiceInstanceHandler
         return null;
     }
 
-
-    /**
-     * This method returns the object for the tenant to use to work with the
-     * asset consumer API
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return  requested client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public OpenIntegrationServiceClient getOpenIntegrationServiceClient(String userId,
-                                                                        String serverName,
-                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
-    {
-        AssetCatalogInstance instance = (AssetCatalogInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getOpenIntegrationServiceClient();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the asset consumer API
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return  requested client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient(String userId,
-                                                              String serverName,
-                                                              String serviceOperationName) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
-    {
-        AssetCatalogInstance instance = (AssetCatalogInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getOpenMetadataStoreClient();
-        }
-
-        return null;
-    }
 }

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
@@ -140,7 +139,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
         int projectStartFrom = 0;
         RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
                                                                                                                   1,
-                                                                                                                  OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+                                                                                                                  OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                                                                   projectStartFrom,
                                                                                                                   governanceContext.getMaxPageSize());
         while ((projects != null) && (projects.getElementList() != null))
@@ -160,7 +159,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
             projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
                                                                                            1,
-                                                                                           OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+                                                                                           OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                                            projectStartFrom,
                                                                                            governanceContext.getMaxPageSize());
         }
@@ -264,12 +263,12 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected void addSolutionComponentRelationship(String solutionComponentGUID,
-                                                    String implementationGUID,
-                                                    String informationSupplyChainQualifiedName,
-                                                    String role) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    protected void addSolutionComponentImplementedByRelationship(String solutionComponentGUID,
+                                                                 String implementationGUID,
+                                                                 String informationSupplyChainQualifiedName,
+                                                                 String role) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
                                                                         OpenMetadataProperty.DESIGN_STEP.name,
@@ -284,6 +283,37 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                       role);
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                              solutionComponentGUID,
+                                                                              implementationGUID,
+                                                                              null,
+                                                                              null,
+                                                                              properties);
+    }
+
+
+    /**
+     * Set up the ImplementedBy relationship between an implementation component and a solution component.
+     * The information supply chain qualified names ensures that the appropriate assets are returned
+     * on a specific ISC lineage query.
+     *
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param implementationGUID unique identifier of the newly set up governance action process
+     * @param description optional description of the implementation
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    protected void addSolutionComponentImplementationResource(String solutionComponentGUID,
+                                                              String implementationGUID,
+                                                              String description) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.DESCRIPTION.name,
+                                                                        description);
+
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
                                                                               solutionComponentGUID,
                                                                               implementationGUID,
                                                                               null,

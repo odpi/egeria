@@ -57,15 +57,6 @@ public enum DesignModelAuditCode implements AuditLogMessageSet
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
-    /**
-     * OMAS-DESIGN-MODEL-0015 - The Design Model OMAS has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}
-     */
-    UNEXPECTED_CONVERTER_EXCEPTION("OMAS-DESIGN-MODEL-0015",
-                                   AuditLogRecordSeverityLevel.EXCEPTION,
-                                   "The Design Model OMAS has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}",
-                                   "The request returns all of the information that it was able to receive.",
-                                   "Review the stack trace to identify where the error occurred and work to resolve the cause."),
-
     ;
 
 

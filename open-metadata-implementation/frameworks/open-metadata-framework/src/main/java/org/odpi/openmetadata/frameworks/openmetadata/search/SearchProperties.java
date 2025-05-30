@@ -22,8 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchProperties
 {
-    private List<PropertyCondition> conditions    = null;
-    private MatchCriteria           matchCriteria = MatchCriteria.ALL;
+    private List<PropertyCondition> conditions     = null;
+    private MatchCriteria           matchCriteria  = MatchCriteria.ALL;
+    private TemplateFilter          templateFilter = TemplateFilter.ALL;
 
     /**
      * Typical constructor
@@ -49,6 +50,8 @@ public class SearchProperties
             this.matchCriteria = templateProperties.getMatchCriteria();
             this.conditions = new ArrayList<>();
             this.conditions.addAll(templateProperties.getConditions());
+            this.templateFilter = templateProperties.getTemplateFilter();
+
         }
     }
 
@@ -93,6 +96,29 @@ public class SearchProperties
         this.matchCriteria = matchCriteria;
     }
 
+
+    /**
+     * Return the setting of the template filter.
+     *
+     * @return TemplateFilter enum
+     */
+    public TemplateFilter getTemplateFilter()
+    {
+        return templateFilter;
+    }
+
+
+    /**
+     *  Set up the setting of the template filter.
+     *
+     * @param templateFilter enum
+     */
+    public void setTemplateFilter(TemplateFilter templateFilter)
+    {
+        this.templateFilter = templateFilter;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -104,6 +130,7 @@ public class SearchProperties
         return "SearchProperties{" +
                 "matchCriteria=" + matchCriteria +
                 ", conditions=" + conditions +
+                ", templateFilter=" + templateFilter +
                 '}';
     }
 
@@ -121,13 +148,13 @@ public class SearchProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof SearchProperties))
+        if (!(objectToCompare instanceof SearchProperties that))
         {
             return false;
         }
-        SearchProperties that = (SearchProperties) objectToCompare;
         return getMatchCriteria() == that.getMatchCriteria() &&
-                Objects.equals(getConditions(), that.getConditions());
+                Objects.equals(conditions, that.conditions) &&
+                templateFilter == that.templateFilter;
     }
 
 
@@ -139,7 +166,7 @@ public class SearchProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(getMatchCriteria(), getConditions());
+        return Objects.hash(getMatchCriteria(), getConditions(), templateFilter);
     }
 
 }

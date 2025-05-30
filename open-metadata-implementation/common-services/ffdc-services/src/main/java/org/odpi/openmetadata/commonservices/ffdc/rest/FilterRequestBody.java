@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 
 import java.util.Objects;
 
@@ -20,7 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FilterRequestBody extends ResultsRequestBody
 {
-    private String filter = null;
+    private String         filter         = null;
+    private TemplateFilter templateFilter = null;
 
 
     /**
@@ -43,7 +45,8 @@ public class FilterRequestBody extends ResultsRequestBody
 
         if (template != null)
         {
-            filter = template.getFilter();
+            filter         = template.getFilter();
+            templateFilter = template.getTemplateFilter();
         }
     }
 
@@ -71,6 +74,28 @@ public class FilterRequestBody extends ResultsRequestBody
 
 
     /**
+     * Return the setting of the template filter.
+     *
+     * @return TemplateFilter enum
+     */
+    public TemplateFilter getTemplateFilter()
+    {
+        return templateFilter;
+    }
+
+
+    /**
+     *  Set up the setting of the template filter.
+     *
+     * @param templateFilter enum
+     */
+    public void setTemplateFilter(TemplateFilter templateFilter)
+    {
+        this.templateFilter = templateFilter;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -80,6 +105,7 @@ public class FilterRequestBody extends ResultsRequestBody
     {
         return "FilterRequestBody{" +
                 "filter='" + filter + '\'' +
+                ", templateFilter=" + templateFilter +
                 "} " + super.toString();
     }
 
@@ -96,7 +122,7 @@ public class FilterRequestBody extends ResultsRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         FilterRequestBody that = (FilterRequestBody) objectToCompare;
-        return Objects.equals(filter, that.filter);
+        return Objects.equals(filter, that.filter) && templateFilter == that.templateFilter;
     }
 
     /**
@@ -107,6 +133,6 @@ public class FilterRequestBody extends ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), filter);
+        return Objects.hash(super.hashCode(), filter, templateFilter);
     }
 }
