@@ -101,7 +101,7 @@ ext {
     springsecurityVersion = '6.1.4'
     springsecurityJwtVersion = '1.1.1.RELEASE'
     testngVersion = '7.10.2'
-    swaggerVersion = '2.2.25'
+    swaggerVersion = '2.2.32'
     springwebVersion = '6.0.6'
     tinkVersion = '1.15.0'
     tomcatVersion = '10.1.13'
