@@ -9,8 +9,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.viewservices.classificationexplorer.ffdc.ClassificationExplorerErrorCode;
-import org.odpi.openmetadata.viewservices.classificationexplorer.handler.OpenMetadataStoreHandler;
-import org.odpi.openmetadata.viewservices.classificationexplorer.handler.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.StewardshipManagementHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +46,6 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @param activeViewServices list of view services active in this server
-     * @throws InvalidParameterException problem with server name or platform URL
      */
     public ClassificationExplorerInstance(String                  serverName,
                                           AuditLog                auditLog,
@@ -54,7 +53,7 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
                                           int                     maxPageSize,
                                           String                  remoteServerName,
                                           String                  remoteServerURL,
-                                          List<ViewServiceConfig> activeViewServices) throws InvalidParameterException
+                                          List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceName(),

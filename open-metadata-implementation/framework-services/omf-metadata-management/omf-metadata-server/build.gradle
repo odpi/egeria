@@ -13,7 +13,6 @@ dependencies {
     implementation project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:mermaid-services')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')

@@ -75,7 +75,7 @@ public class PropertyHelper
      * ie entities, relationships and classifications.
      *
      * @param elementControlHeader header of the element to test
-     * @param expectedType         expected type - nul means any type
+     * @param expectedType         expected type - null means any type
      *
      * @return boolean result
      */
@@ -103,6 +103,36 @@ public class PropertyHelper
             typeList.add(elementControlHeader.getType().getTypeName());
 
             return typeList.contains(expectedType);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Test the type of the element to determine if it matches any of the desired types.
+     * This method works for all categories of elements,
+     * ie entities, relationships and classifications.
+     *
+     * @param elementControlHeader header of the element to test
+     * @param expectedTypes         expected type - nul means any type
+     *
+     * @return boolean result
+     */
+    public boolean isTypeOf(ElementControlHeader elementControlHeader,
+                            List<String>         expectedTypes)
+    {
+        if (expectedTypes == null)
+        {
+            return true;
+        }
+
+        for (String typeName : expectedTypes)
+        {
+            if (this.isTypeOf(elementControlHeader, typeName))
+            {
+                return true;
+            }
         }
 
         return false;
@@ -178,11 +208,14 @@ public class PropertyHelper
      */
     public SearchProperties getSearchPropertiesByName(List<String>               propertyNames,
                                                       String                     value,
-                                                      PropertyComparisonOperator propertyComparisonOperator)
+                                                      PropertyComparisonOperator propertyComparisonOperator,
+                                                      TemplateFilter             templateFilter)
     {
         if ((propertyNames != null) && (! propertyNames.isEmpty()))
         {
             SearchProperties searchProperties = new SearchProperties();
+
+            searchProperties.setTemplateFilter(templateFilter);
 
             PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
             propertyValue.setTypeName("string");

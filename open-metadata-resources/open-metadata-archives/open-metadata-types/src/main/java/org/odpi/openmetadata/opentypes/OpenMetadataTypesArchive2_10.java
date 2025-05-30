@@ -269,7 +269,6 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addEntityDef(addBusinessImperativeEntity());
         this.archiveBuilder.addRelationshipDef(addGovernanceDriverLinkRelationship());
 
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceResponsibilityAssignmentRelationship());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceOfficer());
         this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
@@ -445,39 +444,6 @@ public class OpenMetadataTypesArchive2_10
 
         return relationshipDef;
     }
-
-
-    /**
-     * Link GovernanceResponsibility to PersonRole rather than GovernanceRole.
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch updateGovernanceResponsibilityAssignmentRelationship()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Update end 2.
-         */
-        final String                     end1AttributeName            = "performedByRoles";
-        final String                     end1AttributeDescription     = "The roles assigned to this responsibility.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
 
     /**
      * Add properties so it is possible to specific the property name use to identify the organization and the business capability.

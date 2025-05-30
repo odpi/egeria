@@ -20,16 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProjectElement implements MetadataElement
+public class ProjectElement extends AttributedMetadataElement
 {
-    private ElementHeader                       elementHeader   = null;
     private ProjectProperties                   properties   = null;
     private RelatedBy                           relatedBy    = null;
     private List<RelatedMetadataElementSummary> resourceList = null;
     private List<RelatedMetadataElementSummary> projectManagers = null;
     private List<RelatedMetadataElementSummary> projectTeam     = null;
 
-    protected String                            mermaidGraph = null;
 
     /**
      * Default constructor
@@ -47,40 +45,16 @@ public class ProjectElement implements MetadataElement
      */
     public ProjectElement(ProjectElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            elementHeader   = template.getElementHeader();
             properties   = template.getProperties();
             relatedBy    = template.getRelatedBy();
             resourceList = template.getResourceList();
             projectManagers = template.getProjectManagers();
             projectTeam     = template.getProjectTeam();
-            mermaidGraph    = template.getMermaidGraph();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -197,28 +171,6 @@ public class ProjectElement implements MetadataElement
 
 
     /**
-     * Return the graph view of the project.
-     *
-     * @return mermaid markdown
-     */
-    public String getMermaidGraph()
-    {
-        return mermaidGraph;
-    }
-
-
-    /**
-     * Set up the graph view of the project.
-     *
-     * @param mermaidGraph mermaid markdown
-     */
-    public void setMermaidGraph(String mermaidGraph)
-    {
-        this.mermaidGraph = mermaidGraph;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -227,14 +179,12 @@ public class ProjectElement implements MetadataElement
     public String toString()
     {
         return "ProjectElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
+                "properties=" + properties +
                 ", relatedBy=" + relatedBy +
                 ", resourceList=" + resourceList +
                 ", projectManagers=" + projectManagers +
                 ", projectTeam=" + projectTeam +
-                ", mermaidGraph='" + mermaidGraph +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -247,24 +197,16 @@ public class ProjectElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ProjectElement that = (ProjectElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties) &&
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(resourceList, that.resourceList) &&
                 Objects.equals(projectManagers, that.projectManagers) &&
-                Objects.equals(projectTeam, that.projectTeam) &&
-                Objects.equals(relatedBy, that.relatedBy) &&
-                Objects.equals(mermaidGraph, that.mermaidGraph);
+                Objects.equals(projectTeam, that.projectTeam);
     }
-
 
     /**
      * Return hash code for this object
@@ -274,6 +216,6 @@ public class ProjectElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedBy, resourceList, projectManagers, projectTeam, mermaidGraph);
+        return Objects.hash(super.hashCode(), properties, relatedBy, resourceList, projectManagers, projectTeam);
     }
 }

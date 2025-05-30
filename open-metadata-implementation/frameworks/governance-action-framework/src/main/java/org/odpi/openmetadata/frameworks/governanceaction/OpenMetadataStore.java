@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -495,6 +496,7 @@ public class OpenMetadataStore
     {
         return openMetadataClient.findMetadataElementsWithString(userId,
                                                                  searchString,
+                                                                 TemplateFilter.ALL,
                                                                  null,
                                                                  null,
                                                                  null,
@@ -529,6 +531,7 @@ public class OpenMetadataStore
     {
         return openMetadataClient.findMetadataElementsWithString(userId,
                                                                  searchString,
+                                                                 TemplateFilter.ALL,
                                                                  typeName,
                                                                  null,
                                                                  null,

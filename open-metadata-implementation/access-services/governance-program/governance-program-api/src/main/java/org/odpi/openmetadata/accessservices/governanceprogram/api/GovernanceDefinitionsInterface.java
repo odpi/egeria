@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;

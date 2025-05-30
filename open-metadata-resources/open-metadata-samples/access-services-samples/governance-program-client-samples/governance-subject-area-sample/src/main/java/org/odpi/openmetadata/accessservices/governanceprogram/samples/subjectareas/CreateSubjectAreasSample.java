@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceD
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceMetricsManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramReviewManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.SubjectAreaManager;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -15,12 +16,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Gover
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.http.HttpHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -305,60 +304,159 @@ public class CreateSubjectAreasSample
         /*
          * Create governance definition graph and link one to subject area definitions.
          */
-        final String governanceDriverTypeName = "BusinessImperative";
         final String governanceDriverDocId = "GOV-BUS-001";
         final String governanceDriverTitle = "Many regulations require accurate reporting.";
-        final String governancePolicyTypeName = "GovernancePrinciple";
         final String governancePolicyDocId = "GOV-DATA-001";
         final String governancePolicyTitle = "All critical data elements should be defined and controlled.";
         final int    governancePolicyDomain = 1;
-        final String governanceControl1TypeName = "OrganizationalControl";
         final String governanceControl1DocId = "GOV-SUBJECT-AREA-001";
         final String governanceControl1Title = "Use subject areas to manage the definitions of critical data items.";
         final int    governanceControl1Domain = 1;
-        final String governanceControl2TypeName = "TechnicalControl";
         final String governanceControl2DocId = "GOV-METRICS-001";
         final String governanceControl2Title = "Implement governance metrics using defined governance processes/rules.";
         final int    governanceControl2Domain = 0;
 
         GovernanceDefinitionProperties governanceDefinitionProperties = new GovernanceDefinitionProperties();
-        governanceDefinitionProperties.setTypeName(governanceDriverTypeName);
+        governanceDefinitionProperties.setTypeName(OpenMetadataType.BUSINESS_IMPERATIVE.typeName);
         governanceDefinitionProperties.setDocumentIdentifier(governanceDriverDocId);
         governanceDefinitionProperties.setTitle(governanceDriverTitle);
 
-        String governanceDriverGUID = definitionManager.createGovernanceDefinition(clientUserId, governanceDefinitionProperties, GovernanceDefinitionStatus.ACTIVE);
+        String governanceDriverGUID = definitionManager.createGovernanceDefinition(clientUserId,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   true,
+                                                                                   null,
+                                                                                   governanceDefinitionProperties,
+                                                                                   GovernanceDefinitionStatus.ACTIVE,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date());
 
         governanceDefinitionProperties = new GovernanceDefinitionProperties();
-        governanceDefinitionProperties.setTypeName(governancePolicyTypeName);
+        governanceDefinitionProperties.setTypeName(OpenMetadataType.GOVERNANCE_PRINCIPLE.typeName);
         governanceDefinitionProperties.setDocumentIdentifier(governancePolicyDocId);
         governanceDefinitionProperties.setTitle(governancePolicyTitle);
         governanceDefinitionProperties.setDomainIdentifier(governancePolicyDomain);
 
-        String governancePolicyGUID = definitionManager.createGovernanceDefinition(clientUserId, governanceDefinitionProperties, GovernanceDefinitionStatus.ACTIVE);
+        String governancePolicyGUID = definitionManager.createGovernanceDefinition(clientUserId,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   true,
+                                                                                   null,
+                                                                                   governanceDefinitionProperties,
+                                                                                   GovernanceDefinitionStatus.ACTIVE,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date());
 
-        definitionManager.setupSupportingDefinition(clientUserId, governanceDriverGUID, governancePolicyGUID, "GovernanceResponse", null);
+        definitionManager.attachSupportingDefinition(clientUserId,
+                                                     null,
+                                                     null,
+                                                     governanceDriverGUID,
+                                                     governancePolicyGUID,
+                                                     OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                                                     null,
+                                                     false,
+                                                     false,
+                                                     new Date());
 
         governanceDefinitionProperties = new GovernanceDefinitionProperties();
-        governanceDefinitionProperties.setTypeName(governanceControl1TypeName);
+        governanceDefinitionProperties.setTypeName(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName);
         governanceDefinitionProperties.setDocumentIdentifier(governanceControl1DocId);
         governanceDefinitionProperties.setTitle(governanceControl1Title);
         governanceDefinitionProperties.setDomainIdentifier(governanceControl1Domain);
 
-        String governanceControl1GUID = definitionManager.createGovernanceDefinition(clientUserId, governanceDefinitionProperties, GovernanceDefinitionStatus.ACTIVE);
-        definitionManager.setupSupportingDefinition(clientUserId, governancePolicyGUID, governanceControl1GUID, "GovernanceImplementation", null);
+        String governanceControl1GUID = definitionManager.createGovernanceDefinition(clientUserId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     true,
+                                                                                     null,
+                                                                                     governanceDefinitionProperties,
+                                                                                     GovernanceDefinitionStatus.ACTIVE,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date());
+        definitionManager.attachSupportingDefinition(clientUserId,
+                                                     null,
+                                                     null,
+                                                     governancePolicyGUID,
+                                                     governanceControl1GUID,
+                                                     OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+                                                     null,
+                                                     false,
+                                                     false,
+                                                     new Date());
 
         governanceDefinitionProperties = new GovernanceDefinitionProperties();
-        governanceDefinitionProperties.setTypeName(governanceControl2TypeName);
+        governanceDefinitionProperties.setTypeName(OpenMetadataType.TECHNICAL_CONTROL.typeName);
         governanceDefinitionProperties.setDocumentIdentifier(governanceControl2DocId);
         governanceDefinitionProperties.setTitle(governanceControl2Title);
         governanceDefinitionProperties.setDomainIdentifier(governanceControl2Domain);
 
-        String governanceControl2GUID = definitionManager.createGovernanceDefinition(clientUserId, governanceDefinitionProperties, GovernanceDefinitionStatus.ACTIVE);
+        String governanceControl2GUID = definitionManager.createGovernanceDefinition(clientUserId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     true,
+                                                                                     null,
+                                                                                     governanceDefinitionProperties,
+                                                                                     GovernanceDefinitionStatus.ACTIVE,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date());
 
-        definitionManager.setupSupportingDefinition(clientUserId, governancePolicyGUID, governanceControl2GUID, "GovernanceImplementation", null);
-        definitionManager.linkPeerDefinitions(clientUserId, governanceControl1GUID, governanceControl2GUID, "GovernanceControlLink", null);
+        definitionManager.attachSupportingDefinition(clientUserId,
+                                                     null,
+                                                     null,
+                                                     governancePolicyGUID,
+                                                     governanceControl2GUID,
+                                                     OpenMetadataType.GOVERNANCE_IMPLEMENTATION_RELATIONSHIP.typeName,
+                                                     null,
+                                                     false,
+                                                     false,
+                                                     new Date());
+        definitionManager.linkPeerDefinitions(clientUserId,
+                                              null,
+                                              null,
+                                              governanceControl1GUID,
+                                              governanceControl2GUID,
+                                              OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName,
+                                              null,
+                                              false,
+                                              false,
+                                              new Date());
 
-        GovernanceDefinitionGraph governanceDefinitionGraph = reviewManager.getGovernanceDefinitionInContext(clientUserId, governancePolicyGUID);
+        GovernanceDefinitionGraph governanceDefinitionGraph = definitionManager.getGovernanceDefinitionInContext(clientUserId,
+                                                                                                                 governancePolicyGUID,
+                                                                                                                 null,
+                                                                                                                 null,
+                                                                                                                 null,
+                                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                 false,
+                                                                                                                 false,
+                                                                                                                 new Date(),
+                                                                                                                 0,
+                                                                                                                 0);
+        System.out.println(governanceDefinitionGraph);
 
         if ((governanceDefinitionGraph.getParents() == null) ||
                     (governanceDefinitionGraph.getChildren() == null) ||
@@ -369,7 +467,19 @@ public class CreateSubjectAreasSample
             System.out.println("Unexpected policy governance definition graph: " + governanceDefinitionGraph);
         }
 
-        governanceDefinitionGraph = reviewManager.getGovernanceDefinitionInContext(clientUserId, governanceDriverGUID);
+        governanceDefinitionGraph = definitionManager.getGovernanceDefinitionInContext(clientUserId,
+                                                                                       governanceDriverGUID,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       false,
+                                                                                       false,
+                                                                                       new Date(),
+                                                                                       0,
+                                                                                       0);
+
+        System.out.println(governanceDefinitionGraph);
 
         if ((governanceDefinitionGraph.getParents() != null) ||
                     (governanceDefinitionGraph.getChildren() == null) ||
@@ -380,7 +490,19 @@ public class CreateSubjectAreasSample
             System.out.println("Unexpected driver governance definition graph: " + governanceDefinitionGraph);
         }
 
-        governanceDefinitionGraph = reviewManager.getGovernanceDefinitionInContext(clientUserId, governanceControl1GUID);
+        governanceDefinitionGraph = definitionManager.getGovernanceDefinitionInContext(clientUserId,
+                                                                                       governanceControl1GUID,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       false,
+                                                                                       false,
+                                                                                       new Date(),
+                                                                                       0,
+                                                                                       0);
+
+        System.out.println(governanceDefinitionGraph);
 
         if ((governanceDefinitionGraph.getParents() == null) ||
                     (governanceDefinitionGraph.getChildren() != null) ||
@@ -544,7 +666,13 @@ public class CreateSubjectAreasSample
         {
             subjectAreaManager = new SubjectAreaManager(serverName, serverURLRoot);
             metricsManager = new GovernanceMetricsManager(serverName, serverURLRoot);
-            definitionManager = new GovernanceDefinitionManager(serverName, serverURLRoot);
+            definitionManager = new GovernanceDefinitionManager("SubjectAreaSample",
+                                                                serverName,
+                                                                serverURLRoot,
+                                                                null,
+                                                                "governance-program",
+                                                                this.getClass().getName(),
+                                                                100);
             reviewManager = new GovernanceProgramReviewManager(serverName, serverURLRoot);
 
             SubjectAreaSampleDefinitions[] subjectAreaDefinitions = SubjectAreaSampleDefinitions.values();
@@ -566,6 +694,7 @@ public class CreateSubjectAreasSample
         catch (Exception error)
         {
             System.out.println("There was an exception when calling the SubjectAreaManager client.  Error message is: " + error.getMessage());
+            System.out.println(Arrays.toString(error.getStackTrace()));
             throw error;
         }
     }

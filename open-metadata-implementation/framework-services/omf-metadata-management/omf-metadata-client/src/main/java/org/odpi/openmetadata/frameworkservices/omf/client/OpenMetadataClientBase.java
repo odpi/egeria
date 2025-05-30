@@ -676,7 +676,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         List<OpenMetadataElement> matchingElements = this.findMetadataElements(userId,
                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                null,
-                                                                               propertyHelper.getSearchPropertiesByName(propertyNames, uniqueName, PropertyComparisonOperator.EQ),
+                                                                               propertyHelper.getSearchPropertiesByName(propertyNames, uniqueName, PropertyComparisonOperator.EQ, TemplateFilter.ALL),
                                                                                requiredStatuses,
                                                                                null,
                                                                                null,
@@ -772,6 +772,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @param userId                 caller's userId
      * @param searchString           name to retrieve
+     * @param templateFilter  should templates be returned?
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -793,6 +794,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     @Override
     public List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
                                                                     String              searchString,
+                                                                    TemplateFilter      templateFilter,
                                                                     List<ElementStatus> limitResultsByStatus,
                                                                     Date                asOfTime,
                                                                     String              sequencingProperty,
@@ -805,7 +807,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return this.findMetadataElementsWithString(userId, searchString, null, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
+        return this.findMetadataElementsWithString(userId, searchString, templateFilter, null, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -814,6 +816,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @param userId                 caller's userId
      * @param searchString           name to retrieve
+     * @param templateFilter  should templates be returned?
      * @param typeName               name of the type to limit the results to (maybe null to mean all types)
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
@@ -836,6 +839,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     @Override
     public List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
                                                                     String              searchString,
+                                                                    TemplateFilter      templateFilter,
                                                                     String              typeName,
                                                                     List<ElementStatus> limitResultsByStatus,
                                                                     Date                asOfTime,
@@ -871,6 +875,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setTypeName(typeName);
+        requestBody.setTemplateFilter(templateFilter);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
                                                                                                   urlTemplate,
@@ -2139,7 +2144,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         return this.findMetadataElements(userId,
                                          metadataElementTypeName,
                                          metadataElementSubtypeNames,
-                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.EQ),
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.EQ, TemplateFilter.ALL),
                                          limitResultsByStatus,
                                          asOfTime,
                                          null,
@@ -2202,7 +2207,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         return this.findMetadataElements(userId,
                                          metadataElementTypeName,
                                          metadataElementSubtypeNames,
-                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.LIKE),
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.LIKE, TemplateFilter.ALL),
                                          limitResultsByStatus,
                                          asOfTime,
                                          null,
@@ -2263,7 +2268,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         return this.findMetadataElements(userId,
                                          metadataElementTypeName,
                                          metadataElementSubtypeNames,
-                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.EQ),
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.EQ, TemplateFilter.ALL),
                                          limitResultsByStatus,
                                          asOfTime,
                                          null,
@@ -2324,7 +2329,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         return this.findMetadataElements(userId,
                                          metadataElementTypeName,
                                          metadataElementSubtypeNames,
-                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.LIKE),
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.LIKE, TemplateFilter.ALL),
                                          limitResultsByStatus,
                                          asOfTime,
                                          null,

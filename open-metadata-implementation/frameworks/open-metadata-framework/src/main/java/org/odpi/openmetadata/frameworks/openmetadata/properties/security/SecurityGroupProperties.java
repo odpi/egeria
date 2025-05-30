@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.security;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceControlProperties;
 
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SecurityGroupProperties extends GovernanceDefinitionProperties
+public class SecurityGroupProperties extends GovernanceControlProperties
 {
     private  String distinguishedName = null;
 
@@ -42,13 +42,13 @@ public class SecurityGroupProperties extends GovernanceDefinitionProperties
 
         if (template != null)
         {
-            this.distinguishedName = template.getDistinguishedName();
+            this.distinguishedName = template.getImplementationDescription();
         }
     }
 
 
     /**
-     * Return the specific distinguishedName of the license.
+     * Return the specific distinguishedName of the security group.
      *
      * @return string description
      */
@@ -59,7 +59,7 @@ public class SecurityGroupProperties extends GovernanceDefinitionProperties
 
 
     /**
-     * Set up the specific distinguishedName of the license.
+     * Set up the specific distinguishedName of the security group.
      *
      * @param distinguishedName string description
      */

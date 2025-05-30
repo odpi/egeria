@@ -5,11 +5,8 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
-import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.server.FeedbackManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -333,7 +330,7 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Element classifiers",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
-    public RelatedElementsResponse getElementsByTag(@PathVariable String serverName,
+    public RelatedMetadataElementStubsResponse getElementsByTag(@PathVariable String serverName,
                                                     @PathVariable String                        urlMarker,
                                                     @PathVariable String tagGUID,
                                                     @RequestParam int    startFrom,
@@ -343,7 +340,7 @@ public class FeedbackManagerResource
                                                     @RequestParam (required = false, defaultValue = "asset-manager")
                                                     String                         accessServiceURLMarker,
                                                     @RequestBody(required = false)
-                                                        EffectiveTimeQueryRequestBody requestBody)
+                                                        ResultsRequestBody requestBody)
 
     {
         return restAPI.getElementsByTag(serverName, tagGUID, startFrom, pageSize, urlMarker, requestBody);
@@ -693,7 +690,7 @@ public class FeedbackManagerResource
                                                            String                         viewServiceURLMarker,
                                                      @RequestParam (required = false, defaultValue = "asset-manager")
                                                            String                         accessServiceURLMarker,
-                                                     @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+                                                     @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getAttachedRatings(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
     }
@@ -732,7 +729,7 @@ public class FeedbackManagerResource
                                                      String                         viewServiceURLMarker,
                                                  @RequestParam (required = false, defaultValue = "asset-manager")
                                                        String                         accessServiceURLMarker,
-                                                 @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+                                                 @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getAttachedLikes(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
     }
@@ -770,11 +767,10 @@ public class FeedbackManagerResource
                                                        String                         viewServiceURLMarker,
                                                        @RequestParam (required = false, defaultValue = "asset-manager")
                                                        String                         accessServiceURLMarker,
-                                                       @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+                                                       @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getAttachedComments(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
     }
-
 
 
     /**
@@ -809,7 +805,7 @@ public class FeedbackManagerResource
                                                        String                         viewServiceURLMarker,
                                                        @RequestParam (required = false, defaultValue = "asset-manager")
                                                        String                         accessServiceURLMarker,
-                                                       @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+                                                       @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getAttachedTags(serverName, elementGUID, startFrom, pageSize, urlMarker, requestBody);
     }
@@ -1373,7 +1369,7 @@ public class FeedbackManagerResource
                                                              String                         viewServiceURLMarker,
                                                   @RequestParam (required = false, defaultValue = "asset-manager")
                                                              String                         accessServiceURLMarker,
-                                                  @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
+                                                  @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getNoteLogsForElement(serverName, elementGUID, startFrom, pageSize, urlMarker,requestBody);
     }
@@ -1617,7 +1613,7 @@ public class FeedbackManagerResource
                                             @RequestParam (required = false, defaultValue = "asset-manager")
                                                        String                         accessServiceURLMarker,
                                             @RequestBody(required = false)
-                                                EffectiveTimeQueryRequestBody requestBody)
+                                                       ResultsRequestBody requestBody)
     {
         return restAPI.getNotesForNoteLog(serverName, noteLogGUID, startFrom, pageSize, urlMarker, requestBody);
     }

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.viewservices.solutionarchitect.server;
 
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.SolutionManager;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -12,6 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createInformationSupplyChain(userId,
                                                                       requestBody.getExternalSourceGUID(),
@@ -137,7 +138,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createInformationSupplyChainFromTemplate(userId,
                                                                                   requestBody.getExternalSourceGUID(),
@@ -209,7 +210,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 handler.updateInformationSupplyChain(userId,
                                                      requestBody.getExternalSourceGUID(),
@@ -269,7 +270,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createInformationSupplyChainSegment(userId,
                                                                              requestBody.getExternalSourceGUID(),
@@ -331,7 +332,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 handler.updateInformationSupplyChainSegment(userId,
                                                             requestBody.getExternalSourceGUID(),
@@ -393,7 +394,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 handler.linkSegments(userId,
                                      requestBody.getExternalSourceGUID(),
@@ -453,7 +454,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -519,7 +520,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -585,7 +586,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -655,12 +656,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getInformationSupplyChainsByName(userId,
                                                                               requestBody.getFilter(),
+                                                                              requestBody.getTemplateFilter(),
                                                                               addImplementation,
                                                                               requestBody.getLimitResultsByStatus(),
                                                                               requestBody.getAsOfTime(),
@@ -728,12 +730,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findInformationSupplyChains(userId,
                                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                         requestBody.getTemplateFilter(),
                                                                          addImplementation,
                                                                          requestBody.getLimitResultsByStatus(),
                                                                          requestBody.getAsOfTime(),
@@ -749,6 +752,7 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 response.setElements(handler.findInformationSupplyChains(userId,
                                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                         TemplateFilter.ALL,
                                                                          addImplementation,
                                                                          null,
                                                                          null,
@@ -804,7 +808,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -868,7 +872,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createSolutionBlueprint(userId,
                                                                  requestBody.getExternalSourceGUID(),
@@ -933,7 +937,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createSolutionBlueprintFromTemplate(userId,
                                                                              requestBody.getExternalSourceGUID(),
@@ -1005,7 +1009,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 handler.updateSolutionBlueprint(userId,
                                                 requestBody.getExternalSourceGUID(),
@@ -1064,7 +1068,7 @@ public class SolutionArchitectRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1134,7 +1138,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1202,7 +1206,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1270,12 +1274,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getSolutionBlueprintsByName(userId,
                                                                          requestBody.getFilter(),
+                                                                         requestBody.getTemplateFilter(),
                                                                          requestBody.getLimitResultsByStatus(),
                                                                          requestBody.getAsOfTime(),
                                                                          requestBody.getSequencingOrder(),
@@ -1332,7 +1337,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1402,12 +1407,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findSolutionBlueprints(userId,
                                                                     instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                    requestBody.getTemplateFilter(),
                                                                     requestBody.getLimitResultsByStatus(),
                                                                     requestBody.getAsOfTime(),
                                                                     requestBody.getSequencingOrder(),
@@ -1422,6 +1428,7 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 response.setElements(handler.findSolutionBlueprints(userId,
                                                                     instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                    TemplateFilter.ALL,
                                                                     null,
                                                                     null,
                                                                     SequencingOrder.CREATION_DATE_RECENT,
@@ -1476,7 +1483,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createSolutionRole(userId,
                                                             requestBody.getExternalSourceGUID(),
@@ -1541,7 +1548,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createSolutionRoleFromTemplate(userId,
                                                                         requestBody.getExternalSourceGUID(),
@@ -1613,7 +1620,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 handler.updateSolutionRole(userId,
                                            requestBody.getExternalSourceGUID(),
@@ -1672,7 +1679,7 @@ public class SolutionArchitectRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1742,7 +1749,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1810,7 +1817,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1878,12 +1885,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getSolutionRolesByName(userId,
                                                                     requestBody.getFilter(),
+                                                                    requestBody.getTemplateFilter(),
                                                                     requestBody.getLimitResultsByStatus(),
                                                                     requestBody.getAsOfTime(),
                                                                     requestBody.getSequencingOrder(),
@@ -1948,12 +1956,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findSolutionRoles(userId,
                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                               requestBody.getTemplateFilter(),
                                                                requestBody.getLimitResultsByStatus(),
                                                                requestBody.getAsOfTime(),
                                                                requestBody.getSequencingOrder(),
@@ -1968,6 +1977,7 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 response.setElements(handler.findSolutionRoles(userId,
                                                                instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                               TemplateFilter.ALL,
                                                                null,
                                                                null,
                                                                SequencingOrder.CREATION_DATE_RECENT,
@@ -2020,7 +2030,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2082,7 +2092,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createSolutionComponent(userId,
                                                                  requestBody.getExternalSourceGUID(),
@@ -2147,7 +2157,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 response.setGUID(handler.createSolutionComponentFromTemplate(userId,
                                                                              requestBody.getExternalSourceGUID(),
@@ -2219,7 +2229,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+                SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
                 handler.updateSolutionComponent(userId,
                                                 requestBody.getExternalSourceGUID(),
@@ -2278,7 +2288,7 @@ public class SolutionArchitectRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2348,7 +2358,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2416,7 +2426,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2484,12 +2494,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.getSolutionComponentsByName(userId,
                                                                          requestBody.getFilter(),
+                                                                         requestBody.getTemplateFilter(),
                                                                          requestBody.getLimitResultsByStatus(),
                                                                          requestBody.getAsOfTime(),
                                                                          requestBody.getSequencingOrder(),
@@ -2546,7 +2557,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2617,12 +2628,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 response.setElements(handler.findSolutionComponents(userId,
                                                                     instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                    requestBody.getTemplateFilter(),
                                                                     requestBody.getLimitResultsByStatus(),
                                                                     requestBody.getAsOfTime(),
                                                                     requestBody.getSequencingOrder(),
@@ -2637,6 +2649,7 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 response.setElements(handler.findSolutionComponents(userId,
                                                                     instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                    TemplateFilter.ALL,
                                                                     null,
                                                                     null,
                                                                     SequencingOrder.CREATION_DATE_RECENT,
@@ -2693,7 +2706,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionManager handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
+            SolutionHandler handler = instanceHandler.getSolutionManagerClient(userId, serverName, methodName);
 
             if (requestBody == null)
             {

@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -93,15 +90,36 @@ public class GovernanceDefinitionConverter<B> extends OMFConverter<B>
 
                         ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP.typeName))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_CONTROL.typeName))
                     {
-                        governanceDefinitionProperties = new SecurityGroupProperties();
+                        if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP.typeName))
+                        {
+                            governanceDefinitionProperties = new SecurityGroupProperties();
+                            ((SecurityGroupProperties) governanceDefinitionProperties).setDistinguishedName(this.removeDistinguishedName(instanceProperties));
+                        }
+                        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.NAMING_STANDARD_RULE.typeName))
+                        {
+                            governanceDefinitionProperties = new NamingStandardRuleProperties();
+                            ((NamingStandardRuleProperties) governanceDefinitionProperties).setNamePatterns(this.removeNamePatterns(instanceProperties));
+                        }
+                        else
+                        {
+                            governanceDefinitionProperties = new GovernanceControlProperties();
+                        }
 
-                        ((SecurityGroupProperties) governanceDefinitionProperties).setDistinguishedName(this.removeDistinguishedName(instanceProperties));
+                        ((GovernanceControlProperties) governanceDefinitionProperties).setImplementationDescription(this.removeImplementationDescription(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_STRATEGY.typeName))
                     {
-                        governanceDefinitionProperties = new DataProcessingPurposeProperties();
+                        governanceDefinitionProperties = new GovernanceStrategyProperties();
+
+                        ((GovernanceStrategyProperties) governanceDefinitionProperties).setBusinessImperatives(this.removeBusinessImperatives(instanceProperties));
+                    }
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.REGULATION.typeName))
+                    {
+                        governanceDefinitionProperties = new RegulationProperties();
+
+                        ((RegulationProperties) governanceDefinitionProperties).setJurisdiction(this.removeJurisdiction(instanceProperties));
                     }
                     else
                     {
@@ -228,7 +246,7 @@ public class GovernanceDefinitionConverter<B> extends OMFConverter<B>
                     {
                         governanceDefinitionProperties = new SecurityGroupProperties();
 
-                        ((SecurityGroupProperties) governanceDefinitionProperties).setDistinguishedName(this.removeDistinguishedName(instanceProperties));
+                        ((SecurityGroupProperties) governanceDefinitionProperties).setImplementationDescription(this.removeDistinguishedName(instanceProperties));
                     }
                     else
                     {

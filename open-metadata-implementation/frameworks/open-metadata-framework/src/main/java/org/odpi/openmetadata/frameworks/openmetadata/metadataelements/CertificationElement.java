@@ -6,8 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 
 import java.util.Objects;
 
@@ -21,12 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CertificationElement
+public class CertificationElement extends RelatedMetadataElementSummary
 {
-    private ElementHeader           certificationHeader         = null;
-    private RelationshipProperties  certificationProperties     = null;
-    private ElementHeader           certificationTypeHeader     = null;
-    private CertificationProperties certificationTypeProperties = null;
+    private MetadataElementSummary certifiedBy = null;
+    private MetadataElementSummary custodian = null;
+    private MetadataElementSummary recipient = null;
 
     /**
      * Default constructor
@@ -44,102 +41,93 @@ public class CertificationElement
      */
     public CertificationElement(CertificationElement template)
     {
+        super(template);
+
         if (template != null)
         {
-            certificationHeader = template.getCertificationHeader();
-            certificationProperties = template.getCertificationProperties();
-            certificationTypeHeader = template.getCertificationTypeHeader();
-            certificationTypeProperties = template.getCertificationTypeProperties();
+            certifiedBy = template.getCertifiedBy();
+            custodian = template.getCustodian();
+            recipient = template.getRecipient();
         }
     }
 
 
     /**
-     * Return the element header associated with the relationship.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    public ElementHeader getCertificationHeader()
+    public CertificationElement(RelatedMetadataElementSummary template)
     {
-        return certificationHeader;
+        super(template);
     }
 
 
     /**
-     * Set up the element header associated with the relationship.
+     * Return the person in the certification authority that granted this certificate.
      *
-     * @param certificationHeader element header object
+     * @return element
      */
-    public void setCertificationHeader(ElementHeader certificationHeader)
+    public MetadataElementSummary getCertifiedBy()
     {
-        this.certificationHeader = certificationHeader;
+        return certifiedBy;
     }
 
 
     /**
-     * Return details of the relationship
+     * Set up the person in the certification authority that granted this certificate.
      *
-     * @return relationship properties
+     * @param certifiedBy element
      */
-    public RelationshipProperties getCertificationProperties()
+    public void setCertifiedBy(MetadataElementSummary certifiedBy)
     {
-        return certificationProperties;
+        this.certifiedBy = certifiedBy;
     }
 
 
     /**
-     * Set up relationship properties
+     * Return the person/team responsible for ensuring that the certificate conditions are adhered to.
      *
-     * @param certificationProperties relationship properties
+     * @return element
      */
-    public void setCertificationProperties(RelationshipProperties certificationProperties)
+    public MetadataElementSummary getCustodian()
     {
-        this.certificationProperties = certificationProperties;
+        return custodian;
     }
 
 
     /**
-     * Return the element header associated with end 2 of the relationship (certification type).
+     * Set up the person/team responsible for ensuring that the certificate conditions are adhered to.
      *
-     * @return element stub object
+     * @param custodian element
      */
-    public ElementHeader getCertificationTypeHeader()
+    public void setCustodian(MetadataElementSummary custodian)
     {
-        return certificationTypeHeader;
+        this.custodian = custodian;
     }
 
 
     /**
-     * Set up the element header associated with end 2 of the relationship (certification type).
+     * Return the person/team that received the certification.
      *
-     * @param certificationTypeHeader element stub object
+     * @return element
      */
-    public void setCertificationTypeHeader(ElementHeader certificationTypeHeader)
+    public MetadataElementSummary getRecipient()
     {
-        this.certificationTypeHeader = certificationTypeHeader;
+        return recipient;
     }
 
 
     /**
-     * Return the properties of the certification type.
-     * 
-     * @return properties
+     * Set up the person/team that received the certification.
+     *
+     * @param recipient element
      */
-    public CertificationProperties getCertificationTypeProperties()
+    public void setRecipient(MetadataElementSummary recipient)
     {
-        return certificationTypeProperties;
+        this.recipient = recipient;
     }
 
-
-    /**
-     * Set up the properties of the certification type.
-     * 
-     * @param certificationTypeProperties properties
-     */
-    public void setCertificationTypeProperties(CertificationProperties certificationTypeProperties)
-    {
-        this.certificationTypeProperties = certificationTypeProperties;
-    }
 
 
     /**
@@ -151,12 +139,12 @@ public class CertificationElement
     public String toString()
     {
         return "CertificationElement{" +
-                       "certificationHeader=" + certificationHeader +
-                       ", relationshipProperties=" + certificationProperties +
-                       ", certificationTypeHeader=" + certificationTypeHeader +
-                       ", certificationTypeProperties=" + certificationTypeProperties +
-                       '}';
+                "certifiedBy=" + certifiedBy +
+                ", custodian=" + custodian +
+                ", recipient=" + recipient +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -168,19 +156,13 @@ public class CertificationElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof CertificationElement))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         CertificationElement that = (CertificationElement) objectToCompare;
-        return Objects.equals(certificationHeader, that.certificationHeader) && 
-                       Objects.equals(certificationProperties, that.certificationProperties) &&
-                       Objects.equals(certificationTypeHeader, that.certificationTypeHeader) && 
-                       Objects.equals(certificationTypeProperties, that.certificationTypeProperties);
+        return Objects.equals(certifiedBy, that.certifiedBy) &&
+                Objects.equals(custodian, that.custodian) &&
+                Objects.equals(recipient, that.recipient);
     }
 
 
@@ -192,6 +174,6 @@ public class CertificationElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), certificationHeader, certificationProperties, certificationTypeHeader, certificationTypeProperties);
+        return Objects.hash(super.hashCode(), certifiedBy, custodian, recipient);
     }
 }

@@ -24,23 +24,23 @@ public enum CertificationTypeDefinition
     /**
      * The certification that a particular hospital is approved to participate in the Teddy Bear Drop Foot Clinical Trial.
      */
-    DROP_FOOT_APPROVED_HOSPITAL("5acc69bf-dfbb-4e4a-b47b-19d610f2cb06",
-                                "Participating Hospital for Teddy Bear Drop Foot Clinical Trial",
-                 "The hospital is participating in the Teddy Bear Drop Foot Clinical Trial.",
-                 "This certification is started when the hospital completes the necessary preparations for the clinical trail.",
-                 "This certification requires the hospital to provided signed data sharing agreements for each of their patient subjects and agrees to supply data that conforms to the schema and quality levels laid out for both the patient details and weekly patient measurements data sets.",
-                 ScopeDefinition.WITHIN_PROJECT),
+    CLINICAL_TRIAL_APPROVED_HOSPITAL("5acc69bf-dfbb-4e4a-b47b-19d610f2cb06",
+                                     "Participating Hospital for an approved Clinical Trial",
+                                     "The hospital is participating in the associated Clinical Trial.",
+                                     "This certification is started when the hospital completes the necessary preparations for the clinical trail.",
+                                     "This certification requires the hospital to provided signed data sharing agreements for each of their patient subjects and agrees to supply data that conforms to the schema and quality levels laid out for both the patient details and weekly patient measurements data specifications.",
+                                     ScopeDefinition.WITHIN_PROJECT),
 
 
     /**
-     * The data in this file matches the specification for the Teddy Bear Drop Foot Clinical Trial.
+     * The data in this file matches the specification for a Clinical Trial.
      */
-    DROP_FOOT_APPROVED_DATA("8a921039-ad5f-454d-ae17-e5a5b69f9333",
-                            "Valid data for Teddy Bear Drop Foot Clinical Trial",
-                            "The data in this file matches the specification for the Teddy Bear Drop Foot Clinical Trial.",
-                            "This certification is awarded when the data matches both the schema and the va;lid values specification.",
-                            "This certification is added to the weekly patient measurements data sets if they are correctly formatted and the data passes the valid value tests.",
-                            ScopeDefinition.WITHIN_PROJECT),
+    WEEKLY_MEASUREMENTS_APPROVED_DATA("8a921039-ad5f-454d-ae17-e5a5b69f9333",
+                                      "Valid weekly measurements data for Clinical Trial",
+                                      "The data in this file matches the specification for the associated Clinical Trial.",
+                                      "This certification is awarded when the data matches both the schema and the data specification.",
+                                      "This certification is added to the weekly patient measurements data sets if they are correctly formatted and the data passes the valid value tests.",
+                                      ScopeDefinition.WITHIN_PROJECT),
 
 
     ;

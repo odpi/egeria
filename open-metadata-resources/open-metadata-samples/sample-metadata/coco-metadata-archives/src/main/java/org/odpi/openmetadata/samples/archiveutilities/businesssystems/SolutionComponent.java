@@ -385,7 +385,7 @@ public enum SolutionComponent
     private final SolutionBlueprint[]             consumingBlueprints;
     private final SolutionComponent[]             subComponents;
     private final InformationSupplyChainSegment[] linkedFromSegment;
-    private final String                          implementedBy;
+    private final String                          implementationResource;
 
 
     /**
@@ -400,6 +400,7 @@ public enum SolutionComponent
      * @param consumingBlueprints the blueprint that this belongs to
      * @param subComponents optional subcomponents of the solution
      * @param linkedFromSegment array of segments that are implemented by this component
+     * @param implementationResource components useful when creating implementations
      */
     SolutionComponent(String                          guid,
                       String                          componentType,
@@ -410,18 +411,18 @@ public enum SolutionComponent
                       SolutionBlueprint[]             consumingBlueprints,
                       SolutionComponent[]             subComponents,
                       InformationSupplyChainSegment[] linkedFromSegment,
-                      String                          implementedBy)
+                      String                          implementationResource)
     {
-        this.guid                = guid;
-        this.componentType       = componentType;
-        this.implementationType  = implementationType;
-        this.displayName         = displayName;
-        this.description         = description;
-        this.versionIdentifier   = versionIdentifier;
-        this.consumingBlueprints = consumingBlueprints;
-        this.subComponents       = subComponents;
-        this.linkedFromSegment   = linkedFromSegment;
-        this.implementedBy       = implementedBy;
+        this.guid                   = guid;
+        this.componentType          = componentType;
+        this.implementationType     = implementationType;
+        this.displayName            = displayName;
+        this.description            = description;
+        this.versionIdentifier      = versionIdentifier;
+        this.consumingBlueprints    = consumingBlueprints;
+        this.subComponents          = subComponents;
+        this.linkedFromSegment      = linkedFromSegment;
+        this.implementationResource = implementationResource;
     }
 
 
@@ -539,9 +540,9 @@ public enum SolutionComponent
      *
      * @return guid
      */
-    public String getImplementedBy()
+    public String getImplementationResource()
     {
-        return implementedBy;
+        return implementationResource;
     }
 
     /**

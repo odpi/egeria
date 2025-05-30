@@ -60,7 +60,7 @@ public class GovernanceCertificationsResource
 
     public GUIDResponse createCertificationType(@PathVariable String                          serverName,
                                                 @PathVariable String                          userId,
-                                                @RequestBody  GovernanceDefinitionRequestBody requestBody)
+                                                @RequestBody NewGovernanceDefinitionRequestBody requestBody)
     {
         return restAPI.createCertificationType(serverName, userId, requestBody);
     }
@@ -86,7 +86,7 @@ public class GovernanceCertificationsResource
                                                 @PathVariable String                          userId,
                                                 @PathVariable String                          certificationTypeGUID,
                                                 @RequestParam boolean                         isMergeUpdate,
-                                                @RequestBody  GovernanceDefinitionRequestBody requestBody)
+                                                @RequestBody NewGovernanceDefinitionRequestBody requestBody)
     {
         return restAPI.updateCertificationType(serverName, userId, certificationTypeGUID, isMergeUpdate, requestBody);
     }

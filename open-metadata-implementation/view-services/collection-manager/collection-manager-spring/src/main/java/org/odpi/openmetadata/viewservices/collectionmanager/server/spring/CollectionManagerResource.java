@@ -396,6 +396,81 @@ public class CollectionManagerResource
 
 
     /**
+     * Create a new collection with the ContextEventCollection classification.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/context-event-collection")
+    @Operation(summary="createContextEventCollection",
+            description="Create a new collection with the ContextEventCollection classification.  This is used to group context events together." +
+                    " For example, the collection may describe a series of events that affect a set of resources.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public GUIDResponse createContextEventCollection(@PathVariable String                   serverName,
+                                                     @RequestBody  NewCollectionRequestBody requestBody)
+    {
+        return restAPI.createContextEventCollection(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new collection with the EventSet classification.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/event-set-collection")
+    @Operation(summary="createContextEventCollection",
+            description="Create a new collection with the EventSet classification.  This is used to group event schemas together." +
+                    " For example, the collection may describe a set of events emitted by a specific system or to disseminate information about a certain situation.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public GUIDResponse createEventSetCollection(@PathVariable String                   serverName,
+                                                 @RequestBody  NewCollectionRequestBody requestBody)
+    {
+        return restAPI.createEventSetCollection(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new collection with the NamingStandardRuleSet classification.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/naming-standard-rule-set-collection")
+    @Operation(summary="createNamingStandardRuleSetCollection",
+            description="Create a new collection with the NamingStandardRuleSet classification.  This is used to group event schemas together." +
+                    " For example, the collection may describe a set of naming standard rule definitions.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public GUIDResponse createNamingStandardRuleSetCollection(@PathVariable String                   serverName,
+                                                              @RequestBody  NewCollectionRequestBody requestBody)
+    {
+        return restAPI.createNamingStandardRuleSetCollection(serverName, requestBody);
+    }
+
+
+    /**
      * Create a new metadata element to represent a collection using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new collection.
      *

@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipRequestBody extends MetadataSourceRequestBody
 {
-    private String                 relationshipName = null;
     private RelationshipProperties properties = null;
 
 
@@ -46,31 +45,8 @@ public class RelationshipRequestBody extends MetadataSourceRequestBody
 
         if (template != null)
         {
-            relationshipName = template.getRelationshipName();
             properties = template.getProperties();
         }
-    }
-
-
-    /**
-     * Return the name of the relationship type.
-     *
-     * @return type name
-     */
-    public String getRelationshipName()
-    {
-        return relationshipName;
-    }
-
-
-    /**
-     * Set up the name of the relationship type.
-     *
-     * @param relationshipName type name
-     */
-    public void setRelationshipName(String relationshipName)
-    {
-        this.relationshipName = relationshipName;
     }
 
 
@@ -105,7 +81,6 @@ public class RelationshipRequestBody extends MetadataSourceRequestBody
     public String toString()
     {
         return "RelationshipRequestBody{" +
-                "relationshipName='" + relationshipName + '\'' +
                 ", properties=" + properties +
                 "} " + super.toString();
     }
@@ -145,6 +120,6 @@ public class RelationshipRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipName, properties);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

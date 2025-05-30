@@ -7,11 +7,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
-import org.odpi.openmetadata.viewservices.classificationmanager.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.viewservices.classificationmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.classificationmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.server.ClassificationManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,7 +107,7 @@ public class ClassificationManagerResource
                                                       @RequestParam (required = false, defaultValue = "false")
                                                       boolean                   forDuplicateProcessing,
                                                       @RequestBody  (required = false)
-                                                          ResultsRequestBody requestBody)
+                                                          MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -182,7 +177,7 @@ public class ClassificationManagerResource
                                                        @RequestParam (required = false, defaultValue = "false")
                                                        boolean                   forDuplicateProcessing,
                                                        @RequestBody  (required = false)
-                                                           ResultsRequestBody requestBody)
+                                                           MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -254,7 +249,7 @@ public class ClassificationManagerResource
                                                            @RequestParam (required = false, defaultValue = "false")
                                                            boolean                   forDuplicateProcessing,
                                                            @RequestBody  (required = false)
-                                                               ResultsRequestBody requestBody)
+                                                               MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -326,7 +321,7 @@ public class ClassificationManagerResource
                                                      @RequestParam (required = false, defaultValue = "false")
                                                      boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                         ResultsRequestBody requestBody)
+                                                         MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -394,7 +389,7 @@ public class ClassificationManagerResource
                                           @RequestParam (required = false, defaultValue = "false")
                                           boolean                   forDuplicateProcessing,
                                           @RequestBody(required = false)
-                                          ClassificationRequestBody requestBody)
+                                          MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearSecurityTags(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -462,7 +457,7 @@ public class ClassificationManagerResource
                                        @RequestParam (required = false, defaultValue = "false")
                                        boolean                   forDuplicateProcessing,
                                        @RequestBody  (required = false)
-                                       ClassificationRequestBody requestBody)
+                                       MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearOwnership(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -530,7 +525,7 @@ public class ClassificationManagerResource
                                                      @RequestParam (required = false, defaultValue = "false")
                                                      boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                     ClassificationRequestBody requestBody)
+                                                     MetadataSourceRequestBody requestBody)
     {
         return restAPI.removeElementFromSubjectArea(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -603,7 +598,7 @@ public class ClassificationManagerResource
                                                 @RequestParam (required = false, defaultValue = "false")
                                                 boolean                       forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                EffectiveTimeQueryRequestBody requestBody)
+                                                MetadataSourceRequestBody requestBody)
     {
         return restAPI.clearSemanticAssignment(serverName, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -613,8 +608,8 @@ public class ClassificationManagerResource
      * Link a governance definition to an element using the GovernedBy relationship.
      *
      * @param serverName  name of the server instance to connect to
-     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
+     * @param definitionGUID identifier of the governance definition to link
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
@@ -632,8 +627,8 @@ public class ClassificationManagerResource
                     url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
 
     public VoidResponse addGovernanceDefinitionToElement(@PathVariable String                  serverName,
-                                                         @PathVariable String                  definitionGUID,
                                                          @PathVariable String                  elementGUID,
+                                                         @PathVariable String                  definitionGUID,
                                                          @RequestParam(required = false, defaultValue = "false")
                                                          boolean                 forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
@@ -641,7 +636,7 @@ public class ClassificationManagerResource
                                                          @RequestBody  (required = false)
                                                          RelationshipRequestBody requestBody)
     {
-        return restAPI.addGovernanceDefinitionToElement(serverName, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addGovernanceDefinitionToElement(serverName, elementGUID, definitionGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -649,8 +644,8 @@ public class ClassificationManagerResource
      * Remove the GovernedBy relationship between a governance definition and an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to update
+     * @param definitionGUID identifier of the governance definition to link
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for relationship request
@@ -668,15 +663,315 @@ public class ClassificationManagerResource
                     url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
 
     public VoidResponse removeGovernanceDefinitionFromElement(@PathVariable String                        serverName,
-                                                              @PathVariable String                        definitionGUID,
                                                               @PathVariable String                        elementGUID,
+                                                              @PathVariable String                        definitionGUID,
                                                               @RequestParam(required = false, defaultValue = "false")
                                                               boolean                       forLineage,
                                                               @RequestParam (required = false, defaultValue = "false")
                                                               boolean                       forDuplicateProcessing,
                                                               @RequestBody  (required = false)
-                                                              EffectiveTimeQueryRequestBody requestBody)
+                                                              MetadataSourceRequestBody requestBody)
     {
-        return restAPI.removeGovernanceDefinitionFromElement(serverName, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGovernanceDefinitionFromElement(serverName, elementGUID, definitionGUID, forLineage, forDuplicateProcessing, requestBody);
     }
+
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param stakeholderGUID identifier of the stakeholder to link
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/stakeholders/{stakeholderGUID}")
+
+    @Operation(summary="addStakeholderToElement",
+            description="Link a stakeholder to an element using the Stakeholder relationship.",
+            externalDocs=@ExternalDocumentation(description="Stakeholders",
+                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public VoidResponse addStakeholderToElement(@PathVariable String                  serverName,
+                                                         @PathVariable String                  elementGUID,
+                                                         @PathVariable String                  stakeholderGUID,
+                                                         @RequestParam(required = false, defaultValue = "false")
+                                                         boolean                 forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                 forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                         RelationshipRequestBody requestBody)
+    {
+        return restAPI.addStakeholderToElement(serverName, elementGUID, stakeholderGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param stakeholderGUID identifier of the stakeholder to link
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/stakeholders/{stakeholderGUID}/remove")
+
+    @Operation(summary="removeStakeholderFromElement",
+            description="Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.",
+            externalDocs=@ExternalDocumentation(description="Stakeholders",
+                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public VoidResponse removeStakeholderFromElement(@PathVariable String                        serverName,
+                                                              @PathVariable String                        elementGUID,
+                                                              @PathVariable String                        stakeholderGUID,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean                       forLineage,
+                                                              @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                       forDuplicateProcessing,
+                                                              @RequestBody  (required = false)
+                                                              MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.removeStakeholderFromElement(serverName, elementGUID, stakeholderGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Link a scope to an element using the ScopedBy relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param scopeGUID identifier of the scope to link
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/scoped-by/{scopeGUID}")
+
+    @Operation(summary="addScopeToElement",
+            description="Link a scope to an element using the ScopedBy relationship.",
+            externalDocs=@ExternalDocumentation(description="Scopes",
+                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public VoidResponse addScopeToElement(@PathVariable String                  serverName,
+                                                         @PathVariable String                  elementGUID,
+                                                         @PathVariable String scopeGUID,
+                                                         @RequestParam(required = false, defaultValue = "false")
+                                                         boolean                 forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                 forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                         RelationshipRequestBody requestBody)
+    {
+        return restAPI.addScopeToElement(serverName, elementGUID, scopeGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the ScopedBy relationship between a scope and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param scopeGUID identifier of the scope to link
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/scoped-by/{scopeGUID}/remove")
+
+    @Operation(summary="removeScopeFromElement",
+            description="Remove the ScopedBy relationship between a scope and an element.",
+            externalDocs=@ExternalDocumentation(description="Scopes",
+                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public VoidResponse removeScopeFromElement(@PathVariable String                        serverName,
+                                               @PathVariable String                        elementGUID,
+                                               @PathVariable String                        scopeGUID,
+                                               @RequestParam(required = false, defaultValue = "false")
+                                                   boolean                       forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                       forDuplicateProcessing,
+                                               @RequestBody  (required = false)
+                                                   MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.removeScopeFromElement(serverName, elementGUID, scopeGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+    /* =======================================
+     * Licenses
+     */
+
+    /**
+     * Link an element to a license type and include details of the license in the relationship properties.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param elementGUID unique identifier of the element being licensed
+     * @param licenseTypeGUID unique identifier for the license type
+     * @param requestBody the properties of the license
+     *
+     * @return guid or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/{elementGUID}/license-types/{licenseTypeGUID}/license")
+
+    public GUIDResponse licenseElement(@PathVariable String                  serverName,
+                                       @PathVariable String                  elementGUID,
+                                       @PathVariable String                  licenseTypeGUID,
+                                       @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.licenseElement(serverName, elementGUID, licenseTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
+     * licenses for the same license type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param licenseGUID unique identifier for the license relationship
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param requestBody the properties of the license
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/licenses/{licenseGUID}/update")
+
+    public VoidResponse updateLicense(@PathVariable String                  serverName,
+                                      @PathVariable String                  licenseGUID,
+                                      @RequestParam boolean                 replaceAllProperties,
+                                      @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.updateLicense(serverName, licenseGUID, replaceAllProperties, requestBody);
+    }
+
+
+    /**
+     * Remove the license for an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param licenseGUID unique identifier for the license relationship
+     * @param requestBody external source information.
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/licenses/{licenseGUID}/delete")
+
+    public VoidResponse unlicenseElement(@PathVariable String                    serverName,
+                                         @PathVariable String                    licenseGUID,
+                                         @RequestBody  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.unlicenseElement(serverName, licenseGUID, requestBody);
+    }
+
+
+
+    /* =======================================
+     * Certifications
+     */
+
+    /**
+     * Link an element to a certification type and include details of the certification in the relationship properties.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param elementGUID unique identifier of the element being certified
+     * @param certificationTypeGUID unique identifier for the certification type
+     * @param requestBody the properties of the certification
+     *
+     * @return guid or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/{elementGUID}/certification-types/{certificationTypeGUID}/certify")
+
+    public GUIDResponse certifyElement(@PathVariable String                  serverName,
+                                       @PathVariable String                  elementGUID,
+                                       @PathVariable String                  certificationTypeGUID,
+                                       @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.certifyElement(serverName, elementGUID, certificationTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
+     * certifications for the same certification type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param certificationGUID unique identifier for the certification relationship
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param requestBody the properties of the certification
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/certifications/{certificationGUID}/update")
+
+    public VoidResponse updateCertification(@PathVariable String                  serverName,
+                                            @PathVariable String                  certificationGUID,
+                                            @RequestParam boolean                 replaceAllProperties,
+                                            @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.updateCertification(serverName, certificationGUID, replaceAllProperties, requestBody);
+    }
+
+
+    /**
+     * Remove the certification for an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param certificationGUID unique identifier for the certification relationship
+     * @param requestBody external source information.
+     *
+     * @return void or
+     *  InvalidParameterException one of the properties is invalid
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/certifications/{certificationGUID}/delete")
+
+    public VoidResponse decertifyElement(@PathVariable String                    serverName,
+                                         @PathVariable String                    certificationGUID,
+                                         @RequestBody  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.decertifyElement(serverName, certificationGUID, requestBody);
+    }
+
+
 }

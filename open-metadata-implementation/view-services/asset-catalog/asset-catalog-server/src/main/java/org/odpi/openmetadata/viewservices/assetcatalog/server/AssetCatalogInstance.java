@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenIntegrationServiceClient;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
@@ -13,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Type;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ASSET_CATALOG;
 
     private final AssetConsumer                assetConsumerClient;
-    private final OpenIntegrationServiceClient openIntegrationServiceClient;
     private final OpenMetadataStoreClient      openMetadataStoreClient;
     private final List<Type>                   supportedAssetTypes;
 
@@ -67,7 +65,6 @@ public class AssetCatalogInstance extends OMVSServiceInstance
               remoteServerURL);
 
         this.assetConsumerClient = new AssetConsumer(remoteServerName, remoteServerURL, auditLog);
-        this.openIntegrationServiceClient = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
         this.openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
 
         this.supportedAssetTypes = this.setupSupportedAssetTypes(supportedAssetTypeNames);
@@ -205,27 +202,5 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     public AssetConsumer getAssetConsumerClient()
     {
         return assetConsumerClient;
-    }
-
-
-    /**
-     * Return the open integration client.  This client is from the Open Integration Framework (OIF).
-     *
-     * @return client
-     */
-    public OpenIntegrationServiceClient getOpenIntegrationServiceClient()
-    {
-        return openIntegrationServiceClient;
-    }
-
-
-    /**
-     * Return the open metadata store client.  This client is from the Governance Action Framework (GAF).
-     *
-     * @return client
-     */
-    public OpenMetadataStoreClient getOpenMetadataStoreClient()
-    {
-        return openMetadataStoreClient;
     }
 }

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -2084,7 +2083,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
          * it is possible that the entity GUID returned is for an entity that has been around for a while,
          * and already has the parent attached.  So the code below checks that the parent is not already there.
          */
-        if ((metadataElementGUID != null) && (parentGUID != null))
+        if (metadataElementGUID != null)
         {
             final String metadataElementGUIDParameterName = "metadataElementGUID";
 
@@ -2100,40 +2099,47 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      effectiveTime,
                                                                      methodName);
 
+            String pathName = repositoryHelper.getStringProperty(serviceName,
+                                                                 OpenMetadataProperty.PATH_NAME.name,
+                                                                 entityDetail.getProperties(),
+                                                                 methodName);
             List<Relationship> existingRelationships = null;
-            if (allowRetrieve)
-            {
-                int attachmentEnd = 2;
-                if (parentAtEnd1)
-                {
-                    attachmentEnd = 1;
-                }
 
-                existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
-                                                                                          entityDetail,
-                                                                                          metadataElementTypeName,
-                                                                                          parentGUID,
-                                                                                          parentRelationshipTypeGUID,
-                                                                                          parentRelationshipTypeName,
-                                                                                          attachmentEnd,
-                                                                                          null,
-                                                                                          null,
-                                                                                          org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_RECENT,
-                                                                                          null,
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveFrom,
-                                                                                          effectiveTo,
-                                                                                          true,
-                                                                                          methodName);
+            if (parentGUID != null)
+            {
+                if (allowRetrieve)
+                {
+                    int attachmentEnd = 2;
+                    if (parentAtEnd1)
+                    {
+                        attachmentEnd = 1;
+                    }
+
+                    existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                              entityDetail,
+                                                                                              metadataElementTypeName,
+                                                                                              parentGUID,
+                                                                                              parentRelationshipTypeGUID,
+                                                                                              parentRelationshipTypeName,
+                                                                                              attachmentEnd,
+                                                                                              null,
+                                                                                              null,
+                                                                                              org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_RECENT,
+                                                                                              null,
+                                                                                              false,
+                                                                                              false,
+                                                                                              effectiveFrom,
+                                                                                              effectiveTo,
+                                                                                              true,
+                                                                                              methodName);
+                }
             }
 
             if ((existingRelationships == null) || (existingRelationships.isEmpty()))
             {
-                String pathName = repositoryHelper.getStringProperty(serviceName,
-                                                                     OpenMetadataProperty.PATH_NAME.name,
-                                                                     entityDetail.getProperties(),
-                                                                     methodName);
+                /*
+                 * This is the first time through - use the caller's values
+                 */
                 createParentRelationships(userId,
                                           externalSourceGUID,
                                           externalSourceName,
@@ -2144,6 +2150,26 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                           parentRelationshipTypeGUID,
                                           parentRelationshipProperties,
                                           parentAtEnd1,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
+            }
+            else
+            {
+                /*
+                 * Ignore the creation of the parent.
+                 */
+                createParentRelationships(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          metadataElementTypeName,
+                                          pathName,
+                                          null,
+                                          null,
+                                          null,
+                                          true,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,

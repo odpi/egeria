@@ -47,7 +47,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException there is a problem within the survey service.
      */
     @Override
     public void start() throws ConnectorCheckedException
@@ -347,6 +347,30 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.CERTIFICATE_GUID.name,
                                                                          annotationStore.getSurveyReportGUID());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CERTIFIED_BY.name,
+                                                                         this.getSurveyContext().getSurveyActionServiceName());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CERTIFIED_BY_TYPE_NAME.name,
+                                                                         OpenMetadataType.SURVEY_ACTION_SERVICE.typeName);
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name,
+                                                                         OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CUSTODIAN.name,
+                                                                         stewardGUID);
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CUSTODIAN_TYPE_NAME.name,
+                                                                         OpenMetadataType.PERSON.typeName);
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name,
+                                                                         OpenMetadataProperty.GUID.name);
 
                     surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
                                                                                       assetUniverse.getGUID(),

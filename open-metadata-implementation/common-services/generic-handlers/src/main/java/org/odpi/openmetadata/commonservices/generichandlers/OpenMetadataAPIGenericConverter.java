@@ -2775,6 +2775,100 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the businessImperatives property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected List<String> removeBusinessImperatives(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeBusinessImperatives";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataProperty.BUSINESS_IMPERATIVES.name,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Extract and delete the namePatterns property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected List<String> removeNamePatterns(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeNamePatterns";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataProperty.NAME_PATTERNS.name,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the jurisdiction property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeJurisdiction(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeJurisdiction";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.JURISDICTION.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the implementationDescription property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeImplementationDescription(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeImplementationDescription";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.IMPLEMENTATION_DESCRIPTION.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the karmaPoints property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

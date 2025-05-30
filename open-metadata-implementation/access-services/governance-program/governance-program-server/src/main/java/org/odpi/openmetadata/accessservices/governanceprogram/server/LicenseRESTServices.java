@@ -58,7 +58,7 @@ public class LicenseRESTServices
      */
     public GUIDResponse createLicenseType(String                          serverName,
                                           String                          userId,
-                                          GovernanceDefinitionRequestBody requestBody)
+                                          NewGovernanceDefinitionRequestBody requestBody)
     {
         final String methodName = "createLicenseType";
 
@@ -142,7 +142,7 @@ public class LicenseRESTServices
                                                 String                          userId,
                                                 String                          licenseTypeGUID,
                                                 boolean                         isMergeUpdate,
-                                                GovernanceDefinitionRequestBody requestBody)
+                                                NewGovernanceDefinitionRequestBody requestBody)
     {
         final String methodName = "updateLicenseType";
         final String guidParameterName = "licenseTypeGUID";

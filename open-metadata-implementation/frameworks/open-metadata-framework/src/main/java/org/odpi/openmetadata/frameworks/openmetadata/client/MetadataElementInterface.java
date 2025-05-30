@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassification
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 
 import java.util.Date;
 import java.util.List;
@@ -127,6 +128,7 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
+     * @param templateFilter  should templates be returned?
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -146,6 +148,7 @@ public interface MetadataElementInterface
      */
     List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
                                                              String              searchString,
+                                                             TemplateFilter      templateFilter,
                                                              List<ElementStatus> limitResultsByStatus,
                                                              Date                asOfTime,
                                                              String              sequencingProperty,
@@ -164,6 +167,7 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
+     * @param templateFilter  should templates be returned?
      * @param typeName name of the type to limit the results to
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
@@ -184,6 +188,7 @@ public interface MetadataElementInterface
      */
     List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
                                                              String              searchString,
+                                                             TemplateFilter      templateFilter,
                                                              String              typeName,
                                                              List<ElementStatus> limitResultsByStatus,
                                                              Date                asOfTime,

@@ -5,23 +5,26 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.RelatedElementsManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 
@@ -312,7 +315,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
         invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
-        GovernanceDefinitionRequestBody requestBody = new GovernanceDefinitionRequestBody();
+        NewGovernanceDefinitionRequestBody requestBody = new NewGovernanceDefinitionRequestBody();
 
         requestBody.setProperties(properties);
         requestBody.setInitialStatus(initialStatus);
@@ -467,7 +470,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
             invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
         }
 
-        GovernanceDefinitionRequestBody requestBody = new GovernanceDefinitionRequestBody();
+        NewGovernanceDefinitionRequestBody requestBody = new NewGovernanceDefinitionRequestBody();
 
         requestBody.setProperties(properties);
 
@@ -510,7 +513,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateEnum(newStatus, propertiesParameterName, methodName);
 
-        GovernanceStatusRequestBody requestBody = new GovernanceStatusRequestBody();
+        GovernanceDefinitionStatusRequestBody requestBody = new GovernanceDefinitionStatusRequestBody();
 
         requestBody.setStatus(newStatus);
 
@@ -689,8 +692,20 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
-        requestBody.setProperties(properties);
+        RelationshipProperties relationshipProperties;
+
+        if (properties == null)
+        {
+            relationshipProperties = new RelationshipProperties();
+        }
+        else
+        {
+            relationshipProperties = properties;
+        }
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -739,8 +754,20 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
-        requestBody.setProperties(properties);
+        RelationshipProperties relationshipProperties;
+
+        if (properties == null)
+        {
+            relationshipProperties = new RelationshipProperties();
+        }
+        else
+        {
+            relationshipProperties = new RelationshipProperties(properties);
+        }
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
                                                                 urlTemplate,
@@ -787,8 +814,20 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
-        requestBody.setProperties(properties);
+        RelationshipProperties relationshipProperties;
+
+        if (properties == null)
+        {
+            relationshipProperties = new RelationshipProperties();
+        }
+        else
+        {
+            relationshipProperties = new RelationshipProperties(properties);
+        }
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -829,7 +868,11 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
+        RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -873,7 +916,11 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setRelationshipName(relationshipName);
+        RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+        relationshipProperties.setTypeName(relationshipName);
+
+        requestBody.setProperties(relationshipProperties);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1246,7 +1293,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.setupRelationship(userId,
                                elementGUID,
                                elementGUIDParameterName,
-                               null,
+                               OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                properties,
                                governanceDefinitionGUID,
                                governanceDefinitionGUIDParameterName,
@@ -1282,7 +1329,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.clearRelationship(userId,
                                elementGUID,
                                elementGUIDParameterName,
-                               null,
+                               OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                governanceDefinitionGUID,
                                governanceDefinitionGUIDParameterName,
                                urlTemplate,
@@ -1377,7 +1424,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.setupRelationship(userId,
                                scopeGUID,
                                scopeGUIDParameterName,
-                               null,
+                               OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                null,
                                governanceDefinitionGUID,
                                governanceDefinitionGUIDParameterName,
@@ -1414,7 +1461,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.clearRelationship(userId,
                                scopeGUID,
                                scopeGUIDParameterName,
-                               null,
+                               OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                governanceDefinitionGUID,
                                governanceDefinitionGUIDParameterName,
                                urlTemplate,
@@ -1509,7 +1556,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.setupRelationship(userId,
                                personRoleGUID,
                                personRoleGUIDParameterName,
-                               null,
+                               OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                null,
                                governanceResponsibilityGUID,
                                governanceResponsibilityGUIDParameterName,
@@ -1545,7 +1592,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.clearRelationship(userId,
                                personRoleGUID,
                                personRoleGUIDParameterName,
-                               null,
+                               OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT.typeName,
                                governanceResponsibilityGUID,
                                governanceResponsibilityGUIDParameterName,
                                urlTemplate,
@@ -1643,7 +1690,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.setupRelationship(userId,
                                elementGUID,
                                elementGUIDParameterName,
-                               null,
+                               OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName,
                                properties,
                                stakeholderGUID,
                                stakeholderGUIDParameterName,
@@ -1679,7 +1726,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         this.clearRelationship(userId,
                                elementGUID,
                                elementGUIDParameterName,
-                               null,
+                               OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName,
                                stakeholderGUID,
                                stakeholderGUIDParameterName,
                                urlTemplate,

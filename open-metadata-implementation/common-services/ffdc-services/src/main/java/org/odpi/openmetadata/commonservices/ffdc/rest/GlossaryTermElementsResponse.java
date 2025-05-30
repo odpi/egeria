@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTermElementsResponse extends FFDCResponseBase
 {
-    private List<GlossaryTermElement> elementList = null;
+    private List<GlossaryTermElement> elements = null;
 
 
     /**
@@ -47,7 +47,7 @@ public class GlossaryTermElementsResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            elements = template.getElements();
         }
     }
 
@@ -57,19 +57,19 @@ public class GlossaryTermElementsResponse extends FFDCResponseBase
      *
      * @return result object
      */
-    public List<GlossaryTermElement> getElementList()
+    public List<GlossaryTermElement> getElements()
     {
-        if (elementList == null)
+        if (elements == null)
         {
             return null;
         }
-        else if (elementList.isEmpty())
+        else if (elements.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(elementList);
+            return new ArrayList<>(elements);
         }
     }
 
@@ -77,11 +77,11 @@ public class GlossaryTermElementsResponse extends FFDCResponseBase
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param elements result object
      */
-    public void setElementList(List<GlossaryTermElement> elementList)
+    public void setElements(List<GlossaryTermElement> elements)
     {
-        this.elementList = elementList;
+        this.elements = elements;
     }
 
 
@@ -94,7 +94,7 @@ public class GlossaryTermElementsResponse extends FFDCResponseBase
     public String toString()
     {
         return "GlossaryTermElementsResponse{" +
-                "elementList=" + elementList +
+                "elementList=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -131,7 +131,7 @@ public class GlossaryTermElementsResponse extends FFDCResponseBase
             return false;
         }
         GlossaryTermElementsResponse that = (GlossaryTermElementsResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -143,6 +143,6 @@ public class GlossaryTermElementsResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), elements);
     }
 }

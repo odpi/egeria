@@ -1074,8 +1074,8 @@ public class StewardshipExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addGovernanceDefinitionToElement(String  definitionGUID,
-                                                 String  elementGUID,
+    public void addGovernanceDefinitionToElement(String  elementGUID,
+                                                 String  definitionGUID,
                                                  Date    effectiveTime) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -1084,7 +1084,7 @@ public class StewardshipExchangeService
 
         if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
-            stewardshipExchangeClient.addGovernanceDefinitionToElement(userId, assetManagerGUID, assetManagerName, definitionGUID, elementGUID, effectiveTime, forLineage, forDuplicateProcessing);
+            stewardshipExchangeClient.addGovernanceDefinitionToElement(userId, assetManagerGUID, assetManagerName, elementGUID, definitionGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -1110,8 +1110,8 @@ public class StewardshipExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGovernanceDefinitionFromElement(String  definitionGUID,
-                                                      String  elementGUID,
+    public void removeGovernanceDefinitionFromElement(String  elementGUID,
+                                                      String  definitionGUID,
                                                       Date    effectiveTime) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -1120,7 +1120,7 @@ public class StewardshipExchangeService
 
         if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
-            stewardshipExchangeClient.removeGovernanceDefinitionFromElement(userId, assetManagerGUID, assetManagerName, definitionGUID, elementGUID, effectiveTime, forLineage, forDuplicateProcessing);
+            stewardshipExchangeClient.removeGovernanceDefinitionFromElement(userId, assetManagerGUID, assetManagerName, elementGUID, definitionGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {

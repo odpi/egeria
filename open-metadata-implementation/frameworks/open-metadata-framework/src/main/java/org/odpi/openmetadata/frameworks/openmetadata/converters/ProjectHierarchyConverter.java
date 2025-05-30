@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -88,6 +89,15 @@ public class ProjectHierarchyConverter<B> extends ProjectConverter<B>
                     bean.setChildren(children);
                     bean.setDependentProjects(this.getDependentProjects(beanClass, relationships));
                     bean.setDependsOnProjects(this.getDependsOnProjects(beanClass, relationships));
+                    bean.setExternalReferences(super.getExternalReferences(beanClass, relationships));
+                    bean.setOtherRelatedElements(super.getOtherRelatedElements(beanClass,
+                                                                               relationships,
+                                                                               Arrays.asList(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)));
+
                 }
             }
 

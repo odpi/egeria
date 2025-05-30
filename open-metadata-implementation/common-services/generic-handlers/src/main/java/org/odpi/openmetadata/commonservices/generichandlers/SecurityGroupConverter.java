@@ -85,7 +85,7 @@ public class SecurityGroupConverter<B> extends OMFConverter<B>
                     securityGroupProperties.setImportance(this.removeImportance(instanceProperties));
                     securityGroupProperties.setOutcomes(this.removeOutcomes(instanceProperties));
                     securityGroupProperties.setResults(this.removeResults(instanceProperties));
-                    securityGroupProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
+                    securityGroupProperties.setImplementationDescription(this.removeDistinguishedName(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ClassificationExplorerResource provides the Spring API endpoints of the Classification Explorer Open Metadata View Service (OMVS).
-= */
+ */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 
 @Tag(name="API: Classification Explorer OMVS",
-     description="Retrieve elements by type, or by classifications/relationships attached to them.",
-     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/classification-explorer/overview/"))
+        description="Retrieve elements by type, or by classifications/relationships attached to them.",
+        externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/classification-explorer/overview/"))
 
 public class ClassificationExplorerResource
 {
@@ -75,7 +75,7 @@ public class ClassificationExplorerResource
                                                                             @RequestParam(required = false, defaultValue = "false")
                                                                             boolean                     forDuplicateProcessing,
                                                                             @RequestBody(required = false)
-                                                                                LevelIdentifierQueryProperties requestBody)
+                                                                            LevelIdentifierQueryProperties requestBody)
     {
         return restAPI.getConfidenceClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -114,7 +114,7 @@ public class ClassificationExplorerResource
                                                                              @RequestParam(required = false, defaultValue = "false")
                                                                              boolean                     forDuplicateProcessing,
                                                                              @RequestBody(required = false)
-                                                                                 LevelIdentifierQueryProperties requestBody)
+                                                                             LevelIdentifierQueryProperties requestBody)
     {
         return restAPI.getCriticalityClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -153,7 +153,7 @@ public class ClassificationExplorerResource
                                                                                  @RequestParam(required = false, defaultValue = "false")
                                                                                  boolean                     forDuplicateProcessing,
                                                                                  @RequestBody(required = false)
-                                                                                     LevelIdentifierQueryProperties requestBody)
+                                                                                 LevelIdentifierQueryProperties requestBody)
     {
         return restAPI.getConfidentialityClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -192,7 +192,7 @@ public class ClassificationExplorerResource
                                                                            @RequestParam(required = false, defaultValue = "false")
                                                                            boolean                     forDuplicateProcessing,
                                                                            @RequestBody(required = false)
-                                                                               LevelIdentifierQueryProperties requestBody)
+                                                                           LevelIdentifierQueryProperties requestBody)
     {
         return restAPI.getRetentionClassifiedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -231,7 +231,7 @@ public class ClassificationExplorerResource
                                                                       @RequestParam(required = false, defaultValue = "false")
                                                                       boolean                     forDuplicateProcessing,
                                                                       @RequestBody(required = false)
-                                                                          SecurityTagQueryProperties requestBody)
+                                                                      SecurityTagQueryProperties requestBody)
     {
         return restAPI.getSecurityTaggedElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -270,7 +270,7 @@ public class ClassificationExplorerResource
                                                               @RequestParam(required = false, defaultValue = "false")
                                                               boolean                     forDuplicateProcessing,
                                                               @RequestBody(required = false)
-                                                                  FindNameProperties requestBody)
+                                                              FindNameProperties requestBody)
     {
         return restAPI.getOwnersElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -309,7 +309,7 @@ public class ClassificationExplorerResource
                                                                     @RequestParam(required = false, defaultValue = "false")
                                                                     boolean                     forDuplicateProcessing,
                                                                     @RequestBody(required = false)
-                                                                        FindNameProperties requestBody)
+                                                                    FindNameProperties requestBody)
     {
         return restAPI.getMembersOfSubjectArea(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -348,7 +348,7 @@ public class ClassificationExplorerResource
                                                               @RequestParam(required = false, defaultValue = "false")
                                                               boolean                     forDuplicateProcessing,
                                                               @RequestBody(required = false)
-                                                                  FindAssetOriginProperties requestBody)
+                                                              FindAssetOriginProperties requestBody)
     {
         return restAPI.getAssetsByOrigin(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -390,7 +390,7 @@ public class ClassificationExplorerResource
                                                                @RequestParam(required = false, defaultValue = "false")
                                                                boolean                     forDuplicateProcessing,
                                                                @RequestBody(required = false)
-                                                                   SemanticAssignmentQueryProperties requestBody)
+                                                               SemanticAssignmentQueryProperties requestBody)
     {
         return restAPI.getMeanings(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -431,7 +431,7 @@ public class ClassificationExplorerResource
                                                                         @RequestParam(required = false, defaultValue = "false")
                                                                         boolean                     forDuplicateProcessing,
                                                                         @RequestBody(required = false)
-                                                                            SemanticAssignmentQueryProperties requestBody)
+                                                                        SemanticAssignmentQueryProperties requestBody)
     {
         return restAPI.getSemanticAssignees(serverName, urlMarker, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -472,7 +472,7 @@ public class ClassificationExplorerResource
                                                                        @RequestParam(required = false, defaultValue = "false")
                                                                        boolean                     forDuplicateProcessing,
                                                                        @RequestBody(required = false)
-                                                                           FindProperties requestBody)
+                                                                       FindProperties requestBody)
     {
         return restAPI.getGovernedElements(serverName, urlMarker, governanceDefinitionGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -502,18 +502,18 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Governance definitions", url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
 
     public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(@PathVariable String                        serverName,
-                                                                  @PathVariable String                        urlMarker,
-                                                                  @PathVariable String                        elementGUID,
-                                                                  @RequestParam(required = false, defaultValue = "0")
-                                                                  int                         startFrom,
-                                                                  @RequestParam(required = false, defaultValue = "0")
-                                                                  int                         pageSize,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                  boolean                     forLineage,
-                                                                  @RequestParam(required = false, defaultValue = "false")
-                                                                  boolean                     forDuplicateProcessing,
-                                                                  @RequestBody(required = false)
-                                                                      FindProperties requestBody)
+                                                                            @PathVariable String                        urlMarker,
+                                                                            @PathVariable String                        elementGUID,
+                                                                            @RequestParam(required = false, defaultValue = "0")
+                                                                            int                         startFrom,
+                                                                            @RequestParam(required = false, defaultValue = "0")
+                                                                            int                         pageSize,
+                                                                            @RequestParam(required = false, defaultValue = "false")
+                                                                            boolean                     forLineage,
+                                                                            @RequestParam(required = false, defaultValue = "false")
+                                                                            boolean                     forDuplicateProcessing,
+                                                                            @RequestBody(required = false)
+                                                                            FindProperties requestBody)
     {
         return restAPI.getGovernedByDefinitions(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -555,7 +555,7 @@ public class ClassificationExplorerResource
                                                                      @RequestParam (required = false, defaultValue = "false")
                                                                      boolean                     forDuplicateProcessing,
                                                                      @RequestBody  (required = false)
-                                                                         FindProperties requestBody)
+                                                                     FindProperties requestBody)
     {
         return restAPI.getSourceElements(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -589,17 +589,302 @@ public class ClassificationExplorerResource
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String                        elementGUID,
                                                                           @RequestParam (required = false, defaultValue = "0")
-                                                                         int                           startFrom,
+                                                                          int                           startFrom,
                                                                           @RequestParam (required = false, defaultValue = "0")
-                                                                         int                           pageSize,
+                                                                          int                           pageSize,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean                       forLineage,
+                                                                          boolean                       forLineage,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean                       forDuplicateProcessing,
+                                                                          boolean                       forDuplicateProcessing,
                                                                           @RequestBody  (required = false)
-                                                                             FindProperties requestBody)
+                                                                          FindProperties requestBody)
     {
         return restAPI.getElementsSourcedFrom(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "Stakeholder" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/stakeholders")
+
+    @Operation(summary="getStakeholders",
+            description="Retrieve the elements linked via a Stakeholders relationship to the requested element.",
+            externalDocs=@ExternalDocumentation(description="Stakeholders", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public RelatedMetadataElementSummariesResponse getStakeholders(@PathVariable String                        serverName,
+                                                                   @PathVariable String                        urlMarker,
+                                                                   @PathVariable String                        elementGUID,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                   int                           startFrom,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                   int                           pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                       forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                       forDuplicateProcessing,
+                                                                   @RequestBody  (required = false)
+                                                                   FindProperties requestBody)
+    {
+        return restAPI.getStakeholders(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve the elements linked via a "Stakeholder" relationship to the requested stakeholder.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param stakeholderGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/stakeholders/{stakeholderGUID}")
+
+    @Operation(summary="getStakeholderElements",
+            description="Retrieve the elements linked via a Stakeholders relationship to the requested stakeholder.",
+            externalDocs=@ExternalDocumentation(description="Stakeholders", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public RelatedMetadataElementSummariesResponse getStakeholderElements(@PathVariable String                        serverName,
+                                                                          @PathVariable String                        urlMarker,
+                                                                          @PathVariable String stakeholderGUID,
+                                                                          @RequestParam (required = false, defaultValue = "0")
+                                                                          int                           startFrom,
+                                                                          @RequestParam (required = false, defaultValue = "0")
+                                                                          int                           pageSize,
+                                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                          boolean                       forLineage,
+                                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                          boolean                       forDuplicateProcessing,
+                                                                          @RequestBody  (required = false)
+                                                                          FindProperties requestBody)
+    {
+        return restAPI.getStakeholderElements(serverName, urlMarker, stakeholderGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "ScopedBy" relationship to the requested scope.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/scoped-by")
+
+    @Operation(summary="getScopes",
+            description="Retrieve the elements linked via a ScopedBy relationship to the requested element.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public RelatedMetadataElementSummariesResponse getScopes(@PathVariable String                        serverName,
+                                                             @PathVariable String                        urlMarker,
+                                                             @PathVariable String                        elementGUID,
+                                                             @RequestParam (required = false, defaultValue = "0")
+                                                             int                           startFrom,
+                                                             @RequestParam (required = false, defaultValue = "0")
+                                                             int                           pageSize,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                       forLineage,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                       forDuplicateProcessing,
+                                                             @RequestBody  (required = false)
+                                                             FindProperties requestBody)
+    {
+        return restAPI.getScopes(serverName, urlMarker, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "ScopedBy" relationship to the requested scope.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param scopeGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/scoped-by/{scopeGUID}")
+
+    @Operation(summary="getScopedElements",
+            description="Retrieve the elements linked via a ScopedBy relationship to the requested scope.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
+
+    public RelatedMetadataElementSummariesResponse getScopedElements(@PathVariable String                        serverName,
+                                                                     @PathVariable String                        urlMarker,
+                                                                     @PathVariable String scopeGUID,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int                           startFrom,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int                           pageSize,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     @RequestBody  (required = false)
+                                                                     FindProperties requestBody)
+    {
+        return restAPI.getScopedElements(serverName, urlMarker, scopeGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements linked to a license type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param licenseTypeGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/licenses/{licenseTypeGUID}")
+
+    public RelatedMetadataElementSummariesResponse  getLicensedElements(@PathVariable String serverName,
+                                                                        @PathVariable String                        urlMarker,
+                                                                        @PathVariable String licenseTypeGUID,
+                                                                        @RequestParam (required = false, defaultValue = "0")
+                                                                        int                           startFrom,
+                                                                        @RequestParam (required = false, defaultValue = "0")
+                                                                        int                           pageSize,
+                                                                        @RequestBody(required = false) ResultsRequestBody requestBody)
+    {
+        return restAPI.getLicensedElements(serverName, urlMarker, licenseTypeGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return information about the licenses linked to an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/{elementGUID}/licenses")
+
+    public RelatedMetadataElementSummariesResponse getLicenses(@PathVariable String serverName,
+                                                               @PathVariable String urlMarker,
+                                                               @PathVariable String elementGUID,
+                                                               @RequestParam (required = false, defaultValue = "0")
+                                                               int                           startFrom,
+                                                               @RequestParam (required = false, defaultValue = "0")
+                                                               int                           pageSize,
+                                                               @RequestBody(required = false) ResultsRequestBody requestBody)
+    {
+        return restAPI.getLicenses(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements linked to a certification type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param certificationTypeGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/certifications/{certificationTypeGUID}")
+
+    public CertificationElementsResponse  geCertifiedElements(@PathVariable String serverName,
+                                                              @PathVariable String                        urlMarker,
+                                                              @PathVariable String certificationTypeGUID,
+                                                              @RequestParam (required = false, defaultValue = "0")
+                                                              int                           startFrom,
+                                                              @RequestParam (required = false, defaultValue = "0")
+                                                              int                           pageSize,
+                                                              @RequestBody(required = false) ResultsRequestBody requestBody)
+    {
+        return restAPI.getCertifiedElements(serverName, urlMarker, certificationTypeGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return information about the certifications linked to an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping (path = "/elements/{elementGUID}/certifications")
+
+    public CertificationElementsResponse getCertifications(@PathVariable String serverName,
+                                                           @PathVariable String urlMarker,
+                                                           @PathVariable String elementGUID,
+                                                           @RequestParam (required = false, defaultValue = "0")
+                                                           int                           startFrom,
+                                                           @RequestParam (required = false, defaultValue = "0")
+                                                           int                           pageSize,
+                                                           @RequestBody(required = false) ResultsRequestBody requestBody)
+    {
+        return restAPI.getCertifications(serverName, urlMarker, elementGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -633,7 +918,7 @@ public class ClassificationExplorerResource
                                                                    @RequestParam (required = false, defaultValue = "false")
                                                                    boolean forDuplicateProcessing,
                                                                    @RequestBody  (required = false)
-                                                                       FindRequest requestBody)
+                                                                   FindRequest requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -738,7 +1023,7 @@ public class ClassificationExplorerResource
                                                         @RequestParam (required = false, defaultValue = "false")
                                                         boolean                       forDuplicateProcessing,
                                                         @RequestBody  (required = false)
-                                                            FindProperties requestBody)
+                                                        FindProperties requestBody)
     {
         return restAPI.getElements(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -863,7 +1148,7 @@ public class ClassificationExplorerResource
                                                                         @RequestParam (required = false, defaultValue = "false")
                                                                         boolean                       forDuplicateProcessing,
                                                                         @RequestBody  (required = false)
-                                                                            FindProperties requestBody)
+                                                                        FindProperties requestBody)
     {
         return restAPI.getElementsByClassification(serverName, urlMarker, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -997,7 +1282,7 @@ public class ClassificationExplorerResource
                                                                       @RequestParam (required = false, defaultValue = "false")
                                                                       boolean                       forDuplicateProcessing,
                                                                       @RequestBody  (required = false)
-                                                                          FindProperties requestBody)
+                                                                      FindProperties requestBody)
     {
         return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, null, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1045,7 +1330,7 @@ public class ClassificationExplorerResource
                                                                       @RequestParam (required = false, defaultValue = "false")
                                                                       boolean                       forDuplicateProcessing,
                                                                       @RequestBody  (required = false)
-                                                                          FindProperties requestBody)
+                                                                      FindProperties requestBody)
     {
         return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1183,7 +1468,7 @@ public class ClassificationExplorerResource
                                                                   @RequestParam (required = false, defaultValue = "false")
                                                                   boolean                       forDuplicateProcessing,
                                                                   @RequestBody  (required = false)
-                                                                      FindProperties requestBody)
+                                                                  FindProperties requestBody)
     {
         return restAPI.getRelationships(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }

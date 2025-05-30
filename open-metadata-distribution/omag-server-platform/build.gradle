@@ -375,6 +375,8 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/time-keeper" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/valid-metadata" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }

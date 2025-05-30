@@ -60,7 +60,7 @@ public class GovernanceLicensesResource
 
     public GUIDResponse createLicenseType(@PathVariable String                          serverName,
                                           @PathVariable String                          userId,
-                                          @RequestBody  GovernanceDefinitionRequestBody requestBody)
+                                          @RequestBody NewGovernanceDefinitionRequestBody requestBody)
     {
         return restAPI.createLicenseType(serverName, userId, requestBody);
     }
@@ -86,7 +86,7 @@ public class GovernanceLicensesResource
                                           @PathVariable String                          userId,
                                           @PathVariable String                          licenseTypeGUID,
                                           @RequestParam boolean                         isMergeUpdate,
-                                          @RequestBody  GovernanceDefinitionRequestBody requestBody)
+                                          @RequestBody NewGovernanceDefinitionRequestBody requestBody)
     {
         return restAPI.updateLicenseType(serverName, userId, licenseTypeGUID, isMergeUpdate, requestBody);
     }
@@ -310,7 +310,7 @@ public class GovernanceLicensesResource
      */
     @GetMapping (path = "/elements/licenses/{licenseGUID}")
 
-    public RelatedElementsResponse getCertifiedElements(@PathVariable String serverName,
+    public RelatedElementsResponse  getLicensedElements(@PathVariable String serverName,
                                                         @PathVariable String userId,
                                                         @PathVariable String licenseGUID,
                                                         @RequestParam int    startFrom,

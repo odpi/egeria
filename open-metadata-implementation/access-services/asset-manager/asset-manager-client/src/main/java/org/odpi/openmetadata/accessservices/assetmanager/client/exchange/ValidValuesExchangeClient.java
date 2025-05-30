@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataE
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -894,7 +895,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, validValueName, PropertyComparisonOperator.EQ),
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, validValueName, PropertyComparisonOperator.EQ, TemplateFilter.ALL),
                                                                                                       null,
                                                                                                       null,
                                                                                                       null,
@@ -952,6 +953,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
+                                                                                                                TemplateFilter.ALL,
                                                                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                                                 null,
                                                                                                                 null,

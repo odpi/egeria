@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.solutionarchitect.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.SolutionManager;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
 
 /**
  * SolutionArchitectInstance caches references to the objects it needs for a specific server.
@@ -17,7 +18,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.SOLUTION_ARCHITECT;
 
-    private final SolutionManager solutionManager;
+    private final SolutionHandler solutionHandler;
 
 
     /**
@@ -46,7 +47,13 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        solutionManager = new SolutionManager(remoteServerName, remoteServerURL, maxPageSize, auditLog);
+        solutionHandler = new SolutionHandler(serverName,
+                                              remoteServerName,
+                                              remoteServerURL,
+                                              auditLog,
+                                              AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceURLMarker(),
+                                              ViewServiceDescription.SOLUTION_ARCHITECT.getViewServiceFullName(),
+                                              maxPageSize);
     }
 
 
@@ -56,8 +63,8 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public SolutionManager getSolutionManagerClient()
+    public SolutionHandler getSolutionManagerClient()
     {
-        return solutionManager;
+        return solutionHandler;
     }
 }

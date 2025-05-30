@@ -273,7 +273,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                         clinicalTrialName,
                                                                         clinicalTrialId.toLowerCase());
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                             hospitalGUID,
                                                             informationSupplyChainQualifiedName,
@@ -338,7 +338,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                 clinicalTrialName,
                                                 newFileProcessName);
 
-                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+                addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
                 governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                             landingAreaFolderGUID,
                                                             informationSupplyChainQualifiedName,
@@ -519,7 +519,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                             int projectStartFrom = 0;
                             RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                                         1,
-                                                                                                                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+                                                                                                                                        OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                                                                                         projectStartFrom,
                                                                                                                                         governanceContext.getMaxPageSize());
                             while ((projects != null) && (projects.getElementList() != null))
@@ -548,7 +548,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
                                 projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                2,
-                                                                                                               OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE.typeName,
+                                                                                                               OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                                                                projectStartFrom,
                                                                                                                governanceContext.getMaxPageSize());
                             }
@@ -779,7 +779,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                      null,
                                                                      clinicalTrialGUID);
 
-            addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
+            addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
             governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
                                                         integrationConnectorGUID,
                                                         informationSupplyChainQualifiedName,

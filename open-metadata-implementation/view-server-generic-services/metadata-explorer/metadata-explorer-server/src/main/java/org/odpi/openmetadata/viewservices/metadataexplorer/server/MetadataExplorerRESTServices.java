@@ -12,9 +12,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.OpenMetadataStoreHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.metadataexplorer.handlers.OpenMetadataHandler;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -75,7 +75,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
@@ -139,7 +139,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElement(handler.getMetadataElementByUniqueName(userId,
                                                                            requestBody.getName(),
@@ -197,7 +197,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
                                                                             requestBody.getName(),
@@ -261,7 +261,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
@@ -337,10 +337,11 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElementList(handler.findMetadataElementsWithString(userId,
                                                                                requestBody.getSearchString(),
+                                                                               requestBody.getTemplateFilter(),
                                                                                requestBody.getTypeName(),
                                                                                requestBody.getLimitResultsByStatus(),
                                                                                requestBody.getAsOfTime(),
@@ -410,7 +411,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElement(handler.findElementsForAnchor(userId,
                                                                   requestBody.getSearchString(),
@@ -482,7 +483,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElements(handler.findElementsInAnchorDomain(userId,
                                                                         requestBody.getSearchString(),
@@ -554,7 +555,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElements(handler.findElementsInAnchorScope(userId,
                                                                        requestBody.getSearchString(),
@@ -626,7 +627,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
@@ -709,7 +710,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
@@ -785,7 +786,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
@@ -867,7 +868,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setElementList(handler.findMetadataElements(userId,
                                                                      requestBody.getMetadataElementTypeName(),
@@ -936,7 +937,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
                 response.setRelationshipList(handler.findRelationshipsBetweenMetadataElements(userId,
                                                                                               requestBody.getRelationshipTypeName(),
@@ -1002,7 +1003,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1073,7 +1074,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataStoreHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
             if (requestBody != null)
             {

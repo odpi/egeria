@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project */
-/* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.classificationexplorer.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -9,19 +8,19 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummaryList;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.classificationexplorer.handler.StewardshipManagementHandler;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
+import java.util.*;
 
 
 /**
@@ -1302,6 +1301,984 @@ public class ClassificationExplorerRESTServices extends TokenController
         return response;
     }
 
+
+
+    /**
+     * Retrieve the elements linked via a "Stakeholder" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getStakeholders(String         serverName,
+                                                                   String         urlMarker,
+                                                                   String         elementGUID,
+                                                                   int            startFrom,
+                                                                   int            pageSize,
+                                                                   boolean        forLineage,
+                                                                   boolean        forDuplicateProcessing,
+                                                                   FindProperties requestBody)
+    {
+        final String methodName = "getStakeholders";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholders(userId,
+                                                                                        elementGUID,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        startFrom,
+                                                                                        pageSize,
+                                                                                        new Date(),
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholders(userId,
+                                                                                        elementGUID,
+                                                                                        requestBody.getOpenMetadataTypeName(),
+                                                                                        requestBody.getLimitResultsByStatus(),
+                                                                                        requestBody.getAsOfTime(),
+                                                                                        requestBody.getSequencingProperty(),
+                                                                                        requestBody.getSequencingOrder(),
+                                                                                        startFrom,
+                                                                                        pageSize,
+                                                                                        requestBody.getEffectiveTime(),
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Retrieve the elements linked via a "Stakeholder" relationship to the requested stakeholder.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param stakeholderGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getStakeholderElements(String         serverName,
+                                                                          String         urlMarker,
+                                                                          String         stakeholderGUID,
+                                                                          int            startFrom,
+                                                                          int            pageSize,
+                                                                          boolean        forLineage,
+                                                                          boolean        forDuplicateProcessing,
+                                                                          FindProperties requestBody)
+    {
+        final String methodName = "getStakeholderElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholderElements(userId,
+                                                                                               stakeholderGUID,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               null,
+                                                                                               startFrom,
+                                                                                               pageSize,
+                                                                                               new Date(),
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getStakeholderElements(userId,
+                                                                                               stakeholderGUID,
+                                                                                               requestBody.getOpenMetadataTypeName(),
+                                                                                               requestBody.getLimitResultsByStatus(),
+                                                                                               requestBody.getAsOfTime(),
+                                                                                               requestBody.getSequencingProperty(),
+                                                                                               requestBody.getSequencingOrder(),
+                                                                                               startFrom,
+                                                                                               pageSize,
+                                                                                               requestBody.getEffectiveTime(),
+                                                                                               forLineage,
+                                                                                               forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Retrieve the elements linked via a "ScopedBy" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getScopes(String         serverName,
+                                                             String         urlMarker,
+                                                             String         elementGUID,
+                                                             int            startFrom,
+                                                             int            pageSize,
+                                                             boolean        forLineage,
+                                                             boolean        forDuplicateProcessing,
+                                                             FindProperties requestBody)
+    {
+        final String methodName = "getScopes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId,
+                                                                                  elementGUID,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  new Date(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId,
+                                                                                  elementGUID,
+                                                                                  requestBody.getOpenMetadataTypeName(),
+                                                                                  requestBody.getLimitResultsByStatus(),
+                                                                                  requestBody.getAsOfTime(),
+                                                                                  requestBody.getSequencingProperty(),
+                                                                                  requestBody.getSequencingOrder(),
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "ScopedBy" relationship to the requested scope.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param scopeGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getScopedElements(String         serverName,
+                                                                     String         urlMarker,
+                                                                     String         scopeGUID,
+                                                                     int            startFrom,
+                                                                     int            pageSize,
+                                                                     boolean        forLineage,
+                                                                     boolean        forDuplicateProcessing,
+                                                                     FindProperties requestBody)
+    {
+        final String methodName = "getScopedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId,
+                                                                                          scopeGUID,
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          new Date(),
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId,
+                                                                                          scopeGUID,
+                                                                                          requestBody.getOpenMetadataTypeName(),
+                                                                                          requestBody.getLimitResultsByStatus(),
+                                                                                          requestBody.getAsOfTime(),
+                                                                                          requestBody.getSequencingProperty(),
+                                                                                          requestBody.getSequencingOrder(),
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the elements linked to a license type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param licenseTypeGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getLicensedElements(String             serverName,
+                                                                       String             urlMarker,
+                                                                       String             licenseTypeGUID,
+                                                                       int                startFrom,
+                                                                       int                pageSize,
+                                                                       ResultsRequestBody requestBody)
+    {
+        final String methodName = "getLicensedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getLicensedElements(userId,
+                                                                                            licenseTypeGUID,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            startFrom,
+                                                                                            pageSize,
+                                                                                            new Date(),
+                                                                                            false,
+                                                                                            false);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getLicensedElements(userId,
+                                                                                            licenseTypeGUID,
+                                                                                            requestBody.getLimitResultsByStatus(),
+                                                                                            requestBody.getAsOfTime(),
+                                                                                            requestBody.getSequencingProperty(),
+                                                                                            requestBody.getSequencingOrder(),
+                                                                                            startFrom,
+                                                                                            pageSize,
+                                                                                            requestBody.getEffectiveTime(),
+                                                                                            requestBody.getForLineage(),
+                                                                                            requestBody.getForDuplicateProcessing());
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the licenses linked to an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public RelatedMetadataElementSummariesResponse getLicenses(String             serverName,
+                                                               String             urlMarker,
+                                                               String             elementGUID,
+                                                               int                startFrom,
+                                                               int                pageSize,
+                                                               ResultsRequestBody requestBody)
+    {
+        final String methodName = "getLicenses";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getLicenses(userId,
+                                                                                    elementGUID,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    new Date(),
+                                                                                    false,
+                                                                                    false);
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+            else
+            {
+                RelatedMetadataElementSummaryList summaryList = handler.getLicenses(userId,
+                                                                                    elementGUID,
+                                                                                    requestBody.getLimitResultsByStatus(),
+                                                                                    requestBody.getAsOfTime(),
+                                                                                    requestBody.getSequencingProperty(),
+                                                                                    requestBody.getSequencingOrder(),
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    requestBody.getEffectiveTime(),
+                                                                                    requestBody.getForLineage(),
+                                                                                    requestBody.getForDuplicateProcessing());
+                if (summaryList != null)
+                {
+                    response.setElements(summaryList.getElementList());
+                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the elements linked to a certification type.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param certificationTypeGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public CertificationElementsResponse getCertifiedElements(String             serverName,
+                                                              String             urlMarker,
+                                                              String             certificationTypeGUID,
+                                                              int                startFrom,
+                                                              int                pageSize,
+                                                              ResultsRequestBody requestBody)
+    {
+        final String methodName = "getCertifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        CertificationElementsResponse response = new CertificationElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            /*
+             * Check that the guid is valid and retrieve the associated element.
+             */
+            MetadataElementSummary startingElement;
+            if (requestBody == null)
+            {
+                startingElement = handler.getMetadataElementByGUID(userId,
+                                                                   certificationTypeGUID,
+                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   new Date());
+            }
+            else
+            {
+                startingElement = handler.getMetadataElementByGUID(userId,
+                                                                   certificationTypeGUID,
+                                                                   requestBody.getAsOfTime(),
+                                                                   requestBody.getForLineage(),
+                                                                   requestBody.getForDuplicateProcessing(),
+                                                                   requestBody.getEffectiveTime());
+            }
+
+            if (startingElement != null)
+            {
+                /*
+                 * Does this element have associated certifications
+                 */
+                RelatedMetadataElementSummaryList summaryList;
+
+                if (requestBody == null)
+                {
+                    summaryList = handler.getCertifiedElements(userId,
+                                                               certificationTypeGUID,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               new Date(),
+                                                               false,
+                                                               false);
+
+                    getCertificationElements(userId,
+                                             startingElement,
+                                             summaryList,
+                                             handler,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             response);
+                }
+                else
+                {
+                    summaryList = handler.getCertifiedElements(userId,
+                                                               certificationTypeGUID,
+                                                               requestBody.getLimitResultsByStatus(),
+                                                               requestBody.getAsOfTime(),
+                                                               requestBody.getSequencingProperty(),
+                                                               requestBody.getSequencingOrder(),
+                                                               startFrom,
+                                                               pageSize,
+                                                               requestBody.getEffectiveTime(),
+                                                               requestBody.getForLineage(),
+                                                               requestBody.getForDuplicateProcessing());
+
+                    getCertificationElements(userId,
+                                             startingElement,
+                                             summaryList,
+                                             handler,
+                                             requestBody.getAsOfTime(),
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime(),
+                                             response);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Convert the related metadata element summary into a certification response that includes details of the actors
+     * involved in the certification.
+     *
+     * @param userId calling user
+     * @param startingElement requested starting element
+     * @param summaryList list of related elements
+     * @param handler handler for receiving more metadata
+     * @param asOfTime repository time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param response response object to populate
+     */
+    private void getCertificationElements(String                            userId,
+                                          MetadataElementSummary            startingElement,
+                                          RelatedMetadataElementSummaryList summaryList,
+                                          StewardshipManagementHandler      handler,
+                                          Date                              asOfTime,
+                                          boolean                           forLineage,
+                                          boolean                           forDuplicateProcessing,
+                                          Date                              effectiveTime,
+                                          CertificationElementsResponse     response)
+    {
+        response.setStartingElement(startingElement);
+
+        List<CertificationElement> certificationElements = new ArrayList<>();
+
+        /*
+         * Set up the list of certified elements
+         */
+        if ((summaryList != null) && (summaryList.getElementList() != null))
+        {
+            /*
+             * Each certification relationship potentially identifies 3 actors.
+             * The code below retrieves the actors to include them in the output.
+             */
+            Map<String, MetadataElementSummary> actorMap              = new HashMap<>(); // only receive each actor once
+
+            for (RelatedMetadataElementSummary relatedMetadataElementSummary : summaryList.getElementList())
+            {
+                if (relatedMetadataElementSummary != null)
+                {
+                    CertificationElement certificationElement = new CertificationElement(relatedMetadataElementSummary);
+
+
+                    if (relatedMetadataElementSummary.getRelationshipProperties() != null)
+                    {
+                        certificationElement.setCertifiedBy(getActorSummary(userId,
+                                                                            relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY.name),
+                                                                            relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name),
+                                                                            actorMap,
+                                                                            handler,
+                                                                            asOfTime,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            effectiveTime));
+
+                        certificationElement.setCustodian(getActorSummary(userId,
+                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN.name),
+                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name),
+                                                                          actorMap,
+                                                                          handler,
+                                                                          asOfTime,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime));
+
+                        certificationElement.setRecipient(getActorSummary(userId,
+                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT.name),
+                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name),
+                                                                          actorMap,
+                                                                          handler,
+                                                                          asOfTime,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime));
+                    }
+
+                    certificationElements.add(certificationElement);
+                }
+            }
+
+            response.setElements(certificationElements);
+        }
+
+        /*
+         * Set up the mermaid graph
+         */
+        CertificationMermaidGraphBuilder graphBuilder = new CertificationMermaidGraphBuilder(startingElement,
+                                                                                             certificationElements);
+
+        response.setMermaidGraph(graphBuilder.getMermaidGraph());
+    }
+
+
+    /**
+     * Retrieve details of a requested actor, unless element has already been retrieved.
+     *
+     * @param userId calling user
+     * @param actorName name of actor
+     * @param actorPropertyName property name it represents
+     * @param actorMap map of other actors already received
+     * @param handler handler for receiving more metadata
+     * @param asOfTime repository time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return actor element or null if nothing found
+     */
+    private MetadataElementSummary getActorSummary(String                              userId,
+                                                   String                              actorName,
+                                                   String                              actorPropertyName,
+                                                   Map<String, MetadataElementSummary> actorMap,
+                                                   StewardshipManagementHandler        handler,
+                                                   Date                                asOfTime,
+                                                   boolean                             forLineage,
+                                                   boolean                             forDuplicateProcessing,
+                                                   Date                                effectiveTime)
+    {
+        if (actorName != null)
+        {
+            if (actorMap.containsKey(actorName))
+            {
+                return actorMap.get(actorName);
+            }
+            else
+            {
+                MetadataElementSummary actorSummary;
+
+                if ((actorPropertyName == null) || (actorPropertyName.equals(OpenMetadataProperty.GUID.name)))
+                {
+                    try
+                    {
+                        actorSummary = handler.getMetadataElementByGUID(userId,
+                                                                        actorName,
+                                                                        asOfTime,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime);
+                    }
+                    catch (Exception exception)
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        actorSummary = handler.getMetadataElementByUniqueName(userId,
+                                                                              actorName,
+                                                                              actorPropertyName,
+                                                                              asOfTime,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime);
+                    }
+                    catch (Exception exception)
+                    {
+                        return null;
+                    }
+                }
+
+                if (actorSummary != null)
+                {
+                    actorMap.put(actorName, actorSummary);
+                    return actorSummary;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return information about the certifications linked to an element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody additional query parameters
+     *
+     * @return properties of the license or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public CertificationElementsResponse getCertifications(String             serverName,
+                                                           String             urlMarker,
+                                                           String             elementGUID,
+                                                           int                startFrom,
+                                                           int                pageSize,
+                                                           ResultsRequestBody requestBody)
+    {
+        final String methodName = "getCertifications";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        CertificationElementsResponse response = new CertificationElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            /*
+             * Check that the guid is valid and retrieve the associated element.
+             */
+            MetadataElementSummary startingElement;
+            if (requestBody == null)
+            {
+                startingElement = handler.getMetadataElementByGUID(userId,
+                                                                   elementGUID,
+                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   new Date());
+            }
+            else
+            {
+                startingElement = handler.getMetadataElementByGUID(userId,
+                                                                   elementGUID,
+                                                                   requestBody.getAsOfTime(),
+                                                                   requestBody.getForLineage(),
+                                                                   requestBody.getForDuplicateProcessing(),
+                                                                   requestBody.getEffectiveTime());
+            }
+
+            if (startingElement != null)
+            {
+                /*
+                 * Does this element have associated certifications
+                 */
+                RelatedMetadataElementSummaryList summaryList;
+
+                if (requestBody == null)
+                {
+                    summaryList = handler.getCertifications(userId,
+                                                            elementGUID,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            startFrom,
+                                                            pageSize,
+                                                            new Date(),
+                                                            false,
+                                                            false);
+                    getCertificationElements(userId,
+                                             startingElement,
+                                             summaryList,
+                                             handler,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             response);
+                }
+                else
+                {
+                    summaryList = handler.getCertifications(userId,
+                                                            elementGUID,
+                                                            requestBody.getLimitResultsByStatus(),
+                                                            requestBody.getAsOfTime(),
+                                                            requestBody.getSequencingProperty(),
+                                                            requestBody.getSequencingOrder(),
+                                                            startFrom,
+                                                            pageSize,
+                                                            requestBody.getEffectiveTime(),
+                                                            requestBody.getForLineage(),
+                                                            requestBody.getForDuplicateProcessing());
+                    getCertificationElements(userId,
+                                             startingElement,
+                                             summaryList,
+                                             handler,
+                                             requestBody.getAsOfTime(),
+                                             requestBody.getForLineage(),
+                                             requestBody.getForDuplicateProcessing(),
+                                             requestBody.getEffectiveTime(),
+                                             response);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**

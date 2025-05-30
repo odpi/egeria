@@ -20,14 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ToDoElement implements MetadataElement
+public class ToDoElement extends AttributedMetadataElement
 {
-    private ElementHeader                 elementHeader  = null;
-    private ToDoProperties                properties     = null;
-    private ElementStub                   toDoSource     = null;
-    private List<ElementStub>             assignedActors = null;
-    private List<ElementStub>             sponsors       = null;
-    private List<ToDoActionTargetElement> actionTargets  = null;
+    private ToDoProperties                      properties     = null;
+    private RelatedMetadataElementSummary       toDoSource     = null;
+    private List<RelatedMetadataElementSummary> assignedActors = null;
+    private List<RelatedMetadataElementSummary> sponsors       = null;
+    private List<ToDoActionTargetElement>       actionTargets  = null;
+
 
     /**
      * Default constructor
@@ -45,39 +45,15 @@ public class ToDoElement implements MetadataElement
      */
     public ToDoElement(ToDoElement template)
     {
+        super(template);
         if (template != null)
         {
-            elementHeader  = template.getElementHeader();
             properties     = template.getProperties();
             toDoSource     = template.getToDoSource();
             assignedActors = template.getAssignedActors();
             sponsors       = template.getSponsors();
             actionTargets  = template.getActionTargets();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    @Override
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
     }
 
 
@@ -108,7 +84,7 @@ public class ToDoElement implements MetadataElement
      *
      * @return  element stub
      */
-    public ElementStub getToDoSource()
+    public RelatedMetadataElementSummary getToDoSource()
     {
         return toDoSource;
     }
@@ -119,7 +95,7 @@ public class ToDoElement implements MetadataElement
      *
      * @param toDoSource element stub
      */
-    public void setToDoSource(ElementStub toDoSource)
+    public void setToDoSource(RelatedMetadataElementSummary toDoSource)
     {
         this.toDoSource = toDoSource;
     }
@@ -130,7 +106,7 @@ public class ToDoElement implements MetadataElement
      *
      * @return list of actors
      */
-    public List<ElementStub> getAssignedActors()
+    public List<RelatedMetadataElementSummary> getAssignedActors()
     {
         return assignedActors;
     }
@@ -141,7 +117,7 @@ public class ToDoElement implements MetadataElement
      *
      * @param assignedActors list of actors
      */
-    public void setAssignedActors(List<ElementStub> assignedActors)
+    public void setAssignedActors(List<RelatedMetadataElementSummary> assignedActors)
     {
         this.assignedActors = assignedActors;
     }
@@ -152,7 +128,7 @@ public class ToDoElement implements MetadataElement
      *
      * @return list of sponsors
      */
-    public List<ElementStub> getSponsors()
+    public List<RelatedMetadataElementSummary> getSponsors()
     {
         return sponsors;
     }
@@ -163,7 +139,7 @@ public class ToDoElement implements MetadataElement
      *
      * @param sponsors list of sponsors
      */
-    public void setSponsors(List<ElementStub> sponsors)
+    public void setSponsors(List<RelatedMetadataElementSummary> sponsors)
     {
         this.sponsors = sponsors;
     }
@@ -200,13 +176,12 @@ public class ToDoElement implements MetadataElement
     public String toString()
     {
         return "ToDoElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
+                "properties=" + properties +
                 ", toDoSource=" + toDoSource +
                 ", assignedActors=" + assignedActors +
                 ", sponsors=" + sponsors +
                 ", actionTargets=" + actionTargets +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -219,23 +194,16 @@ public class ToDoElement implements MetadataElement
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ToDoElement that = (ToDoElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties) &&
+        return Objects.equals(properties, that.properties) &&
                 Objects.equals(toDoSource, that.toDoSource) &&
                 Objects.equals(assignedActors, that.assignedActors) &&
                 Objects.equals(sponsors, that.sponsors) &&
                 Objects.equals(actionTargets, that.actionTargets);
     }
-
 
     /**
      * Return hash code for this object
@@ -245,6 +213,6 @@ public class ToDoElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, toDoSource, sponsors, assignedActors, actionTargets);
+        return Objects.hash(super.hashCode(), properties, toDoSource, sponsors, assignedActors, actionTargets);
     }
 }

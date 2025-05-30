@@ -17,7 +17,7 @@
 # The URL marker is derived from the name of the requested service - take the short two-word service name, convert to
 # lower case and add a hyphen between the two words - so Automated Curation's OMVS's URL Marker is automated-curation.
 #
-# There are optional request parameters for lineage and duplicate processing requests.
+# There are optional request bodies for query parameters.
 #
 # * forLineage (default=false) - set this request parameter to true if this request is to support a lineage query -
 #                                it will include the mementos representing elements in the graph that are deleted.

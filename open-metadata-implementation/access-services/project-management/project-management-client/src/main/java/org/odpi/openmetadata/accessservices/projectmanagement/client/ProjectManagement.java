@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
-import org.odpi.openmetadata.commonservices.mermaid.ProjectGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.commonservices.mermaid.ProjectMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ProjectGraphMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ProjectMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.ProjectConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.ProjectHierarchyConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.TeamMemberConverter;
@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -823,7 +824,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     {
         return openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                   projectGUID,
-                                                                  1,
+                                                                  0,
                                                                   null,
                                                                   null,
                                                                   null,
@@ -851,7 +852,9 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
             for (RelatedMetadataElement relatedProjectElement : relatedProjectElements)
             {
-                if ((relatedProjectElement != null) && (propertyHelper.isTypeOf(relatedProjectElement, OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName)))
+                if ((relatedProjectElement != null) &&
+                        (propertyHelper.isTypeOf(relatedProjectElement, OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName)) &&
+                        (! relatedProjectElement.getElementAtEnd1()))
                 {
                     children.add(relatedProjectElement);
                 }
@@ -1104,6 +1107,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
+                                                                                                                TemplateFilter.ALL,
                                                                                                                 OpenMetadataType.PROJECT.typeName,
                                                                                                                 null,
                                                                                                                 null,
@@ -1210,6 +1214,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 null,
+                                                                                                                TemplateFilter.ALL,
                                                                                                                 OpenMetadataType.PROJECT.typeName,
                                                                                                                 null,
                                                                                                                 null,

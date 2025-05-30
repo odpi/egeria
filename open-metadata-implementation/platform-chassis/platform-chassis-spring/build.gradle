@@ -64,7 +64,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:feedback-manager:feedback-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:governance-officer:governance-officer-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:governance-officer:governance-officer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:data-officer:data-officer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:security-officer:security-officer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:privacy-officer:privacy-officer-spring')
@@ -76,6 +76,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:runtime-manager:runtime-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:solution-architect:solution-architect-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:template-manager:template-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:time-keeper:time-keeper-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:valid-metadata:valid-metadata-spring')
 
         runtimeOnly project(':open-metadata-implementation:access-services:security-manager:security-manager-spring')

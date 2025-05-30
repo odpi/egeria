@@ -183,18 +183,18 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
 
             String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE.typeName,
-                                                  certificationTypeDefinition.getQualifiedName(),
-                                                  certificationTypeDefinition.getTitle(),
-                                                  certificationTypeDefinition.getSummary(),
-                                                  certificationTypeDefinition.getScope().getPreferredValue(),
-                                                  certificationTypeDefinition.getDescription(),
-                                                  0,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  extendedProperties);
+                                                                certificationTypeDefinition.getQualifiedName(),
+                                                                certificationTypeDefinition.getTitle(),
+                                                                certificationTypeDefinition.getSummary(),
+                                                                certificationTypeDefinition.getDescription(),
+                                                                certificationTypeDefinition.getScope().getPreferredValue(),
+                                                                0,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                extendedProperties);
 
             assert (certificationTypeDefinition.getGUID().equals(guid));
         }

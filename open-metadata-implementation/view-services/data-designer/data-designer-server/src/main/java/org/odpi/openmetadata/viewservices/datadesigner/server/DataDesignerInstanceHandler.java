@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.viewservices.datadesigner.server;
 
 
-import org.odpi.openmetadata.accessservices.designmodel.client.DataDesignManager;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.DataDesignHandler;
 
 
 /**
@@ -30,7 +30,7 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a Digital Architecture OMAS client.
+     * This method returns a Open Metadata Store client.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -40,9 +40,9 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public DataDesignManager getDataDesignManagerClient(String userId,
-                                                        String serverName,
-                                                        String serviceOperationName) throws InvalidParameterException,
+    public DataDesignHandler getDataDesignManager(String userId,
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
@@ -50,7 +50,7 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getDataDesignManagerClient();
+            return instance.getDataDesignManagerHandler();
         }
 
         return null;

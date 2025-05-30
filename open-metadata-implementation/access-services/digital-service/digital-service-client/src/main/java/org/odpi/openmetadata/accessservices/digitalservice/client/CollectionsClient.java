@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.digitalservice.client;
 
 import org.odpi.openmetadata.accessservices.digitalservice.api.CollectionsInterface;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.mermaid.CollectionMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CollectionMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.CollectionConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.CollectionMemberConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -112,8 +113,16 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
      *                       community) that the collections hang off of
      * @param collectionType filter response by collection type - if null, any value will do
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
+     * @param templateFilter  should templates be returned?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -122,13 +131,21 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<CollectionElement> getAttachedCollections(String userId,
-                                                          String parentGUID,
-                                                          String collectionType,
-                                                          int    startFrom,
-                                                          int    pageSize) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public List<CollectionElement> getAttachedCollections(String              userId,
+                                                          String              parentGUID,
+                                                          String              collectionType,
+                                                          TemplateFilter      templateFilter,
+                                                          List<ElementStatus> limitResultsByStatus,
+                                                          Date                asOfTime,
+                                                          SequencingOrder     sequencingOrder,
+                                                          String              sequencingProperty,
+                                                          int                 startFrom,
+                                                          int                 pageSize,
+                                                          boolean             forLineage,
+                                                          boolean             forDuplicateProcessing,
+                                                          Date                effectiveTime) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
         final String methodName = "getLinkedCollections";
         final String parentGUIDParameterName = "parentGUID";
@@ -141,13 +158,13 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
                                                                                                         parentGUID,
                                                                                                         1,
                                                                                                         OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                        limitResultsByStatus,
+                                                                                                        asOfTime,
+                                                                                                        sequencingProperty,
+                                                                                                        sequencingOrder,
                                                                                                         forLineage,
                                                                                                         forDuplicateProcessing,
-                                                                                                        new Date(),
+                                                                                                        effectiveTime,
                                                                                                         startFrom,
                                                                                                         pageSize);
 
@@ -183,8 +200,16 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      *
      * @param userId             userId of user making request
      * @param classificationName name of the classification - if null, all collections are returned
-     * @param startFrom          index of the list to start from (0 for start)
-     * @param pageSize           maximum number of elements to return
+     * @param templateFilter  should templates be returned?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -193,12 +218,20 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<CollectionElement> getClassifiedCollections(String userId,
-                                                            String classificationName,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public List<CollectionElement> getClassifiedCollections(String              userId,
+                                                            String              classificationName,
+                                                            TemplateFilter      templateFilter,
+                                                            List<ElementStatus> limitResultsByStatus,
+                                                            Date                asOfTime,
+                                                            SequencingOrder     sequencingOrder,
+                                                            String              sequencingProperty,
+                                                            int                 startFrom,
+                                                            int                 pageSize,
+                                                            boolean             forLineage,
+                                                            boolean             forDuplicateProcessing,
+                                                            Date                effectiveTime) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
     {
         final String methodName = "getClassifiedCollections";
 
@@ -209,14 +242,14 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
                                                                                                       OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
                                                                                                       null,
-                                                                                                      null,
-                                                                                                      null,
+                                                                                                      limitResultsByStatus,
+                                                                                                      asOfTime,
                                                                                                       propertyHelper.getSearchClassifications(classificationName),
-                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      new Date(),
+                                                                                                      sequencingProperty,
+                                                                                                      sequencingOrder,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
+                                                                                                      effectiveTime,
                                                                                                       startFrom,
                                                                                                       pageSize);
 
@@ -278,6 +311,7 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      * @param userId       userId of user making request
      * @param classificationName option name of a collection classification
      * @param searchString string to search for
+     * @param templateFilter  should templates be returned?
      * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
      * @param asOfTime             repository time to use
      * @param sequencingOrder      order to retrieve results
@@ -298,6 +332,7 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
     public List<CollectionElement> findCollections(String              userId,
                                                    String              classificationName,
                                                    String              searchString,
+                                                   TemplateFilter      templateFilter,
                                                    List<ElementStatus> limitResultsByStatus,
                                                    Date                asOfTime,
                                                    SequencingOrder     sequencingOrder,
@@ -319,6 +354,7 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
+                                                                                                                templateFilter,
                                                                                                                 OpenMetadataType.COLLECTION.typeName,
                                                                                                                 limitResultsByStatus,
                                                                                                                 asOfTime,
@@ -360,6 +396,7 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
     public List<CollectionElement> getCollectionsByName(String              userId,
                                                         String              classificationName,
                                                         String              name,
+                                                        TemplateFilter      templateFilter,
                                                         List<ElementStatus> limitResultsByStatus,
                                                         Date                asOfTime,
                                                         SequencingOrder     sequencingOrder,
@@ -385,7 +422,7 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ, templateFilter),
                                                                                                       limitResultsByStatus,
                                                                                                       asOfTime,
                                                                                                       propertyHelper.getSearchClassifications(classificationName),
@@ -407,8 +444,16 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      * @param userId         userId of user making request
      * @param classificationName option name of a collection classification
      * @param collectionType the collection type value to match on.  If it is null, all collections with a null collectionType are returned
-     * @param startFrom      index of the list to start from (0 for start)
-     * @param pageSize       maximum number of elements to return
+     * @param templateFilter  should templates be returned?
+     * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
+     * @param asOfTime             repository time to use
+     * @param sequencingOrder      order to retrieve results
+     * @param sequencingProperty   property to use for sequencing order
+     * @param startFrom            paging start point
+     * @param pageSize             maximum results that can be returned
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -417,13 +462,21 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<CollectionElement> getCollectionsByType(String userId,
-                                                        String classificationName,
-                                                        String collectionType,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<CollectionElement> getCollectionsByType(String              userId,
+                                                        String              classificationName,
+                                                        String              collectionType,
+                                                        TemplateFilter      templateFilter,
+                                                        List<ElementStatus> limitResultsByStatus,
+                                                        Date                asOfTime,
+                                                        SequencingOrder     sequencingOrder,
+                                                        String              sequencingProperty,
+                                                        int                 startFrom,
+                                                        int                 pageSize,
+                                                        boolean             forLineage,
+                                                        boolean             forDuplicateProcessing,
+                                                        Date                effectiveTime) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         final String methodName = "getCollectionsByType";
 
@@ -437,15 +490,16 @@ public class CollectionsClient extends OpenMetadataBaseClient implements Collect
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames,
                                                                                                                                                collectionType,
-                                                                                                                                               PropertyComparisonOperator.EQ),
-                                                                                                      null,
-                                                                                                      null,
+                                                                                                                                               PropertyComparisonOperator.EQ,
+                                                                                                                                               templateFilter),
+                                                                                                      limitResultsByStatus,
+                                                                                                      asOfTime,
                                                                                                       propertyHelper.getSearchClassifications(classificationName),
-                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      new Date(),
+                                                                                                      sequencingProperty,
+                                                                                                      sequencingOrder,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
+                                                                                                      effectiveTime,
                                                                                                       startFrom,
                                                                                                       pageSize);
 

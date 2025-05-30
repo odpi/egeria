@@ -4,13 +4,12 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
 
 
 /**
@@ -70,9 +69,9 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public ToDoActionManagement getToDoActionManagementClient(String userId,
-                                                              String serverName,
-                                                              String serviceOperationName) throws InvalidParameterException,
+    public ToDoActionHandler getToDoActionManagementClient(String userId,
+                                                           String serverName,
+                                                           String serviceOperationName) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {

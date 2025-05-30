@@ -290,7 +290,7 @@ Content-Type: application/json
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
   "collectionProperties": {
-    "class" : "CollectionProperties",
+    "class" : "CollectionFolderProperties",
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
@@ -299,6 +299,88 @@ Content-Type: application/json
     "orderByPropertyName" : "Add property name if 'collectionOrder' is OTHER"
   }
 }
+
+
+###
+# @name createContextEventCollection
+# Create a new collection with the ContextEventCollection classification.  This is used to group context events together.
+# For example, the collection may be a series of events that affect a set of resources.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/context-event-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewCollectionRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type"
+  }
+}
+
+
+###
+# @name createEventSetCollection
+# Create a new collection with the EventSet classification.  This is used to group event schemas together.
+# For example, the collection may describe a set of events emitted by a specific system or to disseminate
+# information about a certain situation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/context-event-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewCollectionRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type"
+  }
+}
+
+
+
+
+###
+# @name createNamingStandardRuleSetCollection
+# Create a new collection with the NamingStandardRuleSet classification.  This is used to group naming standard rule
+# governance definitions together.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/naming-standard-rule-set-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewCollectionRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type"
+  }
+}
+
 
 ###
 # @name createCollectionFromTemplate

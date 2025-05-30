@@ -447,14 +447,11 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                 }
             }
 
-            if (solutionComponent.getImplementedBy() != null)
+            if (solutionComponent.getImplementationResource() != null)
             {
-                archiveHelper.addImplementedByRelationship(solutionComponent.getGUID(),
-                                                           solutionComponent.getImplementedBy(),
-                                                           "Standard implementation",
-                                                           "Runnable component",
-                                                           null,
-                                                           null);
+                archiveHelper.addImplementationResourceRelationship(solutionComponent.getGUID(),
+                                                                    solutionComponent.getImplementationResource(),
+                                                                    "Standard implementation of the main process step");
             }
         }
     }

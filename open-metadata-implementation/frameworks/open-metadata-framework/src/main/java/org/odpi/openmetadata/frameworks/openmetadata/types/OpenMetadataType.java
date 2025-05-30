@@ -1478,6 +1478,14 @@ public enum OpenMetadataType
                                   "d2f5cbd5-36f7-4471-83fb-b1aec78d39df",
                                   "Links a profile, role or project to the elements that they are responsible for managing."),
 
+    /**
+     * Link between a scope - such as a digital service, infrastructure element or organization - and an element restricted the scope.
+     */
+    SCOPED_BY_RELATIONSHIP("3845b5cc-8c85-462f-b7e6-47472a568793",
+                           "ScopedBy",
+                           OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
+                           "ffe8adb8-58bd-469c-9077-f4c4088ca1d1",
+                           "Link between a scope - such as a digital service, infrastructure element or organization - and an element restricted the scope, such as a governance definition."),
 
     /**
      * Identifies the Actor that commissioned work (such as a project or a community) or a capability, service or assets.
@@ -3028,15 +3036,6 @@ public enum OpenMetadataType
                              "Shows the resources that are governed by a specific governance definition."),
 
     /**
-     * Link between a scope - such as a digital service, infrastructure element or organization - and a governance definition.
-     */
-    GOVERNANCE_DEFINITION_SCOPE("3845b5cc-8c85-462f-b7e6-47472a568793",
-                                "GovernanceDefinitionScope",
-                                OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
-                                "ffe8adb8-58bd-469c-9077-f4c4088ca1d1",
-                                "Link between a scope - such as a digital service, infrastructure element or organization - and a governance definition."),
-
-    /**
      * Defines a reason for having the governance program.
      */
     GOVERNANCE_DRIVER("c403c109-7b6b-48cd-8eee-df445b258b33",
@@ -3661,7 +3660,7 @@ public enum OpenMetadataType
                                          "GovernanceResponsibilityAssignment",
                                          OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                                          "b44383d1-58bb-4609-b84e-45fed8b9ea1d",
-                                         "Identifies a role that will perform a governance responsibility."),
+                                         "Identifies an actor that will perform a governance responsibility."),
 
     /**
      * A definition for how the effectiveness of the governance program is measured.
@@ -5878,6 +5877,15 @@ public enum OpenMetadataType
                                       OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                                       "63e2ac1e-394f-47f6-87a6-7ae4ebed0887",
                                       "Identifies the structure of data passed through a solution port."),
+
+    /**
+     * Identifies a useful component for creating an implementation of the parent.
+     */
+    IMPLEMENTATION_RESOURCE_RELATIONSHIP("c254256e-ca56-4155-96d1-93cf52e68d41",
+                                "ImplementationResource",
+                                OpenMetadataWikiPages.MODEL_0737_SOLUTION_IMPLEMENTATION,
+                                "0802f7f8-ad1a-449b-9a57-611a668f5bde",
+                                "Identifies a useful component for creating an implementation of the parent."),
 
 
     /**

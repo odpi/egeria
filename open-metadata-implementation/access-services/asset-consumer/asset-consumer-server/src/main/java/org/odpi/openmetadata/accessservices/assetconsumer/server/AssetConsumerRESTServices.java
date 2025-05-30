@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.mermaid.AssetGraphMermaidGraphBuilder;
-import org.odpi.openmetadata.commonservices.mermaid.AssetLineageGraphMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetLineageGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -381,15 +381,9 @@ public class AssetConsumerRESTServices
                                 {
                                     if (relationship != null)
                                     {
-                                        if ((! assetHandler.getRepositoryHelper().isTypeOf(instanceHandler.getServiceName(),
-                                                                                           relationship.getType().getTypeDefName(),
-                                                                                           OpenMetadataType.TARGET_FOR_ACTION_RELATIONSHIP.typeName)) &&
-                                                (! assetHandler.getRepositoryHelper().isTypeOf(instanceHandler.getServiceName(),
-                                                                                               relationship.getType().getTypeDefName(),
-                                                                                               OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName)))
-                                        {
-                                            receivedRelationships.put(relationship.getGUID(), relationship);
-                                        }
+                                        receivedRelationships.put(relationship.getGUID(), relationship);
+
+
 
                                         String iscQualifiedName = assetHandler.getRepositoryHelper().getStringProperty(assetHandler.getServiceName(),
                                                                                                                        OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
@@ -465,10 +459,16 @@ public class AssetConsumerRESTServices
                     assetGraph.setInformationSupplyChains(informationSupplyChains);
                 }
 
+                /*
+                 * Build the various mermaid graphs that show different aspects of the asset graph.
+                 */
                 AssetGraphMermaidGraphBuilder graphBuilder = new AssetGraphMermaidGraphBuilder(assetGraph);
+
                 assetGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
                 assetGraph.setInformationSupplyChainMermaidGraph(graphBuilder.getInformationSupplyChainMermaidGraph());
                 assetGraph.setFieldLevelLineageGraph(graphBuilder.getFieldLevelLineageGraph());
+                assetGraph.setActionMermaidGraph(graphBuilder.getActionGraph());
+                assetGraph.setLocalLineageGraph(graphBuilder.getLocalLineageGraph());
 
                 response.setAssetGraph(assetGraph);
             }
