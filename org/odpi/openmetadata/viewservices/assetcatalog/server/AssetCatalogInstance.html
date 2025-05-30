@@ -141,17 +141,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the main Asset Consumer OMAS client.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetconsumer/client/OpenIntegrationServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenIntegrationServiceClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenIntegrationServiceClient()" class="member-name-link">getOpenIntegrationServiceClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open integration client.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetconsumer/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenMetadataStoreClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataStoreClient()" class="member-name-link">getOpenMetadataStoreClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open metadata store client.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../beans/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.beans">Type</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../rest/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">Type</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedAssetTypes()" class="member-name-link">getSupportedAssetTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the values from the SupportedTypesForSearch view service option.</div>
@@ -222,7 +212,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSupportedAssetTypes()">
 <h3>getSupportedAssetTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../beans/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.beans">Type</a>&gt;</span>&nbsp;<span class="element-name">getSupportedAssetTypes</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../rest/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">Type</a>&gt;</span>&nbsp;<span class="element-name">getSupportedAssetTypes</span>()</div>
 <div class="block">Return the values from the SupportedTypesForSearch view service option.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -235,28 +225,6 @@ loadScripts(document, 'script');</script>
 <h3>getAssetConsumerClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetconsumer/client/AssetConsumer.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">AssetConsumer</a></span>&nbsp;<span class="element-name">getAssetConsumerClient</span>()</div>
 <div class="block">Return the main Asset Consumer OMAS client.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOpenIntegrationServiceClient()">
-<h3>getOpenIntegrationServiceClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetconsumer/client/OpenIntegrationServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenIntegrationServiceClient</a></span>&nbsp;<span class="element-name">getOpenIntegrationServiceClient</span>()</div>
-<div class="block">Return the open integration client.  This client is from the Open Integration Framework (OIF).</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>client</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOpenMetadataStoreClient()">
-<h3>getOpenMetadataStoreClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetconsumer/client/OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenMetadataStoreClient</a></span>&nbsp;<span class="element-name">getOpenMetadataStoreClient</span>()</div>
-<div class="block">Return the open metadata store client.  This client is from the Governance Action Framework (GAF).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>

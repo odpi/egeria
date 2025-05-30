@@ -366,8 +366,9 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <div class="block">Return a list of metadata elements that match the supplied criteria.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="../search/TemplateFilter.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateFilter</a>&nbsp;templateFilter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
@@ -382,8 +383,9 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <div class="block">Retrieve the metadata elements of the requested type that contain the requested string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="../search/TemplateFilter.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateFilter</a>&nbsp;templateFilter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -1245,10 +1247,11 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">
+<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">
 <h3>findMetadataElementsWithString</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&gt;</span>&nbsp;<span class="element-name">findMetadataElementsWithString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="../search/TemplateFilter.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateFilter</a>&nbsp;templateFilter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -1264,10 +1267,11 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <div class="block">Retrieve the metadata elements that contain the requested string.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="MetadataElementInterface.html#findMetadataElementsWithString(java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElementsWithString</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.client">MetadataElementInterface</a></code></dd>
+<dd><code><a href="MetadataElementInterface.html#findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElementsWithString</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.client">MetadataElementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>searchString</code> - name to retrieve</dd>
+<dd><code>templateFilter</code> - should templates be returned?</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
 <dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
@@ -1289,10 +1293,11 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">
+<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">
 <h3>findMetadataElementsWithString</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&gt;</span>&nbsp;<span class="element-name">findMetadataElementsWithString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="../search/TemplateFilter.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateFilter</a>&nbsp;templateFilter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
@@ -1309,10 +1314,11 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <div class="block">Retrieve the metadata elements of the requested type that contain the requested string.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="MetadataElementInterface.html#findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElementsWithString</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.client">MetadataElementInterface</a></code></dd>
+<dd><code><a href="MetadataElementInterface.html#findMetadataElementsWithString(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElementsWithString</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.client">MetadataElementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>searchString</code> - name to retrieve</dd>
+<dd><code>templateFilter</code> - should templates be returned?</dd>
 <dd><code>typeName</code> - name of the type to limit the results to</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>

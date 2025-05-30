@@ -72,12 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class CertificationElement" class="title">Class CertificationElement</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CertificationElement</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CertificationElement</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></span></div>
 <div class="block">CertificationElement contains the properties and header for a certification for an element.
  It includes the details of the specific element's certification and details of the certification type.</div>
 </section>
@@ -99,6 +101,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary)" class="member-name-link">CertificationElement</a><wbr>(<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;template)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Copy/clone constructor</div>
+</div>
 </div>
 </section>
 </li>
@@ -118,50 +124,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCertificationHeader()" class="member-name-link">getCertificationHeader</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCertifiedBy()" class="member-name-link">getCertifiedBy</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the element header associated with the relationship.</div>
+<div class="block">Return the person in the certification authority that granted this certificate.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCertificationProperties()" class="member-name-link">getCertificationProperties</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCustodian()" class="member-name-link">getCustodian</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return details of the relationship</div>
+<div class="block">Return the person/team responsible for ensuring that the certificate conditions are adhered to.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCertificationTypeHeader()" class="member-name-link">getCertificationTypeHeader</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecipient()" class="member-name-link">getRecipient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the element header associated with end 2 of the relationship (certification type).</div>
+<div class="block">Return the person/team that received the certification.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/governance/CertificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">CertificationProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCertificationTypeProperties()" class="member-name-link">getCertificationTypeProperties</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the properties of the certification type.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCertificationHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setCertificationHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;certificationHeader)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the element header associated with the relationship.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCertificationProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)" class="member-name-link">setCertificationProperties</a><wbr>(<a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;certificationProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCertifiedBy(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">setCertifiedBy</a><wbr>(<a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;certifiedBy)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up relationship properties</div>
+<div class="block">Set up the person in the certification authority that granted this certificate.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCertificationTypeHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setCertificationTypeHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;certificationTypeHeader)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCustodian(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">setCustodian</a><wbr>(<a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;custodian)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the element header associated with end 2 of the relationship (certification type).</div>
+<div class="block">Set up the person/team responsible for ensuring that the certificate conditions are adhered to.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCertificationTypeProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties)" class="member-name-link">setCertificationTypeProperties</a><wbr>(<a href="../properties/governance/CertificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">CertificationProperties</a>&nbsp;certificationTypeProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRecipient(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)" class="member-name-link">setRecipient</a><wbr>(<a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;recipient)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the properties of the certification type.</div>
+<div class="block">Set up the person/team that received the certification.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -171,6 +167,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></h3>
+<code><a href="RelatedMetadataElementSummary.html#getEffectiveFromTime()">getEffectiveFromTime</a>, <a href="RelatedMetadataElementSummary.html#getEffectiveToTime()">getEffectiveToTime</a>, <a href="RelatedMetadataElementSummary.html#getRelatedElement()">getRelatedElement</a>, <a href="RelatedMetadataElementSummary.html#getRelatedElementAtEnd1()">getRelatedElementAtEnd1</a>, <a href="RelatedMetadataElementSummary.html#getRelationshipHeader()">getRelationshipHeader</a>, <a href="RelatedMetadataElementSummary.html#getRelationshipProperties()">getRelationshipProperties</a>, <a href="RelatedMetadataElementSummary.html#setEffectiveFromTime(java.util.Date)">setEffectiveFromTime</a>, <a href="RelatedMetadataElementSummary.html#setEffectiveToTime(java.util.Date)">setEffectiveToTime</a>, <a href="RelatedMetadataElementSummary.html#setRelatedElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">setRelatedElement</a>, <a href="RelatedMetadataElementSummary.html#setRelatedElementAtEnd1(boolean)">setRelatedElementAtEnd1</a>, <a href="RelatedMetadataElementSummary.html#setRelationshipHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">setRelationshipHeader</a>, <a href="RelatedMetadataElementSummary.html#setRelationshipProperties(java.util.Map)">setRelationshipProperties</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -203,6 +202,17 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary)">
+<h3>CertificationElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">CertificationElement</span><wbr><span class="parameters">(<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -212,90 +222,68 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getCertificationHeader()">
-<h3>getCertificationHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getCertificationHeader</span>()</div>
-<div class="block">Return the element header associated with the relationship.</div>
+<section class="detail" id="getCertifiedBy()">
+<h3>getCertifiedBy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a></span>&nbsp;<span class="element-name">getCertifiedBy</span>()</div>
+<div class="block">Return the person in the certification authority that granted this certificate.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>element header object</dd>
+<dd>element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setCertificationHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
-<h3>setCertificationHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCertificationHeader</span><wbr><span class="parameters">(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;certificationHeader)</span></div>
-<div class="block">Set up the element header associated with the relationship.</div>
+<section class="detail" id="setCertifiedBy(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">
+<h3>setCertifiedBy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCertifiedBy</span><wbr><span class="parameters">(<a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;certifiedBy)</span></div>
+<div class="block">Set up the person in the certification authority that granted this certificate.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>certificationHeader</code> - element header object</dd>
+<dd><code>certifiedBy</code> - element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getCertificationProperties()">
-<h3>getCertificationProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a></span>&nbsp;<span class="element-name">getCertificationProperties</span>()</div>
-<div class="block">Return details of the relationship</div>
+<section class="detail" id="getCustodian()">
+<h3>getCustodian</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a></span>&nbsp;<span class="element-name">getCustodian</span>()</div>
+<div class="block">Return the person/team responsible for ensuring that the certificate conditions are adhered to.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>relationship properties</dd>
+<dd>element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setCertificationProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)">
-<h3>setCertificationProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCertificationProperties</span><wbr><span class="parameters">(<a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;certificationProperties)</span></div>
-<div class="block">Set up relationship properties</div>
+<section class="detail" id="setCustodian(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">
+<h3>setCustodian</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCustodian</span><wbr><span class="parameters">(<a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;custodian)</span></div>
+<div class="block">Set up the person/team responsible for ensuring that the certificate conditions are adhered to.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>certificationProperties</code> - relationship properties</dd>
+<dd><code>custodian</code> - element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getCertificationTypeHeader()">
-<h3>getCertificationTypeHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getCertificationTypeHeader</span>()</div>
-<div class="block">Return the element header associated with end 2 of the relationship (certification type).</div>
+<section class="detail" id="getRecipient()">
+<h3>getRecipient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a></span>&nbsp;<span class="element-name">getRecipient</span>()</div>
+<div class="block">Return the person/team that received the certification.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>element stub object</dd>
+<dd>element</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setCertificationTypeHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
-<h3>setCertificationTypeHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCertificationTypeHeader</span><wbr><span class="parameters">(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;certificationTypeHeader)</span></div>
-<div class="block">Set up the element header associated with end 2 of the relationship (certification type).</div>
+<section class="detail" id="setRecipient(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">
+<h3>setRecipient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRecipient</span><wbr><span class="parameters">(<a href="MetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElementSummary</a>&nbsp;recipient)</span></div>
+<div class="block">Set up the person/team that received the certification.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>certificationTypeHeader</code> - element stub object</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCertificationTypeProperties()">
-<h3>getCertificationTypeProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/governance/CertificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">CertificationProperties</a></span>&nbsp;<span class="element-name">getCertificationTypeProperties</span>()</div>
-<div class="block">Return the properties of the certification type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>properties</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setCertificationTypeProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties)">
-<h3>setCertificationTypeProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCertificationTypeProperties</span><wbr><span class="parameters">(<a href="../properties/governance/CertificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">CertificationProperties</a>&nbsp;certificationTypeProperties)</span></div>
-<div class="block">Set up the properties of the certification type.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>certificationTypeProperties</code> - properties</dd>
+<dd><code>recipient</code> - element</dd>
 </dl>
 </section>
 </li>
@@ -306,7 +294,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="RelatedMetadataElementSummary.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -319,7 +307,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="RelatedMetadataElementSummary.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
@@ -334,7 +322,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="RelatedMetadataElementSummary.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

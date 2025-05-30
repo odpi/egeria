@@ -73,9 +73,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase</a>
-<div class="inheritance"><a href="AssetCatalogOMASAPIResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogOMASAPIResponse</a>
 <div class="inheritance">org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes</div>
-</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -85,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetCatalogSupportedTypes</span>
-<span class="extends-implements">extends <a href="AssetCatalogOMASAPIResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogOMASAPIResponse</a></span></div>
+<span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></span></div>
 <div class="block">AssetCatalogSupportedTypes is the response structure used on the Asset Catalog OMAS REST API calls that returns
  the Open Metadata Types supported for search as a response.</div>
 </section>
@@ -122,7 +120,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../beans/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.beans">Type</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">Type</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes()" class="member-name-link">getTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of supported types.</div>
@@ -133,7 +131,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypes(java.util.List)" class="member-name-link">setTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../beans/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.beans">Type</a>&gt;&nbsp;types)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypes(java.util.List)" class="member-name-link">setTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">Type</a>&gt;&nbsp;types)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Setup the list of supported types.</div>
 </div>
@@ -180,7 +178,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getTypes()">
 <h3>getTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../beans/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.beans">Type</a>&gt;</span>&nbsp;<span class="element-name">getTypes</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">Type</a>&gt;</span>&nbsp;<span class="element-name">getTypes</span>()</div>
 <div class="block">Returns the list of supported types.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -191,7 +189,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setTypes(java.util.List)">
 <h3>setTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../beans/Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.beans">Type</a>&gt;&nbsp;types)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Type.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">Type</a>&gt;&nbsp;types)</span></div>
 <div class="block">Setup the list of supported types.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

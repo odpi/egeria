@@ -116,7 +116,6 @@ org.odpi.openmetadata.accessservices.datascience.rest
 org.odpi.openmetadata.accessservices.datascience.server
 org.odpi.openmetadata.accessservices.datascience.server.spring
 org.odpi.openmetadata.accessservices.designmodel.admin
-org.odpi.openmetadata.accessservices.designmodel.api
 org.odpi.openmetadata.accessservices.designmodel.client
 org.odpi.openmetadata.accessservices.designmodel.ffdc
 org.odpi.openmetadata.accessservices.designmodel.listener
@@ -422,7 +421,6 @@ org.odpi.openmetadata.commonservices.ffdc.properties
 org.odpi.openmetadata.commonservices.ffdc.rest
 org.odpi.openmetadata.commonservices.generichandlers
 org.odpi.openmetadata.commonservices.generichandlers.ffdc
-org.odpi.openmetadata.commonservices.mermaid
 org.odpi.openmetadata.commonservices.multitenant
 org.odpi.openmetadata.commonservices.multitenant.ffdc
 org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions
@@ -505,6 +503,7 @@ org.odpi.openmetadata.frameworks.governanceaction.controls
 org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
 org.odpi.openmetadata.frameworks.governanceaction.fileclassifier
+org.odpi.openmetadata.frameworks.governanceaction.mermaid
 org.odpi.openmetadata.frameworks.governanceaction.properties
 org.odpi.openmetadata.frameworks.integration.client
 org.odpi.openmetadata.frameworks.integration.connectors
@@ -522,6 +521,7 @@ org.odpi.openmetadata.frameworks.openmetadata.converters
 org.odpi.openmetadata.frameworks.openmetadata.enums
 org.odpi.openmetadata.frameworks.openmetadata.ffdc
 org.odpi.openmetadata.frameworks.openmetadata.mapper
+org.odpi.openmetadata.frameworks.openmetadata.mermaid
 org.odpi.openmetadata.frameworks.openmetadata.metadataelements
 org.odpi.openmetadata.frameworks.openmetadata.properties
 org.odpi.openmetadata.frameworks.openmetadata.properties.actions
@@ -601,6 +601,7 @@ org.odpi.openmetadata.frameworkservices.oif.server
 org.odpi.openmetadata.frameworkservices.oif.server.spring
 org.odpi.openmetadata.frameworkservices.omf.admin
 org.odpi.openmetadata.frameworkservices.omf.client
+org.odpi.openmetadata.frameworkservices.omf.client.handlers
 org.odpi.openmetadata.frameworkservices.omf.client.rest
 org.odpi.openmetadata.frameworkservices.omf.converters
 org.odpi.openmetadata.frameworkservices.omf.ffdc
@@ -815,8 +816,6 @@ org.odpi.openmetadata.viewservices.actionauthor.ffdc
 org.odpi.openmetadata.viewservices.actionauthor.server
 org.odpi.openmetadata.viewservices.actionauthor.server.spring
 org.odpi.openmetadata.viewservices.assetcatalog.admin
-org.odpi.openmetadata.viewservices.assetcatalog.beans
-org.odpi.openmetadata.viewservices.assetcatalog.converters
 org.odpi.openmetadata.viewservices.assetcatalog.ffdc
 org.odpi.openmetadata.viewservices.assetcatalog.rest
 org.odpi.openmetadata.viewservices.assetcatalog.server
@@ -830,15 +829,11 @@ org.odpi.openmetadata.viewservices.automatedcuration.rest
 org.odpi.openmetadata.viewservices.automatedcuration.server
 org.odpi.openmetadata.viewservices.automatedcuration.server.spring
 org.odpi.openmetadata.viewservices.classificationexplorer.admin
-org.odpi.openmetadata.viewservices.classificationexplorer.converters
 org.odpi.openmetadata.viewservices.classificationexplorer.ffdc
-org.odpi.openmetadata.viewservices.classificationexplorer.handler
-org.odpi.openmetadata.viewservices.classificationexplorer.rest
 org.odpi.openmetadata.viewservices.classificationexplorer.server
 org.odpi.openmetadata.viewservices.classificationexplorer.server.spring
 org.odpi.openmetadata.viewservices.classificationmanager.admin
 org.odpi.openmetadata.viewservices.classificationmanager.ffdc
-org.odpi.openmetadata.viewservices.classificationmanager.rest
 org.odpi.openmetadata.viewservices.classificationmanager.server
 org.odpi.openmetadata.viewservices.classificationmanager.server.spring
 org.odpi.openmetadata.viewservices.collectionmanager.admin
@@ -862,11 +857,7 @@ org.odpi.openmetadata.viewservices.devopspipeline.ffdc
 org.odpi.openmetadata.viewservices.devopspipeline.server
 org.odpi.openmetadata.viewservices.devopspipeline.server.spring
 org.odpi.openmetadata.viewservices.feedbackmanager.admin
-org.odpi.openmetadata.viewservices.feedbackmanager.converters
 org.odpi.openmetadata.viewservices.feedbackmanager.ffdc
-org.odpi.openmetadata.viewservices.feedbackmanager.handler
-org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements
-org.odpi.openmetadata.viewservices.feedbackmanager.rest
 org.odpi.openmetadata.viewservices.feedbackmanager.server
 org.odpi.openmetadata.viewservices.feedbackmanager.server.spring
 org.odpi.openmetadata.viewservices.glossarybrowser.admin
@@ -885,7 +876,6 @@ org.odpi.openmetadata.viewservices.governanceofficer.server
 org.odpi.openmetadata.viewservices.governanceofficer.server.spring
 org.odpi.openmetadata.viewservices.metadataexplorer.admin
 org.odpi.openmetadata.viewservices.metadataexplorer.ffdc
-org.odpi.openmetadata.viewservices.metadataexplorer.handlers
 org.odpi.openmetadata.viewservices.metadataexplorer.server
 org.odpi.openmetadata.viewservices.metadataexplorer.server.spring
 org.odpi.openmetadata.viewservices.myprofile.admin
@@ -931,6 +921,10 @@ org.odpi.openmetadata.viewservices.templatemanager.ffdc
 org.odpi.openmetadata.viewservices.templatemanager.rest
 org.odpi.openmetadata.viewservices.templatemanager.server
 org.odpi.openmetadata.viewservices.templatemanager.server.spring
+org.odpi.openmetadata.viewservices.timekeeper.admin
+org.odpi.openmetadata.viewservices.timekeeper.ffdc
+org.odpi.openmetadata.viewservices.timekeeper.server
+org.odpi.openmetadata.viewservices.timekeeper.server.spring
 org.odpi.openmetadata.viewservices.validmetadata.admin
 org.odpi.openmetadata.viewservices.validmetadata.ffdc
 org.odpi.openmetadata.viewservices.validmetadata.server

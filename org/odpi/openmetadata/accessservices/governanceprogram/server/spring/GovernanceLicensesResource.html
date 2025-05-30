@@ -111,9 +111,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createLicenseType(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)" class="member-name-link">createLicenseType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createLicenseType(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewGovernanceDefinitionRequestBody)" class="member-name-link">createLicenseType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/NewGovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewGovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a description of the license type.</div>
 </div>
@@ -126,7 +126,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete the properties of the license type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/RelatedElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCertifiedElements(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getCertifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLicensedElements(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getLicensedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseGUID,
  int&nbsp;startFrom,
@@ -202,11 +202,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a license.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateLicenseType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)" class="member-name-link">updateLicenseType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateLicenseType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NewGovernanceDefinitionRequestBody)" class="member-name-link">updateLicenseType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseTypeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/NewGovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewGovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of the license type.</div>
 </div>
@@ -243,7 +243,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createLicenseType(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)">
+<section class="detail" id="createLicenseType(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewGovernanceDefinitionRequestBody)">
 <h3>createLicenseType</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/license-types")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createLicenseType</span><wbr><span class="parameters">(@PathVariable
@@ -251,7 +251,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/NewGovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewGovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a description of the license type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -267,7 +267,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateLicenseType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)">
+<section class="detail" id="updateLicenseType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NewGovernanceDefinitionRequestBody)">
 <h3>updateLicenseType</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/license-types/{licenseTypeGUID}/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateLicenseType</span><wbr><span class="parameters">(@PathVariable
@@ -279,7 +279,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  boolean&nbsp;isMergeUpdate,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/NewGovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewGovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the properties of the license type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -520,10 +520,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCertifiedElements(java.lang.String,java.lang.String,java.lang.String,int,int)">
-<h3>getCertifiedElements</h3>
+<section class="detail" id="getLicensedElements(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<h3>getLicensedElements</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/elements/licenses/{licenseGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/RelatedElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedElementsResponse</a></span>&nbsp;<span class="element-name">getCertifiedElements</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/RelatedElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedElementsResponse</a></span>&nbsp;<span class="element-name">getLicensedElements</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
