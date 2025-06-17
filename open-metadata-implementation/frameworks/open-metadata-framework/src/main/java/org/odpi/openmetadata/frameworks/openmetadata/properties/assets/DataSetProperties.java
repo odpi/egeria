@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.F
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -43,6 +44,7 @@ public class DataSetProperties extends DataAssetProperties
     public DataSetProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DATA_SET.typeName);
     }
 
 

@@ -44,8 +44,6 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(assetGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        super.addClassifications(assetGraph.getElementHeader());
-
         appendNewMermaidNode(assetGraph.getElementHeader().getGUID(),
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),

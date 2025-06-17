@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.RootSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,6 +27,8 @@ public class DatabaseSchemaTypeProperties extends RootSchemaTypeProperties
      */
     public DatabaseSchemaTypeProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName);
     }
 
 

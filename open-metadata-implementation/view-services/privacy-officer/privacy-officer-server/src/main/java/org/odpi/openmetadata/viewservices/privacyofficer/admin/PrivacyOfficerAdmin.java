@@ -29,22 +29,23 @@ public class PrivacyOfficerAdmin extends ViewServiceAdmin
 
 
     /**
-     * Initialize the Privacy Officer view service.
+     * Initialize the view service.
      *
      * @param serverName                         name of the local server
      * @param viewServiceConfig                  specific configuration properties for this view service.
      * @param auditLog                           audit log component for logging messages.
-     * @param serverUserName                     user id to use to issue calls to the remote server.
+     * @param serverUserName                     user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param serverUserPassword                 password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize                        maximum page size. 0 means unlimited
-     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
+     * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
      */
     @Override
     public void initialize(String                       serverName,
                            ViewServiceConfig            viewServiceConfig,
                            AuditLog                     auditLog,
                            String                       serverUserName,
+                           String                       serverUserPassword,
                            int                          maxPageSize) throws OMAGConfigurationErrorException
-
     {
 
         final String actionDescription = "initialize";
@@ -61,11 +62,12 @@ public class PrivacyOfficerAdmin extends ViewServiceAdmin
              * because they are set at runtime by the user and potentially changed between operations.
              */
             this.instance = new PrivacyOfficerInstance(serverName,
-                                                      auditLog,
-                                                      serverUserName,
-                                                      maxPageSize,
-                                                      viewServiceConfig.getOMAGServerName(),
-                                                      viewServiceConfig.getOMAGServerPlatformRootURL());
+                                                       auditLog,
+                                                       serverUserName,
+                                                       serverUserPassword,
+                                                       maxPageSize,
+                                                       viewServiceConfig.getOMAGServerName(),
+                                                       viewServiceConfig.getOMAGServerPlatformRootURL());
 
             auditLog.logMessage(actionDescription,
                                 PrivacyOfficerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),

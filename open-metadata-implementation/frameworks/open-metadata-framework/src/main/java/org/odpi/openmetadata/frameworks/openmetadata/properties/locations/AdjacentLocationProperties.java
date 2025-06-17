@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,6 +25,7 @@ public class AdjacentLocationProperties extends RelationshipProperties
     public AdjacentLocationProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName);
     }
 
 

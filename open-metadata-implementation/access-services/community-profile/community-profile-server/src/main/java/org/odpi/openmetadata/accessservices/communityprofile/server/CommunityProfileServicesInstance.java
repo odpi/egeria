@@ -4,21 +4,14 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataSourceElement;
-import org.odpi.openmetadata.commonservices.generichandlers.CommentConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.InformalTagConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.LikeConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.LocationConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.RatingConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.RelatedElementConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -33,21 +26,14 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
     private final ReferenceableHandler<RelatedElementStub>         relatedElementHandler;
     private final SoftwareCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
-    private final UserIdentityHandler<UserIdentityElement>         userIdentityHandler;
-    private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
+    private final ActorProfileHandler<ActorProfileGraphElement> actorProfileHandler;
     private final PersonRoleHandler<ActorRoleElement>      personRoleHandler;
-    private final CollectionHandler<CollectionElement>     collectionHandler;
     private final CommunityHandler<CommunityElement>                     communityHandler;
     private final ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
-    private final ContactDetailsHandler<ContactMethodElement>            contactDetailsHandler;
     private final LocationHandler<LocationElement>                       locationHandler;
     private final GovernanceDefinitionHandler<SecurityGroupElement>      securityGroupHandler;
     private final ValidValuesHandler<ValidValueElement>                  validValuesHandler;
 
-    private final CommentHandler<CommentElement>         commentHandler;
-    private final InformalTagHandler<InformalTagElement> informalTagHandler;
-    private final LikeHandler<LikeElement>               likeHandler;
-    private final RatingHandler<RatingElement>           ratingHandler;
 
 
     /**
@@ -125,7 +111,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
 
             this.actorProfileHandler = new ActorProfileHandler<>(new ActorProfileConverter<>(repositoryHelper, serviceName,serverName),
-                                                                 ActorProfileElement.class,
+                                                                 ActorProfileGraphElement.class,
                                                                  serviceName,
                                                                  serverName,
                                                                  invalidParameterHandler,
@@ -152,20 +138,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                              publishZones,
                                                              auditLog);
 
-            this.collectionHandler = new CollectionHandler<>(new CollectionConverter<>(repositoryHelper, serviceName,serverName),
-                                                             CollectionElement.class,
-                                                             serviceName,
-                                                             serverName,
-                                                             invalidParameterHandler,
-                                                             repositoryHandler,
-                                                             repositoryHelper,
-                                                             localServerUserId,
-                                                             securityVerifier,
-                                                             supportedZones,
-                                                             defaultZones,
-                                                             publishZones,
-                                                             auditLog);
-
             this.communityHandler = new CommunityHandler<>(new CommunityConverter<>(repositoryHelper, serviceName, serverName),
                                                            CommunityElement.class,
                                                            serviceName,
@@ -179,20 +151,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                            defaultZones,
                                                            publishZones,
                                                            auditLog);
-
-            this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
-                                                                 UserIdentityElement.class,
-                                                                 serviceName,
-                                                                 serverName,
-                                                                 invalidParameterHandler,
-                                                                 repositoryHandler,
-                                                                 repositoryHelper,
-                                                                 localServerUserId,
-                                                                 securityVerifier,
-                                                                 supportedZones,
-                                                                 defaultZones,
-                                                                 publishZones,
-                                                                 auditLog);
 
             this.locationHandler = new LocationHandler<>(new LocationConverter<>(repositoryHelper, serviceName, serverName),
                                                          LocationElement.class,
@@ -222,19 +180,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                         publishZones,
                                                                         auditLog);
 
-            this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
-                                                                     ContactMethodElement.class,
-                                                                     serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHandler,
-                                                                     repositoryHelper,
-                                                                     localServerUserId,
-                                                                     securityVerifier,
-                                                                     supportedZones,
-                                                                     defaultZones,
-                                                                     publishZones,
-                                                                     auditLog);
 
             this.contributionRecordHandler = new ContributionRecordHandler<>(new ContributionRecordConverter<>(repositoryHelper, serviceName, serverName, karmaPointPlateau),
                                                                              ContributionRecordElement.class,
@@ -250,62 +195,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                              publishZones,
                                                                              karmaPointPlateau,
                                                                              auditLog);
-
-            this.commentHandler = new CommentHandler<>(new CommentConverter<>(repositoryHelper, serviceName, serverName),
-                                                       CommentElement.class,
-                                                       serviceName,
-                                                       serverName,
-                                                       invalidParameterHandler,
-                                                       repositoryHandler,
-                                                       repositoryHelper,
-                                                       localServerUserId,
-                                                       securityVerifier,
-                                                       supportedZones,
-                                                       defaultZones,
-                                                       publishZones,
-                                                       auditLog);
-
-            this.informalTagHandler = new InformalTagHandler<>(new InformalTagConverter<>(repositoryHelper, serviceName, serverName),
-                                                               InformalTagElement.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
-
-            this.likeHandler = new LikeHandler<>(new LikeConverter<>(repositoryHelper, serviceName, serverName),
-                                                 LikeElement.class,
-                                                 serviceName,
-                                                 serverName,
-                                                 invalidParameterHandler,
-                                                 repositoryHandler,
-                                                 repositoryHelper,
-                                                 localServerUserId,
-                                                 securityVerifier,
-                                                 supportedZones,
-                                                 defaultZones,
-                                                 publishZones,
-                                                 auditLog);
-
-            this.ratingHandler = new RatingHandler<>(new RatingConverter<>(repositoryHelper, serviceName, serverName),
-                                                     RatingElement.class,
-                                                     serviceName,
-                                                     serverName,
-                                                     invalidParameterHandler,
-                                                     repositoryHandler,
-                                                     repositoryHelper,
-                                                     localServerUserId,
-                                                     securityVerifier,
-                                                     supportedZones,
-                                                     defaultZones,
-                                                     publishZones,
-                                                     auditLog);
 
             this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
                                                                ValidValueElement.class,
@@ -369,7 +258,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ActorProfileHandler<ActorProfileElement> getActorProfileHandler() throws PropertyServerException
+    public ActorProfileHandler<ActorProfileGraphElement> getActorProfileHandler() throws PropertyServerException
     {
         final String methodName = "getActorProfileHandler";
 
@@ -395,23 +284,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
     }
 
 
-
-    /**
-     * Return the handler for community requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public CollectionHandler<CollectionElement> getCollectionHandler() throws PropertyServerException
-    {
-        final String methodName = "getCollectionHandler";
-
-        validateActiveRepository(methodName);
-
-        return collectionHandler;
-    }
-
-
     /**
      * Return the handler for community requests.
      *
@@ -425,38 +297,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return communityHandler;
-    }
-
-
-    /**
-     * Return the handler for contact methods requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public ContactDetailsHandler<ContactMethodElement> getContactDetailsHandler() throws PropertyServerException
-    {
-        final String methodName = "getContactMethodHandler";
-
-        validateActiveRepository(methodName);
-
-        return contactDetailsHandler;
-    }
-
-
-    /**
-     * Return the handler for user identity requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public UserIdentityHandler<UserIdentityElement> getUserIdentityHandler() throws PropertyServerException
-    {
-        final String methodName = "getUserIdentityHandler";
-
-        validateActiveRepository(methodName);
-
-        return userIdentityHandler;
     }
 
 
@@ -505,70 +345,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return contributionRecordHandler;
-    }
-
-
-    /**
-     * Return the handler for managing comment objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    CommentHandler<CommentElement> getCommentHandler() throws PropertyServerException
-    {
-        final String methodName = "getCommentHandler";
-
-        validateActiveRepository(methodName);
-
-        return commentHandler;
-    }
-
-
-    /**
-     * Return the handler for managing informal tag objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    InformalTagHandler<InformalTagElement> getInformalTagHandler() throws PropertyServerException
-    {
-        final String methodName = "getInformalTagHandler";
-
-        validateActiveRepository(methodName);
-
-        return informalTagHandler;
-    }
-
-
-    /**
-     * Return the handler for managing like objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    LikeHandler<LikeElement> getLikeHandler() throws PropertyServerException
-    {
-        final String methodName = "getLikeHandler";
-
-        validateActiveRepository(methodName);
-
-        return likeHandler;
-    }
-
-
-    /**
-     * Return the handler for managing rating objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    RatingHandler<RatingElement> getRatingHandler() throws PropertyServerException
-    {
-        final String methodName = "getRatingHandler";
-
-        validateActiveRepository(methodName);
-
-        return ratingHandler;
     }
 
 

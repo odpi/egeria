@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -36,6 +37,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
     public SimpleSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SIMPLE_SCHEMA_TYPE.typeName);
     }
 
 

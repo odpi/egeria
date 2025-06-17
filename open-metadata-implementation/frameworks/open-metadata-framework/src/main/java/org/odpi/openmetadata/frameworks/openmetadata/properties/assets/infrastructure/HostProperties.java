@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,6 +26,7 @@ public class HostProperties extends ITInfrastructureProperties
     public HostProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.HOST.typeName);
     }
 
 

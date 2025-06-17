@@ -210,6 +210,24 @@ public enum CocoClinicalTrialActionTarget
                       false),
 
     /**
+     * The certification type that should be used to certify the clinical trial.
+     */
+    CLINICAL_TRIAL_CERTIFICATION_TYPE("clinicalTrialCertificationType",
+                                "The certification type that should be used to certify the clinical trial as approved.",
+                                OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                null,
+                                true),
+
+    /**
+     * The template to create the certification type that should be used to certify the hospital.
+     */
+    HOSPITAL_CERTIFICATION_TYPE_TEMPLATE("hospitalCertificationTypeTemplate",
+                                "The template to create the certification type that should be used to certify the hospital.",
+                                OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                null,
+                                true),
+
+    /**
      * The certification type that should be used to certify the hospital.
      */
     HOSPITAL_CERTIFICATION_TYPE("hospitalCertificationType",
@@ -217,6 +235,15 @@ public enum CocoClinicalTrialActionTarget
                                 OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                 null,
                                 true),
+
+    /**
+     * The template to create the certification type that should be used to certify the hospital.
+     */
+    DATA_QUALITY_CERTIFICATION_TYPE_TEMPLATE("dataQualityCertificationTypeTemplate",
+                                    "The template to create the certification type that should be used to certify that data from the hospital conforms to specification.",
+                                    OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                    null,
+                                    true),
 
     /**
      * The certification type that should be used to certify the hospital.
@@ -269,6 +296,12 @@ public enum CocoClinicalTrialActionTarget
                                     OpenMetadataType.DATA_FILE_COLLECTION.typeName,
                                     null,
                                     true),
+
+    INFORMATION_SUPPLY_CHAIN_TEMPLATE("informationSupplyChainTemplate",
+                                      "The template to create the information supply chain for this clinical trial.",
+                                      OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                      null,
+                                      true),
 
     INFORMATION_SUPPLY_CHAIN("informationSupplyChain",
                              "The information supply chain for this clinical trial.",
@@ -349,8 +382,9 @@ public enum CocoClinicalTrialActionTarget
         /*
          * Set up in CocoCombo (see CocoRequestTypeDefinition)
          */
-        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
-        actionTargetTypes.add(DATA_QUALITY_CERTIFICATION_TYPE.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE_TEMPLATE.getActionTargetType());
+        actionTargetTypes.add(DATA_QUALITY_CERTIFICATION_TYPE_TEMPLATE.getActionTargetType());
+        actionTargetTypes.add(INFORMATION_SUPPLY_CHAIN_TEMPLATE.getActionTargetType());
 
         actionTargetTypes.add(GENERIC_HOSPITAL_ONBOARDING_GAT.getActionTargetType());
         actionTargetTypes.add(GENERIC_HOSPITAL_NOMINATION_GAT.getActionTargetType());

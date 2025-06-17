@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
     public GovernanceRoleProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ROLE.typeName);
     }
 
 

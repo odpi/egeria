@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class CommunityMembershipProperties extends RelationshipProperties
     public CommunityMembershipProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName);
     }
 
 

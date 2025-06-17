@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class ActivityDescriptionProperties extends ClassificationProperties
     public ActivityDescriptionProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName);
     }
 
 

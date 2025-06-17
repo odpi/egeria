@@ -292,6 +292,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                  * for the files to be filled out by the integration connector.
                  */
                 String hospitalLandingAreaTemplateName = this.createTemplate(landingAreaFileTemplateGUID,
+                                                                             "landing area file",
                                                                              hospitalName,
                                                                              clinicalTrialId,
                                                                              clinicalTrialName,
@@ -299,6 +300,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                              clinicalTrialProjectGUID);
 
                 String hospitalDataLakeTemplateName = this.createTemplate(dataLakeFileTemplateGUID,
+                                                                          "data lake file",
                                                                           hospitalName,
                                                                           clinicalTrialId,
                                                                           clinicalTrialName,
@@ -683,6 +685,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * RECEIVED_DATE.
      *
      * @param rawTemplateGUID unique identifier of the raw template
+     * @param templateType type of template
      * @param hospitalName name of hospital
      * @param clinicalTrialId business identifier of the clinical trial project
      * @param clinicalTrialName display name of the project
@@ -694,6 +697,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * @throws UserNotAuthorizedException authorization error
      */
     private String createTemplate(String               rawTemplateGUID,
+                                  String               templateType,
                                   String               hospitalName,
                                   String               clinicalTrialId,
                                   String               clinicalTrialName,
@@ -725,6 +729,12 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                                       null,
                                                                                                       null,
                                                                                                       true);
+
+        ElementProperties classificationProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.NAME.name, clinicalTrialId + " specialized " + templateType + " template for " + hospitalName + " hospital");
+
+        governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(templateGUID,
+                                                                                OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
+                                                                                classificationProperties);
 
         OpenMetadataElement templateElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(templateGUID);
 

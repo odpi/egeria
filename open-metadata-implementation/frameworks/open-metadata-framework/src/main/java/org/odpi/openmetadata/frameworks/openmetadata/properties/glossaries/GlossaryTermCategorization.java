@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class GlossaryTermCategorization extends RelationshipProperties
     public GlossaryTermCategorization()
     {
         super();
+        super.setTypeName(OpenMetadataType.TERM_CATEGORIZATION.typeName);
     }
 
 

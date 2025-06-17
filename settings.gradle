@@ -201,6 +201,8 @@ include(':open-metadata-implementation:access-services:stewardship-action:stewar
 include(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-spring')
 include(':open-metadata-implementation:view-services:action-author:action-author-server')
 include(':open-metadata-implementation:view-services:action-author:action-author-spring')
+include(':open-metadata-implementation:view-server-generic-services:actor-manager:actor-manager-server')
+include(':open-metadata-implementation:view-server-generic-services:actor-manager:actor-manager-spring')
 include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-server')
 include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
 include(':open-metadata-implementation:view-services:automated-curation:automated-curation-server')

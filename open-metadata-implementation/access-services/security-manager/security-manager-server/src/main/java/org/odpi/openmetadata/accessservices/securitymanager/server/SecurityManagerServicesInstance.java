@@ -26,10 +26,9 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
 
     private final SoftwareCapabilityHandler<SecurityManagerElement> softwareCapabilityHandler;
     private final GovernanceDefinitionHandler<SecurityGroupElement> securityGroupHandler;
-    private final UserIdentityHandler<UserIdentityElement>          userIdentityHandler;
-    private final ContactDetailsHandler<ContactMethodElement>       contactDetailsHandler;
-    private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
-    private final PersonRoleHandler<ActorRoleElement>      personRoleHandler;
+    private final OpenMetadataAPIGenericHandler<Object>             genericHandler;
+    private final ActorProfileHandler<ActorProfileElement>          actorProfileHandler;
+    private final PersonRoleHandler<ActorRoleElement>               personRoleHandler;
 
 
     /**
@@ -93,19 +92,19 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
                                                                          publishZones,
                                                                          auditLog);
 
-        this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
-                                                             UserIdentityElement.class,
-                                                             serviceName,
-                                                             serverName,
-                                                             invalidParameterHandler,
-                                                             repositoryHandler,
-                                                             repositoryHelper,
-                                                             localServerUserId,
-                                                             securityVerifier,
-                                                             supportedZones,
-                                                             defaultZones,
-                                                             publishZones,
-                                                             auditLog);
+        this.genericHandler = new OpenMetadataAPIGenericHandler<>(null,
+                                                        Object.class,
+                                                        serviceName,
+                                                        serverName,
+                                                        invalidParameterHandler,
+                                                        repositoryHandler,
+                                                        repositoryHelper,
+                                                        localServerUserId,
+                                                        securityVerifier,
+                                                        supportedZones,
+                                                        defaultZones,
+                                                        publishZones,
+                                                        auditLog);
 
 
         this.securityGroupHandler = new GovernanceDefinitionHandler<>(new SecurityGroupConverter<>(repositoryHelper, serviceName, serverName),
@@ -149,20 +148,6 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
-
-        this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
-                                                                 ContactMethodElement.class,
-                                                                 serviceName,
-                                                                 serverName,
-                                                                 invalidParameterHandler,
-                                                                 repositoryHandler,
-                                                                 repositoryHelper,
-                                                                 localServerUserId,
-                                                                 securityVerifier,
-                                                                 supportedZones,
-                                                                 defaultZones,
-                                                                 publishZones,
-                                                                 auditLog);
     }
 
 
@@ -190,13 +175,13 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public UserIdentityHandler<UserIdentityElement> getUserIdentityHandler() throws PropertyServerException
+    public OpenMetadataAPIGenericHandler<Object> getGenericHandler() throws PropertyServerException
     {
-        final String methodName = "getUserIdentityHandler";
+        final String methodName = "getGenericHandler";
 
         validateActiveRepository(methodName);
 
-        return userIdentityHandler;
+        return genericHandler;
     }
 
 

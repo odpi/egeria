@@ -3225,7 +3225,7 @@ public class PropertyHelper
     public boolean isClassified(ElementHeader elementHeader,
                                 String        classificationName)
     {
-        if (elementHeader== null || elementHeader.getClassifications() == null)
+        if (elementHeader == null || elementHeader.getClassifications() == null)
         {
             return false;
         }

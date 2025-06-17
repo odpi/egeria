@@ -38,7 +38,8 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -47,6 +48,7 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
     public GovernanceOfficerInstance(String                  serverName,
                                      AuditLog                auditLog,
                                      String                  localServerUserId,
+                                     String                  localServerUserPassword,
                                      int                     maxPageSize,
                                      String                  remoteServerName,
                                      String                  remoteServerURL,
@@ -56,6 +58,7 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
               myDescription.getViewServiceName(),
               auditLog,
               localServerUserId,
+              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
@@ -94,13 +97,28 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                             {
                                 if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
                                 {
-                                    governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
-                                                                                                  viewServiceConfig.getOMAGServerName(),
-                                                                                                  viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                                  auditLog,
-                                                                                                  accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                                  ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceFullName(),
-                                                                                                  maxPageSize);
+                                    if (localServerUserPassword == null)
+                                    {
+                                        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
+                                                                                                      viewServiceConfig.getOMAGServerName(),
+                                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                                      auditLog,
+                                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                                      ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceFullName(),
+                                                                                                      maxPageSize);
+                                    }
+                                    else
+                                    {
+                                        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
+                                                                                                      viewServiceConfig.getOMAGServerName(),
+                                                                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                                      localServerUserId,
+                                                                                                      localServerUserPassword,
+                                                                                                      auditLog,
+                                                                                                      accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                                      ViewServiceDescription.GOVERNANCE_OFFICER.getViewServiceFullName(),
+                                                                                                      maxPageSize);
+                                    }
 
                                     governanceDefinitionHandlerMap.put(viewServiceURLMarker,
                                                                        governanceDefinitionHandler);

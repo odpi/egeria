@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,6 +30,7 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
     public SchemaTypeChoiceProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName);
     }
 
 
@@ -53,20 +55,6 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
     @Override
     public String toString()
     {
-        return "SchemaTypeChoiceProperties{" +
-                       "versionNumber='" + getVersionNumber() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "SchemaTypeChoiceProperties{} " + super.toString();
     }
 }

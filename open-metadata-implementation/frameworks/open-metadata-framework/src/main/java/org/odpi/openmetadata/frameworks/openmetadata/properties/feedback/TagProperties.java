@@ -5,6 +5,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.feedback;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -26,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TagProperties
+public class TagProperties extends OpenMetadataRootProperties
 {
     private boolean isPrivateTag = false;
     private String  name         = null;
@@ -39,6 +43,7 @@ public class TagProperties
     public TagProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.INFORMAL_TAG.typeName);
     }
 
 
@@ -49,6 +54,8 @@ public class TagProperties
      */
     public TagProperties(TagProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             isPrivateTag = template.getIsPrivateTag();
@@ -134,10 +141,10 @@ public class TagProperties
     public String toString()
     {
         return "TagProperties{" +
-                       "isPrivateTag=" + isPrivateTag +
-                       ", name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       '}';
+                "isPrivateTag=" + isPrivateTag +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -158,6 +165,7 @@ public class TagProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
 
         if (isPrivateTag != that.isPrivateTag)
         {
@@ -179,9 +187,6 @@ public class TagProperties
     @Override
     public int hashCode()
     {
-        int result = (isPrivateTag ? 1 : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), isPrivateTag, name, description);
     }
 }

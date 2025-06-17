@@ -127,15 +127,29 @@ public enum CocoRequestTypeDefinition
 
         NewActionTarget newActionTarget = new NewActionTarget();
 
-        newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName());
+        newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.CLINICAL_TRIAL_CERTIFICATION_TYPE.getName());
+        newActionTarget.setActionTargetGUID(CertificationTypeDefinition.APPROVED_CLINICAL_TRIAL.getGUID());
+
+        actionTargetList.add(newActionTarget);
+
+        newActionTarget = new NewActionTarget();
+
+        newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE_TEMPLATE.getName());
         newActionTarget.setActionTargetGUID(CertificationTypeDefinition.CLINICAL_TRIAL_APPROVED_HOSPITAL.getGUID());
 
         actionTargetList.add(newActionTarget);
 
         newActionTarget = new NewActionTarget();
 
-        newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
+        newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE_TEMPLATE.getName());
         newActionTarget.setActionTargetGUID(CertificationTypeDefinition.WEEKLY_MEASUREMENTS_APPROVED_DATA.getGUID());
+
+        actionTargetList.add(newActionTarget);
+
+        newActionTarget = new NewActionTarget();
+
+        newActionTarget.setActionTargetName(CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN_TEMPLATE.getName());
+        newActionTarget.setActionTargetGUID(InformationSupplyChain.CLINICAL_TRIALS_TREATMENT_VALIDATION_TEMPLATE.getGUID());
 
         actionTargetList.add(newActionTarget);
 

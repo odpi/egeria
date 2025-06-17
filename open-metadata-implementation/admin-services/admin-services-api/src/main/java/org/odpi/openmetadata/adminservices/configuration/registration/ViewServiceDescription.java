@@ -397,8 +397,45 @@ public enum ViewServiceDescription
                              "Time Keeper OMVS",
                              "time-keeper",
                              "Manages context events and other time related behaviour.",
-                             "https://egeria-project.org/services/omvs/time-kepper/overview/",
+                             "https://egeria-project.org/services/omvs/time-keeper/overview/",
                              AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Manages the definitions of user identities, actor profiles, contact details and actor roles.
+     */
+    ACTOR_MANAGER (832,
+                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                 "Actor Manager",
+                 "Actor Manager OMVS",
+                 "actor-manager",
+                 "Manages the definitions of user identities, actor profiles, contact details and actor roles.",
+                 "https://egeria-project.org/services/omvs/actor-manager/overview/",
+                 AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manages the definitions of communities, their leaders and membership.
+     */
+    COMMUNITY_MATTERS (833,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Community Matters",
+                   "Community Matters OMVS",
+                   "community-matters",
+                   "Manages the definitions of communities, their leaders and membership.",
+                   "https://egeria-project.org/services/omvs/community-matters/overview/",
+                   AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manages the definition of subject areas and reporting on their contents.
+     */
+    SUBJECT_AREA (834,
+                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                       "Subject Area",
+                       "Subject Area OMVS",
+                       "subject-area",
+                       "Manages the definition of subject areas and reporting on their contents.",
+                       "https://egeria-project.org/services/omvs/subject-area/overview/",
+                       AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
 
     ;
 

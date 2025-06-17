@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
     public SchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SCHEMA_TYPE.typeName);
     }
 
 

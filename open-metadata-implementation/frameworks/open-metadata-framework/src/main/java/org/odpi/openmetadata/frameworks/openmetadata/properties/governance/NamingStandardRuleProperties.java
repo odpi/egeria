@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,8 @@ public class NamingStandardRuleProperties extends GovernanceControlProperties
      */
     public NamingStandardRuleProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.NAMING_STANDARD_RULE.typeName);
     }
 
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ public class SemanticAssignmentProperties extends RelationshipProperties
     public SemanticAssignmentProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName);
     }
 
 

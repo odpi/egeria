@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -25,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingProperties
+public class RatingProperties extends OpenMetadataRootProperties
 {
     private StarRating starRating = null;
     private String     review     = null;
@@ -36,6 +38,7 @@ public class RatingProperties
     public RatingProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.RATING.typeName);
     }
 
 
@@ -46,6 +49,8 @@ public class RatingProperties
      */
     public RatingProperties(RatingProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             starRating = template.getStarRating();
@@ -108,7 +113,7 @@ public class RatingProperties
         return "RatingProperties{" +
                 "starRating=" + starRating +
                 ", review='" + review + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -129,6 +134,7 @@ public class RatingProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         RatingProperties rating = (RatingProperties) objectToCompare;
         return getStarRating() == rating.getStarRating() &&
                 Objects.equals(getReview(), rating.getReview());
@@ -143,6 +149,6 @@ public class RatingProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(starRating, review);
+        return Objects.hash(super.hashCode(), starRating, review);
     }
 }

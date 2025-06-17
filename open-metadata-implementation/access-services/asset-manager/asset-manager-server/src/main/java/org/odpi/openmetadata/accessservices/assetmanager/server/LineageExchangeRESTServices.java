@@ -13,7 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ProcessCallElementsRespons
 import org.odpi.openmetadata.commonservices.ffdc.rest.LineageMappingElementResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.LineageMappingElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessContainmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -337,7 +337,7 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProcessContainmentProperties properties)
+                if (requestBody.getProperties() instanceof ProcessHierarchyProperties properties)
                 {
                     handler.setupProcessParent(userId,
                                                requestBody.getExternalSourceGUID(),
@@ -2394,7 +2394,7 @@ public class LineageExchangeRESTServices
                                                        assetManagerIsHome,
                                                        dataSupplierGUID,
                                                        dataConsumerGUID,
-                                                       dataFlowProperties.getQualifiedName(),
+                                                       dataFlowProperties.getISCQualifiedName(),
                                                        dataFlowProperties.getLabel(),
                                                        dataFlowProperties.getDescription(),
                                                        dataFlowProperties.getFormula(),
@@ -2550,7 +2550,7 @@ public class LineageExchangeRESTServices
                                        requestBody.getExternalSourceGUID(),
                                        requestBody.getExternalSourceName(),
                                        dataFlowGUID,
-                                       properties.getQualifiedName(),
+                                       properties.getISCQualifiedName(),
                                        properties.getLabel(),
                                        properties.getDescription(),
                                        properties.getFormula(),
@@ -2839,7 +2839,7 @@ public class LineageExchangeRESTServices
                                                           assetManagerIsHome,
                                                           currentStepGUID,
                                                           nextStepGUID,
-                                                          properties.getQualifiedName(),
+                                                          properties.getISCQualifiedName(),
                                                           properties.getLabel(),
                                                           properties.getDescription(),
                                                           properties.getGuard(),
@@ -2995,7 +2995,7 @@ public class LineageExchangeRESTServices
                                           requestBody.getExternalSourceGUID(),
                                           requestBody.getExternalSourceName(),
                                           controlFlowGUID,
-                                          properties.getQualifiedName(),
+                                          properties.getISCQualifiedName(),
                                           properties.getLabel(),
                                           properties.getDescription(),
                                           properties.getGuard(),
@@ -3284,7 +3284,7 @@ public class LineageExchangeRESTServices
                                                           assetManagerIsHome,
                                                           callerGUID,
                                                           calledGUID,
-                                                          properties.getQualifiedName(),
+                                                          properties.getISCQualifiedName(),
                                                           properties.getLabel(),
                                                           properties.getDescription(),
                                                           properties.getFormula(),
@@ -3440,7 +3440,7 @@ public class LineageExchangeRESTServices
                                           requestBody.getExternalSourceGUID(),
                                           requestBody.getExternalSourceName(),
                                           processCallGUID,
-                                          properties.getQualifiedName(),
+                                          properties.getISCQualifiedName(),
                                           properties.getLabel(),
                                           properties.getDescription(),
                                           properties.getFormula(),
@@ -3731,7 +3731,7 @@ public class LineageExchangeRESTServices
                                                        requestBody.getExternalSourceName(),
                                                        sourceElementGUID,
                                                        destinationElementGUID,
-                                                       properties.getQualifiedName(),
+                                                       properties.getISCQualifiedName(),
                                                        properties.getLabel(),
                                                        properties.getDescription(),
                                                        properties.getEffectiveFrom(),
@@ -3904,7 +3904,7 @@ public class LineageExchangeRESTServices
                                              requestBody.getExternalSourceGUID(),
                                              requestBody.getExternalSourceName(),
                                              lineageMappingGUID,
-                                             properties.getQualifiedName(),
+                                             properties.getISCQualifiedName(),
                                              properties.getLabel(),
                                              properties.getDescription(),
                                              properties.getEffectiveFrom(),

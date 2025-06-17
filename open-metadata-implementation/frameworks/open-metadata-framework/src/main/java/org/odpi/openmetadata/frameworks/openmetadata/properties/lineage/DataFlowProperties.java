@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -20,11 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataFlowProperties extends RelationshipProperties
 {
-    private String qualifiedName = null;
-    private String label         = null;
-    private String description   = null;
-    private String formula       = null;
-    private String formulaType   = null;
+    private String iscQualifiedName = null;
+    private String label            = null;
+    private String description      = null;
+    private String formula          = null;
+    private String formulaType      = null;
 
 
     /**
@@ -33,6 +34,7 @@ public class DataFlowProperties extends RelationshipProperties
     public DataFlowProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
     }
 
 
@@ -45,35 +47,34 @@ public class DataFlowProperties extends RelationshipProperties
     {
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
-            label         = template.getLabel();
-            description   = template.getDescription();
-            formula       = template.getFormula();
-            formulaType   = template.getFormulaType();
+            iscQualifiedName = template.getISCQualifiedName();
+            label            = template.getLabel();
+            description      = template.getDescription();
+            formula          = template.getFormula();
+            formulaType      = template.getFormulaType();
         }
     }
 
 
     /**
-     * Set up the fully qualified name.
+     * Set up the fully qualified name of the associated information supply chain.
      *
-     * @param qualifiedName String name
+     * @param iscQualifiedName String name
      */
-    public void setQualifiedName(String qualifiedName)
+    public void setISCQualifiedName(String iscQualifiedName)
     {
-        this.qualifiedName = qualifiedName;
+        this.iscQualifiedName = iscQualifiedName;
     }
 
 
     /**
-     * Returns the stored qualified name property for the relationship.
-     * If no qualified name is available then the empty string is returned.
+     * Returns the stored qualified name of the associated information supply chain.
      *
      * @return qualifiedName
      */
-    public String getQualifiedName()
+    public String getISCQualifiedName()
     {
-        return qualifiedName;
+        return iscQualifiedName;
     }
 
 
@@ -174,14 +175,12 @@ public class DataFlowProperties extends RelationshipProperties
     public String toString()
     {
         return "DataFlowProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", label='" + label + '\'' +
-                       ", description='" + description + '\'' +
-                       ", formula='" + formula + '\'' +
-                       ", formulaType='" + formulaType + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       '}';
+                "iscQualifiedName='" + iscQualifiedName + '\'' +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                ", formula='" + formula + '\'' +
+                ", formulaType='" + formulaType + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -202,8 +201,9 @@ public class DataFlowProperties extends RelationshipProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         DataFlowProperties that = (DataFlowProperties) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
+        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName()) &&
                 Objects.equals(getLabel(), that.getLabel()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getFormula(), that.getFormula()) &&
@@ -219,6 +219,6 @@ public class DataFlowProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, label, description, formula, formulaType);
+        return Objects.hash(iscQualifiedName, label, description, formula, formulaType);
     }
 }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionRolesResponse extends FFDCResponseBase
 {
-    private List<SolutionRoleElement> elements = null;
+    private List<ActorRoleElement> elements = null;
 
     /**
      * Default constructor
@@ -56,7 +56,7 @@ public class SolutionRolesResponse extends FFDCResponseBase
      *
      * @return list of properties objects
      */
-    public List<SolutionRoleElement> getElements()
+    public List<ActorRoleElement> getElements()
     {
         return elements;
     }
@@ -67,7 +67,7 @@ public class SolutionRolesResponse extends FFDCResponseBase
      *
      * @param elements  list of properties objects
      */
-    public void setElements(List<SolutionRoleElement> elements)
+    public void setElements(List<ActorRoleElement> elements)
     {
         this.elements = elements;
     }

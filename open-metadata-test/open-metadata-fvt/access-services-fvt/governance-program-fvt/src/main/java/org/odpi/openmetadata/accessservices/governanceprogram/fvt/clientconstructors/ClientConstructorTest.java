@@ -75,7 +75,6 @@ public class ClientConstructorTest
 
         thisTest.testCertificationManagerClient(serverName, serverPlatformRootURL, auditLog);
         thisTest.testExternalReferenceManagerClient(serverName, serverPlatformRootURL, auditLog);
-        thisTest.testClassificationLevelClient(serverName, serverPlatformRootURL, auditLog);
         thisTest.testGovernanceMetricsManagerClient(serverName, serverPlatformRootURL, auditLog);
         thisTest.testGovernanceProgramReviewManagerClient(serverName, serverPlatformRootURL, auditLog);
         thisTest.testGovernanceRoleManagerClient(serverName, serverPlatformRootURL, auditLog);
@@ -276,29 +275,5 @@ public class ClientConstructorTest
         GovernanceProgramRESTClient restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL);
 
         new ExternalReferenceManager(serverName, serverPlatformRootURL, restClient, maxPageSize);
-    }
-
-
-    /**
-     * Create a client using each of its constructors.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    private void testClassificationLevelClient(String   serverName,
-                                               String   serverPlatformRootURL,
-                                               AuditLog auditLog) throws InvalidParameterException
-    {
-        new GovernanceClassificationLevelManager(serverName, serverPlatformRootURL, 100, auditLog);
-        new GovernanceClassificationLevelManager(serverName, serverPlatformRootURL);
-        new GovernanceClassificationLevelManager(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100, auditLog);
-        new GovernanceClassificationLevelManager(serverName, serverPlatformRootURL, serverUserId, serverPassword);
-
-        GovernanceProgramRESTClient restClient = new GovernanceProgramRESTClient(serverName, serverPlatformRootURL);
-
-        new GovernanceClassificationLevelManager(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 }

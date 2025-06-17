@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonalProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProfileProperties;
 
 import java.util.Objects;
 
@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalProfileElement implements MetadataElement
 {
-    private ElementHeader             elementHeader     = null;
-    private PersonalProfileProperties profileProperties = null;
+    private ElementHeader           elementHeader     = null;
+    private PersonProfileProperties profileProperties = null;
 
 
 
@@ -80,7 +80,7 @@ public class PersonalProfileElement implements MetadataElement
      *
      * @return  properties
      */
-    public PersonalProfileProperties getProfileProperties()
+    public PersonProfileProperties getProfileProperties()
     {
         return profileProperties;
     }
@@ -91,7 +91,7 @@ public class PersonalProfileElement implements MetadataElement
      *
      * @param profileProperties  properties
      */
-    public void setProfileProperties(PersonalProfileProperties profileProperties)
+    public void setProfileProperties(PersonProfileProperties profileProperties)
     {
         this.profileProperties = profileProperties;
     }

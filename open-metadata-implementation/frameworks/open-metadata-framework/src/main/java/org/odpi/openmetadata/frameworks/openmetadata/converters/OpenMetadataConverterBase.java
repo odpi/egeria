@@ -1807,6 +1807,28 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the courtesyTitle property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeCourtesyTitle(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCourtesyTitle";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.COURTESY_TITLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the givenNames property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -1894,6 +1916,27 @@ public class OpenMetadataConverterBase<B>
         return null;
     }
 
+
+    /**
+     * Extract and delete the residentCountry property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeResidentCountry(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeResidentCountry";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.RESIDENT_COUNTRY.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
 
 
     /**
@@ -2443,6 +2486,28 @@ public class OpenMetadataConverterBase<B>
         {
             return propertyHelper.removeStringProperty(serviceName,
                                                        OpenMetadataProperty.TEAM_ROLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the teamType property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeTeamType(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTeamType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.TEAM_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }

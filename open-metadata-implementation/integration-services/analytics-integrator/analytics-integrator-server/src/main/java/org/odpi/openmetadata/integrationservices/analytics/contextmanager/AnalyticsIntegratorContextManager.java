@@ -42,6 +42,7 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
     /**
      * Initialize server properties for the context manager.
      *
+     * @param localServerName name of this integration daemon
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
@@ -50,7 +51,8 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    public void initializeContextManager(String              partnerOMASServerName,
+    public void initializeContextManager(String              localServerName,
+                                         String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
                                          String              password,
@@ -58,7 +60,7 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
+        super.initializeContextManager(localServerName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 

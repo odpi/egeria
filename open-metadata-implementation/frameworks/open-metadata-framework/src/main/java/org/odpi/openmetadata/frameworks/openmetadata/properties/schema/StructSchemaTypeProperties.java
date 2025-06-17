@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,6 +26,7 @@ public class StructSchemaTypeProperties extends ComplexSchemaTypeProperties
     public StructSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName);
     }
 
 
@@ -47,20 +49,6 @@ public class StructSchemaTypeProperties extends ComplexSchemaTypeProperties
     @Override
     public String toString()
     {
-        return "StructSchemaTypeProperties{" +
-                       "versionNumber='" + getVersionNumber() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "StructSchemaTypeProperties{} " + super.toString();
     }
 }

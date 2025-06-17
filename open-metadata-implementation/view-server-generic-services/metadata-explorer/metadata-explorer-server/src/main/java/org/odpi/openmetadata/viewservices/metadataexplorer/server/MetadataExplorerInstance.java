@@ -31,11 +31,12 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
     private final List<ViewServiceConfig> activeViewServices;
 
     /**
-     * Set up the Metadata Explorer OMVS instance
+     * Set up the view service instance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -44,6 +45,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
     public MetadataExplorerInstance(String                  serverName,
                                     AuditLog                auditLog,
                                     String                  localServerUserId,
+                                    String                  localServerUserPassword,
                                     int                     maxPageSize,
                                     String                  remoteServerName,
                                     String                  remoteServerURL,
@@ -53,6 +55,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
               myDescription.getViewServiceName(),
               auditLog,
               localServerUserId,
+              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
@@ -71,7 +74,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
      * @return client
      */
     public OpenMetadataStoreHandler getOpenMetadataHandler(String viewServiceURLMarker,
-                                                      String methodName) throws InvalidParameterException
+                                                           String methodName) throws InvalidParameterException
     {
         OpenMetadataStoreHandler openMetadataHandler = null;
 
@@ -96,10 +99,22 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
                             {
                                 if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
                                 {
-                                    openMetadataHandler = new OpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
-                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                       accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                       maxPageSize);
+                                    if (localServerUserPassword == null)
+                                    {
+                                        openMetadataHandler = new OpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
+                                                                                           viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                           accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                           maxPageSize);
+                                    }
+                                    else
+                                    {
+                                        openMetadataHandler = new OpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
+                                                                                           viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                           accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                           localServerUserId,
+                                                                                           localServerUserPassword,
+                                                                                           maxPageSize);
+                                    }
 
                                     openMetadataHandlerMap.put(viewServiceURLMarker, openMetadataHandler);
                                 }

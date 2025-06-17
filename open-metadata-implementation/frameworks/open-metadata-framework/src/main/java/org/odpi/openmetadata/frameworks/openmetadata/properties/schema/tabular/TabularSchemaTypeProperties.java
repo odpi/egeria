@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ComplexSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.RootSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,6 +27,7 @@ public class TabularSchemaTypeProperties extends RootSchemaTypeProperties
     public TabularSchemaTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName);
     }
 
 

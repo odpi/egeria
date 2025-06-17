@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public class GovernanceExpectationsProperties extends ClassificationProperties
     public GovernanceExpectationsProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION.typeName);
     }
 
 

@@ -24,12 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalIdentifierProperties
 {
-    private PermittedSynchronization permittedSynchronization   = null;
-    private String                   synchronizationDescription = null;
+    private PermittedSynchronization permittedSynchronization       = null;
+    private String                   synchronizationDescription     = null;
     private String                   externalIdentifier             = null;
-    private String externalIdentifierName   = null;
-    private String externalInstanceTypeName = null;
-    private String externalIdentifierUsage  = null;
+    private String                   externalIdentifierName         = null;
+    private String                   externalInstanceTypeName       = null;
+    private String                   externalIdentifierUsage        = null;
     private String                   externalIdentifierSource       = null;
     private KeyPattern               keyPattern                     = null;
     private String                   externalInstanceCreatedBy      = null;
@@ -57,20 +57,20 @@ public class ExternalIdentifierProperties
     {
         if (template != null)
         {
-            permittedSynchronization   = template.getSynchronizationDirection();
-            synchronizationDescription = template.getSynchronizationDescription();
-            externalIdentifier = template.getExternalIdentifier();
-            externalIdentifierName   = template.getExternalIdentifierName();
-            externalInstanceTypeName = template.getExternalInstanceTypeName();
-            externalIdentifierUsage  = template.getExternalIdentifierUsage();
-            externalIdentifierSource = template.getExternalIdentifierSource();
-            keyPattern = template.getKeyPattern();
-            externalInstanceCreatedBy = template.getExternalInstanceCreatedBy();
-            externalInstanceCreationTime = template.getExternalInstanceCreationTime();
-            externalInstanceLastUpdatedBy = template.getExternalInstanceLastUpdatedBy();
+            permittedSynchronization       = template.getSynchronizationDirection();
+            synchronizationDescription     = template.getSynchronizationDescription();
+            externalIdentifier             = template.getExternalIdentifier();
+            externalIdentifierName         = template.getExternalIdentifierName();
+            externalInstanceTypeName       = template.getExternalInstanceTypeName();
+            externalIdentifierUsage        = template.getExternalIdentifierUsage();
+            externalIdentifierSource       = template.getExternalIdentifierSource();
+            keyPattern                     = template.getKeyPattern();
+            externalInstanceCreatedBy      = template.getExternalInstanceCreatedBy();
+            externalInstanceCreationTime   = template.getExternalInstanceCreationTime();
+            externalInstanceLastUpdatedBy  = template.getExternalInstanceLastUpdatedBy();
             externalInstanceLastUpdateTime = template.getExternalInstanceLastUpdateTime();
-            externalInstanceVersion = template.getExternalInstanceVersion();
-            mappingProperties = template.getMappingProperties();
+            externalInstanceVersion        = template.getExternalInstanceVersion();
+            mappingProperties              = template.getMappingProperties();
         }
     }
 

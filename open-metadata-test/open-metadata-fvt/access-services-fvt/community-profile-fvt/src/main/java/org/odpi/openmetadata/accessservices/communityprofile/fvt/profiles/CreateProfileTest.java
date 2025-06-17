@@ -4,18 +4,21 @@
 package org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AppointmentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.ActorProfileManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.ActorRoleManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateFilter;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,109 +115,227 @@ public class CreateProfileTest
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
 
-        OrganizationManagement organizationManagement = thisTest.getOrganizationClient(serverName, serverPlatformRootURL, auditLog);
+        ActorProfileManagement actorProfileManagement = thisTest.getActorProfileClient(serverName, serverPlatformRootURL, auditLog);
+        ActorRoleManagement actorRoleManagement = thisTest.getActorRoleClient(serverName, serverPlatformRootURL, auditLog);
 
-        thisTest.runOrganizationTest(organizationManagement, userId);
+        thisTest.runOrganizationTest(actorProfileManagement, actorRoleManagement, userId);
 
     }
 
 
-    private void runOrganizationTest(OrganizationManagement client,
+    private void runOrganizationTest(ActorProfileManagement actorProfileManagement,
+                                     ActorRoleManagement    actorRoleManagement,
                                      String                 userId) throws FVTUnexpectedCondition
     {
         String activityName = "create persons";
 
         try
         {
-            ActorProfileProperties profileProperties = new ActorProfileProperties();
-            profileProperties.setTypeName("Person");
-            profileProperties.setQualifiedName(profile1QualifiedName);
-            profileProperties.setKnownName(profile1KnownName);
-            profileProperties.setDescription(profile1Description);
+            ActorProfileProperties actorProfileProperties = new ActorProfileProperties();
+            actorProfileProperties.setTypeName(OpenMetadataType.PERSON.typeName);
+            actorProfileProperties.setQualifiedName(profile1QualifiedName);
+            actorProfileProperties.setKnownName(profile1KnownName);
+            actorProfileProperties.setDescription(profile1Description);
 
             Map<String, Object> extendedProperties = new HashMap<>();
-            extendedProperties.put("fullName", profile1FullName);
-            extendedProperties.put("jobTitle", profile1JobTitle);
+            extendedProperties.put(OpenMetadataProperty.FULL_NAME.name, profile1FullName);
+            extendedProperties.put(OpenMetadataProperty.JOB_TITLE.name, profile1JobTitle);
 
-            profileProperties.setExtendedProperties(extendedProperties);
+            actorProfileProperties.setExtendedProperties(extendedProperties);
 
             Map<String, String> additionalProperties = new HashMap<>();
             additionalProperties.put("jobRole", profile1jobRole);
             additionalProperties.put("addProp", profile1AddProp);
 
-            profileProperties.setAdditionalProperties(additionalProperties);
+            actorProfileProperties.setAdditionalProperties(additionalProperties);
 
 
-            String profile1GUID = client.createActorProfile(userId, null, null, profileProperties, null);
+            String profile1GUID = actorProfileManagement.createActorProfile(userId,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            true,
+                                                                            null,
+                                                                            actorProfileProperties,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            true,
+                                                                            false,
+                                                                            false,
+                                                                            new Date());
 
-            profileProperties = new ActorProfileProperties();
-            profileProperties.setTypeName("Person");
-            profileProperties.setQualifiedName(profile2QualifiedName);
-            profileProperties.setKnownName(profile2KnownName);
-            profileProperties.setDescription(profile2Description);
-
-            extendedProperties = new HashMap<>();
-            extendedProperties.put("fullName", profile2FullName);
-            extendedProperties.put("jobTitle", profile2JobTitle);
-
-            profileProperties.setExtendedProperties(extendedProperties);
+            PersonProfileProperties personProfileProperties = new PersonProfileProperties();
+            personProfileProperties.setTypeName(OpenMetadataType.PERSON.typeName);
+            personProfileProperties.setQualifiedName(profile2QualifiedName);
+            personProfileProperties.setKnownName(profile2KnownName);
+            personProfileProperties.setDescription(profile2Description);
+            personProfileProperties.setFullName(profile2FullName);
+            personProfileProperties.setJobTitle(profile2JobTitle);
 
             additionalProperties = new HashMap<>();
             additionalProperties.put("jobRole", profile2jobRole);
             additionalProperties.put("addProp", profile2AddProp);
 
-            profileProperties.setAdditionalProperties(additionalProperties);
+            personProfileProperties.setAdditionalProperties(additionalProperties);
 
-            String profile2GUID = client.createActorProfile(userId, null, null, profileProperties, null);
+            String profile2GUID = actorProfileManagement.createActorProfile(userId,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            true,
+                                                                            null,
+                                                                            personProfileProperties,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            true,
+                                                                            false,
+                                                                            false,
+                                                                            new Date());
 
-            profileProperties = new ActorProfileProperties();
-            profileProperties.setTypeName("Organization");
-            profileProperties.setQualifiedName(team1QualifiedName);
-            profileProperties.setKnownName(team1KnownName);
-            profileProperties.setDescription(team1Description);
+            actorProfileProperties = new ActorProfileProperties();
+            actorProfileProperties.setTypeName(OpenMetadataType.ORGANIZATION.typeName);
+            actorProfileProperties.setQualifiedName(team1QualifiedName);
+            actorProfileProperties.setKnownName(team1KnownName);
+            actorProfileProperties.setDescription(team1Description);
 
             extendedProperties = new HashMap<>();
-            extendedProperties.put("teamType", team1TeamType);
-            extendedProperties.put("identifier", team1Identifier);
-            profileProperties.setExtendedProperties(extendedProperties);
+            extendedProperties.put(OpenMetadataProperty.TEAM_TYPE.name, team1TeamType);
+            extendedProperties.put(OpenMetadataProperty.IDENTIFIER.name, team1Identifier);
+            actorProfileProperties.setExtendedProperties(extendedProperties);
 
-            String team1GUID = client.createActorProfile(userId, null, null, profileProperties, null);
+            String team1GUID = actorProfileManagement.createActorProfile(userId,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         true,
+                                                                         null,
+                                                                         actorProfileProperties,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         true,
+                                                                         false,
+                                                                         false,
+                                                                         new Date());
 
-            profileProperties = new ActorProfileProperties();
-            profileProperties.setTypeName("Team");
-            profileProperties.setQualifiedName(team2QualifiedName);
-            profileProperties.setKnownName(team2KnownName);
-            profileProperties.setDescription(team2Description);
+            TeamProfileProperties teamProfileProperties = new TeamProfileProperties();
+            teamProfileProperties.setTypeName("Team");
+            teamProfileProperties.setQualifiedName(team2QualifiedName);
+            teamProfileProperties.setKnownName(team2KnownName);
+            teamProfileProperties.setDescription(team2Description);
+            teamProfileProperties.setTeamType(team2TeamType);
+            teamProfileProperties.setIdentifier(team2Identifier);
 
-            extendedProperties = new HashMap<>();
-            extendedProperties.put("teamType", team2TeamType);
-            extendedProperties.put("identifier", team2Identifier);
-            profileProperties.setExtendedProperties(extendedProperties);
+            String team2GUID = actorProfileManagement.createActorProfile(userId,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         true,
+                                                                         null,
+                                                                         teamProfileProperties,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         true,
+                                                                         false,
+                                                                         false,
+                                                                         new Date());
 
-            String team2GUID = client.createActorProfile(userId, null, null, profileProperties, null);
-
-            client.linkTeamsInHierarchy(userId, null,null, team1GUID, team2GUID, true, null, null);
+            actorProfileManagement.linkTeamStructure(userId,
+                                                     null,
+                                                     null,
+                                                     team1GUID,
+                                                     team2GUID,
+                                                     null,
+                                                     true,
+                                                     false,
+                                                     new Date());
 
             PersonRoleProperties personRoleProperties = new PersonRoleProperties();
+            personRoleProperties.setTypeName(OpenMetadataType.PERSON_ROLE.typeName);
             personRoleProperties.setQualifiedName("TeamLeader:" + team2QualifiedName);
-            personRoleProperties.setRoleId("TeamLeader:" + team2Description);
-            String team2LeaderGUID = client.createPersonRole(userId, null, null, personRoleProperties);
-            client.linkTeamPlayer(userId, null, null, team2LeaderGUID, team2GUID, null,true);
+            personRoleProperties.setIdentifier("TeamLeader:" + team2Description);
+            String team2LeaderGUID = actorRoleManagement.createActorRole(userId,
+                                                                         null,
+                                                                         null,
+                                                                         team2GUID,
+                                                                         false,
+                                                                         team2GUID,
+                                                                         personRoleProperties,
+                                                                         team2GUID,
+                                                                         OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
+                                                                         null,
+                                                                         true,
+                                                                         false,
+                                                                         false,
+                                                                         new Date());
 
-            personRoleProperties = new PersonRoleProperties();
-            personRoleProperties.setQualifiedName("TeamMember:" + team2QualifiedName);
-            personRoleProperties.setRoleId("TeamMember:" + team2Description);
+            ActorRoleProperties actorRoleProperties = new ActorRoleProperties();
+            actorRoleProperties.setTypeName(OpenMetadataType.PERSON_ROLE.typeName);
+            actorRoleProperties.setQualifiedName("TeamMember:" + team2QualifiedName);
+            actorRoleProperties.setIdentifier("TeamMember:" + team2Description);
 
-            String team2MemberGUID = client.createPersonRole(userId, null, null, personRoleProperties);
-            client.linkTeamPlayer(userId, null, null, team2MemberGUID, team2GUID, null,false);
+            String team2MemberGUID = actorRoleManagement.createActorRole(userId,
+                                                                         null,
+                                                                         null,
+                                                                         team2GUID,
+                                                                         false,
+                                                                         team2GUID,
+                                                                         actorRoleProperties,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         true,
+                                                                         false,
+                                                                         false,
+                                                                         new Date());
 
-            AppointmentProperties appointmentProperties = new AppointmentProperties();
+            actorProfileManagement.linkTeamToMembershipRole(userId,
+                                                            null,
+                                                            null,
+                                                            team2GUID,
+                                                            team2MemberGUID,
+                                                            null,
+                                                            false,
+                                                            false,
+                                                            new Date());
+
+            PersonRoleAppointmentProperties appointmentProperties = new PersonRoleAppointmentProperties();
             appointmentProperties.setIsPublic(true);
 
-            client.linkPersonRoleToProfile(userId, null, null, team2MemberGUID, profile1GUID, appointmentProperties);
-            client.linkPersonRoleToProfile(userId, null, null, team2MemberGUID, profile2GUID, appointmentProperties);
+            actorRoleManagement.linkPersonRoleToProfile(userId,
+                                                        null,
+                                                        null,
+                                                        team2MemberGUID,
+                                                        profile1GUID,
+                                                        appointmentProperties,
+                                                        false,
+                                                        false,
+                                                        new Date());
+            actorRoleManagement.linkPersonRoleToProfile(userId,
+                                                        null,
+                                                        null,
+                                                        team2MemberGUID,
+                                                        profile2GUID,
+                                                        appointmentProperties,
+                                                        false,
+                                                        false,
+                                                        new Date());
 
-            List<ActorProfileElement> actorProfileElements = client.getActorProfiles(userId, 0 ,0);
+            List<ActorProfileElement> actorProfileElements = actorProfileManagement.findActorProfiles(userId,
+                                                                                                      ".*",
+                                                                                                      TemplateFilter.ALL,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                      null,
+                                                                                                      0,
+                                                                                                      0,
+                                                                                                      false,
+                                                                                                      false,
+                                                                                                      new Date());
 
 
         }
@@ -234,17 +355,48 @@ public class CreateProfileTest
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private OrganizationManagement getOrganizationClient(String   serverName,
+    private ActorProfileManagement getActorProfileClient(String   serverName,
                                                          String   serverPlatformRootURL,
                                                          AuditLog auditLog) throws FVTUnexpectedCondition
     {
-        final String activityName = "getOrganizationClient";
+        final String activityName = "getActorProfileClient";
 
         try
         {
-            CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL, auditLog);
+            return new ActorProfileManagement(this.getClass().getName(),
+                                              serverName,
+                                              serverPlatformRootURL,
+                                              auditLog,
+                                              maxPageSize);
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
 
-            return new OrganizationManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+    /**
+     * Create and return a personal profile manager client.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @return client
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private ActorRoleManagement getActorRoleClient(String   serverName,
+                                                   String   serverPlatformRootURL,
+                                                   AuditLog auditLog) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getActorRoleClient";
+
+        try
+        {
+            return new ActorRoleManagement(this.getClass().getName(),
+                                           serverName,
+                                           serverPlatformRootURL,
+                                           auditLog,
+                                           maxPageSize);
         }
         catch (Exception unexpectedError)
         {

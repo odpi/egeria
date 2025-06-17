@@ -47,6 +47,8 @@ public class SchemaAttributeRelationshipProperties extends RelationshipPropertie
      */
     public SchemaAttributeRelationshipProperties(SchemaAttributeRelationshipProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             linkGUID = template.getLinkGUID();
@@ -182,7 +184,7 @@ public class SchemaAttributeRelationshipProperties extends RelationshipPropertie
                 ", linkedAttributeName='" + linkedAttributeName + '\'' +
                 ", linkProperties=" + linkProperties +
                 ", linkedAttributeGUID='" + linkedAttributeGUID + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -199,11 +201,11 @@ public class SchemaAttributeRelationshipProperties extends RelationshipPropertie
         {
             return true;
         }
-        if (!(objectToCompare instanceof SchemaAttributeRelationshipProperties))
+        if (!(objectToCompare instanceof SchemaAttributeRelationshipProperties that))
         {
             return false;
         }
-        SchemaAttributeRelationshipProperties that = (SchemaAttributeRelationshipProperties) objectToCompare;
+        if (!super.equals(objectToCompare)) return false;
         return Objects.equals(getLinkGUID(), that.getLinkGUID()) &&
                 Objects.equals(getLinkType(), that.getLinkType()) &&
                 Objects.equals(getLinkedAttributeName(), that.getLinkedAttributeName()) &&

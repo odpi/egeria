@@ -784,7 +784,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateGovernanceDefinitionRequestBody",
+  "class" : "UpdateElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -847,7 +847,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "PeerDefinitionRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -878,54 +878,6 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
-
-
-
-###
-# @name linkPeerDefinitions
-# Attach two peer governance definitions. Request body is optional.
-# The relationshipTypeNme can be:
-## * GovernanceDriverLink between governance drivers (GovernanceStrategy, BusinessImperitive, Regulation, RegulationArticle, Threat).
-## * GovernancePolicyLink between governance policies (GovernancePrinciple, GovernanceObligation, GovernanceApproach).
-## * GovernanceControlLink between governance controls (GovernanceRule, GovernanceProcess, GovernanceResponsibility, GovernanceProcedure, SecurityAccessControl, SecurityGroup).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "PeerDefinitionRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "PeerDefinitionProperties",
-    "description": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-
-# @name detachPeerDefinitions
-# Detach a governance definition from one of its peers. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionOneGUID}}/peer-definitions/{{relationshipTypeName}}/{{governanceDefinitionTwoGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
 
 
 ###
@@ -939,7 +891,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "SupportingDefinitionRequestBody",
+  "class" : "RelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -970,61 +922,6 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
-
-
-
-
-
-###
-
-@technicalControlGUID=add guid here
-@implementationGUID=add guid here
-
-###
-# @name linkDefinitionImplementation
-# Attach a governance definition to its implementation. Request body is optional.
-# The relationshipTypeNme can be:
-## * GovernanceRuleImplementation between GovernanceRule and DeployedSoftwareComponent.
-## * GovernanceProcessImplementation between GovernanceProcess and Process.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{technicalControlGUID}}/governance-implementation/{{relationshipTypeName}}/{{implementationGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GovernanceImplementationRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "GovernanceImplementationProperties",
-    "notes": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-
-# @name detachDefinitionImplementation
-# Detach a governance definition from its implementation. Request body is optional.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{technicalControlGUID}}/governance-implementation/{{relationshipTypeName}}/{{implementationGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-
 
 
 ###
@@ -1158,7 +1055,107 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+
 ###
+
+@designDescriptionGUID=add guid here
+@implementationGUID=add guid here
+@implementationResourceGUID=add guid here
+
+###
+# @name linkDesignToImplementation
+# Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.
+# https://egeria-project.org/types/7/0737-Solution-Implementation/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/designs/{{designDescriptionGUID}}/implementations/{{implementationGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ImplementedByProperties",
+    "designStep": "",
+    "role": "",
+    "transformation": "",
+    "description": "",
+    "iscQualifiedName": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+
+# @name detachDesignFromImplementation
+# Detach a design object such as a solution component or governance definition from its implementation. Request body is optional.
+# https://egeria-project.org/types/7/0737-Solution-Implementation/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/designs/{{designDescriptionGUID}}/implementations/{{implementationGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkImplementationResource
+# Attach a design object such as a solution component or governance definition to one of its implementation resource via the ImplementationResource relationship. Request body is optional.
+# https://egeria-project.org/types/7/0737-Solution-Implementation/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/designs/{{designDescriptionGUID}}/implementation-resources/{{implementationResourceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ImplementationResourceProperties",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+
+# @name detachImplementationResource
+# Detach a design object such as a solution component or governance definition from one of its implementation resources. Request body is optional.
+# https://egeria-project.org/types/7/0737-Solution-Implementation/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/designs/{{designDescriptionGUID}}/implementation-resources/{{implementationResourceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+
+
 
 
 

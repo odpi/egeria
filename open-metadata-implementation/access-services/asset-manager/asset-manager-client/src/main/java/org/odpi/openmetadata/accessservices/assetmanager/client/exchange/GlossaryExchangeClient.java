@@ -1905,6 +1905,11 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
+        if (OpenMetadataType.GLOSSARY_TERM.typeName.equals(glossaryTermProperties.getTypeName()))
+        {
+            glossaryTermProperties.setTypeName(OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName);
+        }
+
         ControlledGlossaryTermRequestBody requestBody = new ControlledGlossaryTermRequestBody();
         requestBody.setElementProperties(glossaryTermProperties);
         requestBody.setInitialStatus(initialStatus);

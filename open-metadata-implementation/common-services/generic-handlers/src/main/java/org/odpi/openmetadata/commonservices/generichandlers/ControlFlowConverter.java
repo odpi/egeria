@@ -82,7 +82,7 @@ public class ControlFlowConverter<B> extends OMFConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    controlFlowProperties.setQualifiedName(this.getISCQualifiedName(instanceProperties));
+                    controlFlowProperties.setISCQualifiedName(this.getISCQualifiedName(instanceProperties));
                     controlFlowProperties.setDescription(this.getDescription(instanceProperties));
                     controlFlowProperties.setGuard(this.getGuard(instanceProperties));
 

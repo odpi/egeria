@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -40,6 +41,8 @@ public class ContextEventProperties extends SupplementaryProperties
      */
     public ContextEventProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.CONTEXT_EVENT.typeName);
     }
 
 

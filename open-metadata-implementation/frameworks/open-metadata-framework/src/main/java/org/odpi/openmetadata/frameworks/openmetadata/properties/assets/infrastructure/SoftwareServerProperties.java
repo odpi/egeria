@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastr
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,8 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
      */
     public SoftwareServerProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.SOFTWARE_SERVER.typeName);
     }
 
 

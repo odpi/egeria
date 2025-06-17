@@ -13,6 +13,9 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
     compileOnly project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-client')
+    compileOnly project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-api')
+    compileOnly project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-client')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')

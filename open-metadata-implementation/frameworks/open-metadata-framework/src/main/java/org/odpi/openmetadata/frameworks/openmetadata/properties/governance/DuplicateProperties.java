@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public class DuplicateProperties extends RelationshipProperties
     public DuplicateProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.PEER_DUPLICATE_LINK.typeName);
     }
 
 

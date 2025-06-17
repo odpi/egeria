@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ActorRoleHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.SolutionHandler;
 
 
@@ -53,6 +54,34 @@ public class SolutionArchitectInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getSolutionManagerClient();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns a Digital Architecture OMAS client.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public ActorRoleHandler getSolutionRoleClient(String userId,
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        SolutionArchitectInstance instance = (SolutionArchitectInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSolutionRoleClient();
         }
 
         return null;

@@ -188,7 +188,7 @@ public class GovernanceOfficerResource
                                             @PathVariable
                                             String                     governanceDefinitionTwoGUID,
                                             @RequestBody (required = false)
-                                            PeerDefinitionRequestBody requestBody)
+                                            RelationshipRequestBody requestBody)
     {
         return restAPI.linkPeerDefinitions(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -262,7 +262,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                     governanceDefinitionTwoGUID,
                                                    @RequestBody (required = false)
-                                                   SupportingDefinitionRequestBody requestBody)
+                                                   RelationshipRequestBody requestBody)
     {
         return restAPI.attachSupportingDefinition(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -302,80 +302,6 @@ public class GovernanceOfficerResource
                                                    MetadataSourceRequestBody requestBody)
     {
         return restAPI.detachSupportingDefinition(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
-    }
-
-
-    /**
-     * Attach a governance definition to its implementation.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param technicalControlGUID unique identifier of the first governance definition
-     * @param implementationGUID unique identifier of the second governance definition
-     * @param relationshipTypeName name of the relationship to use
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/governance-definitions/{technicalControlGUID}/governance-implementation/{relationshipTypeName}/{implementationGUID}/attach")
-    @Operation(summary="linkDefinitionImplementation",
-            description="Attach a governance definition to its implementation.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-definition"))
-
-    public VoidResponse linkDefinitionImplementation(@PathVariable
-                                                     String                     serverName,
-                                                     @PathVariable String             urlMarker,
-                                                     @PathVariable
-                                                     String technicalControlGUID,
-                                                     @PathVariable
-                                                     String                     relationshipTypeName,
-                                                     @PathVariable
-                                                     String implementationGUID,
-                                                     @RequestBody (required = false)
-                                                     GovernanceImplementationRequestBody requestBody)
-    {
-        return restAPI.linkDefinitionImplementation(serverName, urlMarker, technicalControlGUID, implementationGUID, relationshipTypeName, requestBody);
-    }
-
-
-    /**
-     * Detach a governance definition from its implementation.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param technicalControlGUID unique identifier of the first governance definition
-     * @param implementationGUID unique identifier of the second governance definition
-     * @param relationshipTypeName name of the relationship to use
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/governance-definitions/{technicalControlGUID}/governance-implementation/{relationshipTypeName}/{implementationGUID}/detach")
-    @Operation(summary="detachDefinitionImplementation",
-            description="Detach a governance definition from its implementation.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-definition"))
-
-    public VoidResponse detachDefinitionImplementation(@PathVariable
-                                                       String                    serverName,
-                                                       @PathVariable String             urlMarker,
-                                                       @PathVariable
-                                                       String                     technicalControlGUID,
-                                                       @PathVariable
-                                                       String                     relationshipTypeName,
-                                                       @PathVariable
-                                                       String                     implementationGUID,
-                                                       @RequestBody (required = false)
-                                                       MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.detachDefinitionImplementation(serverName, urlMarker, technicalControlGUID, implementationGUID, relationshipTypeName, requestBody);
     }
 
 
@@ -546,5 +472,137 @@ public class GovernanceOfficerResource
                                                                               @RequestBody (required = false)  ResultsRequestBody requestBody)
     {
         return restAPI.getGovernanceDefinitionInContext(serverName, urlMarker, governanceDefinitionGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param designGUID             unique identifier of the  governance definition, solution component etc
+     * @param implementationGUID     unique identifier of the implementation
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/designs/{designGUID}/implementations/{implementationGUID}/attach")
+    @Operation(summary="linkDesignToImplementation",
+            description="Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/7/0737-Solution-Implementation/"))
+
+    public VoidResponse linkDesignToImplementation(@PathVariable
+                                                   String                     serverName,
+                                                   @PathVariable String             urlMarker,
+                                                   @PathVariable
+                                                   String designGUID,
+                                                   @PathVariable
+                                                   String implementationGUID,
+                                                   @RequestBody (required = false)
+                                                   RelationshipRequestBody requestBody)
+    {
+        return restAPI.linkDesignToImplementation(serverName, urlMarker, designGUID, implementationGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a design object such as a solution component or governance definition from its implementation. Request body is optional.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param designGUID             unique identifier of the  governance definition, solution component etc
+     * @param implementationGUID     unique identifier of the implementation
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/designs/{designGUID}/implementations/{implementationGUID}/detach")
+    @Operation(summary="detachDesignFromImplementation",
+            description="Detach a design object such as a solution component or governance definition from its implementation. Request body is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/7/0737-Solution-Implementation/"))
+
+    public VoidResponse detachDesignFromImplementation(@PathVariable
+                                                       String                    serverName,
+                                                       @PathVariable String             urlMarker,
+                                                       @PathVariable
+                                                       String                     designGUID,
+                                                       @PathVariable
+                                                       String                     implementationGUID,
+                                                       @RequestBody (required = false)
+                                                       MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachDesignFromImplementation(serverName, urlMarker, designGUID, implementationGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a design object such as a solution component or governance definition to one of its implementation resources via the ImplementationResource relationship. Request body is optional.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param designGUID unique identifier of the design object
+     * @param implementationResourceGUID unique identifier of the implementation resource
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/designs/{designGUID}/implementation-resources/{implementationResourceGUID}/attach")
+    @Operation(summary="linkImplementationResource",
+            description="Attach a design object such as a solution component or governance definition to one of its implementation resources via the ImplementationResource relationship. Request body is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/7/0737-Solution-Implementation/"))
+
+    public VoidResponse linkImplementationResource(@PathVariable
+                                                   String                     serverName,
+                                                   @PathVariable String             urlMarker,
+                                                   @PathVariable
+                                                   String designGUID,
+                                                   @PathVariable
+                                                   String implementationResourceGUID,
+                                                   @RequestBody (required = false)
+                                                   RelationshipRequestBody requestBody)
+    {
+        return restAPI.linkImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a design object such as a solution component or governance definition from one of its implementation resources. Request body is optional.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param designGUID unique identifier of the design object
+     * @param implementationResourceGUID unique identifier of the implementation resource
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/designs/{designGUID}/implementation-resources/{implementationResourceGUID}/detach")
+    @Operation(summary="detachImplementationResource",
+            description="Detach a design object such as a solution component or governance definition from one of its implementation resources. Request body is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/7/0737-Solution-Implementation/"))
+
+    public VoidResponse detachImplementationResource(@PathVariable String                    serverName,
+                                                     @PathVariable String             urlMarker,
+                                                     @PathVariable String                     designGUID,
+                                                     @PathVariable String implementationResourceGUID,
+                                                     @RequestBody (required = false) MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.detachImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
     }
 }

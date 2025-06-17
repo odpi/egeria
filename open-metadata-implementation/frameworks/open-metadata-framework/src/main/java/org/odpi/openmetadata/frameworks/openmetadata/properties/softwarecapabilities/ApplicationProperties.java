@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
 /**
  * ApplicationProperties describes an collection of processes (application) that implements support for the business.
  */
@@ -14,6 +16,7 @@ public class ApplicationProperties extends SoftwareCapabilityProperties
     public ApplicationProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.APPLICATION.typeName);
     }
 
 

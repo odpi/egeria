@@ -1,12 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 
 import java.util.Objects;
 
@@ -14,20 +11,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewElementRequestBody provides a structure for the common properties when creating an element.
+ * NewElementRequestBody provides a structure used when creating actor profiles.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewElementRequestBody extends MetadataSourceRequestBody
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = NewGovernanceDefinitionRequestBody.class, name = "NewGovernanceDefinitionRequestBody"),
+        })
+public class NewElementRequestBody extends NewElementOptionsRequestBody
 {
-    private String            anchorGUID                   = null;
-    private boolean           isOwnAnchor                  = false;
-    private String            anchorScopeGUID              = null;
-    private String            parentGUID                   = null;
-    private String            parentRelationshipTypeName   = null;
-    private ElementProperties parentRelationshipProperties = null;
-    private boolean           parentAtEnd1                 = true;
+    private OpenMetadataRootProperties properties = null;
 
 
     /**
@@ -35,7 +33,6 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
      */
     public NewElementRequestBody()
     {
-        super();
     }
 
 
@@ -50,174 +47,30 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
 
         if (template != null)
         {
-            anchorGUID = template.getAnchorGUID();
-            isOwnAnchor = template.getIsOwnAnchor();
-            anchorScopeGUID = template.getAnchorScopeGUID();
-            parentGUID = template.getParentGUID();
-            parentRelationshipTypeName = template.getParentRelationshipTypeName();
-            parentRelationshipProperties = template.getParentRelationshipProperties();
-            parentAtEnd1 = template.getParentAtEnd1();
+            this.properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the unique identifier of the element that should be the anchor for the new element. It is set to null if no anchor,
-     * or the Anchors classification is included in the initial classifications.
+     * Return the properties of the new element.
      *
-     * @return string guid
+     * @return properties
      */
-    public String getAnchorGUID()
+    public OpenMetadataRootProperties getProperties()
     {
-        return anchorGUID;
+        return properties;
     }
 
 
     /**
-     * Set up the unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
-     * or the new collection should be its own anchor.
+     * Set up the properties of the new element.
      *
-     * @param anchorGUID string guid
+     * @param properties properties
      */
-    public void setAnchorGUID(String anchorGUID)
+    public void setProperties(OpenMetadataRootProperties properties)
     {
-        this.anchorGUID = anchorGUID;
-    }
-
-
-    /**
-     * Return whether this element should be classified as its own anchor or not.  The default is false.
-     *
-     * @return boolean
-     */
-    public boolean getIsOwnAnchor()
-    {
-        return isOwnAnchor;
-    }
-
-
-    /**
-     * Set up whether this element should be classified as its own anchor or not.  The default is false.
-     *
-     * @param ownAnchor boolean
-     */
-    public void setIsOwnAnchor(boolean ownAnchor)
-    {
-        isOwnAnchor = ownAnchor;
-    }
-
-
-    /**
-     * Return the unique identifier of the anchor's scope.
-     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
-     *
-     * @return string guid
-     */
-    public String getAnchorScopeGUID()
-    {
-        return anchorScopeGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the anchor's scope.
-     * If this is not supplied, the value set in the anchor entity's Anchors classification is used.
-     *
-     * @param anchorScopeGUID string guid
-     */
-    public void setAnchorScopeGUID(String anchorScopeGUID)
-    {
-        this.anchorScopeGUID = anchorScopeGUID;
-    }
-
-
-    /**
-     * Return the optional unique identifier for an element that should be connected to the newly created element.
-     * If this property is specified, parentRelationshipTypeName must also be specified.
-     *
-     * @return string guid
-     */
-    public String getParentGUID()
-    {
-        return parentGUID;
-    }
-
-
-    /**
-     * Set up the optional unique identifier for an element that should be connected to the newly created element.
-     * If this property is specified, parentRelationshipTypeName must also be specified.
-     *
-     * @param parentGUID string guid
-     */
-    public void setParentGUID(String parentGUID)
-    {
-        this.parentGUID = parentGUID;
-    }
-
-
-    /**
-     * Return the name of the relationship, if any, that should be established between the new element and the parent element.
-     *
-     * @return string type name
-     */
-    public String getParentRelationshipTypeName()
-    {
-        return parentRelationshipTypeName;
-    }
-
-
-    /**
-     * Set up the name of the optional relationship from the newly created element to a parent element.
-     *
-     * @param parentRelationshipTypeName string type name
-     */
-    public void setParentRelationshipTypeName(String parentRelationshipTypeName)
-    {
-        this.parentRelationshipTypeName = parentRelationshipTypeName;
-    }
-
-
-    /**
-     * Return any properties that should be included in the parent relationship.
-     *
-     * @return element properties
-     */
-    public ElementProperties getParentRelationshipProperties()
-    {
-        return parentRelationshipProperties;
-    }
-
-
-    /**
-     * Set up any properties that should be included in the parent relationship.
-     *
-     * @param parentRelationshipProperties element properties
-     */
-    public void setParentRelationshipProperties(ElementProperties parentRelationshipProperties)
-    {
-        this.parentRelationshipProperties = parentRelationshipProperties;
-    }
-
-
-    /**
-     * Return which end any parent entity sits on the relationship.
-     *
-     * @return boolean
-     */
-    public boolean getParentAtEnd1()
-    {
-        return parentAtEnd1;
-    }
-
-
-    /**
-     * Set up  which end any parent entity sits on the relationship.
-     *
-     * @param parentAtEnd1 boolean
-     */
-    public void setParentAtEnd1(boolean parentAtEnd1)
-    {
-        this.parentAtEnd1 = parentAtEnd1;
+        this.properties = properties;
     }
 
 
@@ -230,13 +83,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
     public String toString()
     {
         return "NewElementRequestBody{" +
-                "anchorGUID='" + anchorGUID + '\'' +
-                ", isOwnAnchor=" + isOwnAnchor +
-                ", anchorScopeGUID='" + anchorScopeGUID + '\'' +
-                ", parentGUID='" + parentGUID + '\'' +
-                ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
-                ", parentRelationshipProperties=" + parentRelationshipProperties +
-                ", parentAtEnd1=" + parentAtEnd1 +
+                "properties=" + properties +
                 "} " + super.toString();
     }
 
@@ -262,13 +109,7 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        return parentAtEnd1 == that.parentAtEnd1 &&
-                       isOwnAnchor == that.isOwnAnchor &&
-                       Objects.equals(anchorGUID, that.anchorGUID) &&
-                       Objects.equals(anchorScopeGUID, that.anchorScopeGUID) &&
-                       Objects.equals(parentGUID, that.parentGUID) &&
-                       Objects.equals(parentRelationshipTypeName, that.parentRelationshipTypeName) &&
-                       Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties);
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -280,7 +121,6 @@ public class NewElementRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, isOwnAnchor, anchorScopeGUID, parentGUID,
-                            parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

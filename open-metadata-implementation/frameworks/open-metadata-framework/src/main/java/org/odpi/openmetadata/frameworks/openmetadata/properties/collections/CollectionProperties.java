@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -36,6 +37,7 @@ public class CollectionProperties extends ReferenceableProperties
     public CollectionProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.COLLECTION.typeName);
     }
 
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -31,6 +32,8 @@ public class DependentContextEventProperties extends RelationshipProperties
      */
     public DependentContextEventProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName);
     }
 
 

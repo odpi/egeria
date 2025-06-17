@@ -72,11 +72,10 @@ public class PersonRoleConverter<B> extends OMFConverter<B>
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
                     roleProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    roleProperties.setRoleId(this.removeIdentifier(instanceProperties));
-                    roleProperties.setTitle(this.removeName(instanceProperties));
+                    roleProperties.setIdentifier(this.removeIdentifier(instanceProperties));
+                    roleProperties.setName(this.removeName(instanceProperties));
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
-                    roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataProperty.HEAD_COUNT.name) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 

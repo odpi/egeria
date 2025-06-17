@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Map;
@@ -46,6 +47,8 @@ public class LicenseProperties extends RelationshipProperties
      */
     public LicenseProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.LICENSE_RELATIONSHIP.typeName);
     }
 
 

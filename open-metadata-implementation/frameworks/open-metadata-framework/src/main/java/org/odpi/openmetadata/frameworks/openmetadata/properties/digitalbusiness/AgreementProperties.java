@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ public class AgreementProperties extends ReferenceableProperties
     public AgreementProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.AGREEMENT.typeName);
     }
 
 

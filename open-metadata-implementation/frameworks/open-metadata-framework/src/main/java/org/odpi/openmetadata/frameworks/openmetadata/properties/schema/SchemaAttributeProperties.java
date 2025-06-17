@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIP
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public SchemaAttributeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
     }
 
 

@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CollectionElement extends AttributedMetadataElement
 {
     private CollectionProperties properties = null;
-    private RelatedBy            relatedBy  = null;
 
 
     /**
@@ -46,7 +45,6 @@ public class CollectionElement extends AttributedMetadataElement
         if (template != null)
         {
             properties = template.getProperties();
-            relatedBy  = template.getRelatedBy();
         }
     }
 
@@ -73,29 +71,6 @@ public class CollectionElement extends AttributedMetadataElement
     }
 
 
-    /**
-     * Return details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @return list of element stubs
-     */
-    public RelatedBy getRelatedBy()
-    {
-        return relatedBy;
-    }
-
-
-    /**
-     * Set up details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @param relatedBy relationship details
-     */
-    public void setRelatedBy(RelatedBy relatedBy)
-    {
-        this.relatedBy = relatedBy;
-    }
-
 
     /**
      * JSON-style toString
@@ -107,7 +82,6 @@ public class CollectionElement extends AttributedMetadataElement
     {
         return "CollectionElement{" +
                 "properties=" + properties +
-                ", relatedBy=" + relatedBy +
                 "} " + super.toString();
     }
 
@@ -125,8 +99,7 @@ public class CollectionElement extends AttributedMetadataElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         CollectionElement that = (CollectionElement) objectToCompare;
-        return Objects.equals(properties, that.properties) &&
-                Objects.equals(relatedBy, that.relatedBy);
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -138,6 +111,6 @@ public class CollectionElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, relatedBy);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

@@ -23,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProjectElement extends AttributedMetadataElement
 {
     private ProjectProperties                   properties   = null;
-    private RelatedBy                           relatedBy    = null;
     private List<RelatedMetadataElementSummary> resourceList = null;
     private List<RelatedMetadataElementSummary> projectManagers = null;
     private List<RelatedMetadataElementSummary> projectTeam     = null;
@@ -50,7 +49,6 @@ public class ProjectElement extends AttributedMetadataElement
         if (template != null)
         {
             properties   = template.getProperties();
-            relatedBy    = template.getRelatedBy();
             resourceList = template.getResourceList();
             projectManagers = template.getProjectManagers();
             projectTeam     = template.getProjectTeam();
@@ -77,30 +75,6 @@ public class ProjectElement extends AttributedMetadataElement
     public void setProperties(ProjectProperties properties)
     {
         this.properties = properties;
-    }
-
-
-    /**
-     * Return details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @return list of element stubs
-     */
-    public RelatedBy getRelatedBy()
-    {
-        return relatedBy;
-    }
-
-
-    /**
-     * Set up details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
-     *
-     * @param relatedBy relationship details
-     */
-    public void setRelatedBy(RelatedBy relatedBy)
-    {
-        this.relatedBy = relatedBy;
     }
 
 
@@ -180,7 +154,6 @@ public class ProjectElement extends AttributedMetadataElement
     {
         return "ProjectElement{" +
                 "properties=" + properties +
-                ", relatedBy=" + relatedBy +
                 ", resourceList=" + resourceList +
                 ", projectManagers=" + projectManagers +
                 ", projectTeam=" + projectTeam +
@@ -202,7 +175,6 @@ public class ProjectElement extends AttributedMetadataElement
         if (!super.equals(objectToCompare)) return false;
         ProjectElement that = (ProjectElement) objectToCompare;
         return Objects.equals(properties, that.properties) &&
-                Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(resourceList, that.resourceList) &&
                 Objects.equals(projectManagers, that.projectManagers) &&
                 Objects.equals(projectTeam, that.projectTeam);
@@ -216,6 +188,6 @@ public class ProjectElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, relatedBy, resourceList, projectManagers, projectTeam);
+        return Objects.hash(super.hashCode(), properties, resourceList, projectManagers, projectTeam);
     }
 }

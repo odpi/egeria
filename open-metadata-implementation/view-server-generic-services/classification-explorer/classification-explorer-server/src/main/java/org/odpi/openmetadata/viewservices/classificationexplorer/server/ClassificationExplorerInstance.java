@@ -41,7 +41,8 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
      * Set up the Classification Explorer OMVS instance*
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
+     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -50,6 +51,7 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
     public ClassificationExplorerInstance(String                  serverName,
                                           AuditLog                auditLog,
                                           String                  localServerUserId,
+                                          String                  localServerUserPassword,
                                           int                     maxPageSize,
                                           String                  remoteServerName,
                                           String                  remoteServerURL,
@@ -59,6 +61,7 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
               myDescription.getViewServiceName(),
               auditLog,
               localServerUserId,
+              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
@@ -98,12 +101,26 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
                             {
                                 if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
                                 {
-                                    collaborationManagerHandler = new StewardshipManagementHandler(serverName,
-                                                                                                   viewServiceConfig.getOMAGServerName(),
-                                                                                                   viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                                                   auditLog,
-                                                                                                   accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                                   maxPageSize);
+                                    if (localServerUserPassword == null)
+                                    {
+                                        collaborationManagerHandler = new StewardshipManagementHandler(serverName,
+                                                                                                       viewServiceConfig.getOMAGServerName(),
+                                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                                       auditLog,
+                                                                                                       accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                                       maxPageSize);
+                                    }
+                                    else
+                                    {
+                                        collaborationManagerHandler = new StewardshipManagementHandler(serverName,
+                                                                                                       viewServiceConfig.getOMAGServerName(),
+                                                                                                       viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                                       localServerUserId,
+                                                                                                       localServerUserPassword,
+                                                                                                       auditLog,
+                                                                                                       accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                                       maxPageSize);
+                                    }
 
                                     stewardshipManagementHandlerHashMap.put(viewServiceURLMarker,
                                                                             collaborationManagerHandler);

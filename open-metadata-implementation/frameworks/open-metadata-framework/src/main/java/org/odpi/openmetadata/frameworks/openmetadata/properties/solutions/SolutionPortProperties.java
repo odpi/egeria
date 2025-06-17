@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class SolutionPortProperties extends ReferenceableProperties
     public SolutionPortProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SOLUTION_PORT.typeName);
     }
 
 

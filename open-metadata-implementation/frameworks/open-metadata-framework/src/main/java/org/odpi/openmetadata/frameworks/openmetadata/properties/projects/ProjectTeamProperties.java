@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -29,6 +30,7 @@ public class ProjectTeamProperties extends RelationshipProperties
     public ProjectTeamProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName);
     }
 
 
@@ -79,11 +81,8 @@ public class ProjectTeamProperties extends RelationshipProperties
     public String toString()
     {
         return "ProjectTeamProperties{" +
-                       "membershipType=" + teamRole +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "teamRole='" + teamRole + '\'' +
+                "} " + super.toString();
     }
 
 

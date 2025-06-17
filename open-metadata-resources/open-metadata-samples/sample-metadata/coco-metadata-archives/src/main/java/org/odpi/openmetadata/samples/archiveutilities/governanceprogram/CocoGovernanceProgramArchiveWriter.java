@@ -15,9 +15,7 @@ import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -174,6 +172,8 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeCertificationTypes()
     {
+        final String methodName = "writeCertificationTypes";
+
         for (CertificationTypeDefinition certificationTypeDefinition : CertificationTypeDefinition.values())
         {
             Map<String, Object> extendedProperties = new HashMap<>();
@@ -197,6 +197,16 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                                 extendedProperties);
 
             assert (certificationTypeDefinition.getGUID().equals(guid));
+
+            if (certificationTypeDefinition.isTemplate())
+            {
+                archiveHelper.addTemplateClassification(certificationTypeDefinition.getGUID(),
+                                                        certificationTypeDefinition.getTemplateName(),
+                                                        certificationTypeDefinition.getTemplateDescription(),
+                                                        "V1.0",
+                                                        null,
+                                                        methodName);
+            }
         }
     }
 
@@ -223,6 +233,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                   null);
         }
     }
+
 
     /**
      * Creates Governance Zone definitions.

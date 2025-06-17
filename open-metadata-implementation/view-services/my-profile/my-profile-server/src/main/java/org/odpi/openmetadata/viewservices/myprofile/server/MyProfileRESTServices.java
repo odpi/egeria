@@ -5,20 +5,17 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProfileProperties;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.ToDoActionHandler;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonalProfileUniverse;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonalProfileProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -75,20 +72,20 @@ public class MyProfileRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OrganizationManagement client = instanceHandler.getOrganizationManagementClient(userId, serverName, methodName);
 
-            ActorProfileElement actorProfileElement = client.getActorProfileByUserId(userId, userId);
+            ActorProfileGraphElement actorProfileElement = client.getActorProfileByUserId(userId, userId);
 
             if (actorProfileElement != null)
             {
-                PersonalProfileUniverse   personalProfileUniverse = new PersonalProfileUniverse();
-                PersonalProfileProperties profileProperties      = new PersonalProfileProperties();
-                ActorProfileProperties    actorProfileProperties = actorProfileElement.getProfileProperties();
-                Map<String, Object>       extendedProperties     = actorProfileProperties.getExtendedProperties();
+                PersonalProfileUniverse personalProfileUniverse = new PersonalProfileUniverse();
+                PersonProfileProperties profileProperties       = new PersonProfileProperties();
+                ActorProfileProperties  actorProfileProperties  = actorProfileElement.getProfileProperties();
+                Map<String, Object>     extendedProperties     = actorProfileProperties.getExtendedProperties();
 
                 profileProperties.setQualifiedName(actorProfileProperties.getQualifiedName());
                 profileProperties.setKnownName(actorProfileProperties.getKnownName());
                 profileProperties.setDescription(actorProfileProperties.getDescription());
                 profileProperties.setPronouns(getExtendedProperty(extendedProperties,"pronouns"));
-                profileProperties.setTitle(getExtendedProperty(extendedProperties,"title"));
+                profileProperties.setCourtesyTitle(getExtendedProperty(extendedProperties, "title"));
                 profileProperties.setInitials(getExtendedProperty(extendedProperties,"initials"));
                 profileProperties.setGivenNames(getExtendedProperty(extendedProperties,"givenNames"));
                 profileProperties.setSurname(getExtendedProperty(extendedProperties,"surname"));

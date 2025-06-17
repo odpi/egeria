@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
+import org.odpi.openmetadata.samples.archiveutilities.governanceengines.SolutionComponent;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.FacilityDefinition;
 

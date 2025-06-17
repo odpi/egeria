@@ -1297,6 +1297,51 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+
+@solutionComponentOneGUID=add guid here
+@solutionComponentTwoGUID=add guid here
+
+###
+# @name linkSolutionLinkingWire
+# Connect a solution component to a peer component in a solution using the SolutionLinkingWore relationship. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentOneGUID}}/wired-to/{{solutionComponentTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "properties" : {
+     "class" : "SolutionLinkingWireProperties",
+     "label" : "",
+     "description" : "",
+     "informationSupplyChainSegmentGUIDs" : []
+  },
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSolutionLinkingWire
+# Detach a solution component from a peer solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentOneGUID}}/wired-to/{{solutionComponentTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
 
 ###
 # @name deleteSolutionComponent

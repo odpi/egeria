@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPro
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ITInfrastructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -43,6 +44,8 @@ public class AssetProperties extends SupplementaryProperties
      */
     public AssetProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.ASSET.typeName);
     }
 
 

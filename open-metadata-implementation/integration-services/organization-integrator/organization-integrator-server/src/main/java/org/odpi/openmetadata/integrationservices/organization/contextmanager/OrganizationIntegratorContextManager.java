@@ -29,7 +29,9 @@ import java.util.Map;
 public class OrganizationIntegratorContextManager extends IntegrationContextManager
 {
     private MetadataSourceClient    metadataSourceClient    = null;
-    private OrganizationManagement  organizationManagement  = null;
+    private ActorProfileManagement  actorProfileManagement  = null;
+    private ActorRoleManagement     actorRoleManagement     = null;
+    private ContactMethodManagement contactMethodManagement = null;
     private SecurityGroupManagement securityGroupManagement = null;
     private UserIdentityManagement  userIdentityManagement  = null;
 
@@ -44,6 +46,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
     /**
      * Initialize server properties for the context manager.
      *
+     * @param localServerName name of this integration daemon
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
@@ -52,7 +55,8 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    public void initializeContextManager(String              partnerOMASServerName,
+    public void initializeContextManager(String              localServerName,
+                                         String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
                                          String              password,
@@ -60,7 +64,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
+        super.initializeContextManager(localServerName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -105,21 +109,65 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                         restClient,
                                                         maxPageSize);
 
-        organizationManagement = new OrganizationManagement(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            restClient,
-                                                            maxPageSize);
-
         securityGroupManagement = new SecurityGroupManagement(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,
                                                               restClient,
                                                               maxPageSize);
 
-        userIdentityManagement = new UserIdentityManagement(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            restClient,
-                                                            maxPageSize);
-
+        if (localServerPassword == null)
+        {
+            actorProfileManagement = new ActorProfileManagement(localServerName,
+                                                                partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                auditLog,
+                                                                maxPageSize);
+            actorRoleManagement = new ActorRoleManagement(localServerName,
+                                                          partnerOMASServerName,
+                                                          partnerOMASPlatformRootURL,
+                                                          auditLog,
+                                                          maxPageSize);
+            contactMethodManagement = new ContactMethodManagement(localServerName,
+                                                                  partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  auditLog,
+                                                                  maxPageSize);
+            userIdentityManagement = new UserIdentityManagement(localServerName,
+                                                                partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                auditLog,
+                                                                maxPageSize);
+        }
+        else
+        {
+            actorProfileManagement = new ActorProfileManagement(localServerName,
+                                                                partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                localServerUserId,
+                                                                localServerPassword,
+                                                                auditLog,
+                                                                maxPageSize);
+            actorRoleManagement = new ActorRoleManagement(localServerName,
+                                                          partnerOMASServerName,
+                                                          partnerOMASPlatformRootURL,
+                                                          localServerUserId,
+                                                          localServerPassword,
+                                                          auditLog,
+                                                          maxPageSize);
+            contactMethodManagement = new ContactMethodManagement(localServerName,
+                                                                  partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  localServerUserId,
+                                                                  localServerPassword,
+                                                                  auditLog,
+                                                                  maxPageSize);
+            userIdentityManagement = new UserIdentityManagement(localServerName,
+                                                                partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                localServerUserId,
+                                                                localServerPassword,
+                                                                auditLog,
+                                                                maxPageSize);
+        }
     }
 
 
@@ -201,7 +249,9 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                                                                 governanceConfiguration,
                                                                                                 openMetadataStoreClient,
                                                                                                 actionControlInterface,
-                                                                                                organizationManagement,
+                                                                                                actorProfileManagement,
+                                                                                                actorRoleManagement,
+                                                                                                contactMethodManagement,
                                                                                                 securityGroupManagement,
                                                                                                 userIdentityManagement,
                                                                                                 eventClient,

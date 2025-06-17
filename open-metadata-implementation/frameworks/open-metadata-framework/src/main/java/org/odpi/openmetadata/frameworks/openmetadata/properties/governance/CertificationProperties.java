@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -42,6 +43,8 @@ public class CertificationProperties extends RelationshipProperties
      */
     public CertificationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName);
     }
 
 

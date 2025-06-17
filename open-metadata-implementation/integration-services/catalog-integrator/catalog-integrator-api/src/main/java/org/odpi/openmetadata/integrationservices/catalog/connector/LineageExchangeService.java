@@ -261,7 +261,7 @@ public class LineageExchangeService extends SchemaExchangeService
     public void setupProcessParent(boolean                      assetManagerIsHome,
                                    String                       parentProcessGUID,
                                    String                       childProcessGUID,
-                                   ProcessContainmentProperties containmentProperties,
+                                   ProcessHierarchyProperties containmentProperties,
                                    Date                         effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException

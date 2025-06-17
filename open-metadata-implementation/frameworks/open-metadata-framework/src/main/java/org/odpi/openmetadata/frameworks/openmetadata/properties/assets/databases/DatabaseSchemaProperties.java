@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.database
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,6 +24,7 @@ public class DatabaseSchemaProperties extends DataSetProperties
     public DatabaseSchemaProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName);
     }
 
 

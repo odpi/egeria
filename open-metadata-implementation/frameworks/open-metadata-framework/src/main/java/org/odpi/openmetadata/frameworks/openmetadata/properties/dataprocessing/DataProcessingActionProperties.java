@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -28,6 +29,8 @@ public class DataProcessingActionProperties extends ReferenceableProperties
      */
     public DataProcessingActionProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.DATA_PROCESSING_ACTION.typeName);
     }
 
 

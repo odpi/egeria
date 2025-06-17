@@ -35,9 +35,6 @@ public class CocoArchivesWriter
             CocoTypesArchiveWriter             typesArchiveWriter = new CocoTypesArchiveWriter();
             typesArchiveWriter.writeOpenMetadataArchive(folderName);
 
-            CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
-            governanceEnginesArchiveWriter.writeOpenMetadataArchive(folderName);
-
             CocoOrganizationArchiveWriter      organizationArchiveWriter = new CocoOrganizationArchiveWriter();
             organizationArchiveWriter.writeOpenMetadataArchive(folderName);
 
@@ -52,6 +49,9 @@ public class CocoArchivesWriter
 
             CocoBusinessSystemsArchiveWriter   businessSystemsArchiveWriter = new CocoBusinessSystemsArchiveWriter();
             businessSystemsArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
+            governanceEnginesArchiveWriter.writeOpenMetadataArchive(folderName);
         }
         catch (Exception error)
         {

@@ -8,11 +8,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
 import java.util.Date;
@@ -37,9 +37,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
                 @JsonSubTypes.Type(value = AssetOriginProperties.class, name = "AssetOriginProperties"),
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
-                @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
                 @JsonSubTypes.Type(value = DatabasePrimaryKeyProperties.class, name = "DatabasePrimaryKeyProperties"),
-                @JsonSubTypes.Type(value = DigitalLocationProperties.class, name = "DigitalLocationProperties"),
+                @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
                 @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),
                 @JsonSubTypes.Type(value = FixedLocationProperties.class, name = "FixedLocationProperties"),
@@ -51,6 +50,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = OwnerProperties.class, name = "OwnerProperties"),
                 @JsonSubTypes.Type(value = PrimaryKeyProperties.class, name = "PrimaryKeyProperties"),
                 @JsonSubTypes.Type(value = SecureLocationProperties.class, name = "SecureLocationProperties"),
+                @JsonSubTypes.Type(value = SecurityGroupMembershipProperties.class, name = "SecurityGroupMembershipProperties"),
                 @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
                 @JsonSubTypes.Type(value = StagingGlossaryProperties.class, name = "StagingGlossaryProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaClassificationProperties.class, name = "SubjectAreaClassificationProperties"),
@@ -58,10 +58,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ClassificationProperties
 {
-    private Date effectiveFrom = null;
-    private Date effectiveTo   = null;
-
-    private Map<String, Object> extendedProperties = null;
+    private Date                 effectiveFrom        = null;
+    private Date                 effectiveTo          = null;
+    private String               typeName             = null;
+    private Map<String, Object>  extendedProperties   = null;
 
 
     /**
@@ -82,8 +82,9 @@ public class ClassificationProperties
     {
         if (template != null)
         {
-            effectiveFrom = template.getEffectiveFrom();
-            effectiveTo = template.getEffectiveTo();
+            effectiveFrom      = template.getEffectiveFrom();
+            effectiveTo        = template.getEffectiveTo();
+            typeName           = template.getTypeName();
             extendedProperties = template.getExtendedProperties();
         }
     }
@@ -134,6 +135,28 @@ public class ClassificationProperties
 
 
     /**
+     * Return the name of the open metadata type for this classification.
+     *
+     * @return string name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the name of the open metadata type for this classification.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
      * Return the properties that have been defined for a subtype of this object that are not supported explicitly
      * by this bean.
      *
@@ -165,11 +188,12 @@ public class ClassificationProperties
     @Override
     public String toString()
     {
-        return "RelationshipProperties{" +
-                       "effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
-                       ", extendedProperties=" + extendedProperties +
-                       '}';
+        return "ClassificationProperties{" +
+                "effectiveFrom=" + effectiveFrom +
+                ", effectiveTo=" + effectiveTo +
+                ", typeName='" + typeName + '\'' +
+                ", extendedProperties=" + extendedProperties +
+                '}';
     }
 
 
@@ -192,7 +216,9 @@ public class ClassificationProperties
         }
         ClassificationProperties that = (ClassificationProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo);
+                Objects.equals(effectiveTo, that.effectiveTo) &&
+                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -204,6 +230,6 @@ public class ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo);
+        return Objects.hash(effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

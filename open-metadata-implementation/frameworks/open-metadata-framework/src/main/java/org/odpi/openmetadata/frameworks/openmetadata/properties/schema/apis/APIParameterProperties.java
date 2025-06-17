@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +32,7 @@ public class APIParameterProperties extends SchemaAttributeProperties
     public APIParameterProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.API_PARAMETER.typeName);
     }
 
 

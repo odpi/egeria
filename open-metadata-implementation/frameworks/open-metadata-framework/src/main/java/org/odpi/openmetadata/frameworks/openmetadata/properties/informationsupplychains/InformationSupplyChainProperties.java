@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
     public InformationSupplyChainProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName);
     }
 
 

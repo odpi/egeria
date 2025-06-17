@@ -40,6 +40,8 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      */
     public SoftwareServerPlatformProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
     }
 
 

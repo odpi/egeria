@@ -6,8 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceImplementationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 
 import java.util.Objects;
 
@@ -22,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceImplementationRequestBody extends MetadataSourceRequestBody
 {
-    private GovernanceImplementationProperties properties = null;
+    private ImplementationResourceProperties properties = null;
 
 
     /**
@@ -54,7 +53,7 @@ public class GovernanceImplementationRequestBody extends MetadataSourceRequestBo
      *
      * @return properties
      */
-    public GovernanceImplementationProperties getProperties()
+    public ImplementationResourceProperties getProperties()
     {
         return properties;
     }
@@ -65,7 +64,7 @@ public class GovernanceImplementationRequestBody extends MetadataSourceRequestBo
      *
      * @param properties properties
      */
-    public void setProperties(GovernanceImplementationProperties properties)
+    public void setProperties(ImplementationResourceProperties properties)
     {
         this.properties = properties;
     }

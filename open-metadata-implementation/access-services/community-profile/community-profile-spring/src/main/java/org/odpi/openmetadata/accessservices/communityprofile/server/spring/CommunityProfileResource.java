@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabili
 import org.springframework.web.bind.annotation.*;
 
 /**
- * UserIdentityResource provides the APIs for maintaining user identities and their relationships with profiles.
+ * CommunityProfileResource provides the APIs for maintaining the metadata sources.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}")

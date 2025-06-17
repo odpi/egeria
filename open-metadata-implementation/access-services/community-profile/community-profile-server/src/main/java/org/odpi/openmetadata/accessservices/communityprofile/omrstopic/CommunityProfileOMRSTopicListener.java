@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 import org.odpi.openmetadata.accessservices.communityprofile.converters.CommunityProfileOMASConverter;
 import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEventType;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileGraphElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ContributionRecordElement;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
@@ -102,14 +102,14 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
                 try
                 {
-                    ActorProfileElement personalProfile = instance.getActorProfileHandler().getActorProfileForUser(serverUserId,
-                                                                                                                   contributingUserId,
-                                                                                                                   userParameterName,
-                                                                                                                   OpenMetadataType.ACTOR_PROFILE.typeName,
-                                                                                                                   false,
-                                                                                                                   false,
-                                                                                                                   new Date(),
-                                                                                                                   methodName);
+                    ActorProfileGraphElement personalProfile = instance.getActorProfileHandler().getActorProfileForUser(serverUserId,
+                                                                                                                        contributingUserId,
+                                                                                                                        userParameterName,
+                                                                                                                        OpenMetadataType.ACTOR_PROFILE.typeName,
+                                                                                                                        false,
+                                                                                                                        false,
+                                                                                                                        new Date(),
+                                                                                                                        methodName);
 
                     if (personalProfile != null)
                     {
@@ -363,8 +363,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                         (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName)) ||
                         (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PEER_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_LEADER.typeName)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_MEMBER.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName)))
                 {
                     publisher.sendRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);

@@ -128,9 +128,9 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
      */
     public String getSearchString(String requestedSearch, boolean startsWith, boolean endsWith, boolean ignoreCase)
     {
-        if ((requestedSearch == null) || (requestedSearch.isBlank()))
+        if ((requestedSearch == null) || (requestedSearch.isBlank()) || "*".equals(requestedSearch) || ("'".equals(requestedSearch) || ("''".equals(requestedSearch)) || "%".equals(requestedSearch)))
         {
-            // ignore the flags for an empty search criteria string - assume we want everything
+            // ignore the flags for an empty search criteria string or SQL special characters - assume we want everything
             requestedSearch = ".*";
         }
         else

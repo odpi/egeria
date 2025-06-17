@@ -25,10 +25,11 @@ public class IntegrationContextManager
     protected String                       partnerOMASPlatformRootURL   = null;
     protected String                       partnerOMASServerName        = null;
     protected OpenIntegrationClient        openIntegrationClient        = null;
-    protected GovernanceConfiguration      governanceConfiguration = null;
-    protected ActionControlInterface       actionControlInterface = null;
-    protected ConnectedAssetContext        connectedAssetContext   = null;
+    protected GovernanceConfiguration      governanceConfiguration      = null;
+    protected ActionControlInterface       actionControlInterface       = null;
+    protected ConnectedAssetContext        connectedAssetContext        = null;
     protected OpenMetadataClient           openMetadataStoreClient      = null;
+    protected String                       localServerName              = null;
     protected String                       localServerUserId            = null;
     protected String                       localServerPassword          = null;
     protected Map<String, Object>          serviceOptions               = null;
@@ -47,6 +48,7 @@ public class IntegrationContextManager
     /**
      * Initialize server properties for the context manager.
      *
+     * @param localServerName name of this integration daemon
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
@@ -55,7 +57,8 @@ public class IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    public void initializeContextManager(String              partnerOMASServerName,
+    public void initializeContextManager(String              localServerName,
+                                         String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
                                          String              password,
@@ -63,6 +66,7 @@ public class IntegrationContextManager
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
+        this.localServerName            = localServerName;
         this.partnerOMASPlatformRootURL = partnerOMASPlatformRootURL;
         this.partnerOMASServerName      = partnerOMASServerName;
         this.localServerUserId          = userId;
@@ -86,7 +90,7 @@ public class IntegrationContextManager
 
     /**
      * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this event broker.
+     * for this service.
      *
      * @param metadataSourceQualifiedName unique name of the software capability that represents this integration service
      * @param typeName subtype name of the software capability

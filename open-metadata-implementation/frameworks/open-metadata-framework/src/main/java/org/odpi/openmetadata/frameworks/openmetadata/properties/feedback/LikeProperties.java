@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.feedback;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -18,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LikeProperties
+public class LikeProperties extends OpenMetadataRootProperties
 {
     private String     user       = null;
 
@@ -29,6 +31,7 @@ public class LikeProperties
     public LikeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.LIKE.typeName);
     }
 
 
@@ -39,6 +42,8 @@ public class LikeProperties
      */
     public LikeProperties(LikeProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             user = template.getUser();
@@ -75,8 +80,8 @@ public class LikeProperties
     public String toString()
     {
         return "LikeProperties{" +
-                       "user='" + user + '\'' +
-                       '}';
+                "user='" + user + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -97,6 +102,7 @@ public class LikeProperties
         {
             return false;
         }
+        if (!super.equals(objectToCompare)) return false;
         LikeProperties like = (LikeProperties) objectToCompare;
         return Objects.equals(getUser(), like.getUser());
     }
@@ -110,6 +116,6 @@ public class LikeProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(user);
+        return Objects.hash(super.hashCode(), user);
     }
 }

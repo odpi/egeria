@@ -19,6 +19,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermCategorization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -615,13 +617,14 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
             GlossaryTermProperties properties = new GlossaryTermProperties();
             Map<String, Object>    extendedProperties = new HashMap<>();
 
-            extendedProperties.put("userDefinedStatus", controlledGlossaryTermStatus);
 
             properties.setQualifiedName(controlledGlossaryTermName);
             properties.setDisplayName(controlledGlossaryTermDisplayName);
             properties.setDescription(controlledGlossaryTermDescription);
-            properties.setExtendedProperties(extendedProperties);
 
+            extendedProperties.put(OpenMetadataProperty.USER_DEFINED_STATUS.name, controlledGlossaryTermStatus);
+            properties.setExtendedProperties(extendedProperties);
+            properties.setTypeName(OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName);
 
             String glossaryTermGUID = client.createControlledGlossaryTerm(userId,
                                                                           null,

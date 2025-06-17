@@ -26,7 +26,6 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
 {
     private List<MetadataCorrelationHeader>     correlationHeaders     = null;
     private GlossaryTermProperties              glossaryTermProperties = null;
-    private RelatedBy                           relatedBy              = null;
     private RelatedMetadataElementSummary       parentGlossary         = null;
     private List<RelatedMetadataElementSummary> categoryMembership     = null;
     private List<RelatedMetadataElementSummary> relatedTerms           = null;
@@ -56,7 +55,6 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
         {
             correlationHeaders     = template.getCorrelationHeaders();
             glossaryTermProperties = template.getGlossaryTermProperties();
-            relatedBy              = template.getRelatedElement();
             parentGlossary         = template.getParentGlossary();
             categoryMembership     = template.getCategoryMembership();
             relatedTerms           = template.getRelatedTerms();
@@ -111,28 +109,6 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
     public void setGlossaryTermProperties(GlossaryTermProperties glossaryTermProperties)
     {
         this.glossaryTermProperties = glossaryTermProperties;
-    }
-
-
-    /**
-     * Return details of the relationship used to retrieve the element.
-     *
-     * @return relationship properties and starting element
-     */
-    public RelatedBy getRelatedElement()
-    {
-        return relatedBy;
-    }
-
-
-    /**
-     * Set up details of the relationship used to retrieve the element.
-     *
-     * @param relatedBy relationship properties and starting element
-     */
-    public void setRelatedElement(RelatedBy relatedBy)
-    {
-        this.relatedBy = relatedBy;
     }
 
 
@@ -257,13 +233,11 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
         return "GlossaryTermElement{" +
                 "correlationHeaders=" + correlationHeaders +
                 ", glossaryTermProperties=" + glossaryTermProperties +
-                ", relatedBy=" + relatedBy +
                 ", parentGlossary=" + parentGlossary +
                 ", categoryMembership=" + categoryMembership +
                 ", relatedTerms=" + relatedTerms +
                 ", relatedDefinitions=" + relatedDefinitions +
                 ", semanticAssignments=" + semanticAssignments +
-                ", relatedElement=" + getRelatedElement() +
                 "} " + super.toString();
     }
 
@@ -283,7 +257,6 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
         GlossaryTermElement that = (GlossaryTermElement) objectToCompare;
         return Objects.equals(correlationHeaders, that.correlationHeaders) &&
                 Objects.equals(glossaryTermProperties, that.glossaryTermProperties) &&
-                Objects.equals(relatedBy, that.relatedBy) &&
                 Objects.equals(parentGlossary, that.parentGlossary) &&
                 Objects.equals(categoryMembership, that.categoryMembership) &&
                 Objects.equals(relatedTerms, that.relatedTerms) &&
@@ -300,7 +273,7 @@ public class GlossaryTermElement extends AttributedMetadataElement implements Co
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), correlationHeaders, glossaryTermProperties, relatedBy,
+        return Objects.hash(super.hashCode(), correlationHeaders, glossaryTermProperties,
                             parentGlossary, categoryMembership, relatedTerms, relatedDefinitions, semanticAssignments);
     }
 }

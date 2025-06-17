@@ -154,7 +154,8 @@ public class IntegrationDaemonOperationalServices
                                                              integrationServiceConfig.getIntegrationServiceFullName(),
                                                              integrationServiceConfig.getIntegrationServiceDescription(),
                                                              integrationServiceConfig.getIntegrationServiceWiki());
-                        contextManager.initializeContextManager(partnerOMASServerName,
+                        contextManager.initializeContextManager(localServerName,
+                                                                partnerOMASServerName,
                                                                 partnerOMASRootURL,
                                                                 localServerUserId,
                                                                 localServerPassword,
@@ -238,7 +239,8 @@ public class IntegrationDaemonOperationalServices
                                                                  integrationServiceConfig.getIntegrationServiceFullName(),
                                                                  integrationServiceConfig.getIntegrationServiceDescription(),
                                                                  integrationServiceConfig.getIntegrationServiceWiki());
-                            serviceContextManager.initializeContextManager(partnerOMASServerName,
+                            serviceContextManager.initializeContextManager(localServerName,
+                                                                           partnerOMASServerName,
                                                                            partnerOMASRootURL,
                                                                            localServerUserId,
                                                                            localServerPassword,

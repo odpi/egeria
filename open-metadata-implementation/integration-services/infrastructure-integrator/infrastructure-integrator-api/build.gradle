@@ -10,6 +10,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
+    implementation project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')

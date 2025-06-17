@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.database
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class DatabaseTableProperties extends SchemaAttributeProperties
     public DatabaseTableProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.RELATIONAL_TABLE.typeName);
     }
 
 

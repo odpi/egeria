@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,6 +25,7 @@ public class AssetManagerProperties extends SoftwareCapabilityProperties
     public AssetManagerProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.ASSET_MANAGER.typeName);
     }
 
 

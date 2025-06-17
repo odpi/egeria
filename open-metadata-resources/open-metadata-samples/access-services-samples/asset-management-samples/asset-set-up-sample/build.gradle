@@ -9,6 +9,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
@@ -25,6 +26,8 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+    compileOnly project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-api')
+    compileOnly project(':open-metadata-implementation:framework-services:omf-metadata-management:omf-metadata-client')
     implementation project(':open-metadata-implementation:platform-services:platform-services-client')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     runtimeOnly 'ch.qos.logback:logback-classic'
