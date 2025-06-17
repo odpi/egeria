@@ -106,10 +106,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.outtopic.SecurityManagerOutTopicPublisher,org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">SecurityManagerOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.outtopic.SecurityManagerOutTopicPublisher,org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">SecurityManagerOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="SecurityManagerOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.outtopic">SecurityManagerOutTopicPublisher</a>&nbsp;eventPublisher,
- <a href="../../../commonservices/generichandlers/UserIdentityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">UserIdentityHandler</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">UserIdentityElement</a>&gt;&nbsp;userIdentityHandler,
+ <a href="../../../commonservices/generichandlers/OpenMetadataAPIGenericHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericHandler</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;genericHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
@@ -342,12 +342,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.outtopic.SecurityManagerOutTopicPublisher,org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.outtopic.SecurityManagerOutTopicPublisher,org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>SecurityManagerOMRSTopicListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SecurityManagerOMRSTopicListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="SecurityManagerOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.outtopic">SecurityManagerOutTopicPublisher</a>&nbsp;eventPublisher,
- <a href="../../../commonservices/generichandlers/UserIdentityHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">UserIdentityHandler</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">UserIdentityElement</a>&gt;&nbsp;userIdentityHandler,
+ <a href="../../../commonservices/generichandlers/OpenMetadataAPIGenericHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericHandler</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;genericHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Initialize the topic listener.</div>
@@ -356,7 +356,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serviceName</code> - this is the full name of the service - used for error logging in base class</dd>
 <dd><code>localServerUserId</code> - userId used by this server for metadata governance</dd>
 <dd><code>eventPublisher</code> - this is the out topic publisher</dd>
-<dd><code>userIdentityHandler</code> - handler for retrieving asset information</dd>
+<dd><code>genericHandler</code> - handler for retrieving entity information</dd>
 <dd><code>supportedZones</code> - list of zones that the access service is allowed to serve instances from.</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 </dl>

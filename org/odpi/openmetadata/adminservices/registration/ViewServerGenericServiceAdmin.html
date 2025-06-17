@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../viewservices/classificationexplorer/admin/ClassificationExplorerAdmin.html" title="class in org.odpi.openmetadata.viewservices.classificationexplorer.admin">ClassificationExplorerAdmin</a></code>, <code><a href="../../viewservices/feedbackmanager/admin/FeedbackManagerAdmin.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.admin">FeedbackManagerAdmin</a></code>, <code><a href="../../viewservices/governanceofficer/admin/GovernanceOfficerAdmin.html" title="class in org.odpi.openmetadata.viewservices.governanceofficer.admin">GovernanceOfficerAdmin</a></code>, <code><a href="../../viewservices/metadataexplorer/admin/MetadataExplorerAdmin.html" title="class in org.odpi.openmetadata.viewservices.metadataexplorer.admin">MetadataExplorerAdmin</a></code></dd>
+<dd><code><a href="../../viewservices/actormanager/admin/ActorManagerAdmin.html" title="class in org.odpi.openmetadata.viewservices.actormanager.admin">ActorManagerAdmin</a></code>, <code><a href="../../viewservices/classificationexplorer/admin/ClassificationExplorerAdmin.html" title="class in org.odpi.openmetadata.viewservices.classificationexplorer.admin">ClassificationExplorerAdmin</a></code>, <code><a href="../../viewservices/feedbackmanager/admin/FeedbackManagerAdmin.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.admin">FeedbackManagerAdmin</a></code>, <code><a href="../../viewservices/governanceofficer/admin/GovernanceOfficerAdmin.html" title="class in org.odpi.openmetadata.viewservices.governanceofficer.admin">GovernanceOfficerAdmin</a></code>, <code><a href="../../viewservices/metadataexplorer/admin/MetadataExplorerAdmin.html" title="class in org.odpi.openmetadata.viewservices.metadataexplorer.admin">MetadataExplorerAdmin</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">ViewServerGenericServiceAdmin</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">ViewServiceAdmin is the interface that a view service implements to receive its configuration.
+<div class="block">ViewServerGenericServiceAdmin is the interface that a view service implements to receive its configuration.
  The java class that implements this interface is created with a default constructor and then
  the initialize method is called.  It is configured in the ViewServiceDescription enumeration.</div>
 </section>
@@ -147,10 +147,11 @@ loadScripts(document, 'script');</script>
  that a caller can search for.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.util.List)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.util.List)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&nbsp;viewServiceConfig,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;activeViewServices)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -274,12 +275,13 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.util.List)">
+<section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.util.List)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&nbsp;viewServiceConfig,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;activeViewServices)</span>
                          throws <span class="exceptions"><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
@@ -289,7 +291,8 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the local server</dd>
 <dd><code>viewServiceConfig</code> - specific configuration properties for this view service.</dd>
 <dd><code>auditLog</code> - audit log component for logging messages.</dd>
-<dd><code>serverUserName</code> - user id to use on OMRS calls where there is no end user.</dd>
+<dd><code>serverUserName</code> - user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.</dd>
+<dd><code>serverUserPassword</code> - password to use as part of an HTTP authentication mechanism.</dd>
 <dd><code>maxPageSize</code> - maximum page size. 0 means unlimited</dd>
 <dd><code>activeViewServices</code> - list of view services active in this server</dd>
 <dt>Throws:</dt>

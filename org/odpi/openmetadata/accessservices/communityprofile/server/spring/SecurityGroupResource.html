@@ -298,7 +298,7 @@ loadScripts(document, 'script');</script>
  int&nbsp;startFrom,
  @RequestParam
  int&nbsp;pageSize)</span></div>
-<div class="block">Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.</div>
+<div class="block">Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - called server</dd>
@@ -392,7 +392,6 @@ loadScripts(document, 'script');</script>
 <dd><code>securityGroupGUID</code> - unique identifier for the actor profile</dd>
 <dt>Returns:</dt>
 <dd>properties of the actor profile
-
    InvalidParameterException securityGroupGUID or userId is null
    PropertyServerException problem accessing property server
    UserNotAuthorizedException security access problem</dd>

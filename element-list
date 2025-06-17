@@ -545,6 +545,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences
 org.odpi.openmetadata.frameworks.openmetadata.properties.feedback
 org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries
 org.odpi.openmetadata.frameworks.openmetadata.properties.governance
+org.odpi.openmetadata.frameworks.openmetadata.properties.implementations
 org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains
 org.odpi.openmetadata.frameworks.openmetadata.properties.lineage
 org.odpi.openmetadata.frameworks.openmetadata.properties.locations
@@ -815,6 +816,10 @@ org.odpi.openmetadata.viewservices.actionauthor.admin
 org.odpi.openmetadata.viewservices.actionauthor.ffdc
 org.odpi.openmetadata.viewservices.actionauthor.server
 org.odpi.openmetadata.viewservices.actionauthor.server.spring
+org.odpi.openmetadata.viewservices.actormanager.admin
+org.odpi.openmetadata.viewservices.actormanager.ffdc
+org.odpi.openmetadata.viewservices.actormanager.server
+org.odpi.openmetadata.viewservices.actormanager.server.spring
 org.odpi.openmetadata.viewservices.assetcatalog.admin
 org.odpi.openmetadata.viewservices.assetcatalog.ffdc
 org.odpi.openmetadata.viewservices.assetcatalog.rest

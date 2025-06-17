@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.multitenant.<a href="../../../commonservices/multitenant/OMVSServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">OMVSServiceInstance</a></h3>
-<code><a href="../../../commonservices/multitenant/OMVSServiceInstance.html#remoteServerName">remoteServerName</a>, <a href="../../../commonservices/multitenant/OMVSServiceInstance.html#remoteServerURL">remoteServerURL</a></code></div>
+<code><a href="../../../commonservices/multitenant/OMVSServiceInstance.html#localServerUserPassword">localServerUserPassword</a>, <a href="../../../commonservices/multitenant/OMVSServiceInstance.html#remoteServerName">remoteServerName</a>, <a href="../../../commonservices/multitenant/OMVSServiceInstance.html#remoteServerURL">remoteServerURL</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.multitenant.AuditableServerServiceInstance">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.multitenant.<a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">AuditableServerServiceInstance</a></h3>
 <code><a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html#auditLog">auditLog</a>, <a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html#localServerUserId">localServerUserId</a></code></div>
@@ -112,9 +112,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,java.lang.String)" class="member-name-link">ClassificationManagerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)" class="member-name-link">ClassificationManagerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL)</code></div>
@@ -177,11 +178,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">
 <h3>ClassificationManagerInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ClassificationManagerInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL)</span>
@@ -191,7 +193,8 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of this server</dd>
 <dd><code>auditLog</code> - logging destination</dd>
-<dd><code>localServerUserId</code> - userId used for server initiated actions</dd>
+<dd><code>localServerUserId</code> - user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.</dd>
+<dd><code>localServerUserPassword</code> - password to use as part of an HTTP authentication mechanism.</dd>
 <dd><code>maxPageSize</code> - maximum page size</dd>
 <dd><code>remoteServerName</code> - remote server name</dd>
 <dd><code>remoteServerURL</code> - remote server URL</dd>

@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CyberLocationProperties</span>
 <span class="extends-implements">extends <a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a></span></div>
-<div class="block">CyberLocationProperties indicates that a location is a cyber location rather than a physical location.</div>
+<div class="block">CyberLocationProperties carries the parameters for marking a location as a digital (cyber) location.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -98,7 +98,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties)" class="member-name-link">CyberLocationProperties</a><wbr>(<a href="CyberLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">CyberLocationProperties</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Copy/clone constructor.</div>
+<div class="block">Copy/clone constructor</div>
 </div>
 </div>
 </section>
@@ -117,34 +117,34 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<div class="block">Return comparison result based on the content of the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAddress()" class="member-name-link">getAddress</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNetworkAddress()" class="member-name-link">getNetworkAddress</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the address for the location.</div>
+<div class="block">Return the network address used to connect to the location.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return hash code based on properties.</div>
+<div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAddress(java.lang.String)" class="member-name-link">setAddress</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNetworkAddress(java.lang.String)" class="member-name-link">setNetworkAddress</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up address of the location.</div>
+<div class="block">Set up the network address used to connect to the location.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Standard toString method.</div>
+<div class="block">JSON-style toString</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a></h3>
-<code><a href="../ClassificationProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../ClassificationProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../ClassificationProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../ClassificationProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../ClassificationProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="../ClassificationProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a></code></div>
+<code><a href="../ClassificationProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../ClassificationProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../ClassificationProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../ClassificationProperties.html#getTypeName()">getTypeName</a>, <a href="../ClassificationProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../ClassificationProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="../ClassificationProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../ClassificationProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -170,10 +170,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties)">
 <h3>CyberLocationProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">CyberLocationProperties</span><wbr><span class="parameters">(<a href="CyberLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">CyberLocationProperties</a>&nbsp;template)</span></div>
-<div class="block">Copy/clone constructor.</div>
+<div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>template</code> - template object to copy.</dd>
+<dd><code>template</code> - object to copy</dd>
 </dl>
 </section>
 </li>
@@ -186,24 +186,24 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setAddress(java.lang.String)">
-<h3>setAddress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAddress</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address)</span></div>
-<div class="block">Set up address of the location.</div>
+<section class="detail" id="getNetworkAddress()">
+<h3>getNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNetworkAddress</span>()</div>
+<div class="block">Return the network address used to connect to the location.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>address</code> - String</dd>
+<dt>Returns:</dt>
+<dd>string name - often a URL</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getAddress()">
-<h3>getAddress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAddress</span>()</div>
-<div class="block">Return the address for the location.</div>
+<section class="detail" id="setNetworkAddress(java.lang.String)">
+<h3>setNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNetworkAddress</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</span></div>
+<div class="block">Set up the network address used to connect to the location.</div>
 <dl class="notes">
-<dt>Returns:</dt>
-<dd>String address</dd>
+<dt>Parameters:</dt>
+<dd><code>networkAddress</code> - string name - often a URL</dd>
 </dl>
 </section>
 </li>
@@ -211,12 +211,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">Standard toString method.</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../ClassificationProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a></code></dd>
 <dt>Returns:</dt>
-<dd>print out of variables in a JSON-style</dd>
+<dd>return string containing the property names and values</dd>
 </dl>
 </section>
 </li>
@@ -224,14 +224,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="equals(java.lang.Object)">
 <h3>equals</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../ClassificationProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>objectToCompare</code> - supplied object</dd>
+<dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
-<dd>boolean result of comparison</dd>
+<dd>result of comparison</dd>
 </dl>
 </section>
 </li>
@@ -239,12 +239,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Return hash code based on properties.</div>
+<div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../ClassificationProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a></code></dd>
 <dt>Returns:</dt>
-<dd>int</dd>
+<dd>int hash code</dd>
 </dl>
 </section>
 </li>

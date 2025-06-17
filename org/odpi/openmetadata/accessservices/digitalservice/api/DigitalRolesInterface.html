@@ -99,12 +99,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Link a person to a person role.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createAgreementRole(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties)" class="member-name-link">createAgreementRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createAgreementActor(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties)" class="member-name-link">createAgreementActor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementGUID,
- <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementRoleProperties</a>&nbsp;agreementRoleProperties,
+ <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementActorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementActorProperties</a>&nbsp;agreementActorProperties,
  <a href="../../../frameworks/openmetadata/properties/actors/PersonRoleProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">PersonRoleProperties</a>&nbsp;personRoleProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Create a definition of a new role that is part of an agreement such as a digital subscription.</div>
+<div class="block">Create a definition of a new actor that is part of an agreement such as a digital subscription.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDigitalServiceManagerRole(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties)" class="member-name-link">createDigitalServiceManagerRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -171,11 +171,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete the person role.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateAgreementRole(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties)" class="member-name-link">updateAgreementRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateAgreementRole(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties)" class="member-name-link">updateAgreementRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;roleGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementRoleProperties</a>&nbsp;agreementRoleProperties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementActorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementActorProperties</a>&nbsp;agreementActorProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the name of the role for a specific agreement.</div>
 </div>
@@ -230,31 +230,28 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createAgreementRole(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties)">
-<h3>createAgreementRole</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createAgreementRole</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<section class="detail" id="createAgreementActor(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties)">
+<h3>createAgreementActor</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createAgreementActor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementGUID,
- <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementRoleProperties</a>&nbsp;agreementRoleProperties,
+ <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementActorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementActorProperties</a>&nbsp;agreementActorProperties,
  <a href="../../../frameworks/openmetadata/properties/actors/PersonRoleProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">PersonRoleProperties</a>&nbsp;personRoleProperties)</span>
-                    throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+                     throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a definition of a new role that is part of an agreement such as a digital subscription.
-
+<div class="block">Create a definition of a new actor that is part of an agreement such as a digital subscription.
  These roles are often referred to in the agreement.  For example, the agreement may refer to the subscriber, payer, data consumer.
- The name of such a role is stored in the <i>agreementRoleProperties</i>.  The properties of the person role that is created to represent
+ The name of such a role is stored in the <i>agreementActorProperties</i>.  The properties of the person role that is created to represent
  the role is stored in <i>personRoleProperties</i>.  A person (or multiple people) can be appointed to the new role using the
  <i>appointPersonRole</i> method.
-
  The new person role created is anchored to the agreement and so it is deleted when the agreement is deleted.
  It can be managed using the methods below before that.
-
  More general support for creating roles is found in Community Profile OMAS and Governance Program OMAS.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
-<dd><code>agreementRoleProperties</code> - description of a role found in the agreement text</dd>
+<dd><code>agreementActorProperties</code> - description of a role found in the agreement text</dd>
 <dd><code>personRoleProperties</code> - properties to use when creating the role.</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new role</dd>
@@ -290,13 +287,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateAgreementRole(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties)">
+<section class="detail" id="updateAgreementRole(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties)">
 <h3>updateAgreementRole</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateAgreementRole</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;roleGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementRoleProperties</a>&nbsp;agreementRoleProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/digitalbusiness/AgreementActorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">AgreementActorProperties</a>&nbsp;agreementActorProperties)</span>
                   throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -307,7 +304,7 @@ loadScripts(document, 'script');</script>
 <dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
 <dd><code>roleGUID</code> - identifier of the person role</dd>
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
-<dd><code>agreementRoleProperties</code> - properties to change</dd>
+<dd><code>agreementActorProperties</code> - properties to change</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
